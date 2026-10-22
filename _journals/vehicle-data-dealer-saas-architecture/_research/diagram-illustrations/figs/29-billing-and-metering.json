@@ -1,0 +1,20 @@
+[
+ {
+  "id": "29-meter-at-source-rate-once",
+  "visual_goal": "Show products recording usage events into Meterline, one rating engine pricing them against the price book, and invoicing, receivables and the usage portal working only from rated usage.",
+  "prompt": "A left-to-right flow illustration. Far left, two stacked source boxes: 'Product services' above and 'Subscriptions' below, each with one arrow into a tall append-only log cylinder labeled 'Meterline'; the arrow from 'Product services' is labeled 'usage event'. One arrow from 'Meterline' into a gear box labeled 'Rating engine'. Above 'Rating engine', a versioned book labeled 'Price book' with one arrow down into it. From 'Rating engine' two arrows: one to the right into a document stack labeled 'Invoice run', and one downward into a small dashboard screen labeled 'Usage portal'. From 'Invoice run' one arrow to a generic building icon labeled 'Customer' and one arrow down into a ledger book labeled 'Receivables ledger'. These ten labels are the only words in the image.",
+  "alt": "Product services and subscriptions write usage events to Meterline; the rating engine, fed by the price book, prices them for the invoice run and the usage portal; the invoice run goes to the customer and the receivables ledger."
+ },
+ {
+  "id": "29-retry-one-event",
+  "visual_goal": "Show a retried request after a lost response producing one usage event, priced at zero for a no-hit by the rating engine.",
+  "prompt": "A left-to-right swimlane illustration with five vertical lanes headed by icons and labels: a laptop labeled 'API client', a gate labeled 'Gateway', a document assembler labeled 'History service', a log cylinder labeled 'Meterline', and a gear labeled 'Rating engine'. Top: an arrow from 'API client' through 'Gateway' to 'History service' labeled 'request K1'. Below it, a dashed return arrow from 'Gateway' toward 'API client' broken by an orange cross, labeled 'timeout'. Below, a second arrow from 'API client' through 'Gateway' to 'History service' labeled 'retry K1'. Below, a green return arrow from 'History service' to 'API client' labeled 'stored response'. Lower, one arrow from 'History service' to 'Meterline' labeled 'one event'. Lowest, one arrow from 'Meterline' to 'Rating engine' labeled 'no_hit', and beside 'Rating engine' a small price tag labeled 'zero'. These thirteen labels are the only words in the image.",
+  "alt": "Swimlanes for API client, gateway, history service, Meterline and rating engine: request K1 times out, the retry with K1 gets the stored response, one event reaches Meterline and the rating engine prices the no-hit at zero."
+ },
+ {
+  "id": "29-invoice-lifecycle",
+  "visual_goal": "Show an invoice editable until finalized, after which every change is a new document: credit note or re-presented collection.",
+  "prompt": "A left-to-right state map of eight rounded tiles. Left group in blue: 'Open', then one arrow to 'Draft', then one arrow to 'Review'. One curved arrow from 'Review' back to 'Draft' labeled 'hold'. A thick vertical dividing line after 'Review'. Right of the line, one arrow from 'Review' to green 'Finalized' with a small seal icon. One arrow from 'Finalized' to teal 'Sent'. From 'Sent' one arrow right to green 'Collected'. Directly below 'Sent', an orange tile 'Returned'. Between 'Sent' and 'Returned' there are exactly two short vertical arrows side by side: the left one points down from 'Sent' to 'Returned'; the right one points up from 'Returned' back to 'Sent' and is labeled 're-presented'. Nothing connects 'Returned' to 'Finalized'. From 'Collected' one arrow down to grey 'Credited', labeled 'credit note'. A small pencil icon appears only on the tiles left of the dividing line. These ten labels are the only words in the image.",
+  "alt": "Open, Draft and Review are editable; after Finalized, invoices are Sent, then Collected or Returned and re-presented, and Collected invoices may be Credited by a credit note."
+ }
+]

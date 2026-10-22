@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecting a Vehicle Data and Dealer SaaS Platform</title>
+    <meta name="description" content="How architects and engineering leaders design, integrate, operate and evolve platforms that turn registers, build data, history records and market data into vehicle identity, history and value — and put that data to work in the daily workflows of dealers, dealer groups, traders and lessors, from identity and valuation to syndication, leads, registration, tenancy and billing. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:description" content="How architects and engineering leaders design, integrate, operate and evolve platforms that turn registers, build data, history records and market data into vehicle identity, history and value — and put that data to work in the daily workflows of dealers, dealer groups, traders and lessors, from identity and valuation to syndication, leads, registration, tenancy and billing. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/journal-logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/journal-logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/journal-logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+        <div style="padding: 4px;">
+            <h1>Architecting a Vehicle Data and Dealer SaaS Platform</h1>
+            <p>How architects and engineering leaders design, integrate, operate and evolve platforms that turn registers, build data, history records and market data into vehicle identity, history and value — and put that data to work in the daily workflows of dealers, dealer groups, traders and lessors, from identity and valuation to syndication, leads, registration, tenancy and billing. This is a living journal and a work in progress: I revise it as I learn more through <a href="https://obren.io">my work</a>.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-label="Book edition" hidden></section>
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <div id="visual" hidden></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Preface", "description": "", "posts": [{"id": "", "status": "", "title": "Introduction: Architecture for Decisions About One Car", "excerpt": "What is an architecture book about vehicle data and dealer software for, and how should you read it? It argues that such a platform sells decisions about one physical car, each only as good as the identity, provenance and freshness of the facts beneath it, compares the data half and the workflow half and five markets wherever their machinery differs, and routes you from the decision on your desk to the chapters that answer it.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong", "excerpt": "Vehicle data and dealer software platforms rarely fail through one bad decision; they sell the wrong car at the wrong price through recurring patterns that each looked reasonable when it was chosen. This guide names fifteen of them, from The Cloned Identity to Customization Creep, and gives for each the warning signs, the mechanism, the cost, the half of the platform it hits hardest and the chapters that address it.", "url": "where-vehicle-platforms-go-wrong.html", "icon": "assets/icons/where-vehicle-platforms-go-wrong.png", "logo": "assets/images/where-vehicle-platforms-go-wrong/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Meet Axleby: A Data Business and a Software Business Under One Roof", "excerpt": "Every chapter in this book tests its argument against the same fictional group: Axleby, which sells vehicle data by the call and the report and dealer software by the rooftop and the month, across four European markets, on a landscape assembled by acquisition. This page introduces its brands, prices, customers, volumes, systems, people, the eleven incidents the chapters reuse, the problems it starts 2027 with and the One Dossier program approved to fix them.", "url": "meet-axleby.html", "icon": "assets/icons/meet-axleby.png", "logo": "assets/images/meet-axleby/logo.jpeg", "tags": []}]}, {"title": "Part I — MARKET: The Business of Vehicle Data and Dealer Software", "description": "Who knows what about a car, how dealers, data providers and software vendors make money, the capabilities a platform needs and the boundaries and sources of truth that divide it.", "posts": [{"id": "", "status": "", "title": "Part I — MARKET: The Business of Vehicle Data and Dealer Software", "excerpt": "Who knows what about a car, who pays for what, what must the business be able to do, and who may say a fact is true? Part I argues that a vehicle data and dealer SaaS platform cannot draw a sound service boundary until it has answered those four questions, because each answer becomes a source of truth, a requirement, a shared capability or a context line.", "url": "part-1.html", "icon": "assets/icons/part-1-intro.png", "logo": "assets/images/part-1-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem", "excerpt": "Who produces, owns, sells and uses facts about a used car, and how did dealer software grow around them? No participant sees the whole car: registers, manufacturers, insurers, workshops, portals, auctions and dealers each hold one part on their own terms, and a vehicle data and dealer SaaS platform earns its place by assembling those parts with provenance and putting them into the dealer's daily work.", "url": "vehicle-data-ecosystem.html", "icon": "assets/icons/01-vehicle-data-ecosystem.png", "logo": "assets/images/01-vehicle-data-ecosystem/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Margins, Days and Lookups: The Economics of Dealers, Data and SaaS", "excerpt": "How do dealers, vehicle-data providers and dealer-software vendors make money, and how does that become architecture? A dealer loses part of a thin gross every day a car stands, a data provider earns cents on calls whose upstream cost it must know, and a SaaS vendor grows through retention and pull-through, so each number becomes a latency, freshness, accuracy or metering requirement.", "url": "dealer-and-data-economics.html", "icon": "assets/icons/02-dealer-and-data-economics.png", "logo": "assets/images/02-dealer-and-data-economics/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Mapping the Business: A Capability Map From Identify to Insight", "excerpt": "Which business capabilities does a vehicle data and dealer SaaS platform need, and which should the data half and the workflow half share? Draw the map from the value chain, not the org chart; classify each capability as differentiating, parity or commodity; and share first the parity capabilities that carry the keys (vehicle, account, meter, license), because every differentiating capability depends on them.", "url": "vehicle-capability-map.html", "icon": "assets/icons/03-vehicle-capability-map.png", "logo": "assets/images/03-vehicle-capability-map/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Drawing the Lines: Bounded Contexts, Entities and Sources of Truth", "excerpt": "Where should service and team boundaries go in a vehicle data and dealer SaaS platform, and which context is the source of truth for each entity? Draw contexts around the meanings that differ (a sold car means five things), give every principal entity exactly one owner and an opaque key, label every copy by its kind and age, and let all contexts conform to one vehicle identity while translating at every external edge.", "url": "vehicle-bounded-contexts.html", "icon": "assets/icons/04-vehicle-bounded-contexts.png", "logo": "assets/images/04-vehicle-bounded-contexts/logo.jpeg", "tags": []}]}, {"title": "Part II — VEHICLE: Identity, Specification and History", "description": "Which car this is, what the official registers say, what was built, what happened to it, and how many sources become one record with known provenance and quality.", "posts": [{"id": "", "status": "", "title": "Part II — VEHICLE: Identity, Specification and History", "excerpt": "Which car is this, what does the register say, what was built and what has happened to it since? Part II argues that every vehicle fact is a sourced, dated observation attached to one internal vehicle key, and that specifications, judgements and golden records are views computed from those observations, so that a correction can reach everything they fed.", "url": "part-2.html", "icon": "assets/icons/part-2-intro.png", "logo": "assets/images/part-2-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Which Car Is This? VINs, Plates and the Vehicle Identity Graph", "excerpt": "How should a platform identify a physical vehicle across plates, VINs, countries and sources? Key every vehicle by an internal surrogate anchored to the VIN, treat plates as time-bounded assignments that must be resolved as of a date, and make matching confidence, merges and splits explicit, audited operations.", "url": "vehicle-identity.html", "icon": "assets/icons/05-vehicle-identity.png", "logo": "assets/images/05-vehicle-identity/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Authoritative Source: Vehicle Registers and Official Data Access", "excerpt": "How does a platform connect to official vehicle registers, and what does it owe them in return? Design the connection around each register's access regime, mirror only what may be mirrored and ask the register live when the decision needs it, and run every read and write through one gateway that holds the credentials, the quotas, the purpose rules and the audit.", "url": "registers-and-official-data.html", "icon": "assets/icons/06-registers-and-official-data.png", "logo": "assets/images/06-registers-and-official-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Exactly Was Built: Specification, Trim and Equipment Data", "excerpt": "How do you turn a VIN or a plate into a specification that valuations, adverts and reports can trust, including the edition and the factory options? Keep register, catalog and as-built facts as separate sourced layers, resolve them into candidates with an explicit confidence state, and buy per-VIN build data only when a decision depends on it, once per car.", "url": "specification-and-equipment.html", "icon": "assets/icons/07-specification-and-equipment.png", "logo": "assets/images/07-specification-and-equipment/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Happened to This Car: Damage, Odometer, Title and Service History", "excerpt": "How do you assemble a vehicle history that buyers and dealers can rely on? Store every history fact as a typed, sourced, person-free event per vehicle, derive judgements such as rollback suspicion from that log with versioned rules, and issue each report as a dated snapshot that says what was checked, what was found and what was not covered.", "url": "vehicle-history.html", "icon": "assets/icons/08-vehicle-history.png", "logo": "assets/images/08-vehicle-history/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Many Sources to One Record: Ingestion, Normalization and Entity Resolution", "excerpt": "How should data enter a vehicle platform, be validated and reconciled, and become one record per vehicle? Pick batch or event-driven ingestion per source from stated freshness, volume, cost and replay requirements; land everything raw and immutable; quarantine instead of dropping or passing; resolve vehicles deterministically by VIN before matching probabilistically; and compute the golden record as a rebuildable view under explicit survivorship rules.", "url": "ingestion-and-entity-resolution.html", "icon": "assets/icons/09-ingestion-and-entity-resolution.png", "logo": "assets/images/09-ingestion-and-entity-resolution/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Where Did This Fact Come From? Provenance, Freshness and Data Quality", "excerpt": "How does a vehicle platform know, show and govern the source, age, license and quality of every fact it sells? Give every fact a provenance envelope, keep both the time it was true and the time the platform learned it, set freshness targets per data class and decision, and hold suppliers to contracts and scorecards measured against independent ground truth.", "url": "provenance-and-data-quality.html", "icon": "assets/icons/10-provenance-and-data-quality.png", "logo": "assets/images/10-provenance-and-data-quality/logo.jpeg", "tags": []}]}, {"title": "Part III — VALUE: Market Data, Valuation and Condition", "description": "Reading the market from adverts and transactions, valuing a car honestly, pricing condition and battery health, and data from the connected car itself.", "posts": [{"id": "", "status": "", "title": "Part III — VALUE: Market Data, Valuation and Condition", "excerpt": "What is a used car worth, and how sure can a platform be about it? Part III argues that value is an estimate built on partial evidence: market observations with their coverage, valuations with ranges and a ledger, and condition, battery and connected-car readings with their methods and rights, all measured against what actually happened.", "url": "part-3.html", "icon": "assets/icons/part-3-intro.png", "logo": "assets/images/part-3-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Reading the Market: Advert Harvesting, Sale Detection and Transaction Data", "excerpt": "How do you build a reliable picture of the used-car market from adverts and transactions? Keep every observation with its source and rights, resolve adverts into market vehicles across portals and relists, treat a de-listing as evidence of a sale rather than a sale, and publish segment statistics together with their coverage.", "url": "market-data.html", "icon": "assets/icons/11-market-data.png", "logo": "assets/images/11-market-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Is It Worth? Building and Governing a Valuation Engine", "excerpt": "How do you produce valuations that dealers can act on and that stay honest when the market moves? Return a typed, evidenced answer with a range and comparables, record it in a ledger linked to what happened next, and watch bias per segment with leading indicators, because realized sales arrive a stock turn too late.", "url": "valuation-engine.html", "icon": "assets/icons/12-valuation-engine.png", "logo": "assets/images/12-valuation-engine/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost", "excerpt": "How should condition be captured and priced into buying and selling decisions? Capture it once as dated, attributable evidence, keep machine detections apart from human findings, and derive the lessee charge, the trade grade, the repair estimate and the reconditioning cost from that evidence with versioned rules, then measure the estimates against what the work actually cost.", "url": "condition-and-damage.html", "icon": "assets/icons/13-condition-and-damage.png", "logo": "assets/images/13-condition-and-damage/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Battery Question: EV State of Health and Battery Data", "excerpt": "How should a platform measure, store and use battery health for used electric vehicles? Treat state of health as a typed observation that records its method, the pack it belongs to and its evidence, not as one percentage. Verify certificates with their issuer, never average across methods, and say 'unknown' rather than guess, because the regulated data that would settle the question reaches the used-car market only slowly.", "url": "ev-battery-health.html", "icon": "assets/icons/14-ev-battery-health.png", "logo": "assets/images/14-ev-battery-health/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act", "excerpt": "What does connected-vehicle data change for a vehicle data platform, and how should it be integrated? It adds a fresh, high-trust source of odometer, fault-code and battery readings, but every reading arrives under a right granted by a particular user for a particular purpose, so the platform must model that right per vehicle, keep raw telemetry apart from history, and promote readings into shared history only where the right allows it.", "url": "connected-vehicle-data.html", "icon": "assets/icons/15-connected-vehicle-data.png", "logo": "assets/images/15-connected-vehicle-data/logo.jpeg", "tags": []}]}, {"title": "Part IV — DEALER: The Used-Car Workflow", "description": "The dealer's daily work as software: buying, the stock book and dossier, pricing, merchandising, syndication to portals, leads, deals, official transactions, the DMS, and trade between businesses.", "posts": [{"id": "", "status": "", "title": "Part IV — DEALER: The Used-Car Workflow", "excerpt": "How should a platform support a dealer's daily work of buying, stocking, pricing, advertising, selling, registering and trading used cars? Part IV argues that each step is a recorded decision or a legal act on one stock item, and that every system the platform does not control, from portals and CRMs to registers and the DMS, needs a contract, a receipt and reconciliation.", "url": "part-4.html", "icon": "assets/icons/part-4-intro.png", "logo": "assets/images/part-4-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price", "excerpt": "How should a platform support buying a car at the right price, from the customer's driveway to the auction lane? Compute the maximum purchase price as a visible, versioned decision that prices in the valuation's uncertainty, treat every offer as an expiring commitment with conditions, and build capture that works offline and hands the car to stock exactly once.", "url": "vehicle-acquisition.html", "icon": "assets/icons/16-vehicle-acquisition.png", "logo": "assets/images/16-vehicle-acquisition/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Stock Book: Inventory Management and the Vehicle Dossier", "excerpt": "What is the system of record for a dealer's car while it is in stock, and how should its life from appraisal to delivery be modeled? One stock item per stay, owned by a tenant and pointing at the shared vehicle by key, with a small commercial state machine with separate tracks for preparation, advertising, registration and finance, and ownership agreed with the DMS field by field, not car by car.", "url": "inventory-and-vehicle-dossier.html", "icon": "assets/icons/17-inventory-and-vehicle-dossier.png", "logo": "assets/images/17-inventory-and-vehicle-dossier/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Pricing to Turn: Market-Based Pricing, Signals and Repricing", "excerpt": "How should a dealer platform help dealers set and change prices against the market? Treat each price as a decision with a reference, a reason and an owner. Compute price position and stand-time signals per car, express repricing as versioned rules with guardrails and a simulation step, and measure outcomes against a control group rather than counting price changes.", "url": "used-car-pricing.html", "icon": "assets/icons/18-used-car-pricing.png", "logo": "assets/images/18-used-car-pricing/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Making the Car Sellable Online: Photos, Descriptions and Equipment", "excerpt": "How do you produce complete, accurate and attractive adverts for hundreds of thousands of used cars without a copywriter per car? Treat the advert as a rendering of sourced facts: compose it from the dossier, the resolved specification, the price and a managed photo set, generate text only from facts the platform can prove, compute mandatory disclosures per market, and re-render whenever a fact changes.", "url": "merchandising.html", "icon": "assets/icons/19-merchandising.png", "logo": "assets/images/19-merchandising/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Stock, Sixty Channels: Listing Syndication to Portals", "excerpt": "How do you keep one dealer's stock correct on dozens of portals that each have their own formats, APIs and rules? Stop sending commands and start converging: hold a desired state for every car on every channel, let one adapter per channel move the portal toward it in order and within its rate budget, and keep reading back what the portal actually shows.", "url": "listing-syndication.html", "icon": "assets/icons/20-listing-syndication.png", "logo": "assets/images/20-listing-syndication/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Every Enquiry Counts: Lead Capture, Routing and CRM", "excerpt": "How should leads be captured, normalized, routed and followed up across portals, websites, phones and CRMs? Treat a lead as a buyer's interest in a car at a rooftop rather than as a message, route it with rules that are validated against the dealer's current organization, and count it as delivered only when a person can see it and its outcome comes back.", "url": "leads-and-crm.html", "icon": "assets/icons/21-leads-and-crm.png", "logo": "assets/images/21-leads-and-crm/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Closing the Sale: Quotes, Contracts, Financing and Margin VAT", "excerpt": "How should a dealer platform support quotes, contracts, financing and invoices without becoming a dealer management system? Model the deal as a contract-shaped aggregate whose issued documents are immutable and numbered, treat the VAT regime as a fact of the purchase rather than a setting of the sale, refer financing to lenders who own the credit decision, and be the system of record for documents only where no DMS is.", "url": "deals-and-sales-documents.html", "icon": "assets/icons/22-deals-and-sales-documents.png", "logo": "assets/images/22-deals-and-sales-documents/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Making It Official: Registration Transactions, Import, Export and Trade Documents", "excerpt": "How should a platform build official transactions with registers and tax authorities so that they are correct, ordered and provable? Treat each one as a legal act with a recorded authority chain, validate everything before submission, queue in order per vehicle, and never resubmit after an ambiguous timeout until the register has been asked what it already did.", "url": "registration-and-trade-services.html", "icon": "assets/icons/23-registration-and-trade-services.png", "logo": "assets/images/23-registration-and-trade-services/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Living With the DMS: Dealer Management System Integration", "excerpt": "How should a dealer SaaS platform integrate with dealer management systems it does not control? Decide ownership field by field, connect only through sanctioned interfaces behind one adapter per DMS, and design every exchange for duplicates, silence and a DMS that disappears for weeks.", "url": "dms-integration.html", "icon": "assets/icons/24-dms-integration.png", "logo": "assets/images/24-dms-integration/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing", "excerpt": "How should a platform support trade between businesses: dealers, traders, exporters, lessors and auctions? Treat the right to sell a car as a single exclusive lease that every channel must hold, capture condition once at return as neutral evidence, and keep money, title, VAT status and documents in one deal record that does not release the car before each is settled.", "url": "b2b-trade-and-remarketing.html", "icon": "assets/icons/25-b2b-trade-and-remarketing.png", "logo": "assets/images/25-b2b-trade-and-remarketing/logo.jpeg", "tags": []}]}, {"title": "Part V — SAAS: Tenants, Access and the Commercial Model", "description": "Tenancy for independents and dealer groups, identity and entitlements, onboarding and configuration, billing a mix of subscriptions and lookups, and the licences that govern every fact.", "posts": [{"id": "", "status": "", "title": "Part V — SAAS: Tenants, Access and the Commercial Model", "excerpt": "How should a platform that serves one-person lots, 46-rooftop groups and hundreds of API clients organize its customers, users, configuration, invoices and licenses? Part V argues that tenancy, identity, configuration, billing and licensing form one control plane, shared by every product and owned once, in which every commercial fact is recorded as evidence.", "url": "part-5.html", "icon": "assets/icons/part-5-intro.png", "logo": "assets/images/part-5-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS", "excerpt": "How should tenants be modeled and isolated when customers range from one-person lots to hundred-rooftop groups? Make the contracting organization the tenant and the rooftop a first-class child, enforce tenant context in every layer that can leak, and choose pooled, siloed or bridged infrastructure per component against stated requirements rather than by customer size.", "url": "tenancy-and-dealer-groups.html", "icon": "assets/icons/26-tenancy-and-dealer-groups.png", "logo": "assets/images/26-tenancy-and-dealer-groups/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who May Do What: Identity, Authorization and Entitlements", "excerpt": "How should authentication, authorization and entitlements work across acquired products, dealer groups, partners, data clients and official registers? Give every person and every client one identity, and decide each action through separate, audited gates: tenant boundary, relationship, entitlement, register authority and licensed purpose, each owned by a different source of truth.", "url": "identity-access-and-entitlements.html", "icon": "assets/icons/27-identity-access-and-entitlements.png", "logo": "assets/images/27-identity-access-and-entitlements/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Signed Contract to First Sale: Onboarding, Migration and Configuration", "excerpt": "How should dealers and data clients be onboarded, migrated and configured without forking the product? Run onboarding as a measured pipeline whose long poles are authority, DMS approval and channel hand-over rather than data import, migrate by re-runnable imports and signed reconciliations, and meet every special request with versioned configuration or an extension point, never a code branch.", "url": "onboarding-and-configuration.html", "icon": "assets/icons/28-onboarding-and-configuration.png", "logo": "assets/images/28-onboarding-and-configuration/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering", "excerpt": "How do you bill a mix of module subscriptions, per-report fees, API calls and register transaction fees correctly, and explain every line when a dealer or data client disputes it? Record an immutable usage event at the business moment in the service that knows the outcome, price it in one rating engine against a versioned price book and contract, and run billing as a ledger whose every invoice line traces back to the events beneath it.", "url": "billing-and-metering.html", "icon": "assets/icons/29-billing-and-metering.png", "logo": "assets/images/29-billing-and-metering/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Allowed to Use It? Data Licensing, Purpose and Governance", "excerpt": "How does a vehicle data platform make sure that each fact it sells is used only as its source license and its client's contract allow? Treat license terms as data in a license register, decide on every request which sources and fields a client may receive for its declared purpose, attach the obligations to the response, and keep an immutable recipient audit that proves who received what, why, and under which terms.", "url": "data-licensing-and-governance.html", "icon": "assets/icons/30-data-licensing-and-governance.png", "logo": "assets/images/30-data-licensing-and-governance/logo.jpeg", "tags": []}]}, {"title": "Part VI — DISTRIBUTION: APIs, Events and Data Products", "description": "Vehicle data as an API product, events and webhooks that keep systems in step, enrichment and insight products, and the consumer door.", "posts": [{"id": "", "status": "", "title": "Part VI — DISTRIBUTION: APIs, Events and Data Products", "excerpt": "How do vehicle facts leave the platform, and what must travel with them? Part VI argues that every door out — the data API, the event backbone, bulk data products and the consumer report — sells the same governed facts under a different contract, and that each door must carry outcome, freshness, provenance, license and a correction path with the fact, because what leaves cannot be called back.", "url": "part-6.html", "icon": "assets/icons/part-6-intro.png", "logo": "assets/images/part-6-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Data as a Product: Designing Vehicle Data APIs", "excerpt": "How should vehicle data be exposed to software vendors, lessors, insurers and portals? Sell category blocks composed from the internal contexts, each with its own outcome, freshness, source and license, describe them once in a contract registry that renders both legacy XML and JSON, and treat versions, errors and deprecation as commercial terms.", "url": "vehicle-data-apis.html", "icon": "assets/icons/31-vehicle-data-apis.png", "logo": "assets/images/31-vehicle-data-apis/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Keeping Everyone in Step: Events, Webhooks and Synchronization", "excerpt": "Which events should a vehicle data and dealer SaaS platform publish, and how do internal services, partners and systems that cannot receive events stay synchronized? Publish a small catalog of versioned domain events through a transactional outbox, deliver them at least once to idempotent consumers and signed webhooks, and pair every push with a reconciliation job that finds what the events missed.", "url": "events-webhooks-and-sync.html", "icon": "assets/icons/32-events-webhooks-and-sync.png", "logo": "assets/images/32-events-webhooks-and-sync/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Selling Insight: Enrichment, Market Insight and Predictive Data Products", "excerpt": "How should batch enrichment, market dashboards and predictive scores be built and sold? Run them as products with written contracts, their own batch lanes and short retention for customer files; enforce disclosure control in the cube, not the dashboard; and sell ownership-change scores only for vehicles the client already has a lawful relationship with, giving everyone else aggregates.", "url": "data-products-and-insights.html", "icon": "assets/icons/33-data-products-and-insights.png", "logo": "assets/images/33-data-products-and-insights/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Consumer Door: Plate Checks, Reports and B2C Services", "excerpt": "How should a consumer vehicle-check product be built on the same data platform that serves dealers and data clients? Treat the free check as a public, low-yield read of facts that are already public, the paid report as a stored snapshot sold under consumer law and a consumer purpose, and the consumer's attention as a channel to dealers that must be kept apart from what the report says.", "url": "consumer-vehicle-checks.html", "icon": "assets/icons/34-consumer-vehicle-checks.png", "logo": "assets/images/34-consumer-vehicle-checks/logo.jpeg", "tags": []}]}, {"title": "Part VII — OPERATIONS: Running the Platform", "description": "Reliability when registers and suppliers fail, scale and the cost of a lookup, observability of systems and data, security, and privacy and retention.", "posts": [{"id": "", "status": "", "title": "Part VII — OPERATIONS: Running the Platform", "excerpt": "What does it take to run a platform whose most valuable facts and transactions belong to someone else? Part VII argues that reliability, cost, observability, security and privacy are all managed at the platform's edges: journeys measured against confirmed outcomes, dependencies given budgets and degraded modes, every paid call and every caller metered and limited, and every copy of a fact reachable when it must be corrected or erased.", "url": "part-7.html", "icon": "assets/icons/part-7-intro.png", "logo": "assets/images/part-7-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "When the Register Is Down: Reliability With External Dependencies", "excerpt": "How do you keep a vehicle data and dealer SaaS platform useful when registers, data suppliers, portals and DMS vendors fail? Give each dealer journey an SLO and each external dependency a budget, serve reads from a labeled copy, queue writes honestly, and never guess the outcome of a transaction with legal effect.", "url": "reliability-and-dependencies.html", "icon": "assets/icons/35-reliability-and-dependencies.png", "logo": "assets/images/35-reliability-and-dependencies/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Volumes, Peaks and Paid Lookups: Scalability and Operating Cost", "excerpt": "Where does a vehicle data and dealer SaaS platform need to scale, and what does it cost to serve a dealer, a lookup and a report? The load comes in a few predictable shapes that capacity planning can name, and the cost is mostly paid upstream data, which caching under the license and costing each call path control far more than compute tuning does.", "url": "scale-and-cost.html", "icon": "assets/icons/36-scale-and-cost.png", "logo": "assets/images/36-scale-and-cost/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Seeing the Platform: Observability, Data Quality Operations and Support", "excerpt": "How do you know that a vehicle data and dealer SaaS platform, and the data inside it, is healthy for each dealer and each channel? Monitor the business flows end to end against confirmed outcomes, treat data quality as an operational signal with freshness and distribution monitors, tag every signal with tenant and channel, and give support one console built from the same evidence.", "url": "observability-and-data-operations.html", "icon": "assets/icons/37-observability-and-data-operations.png", "logo": "assets/images/37-observability-and-data-operations/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Protecting Dealers and Data: Security for a Vehicle Data Platform", "excerpt": "What are the threats to a vehicle data and dealer SaaS platform, and how should it be defended? Treat every plate and VIN lookup as a bulk-export interface that must be expensive, slow, visible and low-yield to walk; give every caller a scoped credential that names who it is, what it may reach and how much it may spend; and design cells, adapters and backups so that one compromise stops one part of the platform, not thousands of dealers.", "url": "vehicle-platform-security.html", "icon": "assets/icons/38-vehicle-platform-security.png", "logo": "assets/images/38-vehicle-platform-security/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Plates Are Personal: Privacy, Retention and Data Subject Rights", "excerpt": "How should a vehicle data platform treat personal data, from plates and VINs to leads and contracts? Treat plates and VINs as personal data by default, decide per product and data class whether you are controller or processor, keep people out of the vehicle stores, and make retention and erasure platform services that reach every copy, including the warehouse, the backups and the next recomputation.", "url": "privacy-and-retention.html", "icon": "assets/icons/39-privacy-and-retention.png", "logo": "assets/images/39-privacy-and-retention/logo.jpeg", "tags": []}]}, {"title": "Part VIII — JOURNEYS: End-to-End Scenarios", "description": "Four flows followed across every boundary they cross — inventory to portal, a data correction, a lead into the DMS, and a sale through registration — with their failures and recoveries.", "posts": [{"id": "", "status": "", "title": "Part VIII — JOURNEYS: End-to-End Scenarios", "excerpt": "What do the chapter-by-chapter designs miss when a car, a fact, a lead or a sale crosses all of them? Part VIII walks four flows end to end and finds the failures in the seams: identifiers re-derived between hops, success reported without evidence, and recovery that nobody owns, so each journey needs an owner, a key chain and measures taken at its two ends.", "url": "part-8.html", "icon": "assets/icons/part-8-intro.png", "logo": "assets/images/part-8-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory", "excerpt": "What does it take to get a traded-in car from the dealer's forecourt onto seven advertising channels, correct, and to know that it is? Every hop must hand the next one an identifier it minted once, a requirement it can measure and an owner who sees its failures, and the journey must be measured from handover to evidence on the last channel, not to the moment the dealer pressed Publish.", "url": "journey-inventory-to-portal.html", "icon": "assets/icons/40-journey-inventory-to-portal.png", "logo": "assets/images/40-journey-inventory-to-portal/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "A Fact Was Wrong: Propagating a Vehicle Data Correction", "excerpt": "When a supplier corrects a vehicle fact, how does the correction reach every valuation, report, advert, insight file and client copy the wrong fact already reached? Contain the suspect fact versions at once, record at the moment of use which fact versions each artifact consumed so the impact graph is a query, recompute derived state but never rewrite what was issued, and tell exactly the people and systems that received the wrong fact.", "url": "journey-data-correction.html", "icon": "assets/icons/41-journey-data-correction.png", "logo": "assets/images/41-journey-data-correction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Portal Enquiry to Dealer System: Routing a Lead End to End", "excerpt": "What has to be true at every hop between a buyer's portal enquiry and a salesperson's reply in the dealer's CRM? Each hop must pass on an identifier and a confirmed state rather than a success code, a lead counts as delivered only when a read-back shows it in a queue a person works, and every lead that cannot be confirmed lands in a watched fallback and in dead-letter review.", "url": "journey-lead-to-dms.html", "icon": "assets/icons/42-journey-lead-to-dms.png", "logo": "assets/images/42-journey-lead-to-dms/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Signed Contract to New Owner: Sale, Registration and Delisting", "excerpt": "What has to happen, in which order and in which systems, between a buyer's signature and the moment the register names them as the car's new keeper? One correlated sale case carried across about ten hops, a hand-over gate that waits for the register's evidence rather than the platform's hope, and a dealer screen that shows commercial, channel and legal state side by side, so that an outage on the worst afternoon of the quarter delays deliveries without making the platform's record disagree with the register's.", "url": "journey-sale-to-registration.html", "icon": "assets/icons/43-journey-sale-to-registration.png", "logo": "assets/images/43-journey-sale-to-registration/logo.jpeg", "tags": []}]}, {"title": "Part IX — LEADERSHIP: The Chief Architect's Agenda", "description": "Build, buy or partner; turning acquired products into one platform; organizing engineering; modernizing live APIs and monoliths; AI in dealer workflows; and evolving the platform over a decade.", "posts": [{"id": "", "status": "", "title": "Part IX — LEADERSHIP: The Chief Architect's Agenda", "excerpt": "What does a Chief Architect decide once the platform has been designed? Part IX follows Axleby's €38 million One Dossier program through six decisions: what to build, buy or partner, what to share across acquired products, who owns each part, how to retire live legacy systems, where AI may act, and how to keep the platform sound for a decade. Its argument is that a few shared keys, records and contracts must stay in the group's hands, and that every move needs an owner, an exit and a measure.", "url": "part-9.html", "icon": "assets/icons/part-9-intro.png", "logo": "assets/images/part-9-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities", "excerpt": "Which capabilities should a vehicle data and dealer SaaS group build, buy, license or partner for? Decide per capability against stated requirements: own what carries your judgement, your liability and your ability to switch suppliers, rent what suppliers do better, and refuse any source that fails the data-rights test, whatever its price.", "url": "build-buy-or-partner.html", "icon": "assets/icons/44-build-buy-or-partner.png", "logo": "assets/images/44-build-buy-or-partner/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Dossier, One Account: Integrating an Acquired Product Portfolio", "excerpt": "How do you turn a portfolio of acquired vehicle data and dealer software products into one platform without stopping any of them? Share a small kernel first (who the customer is, which car it is, what was used and whether it was allowed), keep the brands and their workflows, sequence the rest by dependency and by what customers can see, and turn the result into a capability map and an integration contract that every product, and every future acquisition, must meet.", "url": "one-platform-from-many-products.html", "icon": "assets/icons/45-one-platform-from-many-products.png", "logo": "assets/images/45-one-platform-from-many-products/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Owns What: Organizing Engineering for a Data and SaaS Platform", "excerpt": "Which organizational design makes a vehicle data and dealer SaaS architecture work? Teams aligned to dealer journeys and vehicle-data domains, platform and complicated-subsystem teams behind them, adapters run as products with a named owner per partner, on-call that follows the external dependency, and governance through decision records and an advice forum rather than through acquired brands.", "url": "organizing-engineering.html", "icon": "assets/icons/46-organizing-engineering.png", "logo": "assets/images/46-organizing-engineering/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths", "excerpt": "How do you move a live vehicle data and dealer platform to a new architecture without breaking dealers and API clients? Strangle the monolith one system of record at a time behind seams you control, prove every move with a parallel run that compares outputs on pinned inputs, and retire legacy interfaces with a client sunset policy built on per-client evidence, dated commercial terms and an explicit end to every transitional component.", "url": "modernizing-the-platform.html", "icon": "assets/icons/47-modernizing-the-platform.png", "logo": "assets/images/47-modernizing-the-platform/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "AI on the Forecourt: Agents, Assistants and Automation", "excerpt": "Where do AI and agents create value in vehicle data and dealer workflows, and what architecture keeps them controlled? Value comes from drafting, screening and proposing work that people already do; control comes from treating every agent as a named delegate of a person, acting through the same commands and gates as that person, inside an explicit envelope, with every proposal and action recorded.", "url": "ai-in-dealer-workflows.html", "icon": "assets/icons/48-ai-in-dealer-workflows.png", "logo": "assets/images/48-ai-in-dealer-workflows/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Built for the Next Shock: Evolving the Platform Over a Decade", "excerpt": "How does a Chief Architect keep a vehicle data and dealer SaaS platform coherent over ten years of regulation, market shocks and technology shifts? Not with a target-state diagram. Stress the architecture with what could plausibly happen, invest in the few structures that survive most stressors, keep cheap options open, and steer by a dozen fitness functions that measure whether facts about each car still travel correctly.", "url": "evolving-the-vehicle-platform.html", "icon": "assets/icons/49-evolving-the-vehicle-platform.png", "logo": "assets/images/49-evolving-the-vehicle-platform/logo.jpeg", "tags": []}]}, {"title": "Part X — PRACTICE: How Others Built It", "description": "Test the book's patterns against publicly documented companies: what each built, why, what it teaches and where the public evidence stops.", "posts": [{"id": "", "status": "", "title": "Part X — PRACTICE: How Others Built It", "excerpt": "What do publicly documented companies show about the patterns in this book? Part X reads Cox Automotive, CDK Global, Auto Trader UK and VWE as architecture cases under stricter evidence rules: dated, documented facts kept apart from the author's reading and from labeled inference, with an explicit account of where each public record stops.", "url": "part-10.html", "icon": "assets/icons/part-10-intro.png", "logo": "assets/images/part-10-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Cox Automotive: Building a Portfolio Into a Platform", "excerpt": "What does the largest acquired portfolio in automotive retail teach a Chief Architect about turning many products into one platform? That integration happens in layers over years (infrastructure, governance, identity, data, APIs, embedded features), that linking and federating beat replacing for an acquired estate, and that owning data on both sides of the transaction is a stronger position than owning a system of record you cannot make dominant.", "url": "case-cox-automotive.html", "icon": "assets/icons/50-case-cox-automotive.png", "logo": "assets/images/50-case-cox-automotive/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure", "excerpt": "What does the public record of the largest US dealer management system vendor teach an architect who integrates with a DMS, or who runs a system of record others depend on? That access terms to a system of record are architecture that courts and legislators now review, that a certified API marketplace is credible only with published contracts and terms, and that concentration turns one incident into an industry outage in which integrations recover last.", "url": "case-cdk-global.html", "icon": "assets/icons/51-case-cdk-global.png", "logo": "assets/images/51-case-cdk-global/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers", "excerpt": "What does the UK's dominant car marketplace show about turning advert data into software that retailers run their used-car business on? That the taxonomy, the stock record and the partner API come before valuations, AI and transactions, and that a bundled product which changes who controls a dealer's stock is a commercial decision that needs dealer-level controls.", "url": "case-auto-trader-uk.html", "icon": "assets/icons/52-case-auto-trader-uk.png", "logo": "assets/images/52-case-auto-trader-uk/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "VWE: A Dutch Vehicle Data Company Becomes a Dealer Platform", "excerpt": "What does the public record of VWE, a mid-sized Dutch provider of register access and vehicle data, teach a Chief Architect once it is separated from guesswork? That in a strong-register market the register connection is both the moat and the main dependency, that a product surface built from licensed sources carries its licensors' structure into the API, and that buying, selling and partnering turn internal systems into external contracts.", "url": "case-vwe.html", "icon": "assets/icons/53-case-vwe.png", "logo": "assets/images/53-case-vwe/logo.jpeg", "tags": []}]}, {"title": "Reference", "description": "The model-to-chapter coverage map, templates, plain-language definitions and the sources consulted.", "posts": [{"id": "", "status": "", "title": "Domain Coverage: From the Productscape Model to Chapters", "excerpt": "Which chapter covers which part of a vehicle data and dealer SaaS platform? This reference page maps every root group, group, product brick and module of the Productscape research model behind the book to the chapters that cover it, and lists the personas, stressors and gaps of that model, the domains the book added and the few it leaves out on purpose.", "url": "domain-coverage.html", "icon": "assets/icons/domain-coverage.png", "logo": "assets/images/domain-coverage/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Field Kit: Templates for the Vehicle Platform Architect", "excerpt": "Which records does a Chief Architect need to keep a vehicle data business and a dealer software business coherent, correct and changeable? Sixteen copyable templates, from the capability map to the decision record, each built from the chapter that teaches it and filled in once with Axleby's numbers.", "url": "toolkit.html", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Glossary", "excerpt": "Plain-language definitions of the book's vehicle-data, dealer-workflow, SaaS, distribution, operations and leadership terms, grouped by part, with a table of Dutch, Belgian, German, UK and US register terms, Axleby's fictional names in their own section, an alphabetical index and a link from every term to the chapter that owns it.", "url": "glossary.html", "icon": "assets/icons/glossary.png", "logo": "assets/images/glossary/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Bibliography", "excerpt": "Find the public sources behind every chapter by topic or by chapter, with the year each was published, the kind of evidence it is and the pages that cite it. Every entry was cited in a chapter; nothing is added as further reading.", "url": "bibliography.html", "icon": "assets/icons/bibliography.png", "logo": "assets/images/bibliography/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'});
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
+                        }
+                    }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
+                        }
+                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
+                });
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+[
+ {
+  "id": "09-inlet-pipeline",
+  "visual_goal": "Show Inlet's pipeline: every source lands raw first, validation can send data to quarantine, resolution attaches records to a vehicle, and the golden record is computed from per-source records.",
+  "prompt": "A strictly linear left-to-right pipeline. Far left: a small cluster of unlabeled source icons (a file, a register book, an advert card) with one arrow into a locked vault labeled 'Landing zone'. One arrow from 'Landing zone' into a checkpoint gate labeled 'Validation'. From 'Validation', one arrow down into an orange holding pen labeled 'Quarantine', and one curved arrow from 'Quarantine' back up into 'Validation' labeled 'release'. One arrow from 'Validation' right labeled 'passes' into a box labeled 'Normalize'. One arrow from 'Normalize' into a magnet-and-car box labeled 'Resolve to AVK'. One arrow from 'Resolve to AVK' into a stack of separate cards labeled 'Source records'. One arrow from 'Source records' into a glowing single card labeled 'Golden record', labeled 'computed'. One final arrow out of 'Golden record' to the right edge labeled 'change events'.",
+  "alt": "Sources land raw in a landing zone, pass validation (failures go to quarantine and are released back), are normalized, resolved to an AVK and stored as source records, from which the golden record is computed and change events flow out."
+ },
+ {
+  "id": "09-batch-lifecycle",
+  "visual_goal": "Show the life of a batch: a delivery failure holds the whole batch, a distribution failure holds only a segment, and a corrected redelivery supersedes the original.",
+  "prompt": "A simple state map of six rounded tiles, left to right. Left: blue tile 'Landed'. Next: grey tile 'Validating'. Right of center: green tile 'Accepted'. Below 'Validating': red tile 'Held' showing a whole crate with a padlock. Below 'Accepted': orange tile 'Partially held' showing a crate with one slice padlocked. Far right: muted grey tile 'Superseded' with a small stacked-pages icon. Exactly these arrows: from 'Landed' to 'Validating'; from 'Validating' to 'Accepted' labeled 'checks pass'; from 'Validating' down to 'Held' labeled 'delivery fails'; from 'Held' back up to 'Validating' labeled 'redelivery'; from 'Validating' to 'Partially held' labeled 'segment fails'; from 'Partially held' up to 'Accepted'; from 'Accepted' to 'Superseded' labeled 'corrected batch'.",
+  "alt": "Batch states: Landed goes to Validating, then to Accepted, Held (whole batch, after a delivery failure, back to Validating on redelivery) or Partially held (one segment, then Accepted); a corrected batch supersedes an accepted one."
+ },
+ {
+  "id": "09-resolution-tiers",
+  "visual_goal": "Show the resolution tiers: a valid VIN decides deterministically, a plate decides only through the assignment valid at the observation date, and probabilistic scoring handles the rest, with its middle band going to people.",
+  "prompt": "A top-to-bottom cascade of three stacked funnels on the left half of the image, with a small unlabeled record card dropping into the top funnel. Top funnel labeled 'Valid VIN'. Middle funnel labeled 'Plate at date' with a small calendar icon. Bottom funnel labeled 'Probabilistic score' with a small dial icon. From each funnel, one green arrow to the right into one shared card with a car silhouette labeled 'Attach to AVK'. Out of the bottom tip of the 'Probabilistic score' funnel come two arrows: one orange arrow to an orange tray with a generic reviewer figure labeled 'Review queue', and one grey arrow down-right to a grey shelf labeled 'Unattached'. One green arrow from 'Review queue' up to 'Attach to AVK' labeled 'confirmed'. The 'Attach to AVK' card has no outgoing arrows.",
+  "alt": "A cascade of three sieves, Valid VIN, Plate at date and Probabilistic score, each attaching records to an AVK; the probabilistic tier sends its middle band to a review queue and the rest stays unattached.",
+  "aspect_ratio": "16:9"
+ }
+]

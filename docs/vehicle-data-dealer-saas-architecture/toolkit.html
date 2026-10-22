@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Field Kit: Templates for the Vehicle Platform Architect</title>
+    <meta name="description" content="Which records does a Chief Architect need to keep a vehicle data business and a dealer software business coherent, correct and changeable? Sixteen copyable templates, from the capability map to the decision record, each built from the chapter that teaches it and filled in once with Axleby's numbers.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Field Kit: Templates for the Vehicle Platform Architect">
+    <meta property="og:description" content="Which records does a Chief Architect need to keep a vehicle data business and a dealer software business coherent, correct and changeable? Sixteen copyable templates, from the capability map to the decision record, each built from the chapter that teaches it and filled in once with Axleby's numbers.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/toolkit.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/toolkit/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="domain-coverage.html" title="Domain Coverage: From the Productscape Model to Chapters">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference</p>
+        <h1>Field Kit: Templates for the Vehicle Platform Architect</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  35 min read · <a class="spec-link" href="toolkit.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/toolkit/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/toolkit/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="domain-coverage.html" title="Domain Coverage: From the Productscape Model to Chapters">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Field Kit: Templates for the Vehicle Platform Architect", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "Which records does a Chief Architect need to keep a vehicle data business and a dealer software business coherent, correct and changeable? Sixteen copyable templates, from the capability map to the decision record, each built from the chapter that teaches it and filled in once with Axleby's numbers.", "permalink": "toolkit", "timetoread": "35 min read", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Find the template that fits the design or decision in front of you, copy it, see which fields differ between the data half and the workflow half or between markets, and see it filled in once for Axleby, with the mistakes that most often make it useless and the chapter that explains every field.\n\n> **KEY POINTS:**\n>\n> * **Every template names an owner, a version and the identifier other records cite.** An Axleby Vehicle Key (AVK), a `fact_version`, a Charter decision id that is also Meterline's `licence_ref`, a valuation id, a register transaction id: that chain lets a support agent, a data client or an auditor walk from an invoice line or a complaint back to the fact, rule and version that produced it.\n> * **Keep the common core and the market adapter in separate fields.** A register transaction card is Dutch until a German or British one is written; a channel adapter contract is one portal's; a license card is one supplier's. Fields that read the same everywhere belong to the shared platform. A field copied from one market or channel into another without checking is how a single-market assumption gets into shared code.\n> * **Start with the record the next incident will ask for.** Most fields here came from an incident: the withdrawal lane from the Zombie Golf, the Ambiguous state from the Month-End Register Outage, `corrects_record_id` from the Odometer Correction, read-back of owner and queue from the Lost Leads of Velto, the client grant from the License Breach, outcome rules from the No-Hit Credit. Fill the fields that change a decision, write \"unknown\" rather than guess, and add a field when a post-incident review asks a question no field answers.\n\n> **[FAILURE PATTERNS THIS SECTION ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **Feed Roulette** — the source onboarding checklist, channel adapter contract and DMS adapter card give every supplier, portal and DMS a written contract, a status signal and a monitor before it goes live.\n> * **Provenance Amnesia** — the provenance envelope card and the API contract card make source, observation date, license and confidence part of every fact and every answer.\n> * **License Blindness** — the license and purpose card and the entitlement matrix put what a source allows and what a client bought in machine-checked records, not in contracts nobody reads.\n\n<br>\nThese are **working templates for a group that sells vehicle data and dealer software**: the records that Parts I to IX ask a Chief Architect to keep, from the capability map of [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html) to the decision record of [Who Owns What: Organizing Engineering for a Data and SaaS Platform](organizing-engineering.html), each tested against Axleby, the fictional vehicle data and dealer software group this book follows ([Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)). Each is the smallest form I have found that makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording; keep the fields that carry identity, provenance, ownership and money.**\n\nFour conventions run through all sixteen.\n\n- **They are maintained data, not documents.** License rules live in Charter, the license and purpose register; routing rules in Baseline, the tenant configuration service; API contracts in Folio, the contract registry; decision records in one log. A template copied into a slide deck stops being true within a quarter.\n- **They reference each other by identifier.** An API contract card cites license classes and SKUs; a decision record cites the capability rows and entities whose owner it changes.\n- **They say which half and which market.** The data half sells facts under license; the workflow half runs dealers' work inside tenants. Where a field differs between them, or between the Netherlands and Belgium, Germany, the United Kingdom and the United States, the template says so.\n- **Each Axleby example agrees with the chapter that teaches it.** All Axleby names, figures and dates are fictional; the linked chapter works the full case.\n\n## Find the Template for the Question on Your Desk\n\n| Tool | Use it when | Chapter |\n| --- | --- | --- |\n| [Tool 1](#tool-1): Capability map | You must show what the group needs, what the two halves share and where to invest | [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html) |\n| [Tool 2](#tool-2): Entity–owner table | Two systems disagree about a car, a stock item or a lead, or a new product needs vehicle data | [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html) |\n| [Tool 3](#tool-3): Provenance envelope card | You store a new kind of fact, or nobody can say where a number came from | [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) |\n| [Tool 4](#tool-4): Source onboarding checklist | A register, supplier, portal feed or connected-car route is about to deliver data | [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html) |\n| [Tool 5](#tool-5): Valuation model card | A valuation model is retrained, released or questioned | [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) |\n| [Tool 6](#tool-6): Channel adapter contract | A portal or ad channel is added, changes its API, or shows a sold car | [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) |\n| [Tool 7](#tool-7): Lead routing card | A rooftop or group sets up or changes how leads reach people | [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html) |\n| [Tool 8](#tool-8): Register transaction card | You build or change an official transaction in one market | [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) |\n| [Tool 9](#tool-9): DMS adapter card | You connect, change or fail over a dealer management system | [Living With the DMS: Dealer Management System Integration](dms-integration.html) |\n| [Tool 10](#tool-10): Tenancy decision card | You choose how tenants are modeled and isolated, or a large group asks for a dedicated environment | [Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html) |\n| [Tool 11](#tool-11): Entitlement matrix | A product, module or data client contract changes what someone may do | [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html) |\n| [Tool 12](#tool-12): License and purpose card | A source agreement or a client grant is signed or changed | [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) |\n| [Tool 13](#tool-13): API contract card | You add or change a data block, an outcome rule or a version | [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html) |\n| [Tool 14](#tool-14): Journey SLO card | You set objectives for a dealer or client journey, or add a synchronous dependency | [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html) |\n| [Tool 15](#tool-15): Build, buy or partner decision card | A capability or data source is to be built, bought, licensed or partnered | [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html) |\n| [Tool 16](#tool-16): Architecture decision record | A decision crosses a half, a brand or a contract, or changes who owns an entity | [Who Owns What: Organizing Engineering for a Data and SaaS Platform](organizing-engineering.html) |\n\nThe event catalog of [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html), the impact graph of [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) and the metric definitions of [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) are not repeated here; Tools 2, 3 and 14 link to them where a field depends on them.\n\n## How the Records Connect\n\nMost changes pass through several tools, and the vehicle key is where they meet.\n\n![Capability map leads to the sourcing card and decision record, which changes the entity–owner table; the owner table and license card feed the provenance envelope; envelope, license card and entitlement matrix feed the API contract, which feeds the journey SLO.](assets/images/toolkit/toolkit-how-records-connect.jpeg)\n**Figure 1:** *How the templates reference each other. The capability map and sourcing card decide what is built and shared, and decision records change the entity–owner table. Every fact carries an envelope citing its license and source contract, and every answer sold cites the fact versions, license decision and entitlement behind it.*\n\n## <a id=\"tool-1\"><\/a>Tool 1: Capability Map\n\n**Purpose.** A capability map describes what the group must be able to do along the chain Identify → Check → Value → Stock → Advertise → Sell → Register → Trade → Insight ([Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html)), independent of systems, teams or acquired brands. It **classifies each capability twice**: by investment class (how much to invest and whether to build) and by scope (where it lives). Use it to prepare a sourcing or sharing decision (Tools 15 and 16), a program budget or an acquisition case. Review it yearly and after every acquisition, incident review or market entry.\n\n**The template.** One row per level-2 capability: drawn where one owner can be accountable and sharing or sourcing is a single decision.\n\n| Field | What to record | Guidance |\n| --- | --- | --- |\n| **Domain and capability** | Level-1 domain; a business ability as a noun phrase | Never a system (\"Specbook\"), a team or a brand |\n| **Systems** | Every implementation today | Two or three implementations is the duplication signal |\n| **Class** | D differentiating, P parity, C commodity | D means a customer would leave if it were merely as good as a competitor's; require a named comparison |\n| **Condition** | Green, Amber, Red, Grey (missing) | Funding follows condition as much as class |\n| **Scope** | Shared, data half, workflow half | Shared only if both halves need **the same answer about the same car or customer** |\n| **Market flag** | Market-specific or not | A market difference is a rule set or adapter, not a separate capability |\n| **Shared promise** | For shared rows: latency, freshness, consistency, availability per consumer | Incompatible consumers get two serving paths over one model |\n| **Owner** | One accountable person | Consumers are not owners |\n\n**Axleby example** (capability map v1, March 2027; the full map is in [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html)):\n\n| Field | A3 Specification and equipment |\n| --- | --- |\n| Systems | Specbook with licensed build data; Lotwise's dealer-selected edition as a second, unmanaged answer |\n| Class, condition, scope | **P** parity, **Amber**, **Shared**, market-specific |\n| Evidence | 28.5 million build-data fetches in 2026, about €13.1 million; 9% of sampled Lotwise adverts carried an edition different from the resolved one |\n| Owner | Priya Raman (catalog, precedence rules, purchase policy) |\n\nv1's totals: **39 capabilities; 13 differentiating, 21 parity, 5 commodity; 18 shared, 6 data half, 14 workflow half**.\n\n**Common mistakes.**\n\n- The org chart in disguise. \"Lotwise features\" is not a capability; stock, dossier, adverts and sales administration are.\n- Everything differentiating. If more than about a third of rows are D, ask which ones a customer would leave over.\n\nLearn more: [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html)\n\n## <a id=\"tool-2\"><\/a>Tool 2: Entity–Owner Table\n\n**Purpose.** The entity–owner table names, for each principal entity, its identifier, the one context whose committed state is the answer, the copies others may hold and who moves it through its lifecycle. It turns \"which system is right?\" into a lookup. Use it when two systems disagree, a new product or acquisition needs vehicle data, or a field is written in two places. Review it with every decision record that changes an owner.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Entity** | A business object with identity and a lifecycle |\n| **Identifier** | Opaque, never reused, minted by the owner; plates, stock and invoice numbers are labels |\n| **Source of truth** | The one context allowed to change it; its **system of record** (the store) may differ during a migration |\n| **Allowed copies** | By kind: **reference** (the key), **decision snapshot** (id and version used), **observation** (another party's claim with source), **projection** (rebuildable read model with measured lag) |\n| **Lifecycle** | States and the context that moves it through them; events published on the backbone ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)) |\n| **Team and degraded rule** | The owning team; what consumers do when the owner is unavailable |\n\n**Axleby example** (version 1, approved by the architecture board on 3 June 2027; excerpt of 29 entities):\n\n| Entity | Identifier | Source of truth | Allowed copies |\n| --- | --- | --- | --- |\n| Vehicle | AVK (26 characters, never reused); VIN as evidence | Vehicle identity (Anchor) | References everywhere; merges publish `vehicle.merged` |\n| Register record | The register's key | The register; inside the platform, register access (Turnstile) | Mirror projection; theft and awaiting-inspection status asked live, never mirrored |\n| Valuation | Valuation id | Vantage ledger | Decision snapshots in dossier, deal, trade listing |\n| Stock item and dossier | Stock item id; one open per tenant and AVK per stay | Stock and dossier; system of record still Lotwise Classic MySQL in 2027 | Projections (stock lists, websites); references in leads, deals, listings |\n| Channel listing | (stock item, channel) | Syndication for desired state; the portal for actual state | Observations of portal state |\n| Prospect | Per dealer legal entity | Leads (Switchboard) | None across legal entities or tenants |\n| Register transaction | Transaction id; idempotency key from the dealer's click | Axleby Trade ledger | Dossier register track; proof by reference |\n| Usage event | Client request reference + SKU + billing account | Meterline | Usage views as projections; corrections by reversal |\n\n**Contested rows are written down with reasons.** Example: a signed contract, deposit or hold makes a stock item **Reserved**, which withdraws its adverts in the same transaction; it becomes **Sold** when the deal's conditions are met and the invoice is issued (or at delivery, where the dealer configures it), as [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) defines.\n\n**Common mistakes.**\n\n- \"The DMS is the system of record.\" The DMS owns the accounting stock unit; the dossier owns the stock item; Hitch's cross-reference links them ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n- A copy that fits no kind. Lotwise Classic's register cache, median age 11 days, let Autobedrijf Brandsma agree a €9,800 trade-in the register then refused.\n\nLearn more: [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html)\n\n## <a id=\"tool-3\"><\/a>Tool 3: Provenance Envelope Card\n\n**Purpose.** The provenance envelope answers five questions about one fact: who said it, about which car, when it was true, when we learned it, and what we may do with it. The card defines the envelope for a fact type and the behavior each confidence tier allows. Use it when a new fact type is stored, a new source is onboarded (Tool 4), or a client asks what you told them on a past date.\n\n**The template.** Envelope v1 fields from [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html).\n\n| Field | What to record | Rule |\n| --- | --- | --- |\n| `fact_id`, `fact_version` | Stable id; version per correction | Downstream records cite the version |\n| `subject` | AVK plus the source's own key | Re-attach facts when identity is corrected |\n| `attribute`, `value`, `value_as_delivered` | Normalized and original | Keep the original for disputes |\n| `source`, `source_class` | Official / commercial / first-party / derived | Drives wording and survivorship |\n| `source_record_ref`, `batch_ref` | Supplier record id; landing batch and hash | Batch-level fields stored once, by reference |\n| `observed_at` | Valid time | When it was true of the car |\n| `recorded_at`, `superseded_at` | Transaction time | Append-only; a correction closes the interval |\n| `licence_ref` | Charter license id and display class | What products may show, cache, resell |\n| `confidence` | Confirmed / Corroborated / Asserted / Suspect | Tiers, not probabilities |\n| `derivation` | Rule or model version and input fact versions | Lineage for judgements and valuations |\n| `status` | Active / superseded / retracted / disputed | Lifecycle |\n| **Freshness class** | Immutable, registration state, decision-critical, accumulating, market, derived | Sets the SLO and the degraded answer |\n\nProducts obey the tier: **Confirmed** and **Corroborated** facts may be stated as fact with their sources; **Asserted** facts are shown attributed (\"reported by a workshop\") and make a valuation provisional; **Suspect** facts are never stated as fact.\n\n**Axleby example** (one odometer reading after the Odometer Correction):\n\n| Field | Value |\n| --- | --- |\n| Subject | AVK plus the UK plate on the reading date |\n| Value | 66,337 km; redelivered as `41220` with unit `mi`, version 2 (version 1 carried unit `km`, the error) |\n| Source | Kilometra, commercial; license `KM-2024-03`, consumer display allowed |\n| Observed / recorded | 2027-01-18 workshop visit / 2027-05-24, when the corrected batch loaded |\n| Confidence | Asserted |\n\n**Common mistakes.**\n\n- A separate audit log. The envelope is written in the same transaction as the value, or it drifts.\n- Overwriting in place. The May 2027 loader upserted corrections over the originals, which made \"what did you tell us on 17 May?\" a six-day reconstruction.\n\nLearn more: [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)\n\n## <a id=\"tool-4\"><\/a>Tool 4: Source Onboarding Checklist\n\n**Purpose.** A source goes live only when four owners have signed: the license steward for what may be done with the data, procurement and finance for its cost, the integration owner for delivery and correction terms, and the data and valuation leader for quality and precedence. The checklist is the gate. Use it for every register channel, supplier file, portal data agreement, connected-car route and DMS-sourced feed, and again at every contract renewal.\n\n**The template.**\n\n*License (license steward, [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html))*\n- [ ] License class assigned in Charter; every rule linked to its contract clause\n- [ ] Permitted purposes and display audiences; onward transfer; attribution duty\n- [ ] Raw retention, cache retention and the `derivatives` rule (free, aggregate-only, prohibited)\n- [ ] Personal data: controller, lawful basis, DPIA reference ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html))\n\n*Cost ([Volumes, Peaks and Paid Lookups: Scalability and Operating Cost](scale-and-cost.html))*\n- [ ] Price per request, per no-hit and per redelivery; retention that decides repurchases; rate limits\n\n*Delivery contract (integration owner)*\n- [ ] Schema with meanings, units and code lists, not just columns\n- [ ] Stable `source_record_id`; `corrects_record_id` for corrections\n- [ ] Delivery window, manifest with counts and coverage-through\n- [ ] Correction notice period and remedies\n\n*Pipeline ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html))*\n- [ ] Landing with manifest and content hash; replay possible\n- [ ] Thresholds for the four validation layers: delivery, schema, semantics, distribution per segment\n- [ ] Quarantine owner and alert; release by replay, never by bypass\n\n*Quality and product*\n- [ ] Ground truth and overlap sample named; default confidence tier\n- [ ] Survivorship precedence and the recompute impact estimate\n- [ ] Freshness class and the product wording when it is late\n- [ ] Monthly scorecard measures agreed with the supplier\n\n**Axleby example** (Kilometra workshop readings, contract v2, August 2027):\n\n| Item | Entry |\n| --- | --- |\n| License | `KM-2024-03`, consumer display allowed; signed by Femke de Boer's team |\n| Delivery | Nightly file, about 410,000 readings (about 34,000 UK imports, about 93% with a valid VIN), due 02:30 CET; push feed quoted at €95,000 a year and declined |\n| Contract clauses added | Unit declared per workshop chain, `workshop_chain_id`, stable `source_record_id`, `corrects_record_id`, coverage-through in the manifest, correction notice within 1 business day |\n| Distribution checks | **Per-workshop-chain check** (the fix): share of a chain's readings below the vehicle's previous reading above 0.5% *(assumption)* quarantines that chain's segment and releases the rest. The first post-incident gate, a median reading per age band and origin (0.85–1.15 of trailing 30 days), is **insufficient**: replayed in September 2027 it would not have fired on the May 2027 batch, because one chain's 3,050-record export with 94% failing barely moved the medians |\n| Precedence | Survivorship v3: a commercial reading becomes current only if consistent with prior official readings |\n| Scorecard, Q3 2027 | 91 of 92 batches on time; 96.8% agreement with MOT readings within 2% on 4,100 pairs |\n\n**Common mistakes.**\n\n- A contract that defines columns but not meanings, corrections and provenance. That is an invoice, not a contract.\n- License and cost reviewed after integration. The 30-day build-data retention clause made 41% of fetches repurchases.\n\nLearn more: [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html), [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)\n\n## <a id=\"tool-5\"><\/a>Tool 5: Valuation Model Card\n\n**Purpose.** A valuation model is a product release. The model card states what a release values, on what evidence, how well it did in each segment, which segments it refuses, and what switches it off. Dealers spend money on the engine's word; the card is how the engine keeps that trust. Use it for every release, every challenger, and every complaint that a segment is mispriced.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Release and owner** | Model and adjustment-table versions; approver |\n| **Value types and markets** | Retail, trade-in, trade, private, future; basis (VAT scheme, registration tax included or not) |\n| **Training** | Window, recency weighting, sources and their licenses' `derivatives` rules |\n| **Inputs and flags** | Fact types and confidence; flags that widen the range (`thin_sample`, `stale_market`, `spec_uncertain`) |\n| **Applicability contract** | Segments valued; segments refused, and what is returned instead |\n| **Back-test per segment** | Median absolute percentage error, share within ±5% and ±10%, **signed bias**, 80% range coverage; against transaction and against asking prices separately; rolling origin |\n| **Drift monitors** | Leading indicators per segment and the thresholds for `watch` and `restricted` |\n| **Release gates** | Challenger beats champion on bias and coverage in every segment with enough data; shadow period; staged release; rollback |\n| **Known weaknesses** | Segments with thin data or lagging ground truth |\n\n**Axleby example** (Vantage's recency-weighted release after the EV Overvaluation, 2027):\n\n| Field | Entry |\n| --- | --- |\n| What changed | Twelve months of equally weighted prices replaced by recency weighting plus daily per-segment corrections from asking-price movement |\n| Segment key | Fuel type, age band, price band, body type, market, written to the ledger at issue |\n| Thresholds | `watch`: a leading indicator out of band for two weeks, or early-outcome bias above 3%; `restricted`: bias above 5% or three indicators out of band, which switches off suggested maximum purchase prices (MPP) and automated offers |\n| Replay of the 2026 BEV window | `watch` in week 3, `restricted` in week 5 at +5.8%; replayed bias +2.4% by week 7; estimated overpayment on the 610 trade-ins about €0.3 million instead of €1.1 million |\n| Known weakness | About 7% of BEV valuations in the window used an edition with unknown battery size; now flagged `spec_uncertain` with a wider range |\n| Release gates | Two-week shadow period as unbilled ledger entries with purpose `shadow`; staged by market and segment |\n\n**Common mistakes.**\n\n- Global error only. In 2026 global MdAPE moved from 6.1% to 6.6% under an 8% alert while BEVs ran +9.5% for 14 weeks.\n- No refusals. An applicability contract that says \"no valuation\" is cheaper than a confident wrong number.\n\nLearn more: [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)\n\n## <a id=\"tool-6\"><\/a>Tool 6: Channel Adapter Contract\n\n**Purpose.** Each portal or ad channel is a small integration product depending on a contract that changes on someone else's calendar. The channel adapter contract, or channel profile, records everything the adapter knows about one channel. A profile that cannot be filled in is a channel the platform should not sell as supported. Use it when a channel is added, its changelog announces a change, or reconciliation finds drift.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Channel kind** | Portal write API, file feed, ad catalog, or portal as syndicator |\n| **Reached via** | Other channels this one exports to, so the dealer makes one decision per destination |\n| **Operations** | Create, full update, PATCH allow-list, delete, lifecycle states |\n| **Identity and create idempotency** | Platform external id on the listing; native creation key, or look up by external id before creating again |\n| **Withdrawal saga** | Steps, deadline, how absence is confirmed |\n| **Error classes** | Each response code mapped to transient, throttled, permanent for this content, or locked |\n| **Rate budget** | Token bucket, ramp-up, reserved share for withdrawals |\n| **Observers** | Push (callbacks, streams) and pull (list reads); evidence level: confirmed, asynchronous, or file without status |\n| **Field ownership** | Per field: platform wins, portal wins, or flag |\n| **Mandatory fields per market** | With the date each became mandatory |\n| **Mapping tables** | Equipment, make and model mapping versions, keyed by identifiers, never display names |\n| **Owner and probes** | Named engineer; weekly changelog review into dated tickets; hourly synthetic car on a test rooftop |\n\n**Axleby example** (AutoScout24 profile as Relay 2 holds it; channel facts from AutoScout24's public documentation, accessed October 2026):\n\n| Field | Entry |\n| --- | --- |\n| Reached via | `mobile_de` and `AutoTrack` channel flags export the listing; never also publish to mobile.de directly for the same rooftop without the dealer choosing it |\n| Create idempotency | POST documented as not idempotent; a 500 on fetch does not mean absence; look up by external id before creating |\n| Update | Full desired state by default; PATCH silently drops fields such as `financingOffer`, so it is excluded from the allow-list |\n| Throttling | 429 slows the whole channel's bucket; batch jobs ramp up over 5–10 minutes |\n| Market rules | From 2026-06-01, Belgian used-car listings require `belgianCarpassMileageUrl` (HTTP 400 otherwise); validated before publish |\n| Mapping | `natCode` since 2024-06-13; localized reference names changed 2026-10-19, so mappings key by id |\n| Observer | Listing reads with `include=overwriteProtection`; locked listings marked *Locked*, not overwritten |\n\n**Common mistakes.**\n\n- Mapping errors classified as transient. The Zombie Golf's updates threw on an unmapped equipment code and requeued at the head, blocking its deletes for 4 days.\n- Trusting push alone. Of Axleby's 61 channels, 19 confirm state, 25 accept and process silently, 17 are file feeds; every push needs a pull behind it.\n\nLearn more: [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html); for the receiving side of the same problem, [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](../stays-marketplace-architecture/connectivity-and-channel-managers.html)\n\n## <a id=\"tool-7\"><\/a>Tool 7: Lead Routing Card\n\n**Purpose.** A lead routing card is a rooftop's or group's rule set, written down with its targets, fallback and proof of delivery. Rules live as versioned, effective-dated configuration in Baseline; the card is how a group administrator and the leads team agree what the rules should do before anyone saves them. Use it at onboarding, at every reorganization, and when a rooftop opens, closes or changes CRM.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Scope and version** | Tenant, rooftops, rule-set version and effective date |\n| **Delivery mode** | Inbox, external CRM, or both (and which leads go where) |\n| **Evaluation order** | 1 lead type, 2 vehicle to rooftop, 3 group policy, 4 calendar, 5 assignment, 6 terminal fallback |\n| **Targets** | Each queue, team or CRM queue, validated against the tenant directory and integration registry |\n| **Closure handling** | Successor rooftop on `rooftop.closed`; alert to the group administrator |\n| **Delivered means** | Read-back of the CRM record's owner and queue; inbox copy until confirmed |\n| **After hours** | Contact center, auto-acknowledgement, callback slot |\n| **Consent scopes** | Answer the enquiry; marketing by channel; text version |\n| **Simulation** | Replay of the last 30 days: leads per target, targets with leads and no active users |\n| **Monitors** | Unacknowledged leads per rooftop; portal counts reconciled daily |\n\n**Axleby example** (Velto Mobility Group after the Lost Leads of Velto, autumn 2027):\n\n| Field | Entry |\n| --- | --- |\n| Scope | 46 rooftops in 9 regional hubs; 7 legal entities, so 7 prospect boundaries |\n| Delivery mode | External CRM: each hub's BDC queue in DriveDesk CRM, delivered through Hitch with owner-and-queue read-back; Lotwise inbox as fallback and audit view |\n| Group policy | Hub rooftops' leads to the hub BDC queue first; after 19:00 to the group contact center |\n| Closure handling | The three closed rooftops route to their named successors; a target with leads and no active users blocks activation |\n| Simulation output | For example, \"Hub Noord-Brabant BDC would receive 2,310 leads; 0 leads to rooftops in Closing\" |\n| Monitor | Alert when a rooftop's leads stay unacknowledged for 4 business hours while leads still arrive |\n\n**Common mistakes.**\n\n- HTTP success counted as delivery. DriveDesk's inactive queue returned success and discarded 1,460 leads for 9 days.\n- No terminal fallback. A rule set without a watched fallback must not validate.\n\nLearn more: [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html), [From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html)\n\n## <a id=\"tool-8\"><\/a>Tool 8: Register Transaction Card\n\n**Purpose.** A register transaction changes the official record of a vehicle and produces proof. It is synchronous, all-or-nothing and state-guarded: a blind retry turns a success into an apparent failure. The card specifies one transaction type in one market. Use it when a type or market is added, or the register changes its channel or rules.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Legal act, market, register** | The act in the local term with an English gloss; channel (direct, provider, partner) |\n| **Authority chain** | Legal entity, recognition, credential and expiry, provider route, user, customer mandate; stored as it was at submission |\n| **Prerequisites** | Each check, its source, and whether it can run from a mirror or needs a live call |\n| **Idempotency** | Key from the dealer's click to the fee line; business guard on open transactions per vehicle and type |\n| **Ordering** | Lane key (AVK); fairness across legal entities; pacing set by channel health |\n| **Timeout and Ambiguous** | Timeout; probe that asks the register what it did; outcomes matches, does not match, inconclusive |\n| **Proof** | What is stored verbatim; documents produced; retention |\n| **Fees** | Register fee (pass-through) and own fee; metered on confirmation only |\n| **Degraded mode** | Honest queue; what dealer and buyer are told |\n| **Owner** | Product owner and the on-call team |\n\n**Axleby example** (Dutch registration in the buyer's name, *tenaamstellen*, after the June 2027 redesign; Autobedrijf Brandsma's Corolla):\n\n| Field | Entry |\n| --- | --- |\n| Authority | Brandsma's recognitions; certificate expiring in 11 months; designated register agent; buyer's DigiD authorization (*machtiging*) signed in the showroom |\n| Prerequisites | Validated at signing, not on delivery day; awaiting-inspection status asked live |\n| Ordering | One lane per AVK; the Polo trade-in's stock-in with release (*vrijwaren*) ran in its own lane on delivery day and confirmed in seconds |\n| Timeout | 90 seconds (was 30); first submission timed out, probe showed the change committed two minutes earlier: Confirmed by probe |\n| Fees | €6.50 plus the register's fee; one Meterline usage event on confirmation |\n| Dealer sees | \"Confirmed (verified with the register)\" |\n| Evidence it works | Quarter-end 30 June 2027: 41 ambiguous outcomes, all resolved by probe, no double submissions |\n\n**Common mistakes.**\n\n- No Ambiguous state. On 31 March 2027, 214 acts were submitted twice and recorded as \"rejected\" for cars already in the buyer's name.\n- Fees on submission. A double submission then becomes a double charge.\n\nLearn more: [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html), [From Signed Contract to New Owner: Sale, Registration and Delisting](journey-sale-to-registration.html)\n\n## <a id=\"tool-9\"><\/a>Tool 9: DMS Adapter Card\n\n**Purpose.** A DMS adapter is the anti-corruption layer for one DMS family: transport, mapping, contract scope and degraded mode. The card is its contract with the rest of the platform and with the DMS vendor. Use it when a DMS is connected, its certification or terms change, a dealer authorizes or revokes access, or a game day is planned.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **DMS family and access pattern** | Certified API, events, SOAP, file extract, aggregator; never scraping as a foundation |\n| **Partner agreement** | Scope, fees, certification and recertification triggers, data use, incident duties, termination and data return |\n| **Dealer authorizations** | Legal entity, rooftops, scopes, signer, expiry, held in the authorization register |\n| **Field ownership** | Default table plus per-rooftop overrides by configuration, never code |\n| **Identity mapping** | Time-bounded xref (DMS, rooftop, external id) → stock item and AVK |\n| **Inbound** | Upsert key, version guard, watermark overlap, quarantine for records without a valid VIN |\n| **Outbound** | Commands, receipt definition, read-before-retry, expiry per command type |\n| **Reconciliation** | Nightly per rooftop: VIN set, status, checksum over owned fields; auto-resolve rules |\n| **Health, degraded mode, game day** | Freshness per rooftop; circuit; Lotwise as local system of record; fallback invoice series; last exercise |\n\n**Axleby example** (DriveDesk adapter in Hitch, 2027):\n\n| Field | Entry |\n| --- | --- |\n| Connected | 1,900 Lotwise rooftops; partner approval for Velto took 35 days |\n| Access | Stock file polled every 15 minutes, read from \"last watermark minus 10 minutes\"; partner REST API for leads and customers since 2025 |\n| Field ownership | The accounting stock unit (stock number, purchase cost, posting status): DriveDesk; the stock item, asking price and adverts: Lotwise; vehicle facts: Anchor, never the DMS model text |\n| Outbound | Purchase, reserve and lead commands with idempotency keys; read-before-retry; commands expire after 5 days *(assumption)* |\n| Degraded mode, tested | DriveDesk Outage, 9–21 November 2027: Lotwise ran stock, adverts and sales documents; about 16,000 stock-ins, 19,000 sales and 34,000 leads recorded in Lotwise; 2,140 discrepancy tickets; about 3,900 queued commands expired by design; write-back resumed rooftop by rooftop from 26 November |\n| Game day | Quarterly from June 2027; June found sales documents waiting for DMS customer numbers |\n\n**Common mistakes.**\n\n- \"Success\" as a receipt. A receipt must name the DMS-side record and, for leads, its owner and queue.\n- Blind retry of additive commands. \"Create a customer\" goes to manual review when the outcome cannot be read.\n\nLearn more: [Living With the DMS: Dealer Management System Integration](dms-integration.html)\n\n## <a id=\"tool-10\"><\/a>Tool 10: Tenancy Decision Card\n\n**Purpose.** \"Silo or pool?\" has no answer in the abstract. The tenancy decision card writes the requirements first, with numbers, then decides per component and records the tiers offered to customers. Use it when the tenant model is designed, a cell is added, or a large group asks for dedicated infrastructure.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Hierarchy** | Organization (tenant), legal entity, region, rooftop, department; memberships, not users, in the tree |\n| **Requirements** | Isolation, cost to serve, noisy neighbors, compliance, enterprise demands, restructuring, blast radius, one product, each with a number |\n| **Per component** | Pool, silo or bridge, and why |\n| **Context propagation** | Tenant id mandatory on records, events, objects, cache keys, telemetry |\n| **Encryption** | Per-tenant data keys; dedicated customer keys as an option |\n| **Cells** | Count, regions, assignment by tenant, separate accounts and credentials |\n| **Tiers and prices** | What each tier gives and costs |\n| **Restructuring** | How a rooftop moves between tenants; target time |\n| **Reopens when** | Conditions that change the answer |\n\n**Axleby example** (architecture forum decision, July 2027):\n\n| Field | Entry |\n| --- | --- |\n| Requirements | R2: infrastructure under 3% of module revenue, under about €16 per rooftop per month *(assumption)*; R6: move a rooftop between tenants within one working day; R8: no customer-specific code |\n| Default | Bridge per component: Lotwise, Switchboard, Relay, Showroomly and data APIs pooled with layered isolation controls |\n| Encryption | Per-tenant data keys wrapped by one KMS key per cell; dedicated customer KMS key as enterprise option |\n| Cells | One UK cell (eu-west-2); from 2028 two EU Lotwise cells in eu-west-1, assigned by tenant |\n| Silo-clone tier | Same release, same team; for 100+ rooftops or a named regulatory need; about €130 per rooftop per month for a 46-rooftop group at an assumed €6,000 a month |\n| Velto's choice | Pooled tier with a dedicated KMS key and EU data location; what it wanted was the group stock view and single sign-on |\n\n**Common mistakes.**\n\n- Silos for blast radius. Cells answer blast radius at a fraction of the cost.\n- A filter object that can be built without the tenant id. That is how the Cross-Tenant Lead showed 112 leads to 3 other dealers for 47 minutes.\n\nLearn more: [Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)\n\n## <a id=\"tool-11\"><\/a>Tool 11: Entitlement Matrix\n\n**Purpose.** An action is allowed when five gates agree: tenant boundary, relationship, entitlement, register authority and licensed purpose. The entitlement matrix has two parts: the entitlement rows (what each tenant or rooftop has bought, derived from the same subscription records billing reads) and the gate check for each sensitive action. Use it when a module, plan or data contract changes, or when a support case asks \"why could this person do that?\"\n\n**The template.**\n\n*Part A — entitlement rows*\n\n| Tenant | Rooftop | Product · feature | Limit | Market | Effective | Source contract line |\n| --- | --- | --- | --- | --- | --- | --- |\n\n*Part B — gate check per action*\n\n| Action | Tenant boundary | Relationship (Gatekeeper) | Entitlement | Register authority | Licensed purpose (Charter) | Logged? |\n| --- | --- | --- | --- | --- | --- | --- |\n\n**Axleby example** (2027; the tenant boundary, checked on every action from the verified token, is omitted):\n\n| Tenant | Rooftop | Product · feature | Limit | Effective | Source |\n| --- | --- | --- | --- | --- | --- |\n| Velto Mobility Group | Breda | Lotwise Appraise | 25 reports a month, pooled across the group | 1 Feb 2027 – open | Group contract, line 4 |\n| Velto Mobility Group | all 46 | Lotwise Syndication | Unlimited channels | 1 Jan 2026 – open | Group contract, line 2 |\n| Rijnstaal Verzekeringen | — | Valuation API | 400 calls a second burst; monthly commitment | 2027 | Data contract, schedule B |\n\n| Action | Relationship | Entitlement | Register authority | Purpose | Logged |\n| --- | --- | --- | --- | --- | --- |\n| Reprice a stock item | Manager of the rooftop or its region | Stock & Pricing | — | — | Write, yes |\n| Open a lead | Assignee, or rooftop manager | Syndication or Website & Leads | — | — | Denials only |\n| Register a car in the buyer's name | Designated, unexpired register agent of the rooftop | Axleby Trade | Recognition, certificate, *machtiging* | — | Always |\n| Export the lead list | Rooftop manager | Website & Leads | — | — | Always |\n| Valuation API call | Client credential scoped to its grant | Valuation API limits | — | Licensed purpose for each block | Decision id per call |\n\n**Common mistakes.**\n\n- Release flags as entitlements. A multi-year toggle that decides what a customer paid for has no contract history.\n- Shared logins. Velto's wrong-name *tenaamstelling* under `velto-noord-admin` (11 devices, 4 rooftops) could not be attributed.\n\nLearn more: [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html)\n\n## <a id=\"tool-12\"><\/a>Tool 12: License and Purpose Card\n\n**Purpose.** Two linked records decide what may leave the platform. The **source license rule** says what Axleby may do with a source; the **client grant** says what one client may do with what it receives. Charter checks both on every request and writes a decision id that Meterline carries as `licence_ref`. Use the card when a source agreement or client contract is signed, renewed or changed, and when a misuse monitor fires.\n\n**The template.**\n\n*Source license rule*\n\n| Field | What to record |\n| --- | --- |\n| Source, license class, clause refs | One of: open, register-restricted, supplier-retainable, supplier-per-request, display-limited, tenant-owned, derived |\n| Effective from | Rules are dated so past decisions replay under past rules |\n| Permissions | Purposes × audiences, and products allowed to serve them |\n| Prohibitions | Onward transfer, bulk export |\n| Duties | Attribution, client retention cap, recipient audit years, incident notice |\n| Caching and derivatives | Retention per store; `derivatives`: free, aggregate-only, prohibited |\n\n*Client grant*\n\n| Field | What to record |\n| --- | --- |\n| Client, product, purpose, audience | Purpose from the enumerated list, with DPIA reference |\n| Retention and onward transfer | `retain_until` returned in every response |\n| Sub-clients | Each end customer of a software vendor, named in calls |\n| Lifecycle | Proposed, probation (90 days, volume ceiling), active, under review, suspended, purge pending, closed |\n\n**Axleby example** (the damage-data partner's rule as revised in April 2027, and the Lintvelt grant it would have refused):\n\n| Record | Entry |\n| --- | --- |\n| Source rule | `damage-partner-nl`, `display-limited`; purposes trade-in appraisal, claims fraud check, consumer history report; consumer audience only via Odolo; onward transfer to third-party consumer display prohibited; client retention 30 days; recipient audit 5 years; incident notice 72 hours |\n| Client grant | Lintvelt Leads B.V.: `dealer-lead-qualification`, business audience, 30 days, no onward transfer |\n| Without the card in the path | 71,400 history-report calls, August 2026 to January 2027, fed a consumer plate-check site; incident cost about €230,000 |\n| With the card | Consumer display is outside the grant; a replay of the monitors flags Lintvelt in week 3 of August 2026 |\n\n**Common mistakes.**\n\n- A grant without a clause. Every rule names the contract clause, so a lawyer can check the translation.\n- Local exceptions. A team that needs a different answer changes the reviewed rule, never adds `if client == …`.\n\nLearn more: [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)\n\n## <a id=\"tool-13\"><\/a>Tool 13: API Contract Card\n\n**Purpose.** A data API sells category blocks: identity, registration, specification, history, valuation, market, tax, battery health. Each block is sold, licensed, sourced and failed independently. The API contract card defines one block as Folio, the contract registry, holds it. Use it when a block or field is added, an outcome rule or code list changes, or a version is deprecated.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Block and owning context** | One owner, which decides outcomes; the composer only assembles |\n| **Schema** | JSON Schema reference; code lists documented as open |\n| **Sources and license classes** | Which purposes Charter must find; what is `withheld` and why |\n| **Outcome rules** | `hit`, `partial`, `no_hit`, `failed`: the business definition of each, and its SKU and price rule |\n| **Freshness class** | `current`, `stale`, `unavailable` thresholds; whether a copy may ever serve it |\n| **Error semantics** | Block-level failures stay HTTP 200 with a labeled block; 5xx only when the service cannot answer |\n| **Version status** | Beta (90 days' notice), stable (12 months' notice to remove), dated version supported 24 months after its successor |\n| **Behavioral change record** | Changes to outcome rules, code lists and computation bases, shipped only in the April and October releases |\n| **Service level** | Availability of well-formed answers; per-block `current` rate |\n\n**Axleby example** (history block, JSON API v2, October 2027):\n\n| Field | Entry |\n| --- | --- |\n| Owner | Tracewell, whose assembler decides hit, partial, no hit or failed |\n| Sources | Register and MOT data (official), Kilometra (commercial), damage-data partner (display-limited) |\n| Outcome rules | `partial` when one source times out, with coverage per section; `no_hit` free under no-hit-no-fee; `failed` free; re-opening the same report for the same vehicle within 30 days free; a refresh billed |\n| Freshness | Report states coverage-through per source; a stale block is still a `hit` |\n| Withheld | Damage section listed under `withheld` when the purpose does not allow it, so \"not returned\" never reads as \"nothing found\" |\n| Example client | Fleetmoor's return lookup on a 2022 Kia e-Niro: history rated as a business history report (€4.95 list), `partial` because the damage source timed out, with credit on request; the four-block lookup €5.22 at list |\n\n**Common mistakes.**\n\n- One outcome rule per stack. The No-Hit Credit (€186,000 to 41 clients) came from two definitions of a hit.\n- Client-specific schemas. Of Connect XML's 57 response profiles, v2 replaces subsets with block selection and license hiding with Charter's filter; renamings are not reproduced.\n\nLearn more: [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html)\n\n## <a id=\"tool-14\"><\/a>Tool 14: Journey SLO Card\n\n**Purpose.** A journey SLO sets a service-level objective on what a dealer or client does, not on a service. Each attempt is **good**, **degraded** (a labeled partial or stale answer, or an act honestly queued) or **bad**. The objective covers good plus degraded, and a second cap stops \"always degraded\" from passing as healthy. Upstream failures count. Use the card when objectives are set, a synchronous dependency is added, or a review finds every service green while dealers failed.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Journey** | Where it starts and ends, in dealer or client terms |\n| **Good / degraded / bad** | Exact conditions, including \"never a silent loss\" |\n| **Objective and window** | Good-or-degraded target; cap on degraded; rolling window |\n| **Owner** | One named leader |\n| **Dependency budget** | Share reserved for own code; share per synchronous dependency × share of attempts touching it |\n| **Dependencies** | Tier 1 (blocks a legal or commercial act), 2 (degrades a decision), 3 (delays a background flow) |\n| **Degraded modes** | Labeled copy, partial answer, honest queue, local system of record, or fail fast with a reason |\n| **Never degrades** | The checks that must stay live |\n| **Attribution** | Every bad outcome tagged own code, named dependency or client input |\n| **Error-budget policy and game days** | What stops when the budget burns; last exercise |\n\n**Axleby example** (appraisal in Lotwise, May 2027; targets are assumptions from [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)):\n\n| Field | Entry |\n| --- | --- |\n| Objective | 99.5% good or degraded per month *(assumption)*; budget 0.5%: 0.2% own code, 0.3% dependencies |\n| Proposed change | Blocking live register status call at appraisal open |\n| Budget test | Register call 0.40% + Connect XML 0.30% + build data 0.03% + Vertex AI 0.10% = **0.83%** against a 0.3% line *(illustrative failure rates)* |\n| Decision | Call made non-blocking (\"status unchecked\" counts as degraded); Appraise moved off Connect XML; build-data failure returns catalog-level specification |\n| Never degrades | Purchase confirmation: live theft and transfer status, in its own journey whose objective accepts the register's availability |\n| Sibling objectives | Withdrawals: 99% within 10 minutes; price updates: 95% within 15 minutes; lead delivery to a watched place within 60 seconds *(assumption)* |\n\n**Common mistakes.**\n\n- Excluding upstream failures. That hides **Borrowed Uptime** exactly where it lives.\n- Latency and errors only. The 214 double submissions and 1,460 discarded leads were fast, successful requests.\n\nLearn more: [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)\n\n## <a id=\"tool-15\"><\/a>Tool 15: Build, Buy or Partner Decision Card\n\n**Purpose.** A sourcing decision chooses one of five options for one capability: **build**, **adopt** (run open source in-house), **buy** (vendor software or SaaS), **license** (data under use limits) or **partner** (another business acts for a shared customer). The card applies four gates in order, records the data-rights test, and names what the group keeps in-house so that leaving stays possible. Use it for every Tool 1 row whose sourcing is open, at every renewal, and when a vendor changes terms.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| **Capability and requirement** | Tool 1 row; the requirement the source must meet, with numbers |\n| **Gate 1: supply** | Can anyone else do it, and can anyone but us? |\n| **Gate 2: data rights** | The nine questions: store, scope, derive, redistribute, train, billing basis, evidence, exit, personal data. **An unanswered question is a \"no\"** |\n| **Gate 3: judgement or liability** | Will a customer hold us responsible for the answer? If yes, logic, evidence and record stay in-house |\n| **Gate 4: cost curve** | Unit cost at today's and forecast volume; crossover; team capacity *(assumptions recorded)* |\n| **Options compared** | Including \"do nothing\", with cost, rights, risk and verdict |\n| **Decision and key assumption** | One option; the assumption under which it holds |\n| **Owned to keep exit open** | Adapter boundary, canonical model, ground truth, ledger |\n| **Review trigger and owner** | The event that reopens it; recorded as a Tool 16 record |\n\n**Axleby example** (as-built build data, in the sourcing register approved on 21 October 2027; [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html) works the full comparison):\n\n| Field | Entry |\n| --- | --- |\n| Requirement | As-built data where the candidates' value spread matters: the purchase gate's appraisal threshold of €750 |\n| Gate 1 | Only manufacturers know what a car received at the factory: license the as-built layer; build the catalog and crosswalk |\n| Gate 2 | 30-day retention caused 41% repurchases in 2026; renegotiated in July 2027 to life-of-vehicle retention within Axleby products at about €0.58 a first fetch |\n| Gate 4 | Flat-fee offer of €6.9 million a year against about €6.4 million per request at an assumed 11 million fetches in 2028 |\n| Options | Per request with life retention (**keep**, with a yearly price ceiling); flat fee (decline); second provider for catalog-only makes (pilot two makes); own catalog without as-built (reject: Spec Guesswork) |\n| Result so far | From €13.1 million on 28.5 million fetches (2026) to a run rate of about €7.8 million on 13.5 million (Q4 2027) |\n| Owned for exit | Resolved views with license refs; the canonical catalog |\n| Review trigger | Renewal, or fetch volume below 9 million |\n\n**Common mistakes.**\n\n- Price before rights. The retention clause saved more than any price negotiation.\n- Buying the judgement with the product. Buy damage detection; own the confirmed-findings dataset that measures any provider ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)).\n\nLearn more: [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html)\n\n## <a id=\"tool-16\"><\/a>Tool 16: Architecture Decision Record\n\n**Purpose.** An architecture decision record (ADR) captures one decision, the options rejected and its consequences in about a page. A vehicle platform adds the **halves and markets** affected, the **entities whose owner changes**, the **contracts touched** and the **advice received**. Under Axleby's advice process, anyone may decide after seeking advice; a team record stays in the team's repository, and a decision that crosses a team boundary or a shared standard (vehicle key, tenant model, event catalog, field ownership, public contracts) becomes a forum record before the first production change. A few vetoes are written down: Identity Resolution on any plate or VIN used as a key, the Group Chief Architect on a tenant-specific code path, Billing on a billable event outside Meterline, governance on a data call without a license check ([Who Owns What: Organizing Engineering for a Data and SaaS Platform](organizing-engineering.html)).\n\n**The template.** Builds on Michael Nygard's 2011 record ([Nygard, 2011](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)) and Andrew Harmel-Law's advice process ([Harmel-Law, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)).\n\n```markdown\n# DR-YYYY-NNN — <title that states the decision, not the topic>\n\nStatus: Proposed | Accepted <date> | Superseded by DR-... | Rejected\nProposer: <name, team>     Decided by: <team after advice | architecture forum>\nVetoes consulted: <identity | tenant code path | billing | license check | none>\nHalves and brands: <data half | workflow half; Axleby Data, Lotwise, Showroomly, Axleby Trade, Odolo>\nMarkets: <NL | BE | DE | UK | US; what is a market adapter>\nCapability rows: <Tool 1 rows; grade before -> after>\nEntities and owners: <Tool 2 rows whose owner or copies change>\nContracts touched: <API blocks | events | channel or DMS adapters | license rules>\n\n## Context        The incident or finding; facts with dates and numbers.\n## Drivers        What a good answer must achieve; the journey SLO it protects.\n## Options        At least two real options plus \"do nothing\".\n                  | Option | For | Against | Cost | Reversibility |\n## Decision       \"We will ...\", with scope, owner and dates.\n## Consequences   Better / worse / new work, carried by whom.\n## Data and law   Licenses, personal data, register terms, Data Act.\n## Advice received  Who advised; followed or not, and why.\n## Confirmation   How conformance is checked (reconcilers, replays, SLOs).\n## Review         Date, or the trigger that reopens it.\n```\n\n**Axleby example.** *One Dossier event backbone.* Design record approved on 14 December 2027 ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)).\n\n| Section | Content |\n| --- | --- |\n| Context | *Stock item sold* reached 8 consumers by 6 mechanisms; in October 2027, 83 of 152,400 sold transitions never reached Relay; 19 API clients received the Odometer Correction's wrong mileage in 2,310 lookups and learned of it by email, if at all |\n| Options | Dual write (status quo); outbox with a polling relay; table-level change data capture as the event stream; event sourcing; **outbox with log-tailing relay, entity-keyed topics and reconcilers** |\n| Decision | Catalog with one owner per event type; CloudEvents 1.0 with `tenantid`, `rooftopid`, `avk`, `entityversion`; outbox and Debezium relay, Lotwise Classic first; no events from Connect XML; JSON API v2 webhooks on Standard Webhooks with a 30-day cursor feed |\n| Consequences | Q1 2028 Lotwise outbox; Q2 Switchboard, pricing and valuation ledger on topics; Q3 webhooks for dealer groups, replacing Velto's 30-minute diff script; Q4 `vehicle.fact.corrected` for Rijnstaal and Fleetmoor |\n| Data and law | Lead, deal and fact-correction events thin; public gateway filters by tenant, entitlement and Charter license |\n| Advice received | Marta Nowak (platform) and Hendrik Maes (partner integrations), who traced the audit |\n| Confirmation | Sold-but-live job becomes a check, not the delivery path; reconcilers per flow |\n\n**Common mistakes.**\n\n- One option. Include \"do nothing\" and the cheap answer, so the record shows why they lost.\n- No halves-and-markets line. A decision that names one brand is implemented in the other by assumption.\n\nLearn more: [Who Owns What: Organizing Engineering for a Data and SaaS Platform](organizing-engineering.html)\n\n## Using the Toolkit Over Time\n\nThe templates stay true only when they are revisited, and three habits make that happen.\n\n- **Review on a calendar.** Capability map and sourcing cards yearly and after every acquisition; source contracts and channel profiles at each renewal and each portal changelog entry; model cards with every release; journey SLO cards before month-end and quarter-end peaks; register transaction cards whenever a register changes its channel or rules; decision records on their review dates.\n- **Let incidents add fields.** Beyond those named in the key points, the per-chain check came from the Odometer Correction and tenant id in every cache key from the Cross-Tenant Lead. When a post-incident review finds a gap, the fix usually includes a field in one of these templates.\n- **Keep the set small.** Every field should change a decision or preserve evidence. When a field is filled by habit and read by nobody, remove it; when a review keeps asking a question no field answers, add it.\n\n[Built for the Next Shock: Evolving the Platform Over a Decade](evolving-the-vehicle-platform.html) explains how twelve fitness functions, among them identity merge precision, correction propagation time, publish and withdrawal lag, lead delivery, segment valuation bias and cost per lookup, keep these records honest over years; [Glossary](glossary.html) defines the terms the templates use, and [Bibliography](bibliography.html) lists the sources behind them.\n\n## Sources and Evidence\n\nThe templates are derived from the chapters linked in each tool, which cite their sources in full. The external formats and texts they build on:\n\n*Company, product and investor sources*\n\n- [Listing Creation API documentation and changelog](https://listing-creation.api.autoscout24.com/docs), AutoScout24, n.d. (changelog to 2026-10-19, accessed 2026-10) — non-idempotent POST, lossy PATCH fields, rate-limit advice, the Belgian Car-Pass field and reference-name changes in Tool 6.\n- [Seller API documentation](https://services.mobile.de/manual/seller-api.html), mobile.de, n.d. (accessed 2026-10) — insertion-request idempotency and full-replace updates contrasted in Tool 6.\n\n*Standards, regulation and official documentation*\n\n- [Informatiemap bedrijven met RDW-erkenning 2026](https://www.rdw.nl/-/media/rdwnl/documenten/bedrijf-met-rdw-erkenning/toezichtbeleid/tbb-en-informatiemap-2026/informatiemap.pdf), RDW, 2026 — recognitions, certificates, outage rule and odometer duty behind Tool 8.\n- [Regulation (EU) 2023/2854 (Data Act)](http://publications.europa.eu/resource/celex/32023R2854), European Union, 2023 — purpose binding and erasure duties in Tools 12 and 15.\n- [ODRL Information Model 2.2](https://www.w3.org/TR/odrl-model/), W3C, 2018 — permissions, prohibitions and duties as the vocabulary of Tool 12.\n- [Open Data Contract Standard](https://bitol-io.github.io/open-data-contract-standard/latest/), Bitol project, n.d. (accessed 2026-10) — machine-readable supplier contracts behind Tool 4.\n- [RFC 9457: Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457.txt), IETF, 2023 — error bodies in Tool 13.\n- [Standard Webhooks](https://www.standardwebhooks.com/), n.d. (accessed 2026-10), and the [CloudEvents specification](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md), CNCF, n.d. (accessed 2026-10) — event and webhook formats in the Tool 16 example.\n- [Service Level Objectives](https://sre.google/sre-book/service-level-objectives/), Google, *Site Reliability Engineering*, 2016 — indicators and objectives behind Tool 14.\n- [Silo, pool, and bridge models](https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/silo-pool-and-bridge-models.html), AWS Well-Architected SaaS Lens, 2023 — the tenancy vocabulary of Tool 10.\n\n*Research and practitioner sources*\n\n- [Documenting Architecture Decisions](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions), Michael Nygard, 2011 — the record anatomy Tool 16 extends.\n- [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html), Andrew Harmel-Law, martinfowler.com, 2021 — the advice process and advice-received field in Tool 16.\n- [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03993), Margaret Mitchell et al., 2019 — the model-card form Tool 5 adapts to valuation.\n- [Zanzibar: Google's Consistent, Global Authorization System](https://www.usenix.org/system/files/atc19-pang.pdf), Ruoming Pang et al., USENIX ATC 2019 — the relationship model behind the relationship gate in Tool 11.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

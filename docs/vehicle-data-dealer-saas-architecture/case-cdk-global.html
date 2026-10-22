@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure</title>
+    <meta name="description" content="What does the public record of the largest US dealer management system vendor teach an architect who integrates with a DMS, or who runs a system of record others depend on? That access terms to a system of record are architecture that courts and legislators now review, that a certified API marketplace is credible only with published contracts and terms, and that concentration turns one incident into an industry outage in which integrations recover last.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure">
+    <meta property="og:description" content="What does the public record of the largest US dealer management system vendor teach an architect who integrates with a DMS, or who runs a system of record others depend on? That access terms to a system of record are architecture that courts and legislators now review, that a certified API marketplace is credible only with published contracts and terms, and that concentration turns one incident into an industry outage in which integrations recover last.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/case-cdk-global.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/51-case-cdk-global/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="case-cox-automotive.html" title="Cox Automotive: Building a Portfolio Into a Platform">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-auto-trader-uk.html" title="Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part X — PRACTICE: How Others Built It</p>
+        <h1>CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  31 min read · <a class="spec-link" href="case-cdk-global.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/51-case-cdk-global/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/51-case-cdk-global/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="case-cox-automotive.html" title="Cox Automotive: Building a Portfolio Into a Platform">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-auto-trader-uk.html" title="Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "What does the public record of the largest US dealer management system vendor teach an architect who integrates with a DMS, or who runs a system of record others depend on? That access terms to a system of record are architecture that courts and legislators now review, that a certified API marketplace is credible only with published contracts and terms, and that concentration turns one incident into an industry outage in which integrations recover last.", "permalink": "case-cdk-global", "timetoread": "31 min read", "icon": "assets/icons/51-case-cdk-global.png", "logo": "assets/images/51-case-cdk-global/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Read CDK Global's public record (its filings as a public company, two appellate opinions, an FTC challenge, its Fortellis platform documentation and its dealer customers' 2024 securities filings) as an architecture case. You will also follow Keyloop, the former CDK International, as the European branch of the same lineage, separate what is documented from the author's interpretation, and compare the case with the book's patterns and Axleby's choices.\n\n> **WHY THE BUSINESS CARES:** In June 2024 one vendor's incident stopped the normal working of about 15,000 North American dealerships for one to two weeks, and dealer groups reported the cost in their quarterly results. Every dealer SaaS company integrates with a DMS it does not control, and every data company that becomes a system of record for its clients will be asked the same questions CDK was asked about access, fees and switching.\n\n> **WHY ARCHITECTS SHOULD CARE:** No other dealer-software company has a public record this detailed about how access to a system of record is granted, priced, contested and restored after failure. It shows which integration designs survive litigation, regulation and a two-week outage, and which ones the dealer pays for.\n\n> **KEY POINTS:**\n>\n> * **Access terms to a system of record are architecture, and courts and legislators now review them.** CDK closed its DMS to independent data integrators in 2015 and routed access through its own certified program. The result was a decade of antitrust litigation, a $100 million dealer-class settlement (2024), an Arizona statute that requires DMS vendors to offer a \"standardized framework\" for dealer-authorized access through an open API (upheld in 2021), and a 2024 suit by a rival DMS vendor over data transfers.\n> * **A certified API marketplace separates the contract from the provider, but it is only credible with published terms.** Fortellis, which CDK launched in 2018, defines API contracts that any provider can implement and routes calls to the provider the user chooses. In Europe, Keyloop's Open Platform offers one interface across its DMS products, with endpoints that vary by DMS. No current fee schedule was found for either, and the market's trust follows the terms, not the technology.\n> * **Concentration turns one incident into an industry outage, and integrations recover last.** In June 2024 core DMS functions came back at large dealer groups after about 7 to 11 days, while integrations for ordering, scheduling, payment and reporting took until the end of July. A platform that depends on a DMS needs a degraded mode measured in weeks, validation before it resynchronizes, and tolerance for the dealer cutting the connection on purpose.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **DMS Hostage** — CDK's record is the reference case: integrators whose products depended on scraping a closed DMS, dealers who could not take their data elsewhere easily, and vendors who saw integration prices rise severalfold after access was restricted.\n> * **Borrowed Uptime** — in 2024, every dealer tool that called the CDK DMS synchronously stopped with it, and dealer groups ran on paper and workarounds for one to two weeks.\n> * **Feed Roulette** — the 2015 lock-out and the Partner Program migration show what happens to integrators whose adapters run without a contract the system owner honors: breakage is discovered by the dealer.\n\n<br>\nCDK Global sells the **dealer management system (DMS)**, the enterprise resource planning (ERP) system of a car dealership: the system of record for its deals, accounting, parts, service, vehicle inventory and customers ([Living With the DMS: Dealer Management System Integration](dms-integration.html) owns the term). In 2017 a US appeals court recorded that CDK held more than 40% of the US DMS market and Reynolds and Reynolds about 30%. That position makes CDK three things at once. It is a **platform** on which hundreds of third-party applications depend. It is a **gatekeeper** that decides which of those applications may read and write dealer data, on what terms. And, as June 2024 showed, it is a **single point of failure** for an industry.\n\nThis chapter asks three questions of CDK's public record. *How should the owner of a system of record grant access to the data in it, and what happens when it restricts that access? What does it take to turn a closed integration program into a marketplace that competitors trust? And what does a two-week outage of a system of record do to the applications around it?* A fourth question runs underneath: what the European branch, sold in 2021 and now called **Keyloop**, shows about how the same product line looks in more fragmented, manufacturer-shaped markets.\n\nAxleby, the fictional vehicle data and dealer software group this book follows ([Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), appears only in the final comparison. Axleby does not run a DMS. It sits on the other side of the gate, as a dealer SaaS vendor whose Lotwise product integrates with DMS products, and its own data APIs make it a smaller gatekeeper for 640 API clients. Both positions get a lesson.\n\n## How to Read This Case\n\nPart X cases follow stricter rules than the rest of the book. A **documented fact** carries its source and publication year in the sentence. **My interpretation** is marked as such or sits in the Chief Architect's view. A **reference-architecture inference** sits in a callout labeled `INFERENCE, NOT DOCUMENTED`. Undated web pages are cited as \"read October 2026\".\n\n**The evidence falls into three periods, and they must not be read as one.** The public-company period (2014–2022) produced annual reports, quarterly reports and the antitrust record; CDK's last annual report covers the year to June 2021. Since Brookfield took CDK private in July 2022, CDK files no annual reports, so the record after 2022 comes from its customers' securities filings, court documents, press and its own product pages. The litigation record dates from 2017 to 2025 and describes business practices, not systems.\n\n**The case is strongest on access, terms and the 2024 outage, and weakest on internals.** No public source found for this book describes CDK's hosting architecture, how its DMS is deployed per dealer, the attack vector in 2024 or what changed afterward. Keyloop's record is thinner still: press releases, its own site and a developer portal. \"Where the Public Evidence Stops\" lists the gaps.\n\n## Timeline: CDK and Keyloop in Dated Events\n\nDates are those of the cited filings, opinions and releases. Litigation and product names are volatile as of October 2026.\n\n| Date | Event | Source type |\n| --- | --- | --- |\n| 2005 | ADP acquires Kerridge, a UK DMS vendor; it becomes part of ADP Dealer Services | Encyclopedia; Keyloop site |\n| 30 Sep 2014 | CDK Global begins operating as an independent public company, spun off from ADP | CDK 10-K, 2021 |\n| 2015 | CDK moves from permitting to blocking independent data integrators; signs three agreements with Reynolds | Seventh Circuit opinion, 2017 |\n| 1 May 2017 | Authenticom, an independent integrator, sues CDK and Reynolds | CDK 10-Q, 2021 |\n| 6 Nov 2017 | Seventh Circuit vacates the injunction that had ordered access for Authenticom | Opinion, 2017 |\n| Mar 2018 | Fortellis launches as CDK's API platform and marketplace | Equifax release, 2018 |\n| 20 Mar 2018 | FTC challenges CDK's purchase of Auto/Mate, a smaller DMS vendor; the deal is abandoned | FTC release, 2018 |\n| 2019 | Arizona enacts its dealer data law | Ninth Circuit opinion, 2021 |\n| 20 Oct 2020 | CDK settles with Authenticom; one-time cash payment | CDK 10-Q, 2021 |\n| 1 Mar 2021 | CDK International sold to Francisco Partners for $1.45 billion; renamed Keyloop | CDK 10-K, 2021; Keyloop release, 2021 |\n| 25 Oct 2021 | Ninth Circuit affirms the denial of an injunction against Arizona's law | Opinion, 2021 |\n| Mar 2021–Feb 2022 | Keyloop makes six acquisitions (RAPID RTC, enquiryMAX, MotorDocs, FISC, SilverBullet, SERTI) | Keyloop releases, 2021–2022 |\n| 6 Jul 2022 | Brookfield Business Partners completes the purchase of CDK; enterprise value about $8.3 billion | Press, 2022 |\n| Jan 2023 | Fortellis adds asynchronous APIs and a new API pricing model | CDK release, 2023 |\n| 2 May 2024 | Keyloop completes its purchase of Automotive Transformation Group (ATG) | Keyloop release, 2024 |\n| 19 Jun 2024 | Ransomware attack; CDK shuts down most systems | Dealer-group 8-Ks, 2024 |\n| Aug 2024 | CDK agrees a $100 million settlement with the dealer class | Trade press, 2024 |\n| Oct 2024 | Court orders CDK to transfer four Asbury dealerships' data to Tekion | Trade press, 2024 |\n| 10 Dec 2024 | Tekion, a cloud DMS vendor, files an antitrust suit against CDK | Trade press, 2024 |\n| 5 Oct 2026 | Sudhakar Ramakrishna succeeds Brian MacDonald as CEO (announced 27 August 2026) | Trade press, 2026 |\n\n## What CDK Sells and Why Its Position Is Structural\n\n### The DMS as system of record and OEM channel\n\nIn its 2021 annual report, its last as a public company, CDK described its DMS products as facilitating \"the sale of new and used vehicles, consumer financing, repair and maintenance services, and vehicle and parts inventory management\", plus \"company-wide accounting, financial reporting, cash flow management, and payroll services\". The Ninth Circuit, in 2021, was blunter: \"The core of a DMS is a database containing information about a dealer's customers, vehicles, accounting, parts, and services. Some of that data, such as customers' social-security numbers and credit history, is highly sensitive.\"\n\nTwo facts make the DMS hard to replace. The first is that **it is also the manufacturer's channel**. CDK's 2021 report said its DMSs \"are typically integrated with OEM data processing systems\" (OEM: original equipment manufacturer, the carmaker) for ordering vehicles and parts, warranties and recalls, and the FTC's 2018 complaint explained that this is why DMS vendors need manufacturer certifications. A franchised dealer cannot swap its DMS the way it swaps a website provider.\n\nThe second is that **every other dealer application needs the DMS's data**. In the Ninth Circuit's words, \"those third-party applications must be able to access the data stored in a dealer's DMS\". Pricing tools need stock and cost, customer relationship management (CRM) systems need customers and deals, service marketing needs repair orders. Whoever controls that access controls the market for those applications.\n\n### Scale and the layers around the DMS\n\nCDK's 2021 annual report put revenue for the year to June 2021 at $1,673.2 million and described \"nearly 15,000 retail locations in North America\". Security press used the same order of magnitude in 2024. The report named the products in layers, summarized below.\n\n| Layer | Product, as named publicly by 2021 | Role |\n| --- | --- | --- |\n| System of record | CDK DMS, \"hosted enterprise resource planning applications\" delivered as SaaS | Accounting, deals, parts, service, inventory, customers |\n| Layered applications | Vehicle Sales, Fixed Operations, CRM including Elead, Document Management, Telephony | Workflows on DMS data |\n| Digital retail | Roadster (acquired June 2021) | Online car buying |\n| Third-party access | Partner Program, the successor of Third Party Access (3PA) | Certified vendor access to the DMS |\n| API platform | Fortellis | API directory, marketplace and routing |\n| Data | Neuron, \"intelligent data platform\" | No technical description found |\n\n**The market is concentrated in a way Europe's is not.** The Seventh Circuit recorded US shares of more than 40% for CDK, about 30% for Reynolds and about 17% for Dealertrack, Cox Automotive's DMS ([Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html)), at the time of the 2017 case. In 2021 the Ninth Circuit said CDK and Reynolds \"control a substantial majority of the DMS market\". Those are court recitals, not current market data; Tekion has since taken share, and no current audited figure was found.\n\n![A family tree: a UK DMS vendor joins dealer services in 2005, becomes a public company in 2014, sells digital marketing in 2020, splits off the international business in 2021, which grows by acquisitions, and goes private in North America in 2022.](assets/images/51-case-cdk-global/51-one-product-line-two-companies.jpeg)\n**Figure 1:** *One product line, two companies since 2021: the North American DMS business stayed CDK Global and went private in 2022, while the international business, with its Kerridge roots, became Keyloop. A European reference to \"CDK\" before 2021 usually means today's Keyloop.*\n\n## The Gatekeeper Years: From Open Access to Certified Interfaces\n\n### What changed in 2015\n\nThe facts of the access dispute come from the Seventh Circuit's November 2017 opinion in *Authenticom v. CDK Global*. Independent integrators such as Authenticom worked by credential sharing: \"An interested dealer would provide its log-in credentials to the integrator, which would then be able to pull data from the dealer's management system and provide it to an app vendor.\" Reynolds had long forbidden this in its licenses. CDK had permitted it and ran its own integrator subsidiaries, Digital Motorworks and IntegraLink.\n\nIn 2015 CDK switched from open to closed. The court recorded two reasons: a response to \"well-publicized security breaches\", and apparently \"a desire to squeeze more value out of its internal integration program, 3PA\". In the same year CDK and Reynolds signed three agreements. Under the Data Exchange Agreement, CDK agreed to wind down its integrator subsidiaries over five years, and each company agreed not to help anyone else access the other's system without permission. The court noted that \"nothing in any of the three agreements required either CDK or Reynolds to block third-party access to its own data management system.\"\n\nThe opinion also recorded the price effect, as contested evidence at the injunction stage. One vendor paid independent integrators \"$30 to $35 per month, per dealer\" in 2011, when Reynolds charged $247 for similar services, which later rose to \"$893\". AutoLoop, a software vendor, said CDK charged it \"$160 per month\" before the 2015 agreement and \"$735 per month for the identical service\" after. The court added: \"App vendors pass along these bloated fees to dealers.\"\n\n| | Credential-based (\"hostile\") access | Certified interface |\n| --- | --- | --- |\n| Mechanism | Dealer gives its login to an integrator, which scrapes screens or pulls reports | Vendor-issued credentials and a documented interface |\n| Who consents | The dealer | The dealer and the DMS vendor |\n| License position | Breaches the license of a closed DMS | Contracted |\n| Price (court record, to 2017) | $30–35 per dealer per month (2011) | $247 rising to $893 (Reynolds); $160 rising to $735 (CDK), per vendor per dealer per month |\n| How it fails | Silent breakage when screens or reports change; blocked accounts; legal exposure | Scope and rate limits, certification delays, fees, vendor's discretion |\n| Security story | Shared logins with broad access | Scoped credentials and an audit trail |\n\nBoth sides could claim to be right. Credential sharing is a poor security design. Certified access is the better design, but in this record it came with prices that rose severalfold and with the system owner deciding who may compete with its own applications. **The architecture question and the competition question are the same question here.**\n\n![Two roads lead to a DMS vault; the upper road is closed by a barrier, and the lower road passes a toll booth where the price board shows $160 struck through and $735.](assets/images/51-case-cdk-global/51-toll-gate-on-the-only-road.jpeg)\n**Figure 2:** *After 2015 the certified gate was the only sanctioned road to dealer data, and AutoLoop told the court its monthly charge for the same service rose from $160 to $735.*\n\n### What the courts and the FTC did\n\nThe litigation record, summarized from the court opinions and CDK's own filings:\n\n- **The injunction and its reversal (2017).** A Wisconsin district court ordered CDK and Reynolds in July 2017 to let Authenticom keep using dealer credentials. The Seventh Circuit vacated that order on 6 November 2017: the remedy for an unlawful agreement is to set the agreement aside, not to force a firm to deal with a rival. The court expressly did not decide the merits.\n- **The consolidated litigation (2017–2025).** The cases were consolidated in Illinois. Plaintiffs included Authenticom, Motor Vehicle Software Corporation, Cox Automotive (December 2017), AutoLoop for a vendor class and a dealer class. CDK's filings record settlements with Cox (July 2019), Motor Vehicle Software Corporation (October 2019) and Authenticom (October 2020), all for undisclosed one-time payments, an antitrust provision of $90.0 million in fiscal 2019 and a further $12.0 million in fiscal 2021. In August 2024 CDK agreed to pay the dealer class $100 million without admitting fault, as trade press reported in 2024. The vendor class was certified against CDK in July 2024; its outcome was not verified for this book.\n- **The FTC and Auto/Mate (2018).** On 20 March 2018 the Federal Trade Commission challenged CDK's purchase of Auto/Mate, a smaller DMS vendor that had won business with lower prices, flexible contracts and \"modest fees to integrate third-party applications\". The parties abandoned the deal. **Integration fees were part of what the regulator valued in the competitor.**\n\n### Arizona writes the access rule into law\n\nIn 2019 the Arizona legislature unanimously passed a statute, described by the Ninth Circuit as enacted \"to ensure that dealers retain control over their data\" (Ariz. Rev. Stat. §§ 28-4651 to -4655). Its two central provisions read like an integration specification:\n\n- DMS providers may not \"take any action by contract, technical means or otherwise to prohibit or limit a dealer's ability to protect, store, copy, share or use\" the dealer's data; may not charge \"beyond any direct costs incurred\" for access; and may not prohibit a dealer-authorized integrator that complies with industry security standards \"from integrating into the dealer's data system\".\n- Providers must \"adopt and make available a standardized framework for the exchange, integration and sharing of data\" with authorized integrators, using an \"open application programming interface\" unless an API is \"not the reasonable commercial or technical standard for secure data integration\".\n\nCDK and Reynolds challenged the law. On 25 October 2021 the Ninth Circuit affirmed the denial of a preliminary injunction, holding among other things that dealer data \"consists of facts about dealers' customers and business operations\" and that copyright \"protects expression, not facts\". The Arizona Attorney General's office reported that the vendors later dismissed their cases and that Montana and Oregon passed similar laws; this book did not verify the later statutes.\n\n### Switching: the dispute moves from reading data to taking it away\n\nThe newest strand concerns not access by applications but the dealer's ability to leave. In October 2024 a court ordered CDK to transfer four Asbury Automotive dealerships' data to Tekion, after CDK had refused, as CBT News reported in December 2024. On 10 December 2024 Tekion filed a federal antitrust suit against CDK, accusing it, in the trade press's paraphrase, of \"holding clients' data hostage\" and \"blocking data transfer to other platforms\". Tekion's own announcement sought an injunction to facilitate data transfer \"within 10 days of a dealership's request\". The suit's status as of October 2026 was not verified for this book.\n\n![A dealer reaches its DMS data by two paths: a blocked credential path through an integrator, and a certified path through an app vendor and access program with a fee per rooftop; courts and law review the program, and an export arrow leads to a new DMS.](assets/images/51-case-cdk-global/51-two-paths-to-dealer-data.jpeg)\n**Figure 3:** *Two paths to the same data. After 2015 the credential path was blocked and the certified path became the only sanctioned one; courts, the FTC and a state legislature then turned its terms, fees and the exit path into matters of public review.*\n\n**My reading: the record turns three design properties of an access program into legal exposure.** These are who decides which applications may connect, what access costs relative to its direct cost, and how fast a dealer can take its data to a competitor. A system of record that controls all three for a concentrated market will eventually have them decided by someone else.\n\n## Fortellis: Turning the Gate Into a Marketplace\n\nCDK launched **Fortellis** in March 2018, with a Developer Network and a Marketplace connecting software developers, manufacturers and dealers; Equifax was among the first publishers of APIs. At the January 2019 NADA show CDK said it would charge no fees to join, publish APIs or market products, but would charge \"a nominal transaction fee\". That is seven-year-old pricing; the fee model has changed since, and no current schedule was found.\n\nThe design idea is written down in Fortellis's own documentation, read in October 2026. APIs \"define the contract through which apps will be able to interface with Fortellis\". \"A single provider can implement several APIs, and each API can have any number of providers available.\" When an app calls an API, \"Fortellis routes this call through to the appropriate provider\". Providers supply \"security information so Fortellis can attach appropriate security tokens\", Fortellis verifies that providers implement the APIs they claim, and users choose which provider fulfils each API.\n\n![A third-party app calls a contract API at a gateway that has a contract registry and dealer consent attached; the gateway routes to a DMS provider or another provider and sends metered calls to billing.](assets/images/51-case-cdk-global/51-contract-separate-from-provider.jpeg)\n**Figure 4:** *Fortellis as documented: the contract is separate from the provider. The platform owns the contract, the routing, the token and the billing, and supply can in principle come from any system that implements the contract.*\n\nIn 2021 CDK's annual report described Fortellis as allowing CDK \"and third parties to develop adaptive and interchangeable application programming interfaces\". In January 2023 CDK announced asynchronous APIs \"designed to meet needs for fast data updates, record synchronization and event-triggered workflows\" and a new pricing model, as reported in its press release. The Fortellis home page, read in October 2026, claims \"135+ published APIs\", \"425+\" marketplace apps, \"82K+ dealer integrations\" and \"6.7B+ API transactions per year\", and links to \"CDK Global Partner Program Migration\" guides for software vendors and dealers. The page does not state a sunset date for the Partner Program.\n\n> **INFERENCE, NOT DOCUMENTED:** The migration links suggest that CDK is moving integrations from its older Partner Program onto Fortellis contracts. If so, every certified vendor faces a forced migration of its adapter, with a period in which both paths run. No public source gives the timetable, the terms or the share of traffic already moved, and no source shows non-CDK DMS vendors implementing Fortellis contracts in production.\n\n**My reading: Fortellis is the right architecture with a credibility problem that architecture cannot solve.** Separating contract from provider is what turns a vendor API into a marketplace: a contract registry with versions, provider certification, per-dealer subscription and consent, routing, and metering. The record in the previous section is why the market reads it skeptically. A marketplace run by the dominant provider is judged by its terms: whether fees are published, whether the owner's own applications use the same contracts at the same price, and whether a dealer can switch providers through it. The public record answers none of these.\n\n## Narrowing to the Core, and the European Branch\n\n### Divest everything except the system of record\n\nBetween 2020 and 2022 CDK narrowed. It sold its digital marketing business to Sincro in April 2020 and CDK International to Francisco Partners on 1 March 2021, booking a pre-tax gain of $965.6 million and moving to a single operating segment. It bought Roadster in June 2021 to let dealers \"sell new and used vehicles completely online\". In July 2022 Brookfield Business Partners completed its purchase at $54.87 per share, an enterprise value of about $8.3 billion, as widely reported in 2022.\n\n**My reading: the DMS was the asset; everything else was negotiable.** CDK kept the system of record, the access program and the API platform, and bought the online-retail layer that sits directly on the deal. That is a coherent strategy for a system-of-record vendor. It also concentrates the company's value, and its customers' risk, in one system.\n\n### Keyloop: the same lineage in fragmented markets\n\nKeyloop's own site, read in October 2026, says it was founded as Kerridge in Hungerford, England, operated as ADP Dealer Services and CDK Global as it expanded across Europe, the Middle East, Africa and Asia, and was bought by Francisco Partners in 2021. At the sale, in a March 2021 release, Keyloop described itself as serving about 16,000 dealer sites in more than 90 countries, headquartered in the UK, with Tom Kilroy as chief executive.\n\nKeyloop then bought, rather than divested. Its releases record RAPID RTC (lead management, Canada) and enquiryMAX (showroom software, UK) in March 2021, MotorDocs and FISC (UK) in 2021, SilverBullet (online retail, UK) in December 2021, SERTI (a Canadian DMS with more than 1,000 dealers) in February 2022, and Automotive Transformation Group (ATG, omnichannel retail) in May 2024. The SERTI release (2022) gave about 18,000 dealer sites in 100 countries; the ATG completion release (May 2024) gave more than 18,000 retailers and 80 OEMs in more than 90 countries. The 2026 site organizes the portfolio around a \"Fusion Automotive Retail Platform\" with sales, acquisition, vehicle and service hubs, and lists the Keyloop DMS and VEGA under \"Operate\".\n\nKeyloop's access story is also programmatic. Its developer portal, read in October 2026 (copyright 2022), describes an **Open Platform** as \"a single interface to dealer management systems across Europe, the Middle East, Africa and Asia\". It warns that not all endpoints \"are available or relevant for every dealer management system\", lists API products by version, and refers partners to a security review process. A 2021 Keyloop advertisement feature in AM, a UK trade publication, said its partner program dated from 2018 and had 110 signed partners, 58 of them certified. No fee schedule was found.\n\n> **INFERENCE, NOT DOCUMENTED:** \"A single interface to dealer management systems\", with endpoint availability that varies by DMS, reads as a facade over several DMS products that Keyloop inherited or bought, each with its own data model. That is the same shape this book recommends to dealer SaaS vendors for the opposite direction: one canonical contract, adapters per system behind it, and an explicit capability matrix. The portal does not describe the implementation.\n\nTwo documented facts show how different the European position is. In June 2024 Group 1 Automotive told the SEC that its UK dealerships \"do not use CDK's dealers' systems and are therefore not impacted\"; US dealer groups run different DMS products on each side of the Atlantic. And no report found for this book described any effect of CDK's 2024 incident on Keyloop customers, which is consistent with two companies that have been separate since 2021.\n\n**What changes by market.** The table summarizes the DMS landscape a vendor like Keyloop competes in, and that a dealer SaaS vendor integrates with. Its sources are the DMS research brief behind [Living With the DMS: Dealer Management System Integration](dms-integration.html); vendor claims are as of 2026.\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| DMS market shape | Long tail of local vendors (Autoflex claims 2,400+ Dutch car businesses) plus brand-approved DMSs for franchised dealers | Most OEM-shaped: brand-affiliated systems such as CROSS (VW Group); Loco-Soft and incadea across brands | Independent vendors (Keyloop, Pinewood) compete for large groups | Concentrated: CDK, Reynolds, Dealertrack, Tekion |\n| Where access is decided | Contract and the General Data Protection Regulation (GDPR); the EU Data Act's switching rules plausibly cover SaaS DMSs | As NL/BE, plus OEM certification | Contract and UK GDPR; the EU Data Act does not apply | Antitrust litigation and state dealer-data laws (Arizona, upheld 2021) |\n| Concentration risk | Per vendor, narrower | Brand-wide where one DMS dominates a brand network | Per large vendor | Industry-wide (2024) |\n\nThe EU **Data Act** (Regulation (EU) 2023/2854, applicable from 12 September 2025) gives customers of \"data processing services\" a right to switch provider, with a transition period of at most 30 days after notice in the normal case and **no switching charges from 12 January 2027**. Whether a given SaaS DMS is in scope is a legal question; my judgement is that most are. In Europe, then, the switching question that Tekion is litigating in the US is being answered by regulation, and it applies to every dealer SaaS vendor too, not only to DMS vendors.\n\n## June 2024: When the System of Record Went Dark\n\n### What the filings show\n\nCDK notified its dealer customers on 19 June 2024 that it had shut down systems in response to a cyber incident. Security press attributed the attack to the BlackSuit ransomware group. CyberScoop reported on 12 July 2024 that about 15,000 dealerships were affected, that at least six publicly traded dealer groups had reported impacts to the SEC, and that TRM Labs traced about 387 bitcoin (about $25 million) received on 21 June by a wallet likely controlled by BlackSuit, which \"does not conclusively prove\" a payment; CDK and Brookfield declined to comment. Press reported a second incident during recovery and phishing by people posing as CDK support. CDK has published no post-incident report.\n\nThe best evidence comes from the dealer groups' own filings, because securities law forced them to describe the effect:\n\n| Dealer group | Filing | What it reported |\n| --- | --- | --- |\n| AutoNation | 8-Ks of 24 June and 15 July 2024 | DMS supports \"sales, service, inventory, customer relationship management, and accounting functions\"; stores stayed open \"through manual and alternative means\"; by 15 July DMS and core functions restored, but integrations that automate \"ordering, scheduling, payment, and reporting\" still limited, with restoration expected by end of July; the 15 July 8-K estimated the Q2 2024 earnings impact at \"approximately $1.50 per share\" before potential recoveries |\n| Sonic Automotive | 8-K of 5 July 2024 | DMS, CRM and sales, inventory and accounting systems disrupted; resumed DMS transactions on 30 June after \"internal risk assessments and data validation procedures\"; CRM and \"some third-party applications\" still offline |\n| Lithia Motors | 8-K of 24 June 2024 | Activated incident response and severed \"business service connections between the Company's systems and CDK's\"; CDK platform down \"for a two-week period\" (10-Q, August 2024) |\n| Group 1 Automotive | 8-K of 24 June; 10-Q of 24 July 2024 | Core DMS restored 26 June \"subject to certain modified procedures\"; $5.9 million one-time compensation for field staff; UK dealerships unaffected |\n\nAnderson Economic Group, a consultancy, estimated direct dealer losses in the order of $1 billion over the first three weeks, in successive 2024 estimates that are widely reported but not filings. Breach notifications to US state regulators reported small numbers of individuals. **On the public record, the damage was to availability, not mass theft of consumer data.**\n\n### The recovery order\n\nReconciling the filings: core DMS functions were unavailable to large dealer groups for about 7 to 11 days, from 19 June to between 26 and 30 June, depending on when each group resumed after its own validation. Integrations and ancillary systems took up to about six weeks. CDK said on 12 July that all major applications were available.\n\n![Swimlanes for the DMS platform, dealer group, apps and store staff: shutdown on 19 June, manual work, failing app calls, core restored, dealer validation, and app integrations restored in July.](assets/images/51-case-cdk-global/51-recovery-order-swimlanes.jpeg)\n**Figure 5:** *The documented recovery order: the system of record came back first, dealers validated before they resumed, and integrations followed weeks later. For an application vendor, the outage lasted until the last step, not until the DMS was back.*\n\n> **INFERENCE, NOT DOCUMENTED:** The breadth of the outage and the decision to shut down \"most systems\" are consistent with a shared hosted environment in which many dealers' instances and the access programs depend on common infrastructure, identity and network paths. They are equally consistent with many per-dealer instances managed through common tooling. CDK has not described its hosting model, its blast-radius boundaries or what it changed afterward, and either reading is a reference-architecture inference.\n\n**My reading: three lessons in the filings matter more than the attack itself.** First, **integrations are part of recovery, not an afterthought**: AutoNation's ordering and payment integrations returned about a month after the core. Second, **the customer will cut the connection on purpose**: Lithia severed its links before it knew the scope, and an integration must survive that and resume cleanly. Third, **dealers validated before they resynchronized**: Sonic resumed only after data validation, which means a dependent application needs a reconciliation step it can run on demand, not only a replay queue.\n\n## Where the Public Evidence Stops\n\nNo public source found for this book answers these questions.\n\n| Question | What is public | What is not |\n| --- | --- | --- |\n| How is the CDK DMS hosted? | \"Hosted enterprise resource planning applications\" delivered as SaaS (2021); \"Cloud Connect\" installations | Shared or per-dealer instances, regions, isolation boundaries, any cloud move after 2022 |\n| What happened technically in 2024? | Dates, attribution by press, customer impact, restoration milestones | Initial access vector, scope of encryption, recovery architecture, changes made |\n| What does access cost today? | 2011–2017 prices in the court record; \"nominal transaction fee\" (2019); a new pricing model (2023) | A current fee schedule for the Partner Program or Fortellis |\n| Do other DMS vendors implement Fortellis contracts? | The multi-provider design in Fortellis's documentation | Production adoption by non-CDK DMS vendors |\n| When does the Partner Program end? | Migration guides linked from Fortellis (2026) | Sunset date, terms, share of integrations moved |\n| How does Keyloop's Open Platform work? | One interface; endpoints vary by DMS; security review | Architecture, event support, fees, adoption |\n| How did the litigation end? | Settlements to 2024; Asbury order (2024); Tekion suit filed (2024) | Outcome of the vendor class and of Tekion's suit, as of October 2026 |\n\n## Trade-offs the Case Illustrates\n\n| Choice | What CDK's record shows | When it is right | When it fails |\n| --- | --- | --- | --- |\n| **Close the system of record to credential-based access** | Lock-out in 2015; security argument accepted as real by the court record; litigation for a decade | Shared logins are a genuine security risk and a sanctioned path exists at cost-based terms | The sanctioned path is priced at what the market will bear in a concentrated market |\n| **Run a certified access program** | 3PA, then the Partner Program; certification and fees per vendor per dealer | Many vendors of uneven quality write into the system of record | Certification becomes a way to decide who may compete with the owner's own applications |\n| **Turn the program into a contract-first marketplace** | Fortellis: contracts, multiple providers, routing, tokens, metering | The owner wants other systems to supply the same contracts and can show neutral terms | The owner is the only provider in practice and the terms stay private |\n| **Divest everything except the system of record** | Digital marketing (2020) and international (2021) sold; online retail bought (2021) | The system of record is the defensible asset and the capital is better spent near it | Value and customer risk concentrate in one system |\n| **Run one hosted system for a large share of a market** | About 15,000 dealers affected in 2024 | Operations at scale are cheaper and more consistent than thousands of on-premises installs | Blast radius is not bounded, so one incident is an industry outage |\n\n## Failure Modes the Record Exposes\n\n1. **The product built on someone else's goodwill.** Vendors that depended on credential-based access lost it in 2015 and paid severalfold more for the sanctioned path ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n2. **Integration fees as a competitive lever.** The FTC counted Auto/Mate's \"modest fees\" as competition; fees far above cost, or different for the owner's own applications, attract courts and legislators.\n3. **Exit as the last lock.** The Asbury order and Tekion's suit concern taking the data to a new DMS. A system of record without a complete, documented bulk export invites the same dispute.\n4. **Recovery that ends at the core.** The dealer's effective outage was set by the slowest integration, and impostors posing as support used the recovery window for phishing ([Protecting Dealers and Data: Security for a Vehicle Data Platform](vehicle-platform-security.html)).\n\n## The Chief Architect's View\n\nCDK's record gives me four decision rules, from both sides of the gate.\n\n**If you integrate with a system of record you do not control, never let a core workflow depend on unsanctioned access.** Use the vendor's certified interface for anything a dealer relies on daily, accept its fees as a cost of goods, and treat credential-based access, where a vendor permits it at all, as a documented, dealer-authorized and time-boxed fallback. Record each dealer's authorization as data: who authorized which integration, for which rooftops, which scopes, under which contract and until when. That record is evidence in a dispute and a GDPR artifact.\n\n**Design for a degraded mode measured in weeks, and reconcile before you resume.** The 2024 filings set the planning number: core back in one to two weeks, integrations in up to six. Keep a local copy of the stock, customers and documents your product needs, queue write-backs with expiry, show \"pending in DMS\" honestly ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)). Before replaying queued writes, compare counts, checksums and last-modified watermarks per rooftop, and raise discrepancies as tickets rather than overwriting ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)).\n\n**If you are the system of record, publish the terms before someone else writes them.** Arizona's statute is the clearest specification of what a regulator wants: a standardized framework, an open API, cost-based fees and no blocking of compliant, dealer-authorized integrators. I would offer that by design: a contract-first API with a public registry, published fees, the same contracts and prices for the owner's own applications, a consent registry the customer controls, and a complete bulk export with a published turnaround. In the EU the Data Act's switching rules point the same way.\n\n**Bound the blast radius of anything a market depends on.** A hosted system of record for thousands of businesses needs cells: groups of tenants with separate infrastructure, credentials and recovery, so one compromise takes down a cell, not the market ([Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)). The cost is real; the 2024 record prices the alternative.\n\n![Left, one server with a warning burst and every dealership around it dark; right, dealerships split into six cells, with only one cell dark.](assets/images/51-case-cdk-global/51-cells-bound-the-blast-radius.jpeg)\n**Figure 6:** *Cells bound the blast radius: in one hosted system a single compromise darkened about 15,000 dealerships, where separated cells would lose one group of tenants.*\n\n## Comparing the Case to the Book's Patterns and to Axleby\n\nCDK's record supports most of the book's DMS and reliability patterns and sharpens two of them.\n\n| Book pattern or claim | CDK's record | Verdict |\n| --- | --- | --- |\n| Integrate with the DMS through certified interfaces behind an anti-corruption layer, one adapter per DMS family ([Living With the DMS: Dealer Management System Integration](dms-integration.html)) | 2015 lock-out; price rises on the sanctioned path; Keyloop's capability matrix per DMS | Strongly supported; budget the fees |\n| DMS Hostage: critical workflows depend on brittle or unsanctioned DMS access | Credential-based integrators cut off in 2015; switching contested in 2024 | Strongly supported, from both the integrator's and the dealer's side |\n| Borrowed Uptime: synchronous calls to external systems multiply outages ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)) | 7 to 11 days for the core, up to six weeks for integrations (2024) | Strongly supported; the degraded mode must last weeks |\n| Contract-first APIs with a registry, versioning and metering ([Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html)) | Fortellis's contract-provider separation | Supported as design; credibility depends on terms, which the book had underweighted |\n| Record consent and license per party and purpose ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)) | Arizona's dealer-authorized access; the Asbury transfer order | Supported, and extended: consent must also cover exit |\n\nAxleby's choices meet CDK's record from both sides. All Axleby facts below are fictional.\n\n| Axleby situation (2027) | CDK parallel | What the case suggests |\n| --- | --- | --- |\n| Lotwise depends on **DriveDesk** for **1,900** rooftops; in the **DriveDesk Outage** (November 2027) DriveDesk was offline for **12 days** and Lotwise served as the fallback for stock, adverts and sales documents | 2024: core back in 7–11 days, integrations in up to six weeks | Twelve days is inside the documented range. Lotwise's fallback must also cover the weeks after DriveDesk returns, while the adapter reconciles 1,900 rooftops |\n| The **Zombie Golf** (February 2027): a sold status from DriveDesk failed to sync and a Golf stayed live on **4** portals for **4 days** | Dealers resumed only after validating their data | A per-rooftop reconciliation of stock status against the DMS would have caught the missing sold event within a day; it is the same control Sonic used after the outage |\n| The **Lost Leads of Velto** (September 2027): an inactive DriveDesk CRM queue returned success and discarded **1,460** leads | Lithia severed connections deliberately; integrations must tolerate disconnection | An acknowledgement from a DMS or CRM is not proof of delivery. Switchboard needs end-to-end receipts and dead-letter review ([From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html)) |\n| Axleby integrates DriveDesk, two German DMS products and several franchise-brand systems, mostly by files | Keyloop's one interface over many DMS products, with endpoints that vary by DMS | Axleby should keep a published capability matrix per DMS family so product managers and dealers can see what each adapter supports |\n| Axleby Data is a system of record for **640** API clients; Connect XML, with **210** XML-only clients, is to be retired on **31 December 2029** | The Partner Program migration to Fortellis | Axleby is a gatekeeper too. Its sunset needs published dates, terms and a migration path, and its JSON API v2 contracts should be the same for Lotwise as for outside software vendors ([Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths](modernizing-the-platform.html)) |\n\n**The sharpest lesson for Axleby concerns Velto Mobility Group.** Velto's **46** rooftops in the Netherlands and Belgium run DriveDesk, and three of the year's recurring incidents ran through that one dependency: the Zombie Golf, the Lost Leads and the DriveDesk Outage. CDK's record says the answer is not to replace the DMS. Cox Automotive bought a European DMS and sold it within about three years ([Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html)). The answer is to treat DriveDesk as Lotwise's most important external dependency: certified access only, per-rooftop consent and scope records, a reconciliation job that runs nightly and on demand, a degraded mode designed for weeks, and an exit path for dealers that Axleby itself would accept as fair if it were the DMS. [Living With the DMS: Dealer Management System Integration](dms-integration.html) makes those decisions; this case is the strongest public evidence for them.\n\n## Questions to Ask\n\n1. Which of our core dealer workflows depend on access to a DMS that its vendor has not sanctioned in writing? What happens to them if that access is blocked tomorrow?\n2. For each DMS we integrate with, what do we pay per rooftop, what scopes do we have, and when does certification expire? Who owns that list?\n3. Do we store each dealer's authorization for each integration as data, with rooftops, scopes, contract and expiry, and can we produce it in a dispute?\n4. If our largest DMS partner is offline for two weeks, and its integrations for six, which of our features keep working, and for how long have we tested that?\n5. Can we reconcile stock, deals and customers per rooftop against a DMS on demand, before we replay queued writes?\n6. Where are we the system of record for someone else: API clients, dealers, data clients? Are our access terms, fees and export path published, and are they the same for our own products?\n7. How long does a complete export of one dealer's data take, in what format, and at what charge? Would we accept that answer if we were the customer leaving?\n8. What is the blast radius of our worst plausible incident: one tenant, one cell, one market, or every customer?\n\nCDK's record shows a system-of-record vendor whose strength, controlling the dealer's data, became its legal and operational exposure. The next case, [Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html), follows a company that began on the other side, as the consumer portal, and moved into data and software for the same retailers.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [CDK Global Form 10-K for fiscal year 2021](https://www.sec.gov/Archives/edgar/data/1609702/000160970221000058/cdk-20210630.htm), CDK Global (SEC EDGAR), 2021: spin-off date, product layers, Partner Program and Fortellis descriptions, Neuron, revenue, divestitures, Roadster, antitrust provisions, OEM integration.\n- [CDK Global Form 10-Q for the quarter to 31 December 2020](https://www.sec.gov/Archives/edgar/data/1609702/000160970221000005/cdk-20201231.htm), CDK Global (SEC EDGAR), 2021: litigation parties, filing dates and settlements.\n- [Fortellis home page](https://fortellis.io/), CDK Global, n.d. (read October 2026): platform scale claims and Partner Program migration links.\n- [How Fortellis works](https://fortellis.io/node/91), CDK Global, n.d. (read October 2026): contracts, multiple providers, routing and tokens.\n- [Equifax among inaugural developers in Fortellis](https://investor.equifax.com/news-events/press-releases/detail/204/equifax-among-inaugural-developers-in-fortellis-automotive), Equifax, 2018: Fortellis launch in March 2018.\n- [CDK Global unveils technology updates at NADA Show](https://www.autoremarketing.com/ar/technology/cdk-global-unveils-technology-updates-nada-show), Auto Remarketing, 2019: Fortellis Marketplace fee model.\n- [CDK Global introduces new modern API tools at NADA 2023](https://www.businesswire.com/news/home/20230123005590/en/CDK-Global-Introduces-New-Modern-Application-Programming-Interface-Tools-for-Developers-at-NADA-2023), CDK Global (Business Wire), 2023: asynchronous APIs and a new pricing model (widely reported; page not fetched).\n- [International business of CDK Global becomes Keyloop](https://kyodonewsprwire.jp/release/202103021693), Keyloop (PR Newswire), 2021: sale price, dealer sites, countries, CEO.\n- [Keyloop acquires leading DMS provider SERTI](https://prnewswire.co.uk/news-releases/keyloop-acquires-leading-dms-provider-serti-to-offer-full-service-automotive-digital-solutions-across-canada-816542499.html), Keyloop (PR Newswire), 2022: sixth acquisition, 18,000 dealer sites in 100 countries.\n- [Keyloop completes the acquisition of Automotive Transformation Group](https://www.silicon.co.uk/press-release/keyloop-completes-the-acquisition-of-automotive-transformation-group-atg), Keyloop (Business Wire, via Silicon UK), 2024: ATG completion, 18,000+ retailers, 80 OEMs.\n- [About Keyloop](https://keyloop.com/about-us), Keyloop, n.d. (read October 2026): Kerridge origin, history, acquisitions, product organization.\n- [Keyloop developer portal](https://developer.keyloop.io/), Keyloop, n.d. (copyright 2022; read October 2026): Open Platform description and per-DMS endpoint availability.\n- [Keyloop reaches 50+ certified partners in its global partner programme](https://am-online.com/news/latest-news/2021/04/13/keyloop-reaches-50-certified-partners-in-its-global-partner-programme-ad-feature), AM (Keyloop advertisement feature), 2021: partner program start and counts (widely reported; advertisement content).\n- [AutoNation Form 8-K, 24 June 2024](https://www.sec.gov/Archives/edgar/data/350698/000035069824000078/an-20240619.htm) and [Form 8-K, 15 July 2024](https://www.sec.gov/Archives/edgar/data/350698/000035069824000085/an-20240715.htm), AutoNation (SEC EDGAR), 2024: DMS scope, manual operation, restoration order, estimated per-share impact.\n- [Sonic Automotive Form 8-K, 5 July 2024](https://www.sec.gov/Archives/edgar/data/1043509/000104350924000060/sah-20240705.htm), Sonic Automotive (SEC EDGAR), 2024: affected systems, validation before resumption.\n- [Lithia Motors Form 8-K, 24 June 2024](https://www.sec.gov/Archives/edgar/data/1023128/000102312824000079/lad-20240619.htm) and [Form 10-Q, August 2024](https://www.sec.gov/Archives/edgar/data/1023128/000102312824000104/lad-20240630.htm), Lithia Motors (SEC EDGAR), 2024: severed connections, two-week outage.\n- [Group 1 Automotive Form 8-K, 24 June 2024](https://www.sec.gov/Archives/edgar/data/1031203/000103120324000048/gpi-20240619.htm) and [Form 10-Q, July 2024](https://www.sec.gov/Archives/edgar/data/1031203/000103120324000058/gpi-20240630.htm), Group 1 Automotive (SEC EDGAR), 2024: restoration date, staff compensation, UK unaffected.\n\n### Standards, regulation and official documentation\n\n- [Authenticom, Inc. v. CDK Global, LLC, Nos. 17-2540 and 17-2541](https://www.courtlistener.com/opinion/4440779/authenticom-incorporated-v-reynolds-and-reynolds-company/), US Court of Appeals for the Seventh Circuit, 2017: market shares, the 2015 agreements, integrator practice, prices, holding.\n- [CDK Global LLC v. Brnovich, No. 20-16469](https://cdn.ca9.uscourts.gov/datastore/opinions/2021/10/25/20-16469.pdf), US Court of Appeals for the Ninth Circuit, 2021: DMS description, the Arizona Dealer Law's provisions, holding.\n- [FTC challenges CDK Global's proposed acquisition of competitor Auto/Mate](https://www.ftc.gov/news-events/news/press-releases/2018/03/ftc-challenges-cdk-global-incs-proposed-acquisition-competitor-automate-inc), US Federal Trade Commission, 2018: integration fees as competition, abandoned deal.\n- [Regulation (EU) 2023/2854 (Data Act)](http://publications.europa.eu/resource/celex/32023R2854), EU Publications Office (CELEX 32023R2854), 2023: switching between data processing services, transition period, switching charges abolished from 12 January 2027.\n\n### Research and practitioner sources\n\n- [Wallets tied to CDK ransom group received $25 million](https://cyberscoop.com/?p=81004), CyberScoop (A. Vicens), 2024: scale, attribution, traced payment, restoration statement.\n- [CDK agrees to $100M settlement in dealership class action antitrust suit](https://www.repairerdrivennews.com/2024/08/21/cdk-agrees-to-100m-settlement-in-dealership-class-action-anti-trust-suit/), Repairer Driven News, 2024: dealer-class settlement, vendor-class certification.\n- [Tekion slams CDK with a federal antitrust lawsuit](https://www.cbtnews.com/tekion-slams-cdk-with-a-federal-antitrust-lawsuit-citing-anticompetitive-practices-in-dms-market/), CBT News, 2024: Tekion suit and the Asbury transfer order.\n- [Tekion files lawsuit against CDK Global's anticompetitive practices](https://www.businesswire.com/news/home/20241210707655/en/Tekion-Files-Lawsuit-Against-CDK-Globals-Anticompetitive-Practices), Tekion (Business Wire), 2024: relief sought (widely reported; page not fetched).\n- [The CDK Global outage explained](https://www.techtarget.com/whatis/feature/The-CDK-Global-outage-Explaining-how-it-happened), TechTarget, 2024: second incident and phishing during recovery (widely reported).\n- [Dealer losses due to CDK cyberattack](https://www.andersoneconomicgroup.com/dealer-losses-due-to-cdk-cyberattack-reach-1-02-billion/), Anderson Economic Group, 2024: dealer loss estimate (widely reported; consultancy estimate).\n- [Attorney General Mark Brnovich's office obtains victory in defense of Arizona's data law](https://www.azag.gov/press-release/attorney-general-mark-brnovichs-office-obtains-victory-defense-arizonas-data), Arizona Attorney General, 2021–22: dismissal of the vendors' cases, similar laws in Montana and Oregon (widely reported; not fetched).\n- [CDK Global](https://en.wikipedia.org/wiki/CDK_Global), Wikipedia, 2026: Kerridge acquisition, Brookfield terms (encyclopedia; secondary).\n- [CDK Global names Sudhakar Ramakrishna CEO](https://www.cbtnews.com/cdk-global-names-sudhakar-ramakrishna-ceo/), CBT News, 2026: CEO succession effective 5 October 2026.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

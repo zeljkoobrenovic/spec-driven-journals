@@ -1,0 +1,311 @@
+===== part-1 0
+===== vehicle-data-ecosystem 5
+  [register] - A **register** is an official vehicle register, never a commercial provider: the Dutch RDW (*Rijksdienst voor het Wegverkeer*), the Belgian DIV (*Directie Inschrijvingen Voertuigen*), the German KBA (*Kraftfahrt-Bundesamt*), the UK's DVLA (Driver and Vehicle Licensing Agency) and DVSA (Driver and Vehicle Standards Agency, which ho
+  [Dealer SaaS] - **Dealer SaaS** is software that dealers use to buy, stock, price, advertise, sell and register cars, sold as a subscription.
+  [dealer management system (DMS)] - A **dealer management system (DMS)** is the dealer's enterprise resource planning system.
+  [rooftop] - A **rooftop** is one physical dealership location.
+  [dealer group] A **dealer group** is a company that owns two or more rooftops, often under several legal entities and brands. [[tenancy-and-dealer-groups]] owns the deep model.
+===== dealer-and-data-economics 8
+  [Gross per unit] **Gross per unit** (often *gross profit per unit*, GPU) is the profit on one retailed car before overheads.
+  [Days-to-turn] **Days-to-turn** is the number of days from stock-in (the moment a car enters the dealer's stock) to sale.
+  [Holding cost] **Holding cost** is what each day in stock costs: depreciation, the cost of the money tied up, and smaller costs for space and insurance.
+  [16,870,710 records] ands, the RDW's main vehicle dataset of **16,870,710 records** is published as **public domain** open data ([RDW open data](https://opendata.rdw.nl/api/views/m9d7-ebf2.json), queried October 2026).
+  [Cost per lookup] **Cost per lookup** is the fully loaded cost of answering one billable call:
+  [No-hit-no-fee] **No-hit-no-fee** is a pricing rule: a lookup that finds no record is not billed.
+  [What stays common] **What stays common** is the unit model: cost layers, tax regime on the stock item, multiple clocks, per-vehicle targets, usage events with result classes and tenant-attributed cost.
+  [What varies by market] **What varies by market** is a rule set, not a fork: margin-scheme rules, register fees passed through, finance-commission retention, metric defaults, and e-invoicing of the platform's own invoices, mandatory for business-to-business sales in Belgium since 1 January 2026 ([FPS Finance](https://einvoice.belgium.be/en), accessed O
+===== vehicle-capability-map 5
+  [business capability] A **business capability** is what the business must be able to do to deliver value, described independently of the people, processes and systems that currently do it. "Value a used car" is a capability; Vantage is a system that implements it; Wertlauf is the team that built it; the appraisal screen in Lotwise is one place it is us
+  [shared capability] A **shared capability** is one that both halves of the platform, the data half and the workflow half, consume and that has one implementation and one owner.
+  [Lease contract administration] **Lease contract administration** is a different business (fleet management software) that Axleby does not sell; **marketplace payments and escrow** stay with auction partners because Tradefloor hands deals off; **fraud prevention** is treated as a cross-cutting concern of security, not a capability a customer buys ([[vehicle-pl
+  [fraud prevention] ers because Tradefloor hands deals off; **fraud prevention** is treated as a cross-cutting concern of security, not a capability a customer buys ([[vehicle-platform-security]]).
+  [My reading] **My reading** is that the order follows the capability dependencies: specification before valuation, valuation before trended valuation, specification and features before AI descriptions, all of them before transactions. [[case-auto-trader-uk]] develops this reading.
+===== vehicle-bounded-contexts 7
+  [bounded context] A **bounded context** is an explicit boundary within which a model and its language (the **ubiquitous language**, in Eric Evans's term) are consistent.
+  [subdomain] A **subdomain** is a part of the business problem; a bounded context is a part of the solution.
+  [Supporting subdomains] **Supporting subdomains** are specific to the business but not where it wins.
+  [entity] An **entity** is a business object with identity and a lifecycle.
+  [Pricing] **Pricing** is supporting because Axleby's pricing advantage comes from valuation and market data; the rules are copyable configuration.
+  [Licensing] **Licensing** is supporting, but no fact context ships without Charter in the request path ([[data-licensing-and-governance]]).
+  [What is common] **What is common** is every internal context and every entity in the table.
+===== part-2 0
+===== vehicle-identity 10
+  [vehicle identification number (VIN)] The **vehicle identification number (VIN)** is a 17-character code that the manufacturer assigns to one vehicle and stamps into its structure.
+  [world manufacturer identifier (WMI)] The **world manufacturer identifier (WMI)** is the first three characters: a code for a manufacturer or one of its divisions, issued through a national body under ISO 3780.
+  [registration plate] A **registration plate** (registration mark, *kenteken*, *Kennzeichen*, license plate) is issued by a register to a **registration**: the legal record that a vehicle may use public roads in one jurisdiction, with a keeper responsible for insurance, tax and inspection.
+  [plate assignment] A **plate assignment** is this book's name for the fact that a given plate was attached to a given vehicle in a given jurisdiction for a given period: `(country, plate, vehicle, valid_from, valid_to, source, evidence)`.
+  [vehicle key] The **vehicle key** is an internal surrogate identifier that the platform assigns to one physical vehicle when it first sees it, and that it never reuses.
+  [Plate cloning] **Plate cloning** is putting copies of another car's legitimate plates on a vehicle, usually the same make, model and color, to avoid fines and tolls or to hide a stolen car.
+  [Data errors] **Data errors** are the bulk: O and I typed for 0 and 1 (both letters are banned from VINs), missing or swapped characters, the dealer's trade plate recorded instead of the car's, an advert carrying the plate of another car in the same stock.
+  [identity graph] An **identity graph** is the data structure that records which identifiers, registrations and records belong to which physical vehicle, over time, with the evidence for each link.
+  [What stays common] **What stays common** is the model: one vehicle node, VIN observations, registration episodes, time-bounded plate assignments, confidence tiers, merge and split events.
+  [What is market-specific] **What is market-specific** is a set of adapters and rules: how a plate is normalized (Belgian dashes, UK spacing, German district prefixes), how long an assignment may be cached before it is re-checked, which source confirms a VIN, and which transitions to expect.
+===== registers-and-official-data 6
+  [vehicle register] A **vehicle register** is an official record, kept by a public body or under a statutory mandate, of the vehicles admitted to the roads of a jurisdiction and the people responsible for them.
+  [Open data] **Open data** is "free and without restriction" for every user and excludes data that is privacy-, fraud- or competition-sensitive; stolen and missing status is not released ([RDW, n.d.](https://www.rdw.nl/over-rdw/dienstverlening/open-data/algemene-informatie)).
+  [register gateway] The **register gateway** is the one component through which every read from and write to an official register passes.
+  [register mirror] The **register mirror** is a local, queryable copy of the register data the platform may hold in bulk, with the source dataset, its version and the observation time on each fact.
+  [mutation feed] The **mutation feed** is a stream of changes to register records.
+  [Integrating with an existing provider] **Integrating with an existing provider** is faster, but it puts a competitor in the path of every transaction, with that provider's outage behavior and pricing.
+===== specification-and-equipment 4
+  [edition (trim)] - An **edition (trim)** is the named equipment level of a version: the standard content the manufacturer bundled under a marketing name.
+  [factory option] - A **factory option** is an item of equipment fitted at the factory on top of the edition's standard content, ordered alone or in a **pack** whose content can change over time.
+  [specification catalog] - The **specification catalog** is the platform's versioned reference data of makes, models, generations, versions, editions, standard equipment and available options, with the crosswalk to every provider's and portal's keys.
+  [mobile.de] - **mobile.de** describes equipment as named fields with reference-data values, separate fields for model range (*Baureihe*) and trim line ("a.k.a feature sets (Ausstattungslinie)"), a free-text `modelDescription` used as the advert title, German HSN/TSN fields, and a Schwacke code.
+===== vehicle-history 5
+  [history event] A **history event** is one dated observation about one vehicle, from one source: "on 22 May 2025, an inspection recorded 168,950 km"; "on 3 March 2022, an insurer declared the vehicle a total loss"; "on 9 September 2024, the vehicle was first registered in the Netherlands after import from Germany".
+  [odometer reading] An **odometer reading** is an event.
+  [odometer judgement] An **odometer judgement** is a conclusion computed over the series of readings: is the series consistent with a vehicle that was driven normally and never had its odometer turned back?
+  [title brand] A **title brand** is a permanent label on a vehicle's legal status, such as salvage, flood, rebuilt, junk or "not actual mileage".
+  [history report] A **history report** is a rendered, dated snapshot of a vehicle's events and judgements for one product, market and requester.
+===== ingestion-and-entity-resolution 7
+  [Ingestion] **Ingestion** is how those facts enter the platform; **entity resolution** is how the platform decides which physical car each fact is about; **survivorship** is how it decides, attribute by attribute, which fact to believe.
+  [entity resolution] is how those facts enter the platform; **entity resolution** is how the platform decides which physical car each fact is about; **survivorship** is how it decides, attribute by attribute, which fact to believe.
+  [survivorship] which physical car each fact is about; **survivorship** is how it decides, attribute by attribute, which fact to believe.
+  [AVK] 3779), the **plate assignment** and the **AVK** are owned by [[vehicle-identity]]; the **provenance envelope** (source, observed-at, ingested-at, licence and confidence on every fact) by [[provenance-and-data-quality]].
+  [Dealers and rooftops] **Dealers and rooftops** are matched across portal accounts, DMS ids and company numbers ([[tenancy-and-dealer-groups]]); **consumers** in leads are constrained by the General Data Protection Regulation (GDPR) and belong to [[leads-and-crm]].
+  [golden record] The **golden record** is the result of applying these rules to all source records of one vehicle.
+  [Reconciliation against a snapshot] **Reconciliation against a snapshot** is what makes an event-driven feed trustworthy.
+===== provenance-and-data-quality 0
+===== part-3 1
+  [EV Overvaluation] The **EV Overvaluation** is the thread.
+===== market-data 0
+===== valuation-engine 7
+  [maximum purchase price] The **maximum purchase price** (MPP, sometimes called the buy box) is the most a dealer can pay for a car and still earn its target margin.
+  [Valuation confidence] **Valuation confidence** is the engine's statement of how far a value can be trusted, returned with the value.
+  [range] A **range** is an interval expected to contain the realized price with a stated probability; an 80% range should contain 80% of outcomes.
+  [confidence flag] A **confidence flag** names the reason the range is wide or the value is unusual: few comparables, a fallback model, an edition the resolver could not determine, a stale market surface, or a segment under a drift warning.
+  [Own valuations] - **Own valuations** are what Vantage computes.
+  [Decisions] - **Decisions** are what a dealer did: the offer made, the MPP accepted or overridden, the retail price set.
+  [valuation ledger] The **valuation ledger** is the immutable record of every valuation the engine issued, with its inputs, the versions of those inputs and of the model, the answer, who saw it, and links to the decisions and outcomes that followed.
+===== condition-and-damage 0
+===== ev-battery-health 3
+  [State of health (SoH)] **State of health (SoH)** is the ratio of a battery's current ability to store energy or charge to its ability when new, as a percentage.
+  [battery certificate] A **battery certificate** is a document issued by a named party that states a battery's SoH for a specific vehicle at a specific time, with the method used.
+  [battery passport] The **battery passport** is the electronic record that the EU Battery Regulation (Regulation (EU) 2023/1542) requires for every electric-vehicle battery "placed on the market or put into service" from **18 February 2027** (Article 77(1)).
+===== connected-vehicle-data 4
+  [Connected-vehicle data] **Connected-vehicle data** is data a vehicle generates about its use and condition and sends through an electronic communications service or exposes on a physical port.
+  [Consumer consent] **Consumer consent** is a person granting a scope for a car they drive, in one session.
+  [Fleet clearance] **Fleet clearance** is a business registering a car it owns, approved by the manufacturer over days.
+  [Mandate] **Mandate** is the consent and data-rights registry: one record per consent grant, with its state.
+===== part-4 0
+===== vehicle-acquisition 3
+  [appraisal] An **appraisal** is the dealer's structured assessment of one car for a possible purchase, in five steps:
+  [trade-in] A **trade-in** is a car the buyer hands over as part of buying another car from the same dealer.
+  [purchase offer] A **purchase offer** is the price a dealer commits to pay for a specific car, to a specific seller, under stated conditions, until a stated limit.
+===== inventory-and-vehicle-dossier 9
+  [vehicle] A **vehicle** is the physical car, identified by its vehicle identification number (VIN) and, in Axleby, by the **Axleby Vehicle Key (AVK)** in the identity graph Anchor ([[vehicle-identity]] owns both).
+  [stock item] A **stock item** is one tenant's ownership of one vehicle for one **stay**: from the moment the dealer commits to buy it until the moment the dealer no longer carries its risk.
+  [vehicle dossier] A **vehicle dossier** is the stock item together with everything the dealer needs to manage that stay: references to vehicle facts and to the versions used for decisions, documents, the results of module actions, and a timeline of what happened.
+  [front-end gross] A used car's **front-end gross** is the retail price minus everything capitalized into the car.
+  [VAT regime] The **VAT regime** is a stock-item attribute fixed at purchase: under the EU margin scheme, a car bought from a private seller is later sold with VAT due only on the margin, and the margin is the selling price minus the purchase price, not minus reconditioning ([Directive 2006/112/EC, Arts. 313–315](http://publications.europa.eu/res
+  [Target margin] **Target margin** is the planned front-end gross for this car, set at purchase from the appraisal's maximum purchase price ([[vehicle-acquisition]]) and revised by pricing ([[used-car-pricing]]).
+  [58] Axleby's average days-to-turn of **58** is a purchase-to-sale clock.
+  [stock lifecycle] The **stock lifecycle** is the state machine behind those words, and the first design decision is that **they are not all states of the same machine.**
+  [timeline] The **timeline** is an append-only list of what happened to the stock item: state transitions, price changes, cost lines, documents attached, module actions requested and their results, notes, DMS updates, and corrections to vehicle facts the dealer relied on.
+===== used-car-pricing 8
+  [asking price] The **asking price** is the price at which the dealer offers a car to consumers, on its own website and on portals.
+  [valuation] The **valuation** is Vantage's estimate of what the car is worth, with a value type, a range and a confidence flag.
+  [target margin] The **target margin** is the planned front-end gross for this car, set at purchase from the maximum purchase price ([[vehicle-acquisition]]).
+  [transaction price] The **transaction price** is what the buyer finally pays after negotiation and trade-in, recorded on the deal ([[deals-and-sales-documents]]).
+  [Price position] **Price position** is the asking price divided by a **market reference value** for the same car, expressed as a percentage: a car at 97% is asked 3% below the market reference.
+  [Stand-time] **Stand-time** is how long a car has been for sale; [[market-data]] owns it as a market measure, computed from adverts across all dealers.
+  [stand-time signal] A **stand-time signal** is a per-car alert that a car has stood longer than it should, **given its segment, its price position and the market's current pace**.
+  [repricing rule] A **repricing rule** is a versioned, declarative instruction that, for cars matching a scope and a signal, computes a proposed new asking price, subject to guardrails, and either proposes it to a person or applies it.
+===== merchandising 6
+  [Merchandising] **Merchandising** is the first sale: producing complete, accurate and attractive adverts for every car in stock, quickly, and keeping them true while the car and its facts change.
+  [vehicle media pipeline] The **vehicle media pipeline** is the path a car's photos and video take from capture to channel, with the rights and retention rules that govern them.
+  [listing quality score] The **listing quality score** is a per-advert measure of completeness and correctness, computed from explicit checks and delivered with a ranked list of actions.
+  [Background replacement] - **Background replacement** is common practice, offered by specialist vendors and some portals.
+  [claim checker] The **claim checker** is the component that matters.
+  [disclosure rules] Axleby's **disclosure rules** are versioned, effective-dated rule sets per market, evaluated on every draft revision.
+===== listing-syndication 4
+  [Listing syndication] **Listing syndication** is the capability that does this: publishing one dealer's stock to many advertising channels and keeping each copy in step with the stock record.
+  [channel] A **channel** is one destination where a dealer's stock is advertised under one contract: a portal in one country (mobile.de, AutoScout24.nl, Auto Trader UK), a general classifieds site's car category (Marktplaats, 2dehands), an advertising catalog (Google vehicle ads, a Meta automotive catalog), a dealer website, or a B2B exchang
+  [channel listing] A **channel listing** is one car on one channel: the pairing of a stock item from the dossier ([[inventory-and-vehicle-dossier]] owns the stock item) with a channel, plus the identifiers both sides use for it, the content last sent, and the state the channel reports.
+  [17] d process it later without telling, and **17** are file feeds with no status at all ([[observability-and-data-operations]]).
+===== leads-and-crm 7
+  [lead] A **lead** is the commercial unit of the dealer's marketing.
+  [Lead routing] **Lead routing** (owned here) is the assignment of a lead to the rooftop, team, queue and person who should answer it, by rules the dealer configures and the platform evaluates.
+  [Lead attribution] **Lead attribution** (owned here) is the record of which channels, adverts and campaigns touched a lead and its eventual sale, and the rule that decides which of them gets credit.
+  [Auto-lead Data Format (ADF)] The **Auto-lead Data Format (ADF)** is an XML format for sending a car-buying lead from whoever captured it to whoever must answer it.
+  [CRM] A **CRM** (customer relationship management system) is where salespeople work their leads and customers: tasks, calls, appointments, follow-up sequences, pipeline reports.
+  [Won] **Won** is set when a deal for the same stock item and prospect is signed in Lotwise Sales Admin or reported by the DMS ([[deals-and-sales-documents]]), which is the only reliable link from enquiry to sale.
+  [Time to first human response] **Time to first human response** is measured from arrival to the first outbound message or answered call by a person, not to an auto-reply.
+===== deals-and-sales-documents 4
+  [deal] A **deal** is the commercial agreement to sell one or more vehicles to one buyer, together with everything settled with it: trade-ins, add-ons, payments and financing.
+  [margin scheme] The **margin scheme** is the EU's special VAT arrangement for second-hand goods sold by a **taxable dealer**: VAT is charged on the dealer's profit margin, not on the full selling price.
+  [trade-in] A **trade-in** (part-exchange) is two transactions that happen to settle together: the dealer buys the buyer's car, and the buyer buys the dealer's car.
+  [financing referral] A **financing referral** is the dealer presenting a lender's credit product to the buyer and passing the application to the lender.
+===== registration-and-trade-services 3
+  [register transaction] A **register transaction** is a request, submitted by a party with the legal authority to make it, that changes the official record of a vehicle in a government register and produces proof that it did.
+  [Transaction authority] **Transaction authority** is the chain of legal permissions that allows a particular submission: which legal entity acts, under which recognition, through which credential, operated by which person, on behalf of which customer.
+  [proof] The **proof** is the evidence that the register accepted the act: the confirmation message stored verbatim, the transaction code and timestamp the register returned, and the documents produced from them, such as the release certificate the seller takes home.
+===== dms-integration 3
+  [dealer management system (DMS)] A **dealer management system (DMS)** is the transactional core of a dealership: the software that records what the business owns, sells, repairs and owes.
+  [certified interface] A **certified interface** is an access channel that the DMS vendor documents, licenses and tests for a named third party, under a partner agreement.
+  [DMS adapter] A **DMS adapter** is the component on your side that speaks one DMS family's transport and model, translates it into your canonical model and back, and enforces that DMS's contract terms.
+===== b2b-trade-and-remarketing 5
+  [de-fleet] A **de-fleet** is the planned disposal of fleet vehicles at contract end or at the end of a holding period.
+  [digital return] A **digital return** is the handover of a lease or rental car recorded electronically at the moment it happens: identity check (plate and VIN), odometer, keys, documents and accessories, guided photographs, findings against a published return standard, battery state of health for an electric car, the lessee's acknowledgement, and
+  [trade listing] A **trade listing** is an offer of one vehicle to a defined professional audience, on trade terms.
+  [auction hand-off] An **auction hand-off** is then precise: the transfer of the right to sell one vehicle to an auction partner, with the evidence the partner needs, a reserve, a time limit, and an obligation on the partner to report status and the result.
+  [off-platform sale] The **off-platform sale** is the leak in any lock.
+===== part-5 0
+===== tenancy-and-dealer-groups 5
+  [rooftop] The **rooftop** is what most dealer software is built around: stock sits there, portal accounts and franchise agreements name it, and subscriptions are priced per rooftop (Lotwise's Stock & Pricing module is €189 per rooftop per month, an Axleby illustration).
+  [Users] **Users** are not a level of the hierarchy.
+  [tenant] A **tenant** is the unit of data ownership and isolation: the boundary inside which data may flow freely subject to permissions, and across which data may flow only through explicit, audited features.
+  [Tenant context] **Tenant context** is the verified answer, for one unit of work, to "on behalf of which tenant, and which node within it, is this happening?" It consists of the tenant id, the active hierarchy node (usually a rooftop), the acting user or client, and the hierarchy version used to resolve them.
+  [cell] A **cell** is a complete deployment of the application plane serving a defined set of tenants, with its own databases, queues, credentials and network boundary.
+===== identity-access-and-entitlements 10
+  [identity] An **identity** is a person or a piece of software that can authenticate.
+  [user] - A **user** is a person.
+  [API client] - An **API client** is a registered piece of software that belongs to one organization and calls Axleby on its own behalf or on a dealer's.
+  [entitlement] An **entitlement** is a right a tenant or rooftop has bought: a module, a feature, a quota or an allowance, with effective dates and the contract it came from.
+  [Register authority] **Register authority** is the legal capacity of an organization to perform an official transaction with a vehicle register, together with the credential that proves it and, where required, the vehicle owner's authorization for the specific transaction.
+  [Cox Automotive's Bridge ID] **Cox Automotive's Bridge ID** is the most detailed public description of identity unification across an acquired dealer-software portfolio.
+  [CDK Global's CDK Unify] **CDK Global's CDK Unify** is described as "a secure, cloud-based single sign-on" with multifactor authentication and "role-based dashboards" ([CDK Global, n.d., accessed 2026-10](https://www.cdkglobal.com/cdk-unify)); CDK publishes no further detail.
+  [What is common] **What is common** is the whole architecture.
+  [What is a market adapter] **What is a market adapter** is register authority: its credential types, the customer-authorization evidence and the transaction channel differ completely.
+  [What is a rule set] **What is a rule set** is purpose: §39 StVG, the DPPA and GDPR purpose limitation all become purposes recorded in Charter and checked per request.
+===== onboarding-and-configuration 8
+  [Onboarding] **Onboarding** is everything between a signed contract and a customer using the product for its core job without the vendor's help.
+  [register recognition] The **register recognition** is a Dutch example of an authority stage with legal weight.
+  [Time to first advert] **Time to first advert** is the elapsed time from the moment a rooftop is provisioned on the platform to the moment its first advert is **confirmed live** by a channel, meaning the portal has acknowledged the insert or the advert has been observed on the portal, not merely that the platform queued it.
+  [Tenant configuration] **Tenant configuration** is the set of typed values, rules and templates that change a tenant's product behavior inside limits the product defines, and that the product stores, validates and versions as data.
+  [Customization] **Customization** is any change to behavior the product did not anticipate.
+  [extension point] An **extension point** is a documented, versioned place where code the vendor does not own may change or observe behavior, without running inside the vendor's process: a webhook on a domain event, a partner API call, a callout to a customer-hosted rule, a document template.
+  [fork] A **fork** is vendor code that runs only for one customer: a branch, a tenant-conditional code path, a customer-specific build.
+  [Market packs] **Market packs** are configuration the provider owns: Dutch registration-tax (*BPM*) fields, Belgian language and e-invoicing rules, German registration data, UK document formats.
+===== billing-and-metering 14
+  [Subscriptions] **Subscriptions** are priced per rooftop per month and change mid-month.
+  [API calls] **API calls** are tiered by volume and free when nothing is found.
+  [Transaction fees] **Transaction fees** are only earned when an external register confirms the transaction.
+  [usage event] A **usage event** is an immutable record that one billable thing happened, written by the service that did it, at the moment it happened. "Billable" is decided by the product catalog, not by the price: a no-hit history lookup is a usage event with a price of zero, because the event is evidence that the call was made and was free.
+  [business moment] The **business moment** is the point at which the platform has done the thing it will charge for: the report is delivered, the register has confirmed the transaction, the subscription period has started.
+  [outcome] The **outcome** is the service's classification of the result, from a closed list the catalog defines per product: `hit`, `partial`, `no_hit`, `failed`, plus the billing-only `cached_reopen`.
+  [No-hit-no-fee] **No-hit-no-fee** is the commercial promise that a lookup returning nothing useful is not charged.
+  [price book] The **price book** is the versioned, effective-dated catalog of list prices: SKU, unit, currency, market, tiers, and the outcome-to-price map.
+  [billing account] A **billing account** is who receives the invoice and pays it, usually one legal entity with a VAT number, a payment mandate and an invoice address.
+  [tenant] A **tenant** is the contracting organization whose data is isolated ([[tenancy-and-dealer-groups]] owns the term).
+  [credit] A **credit** is a negative rated line with a reason code (`no_hit_misclassified`, `data_correction`, `service_outage`, `goodwill`), an actor, an approval and links to the disputed events, never a quiet edit of an invoice.
+  [48 hours] events for that period arriving within **48 hours** are rated into it; drafts are ready on working day 2; anomaly review runs on day 2 and 3; invoices are finalized and sent on day 3; SEPA collections are presented with the pre-notification period the mandate requires.
+  [Meterline outages] **Meterline outages** are absorbed by the outboxes, sized to buffer **72 hours** of peak usage *(Axleby target)*; the customer-visible effect is a stale usage portal and spend caps running on the gateway counter alone.
+  [credit rate by reason code] The **credit rate by reason code** is the single best early warning: it is how the No-Hit Credit would have been caught in its first month instead of after half a year.
+===== data-licensing-and-governance 6
+  [source licence] A **source licence** is the set of conditions under which the platform obtained a fact.
+  [licence class] A **licence class** is the platform's label for a family of identical conditions.
+  [purpose] A **purpose** is an enumerated reason for using data, such as `claims-fraud-check`, `insurance-quote-prefill`, `trade-in-appraisal`, `consumer-history-report`, `fleet-administration` or `dealer-lead-qualification`.
+  [licence register] - The **licence register** is the system of record for source licences, licence classes, purposes and client grants, each stored as a machine-readable, effective-dated rule linked to its contract clause.
+  [purpose check] - The **purpose check** is the per-request decision: given caller, product, purpose and market, which sources and fields may be returned and which obligations travel with them.
+  [access audit] - The **access audit** is the append-only record of decisions and deliveries: who received what, for which purpose, under which decision and rule versions.
+===== part-6 0
+===== vehicle-data-apis 3
+  [category block] A **category block** is the unit of a vehicle data response that is sold, licensed, sourced and failed independently: identity, registration, specification, history, valuation, market, tax, battery health.
+  [response composer] The **response composer** is the stateless service that turns one client request into one answer.
+  [API contract registry] The **API contract registry** is the system of record for what the API promises: block definitions, canonical schemas (JSON Schema 2020-12 inside OpenAPI 3.1), dated versions with the change class of every difference, the XML serializations for the legacy base, each client credential's version pin, deprecation dates, and per-client
+===== events-webhooks-and-sync 6
+  [domain event (vehicle)] A **domain event (vehicle)** is an immutable statement, published by the context that owns a fact, that something happened to one business entity: a vehicle, a stock item, a channel listing, a lead, a deal or a register transaction.
+  [outbox] An **outbox** is a table in the producing service's own database.
+  [webhook subscription] A **webhook subscription** is a registered, authorized request by an external party to receive selected event types at an HTTPS endpoint, with a secret, a filter, a delivery state and a delivery log.
+  [reconciliation job] A **reconciliation job** is a scheduled comparison of what one system believes with what another system actually holds, for a defined set of entities, that produces discrepancies as tickets or corrective events and never overwrites silently.
+  [The nightly restock signals] **The nightly restock signals** (about **350,000** recomputed stock items) are published as a dataset, because 350,000 "signal changed" messages at 02:00 would bury the transitions that matter.
+  [17] e, **25** accept and process later, and **17** are file feeds with no status ([[observability-and-data-operations]]).
+===== data-products-and-insights 0
+===== consumer-vehicle-checks 3
+  [plate check] A **plate check** is a free, anonymous lookup by registration plate (or VIN, the 17-character vehicle identification number) that identifies the vehicle and shows a few basic facts.
+  [consumer report] A **consumer report** is a paid, rendered, dated snapshot of one vehicle's identity, register status, history judgements and value range, issued to one consumer under one purpose.
+  [entitlement] So the **entitlement**, not the payment, is the center of the order model.
+===== part-7 0
+===== reliability-and-dependencies 8
+  [journey SLO] A **journey SLO** is an objective set on an end-to-end dealer or client journey rather than on a service.
+  [dependency budget] A **dependency budget** is the share of a journey's error budget allotted to one external dependency, together with the rule that limits how many synchronous dependencies a critical journey may carry.
+  [degraded mode] A **degraded mode** is a named, tested way for a journey to keep working, or to fail honestly, while a dependency is impaired.
+  [dependency] A **dependency** is any system outside the team's control that a journey relies on: a register, a data supplier, a portal, a DMS, a payment provider, another cloud, or another team's product.
+  [service level indicator (SLI)] A **service level indicator (SLI)** is "a carefully defined quantitative measure of some aspect of the level of service", and an SLO is a target for it ([Google, *Site Reliability Engineering*, 2016](https://sre.google/sre-book/service-level-objectives/)).
+  [What is common] **What is common** is the reliability model: the dependency map, journey SLOs with three outcomes, per-dependency budgets, one retry point, breakers driven by a shared health state, and the split between labeled reads and honestly queued writes.
+  [What is a market adapter] **What is a market adapter** is the shape of the write channel.
+  [What is a rule set] **What is a rule set** is which facts may be mirrored: open Dutch register data and DVSA bulk files can be, while German register data generally cannot, so a German lookup has fewer labeled-copy options and needs partial answers sooner.
+===== scale-and-cost 8
+  [workload shape] A **workload shape** is the profile of one kind of demand over time.
+  [unit cost] A **unit cost** is the cost of one unit of a business output: a lookup, a report, a publish, a rooftop-month.
+  [Cost per lookup] **Cost per lookup** is the fully loaded unit cost of one billable data call, reported as an average and, more usefully, **per call path**.
+  [Cost to serve] **Cost to serve** is the fully loaded cost of one customer over a period: a rooftop-month, an API client's year, a dealer group's contract.
+  [pass-through cost] A **pass-through cost** is an upstream fee that the platform passes on to the client explicitly, as a surcharge or a separate line, instead of absorbing it in a blended price.
+  [upstream budget broker] The **upstream budget broker** is the component most platforms lack.
+  [Cost per publish] **Cost per publish** is the cost of one channel operation (insert, update or delete of an advert on one portal).
+  [Cost per report] **Cost per report** is dominated by sources.
+===== observability-and-data-operations 3
+  [Publish lag] **Publish lag** is the time from a stock change in the dealer system to its confirmed state on a channel.
+  [support console] The **support console** is the tool that shows a support agent the evidence about one vehicle, advert, lead or transaction.
+  [OpenTelemetry] **OpenTelemetry** (OTel) is the instrumentation standard to use; it graduated in the Cloud Native Computing Foundation on **11 May 2026** ([CNCF, n.d., accessed 2026-10](https://www.cncf.io/projects/opentelemetry/)).
+===== vehicle-platform-security 3
+  [Enumeration defense] **Enumeration defense** is the set of controls that make walking an identifier space (plates, VINs, stock ids, lead ids) expensive, slow, visible and low-yield; a **scoped credential** binds one client, environment, set of purposes and spend limit, and is revocable on its own.
+  [BOLA on the dealer side] **BOLA on the dealer side** is a matter of discipline in every handler: the object must belong to the caller's tenant and be reachable through the caller's relationships. [[tenancy-and-dealer-groups]] describes the tenant context, the response-side assertion and the leak tests.
+  [Backups] **Backups** are designed against an attacker who already holds production credentials.
+===== privacy-and-retention 5
+  [Tidemark] tober 2027**) and the retention service **Tidemark** (live **December 2027**) are the result.
+  [retention rule] A **retention rule** is a period, a trigger and an action.
+  [The erasure ledger] - **The erasure ledger** is an append-only log of every erasure, keyed by a salted hash of the subject key (an e-mail address, phone number, tenant customer id or plate), with the controller, scope, reason and the stores confirmed.
+  [The suppression list] - **The suppression list** is the part of the ledger that recomputation jobs must consult before they produce output: Horizon scoring, harvest-to-Pulse matching, marketing audiences.
+  [unregistered store] The **unregistered store** is the failure that undoes all the others.
+===== part-8 0
+===== journey-inventory-to-portal 1
+  [a create that times out] A seventh failure needs no story: **a create that times out** is retried only after a lookup by the platform's external id, because AutoScout24 documents POST as not idempotent ([[listing-syndication]]).
+===== journey-data-correction 0
+===== journey-lead-to-dms 4
+  [Lead acknowledgement] **Lead acknowledgement** is the evidence, from the system where people work, that a lead reached a person.
+  [Dead-letter review] **Dead-letter review** is the governed process for every lead that could not be routed, delivered or confirmed.
+  [Source-count match] **Source-count match** is the only check made by a party outside the journey.
+  [Time to first human response] **Time to first human response** is split between the platform's segment and the dealer's, so a slow week is attributed to the right party.
+===== journey-sale-to-registration 1
+  [conditional write] This **conditional write** is the deal's only hard dependency on stock ([[deals-and-sales-documents]]), and it must work with every external system down.
+===== part-9 0
+===== build-buy-or-partner 1
+  [Acquire] **Acquire** is a sixth route, used for Lotwise (2019), Wertlauf (2021) and Showroomly (2023); it turns sourcing into integration ([[one-platform-from-many-products]]).
+===== one-platform-from-many-products 4
+  [The shared kernel] **The shared kernel** is the smallest set of capabilities whose answers every product must take from one place: **who** (person, organization, legal entity, rooftop), **which car** (the vehicle key), **what was used** (the usage event) and **whether it was allowed** (entitlement, authority and licence).
+  [five kernel capabilities] The **five kernel capabilities** are A2 vehicle identity resolution, F1 accounts, organizations and tenancy, F2 authorization and entitlements, F4 usage metering and billing and F5 data licensing and purpose governance.
+  [Detection] **Detection** is a standing duplicate report per mapping (the duplicate-tenant backlog of [[tenancy-and-dealer-groups]] is one); **recovery** is a reviewed merge with a tombstone that redirects the old key, never a delete.
+  [recovery] [[tenancy-and-dealer-groups]] is one); **recovery** is a reviewed merge with a tombstone that redirects the old key, never a delete.
+===== organizing-engineering 5
+  [Team Topologies] **Team Topologies** (Matthew Skelton and Manuel Pais, IT Revolution, 2019) names four team types and three interaction modes.
+  [data-product team] A **data-product team** is a stream-aligned team whose stream is a vehicle-data domain (specification, history, market data) and whose customers are internal products and external data clients.
+  [journey owner] The **journey owner** is the stream-aligned team that owns a dealer or data-client outcome end to end ("a sold car is withdrawn from every channel within 30 minutes", "a lead reaches a person who acknowledges it").
+  [dependency owner] The **dependency owner** is the team that owns one external party: a portal, a register channel, a dealer management system (DMS) family, a data supplier.
+  [17] nchronously and process them later, and **17** are file feeds without status ([[observability-and-data-operations]]).
+===== modernizing-the-platform 2
+  [ownership router] The **ownership router** is a per-rooftop setting in Baseline, the tenant configuration service ([[onboarding-and-configuration]]), with a version number.
+  [The data core moves last] **The data core moves last** is a recurring shape.
+===== ai-in-dealer-workflows 1
+  [Model Context Protocol (MCP)] The **Model Context Protocol (MCP)** is an open protocol through which an AI application discovers and calls tools and data on a server.
+===== evolving-the-vehicle-platform 5
+  [stressor] - A **stressor** is anything that could happen to the business or its environment: a law, a competitor's move, a supplier's failure, a price shock, a sale.
+  [attractor] - An **attractor** is the state the business is pushed into when the stressor hits: how dealers, partners and the market will actually behave.
+  [residue] - A **residue** is what remains of the architecture after the stressor, and the structural change that would let the platform survive it.
+  [residual architecture] re** works under normal conditions; the **residual architecture** is the naive design plus the residues that survive the stressors considered.
+  [fitness function] A **fitness function**, from evolutionary architecture, is an objective, preferably automated check that an architecture still has a property it was designed to have.
+===== part-10 0
+===== case-cox-automotive 7
+  [The author's interpretation] **The author's interpretation** is marked "my reading" or sits in the Chief Architect's view.
+  [DMS] A **DMS** is the dealer's operational system of record for deals, accounting, parts and service ([[dms-integration]]).
+  [F&I] **F&I** is the dealer's finance and insurance desk, where credit applications and contracts are prepared.
+  [Floorplan finance] **Floorplan finance** is credit that funds a dealer's stock.
+  [vehicle identification number (VIN)] A **vehicle identification number (VIN)** is the 17-character identifier assigned at manufacture ([[vehicle-identity]]).
+  [Manheim Used Vehicle Value Index (MUVVI)] An index with a published method.** The **Manheim Used Vehicle Value Index (MUVVI)** is a monthly measure of US wholesale used-vehicle prices.
+  [What the public record does not show] **What the public record does not show** is how KBB, vAuto or the Manheim Market Report compute per-vehicle values, how they are back-tested, or how quickly they react to a shock like the 2020 fall.
+===== case-cdk-global 1
+  [My interpretation] **My interpretation** is marked as such or sits in the Chief Architect's view.
+===== case-auto-trader-uk 3
+  [The author's interpretation] **The author's interpretation** is marked "my reading" or sits in the Chief Architect's view.
+  [My reading] **My reading** is that the order was not accidental.
+  [Showroomly] Its UK product **Showroomly** (1,350 rooftops, £325 per rooftop per month in 2027) is one of the many dealer-software vendors that integrate with UK portals on dealers' behalf, so Auto Trader's contract changes reach Showroomly's customers, among them Dave Hartley's 28-rooftop Hartley Motor Group, only when Showroomly's Leeds team ships them.
+===== case-vwe 6
+  [The author's interpretation] **The author's interpretation** is marked "my reading" or sits in the Chief Architect's view.
+  [Occasion Manager] **Occasion Manager** (product page, read October 2026) is the stock and pricing module.
+  [Finnik Zakelijk] **Finnik Zakelijk** (read October 2026) is the appraisal app: plate or VIN lookup including foreign vehicles, damage and recall warnings, register status, odometer history combining official readings with maintenance and international damage records, manufacturer maintenance history, factory options via a SilverDAT VIN lookup, a
+  [MijnVWE] **MijnVWE** (read October 2026) is the workspace that holds the modules together, with advertising to more than 150 channels (the homepage says "more than 100 platforms"), register transactions, damage history, maintenance, battery State of Health (SoH) certificates and, since 2026, weDAT damage calculation.
+  [Vehicle characteristics] **Vehicle characteristics** (English product page, read October 2026) is the data-enrichment product: lookups by plate or chassis number returning edition name, first registration, country of origin, owner history, odometer checks, standard and optional equipment, consumption and environmental data, photos and factory specificat
+  [Interdata] - **Interdata** is an XML interface for using vehicle data in a customer's own application: an XML request, often keyed by plate, and an XML response.
+===== bibliography 0

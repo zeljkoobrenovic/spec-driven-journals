@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Where Did This Fact Come From? Provenance, Freshness and Data Quality</title>
+    <meta name="description" content="How does a vehicle platform know, show and govern the source, age, license and quality of every fact it sells? Give every fact a provenance envelope, keep both the time it was true and the time the platform learned it, set freshness targets per data class and decision, and hold suppliers to contracts and scorecards measured against independent ground truth.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Where Did This Fact Come From? Provenance, Freshness and Data Quality">
+    <meta property="og:description" content="How does a vehicle platform know, show and govern the source, age, license and quality of every fact it sells? Give every fact a provenance envelope, keep both the time it was true and the time the platform learned it, set freshness targets per data class and decision, and hold suppliers to contracts and scorecards measured against independent ground truth.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/provenance-and-data-quality.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/10-provenance-and-data-quality/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="ingestion-and-entity-resolution.html" title="From Many Sources to One Record: Ingestion, Normalization and Entity Resolution">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-3.html" title="Part III — VALUE: Market Data, Valuation and Condition">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — VEHICLE: Identity, Specification and History</p>
+        <h1>Where Did This Fact Come From? Provenance, Freshness and Data Quality</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  34 min read · <a class="spec-link" href="provenance-and-data-quality.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/10-provenance-and-data-quality/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/10-provenance-and-data-quality/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="ingestion-and-entity-resolution.html" title="From Many Sources to One Record: Ingestion, Normalization and Entity Resolution">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-3.html" title="Part III — VALUE: Market Data, Valuation and Condition">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Where Did This Fact Come From? Provenance, Freshness and Data Quality", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How does a vehicle platform know, show and govern the source, age, license and quality of every fact it sells? Give every fact a provenance envelope, keep both the time it was true and the time the platform learned it, set freshness targets per data class and decision, and hold suppliers to contracts and scorecards measured against independent ground truth.", "permalink": "provenance-and-data-quality", "timetoread": "34 min read", "icon": "assets/icons/10-provenance-and-data-quality.png", "logo": "assets/images/10-provenance-and-data-quality/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Design the provenance envelope that travels with every vehicle fact, model corrections bitemporally, set freshness SLOs per data class, and measure data quality per source against ground truth. You will also see how supplier data contracts, lineage and source scorecards turn provenance into governance, and how provenance shows up in reports, dossiers and API responses.\n\n> **WHY THE BUSINESS CARES:** A data client pays for a fact it can defend: to a policyholder, a buyer, a court or a regulator. When a supplier error surfaces, the first questions are \"which of our answers used it?\" and \"what exactly did you tell us on that day?\". A platform that cannot answer them pays in credits, churn and legal exposure.\n\n> **WHY ARCHITECTS SHOULD CARE:** Provenance cannot be added after the fact. A value written without its source, its observation date and the time it was recorded loses that information for good, and every later correction, license check and dispute depends on it. The envelope is a schema decision for every fact store, and it is cheap only on day one.\n\n> **KEY POINTS:**\n>\n> * **Every fact travels in a provenance envelope.** Store with each fact its source and source class, the source record and batch it came from, when it was observed and when it was recorded, its license, its confidence and the rule or model that derived it. Keep the envelope as part of the fact, not in a separate audit log, and store batch-level fields by reference.\n> * **Keep two times, and correct by appending.** Valid time says when a fact was true; transaction time says when the platform believed it. Only a bitemporal store can answer \"what did we tell this client on 17 May?\" after a correction. An overwrite destroys exactly the evidence the correction needs.\n> * **Quality is a contract with the source, measured independently.** Set freshness SLOs per data class and per decision, and separate the source's own lag from the platform's. Write supplier contracts that cover units, correction duties and the provenance fields the supplier must deliver. Score each source against independent ground truth, such as official readings, and let the scores inform survivorship rules and renewals, not silently change them.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **Provenance Amnesia** — a reading stored as a value plus `updated_at` cannot say which batch, supplier or license it came from, so every correction and dispute becomes forensics.\n> * **The Sticky Error** — when a correction overwrites the wrong value, the platform can no longer show what it served, and it cannot find everyone who received it.\n> * **License Blindness** — a fact without its license in the envelope gets shown, cached or attributed in ways the source's terms do not allow.\n\n<br>\nA vehicle data business sells facts it did not observe: the register observed the first registration, a workshop the odometer, an insurer the damage. **The product is not the fact alone but the fact with its answer to \"says who, as of when, under what license, and how sure are you?\"** Without that answer a history report is an assertion, and a correction is a guess about what to fix.\n\nThis chapter owns the **provenance envelope**, the **bitemporal fact**, the **freshness SLO** (service level objective) and the **data contract (vehicle)**. It builds on [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html), where Inlet, Axleby's ingestion pipeline, fills in the envelope, and on [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html). Monitoring belongs to [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html), the license register to [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), and correction propagation to [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html).\n\n## Setting the Scene at Axleby: \"What Did You Tell Us on 17 May?\"\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), received a letter in June 2027 from **Rijnstaal Verzekeringen**, a fictional insurer that uses Axleby's valuation and history calls to settle total-loss claims. In May, a nightly batch from **Kilometra**, a fictional odometer supplier, had recorded miles as kilometers for **2,870** UK-imported vehicles; it was corrected after **11 days** (**the Odometer Correction**). For each of its calls on those vehicles between 13 and 24 May, Rijnstaal asked: which mileage did you return, where did it come from, and what do you now believe it was?\n\nRijnstaal had made **163** such calls *(Axleby illustration)*. Priya Raman, VP Data and Valuation, expected a query. It took her team six working days.\n\nThe valuations were easy: Vantage's valuation ledger records the odometer reading id behind every valuation ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)). The readings were the problem. Tracewell, the history event store, loaded Kilometra's readings by upsert on vehicle, reading date and source. When Kilometra redelivered the corrected batch on 24 May, the loader **overwrote each wrong reading in place**. The correction had erased the evidence of the error: Tracewell said the 18 January 2027 reading was 66,337 km, and nothing said that on 17 May it had said 41,220 km. The team rebuilt the answer from 30-day API response logs and from Kilometra's copy of the original file, because Axleby had not kept its own.\n\n![Before and after: on the left an eraser overwrites a 41,220 km reading with 66,337 km, leaving no trace; on the right both readings stay as stacked versions, the older one faded.](assets/images/10-provenance-and-data-quality/10-overwrite-erases-evidence.jpeg)\n**Figure 1:** *An overwrite keeps only today's answer; appending a new version keeps the reading the platform served before the correction, which is what Rijnstaal's question needed.*\n\nTwo smaller questions came up the same week. Femke de Boer, Head of Data Governance and Privacy, asked whether Kilometra's license allowed its readings in the **96** consumer reports sent through Odolo, Axleby's consumer vehicle-check app; the answer came from a contract PDF, not from the data. And Hendrik Maes, Head of Partner Integrations, found that Kilometra's contract defined the file's columns, not their meaning: it said nothing about units.\n\nInes Marchetti, Group Chief Architect, put the question to the architecture forum: **how does the platform know, show and govern the source, age, license and quality of every fact, so that \"where did this come from, and what did we say when?\" is a query and not a project?**\n\n## The Words This Chapter Owns\n\n| Term | Definition used in this book |\n| --- | --- |\n| **Provenance** | \"Information about entities, activities, and people involved in producing a piece of data or thing, which can be used to form assessments about its quality, reliability or trustworthiness\" (W3C PROV data model, [2013](https://www.w3.org/TR/prov-dm/)). For a vehicle fact: who observed it, who supplied it, how it reached the platform and what was done to it. |\n| **Provenance envelope** | The fields stored with every fact, as part of the fact: source, source class, source record and batch, observed-at, recorded-at, license, confidence, derivation, status and version. |\n| **Fact version** | One immutable version of one fact. A correction creates a new version that supersedes the old one; it never edits it. |\n| **Valid time** | When the fact was true in the world: the date the odometer showed 41,220 miles. Martin Fowler calls it \"actual\" time ([2021](https://martinfowler.com/articles/bitemporal-history.html)). |\n| **Transaction time** | When the platform recorded, and so believed, that version of the fact. Fowler's \"record\" time. |\n| **Bitemporal fact** | A fact stored with both times, so the platform can answer what was true at any date, as known at any date. |\n| **Freshness SLO** | A target for the age of a fact at the moment a decision uses it, set per data class and decision context, with a defined behavior when it is breached. |\n| **Data contract (vehicle)** | The agreement with a data supplier, part commercial and part machine-readable, that fixes the schema, the semantics (units, codes, time zones), the provenance fields the supplier must deliver, delivery times, quality thresholds, correction duties and the license reference. |\n| **Source scorecard** | A periodic, per-source measurement of delivery, contract compliance, accuracy against ground truth, coverage and correction behavior. |\n\nThe **survivorship rule** and the **golden record** belong to [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html); the **history event** to [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html); the **license register** and **purpose check** to [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html).\n\n## The Provenance Envelope\n\n### What every fact carries\n\nThe envelope answers five questions about one fact: who said it, about which car, when it was true, when we learned it, and what we may do with it. Envelope v1, adopted in July 2027 alongside Inlet, turned fields that Tracewell and Specbook already kept under their own names into one standard.\n\n| Field | Example (one odometer reading) | Why it exists |\n| --- | --- | --- |\n| `fact_id`, `fact_version` | `odo:7Q…:2027-01-18:km`, version 2 | Corrections append a version; downstream records cite the version they used |\n| `subject` | AVK plus the source's own key (UK plate on the reading date) | Re-attach facts when identity is corrected ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) |\n| `attribute`, `value`, `value_as_delivered` | odometer, 66,337 km; `41220`, unit field `mi` (version 1 had carried `km`, the error) | Normalized value for use, original for disputes |\n| `source`, `source_class` | Kilometra, workshop feed; **commercial** | Trust ranking and wording; classes are official, commercial, first-party, derived |\n| `source_record_ref`, `batch_ref` | Kilometra record id; landing batch id and content hash | Find every fact from one batch; replay it ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)) |\n| `observed_at` | 2027-01-18 (workshop visit) | Valid time |\n| `recorded_at`, `superseded_at` | 2027-05-24T00:44Z; open | Transaction time interval of this version |\n| `licence_ref` | Charter license id `KM-2024-03`, display class `consumer-allowed` | What products may show, cache and resell ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)) |\n| `confidence` | **Asserted** | How much weight the fact can carry (see below) |\n| `derivation` | null for observed facts; rule or model version and input fact versions for derived ones | Lineage for judgements, golden values and valuations |\n| `status` | active, superseded, retracted, disputed | Lifecycle (Figure 4) |\n\nTwo rules make it useful. **The envelope is written in the same transaction as the value**, so there is no fact without it; a separate audit log drifts and gets lost in migrations. And **it is immutable per version**: a correction writes version 2 and closes version 1's transaction-time interval.\n\n![An envelope holding an odometer reading of 66,337 km, stamped with source, observed, recorded, license and confidence, tied to the card by a thread.](assets/images/10-provenance-and-data-quality/10-envelope-stamps.jpeg)\n**Figure 2:** *The provenance envelope travels with the fact: source, observation time, recording time, license and confidence are written in the same transaction as the value, never in a separate log.*\n\n### Confidence that products can obey\n\nConfidence is only useful if products know what to do with it. Axleby uses the same four tiers for facts that Anchor, its identity graph, uses for vehicle identity ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)), so dealers and engineers learn one vocabulary.\n\n| Tier | Meaning for a fact | Example | What products may do |\n| --- | --- | --- | --- |\n| **Confirmed** | From an official source for that fact | Dutch register first-registration date; a UK MOT (annual roadworthiness test) reading from the Driver and Vehicle Standards Agency (DVSA) | State it as fact, with the source |\n| **Corroborated** | Two independent sources agree within tolerance | Kilometra reading within 2% of an MOT reading taken within 30 days | State it as fact; name both sources on request |\n| **Asserted** | One non-official source | A single workshop reading; a dealer's \"towbar fitted\" | Show it attributed: \"reported by a workshop\"; may feed a valuation, which is then marked provisional |\n| **Suspect** | Failed a check, or disputed | A reading lower than the previous official one | Never state it as fact; feeds judgements such as the odometer judgement in [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) |\n\nThe tiers are ordinal and say where the confidence came from. A probability such as 0.87 would invite false precision, and nobody can audit where it came from. A model score can sit beside the tier in `derivation`. Products never branch on it.\n\n### Derived facts and lineage at two levels\n\nA golden-record value, an odometer judgement and a valuation are **derived facts**: their envelope names the rule or model version and the input fact versions. That list is **fact-level lineage**, the path from one corrected reading to everything built on it. The valuation ledger's input references, report snapshots' event ids ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)) and the `fact_version` on Meterline usage events ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) apply the same idea.\n\n**Dataset-level lineage** answers which jobs read a batch and which tables they wrote. OpenLineage models it with datasets, jobs and runs; a RunEvent is emitted \"when something important occurs within your pipeline\", and facets such as `dataQualityAssertions` carry test results ([OpenLineage object model, v1.54.0, accessed 2026-10](https://openlineage.io/docs/spec/object-model)). Inlet emits one for every load, validation and recompute.\n\n| Question | Level | Where Axleby answers it |\n| --- | --- | --- |\n| Which facts came from Kilometra batch 2027-05-13? | Fact | `batch_ref` in the envelope |\n| Which jobs and tables processed that batch? | Dataset | OpenLineage run events from Inlet |\n| Which valuations, reports and adverts used reading version 1? | Fact | Input fact versions in the valuation ledger, report snapshots and advert renders |\n| Which clients received it? | Fact | `fact_version` on Meterline usage events |\n| What would a recompute touch? | Both | The impact graph in [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html), built from the two |\n\nDataset lineage knows that a job read a file, not which value went to which client; fact-level lineage cannot show which pipelines to re-run. **A platform that sells facts needs both.**\n\n### Paying for the envelope\n\nEnvelopes cost storage. Assume Tracewell, Specbook and Anchor hold about **2.5 billion fact versions**, roughly 60 per vehicle *(assumption)*. A full envelope repeated on every fact runs to about 600 bytes, about 1.5 TB before indexes *(assumption)*. Axleby stores **batch-level fields by reference**: source, license, contract version and landing details sit once in a batch record, and fact-level fields (observed-at, recorded-at, confidence, status, version) stay inline. That is about 90 bytes a fact, about 225 GB *(assumption)*: small next to one six-day reconstruction.\n\nThe reference has one rule: **batch records are immutable and never deleted while any fact points to them**. If retention requires a batch's raw data to go, the batch record stays, and only its landing-zone payload is removed ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n![Sources feed Inlet, which writes each fact with its envelope to the fact stores and batch fields to batch records linked to the license register; fact stores feed derived facts and products, and products record the fact versions they served as usage events.](assets/images/10-provenance-and-data-quality/10-envelope-travels-with-fact.jpeg)\n**Figure 3:** *The provenance envelope is filled in once, at ingestion, and then travels with the fact. Batch-level fields are stored by reference, derived facts cite their inputs, and every answer served records the fact versions it used.*\n\n## Two Clocks: Bitemporal Facts\n\n### Why one timestamp is not enough\n\nA store with one timestamp per value can answer \"what is the mileage now?\" but not \"what did we believe on 17 May?\" once the value has changed. Both are routine: a client disputes a past answer, a court asks what the platform knew at a sale, a back-test needs inputs as they were. Fowler's example is a salary raise reported after payroll ran; the vehicle version is a workshop reading delivered months after the visit and corrected weeks later.\n\nSQL:2011 added both times to the standard: application-time period tables and system-versioned tables ([Kulkarni and Michels, *ACM SIGMOD Record*, 2012](https://doi.org/10.1145/2380776.2380786)). Vehicle data adds one twist: **most facts are observations at an instant** (a reading on a date), while a few are **states over an interval** (a plate assignment, an export status). The model must handle both.\n\n### Four kinds of change\n\nEvery change to a vehicle fact is one of four kinds. Treating them as one, \"update the row\", is what made the Odometer Correction expensive.\n\n| Kind of change | Valid time | Transaction time | Example | Downstream effect |\n| --- | --- | --- | --- | --- |\n| **New observation** | New, usually recent | Now | A new MOT reading | New fact; may change the current value |\n| **Late observation** | In the past | Now | A UK workshop reading from January delivered in May | New fact slotted into history; may change judgements for past dates |\n| **Correction** | Unchanged | Now; previous version closed | The redelivered reading, miles not kilometers | New version supersedes the old one; everything that used the old version is affected |\n| **Retraction** | Unchanged | Now; version closed, no successor | A reading attached to the wrong vehicle by plate | Fact withdrawn; the subject's derived facts recompute |\n\nA correction is not a new observation. If the corrected reading arrives as a new fact, the vehicle appears to have two readings on 18 January, 41,220 km and 66,337 km, and the odometer judgement sees a rollback that never happened. **The supplier must say which record it corrects**, which is why that duty belongs in the data contract.\n\n### The worked vehicle\n\nOne of the 2,870 vehicles was a 2019 compact SUV imported from the UK to the Netherlands in March 2027. Its facts, as Tracewell holds them today under envelope v1:\n\n| Version | Observed (valid) | Recorded (transaction) | Value | Source and class | Status |\n| --- | --- | --- | --- | --- | --- |\n| r1 | 14 Apr 2026 | 15 Apr 2026 | 62,684 km (38,950 miles as delivered, unit `MI`) | DVSA MOT daily file; **Confirmed** | active |\n| k1 | 18 Jan 2027 | 13 May 2027, 02:47 | 41,220 km (as delivered: `41220`, unit `km`) | Kilometra batch of 13 May; commercial | superseded 24 May 2027 |\n| k2 | 18 Jan 2027 | 24 May 2027, 02:44 | 66,337 km (41,220 miles) | Kilometra redelivery, supersedes k1; **Asserted** | active |\n\nFour questions, four answers:\n\n- **What is the current odometer?** The newest valid reading, as known now: k2, 66,337 km.\n- **What did Axleby tell Rijnstaal on 17 May?** As known on 17 May: k1, 41,220 km. From October 2027 every Meterline usage event records the fact version it served; for May's calls, the valuation ledger's reading ids confirm it.\n- **What do we now believe the odometer showed on 17 May?** At least 66,337 km, from k2 on 18 January.\n- **Why did the 14 May valuation come out high?** The valuation ledger cites k1. The value was lower than the official reading r1, and Inlet's semantic check now marks such a reading **Suspect** and keeps it out of the current value.\n\nUnder the old upsert, only the first question had an answer.\n\n![State map: a recorded fact version is Active; it can be superseded by a correction, retracted for a wrong subject, or disputed; a dispute is either rejected (back to Active) or upheld (Superseded); Superseded and Retracted are final.](assets/images/10-provenance-and-data-quality/10-fact-version-lifecycle.jpeg)\n**Figure 4:** *The life of one fact version. Nothing returns from Superseded or Retracted: a correction is always a new version, and the old one keeps its transaction-time interval so the platform can show what it served.*\n\n### Storing it\n\nTracewell keeps an append-only fact-version table with `observed_at` (or `valid_from` and `valid_to` for state facts), `recorded_at` and `superseded_at`; \"as known at T\" filters `recorded_at <= T < superseded_at`. The warehouse receives versions, not current rows, so back-tests can rebuild inputs as they were.\n\nTwo costs are real. Queries need discipline, since a forgotten transaction-time filter reads superseded values, so Axleby exposes only `current`, `as_of_valid(t)` and `as_known_at(t)`, never the raw table. And append-only data must still honor erasure: vehicle facts carry no person fields, and erasure works on the person and link stores ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n## Freshness: How Old May a Fact Be?\n\n### Freshness is a property of a decision, not of a table\n\n\"The data is fresh\" means nothing until you name the decision. A theft status from this morning is too old to complete a purchase. A specification from 2023 is perfectly fresh, because what the factory built does not change. The right question is: **how old may this fact be when this decision uses it, and what happens if it is older?**\n\nIt also helps to split a fact's age into parts, because only one of them is the platform's to control.\n\n- **Source lag**: from observation to the source publishing it. A workshop uploads at the end of the day; a US insurer reports a total loss to the National Motor Vehicle Title Information System (NMVTIS) monthly under [28 CFR 25.55](https://www.law.cornell.edu/cfr/text/28/25.55). The platform cannot shorten this; it can only disclose it.\n- **Pipeline lag**: from publication to the fact being recorded and usable. This is the platform's to own.\n- **Age at use**: from recording to the decision. This depends on caches, mirrors and nightly runs ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)).\n\nA freshness SLO should bind the parts the platform controls, and the product should disclose the rest. Promising \"odometer data within 24 hours\" when a supplier's garages upload weekly is a promise the platform cannot keep.\n\n### Coverage-through, not newest record\n\nFor accumulating facts such as readings, damage and inspections, the age of the newest record says little: a car not serviced for eight months has an eight-month-old reading from a perfectly current feed. The product needs **coverage-through**, the date up to which a source has been checked for this vehicle. Tracewell records it per source and market, and each report states it: \"UK workshop readings checked through 12 October 2027\". It is the \"none found in the sources checked\" discipline of [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html), applied to time.\n\nMeasured values beat assumed ones. The Dutch register's open dataset returned a `Last-Modified` header of 07:01 GMT on 22 October 2026 ([RDW open data, queried 2026-10-22](https://opendata.rdw.nl/resource/m9d7-ebf2.json)), yet [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html) found that recent ownership changes arrive a few days late. Turnstile, Axleby's register gateway, therefore publishes the observed lag per field as the mirror's coverage-through date.\n\n### Axleby's freshness SLOs per data class\n\nThe targets below are Axleby's, set by the owning product teams in 2027. Figures marked *(assumption)* are illustrative; the one-hour register target and the 03:00 deadline come from [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html).\n\n| Data class | Example facts | Decision | SLO (platform-controlled part) | On breach |\n| --- | --- | --- | --- | --- |\n| **Immutable build facts** | As-built edition and options, first registration | Appraisal, advert, valuation | None; recorded once with source and date | Not applicable; re-fetch only on dispute |\n| **Registration state** | Owner-change date, export, inspection expiry | Dossier display, Axleby Trade checks | Dutch register changes in Anchor within an hour of the daily snapshot's publication; mirror coverage-through within 3 days of today *(assumption)* | Label \"register status as of …\"; never block display |\n| **Decision-critical status** | Theft, awaiting-inspection, transfer possible | Purchase confirmation, register transaction | Live at the decision; never from a copy | Block the decision, keep the work saved ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)) |\n| **Accumulating history** | Odometer readings, MOT results, damage | Reports, valuations, odometer judgement | Supplier file recorded before 03:00; MOT daily delta applied by 10:00 CET *(assumption)* | Report states coverage-through; Vantage marks affected valuations provisional |\n| **Market observations** | Adverts, price changes, sale signals | Pricing signals, valuation training | Daily per portal ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)) | Segment flagged; pricing signals withheld for that segment |\n| **Derived judgements** | Valuation, odometer judgement | Offers, prices, reports | Model at most 7 days old (weekly retraining); inputs within their own SLOs | Valuation carries a stale-input flag in its ledger entry ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)) |\n\n**A breach changes behavior, not just a dashboard**: each class has a defined degraded answer. And **freshness is disclosed in the product**, so a dealer or client can judge it. The monitors themselves belong to [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html).\n\n## Quality: Dimensions, Ground Truth and Contracts\n\n### The dimensions that matter for vehicle facts\n\nISO/IEC 25012 defines a data quality model of 15 characteristics, from accuracy, completeness, consistency, credibility and currentness to traceability and availability ([ISO 25000 portal, n.d., accessed 2026-10](https://iso25000.com/en/iso-25000-standards/iso-25012)). The list is useful as a checklist, but a vehicle platform needs to operate five of them per source.\n\n| Dimension | Question for a vehicle source | Check that answers it | Who can check it |\n| --- | --- | --- | --- |\n| **Completeness** | Did we get every record and every required field? | Manifest counts; share of records with VIN, unit, observation date | Inlet, at the door |\n| **Validity** | Are values well formed and in range? | Schema, code lists, VIN structure, plausible ranges | Inlet, at the door |\n| **Consistency** | Do the facts agree with each other and with history? | Reading not below the previous official one; fuel type matches register | Inlet and survivorship |\n| **Accuracy** | Is the fact true of the car? | Agreement with **independent ground truth** on an overlapping sample | Data quality team, monthly |\n| **Timeliness** | Does it arrive when the contract says? | Arrival against window; coverage-through against SLO | Monitors ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)) |\n\nThe first three can be checked on every record ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)). **Accuracy cannot**: a valid, consistent reading can still be wrong about the car. It needs an independent source of truth and a sample where both speak.\n\n### Choosing ground truth\n\nGround truth for a vehicle fact is usually an **official source on an overlapping sample**, and every choice has a bias that must be written down.\n\n| Fact | Ground truth | Overlap | Bias to state |\n| --- | --- | --- | --- |\n| Commercial odometer readings (UK) | DVSA MOT readings | Vehicles with a commercial and an MOT reading within 30 days | MOT covers cars over three years old in Great Britain |\n| Commercial odometer readings (NL, BE) | Register judgement (NL); Car-Pass readings (BE) | Imports and cross-border cars | The Dutch open data shows a judgement, not readings |\n| Edition and options | As-built build data | Stock-ins where build data was bought | Only cars someone paid to resolve ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)) |\n| Damage events | Insurer total-loss records | Vehicles with both | Unreported damage is invisible to both |\n| Valuations | Realized sale prices | Lotwise sales linked to the valuation ledger | Sold cars only; unsold stock is censored |\n\nThe official sources carry their own provenance, and that makes them good ground truth. The DVSA's MOT history API returns, per test, an `odometerUnit` (`MI` or `KM`), an `odometerResultType` (`READ`, `UNREADABLE`, `NO_ODOMETER`) and a `dataSource` field (`DVSA` for Great Britain, `DVA NI` for Northern Ireland) ([DVSA MOT history API specification, n.d., accessed 2026-10](https://documentation.history.mot.api.gov.uk/mot-history-api/api-specification/)). A reading that says what unit it was taken in, and whether it was read at all, is exactly what Kilometra's file did not provide.\n\nThe valuation row shows why ground truth must be named. Auto Trader UK publishes forecast accuracy of 99%, 97% and 95% at one, three and six months, measured against \"the actual retail valuation\", its own later valuation, not sale prices ([Auto Trader help centre, January 2024, updated August 2026](https://help.autotrader.co.uk/hc/en-gb/articles/16450896474141)). That measures forecast stability, not accuracy against transactions. **Every accuracy figure Axleby publishes names its ground truth and its overlap sample.**\n\n### The supplier data contract\n\n[Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html) uses a data contract as the reference its monitors compare against: arrival time, volume, semantics and ranges. That is the machine-checkable half. A supplier contract also has a commercial half, and the Odometer Correction failed in both. A data contract \"defines the ownership, structure, semantics, quality, and terms of use\" of a dataset ([Entropy Data, 2023](https://www.datamesh-manager.com/learn/what-is-a-data-contract)). The Open Data Contract Standard (ODCS) from the Bitol project gives it a machine-readable form with schema, quality, service-level, pricing and roles sections ([Bitol, n.d., accessed 2026-10](https://bitol-io.github.io/open-data-contract-standard/latest/)).\n\nHendrik Maes renegotiated Kilometra's contract in August 2027. Version 2 adds these clauses, shown here in simplified form, not in exact ODCS syntax:\n\n```yaml\ncontract: kilometra-workshop-readings\nversion: 2.0.0            # August 2027\nlicence_ref: KM-2024-03   # held in Charter; consumer display allowed\nschema:\n  odometer_value: {type: integer, required: true}\n  odometer_unit:  {enum: [km, mi], required: true, source: \"as recorded by the workshop system\"}\n  observed_at:    {type: date, required: true, meaning: \"date of the workshop visit\"}\n  workshop_chain_id: {required: true}\n  source_record_id:  {required: true, stable_across_redeliveries: true}\n  corrects_record_id: {required_when: \"record is a correction\"}\nquality:\n  - per workshop_chain_id: share of readings below the previous reading under 0.5%\n  - unit_declared_by_chain: chains must declare their system's unit at onboarding\nservice_levels:\n  delivery_by: \"02:30 CET daily\"\n  coverage_through_in_manifest: true\ncorrections:\n  notify_within: \"1 business day of discovery\"\n  redeliver_as: \"correction records referencing the original source_record_id\"\nremedies:\n  held_segment_credit: \"pro rata per day held\"\n```\n\nEach clause traces to a gap in May. **`corrects_record_id`** lets Inlet append a correction as a new version instead of a second reading. **`workshop_chain_id`** enables the per-chain check that would have stopped the batch; as [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html) shows, a median gate over all UK imports would not have fired, because the 2,870 bad readings came from one chain's export of 3,050 records, 94% of which failed. **`coverage_through_in_manifest`** sources the coverage-through date. **The chain declares its unit**, because the error began in one chain's system.\n\nThe rule I use: **a supplier contract that defines columns but not meanings, corrections and provenance is an invoice, not a contract.** Femke de Boer's team holds the license terms; Hendrik's team holds the delivery and correction terms; Priya's team holds the quality thresholds. All three sign before a source goes live.\n\n### Source scorecards\n\nA contract states what a supplier should deliver; a scorecard measures what it did. Axleby computes one per source per month from the envelope, Inlet's validation results and the ground-truth samples, and reviews it quarterly with the supplier.\n\n| Measure | Kilometra, Q3 2027 *(Axleby illustration)* | Why it is on the card |\n| --- | --- | --- |\n| Batches delivered within window | 91 of 92 | Timeliness |\n| Segments held by Inlet | 2 (one chain's export with a date-format change; one duplicate file) | Contract compliance |\n| Records with all required provenance fields | 99.2% | Envelope completeness |\n| Agreement with MOT readings within 2%, UK overlap sample | 96.8% of 4,100 pairs | Accuracy against ground truth |\n| Corrections issued; median time to correct | 3; 2 business days | Correction behavior |\n| Coverage: UK-import vehicles with a reading in the last 12 months | 71% | Value of the source |\n\nThe card drives **commercial remedies** and renewal, informs **survivorship precedence** and shapes **product wording**: a source with weak accuracy stays Asserted and is shown attributed. **Scores inform rule changes; they never change rules automatically**, because a rule whose weights move monthly cannot explain why a report said one thing in May and another in June. Changes stay versioned decisions with a recompute impact estimate ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)).\n\n\n## Provenance in the Product\n\nProvenance pays back when the customer can see it. It shows up in three places, and in each the platform separates **provenance**, the internal truth about the source, from **attribution**, what the license allows the platform to say about it.\n\n**History reports.** Each section of a Tracewell report carries source class, observation date and coverage-through. For the worked vehicle, the Odolo report now reads: \"Odometer 66,337 km (41,220 miles) on 18 January 2027, reported by a UK workshop through a commercial data supplier. Official MOT reading 62,684 km (38,950 miles) on 14 April 2026. UK workshop readings checked through 12 October 2027.\" The wording table is owned by [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html). The envelope supplies every value in it.\n\n**API responses.** JSON API v1 carries a metadata block per section with `source`, `observedAt` and `status` ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)); envelope v1 adds `sourceClass`, `confidence`, `factVersion` and `coverageThrough` ([Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html) owns the contract). A client that stores `factVersion` can match a later `vehicle.fact.corrected` event ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)) to the exact answers it affects. Connect XML's 210 XML-only clients get none of this.\n\n**The dealer's dossier.** Lotwise shows \"register status as of 06:12 today\" and marks Asserted facts \"dealer stated\" or \"reported by\" ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)); a dealer prices an option differently when it comes from a colleague's entry rather than build data.\n\n**Attribution is a license question.** The Dutch register's open data is published under Creative Commons Zero. Its terms add that reusers may not state that the data come from the RDW, the Netherlands Vehicle Authority, and may not use its logo or house style ([RDW open data terms, n.d., accessed 2026-10](https://www.rdw.nl/over-rdw/dienstverlening/open-data/bijsluiter)). The envelope still records the exact source, because Axleby needs it for freshness, disputes and its own license obligations. The display layer reads the license's attribution rule from Charter and renders \"official register data\" instead of the register's name. **The envelope always knows the source; the license decides what the product says about it.** A platform without that separation either leaks attributions its licenses forbid, or strips provenance it needs internally.\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Write fact with envelope | Atomic with the value | Within the ingestion step | Per data class SLO | Fails with the write; no fact without envelope |\n| `as_known_at` query for a dispute | Exact, repeatable | Seconds to minutes *(assumption)* | Not applicable | Business hours; not on the request path |\n| Metadata block in API response | Same fact version as the value | Adds under 5 ms at p95 *(assumption)* | Current | Same as the API; degraded answers say so |\n| Report footnotes and coverage | From the stored snapshot | At render time | As of the snapshot | With the report |\n| OpenLineage run events | At least once; reconciled daily against Inlet's batch log | Minutes | Not applicable | Loss does not block loads |\n| Monthly scorecard | Reproducible from versions | Batch | Monthly | Not on any request path |\n\n## In Practice\n\n### What the public record shows\n\n- **Registers expose provenance at field level.** The DVSA's MOT API carries unit, read status and data source per test, and publishes daily delta files and a weekly bulk file ([DVSA, n.d., accessed 2026-10](https://documentation.history.mot.api.gov.uk/mot-history-api/download-vehicle-mot-history-data/)). The Dutch register's open dataset publishes an odometer judgement per plate with an explanation code and the year of the last registered reading, but not the readings ([RDW open data metadata, queried 2026-10-22](https://opendata.rdw.nl/api/views/m9d7-ebf2.json)). A platform that shows the Dutch judgement must say it is the register's judgement, as [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) does when it shows two.\n- **US title law fixes some freshness and permanence.** States must report title data to NMVTIS \"at a frequency of once every 24 hours\" ([28 CFR 25.54](https://www.law.cornell.edu/cfr/text/28/25.54)); insurers and salvage yards report monthly ([28 CFR 25.55](https://www.law.cornell.edu/cfr/text/28/25.55), [25.56](https://www.law.cornell.edu/cfr/text/28/25.56)). Once applied, a brand \"becomes a permanent part of the vehicle's NMVTIS record\", and the US Department of Justice warns that a search may show a clean history for a vehicle with unreported damage ([US DOJ, n.d., accessed 2026-10](https://vehiclehistory.bja.ojp.gov/nmvtis_consumers)). Coverage and lag are part of the fact.\n- **History providers disclose source limits.** Carfax states that a report \"is based only on information supplied to CARFAX\" ([Carfax, archived December 2025](https://web.archive.org/web/20251219084511/https://www.carfax.com/company/about)): a coverage disclaimer, not field-level provenance. AutoScout24's DataRunner (2023) integrates Great Expectations and DataHub ([AutoScout24, 2023](https://tech.autoscout24.com/blog/posts/datarunner/)): quality tooling, not a provenance model.\n\n> **INFERENCE, NOT DOCUMENTED:** No vehicle-data company has published how it stores provenance per fact, whether it keeps transaction time, or how it scores its suppliers. The envelope, the bitemporal model and the scorecard in this chapter are the author's reference architecture. They are consistent with the published practices above, but no company describes them.\n\n### Axleby worked example: answering Rijnstaal again\n\nIn November 2027, Axleby re-ran Rijnstaal's June questions as a test of envelope v1. Readings loaded before July 2027 had been backfilled with `recorded_at` from logs where known, `batch_ref = null` and a `provenance_basis = reconstructed` marker. The original May batch, recovered from Kilometra, was re-landed in Inlet as a historical batch, so the k1 versions were rebuilt and linked to it.\n\nThe test ran three queries:\n\n1. **Facts from the batch**: `batch_ref = 2027-05-13` returned 2,870 superseded readings for 2,870 vehicles, each with its k2 successor.\n2. **Answers served to Rijnstaal**: Meterline usage events for Rijnstaal's billing account with `fact_version` in that set. Meterline's `fact_version` field went live in October 2027, so May's calls were matched through the reconstructed versions and the valuation ledger. The result was 163 calls, 141 valuations and 22 history calls, identical to the June answer.\n3. **What Axleby believes now**: `as_known_at(now)` for the same vehicles and dates.\n\nThe run took **40 minutes**, against six working days in June. The answer listed, per call, the fact version served, its source class and batch, the superseding version and the correction notice date. Rijnstaal found **9** settlements that had used a valuation more than €500 above the corrected one *(Axleby illustration)*.\n\nOne gap remained: Lotwise adverts rendered before October 2027 did not record fact versions, so the **1,180** affected adverts could be found only by vehicle and date window. Acceptable for adverts, which are re-rendered anyway; not for reports, which is why report snapshots store event ids ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)).\n\n## Failure Handling\n\n| Failure | How it shows up | Detection | Recovery |\n| --- | --- | --- | --- |\n| **Duplicate fact from one source** (redelivery, replay) | Two identical versions | Idempotency on source, `source_record_id` and source version | Keep one version; no new transaction time |\n| **Same fact from two sources** | Two agreeing readings | Survivorship sees both | Keep both; tier becomes **Corroborated**; never count the car twice in a scorecard |\n| **Conflicting sources** | Two readings a week apart that disagree by a factor of 1.6 | Consistency check | Keep both; lower one becomes **Suspect**; disputed wording in reports |\n| **Correction without a reference** | Supplier resends a value with a new record id | Same subject, same `observed_at`, same chain, different value | Hold as a candidate correction; ask the supplier; never let both stand as observations |\n| **Correction for an unknown or already superseded version** | Reference points to nothing, or to an old version | Lookup on `corrects_record_id` | Park until the original arrives, or chain it after the latest version; [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) owns the ordering cases |\n| **Incomplete envelope** (no `observed_at`, no license) | Fact cannot be placed in time or shown | Envelope validation at write | No observation time: store with a \"no later than\" bound, exclude it from judgements. No license: **not displayable**, default deny in Charter |\n| **Time zone or date-format ambiguity** | Readings land a day early, or with day and month swapped | Contract requires zone or date-only; distribution of `observed_at` per chain | Hold the segment; supplier redelivers |\n| **Lineage emitter outage** | Gaps in OpenLineage runs | Daily reconciliation against Inlet's batch log | Re-emit from the batch log; loads never wait for lineage |\n| **Source outage** | Coverage-through stops advancing | Freshness monitor | Products show the coverage date; decision-critical facts block per the SLO table |\n| **Retroactive change to a past answer** | Client disputes a report or a call | `as_known_at` query | Show what was served and what is known now; never rewrite the served version |\n\n**Beware the confident backfill.** Filling unknown envelope fields of old data with plausible values (`recorded_at` = migration date, `confidence` = the source's usual tier) turns ignorance into false provenance. Axleby marks reconstructed fields as reconstructed. And when a source's license ends, Charter makes its facts undisplayable for new answers while issued report snapshots keep them ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)).\n\n## Trade-offs\n\n**Where provenance lives.**\n\n| Option | How it works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **Per table or dataset** | Source and load time per table | Cheapest; easy to add | Cannot separate sources inside a table; no answer per fact | Internal analytics on single-source data |\n| **Per fact, inline** | All envelope fields on every row | Self-contained; simple queries | Storage about six times the reference model *(assumption)*; license text duplicated and hard to change | Small, high-value stores such as the valuation ledger |\n| **Per fact, batch fields by reference** | Fact-level fields inline; source, license and batch once | Complete answers at modest cost; license changes in one place | A join on reads; batch records must be retained | **Default** for vehicle fact stores |\n\n**How time is kept.**\n\n| Option | What it answers | Weaknesses | When it is right |\n| --- | --- | --- | --- |\n| **Overwrite plus audit log** | Current value; changes only if someone reads the log | Log drifts from data; past answers need forensics | Caches that can be rebuilt from elsewhere |\n| **Transaction time only** (system-versioned, as in SQL Server temporal tables) | What we believed at any time | Cannot tell a late observation from a correction | Records that are not observations: configurations, prices set by people |\n| **Valid time only** | History of the world as now known | Cannot show what was served before a correction | Analytics that never answer disputes |\n| **Bitemporal** | Both, for any pair of dates | Query discipline; storage; erasure handling | **Default** for facts that are sold, judged or disputed |\n\nBoth recommendations rest on three requirements: **facts are sold and must be defensible later, corrections arrive days or weeks late, and licenses change what may be shown.** A platform that only feeds internal dashboards can do with less.\n\n## Across Markets: What Changes by Country\n\nThe envelope, the bitemporal store, the confidence tiers and the scorecard are the same in every market. What changes is which sources can serve as ground truth, how fresh they are, what they tell you about themselves, and what you may say about them.\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Official ground truth for odometer** | NL: register judgement per plate, not readings, in open data; BE: Car-Pass, the statutory mileage register, fed by garages, inspection, manufacturers (including connected-car readings quarterly) and the RDW for Dutch imports | Inspection readings held by the Kraftfahrt-Bundesamt (KBA, federal motor transport authority), not public | DVSA MOT readings with unit and data source per test | Odometer statements on titles via NMVTIS approved providers |\n| **Freshness signal from the source** | RDW dataset `Last-Modified` header; observed lag of a few days for owner changes | None public for the register; commercial providers' own | Daily MOT delta files from 08:00 plus weekly bulk | States report within 24 hours; insurers and yards monthly |\n| **Attribution rule** | RDW open data: may not state the data come from the RDW | Per commercial license (DAT, Autovista) | MOT documentation under the Open Government License; data reuse terms to be checked per agreement | Per approved-provider agreement |\n| **Rectification duty when facts are personal data** | General Data Protection Regulation (GDPR) Art. 16 and Art. 19 | GDPR Art. 16 and Art. 19 | UK GDPR equivalents | No general federal right; brands are permanent by law |\n| **Hardest provenance gap** | Readings behind the Dutch judgement are not available to platforms | No official odometer ground truth for platforms | Commercial readings for vehicles before import | Coverage varies by state and reporting entity |\n\nSources: [Car-Pass FAQ, n.d.](https://www.car-pass.be/en/faq); [KBA central register, n.d.](https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html); DVSA and RDW sources above; [28 CFR 25.54–25.56](https://www.law.cornell.edu/cfr/text/28/25.54); [GDPR, Regulation (EU) 2016/679](http://publications.europa.eu/resource/celex/32016R0679); all accessed 2026-10. The \"hardest gap\" row is the author's judgement.\n\nThe GDPR row has an architectural edge. Article 5(1)(d) requires personal data to be \"accurate and, where necessary, kept up to date\", and Article 19 requires a controller to communicate a rectification \"to each recipient to whom the personal data have been disclosed, unless this proves impossible or involves disproportionate effort\". This book treats plates and VINs as personal data by default where they can be linked to a keeper ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)). There, **recording which recipient got which fact version is a legal capability**. Whether a correction triggers Article 19 is a legal judgement; the platform's job is to make the answer possible.\n\nMy judgement: **keep the envelope, the time model and the scorecard common, and make three things market-specific**: the ground truth per fact type, the attribution rule per license, and the coverage-through computation per source. One change is coming. A November 2025 Council compromise text on the EU roadworthiness revision would require manufacturers to \"transmit the odometer readings of connected vehicles which they have produced every three months\" to national databases ([Council of the EU, 2025](https://data.consilium.europa.eu/doc/document/ST-15613-2025-INIT/en/pdf)). It was not adopted as of October 2026 and gives data companies no direct access, but an envelope that already separates official from commercial readings would absorb it as one more source.\n\n## The Chief Architect's View\n\n**Make the envelope a platform standard, not a team habit.** The data platform team owns the envelope schema, its versions and the three access paths; every service writing vehicle facts must use them. Connect XML cannot carry the envelope, so its answers are logged with fact versions at the gateway until its 2029 sunset.\n\n**Give every SLO and contract an owner where the knowledge is.** Product owners set freshness SLOs; Hendrik Maes's team owns supplier contracts and scorecards; Priya Raman owns accuracy measurement and survivorship precedence; Femke de Boer owns license and attribution rules in Charter. A source goes live only with all four in place.\n\n**Spend on the fact level first.** Dataset lineage tools are easy to buy and demonstrate. Fact-level lineage answers clients, courts and regulators, and it cannot be reconstructed later.\n\n**What to watch.** Per source and product: **envelope completeness** (required fields present, not reconstructed); **served-within-SLO**; **time to answer a provenance question**, tested quarterly with a drill like the Rijnstaal re-run (Axleby's 2028 target: under one hour for up to 1,000 calls); and the **scorecard accuracy trend**.\n\n**Keep the standard cheap to adopt.** If the envelope turns every new source into a quarter-long project, teams will route around it with \"temporary\" loaders, and Provenance Amnesia returns quietly.\n\n## Questions to Ask\n\n1. For any fact we sell, can we show its source, observation date, recording date, license and confidence without asking an engineer?\n2. When a supplier corrects a fact, do we append a new version and close the old one, or overwrite it? Can we still show what we served before the correction?\n3. Does every derived fact (judgement, golden value, valuation) record the input fact versions it used?\n4. Do our usage or response logs record which fact version each client received, and for how long?\n5. For each data class, what freshness does each decision need, which part of the age is the source's and which ours, and what happens on breach?\n6. For accumulating facts, do we report coverage-through per source, or only the age of the newest record?\n7. Does each supplier contract define units, time zones, correction references and the provenance fields the supplier must deliver?\n8. What independent ground truth do we use to measure each source's accuracy, and what bias does it carry?\n9. Where the license restricts attribution, does the product follow it while the envelope keeps the real source?\n\nPart II now gives every fact a car, a source and a degree of trust. Part III turns to value, starting with [Part III — VALUE: Market Data, Valuation and Condition](part-3.html) and [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), where the sources are adverts and transactions, only 61 percent of adverts match a vehicle, and license limits decide what may be harvested at all.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [Forecast accuracy (Auto Trader help centre)](https://help.autotrader.co.uk/hc/en-gb/articles/16450896474141) — Auto Trader UK, published January 2024, updated August 2026; 99/97/95% accuracy measured against its own later valuation.\n- [About Carfax (archived)](https://web.archive.org/web/20251219084511/https://www.carfax.com/company/about) — Carfax, archived December 2025; \"based only on information supplied\" disclaimer.\n- [DataRunner](https://tech.autoscout24.com/blog/posts/datarunner/) — AutoScout24, 2023; pipeline framework with Great Expectations and DataHub.\n\n### Standards, regulation and official documentation\n\n- [PROV-DM: The PROV Data Model](https://www.w3.org/TR/prov-dm/) — W3C Recommendation, 2013; definition of provenance.\n- [OpenLineage object model](https://openlineage.io/docs/spec/object-model) — OpenLineage, v1.54.0, n.d., accessed 2026-10; datasets, jobs, runs and data-quality facets.\n- [Open Data Contract Standard](https://bitol-io.github.io/open-data-contract-standard/latest/) — Bitol (LF AI & Data), n.d., accessed 2026-10; machine-readable data contracts.\n- [ISO/IEC 25012 data quality model](https://iso25000.com/en/iso-25000-standards/iso-25012) — ISO 25000 portal, n.d., accessed 2026-10; 15 data quality characteristics.\n- [Regulation (EU) 2016/679 (GDPR)](http://publications.europa.eu/resource/celex/32016R0679) — EU, 2016; Art. 5(1)(d) accuracy, Art. 16 rectification, Art. 19 notification of recipients.\n- [MOT history API specification](https://documentation.history.mot.api.gov.uk/mot-history-api/api-specification/) — DVSA, n.d., accessed 2026-10; `odometerUnit`, `odometerResultType`, `dataSource` fields.\n- [Download vehicle MOT history data](https://documentation.history.mot.api.gov.uk/mot-history-api/download-vehicle-mot-history-data/) — DVSA, n.d., accessed 2026-10; weekly bulk and daily delta files.\n- [Open Data RDW: Gekentekende voertuigen](https://opendata.rdw.nl/api/views/m9d7-ebf2.json) — RDW, queried 2026-10-22; odometer judgement fields, last-modified time.\n- [Bijsluiter open data](https://www.rdw.nl/over-rdw/dienstverlening/open-data/bijsluiter) — RDW, n.d., accessed 2026-10; CC0 terms, no attribution to the RDW, no availability guarantees.\n- [Car-Pass FAQ](https://www.car-pass.be/en/faq) — Car-Pass, n.d., accessed 2026-10; sources of Belgian odometer readings.\n- [Zentrales Fahrzeugregister](https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html) — Kraftfahrt-Bundesamt, n.d., accessed 2026-10; contents of the German central register.\n- [28 CFR 25.54](https://www.law.cornell.edu/cfr/text/28/25.54), [25.55](https://www.law.cornell.edu/cfr/text/28/25.55), [25.56](https://www.law.cornell.edu/cfr/text/28/25.56) — US Code of Federal Regulations via Cornell LII, n.d., accessed 2026-10; NMVTIS reporting frequencies.\n- [NMVTIS for consumers](https://vehiclehistory.bja.ojp.gov/nmvtis_consumers) — US Department of Justice, n.d., accessed 2026-10; permanence of brands and coverage warning.\n- [Council compromise text on the roadworthiness package, ST 15613/25](https://data.consilium.europa.eu/doc/document/ST-15613-2025-INIT/en/pdf) — Council of the EU, 2025; proposed odometer recording and quarterly connected-vehicle readings.\n\n### Research and practitioner sources\n\n- [Bitemporal History](https://martinfowler.com/articles/bitemporal-history.html) — Martin Fowler, 2021; actual time and record time.\n- [Temporal features in SQL:2011](https://doi.org/10.1145/2380776.2380786) — Krishna Kulkarni and Jan-Eike Michels, *ACM SIGMOD Record*, 2012; application-time and system-versioned tables.\n- [What is a Data Contract?](https://www.datamesh-manager.com/learn/what-is-a-data-contract) — Entropy Data, 2023; data contract definition.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

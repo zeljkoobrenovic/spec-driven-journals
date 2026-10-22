@@ -1,0 +1,38 @@
+- **31-vehicle-data-apis / 31-gateway-composer-contexts** (Figure 3): one extra dashed arrow from 'Contract registry' toward 'Response composer' (prompt asked only for gateway and renderers); consistent with the text ("configures all four"), accepted.
+- **33-data-products-and-insights / 33-enrichment-job-states** (Figure 3): the 'Rejected' to 'Deleted' arrow joins a line dropping from 'Deleted' rather than ending on the tile; meaning still readable, accepted.
+- **27-identity-access-and-entitlements / 27-registration-checks-swimlanes (Figure 4)** — Axleby Trade drawn as a relay box on the submit arrow rather than its own lane; first message label touches a lane line. Structure correct; accepted.
+- **27-identity-access-and-entitlements / 27-shared-login-to-named-people (Figure 1)** — "After" panel keeps faint connecting lines between people; harmless but not requested. Accepted.
+- **37-observability-and-data-operations / 37-green-dashboards-live-zombie (Figure 1)** — 'Services healthy' repeated on each of four screens and 'Leads' on each envelope; repetition of given labels only, no extra words. Accepted.
+- **39-privacy-and-retention / 39-request-workflow (Figure 4)** — some swimlane arrows start at lane borders rather than lane centers; senders and receivers still readable. Accepted.
+- 22-deals-and-sales-documents / 22-deal-components: one extra receipt-slip icon on the internal "refer application" arrow (minor, accepted).
+- 24-dms-integration / 24-field-ownership: "DMS" label sits on the deal folder and "Lotwise" on the lead inbox rather than on the zones (meaning still clear, accepted).
+- **part-8-intro / part-8-journey-shape** (Figure 2): the 'identifier' tag is drawn on each of the three hops (label repeated three times) and the event bolt has a small halo; meaning (one identifier carried along the hops) still reads, accepted.
+- **part-4-intro / part-4-stock-item-boundaries** (Figure 1): the orange 'Deal' to 'Register' arrow runs just above the 'Leads' label; structure otherwise correct after 3 attempts, accepted.
+- **part-3-intro / part-3-average-hides-drifting-segment** (Figure 2): chart adds a '0' on the baseline axis, not in the prompt; harmless, accepted.
+- 46-organizing-engineering / 46-team-topology (Figure 3): one extra arrow from "Data products" down to "Platform teams" after three attempts; consistent with data products running on the platform, accepted.
+- 47-modernizing-the-platform / 47-scaffolding-comes-down (Figure 5): scaffolding tower counts are not literally 4, 9 and 2; the rise-then-fall is clear and no numbers are drawn, accepted.
+- 18-used-car-pricing / 18-pricing-loop (Figure 2): the small price-tag icon on the "Pricing desk" monitor shows a "$" sign (book uses euro); structure correct after 3 attempts, accepted.
+- 20-listing-syndication / 20-commands-vs-desired-state (Figure 2): a tiny red "sold" dot-label on the sold car was not in the label list; it matches the meaning, accepted after 3 attempts.
+- 07-specification-and-equipment / 07-specification-resolver (Figure 2): simplified to five elements after 3 attempts misrouted the 'buy once' arrow; the image omits the catalog, dealer confirmation and portal mappers that the verbatim caption mentions, accepted.
+- 08-vehicle-history / 08-isolated-outlier (Figure 5): shows four official readings rather than five; the outlier above the line is clear, accepted.
+- 09-ingestion-and-entity-resolution / 09-overwrite-versus-land-raw (Figure 1): adds an unrequested but accurate 'Delivery file' label in each panel, accepted.
+- 41-journey-data-correction / 41-impact-graph (Figure 3): one extra arrow from "Derived facts" to "API answers" (the source diagram routes readings and valuations there); consistent with API answers using the derived odometer, accepted after 3 attempts.
+- 42-journey-lead-to-dms / 42-closed-rooftop-still-receiving (Figure 2): a tiny second "Closed" sign on the shop door; harmless, accepted.
+- 13-condition-and-damage / 13-evidence-findings-views (Figure 1): the coating-gauge pictogram shows a small readout "1.00"; not a chapter number, accepted after 2 attempts.
+- 13-condition-and-damage / 13-two-paths-into-mpp (Figure 4): simplified after 3 attempts with misrouted calibrate arrows: shows recon variance calibrating the recon estimate but omits the stock-item recon lines and the actuals arrow from the mermaid source.
+- **11-market-data, Figure 3 (11-pulse-observation-store)** — accepted after 3 attempts with a third dashed Charter arrow onto 'Segment statistics' (the caption names only the outward rights check).
+- **11-market-data, Figure 5 (11-errors-cancel)** — accepted with a stray '0' at the start of the ruler.
+- **43-journey-sale-to-registration / 43-june-design-replay** (Figure 5): the 'being verified' and 'hand-over released' arrows start at the Dossier/Trade ledger lane boundary rather than mid-Dossier lane; meaning still reads correctly. Accepted after 2 attempts.
+- **50-case-cox-automotive / 50-central-login-linked-accounts** (Figure 2): adds a 'Dealer employee' label under the figure (taken from the mermaid source, not the prompt). Accepted on first attempt.
+- **51-case-cdk-global / 51-cells-bound-the-blast-radius** (Figure 6): adds two unrequested sub-captions, 'Single point of failure' and 'Isolated impact'; both match the caption's meaning. Accepted on first attempt.
+- **03-vehicle-capability-map / 03-capability-map-level1** (Figure 2): Platform Foundations draws three upward arrows (also into Registration and Trade) where the mermaid had two; consistent with the caption ('for every product'), accepted.
+
+## Resolution — final figure-fix pass (2026-10-22)
+
+- 18-used-car-pricing / 18-pricing-loop: **FIXED** — regenerated with no currency sign; prompt archive updated.
+- 07-specification-and-equipment / 07-specification-resolver: **FIXED** — caption trimmed to what the simplified image shows (fact store, resolver, purchase gate, buy-once build data, resolved view); edge mapping stays in the prose.
+- 13 two-paths-into-mpp, 44 own-seam, 49 platform-dashboard: **KEPT** — rechecked; captions do not name the omitted elements.
+- Header logo 05-vehicle-identity: **FIXED** — regenerated with `_research/tools/regen_logo.py` (first version named a real car make).
+- Index-card icons: **REDONE** — all 70 regenerated as single bold pictograms legible at 100 px (`_research/tools/regen_icons.py`).
+- All other entries above: **KEPT** as minor, caption-consistent.
+- Header logo brand sweep (all 70): **FIXED** 21 logos regenerated with `regen_logo.py` (real car makes/models/VIN prefixes, "$" amounts, Apple/Google/Facebook/Slack/Microsoft/CDK/Keyloop marks, real portal logos, case names on part-10, garbled boards): 05, 07, 14, 16, 18, 19, 20, 27, 34, 38, 40, 41, 50, 51, where-vehicle-platforms-go-wrong, meet-axleby, part-3, part-4, part-8, part-10, domain-coverage. **KEPT**: amount-less "$" glyphs on part-5, part-7 and meet-axleby boards; small typos on toolkit, domain-coverage, 03 and 45; "XRAY" mark on 53.

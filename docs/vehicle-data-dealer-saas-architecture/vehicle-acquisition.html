@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price</title>
+    <meta name="description" content="How should a platform support buying a car at the right price, from the customer's driveway to the auction lane? Compute the maximum purchase price as a visible, versioned decision that prices in the valuation's uncertainty, treat every offer as an expiring commitment with conditions, and build capture that works offline and hands the car to stock exactly once.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price">
+    <meta property="og:description" content="How should a platform support buying a car at the right price, from the customer's driveway to the auction lane? Compute the maximum purchase price as a visible, versioned decision that prices in the valuation's uncertainty, treat every offer as an expiring commitment with conditions, and build capture that works offline and hands the car to stock exactly once.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/vehicle-acquisition.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/16-vehicle-acquisition/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-4.html" title="Part IV — DEALER: The Used-Car Workflow">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inventory-and-vehicle-dossier.html" title="The Stock Book: Inventory Management and the Vehicle Dossier">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — DEALER: The Used-Car Workflow</p>
+        <h1>Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  31 min read · <a class="spec-link" href="vehicle-acquisition.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/16-vehicle-acquisition/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/16-vehicle-acquisition/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-4.html" title="Part IV — DEALER: The Used-Car Workflow">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inventory-and-vehicle-dossier.html" title="The Stock Book: Inventory Management and the Vehicle Dossier">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How should a platform support buying a car at the right price, from the customer's driveway to the auction lane? Compute the maximum purchase price as a visible, versioned decision that prices in the valuation's uncertainty, treat every offer as an expiring commitment with conditions, and build capture that works offline and hands the car to stock exactly once.", "permalink": "vehicle-acquisition", "timetoread": "31 min read", "icon": "assets/icons/16-vehicle-acquisition.png", "logo": "assets/images/16-vehicle-acquisition/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow a used car from the first plate scan to the moment it becomes stock: the acquisition channels, the appraisal workflow (identify, check, inspect, value, offer), the maximum purchase price as a computed decision, offers with validity and conditions, offline-capable capture, and the hand-off to the stock book.\n\n> **WHY THE BUSINESS CARES:** A dealer's margin on a used car is mostly fixed when it buys the car. Pay €1,000 too much for a trade-in and half the car's gross profit is gone before reconditioning starts. Offer too little and the car goes to a competitor or an instant-offer website. The appraisal tool is where the dealer's buying discipline is either supported or left to gut feeling.\n\n> **WHY ARCHITECTS SHOULD CARE:** Appraisal is the first workflow that uses identity, specification, history, condition, valuation and market data together, on a phone, often in a yard or an auction hall with poor coverage. Its records become the dossier's first evidence, the stock item's cost and value-added tax (VAT) regime, the register's odometer reading and the valuation ledger's outcome links. Errors captured here travel through every later chapter.\n\n> **KEY POINTS:**\n>\n> * **The maximum purchase price is a computed decision with visible lines, priced on uncertainty.** Expected retail price minus reconditioning, fees, holding cost and target margin, solved on the car's VAT basis. It is computed from a cautious point of the valuation range when confidence is thin or the segment is under watch, and every input is recorded by version.\n> * **An offer is a versioned, expiring commitment, not a number in a field.** Issued offers are immutable. Each carries a validity in days and distance, explicit conditions and a link to the appraisal it rests on. A revision supersedes the old version. Acceptance re-checks the conditions. The book of open offers is risk the dealer and the platform must be able to see.\n> * **Capture must work in the yard and the lane, and the hand-off must happen once.** An installable web app with a durable outbox and client-generated ids captures offline. It validates odometer readings at entry and shows degraded answers with a flag instead of blocking. An accepted offer creates exactly one stock item, with its cost, VAT regime and evidence, and starts the register stock-in.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Confident Valuation** — a suggested buying price computed from a point value, with no range or segment status, turns a valuation error into hundreds of cars bought at too high a price.\n> * **Borrowed Uptime** — an appraisal that needs live answers from the register, the history assembler, the build-data provider and the valuation model stops when any of them is slow, or when the yard has no signal.\n> * **The Sticky Error** — an odometer mistyped at appraisal becomes a register reading, a history event and a rollback flag on a consumer report.\n\n<br>\nThe profit on a used car is made when the dealer buys it. That is an old trade saying, and the arithmetic of [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) supports it: on a typical compact car a dealer may keep €1,500 to €2,000 of front-end gross, and a 5% overpayment takes most of it, whatever the pricing and advertising tools do afterwards.\n\nA trade-in is appraised at the sales desk while the customer waits; a lessor's returned car is bid on through a trade exchange; an auction car is judged in seconds in the lane. **Each channel asks the same question, \"what is the most I can pay for this car?\", under different time pressure, evidence and commitments.** A platform that answers it well gives the dealer one calculation, one record and one hand-off to stock, whatever the channel.\n\nThis chapter owns three terms: **appraisal**, **trade-in** and **purchase offer**. The maximum purchase price (MPP) as a value type, and the valuation behind it, belong to [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html). This chapter turns the MPP into a buying decision and the decision into an offer. Condition capture and reconditioning cost belong to [Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html), the stock item that the purchase creates belongs to [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), and the register stock-in belongs to [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html).\n\n## Setting the Scene at Axleby: The Offer Nobody Recorded\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), sells **Lotwise Appraise** for €99 per rooftop per month, including 25 history reports. Until 2027 it was a set of screens in Lotwise Classic, the PHP monolith behind Lotwise. The dealer entered a plate, Lotwise fetched a history report and a Vantage valuation, the dealer typed condition notes, and the screen stored one number in a column called `offered_price`. Every change overwrote it.\n\nIn April 2027, during the first year of the One Dossier program, Tomás Ferreira (Product Director, Lotwise) asked his team what that design had cost. In 2026 Lotwise Appraise recorded about **1.31 million** appraisals at about **4,800** rooftops. About **600,000** of them, roughly 46%, ended in a purchase, about a third of Lotwise's 1.9 million stock-ins. The team sampled **1,000** purchased cars from the first quarter of 2027 (all Axleby illustrations):\n\n- In **23%**, the purchase price differed from the last recorded offer, with no reason recorded.\n- In **11%**, the car was bought more than 14 days after the offer at the offered price, although market and mileage had moved.\n- **17%** had no valuation id: the dealer had typed a retail figure from memory or from a portal.\n- **31%** had no reconditioning estimate to compare with actual cost.\n- **38%** of appraisals started on a phone, and about one in 16 of those lost photos or notes when the session timed out in an auction hall or a farm yard.\n\nTwo incidents gave the numbers faces. In February 2027, at Autobedrijf Brandsma, a one-rooftop independent dealer in Leeuwarden and a Lotwise customer since 2014, an appraisal of a 2016 Volvo V60 recorded **196,840 km** instead of 186,840 km. Two days later the official stock-intake reading said 186,950 km. In March a consumer report from Odolo, Axleby's consumer check app, flagged \"possible rollback\" and the buyer walked away ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)). And in the 2026 **EV Overvaluation** (EV: electric vehicle), two dealer groups had bought **610** battery-electric trade-ins at maximum purchase prices suggested from Vantage, overpaying by about **€1.1 million** ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)). The suggested price had shown one number, with no range and no warning.\n\nInes Marchetti, Group Chief Architect, put the design question to the architecture forum in one sentence: **what did we promise this seller, on what evidence, until when, and what was the most this dealer should have paid?**\n\n## Concepts: Channels, Appraisals, Offers and the Buying Price\n\n### Where used cars come from\n\nA dealer buys used cars through six channels, each with different evidence and a different job for the platform.\n\n| Channel | Seller | How the price is set | Typical VAT basis (EU) | What the platform provides |\n| --- | --- | --- | --- | --- |\n| **Trade-in** (part-exchange) | Consumer buying another car from the dealer | Appraisal and offer, negotiated inside the sale | Margin scheme | Guided appraisal, MPP, offer, link to the deal |\n| **Consumer purchase** (\"we buy your car\") | Consumer not buying | Online estimate, then inspection and a firm offer | Margin scheme | Conditional online offer, inspection, final offer |\n| **Auction** (physical or online) | Lessors, rental fleets, dealers | Bidding | Usually VAT-qualifying from businesses | Lane mode: scan, MPP, bid limit |\n| **Business-to-business (B2B) trade** | Dealers, traders | Asking price or offer | Depends on the seller's VAT status | Trade listings, MPP, offer ([Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html)) |\n| **Lease and rental returns** | Lessors | Tender, auction or buy-back terms | VAT-qualifying | Condition report, MPP, bid |\n| **Import** | Foreign dealers, auctions | Asking price plus landed cost | Cross-border rules | Landed-cost MPP including registration tax ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)) |\n\nThe VAT basis column matters more than it looks. Under the EU margin scheme, a dealer who bought a car from a consumer owes VAT only on the margin when it sells, the margin being the selling price minus the purchase price ([Directive 2006/112/EC, Arts. 313–315](http://publications.europa.eu/resource/celex/32006L0112)). A car bought from a VAT-registered lessor on an invoice showing VAT is normally sold with VAT on the full price. **The same car has a different maximum purchase price depending on whom the dealer buys it from.** [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) owns the scheme; its 2027 Margin-Scheme Error shows what happens when the regime is defaulted instead of recorded.\n\n![One car, two paths: bought from a consumer under the margin scheme, or from a lessor with full VAT, giving maximum purchase prices of different heights.](assets/images/16-vehicle-acquisition/16-same-car-two-prices.jpeg)\n**Figure 1:** *The same car has a different maximum purchase price depending on whom the dealer buys it from, because the seller decides the VAT basis.*\n\n### The appraisal\n\nAn **appraisal** is the dealer's structured assessment of one car for a possible purchase, in five steps:\n\n1. **Identify.** Plate or VIN (vehicle identification number) to the vehicle key, specification candidates and register status ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)).\n2. **Check.** History: odometer readings and the register's judgement of them, damage, theft and import events, open recalls, title brands or finance where the market has them ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)).\n3. **Inspect.** Condition, tires, damage, missing keys and service records, captured as evidence with photos; reconditioning estimate ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)); battery state of health for electric cars ([The Battery Question: EV State of Health and Battery Data](ev-battery-health.html)).\n4. **Value.** A typed valuation with range and comparables, and the maximum purchase price computed from it.\n5. **Offer.** A price the dealer commits to, with validity and conditions.\n\nThe appraisal records evidence and judgement at a point in time, not the car's current truth. If the history is corrected next month, the appraisal still shows what the dealer saw when it decided, which is what settles a dispute.\n\nA **trade-in** is a car the buyer hands over as part of buying another car from the same dealer. It is a purchase by the dealer, not a discount: [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) books the allowance as a payment backed by its own purchase agreement. Because the trade-in is negotiated together with the sale, a dealer can give on one what it holds on the other, so the deal records the appraised value beside the allowance.\n\n### The maximum purchase price, solved on the VAT basis\n\n[What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) defines the **maximum purchase price** (MPP) as the most a dealer can pay and still earn its target margin:\n\n> MPP = expected retail transaction price − reconditioning − transport and fees − holding cost for the expected days to sell − target gross margin\n\nFor a car bought under the margin scheme, the formula needs one more step. The VAT on the margin depends on the purchase price, so the costs and the target must be \"grossed up\" for it. With a VAT rate *t* (21% in the Netherlands and Belgium, 19% in Germany, 20% in the UK), a dealer who wants a gross margin *G* after margin VAT can pay at most:\n\n> MPP = expected retail transaction price − (1 + *t*) × (reconditioning + fees + holding cost + *G*)\n\nIn plain words: every euro of cost or target margin on a margin-scheme car takes €1.21 off the Dutch buying price, because the dealer also owes VAT on the margin that covers it. A calculator that ignores this overstates the MPP by a few hundred euros on an ordinary car. For a VAT-qualifying purchase the calculation runs on net amounts. **The VAT basis is an input to the MPP, not a reporting detail.**\n\nThree more properties make the MPP a decision rather than a lookup. **It belongs to the dealer**: target margin, holding cost, expected discount from asking price and reconditioning rates are the dealer's settings; guide books publish inputs, not this number. **It has a point in time**: it uses today's market surface and expected days to sell ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)). And **it must carry the valuation's uncertainty**: a retail value with a narrow range supports a higher buying price than the same point value with a wide one, which is the lesson of the EV Overvaluation.\n\n### The purchase offer\n\nA **purchase offer** is the price a dealer commits to pay for a specific car, to a specific seller, under stated conditions, until a stated limit. The public examples all share three elements:\n\n- **Validity.** In its 2025 annual report (February 2026), AutoNation describes its \"We'll Buy Your Car\" guaranteed offer as \"honored for 7 days or 500 miles at any of our locations\" ([AutoNation 10-K, 2026](https://www.sec.gov/Archives/edgar/data/350698/000162828026007800/an-20251231.htm)). CarMax's fiscal 2026 annual report (April 2026) says its written appraisal offer \"is good for seven days\" ([CarMax 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm)). Kelley Blue Book's Instant Cash Offer is valid for seven days ([KBB, n.d.](https://b2b.kbb.com/kbb-vehicle-values/definitions-of-our-values)).\n- **Conditions.** KBB's offer is redeemable after the dealer verifies condition and features. Carvana's 2025 annual report (February 2026) describes its online offer as \"an automated, conditional offer\" ([Carvana 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm)).\n- **A basis.** The offer assumes a mileage, a condition and a specification. If the car arrives with 900 more kilometers or a new dent, the basis has changed.\n\nThe distance limit is the detail most systems miss. **A car keeps losing value while the offer is open, and the seller keeps driving it.** Seven days and 500 miles bounds both.\n\n### Disposition is decided at appraisal\n\nThe appraisal also decides whether the dealer will retail the car, sell it to the trade, send it to auction or export it. CarMax's 2026 annual report says that of roughly 1.1 million vehicles it bought in fiscal 2026, \"approximately half\" met its retail standards; the rest went through its own wholesale auctions. OPENLANE's 2025 annual report (February 2026) notes that \"when used vehicle prices are high, dealer customers may retail more of their trade-in vehicles on their own\" ([OPENLANE 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1395942/000139594226000006/opln-20251231.htm)). So the MPP is computed **per disposition**: a twelve-year-old car with 240,000 km may have no sensible retail MPP but a clear trade MPP. The appraisal records the intended disposition and its reason, and the stock item inherits it.\n\n## Architecture: One Appraisal Service, Two Capture Modes\n\nThe research model behind this book (see [Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html)) splits this area into an appraisal-report module and a buying app that shows the MPP on the lot or at auction. As a target design I keep **one appraisal service with two capture modes**. The *desk mode* runs the full five steps for trade-ins and consumer purchases. The *lane mode* runs identify, check and value in seconds for auctions and trade exchanges. Both use the same MPP calculator, policy and records. If they are separate products, a dealer's buying discipline differs by channel, and the group cannot compare them.\n\n![An appraise app syncs to the appraisal service, which draws on vehicle context, condition, Vantage and the buying policy, uses an MPP calculator, and hands an accepted offer to the dossier, which starts the register stock-in.](assets/images/16-vehicle-acquisition/16-appraisal-service-hub.jpeg)\n**Figure 2:** *The appraisal service composes vehicle facts, condition evidence and a typed valuation, computes the maximum purchase price from the dealer's policy, issues offers as documents, and hands an accepted offer to the dossier, which creates the stock item and starts the register stock-in.*\n\n| Component | Responsibility | Owns |\n| --- | --- | --- |\n| **Appraise app** | Capture in desk or lane mode: scan, odometer, offer presentation; guided photos and checklist through the Lotwise Inspect component; offline outbox | Local drafts until synced |\n| **Appraisal service** | Appraisal and offer aggregates, their state and versions; composition of facts | Appraisal, offer versions, decision snapshot |\n| **MPP calculator** | Pure function: valuation, costs, policy and VAT basis in, MPP lines out | Nothing; deterministic and versioned |\n| **Buying policy** | Target margin by band, holding cost, negotiation allowance, recon rates, offer validity, approval limits | Policy versions per group, rooftop and user (in Baseline, [From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)) |\n| **Vehicle context** | Identity, register status, specification, history | Facts with provenance |\n| **Gauge** (condition service) | Inspection evidence, findings, reconditioning estimate from dealer rate cards | Condition report |\n| **Vantage** | Typed valuation with range, comparables, segment status | Valuation ledger |\n| **Dossier** | Stock item from the accepted offer | Stock item, cost layers, VAT regime |\n\nTwo boundaries carry the design. **The MPP calculator is a pure, versioned function**: the same valuation id, condition report, policy version and VAT basis always give the same lines, so it is testable, replayable after a correction, and identical in every channel. And **the appraisal is not a stock item.** In [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) the commercial lifecycle begins at *Appraised*; I keep the appraisal in its own aggregate, because more than half of Axleby's appraisals never become stock. The dossier treats an open appraisal as a proposed stay; the stock item, with cost and risk, starts at *Purchased*.\n\n### The appraisal record\n\nThe appraisal stores **references to versioned facts, plus copies of what the dealer typed**, the rule [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) calls \"reference current facts, snapshot decision inputs\":\n\n| Part | Stored as | Example |\n| --- | --- | --- |\n| Vehicle | AVK (Axleby Vehicle Key), plate at appraisal, VIN | AVK plus the plate as shown on the car |\n| Register status | Observation id and time | Transfer allowed; no *awaiting inspection* flag |\n| Specification and history | Specbook resolution version; report snapshot id and coverage | As-built version 1; report 3, rule `odo-2.0` |\n| Odometer | Reading as entered, unit, photo id, validation result | 61,240 km, dashboard photo, consistent |\n| Condition | Condition report id and reconditioning estimate | 4 items, €1,085 |\n| Seller | Party reference, seller type, VAT status evidence | Consumer; margin scheme |\n| Valuation | Valuation id (typed answer in the ledger) | Retail, range and segment status |\n| MPP | Calculator version, policy version, lines | Every line visible |\n| Disposition | Retail, trade, auction or export, with reason | Retail |\n\nSeller identity is personal data kept in a referenced party record, so an appraisal that never became a purchase can be erased on schedule without breaking the valuation ledger ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n### Pricing uncertainty into the MPP\n\nThe EV Overvaluation produced one rule that I would now apply to any platform that suggests a buying price: **compute the MPP from a point of the valuation range chosen by the valuation's confidence, not always from the point value.**\n\n| Valuation state | Expected retail price used for the MPP | Offer behavior |\n| --- | --- | --- |\n| Segment `normal`, confidence flag normal | Point value | Suggested MPP shown; offers up to MPP without approval |\n| Thin sample, edition candidates, or `stale_market` | Midpoint of point value and the range's lower bound *(Axleby policy)* | MPP shown with the reason; flag on the offer |\n| Segment `watch` | Lower bound of the 80% range | MPP shown with \"segment under watch\"; offers above it need manager approval |\n| Segment `restricted` | None | No suggested MPP; \"manual appraisal advised\"; offers need the group's buying desk |\n| No valuation (outside the applicability contract) | None | Dealer's own figure, recorded as such |\n\nThe segment statuses come from Vantage ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)); the appraisal service only applies them. This is that chapter's per-segment circuit breaker at the point where it saves money: **the buying decision is gated, not the valuation.** The dealer still sees the value and can still buy, but an optimistic number is no longer presented as a safe one. The same applies to specification: [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html) buys as-built data at appraisal only when the candidates' value spread exceeds **€750**; below that, the MPP uses the cautious end of the candidate range.\n\n![Two valuation ranges with the same point value: a narrow range keeps the buying basis at the point value, a wide range moves it to a cautious point near the lower end.](assets/images/16-vehicle-acquisition/16-cautious-point.jpeg)\n**Figure 3:** *A valuation with a wide range supports a lower buying price than the same point value with a narrow one, so the MPP is computed from a cautious point when confidence is thin.*\n\n### The offer lifecycle\n\n![Offer states: Draft is committed to Issued; Issued is superseded by a revision, expires on days or distance, or is accepted; Accepted goes to Purchased at handover, or to Re-inspection when the check fails, which issues a new version.](assets/images/16-vehicle-acquisition/16-offer-lifecycle.jpeg)\n**Figure 4:** *The offer lifecycle. An issued offer never changes. A new price is a new version that supersedes the old one, and acceptance leads to purchase only after the handover check confirms the offer's conditions.*\n\n| Rule | Why |\n| --- | --- |\n| An offer is **issued** only when its version is committed on the server and the document is generated from that version | The seller's PDF or offer page and the dealer's record can never disagree |\n| Issued offers are **immutable**; revisions are new versions that supersede | The 23% of purchases with an unexplained price change become explained by construction |\n| Every offer carries **validity**: an expiry time and a distance limit over the appraised odometer | Bounds both market risk and the seller's driving |\n| Every offer lists its **conditions** in plain words: declared condition, keys and documents present, transfer allowed by the register, no outstanding finance where checkable | Acceptance can be checked against a list, not a memory |\n| **Acceptance** before expiry moves to purchase only after a handover check: odometer reading, quick condition confirmation, documents | A car that arrives with new damage goes to re-inspection, not to stock |\n| **Expiry** is a scheduled transition, and an expired offer cannot be accepted | The dealer may re-offer, but a new offer means a new version based on today's valuation |\n\nValidity defaults are policy, set per group and rooftop in Baseline. Axleby's defaults are **7 days or 500 km** beyond the appraised odometer, borrowing the US convention, shortened to three days when the segment is under `watch`. Long validity is a free option given to the seller, and in a falling segment it costs the dealer money.\n\n**The open-offer book is exposure.** A group's buying desk should see open offers by segment, against current MPPs. When Vantage moves a segment to `watch`, the appraisal service lists the open offers whose MPP would now be lower. The dealer still honors them, because an offer is a promise, but nobody is surprised.\n\n### Capture that works in the yard\n\nAxleby chose an installable web app, a progressive web app (PWA), over native apps for Lotwise Appraise. The decision was close, and two documented platform constraints shaped it:\n\n- **Offline storage needs installation on iPhones.** WebKit's March 2020 announcement capped all script-writable storage, including IndexedDB and service-worker caches, at seven days of Safari use without interaction, and said web apps added to the home screen \"are not part of Safari and thus have their own counter of days of use\" ([WebKit blog, 2020](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/)). The evidence is six years old; recheck it. Axleby requires installation for offline mode.\n- **Background synchronization cannot be assumed.** MDN marks the Background Synchronization API as \"not Baseline because it does not work in some of the most widely-used browsers\" ([MDN, n.d., accessed 2026-10](https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API)). The outbox syncs when the app is in the foreground and connectivity returns, and shows the appraiser what has not been sent. Photos are stored on the device first and uploaded in resumable chunks, each with a device-generated id.\n\nThe client also generates the appraisal id and every offer draft id, so a submission retried three times is one appraisal. The server owns the decision of record: issued offers, MPP lines and valuation ids exist only server-side. Offline, the app can identify a car from cached data, record the odometer, take photos and complete the checklist. It cannot invent a valuation.\n\n**Validation happens at entry, not at month-end.** After the Volvo V60, Lotwise validates every odometer reading against the latest stored reading as it is typed ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)). A reading more than 5,000 km above the expected trend, or below the last official reading, asks for a dashboard photo and a confirmation (Axleby thresholds). That matters because in the Netherlands the dealer submits the dashboard reading at stock-in, and the register judges the car's odometer history from such readings ([RDW, n.d.](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/tellerstanden/tellerstand-controleren)).\n\n### Hand-off to stock\n\nAn accepted offer that passes the handover check becomes a purchase. The appraisal service emits one `offer.accepted` event through its outbox, keyed by the appraisal id. The dossier then does three things in one transaction ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)):\n\n1. Creates the **stock item** in *Purchased*, keyed by tenant and AVK, with the purchase price as its first cost layer, the **VAT regime** from the seller's status and its evidence, the target gross from the MPP lines, and the disposition.\n2. Links the stock item to the appraisal, the offer version, the valuation id and the condition report. The valuation ledger receives the outcome link \"purchased at €X\" ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n3. Requests the register **stock-in** through Axleby Trade with the handover odometer reading ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)).\n\nIf the dossier already holds an open stock item for that tenant and AVK, for example because a stock-in from the dealer management system (DMS) arrived first, it attaches the appraisal and raises a merge task instead of creating a second one.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Scan to vehicle context (identity, register status, specification candidates, history summary) | Read; cached answers allowed with source time | p95 ≤ 2 s end to end *(assumption, as in [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html))* | Register technical data from the daily mirror; theft and awaiting-inspection status asked live, non-blocking at appraisal open | Degrade per source with a flag (\"status unchecked\"); never block capture |\n| Valuation and MPP lines | Ledger entry committed before the value is shown | Valuation p95 < 800 ms *(assumption, as in [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html))*; MPP local | Market surface ≤ 24 h | Cached surface with `stale_market`; MPP from the cautious point |\n| Capture on device | Local durable write first; eventual sync | Instant locally | Not applicable | Offline for at least a working day *(assumption)* |\n| Issue offer | Strong: offer version committed before the document exists | p95 < 1 s *(assumption)* | Uses the appraisal's snapshot | Needs connectivity, except the offline rule below |\n| Accept and purchase | Exactly once per appraisal; idempotent | Seconds | Conditions re-checked at handover, including a blocking live register status check | Must work when the DMS is down |\n| Register stock-in (NL) | Confirmed by the register before \"done\" | Minutes | Not applicable | Queued during an outage; not completed until it ends |\n\n## In Practice: Public Evidence and the Golf Variant at Brandsma\n\n### What the public record shows\n\n**Trade-ins dominate franchised supply in the US.** NADA Data 2025 from the National Automobile Dealers Association (published 2026) reports the sources of used vehicles retailed by US new-car dealers: trade-ins on new vehicles **45.4%**, trade-ins on used vehicles **23.6%**, auction purchases **21.9%**, street purchases **9.1%** ([NADA, 2026](https://www.nada.org/media/4695/download)). More than two thirds of supply arrives through the appraisal desk, as part of a sale. European trade bodies publish no comparable split. In the Netherlands, BOVAG and RDC data for 2025 show that about 35% of ownership changes were private-to-private, so about two thirds involved a business on at least one side ([Autoreview, January 2026](https://www.autoreview.nl/nieuws/id/37104/verkoopcijfers-2025-occasionkoper-moet-geen-ev)).\n\n**Large buyers treat buying as central policy.** CarMax's fiscal 2026 annual report credits its \"ability to quickly adjust appraisal offers to be consistent with trends in the broader trade-in market and the pace of our inventory turns\"; AutoNation's 2025 report describes \"our One Price used vehicle centralized pricing and appraisal strategy\". That is the case for buying policy in versioned configuration that a group owns.\n\n**Inspection is moving into the capture point.** In January 2026 Cox Automotive announced that its vAuto appraisal tools integrate UVeye drive-through scanners that capture \"exterior, underbody, and tire conditions in seconds\", aimed at acquiring cars in the service lane ([Cox Automotive, 2026](https://www.coxautoinc.com/press-releases/cox-automotives-vauto-and-uveye-bring-ai-powered-vehicle-inspections-to-market/)). A record that stores condition as evidence with a source and method can take scanner output as one more source ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)).\n\n**Reconditioning estimates are the weak line.** vAuto's own undated content cites an average **$600** gap between reconditioning estimates and actual cost ([vAuto, n.d.](https://www.vauto.com/resources/how-recon-estimates-hurt-your-appraisal-success/)). It is the MPP line the dealer controls, and it improves only if actual costs flow back from the stock item to the policy.\n\n**In Germany, the trade margin is a published parameter.** DAT's product description for SilverDAT valuateFinance (January 2024) derives the dealer purchase value from the dealer selling value \"depending on a trade margin set by DAT or the contract partner\" ([DAT, 2024](https://dynamic-www.dat.de/fileadmin/de/download/rechtliches/produktbeschreibung-silverdat-valuatefinance.pdf)): a one-parameter MPP that this design generalizes to visible lines.\n\n> **INFERENCE, NOT DOCUMENTED:** None of the companies above describes how its appraisal records, offer versions or validity checks are stored. The record and lifecycle in this chapter are a reference design, not a description of their systems.\n\n### The Golf Variant at Autobedrijf Brandsma\n\nThe rebuilt Lotwise Appraise ran as a pilot at 40 rooftops from June 2027, Brandsma among them, and became available to all Dutch and Belgian rooftops in October 2027. On Saturday 11 September 2027 a customer who is buying a 2023 Škoda Kodiaq from Sietse Brandsma offers his 2021 Volkswagen Golf Variant in part-exchange. [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html) follows the first half of this appraisal: the register narrowed the car to three editions, the value spread of €2,900 exceeded the €750 purchase threshold, and the as-built record showed a Style with a panoramic roof and a towbar. Vantage returned **€23,750** retail. All amounts below are Axleby illustrations.\n\n![Swimlanes for the appraise app, appraisal service, Vantage and dossier: 61,240 km in, €23,750 valuation, MPP €19,434, offer v2 at €19,250, acceptance, and a stock item created in the dossier.](assets/images/16-vehicle-acquisition/16-golf-scan-to-stock.jpeg)\n**Figure 5:** *The Golf Variant from scan to stock. Facts, valuation and policy are read by version. The dealer sees the MPP as lines. Each offer is a committed version, and acceptance hands over once, keyed by the appraisal id.*\n\n**Inspect.** Sietse records the odometer at **61,240 km** with a dashboard photo. The reading is consistent with the stored history, so no confirmation is needed. The checklist finds two worn tires, a service due and a scratched rear bumper. Gauge, the group condition service, prices them from Brandsma's own rate card and tags all four as reconditionable, so Vantage applies no condition deduction for them and the damage is not subtracted twice ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)).\n\n**Value and MPP.** The customer is a consumer, so the car will be sold under the margin scheme at the Dutch rate of 21%. Brandsma's buying policy (version 12 in Baseline) sets a target gross of **€1,600** for cars between €15,000 and €25,000, a 1.5% expected discount from asking price, and holding cost from depreciation of 1.5% a month plus 6% a year funding, the assumptions of [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html). Pulse expects **45** days to sell for this car in its region.\n\n| MPP line | Amount | Source |\n| --- | --- | --- |\n| Vantage retail value (80% range €22,900–€24,500; segment `normal`) | €23,750 | Valuation ledger |\n| Expected discount from asking price (1.5%) | −€350 | Policy v12 |\n| **Expected retail transaction price** | **€23,400** | |\n| Reconditioning: two tires €420, service €310, bumper €260, valet and photos €95 | −€1,085 | Condition report |\n| Register and report fees | −€18 | Price list |\n| Holding cost: ≈ €12.8 a day × 45 days | −€575 | Policy v12; Pulse days to sell |\n| Target gross after margin VAT | −€1,600 | Policy v12 |\n| Margin VAT on the lines above: 21% × €3,278 | −€688 | Margin scheme, consumer seller |\n| **Maximum purchase price** | **€19,434** | Calculator v3 |\n\nCheck: bought at €19,434 and sold at €23,400, the margin is €3,966; margin VAT is 21/121 of that, €688; after reconditioning, fees and holding cost, €1,600 remains.\n\nHad Vantage put the segment on `watch`, the MPP would have used the range's lower bound of €22,900, an expected transaction price of €22,557, and fallen by the same €843 to **€18,591**. A cushion of that size on each of the 610 battery-electric trade-ins would have covered about half of the €1.1 million the two dealer groups lost.\n\n**Offer.** Sietse opens at **€18,900**. The customer shows an online instant offer of €19,600 from a car-buying website. Sietse revises to **€19,250**, below the MPP, and the system issues version 2, superseding version 1 with the reason \"competing offer\". Version 2 is valid for seven days or until 61,740 km. Its conditions are that the condition is as inspected, both keys and the service book are present, and the register allows transfer at handover.\n\n**Purchase.** The customer accepts the next day, Sunday, and the Golf is handed over when the Kodiaq is delivered on Tuesday 14 September, three days after the appraisal. The handover check reads **61,302 km**, 62 km over the appraisal and inside the limit; no new damage is found; the live register check confirms that transfer is allowed and no theft or awaiting-inspection flag is set. The purchase agreement is signed, and the dossier creates the stock item with **€19,250** as its purchase price, `vatRegime = margin` with the purchase agreement as evidence, and a target gross of about **€1,752**: the €1,600 target plus the €184 of MPP that Sietse did not use, less margin VAT on it. Axleby Trade submits the stock-in to the Dutch register with the handover reading, and the customer receives the indemnification certificate (*vrijwaringsbewijs*), which the register requires the dealer to hand over at stock-in ([RDW, n.d.](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/bedrijfsvoorraad/voertuig-in-bedrijfsvoorraad-zetten)). The history report was part of Brandsma's Appraise bundle. The revised offer did not buy it again, because re-opening a report bought for the same car within 30 days is free ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)).\n\n### Lane mode: auctions and Tradefloor\n\nAt an auction or on Tradefloor, Axleby's B2B exchange, there is no consumer offer and no time for a checklist. Lane mode runs identify, check and value, then shows a **bid limit**: the MPP for the intended disposition minus the buyer's fee (€95 on Tradefloor) and transport. Three things differ from desk mode:\n\n- **The VAT basis comes from the seller.** Lessors sell with VAT; dealers may sell under either regime. After the Margin-Scheme Error, Tradefloor events carry the seller's VAT status, and lane mode refuses to compute an MPP when it is unknown ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)).\n- **Condition comes from someone else's report**, with its own grading scale ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)). The MPP uses it as third-party evidence, and the handover check compares it with the car that arrives.\n- **The commitment is the bid.** The appraisal records the bid limit and the bids placed, so a buying desk can see how often its buyers paid above their own limits. Buyer search profiles on Tradefloor are [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html)'s subject.\n\n## Failure Handling\n\n| Failure | Example | Detection | Recovery |\n| --- | --- | --- | --- |\n| **Duplicate appraisals** | Offline submission retried; two salespeople, or two rooftops of one group, appraise the same car | Client-generated appraisal id; open offers indexed by tenant and AVK, checked on sync | Retries return the existing record; a second appraiser sees the first offer and its expiry before issuing; group policy decides whether to match it |\n| **Conflicting offer edits** | Salesperson and manager revise on two devices | Offer versions with optimistic concurrency | Second revision fails with \"v2 issued by the sales manager at 14:02\" and must supersede v2 explicitly |\n| **Incomplete records** | No VIN visible, edition unknown, import with no history coverage, electric car without a verified battery certificate (Vantage returns `battery_unknown` and a wider range) | Appraisal completeness rules per disposition | Offer allowed with the gap named as a condition and the MPP on its cautious point; never silently assumed |\n| **Mistyped odometer** | 196,840 instead of 186,840 km | Entry validation against stored readings | Confirmation with photo; handover reading compared again before the register stock-in |\n| **Partial answers and supplier outages** | History assembler timed out; build-data provider down; valuation model unreachable | Per-source result class; health checks on scoring | Appraisal continues; offer carries \"subject to history check\" or names the edition; cached surface with `stale_market` and MPP from the cautious point |\n| **Retries during issue** | Network drops after \"issue offer\" | Offer draft id as idempotency key | Retry returns the committed version; never two documents with different numbers |\n| **Register outage** | Dutch register's transaction channel unavailable at month-end | Turnstile channel status | Purchase completes commercially; stock-in queued in order; the seller is told the indemnification certificate will follow and when; the register does not allow completion during the outage |\n| **Market moves while offers are open** | Segment moves to `watch` | Segment status change event | Open-offer exposure report per segment; existing offers honored; new offers on the cautious point and shorter validity |\n| **Stale register status** | Brandsma agreed a €9,800 Octavia trade-in on 14 April 2027 from a 19-day-old cache entry saying transfer was possible; the register refused the stock-in ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)) | Live status call at appraisal open (non-blocking) and at purchase confirmation (blocking) | \"Transfer allowed\" is an offer condition checked live at handover, never read from a cache |\n| **Accepted offer, car differs at handover** | New damage, missing key, 900 km over the limit | Handover check against the offer's conditions | Re-inspection; a new version or withdrawal per the stated conditions; reason recorded |\n\nTwo rules hold across the table. **A gap never becomes a default.** An unknown edition, missing history or an unknown VAT status is shown as a gap and named as a condition on the offer. It is never filled with the most common value. And **the purchase waits for one outside answer only**: the live register status at purchase confirmation, because buying a stolen car or one that cannot be transferred is the most expensive error in this chapter. The register transaction, the DMS update and every supplier call are queued, idempotent and visible.\n\n## Trade-offs\n\n### How much to show, and to whom\n\n| Option | What the salesperson sees | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **No MPP; value only** | Retail and trade values | Simple; dealer decides | Discipline depends on the person; no comparable record | Single-owner independents who buy every car themselves |\n| **MPP with lines** (Axleby default) | MPP and every line, offers up to MPP freely | Explainable; disputes are about a line; consistent across channels | Exposes margin targets to staff | Most independents and small groups |\n| **Suggested offer only; MPP hidden** | An opening offer and a ceiling that requires approval | Protects negotiation room | Staff cannot reason about the number; approval traffic | Groups with central buying desks |\n| **Automated binding offer** | Nothing; the system offers online | Scale; speed | Balance-sheet risk; needs segment circuit breakers and fast offer adjustment | Only with risk limits, as [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) warns |\n\n### Offer policy\n\n| Choice | Option A | Option B | My recommendation |\n| --- | --- | --- | --- |\n| Validity | Fixed (7 days or 500 km) | Shorter in volatile segments | Fixed default, shortened automatically under `watch`; long validity is a free option given to the seller |\n| Offline offers | Forbidden | Allowed up to the cached MPP, marked provisional | Allowed up to the cached MPP, because the dealer will make the offer verbally anyway; better recorded than not. Synced offers that conflict go to the manager |\n| Revisions | Edit the offer | New version supersedes | Always a new version with a reason |\n| Acceptance | Ends the appraisal | Leads to a handover check | Handover check against listed conditions |\n\nFor the capture client, native apps give the best camera, background upload and storage control at the price of two code bases and store review; a plain web page loses work offline; the installable web app sits between. **The client choice is reversible. The record model is not**: client-generated ids, a server-owned decision of record and versioned offers work with any client.\n\n## Across Markets: What Changes by Country\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Supply channels** | NL: about 35% of 2025 ownership changes private-to-private (BOVAG/RDC via Autoreview, 2026); lessors are major suppliers *(industry practice)* | Independents 38% of used purchases in 2025, ahead of franchised dealers at 36% (DAT-Report 2026 via [AUTOHAUS](https://www.autohaus.de/nachrichten/gw-trends/umbruch-auf-dem-gebrauchtwagenmarkt-freie-handelsgruppen-auf-dem-vormarsch-3771080), 2026) | Consumer-buying brands are large: We Buy Any Car bought 512,000 cars in the year to March 2025 ([Car Dealer Magazine](https://cardealermagazine.co.uk/huge-112-9m-loss-revealed-for-auction-firm-bca-and-we-buy-any-cars-owner/321091), 2025) | Trade-ins 69% of franchised used supply; auctions 21.9% (NADA, 2026) |\n| **Register action at purchase** | NL: stock-in to trade stock (*bedrijfsvoorraad*) with the dashboard odometer reading; seller receives the *vrijwaringsbewijs*; no completion during an outage (RDW). BE: not verified from primary sources | The registration certificate part II (*Zulassungsbescheinigung Teil II*) passes to the dealer; dealer stock is commonly deregistered *(industry practice)* | Trader tells the Driver and Vehicle Licensing Agency (DVLA) online, using the V5C log book reference ([GOV.UK, n.d.](https://www.gov.uk/sold-bought-vehicle)) | Title assigned with odometer disclosure ([49 CFR 580.5](https://www.law.cornell.edu/cfr/text/49/580.5)); lien payoff on financed trade-ins *(industry practice)* |\n| **Odometer evidence** | NL: register judgement *logisch*, *onlogisch* or *geen oordeel* (logical, illogical, no judgement); BE: Car-Pass, 345.5 million readings received in 2025 ([Car-Pass](https://www.car-pass.be/en)) | No public per-vehicle register; access needs a legal claim under the Road Traffic Act (§39 *Straßenverkehrsgesetz*) | Roadworthiness-test (MOT) history from the Driver and Vehicle Standards Agency (DVSA) | Odometer at titling in the National Motor Vehicle Title Information System (NMVTIS), available to used-car businesses ([49 USC 30502](https://www.law.cornell.edu/uscode/text/49/30502)) |\n| **Reference values** | Portal and data-provider values, e.g. Autotelex and aggregators *(see [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html))* | DAT dealer purchase value: selling value minus a trade margin | Auto Trader retail, trade, private and part-exchange values | KBB trade-in and Instant Cash Offer; Manheim Market Report (MMR) for wholesale |\n| **Units and tax basis** | km; margin scheme for consumer sellers; NL registration tax (*belasting van personenauto's en motorrijwielen*, BPM) in import MPPs | km; margin scheme | miles; UK margin scheme | miles; no VAT; sales tax at registration *(industry practice)* |\n| **Offer conventions** | No published convention found | No published convention found | Online offers conditional on inspection *(industry practice)* | 7 days or 500 miles (AutoNation); 7 days (CarMax, KBB) |\n\nWhat stays common is most of the chapter: the appraisal and offer aggregates, the MPP calculator, the confidence rule, the capture client, the outbox and the hand-off. What changes by market is narrow and belongs in **market packs**: the register adapter and its document set, the odometer source and how its judgement is shown, the distance unit in validity limits, the VAT basis rules and rate, the reference-value provider, and default validity. The **US differs in kind** on one point: a financed trade-in carries a lien that the dealer pays off, and the payoff amount is a deal line. In that market the offer must separate the price for the car from the equity the customer receives. Axleby does not operate in the US. A platform that does needs that split in its offer model, not in a market adapter.\n\n## The Chief Architect's View\n\n**Decide who owns the buying policy.** MPP lines are only as good as the targets, holding costs and reconditioning rates behind them, and those belong to the dealer or the group's used-car director, not to engineering. The platform makes the policy explicit, versioned and inherited (group → region → rooftop) and shows its effect. At Axleby, Tomás Ferreira's team owns the calculator, Baseline owns the policy store, and each group's used-car leader signs off its policy; for Velto, Mirjam Kuipers.\n\n**Treat segment thresholds as commercial changes.** Vantage's segment status gates buying, so Priya Raman's team (thresholds) and the appraisal team (their effect on offers) review changes together.\n\n**Close the loop or the MPP never improves.** Every MPP line has an outcome: actual reconditioning, days to sell, sale price. Measure them per line, rooftop and segment each quarter and feed them into policy defaults. Axleby's 31% of purchases without a reconditioning estimate show that the line most under the dealer's control was the least measured; with rate cards and estimates on every appraisal, Lotwise's mean reconditioning variance fell from +€310 in the second quarter of 2027 to +€95 in the fourth.\n\n**Watch four numbers**: offer acceptance rate by channel; purchases above MPP and their reasons; the open-offer book by segment against current MPP; reconditioning variance per rooftop. A rising acceptance rate in one segment is often the first sign that its MPP is too high.\n\n**Keep automated buying a board decision.** Lotwise suggests prices to people who decide. Binding online offers to consumers would make Axleby a buyer with inventory risk, and the Zillow reference in [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) applies. The architecture makes that possible; it should not make it look easy.\n\n## Questions to Ask\n\n1. Can you show, for any purchased car, the offer version the seller accepted, the valuation id and range behind it, and the policy version that computed the maximum purchase price?\n2. Does the MPP calculation know the car's VAT basis before it runs, and what happens when the seller's VAT status is unknown?\n3. Which point of the valuation range does the MPP use, and what changes when the valuation's segment is under watch or restricted?\n4. Do offers expire on distance as well as time, and is expiry a transition the system enforces?\n5. What can an appraiser record in a yard with no signal, and how do you prevent a retry, a second device or a second rooftop from creating a second appraisal or offer?\n6. Where is an odometer reading validated, and can a typo reach the register before anyone sees it?\n7. When the register, the history assembler or the build-data provider is down, what degrades, and how does the offer show it?\n8. Do actual reconditioning cost and days to sell flow back to the buying policy, and can a group see its open-offer book by segment when the market turns?\n\nThe accepted offer is where buying ends and owning begins. [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) takes the car from here: the stock item, its cost layers and VAT regime, the commercial lifecycle and the parallel tracks for preparation, advertising and registration.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [AutoNation Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/350698/000162828026007800/an-20251231.htm), AutoNation / SEC, 2026. \"We'll Buy Your Car\" offer honored for 7 days or 500 miles; One Price centralized pricing and appraisal.\n- [CarMax Form 10-K for fiscal 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm), CarMax / SEC, 2026. Seven-day written offers; about 1.1 million vehicles bought, about half retail-grade; quick adjustment of appraisal offers.\n- [Carvana Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm), Carvana / SEC, 2026. \"Automated, conditional offer\".\n- [OPENLANE Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1395942/000139594226000006/opln-20251231.htm), OPENLANE / SEC, 2026. Retail versus wholesale disposition depends on prices.\n- [Definitions of our values](https://b2b.kbb.com/kbb-vehicle-values/definitions-of-our-values), Kelley Blue Book, n.d., accessed 2026-10. Trade-in value; Instant Cash Offer valid seven days after verification.\n- [Cox Automotive's vAuto and UVeye bring AI-powered vehicle inspections to market](https://www.coxautoinc.com/press-releases/cox-automotives-vauto-and-uveye-bring-ai-powered-vehicle-inspections-to-market/), Cox Automotive, 2026. Drive-through inspection inside appraisal tools.\n- [How recon estimates hurt your appraisal success](https://www.vauto.com/resources/how-recon-estimates-hurt-your-appraisal-success/), vAuto, n.d. (vendor content). $600 average gap between reconditioning estimate and actual.\n- [Produktbeschreibung SilverDAT valuateFinance](https://dynamic-www.dat.de/fileadmin/de/download/rechtliches/produktbeschreibung-silverdat-valuatefinance.pdf), DAT, 2024. Dealer purchase value from selling value and a trade margin.\n- [Huge £112.9m loss revealed for BCA and We Buy Any Car owner](https://cardealermagazine.co.uk/huge-112-9m-loss-revealed-for-auction-firm-bca-and-we-buy-any-cars-owner/321091), Car Dealer Magazine, 2025. 512,000 cars bought by We Buy Any Car.\n\n### Standards, regulation and official documentation\n\n- [Council Directive 2006/112/EC (VAT Directive)](http://publications.europa.eu/resource/celex/32006L0112), EU Publications Office, 2006. Margin scheme, Articles 313–315.\n- [Voertuig in bedrijfsvoorraad zetten](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/bedrijfsvoorraad/voertuig-in-bedrijfsvoorraad-zetten), RDW, n.d., accessed 2026-10. Stock-in with odometer reading; mandatory release certificate.\n- [Tellerstand controleren](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/tellerstanden/tellerstand-controleren), RDW, n.d., accessed 2026-10. Register odometer judgement.\n- [Car-Pass](https://www.car-pass.be/en), Car-Pass vzw, n.d. (2025 figures), accessed 2026-10. Belgian odometer history.\n- [Tell DVLA you've sold, transferred or bought a vehicle](https://www.gov.uk/sold-bought-vehicle), GOV.UK, n.d., accessed 2026-10. Online notification for motor traders.\n- [49 CFR 580.5](https://www.law.cornell.edu/cfr/text/49/580.5), US GPO via Cornell LII, n.d., accessed 2026-10. Odometer disclosure at transfer.\n- [49 USC 30502](https://www.law.cornell.edu/uscode/text/49/30502), Cornell LII, n.d., accessed 2026-10. NMVTIS information available to prospective purchasers, including used-car businesses.\n- [§39 StVG](https://www.gesetze-im-internet.de/stvg/__39.html), Bundesministerium der Justiz, n.d., accessed 2026-10. Narrow private access to German register data.\n- [Full third-party cookie blocking and more](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/), WebKit, 2020. Seven-day cap on script-writable storage in Safari; home-screen web apps excluded.\n- [Background Synchronization API](https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API), MDN, n.d., accessed 2026-10. Not Baseline across major browsers.\n\n### Research and practitioner sources\n\n- [NADA Data 2025](https://www.nada.org/media/4695/download), NADA, 2026. Sources of used vehicles retailed by US franchised dealers.\n- [Verkoopcijfers 2025: occasionkoper moet geen EV](https://www.autoreview.nl/nieuws/id/37104/verkoopcijfers-2025-occasionkoper-moet-geen-ev), Autoreview (BOVAG/RDC data), 2026. Dutch ownership changes and private-to-private share.\n- [Umbruch auf dem Gebrauchtwagenmarkt](https://www.autohaus.de/nachrichten/gw-trends/umbruch-auf-dem-gebrauchtwagenmarkt-freie-handelsgruppen-auf-dem-vormarsch-3771080), AUTOHAUS (DAT-Report 2026), 2026. German independent versus franchised share.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

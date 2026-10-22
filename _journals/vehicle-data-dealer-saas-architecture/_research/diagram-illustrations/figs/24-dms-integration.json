@@ -1,0 +1,20 @@
+[
+ {
+  "id": "24-hitch-layer",
+  "visual_goal": "Show Hitch as an anti-corruption layer: DMS products behind per-family adapters, inbound idempotent upserts through an xref map, outbound commands with receipts, a reconciler, an authorization register and a health monitor driving degraded mode.",
+  "prompt": "A left-to-right component illustration. Far left: a stack of three generic grey server boxes labeled 'DMS products'. Next, a vertical wall of three small plug boxes labeled 'DMS adapters'. One arrow from 'DMS products' into 'DMS adapters' labeled 'files, APIs, events'. Right of the adapters, a blue box with a link-map icon labeled 'Upsert and xref map', with one arrow from 'DMS adapters' to it labeled 'canonical changes'. One arrow from 'Upsert and xref map' to a large teal box on the right labeled 'Lotwise Dossier'. Below, one arrow from 'Lotwise Dossier' into an orange box with receipt slips labeled 'Command queue', and one arrow from 'Command queue' back left into 'DMS adapters' labeled 'commands'. Above the adapters, a green box with a balance-scale icon labeled 'Reconciler', with one arrow down to 'DMS adapters' labeled 'compare'. Below the adapters, a box with a key icon labeled 'Authorization register', with one arrow up to 'DMS adapters'. Top right, a box with a heart-rate icon labeled 'Health monitor', with one arrow down to 'Lotwise Dossier' labeled 'degraded mode'.",
+  "alt": "DMS products connect through per-family adapters; inbound changes pass an upsert and xref map into the Lotwise Dossier, commands go back through a command queue; a reconciler, authorization register and health monitor govern the adapters and degraded mode."
+ },
+ {
+  "id": "24-read-before-retry",
+  "visual_goal": "Show a write-back that times out being resolved by reading the DMS state, producing a receipt with the DMS version.",
+  "prompt": "A left-to-right swimlane illustration with four vertical lanes, each headed by an icon and label: a screen labeled 'Lotwise Dossier', a tray of slips labeled 'Command queue', a plug box labeled 'DriveDesk adapter', a generic grey server labeled 'DriveDesk'. Horizontal arrows top to bottom: 'Lotwise Dossier' to 'Command queue' labeled 'reserve, key K'; 'Command queue' to 'DriveDesk adapter' labeled 'send K'; 'DriveDesk adapter' to 'DriveDesk' labeled 'set reserved'; dashed orange return arrow 'DriveDesk' to 'DriveDesk adapter' with a stopwatch labeled 'timeout'; 'DriveDesk adapter' to 'DriveDesk' with a magnifier labeled 'read stock unit'; return arrow 'DriveDesk' to 'DriveDesk adapter' labeled 'reserved, version 41'; return arrow 'DriveDesk adapter' to 'Command queue' with a receipt slip labeled 'receipt'; return arrow 'Command queue' to 'Lotwise Dossier' in green labeled 'acknowledged'.",
+  "alt": "Swimlanes for Lotwise Dossier, command queue, DriveDesk adapter and DriveDesk: the reserve command times out, the adapter reads the stock unit, finds it reserved at version 41, and returns a receipt that Lotwise shows as acknowledged."
+ },
+ {
+  "id": "24-degraded-mode-states",
+  "visual_goal": "Show the four per-rooftop integration states and that write-back resumes only after read-only reconciliation.",
+  "prompt": "A simple state loop of four large rounded tiles arranged in a diamond. Top: green 'Connected' with a plug icon. Right: orange 'Degraded' with an unplugged icon. Bottom: teal 'Reconciling' with a balance-scale icon. Left: blue 'Resuming' with a play icon. Exactly five arrows: 'Connected' to 'Degraded' labeled 'DMS unreachable'; 'Degraded' to 'Reconciling' labeled 'credentials rotated'; 'Reconciling' back to 'Degraded' labeled 'discrepancies'; 'Reconciling' to 'Resuming' labeled 'cleared'; 'Resuming' to 'Connected' labeled 'queue drained'. A small store-front icon in the centre of the diamond.",
+  "alt": "A rooftop moves from Connected to Degraded when the DMS is unreachable, to Reconciling once credentials are rotated, back to Degraded on discrepancies or on to Resuming when cleared, and to Connected when the command queue has drained."
+ }
+]

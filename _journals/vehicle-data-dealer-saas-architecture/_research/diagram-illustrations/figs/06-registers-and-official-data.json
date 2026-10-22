@@ -1,0 +1,23 @@
+[
+ {
+  "id": "06-turnstile-gateway",
+  "visual_goal": "Show Turnstile as one gateway with three paths (mirror and mutation feed, live broker, transaction relay), a purpose check in front of live and transaction paths, and one monitor over the adapters.",
+  "prompt": "A left-to-right diagram in three vertical bands. Left band: two generic source boxes stacked: 'Open data' at the top and 'Register channels' below; one arrow from each into the middle band. Middle band: one tall gateway block labeled 'Channel adapters', with a small gauge box labeled 'Monitor' above it and one dashed line from 'Monitor' down to 'Channel adapters' labeled 'health'. Right band: three boxes stacked top to bottom in one column: a database cylinder labeled 'Register mirror', a box labeled 'Live broker', a box labeled 'Transaction relay'. Exactly three arrows leave 'Channel adapters', one straight to each of these three boxes. One arrow from 'Register mirror' further right into a stream-shaped box labeled 'Mutation feed', labeled 'change events'. Further right of 'Live broker' and 'Transaction relay', a shield-shaped box labeled 'Purpose check' with two short arrows pointing left, one into 'Live broker' and one into 'Transaction relay', each labeled 'allow or deny'. No arrow connects 'Channel adapters' to 'Purpose check'.",
+  "alt": "Open data and register channels enter the channel adapters, which feed a register mirror (and from it a mutation feed), a live broker and a transaction relay; a purpose check allows or denies the live and transaction paths and a monitor watches the adapters' health.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "06-two-mutation-feeds",
+  "visual_goal": "Show two ways to build a mutation feed: diffing Dutch daily snapshots behind load guards, and applying UK MOT deltas in order with reload on a gap; both yield the same change events.",
+  "prompt": "A two-row diagram that converges on the right. Top row, left to right: two stacked file icons labeled 'Day N-1' and 'Day N', both with arrows into a gate box labeled 'Load guards'. From 'Load guards' one arrow down-right into an orange tray labeled 'Quarantine', labeled 'fails', and one arrow right into a box labeled 'Field diff', labeled 'passes'. Bottom row: a large file icon labeled 'Sunday bulk' stacked above a pile of small file icons labeled 'Daily deltas', both at the left; two separate arrows, one from 'Sunday bulk' and one from 'Daily deltas', each going directly into one box labeled 'Apply in order'. No arrow between 'Sunday bulk' and 'Daily deltas'. One curved dashed arrow from 'Apply in order' back to 'Sunday bulk', labeled 'gap found'. On the right, between the rows, one green event-stream box labeled 'Change events'; one arrow from 'Field diff' into it and one arrow from 'Apply in order' into it.",
+  "alt": "Top: day N-1 and day N snapshots pass load guards (failures go to quarantine) and a field diff; bottom: the Sunday bulk and daily deltas are applied in order, reloading from bulk when a gap is found; both produce change events.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "06-answer-classes",
+  "visual_goal": "Show that every live register answer gets a class; only Answered and NotFound are register statements, Unavailable can fall back to the mirror for screens, and blocking facts wait.",
+  "prompt": "A simple state map of seven rounded tiles. Left: blue 'Asked'. To its right, a column of four tiles: green 'Answered' at the top, green 'NotFound' below it, orange 'Refused' below that, orange 'Unavailable' at the bottom. A light green rounded band groups 'Answered' and 'NotFound'. Further right: teal 'Served from mirror' with a small clock icon, and grey 'Decision waits' with a small hourglass icon. Arrows: four arrows from 'Asked', one to each of 'Answered', 'NotFound', 'Refused' and 'Unavailable'; one arrow from 'Unavailable' to 'Served from mirror' labeled 'screen only'; one arrow from 'Unavailable' to 'Decision waits' labeled 'blocking fact'; one arrow from 'Refused' to 'Decision waits'; one long curved arrow from 'Decision waits' back to 'Asked' labeled 'channel recovers'.",
+  "alt": "Asked leads to Answered, NotFound, Refused or Unavailable; Unavailable is served from the mirror for screens or makes a blocking decision wait; Refused also waits; waiting decisions return to Asked when the channel recovers.",
+  "aspect_ratio": "16:9"
+ }
+]

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cox Automotive: Building a Portfolio Into a Platform</title>
+    <meta name="description" content="What does the largest acquired portfolio in automotive retail teach a Chief Architect about turning many products into one platform? That integration happens in layers over years (infrastructure, governance, identity, data, APIs, embedded features), that linking and federating beat replacing for an acquired estate, and that owning data on both sides of the transaction is a stronger position than owning a system of record you cannot make dominant.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Cox Automotive: Building a Portfolio Into a Platform">
+    <meta property="og:description" content="What does the largest acquired portfolio in automotive retail teach a Chief Architect about turning many products into one platform? That integration happens in layers over years (infrastructure, governance, identity, data, APIs, embedded features), that linking and federating beat replacing for an acquired estate, and that owning data on both sides of the transaction is a stronger position than owning a system of record you cannot make dominant.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/case-cox-automotive.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/50-case-cox-automotive/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-10.html" title="Part X — PRACTICE: How Others Built It">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-cdk-global.html" title="CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part X — PRACTICE: How Others Built It</p>
+        <h1>Cox Automotive: Building a Portfolio Into a Platform</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  33 min read · <a class="spec-link" href="case-cox-automotive.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/50-case-cox-automotive/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/50-case-cox-automotive/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-10.html" title="Part X — PRACTICE: How Others Built It">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-cdk-global.html" title="CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Cox Automotive: Building a Portfolio Into a Platform", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "What does the largest acquired portfolio in automotive retail teach a Chief Architect about turning many products into one platform? That integration happens in layers over years (infrastructure, governance, identity, data, APIs, embedded features), that linking and federating beat replacing for an acquired estate, and that owning data on both sides of the transaction is a stronger position than owning a system of record you cannot make dominant.", "permalink": "case-cox-automotive", "timetoread": "33 min read", "icon": "assets/icons/50-case-cox-automotive.png", "logo": "assets/images/50-case-cox-automotive/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Read Cox Automotive's public record (company releases, conference talks, vendor case studies, a published index methodology and court filings) as an architecture case. You will separate what Cox documented, with dates, from the author's interpretation, see where the evidence stops, and compare the case with the book's patterns and Axleby's choices.\n\n> **WHY THE BUSINESS CARES:** Cox is what a vehicle data and dealer software group looks like when acquisitions run for two decades: a portal, a valuation brand, auctions, inventory tools, a CRM, a DMS, floorplan finance and transport under one owner. Its record shows what such a group can sell that a single-product competitor cannot, and how long it takes before customers experience the brands as one company.\n\n> **WHY ARCHITECTS SHOULD CARE:** Few acquired portfolios have described their own integration in public, in dated steps. Cox has: a cloud migration (2018), platform scorecards (2019), single sign-on (2020–2021), a unified data brand (2022), a federated API graph (2024) and a customer data platform embedded into its CRM (2026). The order of those steps, and what each one left untouched, is the lesson.\n\n> **KEY POINTS:**\n>\n> * **Portfolio integration comes in layers, and each layer takes years.** Cox's dated record runs infrastructure (AWS, 2018), governance (Well-Architected scorecards over 200+ platforms, 2019), identity (Bridge ID, 2020–2021), data (DRiVEQ, 2022), APIs (federated GraphQL, 2024) and embedded cross-product features (Fullpath inside VinSolutions, 2026). That is eight years for six layers, in a group with more than 2,000 engineers in 2019.\n> * **Cox unified by linking and federating, not by replacing.** Bridge ID links one account per product to a central login; the federated graph wraps the existing VIN decoder rather than rewriting it. That keeps acquired products running, but the public record shows no shared tenancy or authorization model underneath, and \"no extra login\" was still a product headline in October 2026.\n> * **Data on both sides of the transaction is the durable advantage; a minority system of record is not.** Cox sees wholesale auction prices, retail adverts, leads, credit applications and valuation requests, and it publishes the methodology of the Manheim index it sells. Yet its products depended on rival dealer management systems (DMS) for dealer data: Cox sued CDK Global in 2017 and settled in 2019, and it owned and then sold the European DMS incadea within about three years.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Acquisition Archipelago** — Cox grew from more than 20 brands, each with its own users, data and APIs, and its public record is a decade-long effort to make them behave as one.\n> * **DMS Hostage** — although Cox owned Dealertrack, about 17% of the US DMS market in 2017, its other products depended on access to CDK and Reynolds systems, which led to litigation.\n> * **The Confident Valuation** — the Manheim Used Vehicle Value Index is the clearest public counter-example: a defined sample, documented outlier and mileage rules, seasonal adjustment and a published rebase.\n\n<br>\nCox Automotive describes itself as \"the world's largest automotive services and technology provider\", a claim from its own October 2026 press boilerplate. In the same text it reports \"29,000+ employees on four continents\" and brands that include Autotrader, Kelley Blue Book, Manheim, vAuto, Dealertrack, NextGear Capital, CentralDispatch and Cox Fleet. **No other company in this book's field assembled so many parts of the used-car value chain under one owner**, and few have said as much in public about how they tried to make the parts work together.\n\nThis chapter asks three questions of that record. *In what order does an acquired portfolio become a platform, and how long does each step take? What does unification look like when the products cannot be rewritten: one login, one vehicle key, one data layer? And where should a portfolio group own the system of record, and where should it integrate with someone else's?* The third question links this case to the next one, [CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html), which looks at the same market from the DMS vendor's side.\n\nThe chapter is part of [Part X — PRACTICE: How Others Built It](part-10.html). Axleby, the fictional vehicle data and dealer software group this book follows ([Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), appears only in the final comparison. Axleby was also assembled by acquisition, but it is not a disguised Cox: it is pan-European, has about 300 engineers against the more than 2,000 Cox reported in 2019, and none of its products, numbers or incidents are Cox's.\n\n## How to Read This Case\n\nPart X cases follow stricter evidence rules than Parts I–IX. A **documented fact** carries its source and publication year in the sentence. **The author's interpretation** is marked \"my reading\" or sits in the Chief Architect's view. A **reference-architecture inference** sits in a callout labeled `INFERENCE, NOT DOCUMENTED`. Undated web pages are cited as \"read October 2026\" and treated as current but changeable.\n\n**Much of the best evidence is old, and much of it is written by vendors.** Cox's AWS announcement is from 2018 and its Well-Architected talk from 2019. The API and data-platform evidence comes from Apollo GraphQL, Amazon Web Services (AWS) and Databricks customer stories, which are partly marketing; their numbers are the vendors' numbers. This book found no Cox engineering blog. A 2018 source is cited as a 2018 source, not as a description of today.\n\n**Ownership names need care.** The UK's Autotrader is Auto Trader Group plc, a separate listed company and the subject of [Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html); Cox's Autotrader is the US marketplace. Kelley Blue Book (KBB) is a US consumer valuation brand.\n\n**The case is strongest on sequence and weakest on internals.** It shows *what* Cox unified and *when*. It does not show how products share tenancy, how dealer entities map across brands, or how the data platform enforces licenses. \"Where the Public Evidence Stops\" lists those gaps.\n\n## Timeline: Cox Automotive in Dated Events\n\nDates are those of the cited publications. Product names, headcounts and the European brand list are volatile as of October 2026.\n\n| Date | Event | Source type |\n| --- | --- | --- |\n| 1968 | Cox Enterprises acquires Manheim (auctions) | Cox fact sheet, 2018 |\n| 2010 | AutoTrader.com acquires Kelley Blue Book, vAuto and HomeNet Automotive | Cox fact sheet, 2018 |\n| 21 Aug 2014 | Cox Automotive formed as a division of Cox Enterprises, grouping 20+ brands in five areas; Xtime acquired the same year | Cox release, 2014 |\n| Oct 2015 | Cox closes the purchase of Dealertrack, with Dealer.com, for about $4 billion | Press, 2015 |\n| 2016 | \"Concentrated migration to the cloud\" on AWS begins | AWS case study, c. 2021 |\n| Apr 2018 | Cox announces it is going \"all in\" on AWS and closing 40+ data centers | Amazon release, 2018 |\n| Dec 2017 – Jul 2019 | Cox sues CDK Global over DMS data access (filed 11 Dec 2017); settles 10 Jul 2019 | CDK 10-Q, 2021 |\n| Dec 2018 | incadea joins Volaris after Cox separates and sells it | Volaris, 2022 |\n| Dec 2019 | re:Invent talk: Well-Architected reviews across 200+ platforms, 350 teams | Session report, 2019 |\n| 2020–2021 | Bridge ID single sign-on rolled out to Cox users | Cox Bridge ID page, read 2026 |\n| Jun 2021 | Manheim Deutschland buys pkwNOW, a German dealer-to-dealer auction | Law firm release, 2021 |\n| Feb 2022 | DRiVEQ launched: \"unified data streams from across all of our businesses\" | Cox release, 2022 |\n| Jan 2023 | Manheim index rebased to January 1997 = 100 | Manheim methodology, 2023 |\n| Jun 2024 | PlatformCon talk: \"from API silos to a unified API strategy\" | Conference listing, 2024 |\n| Dec 2024 | AWS describes the Cox Automotive Data Marketplace on S3 | AWS blog, 2024 |\n| 1 Jan 2025 | Manheim Express starts a B2B platform for cross-border used-car exports in the EU | Trade press, 2025 |\n| 23 Apr 2026 | Agreement to acquire Fullpath, a customer data platform | Cox release, 2026 |\n| 8 Oct 2026 | Fullpath's CDP embedded in VinSolutions CRM for mutual clients | Cox release, 2026 |\n\n## The Portfolio: What Each Product Owns\n\nWhen Cox Enterprises formed Cox Automotive on 21 August 2014, its release grouped more than 20 brands into five areas: Auctions and Wholesale Services, Financial Services, Media, Software and International. Sandy Schwartz, the new president, said \"the automotive space is not one where any of us can go it alone\". The 2015 Dealertrack purchase, about $4 billion in cash and the largest deal in Cox's history at the time, added a DMS, a finance-and-insurance (F&I) credit-application network, registration and titling services, and Dealer.com websites.\n\nThe table maps the portfolio to the book's capabilities. A **DMS** is the dealer's operational system of record for deals, accounting, parts and service ([Living With the DMS: Dealer Management System Integration](dms-integration.html)). **F&I** is the dealer's finance and insurance desk, where credit applications and contracts are prepared. **Floorplan finance** is credit that funds a dealer's stock.\n\n| Domain | Cox brands (US unless noted) | What the product owns | Book chapter |\n| --- | --- | --- | --- |\n| Consumer marketplace and media | Autotrader, Kelley Blue Book | Shopper traffic, listings, leads, consumer valuations | [The Consumer Door: Plate Checks, Reports and B2C Services](consumer-vehicle-checks.html), [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html) |\n| Valuation and pricing data | Kelley Blue Book, Manheim Market Report, vAuto | Retail and wholesale values, pricing guidance | [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html) |\n| Wholesale and auctions | Manheim; Dealer Auction (UK); Manheim Express (continental Europe) | Physical and digital auctions, condition reports | [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html) |\n| Inventory and merchandising | vAuto, HomeNet | Appraisal, stocking, pricing, listing syndication | [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) |\n| Websites and marketing | Dealer.com, Fullpath | Dealer websites, ad targeting, customer data platform | [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html) |\n| CRM | VinSolutions | Leads, sales pipeline, customer records | [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html) |\n| DMS and F&I | Dealertrack DMS, Dealertrack F&I | Accounting, deals, credit applications, registration | [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html), [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) |\n| Service | Xtime | Service scheduling | — |\n| Floorplan finance | NextGear Capital (US, UK, Ireland) | Stock funding | — |\n| Transport | CentralDispatch; Movex (UK) | Vehicle transport marketplaces | — |\n\nCox's 2018 fact sheet gives the scale behind the brands at that date: more than 34,000 employees, 40,000 dealer clients, 139 Manheim auction sites, more than $58 billion in used-vehicle transaction value through Manheim, 50 million financed titles managed by Dealertrack, more than 7,000 US vAuto dealer clients, and a claim that Autotrader and KBB \"reach 73 percent of all car shoppers\". In April 2026 Cox cited \"40,000+ existing dealer relationships\". These figures are Cox's own and eight years apart; the brief behind this chapter found no source explaining the fall in headcount from 34,000+ to 29,000+.\n\n**My reading is that the portfolio's value lies in the hand-offs between products, not in any single product.** The figure traces the used-car cycle through Cox brands. Each arrow is a data flow that a single-product competitor must buy from someone else or do without.\n\n![A loop of generic product tiles: marketplace, website and CRM, deal and title, wholesale auctions, appraise and price, with floorplan finance funding stock and auctions feeding a market index.](assets/images/50-case-cox-automotive/50-used-car-cycle-portfolio.jpeg)\n**Figure 1:** *The used-car cycle across Cox brands. The products are documented; the flows between them are the author's reading of how a full-stack portfolio could connect, not a description of Cox's integrations.*\n\n> **INFERENCE, NOT DOCUMENTED:** Whether these hand-offs run through shared services, a shared data lake or point-to-point integrations between products is not publicly documented, except for the API and data-platform work described below. A reference architecture for this portfolio would need three shared things: a vehicle identity every product resolves to, a dealer and user identity so a dealer is one customer rather than ten, and a data layer so a signal from one product (a lead, a trade-in appraisal, an auction sale) can be used in another. The rest of the public record shows Cox working on roughly those three, in roughly that order, but never says how far each one reaches.\n\n## Infrastructure and Governance First (2016–2019)\n\nCox's first documented platform move was not a shared product service. It was shared infrastructure and shared measurement.\n\n**The cloud migration.** AWS's undated case study (about 2021) says Cox began a \"concentrated migration to the cloud\" on AWS in 2016. In an April 2018 release, Amazon announced that Cox was going \"all in\" on AWS: migrating most of its 20+ brands, including Autotrader, Dealer.com, Dealertrack, KBB, Manheim, vAuto and Xtime; closing more than 40 data centers; modernizing monoliths with Amazon ECS, AWS Lambda and Amazon Aurora; testing EKS and Fargate; and building a company-wide data lake on Amazon S3. The release is eight years old. This book found no source saying how far the migration got, or where the Dealertrack DMS runs today.\n\n**Governance by scorecard.** At AWS re:Invent in December 2019 (session ARC212-R), Cox's VP of Architecture Chris Dillon and Director of Engineering Operations Gene Mahon described the starting position in a third-party session report: 27 brands, 53 data centers, 30 locations, more than 2,000 engineers and 350 engineering teams. Cox ran a Well-Architected review for each platform, rated each green, yellow or red, and rolled the results into a balanced scorecard. Findings from the Security and Reliability pillars became a \"tech risk\" score; the other pillars became an engineering-maturity score. Improvement ran as a quarterly cycle, and engineers did the work as part of their normal jobs, not in a separate program.\n\n**Two clouds, not one.** A 2021 talk described Cox Automotive UK moving its data platform from manually deployed Hadoop clusters to Azure Databricks. So the UK data platform ran on Azure while the US group had announced AWS. My reading: in a group that grows by acquisition, a second cloud is normal, and data sharing has to be designed across it rather than assumed away.\n\n**Why this order makes sense.** The re:Invent scorecard is, in effect, a portfolio inventory with a risk rating per platform: it answered \"which of our 200+ platforms would hurt us first?\" before anyone asked \"which should share a login?\" I would make the same move at smaller scale ([One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html) develops it for Axleby).\n\n## One Login, Many Accounts: Bridge ID (2020–2021)\n\nCox's public identity story is **Bridge ID**, its single sign-on (SSO). The Bridge ID page (read October 2026) says it \"lets you break free of endless logging in and out of unconnected systems\". It lists the supported products as Autotrader, Dealer.com, Dealertrack F&I and DMS, HomeNet, KBB Instant Cash Offer, vAuto, VinSolutions and Xtime. Its rollout text, still on the page in 2026, refers to 2020 and 2021: \"In 2021, Bridge ID will be rolled out to all Cox Automotive users.\" Dealertrack quick-reference guides from 2020 describe an earlier phase that covered vAuto, Dealer.com and a Dealertrack product.\n\n**The design is visible in the FAQ.** A user \"can attach a single solution account from each of these solutions to your Bridge ID account\", and needs \"your username and password for each solution you would like to attach\". If an account is linked to the wrong Bridge ID, the user must contact \"the technical support team for the Cox Automotive solution\" to relink it. The Bridge ID page itself does not mention multi-factor authentication or federation. A separate, undated **Bridge Federation** page (read October 2026) offers federation to \"Dealerships and Lender Partners with their own Identity Provider\": they must \"Adopt OIDC [Open ID Connect] as the protocol for authenticating Bridge users\" and \"Ensure all employees whose authentication will be federated are already Bridge Users\", and enrollment starts with a request form. Federation therefore sits on top of the linked Bridge accounts; it does not replace the per-product link. [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html) cites the same two pages.\n\n![A dealer employee signs in once to a central login, which is linked to four separate user stores, each with its own roles card.](assets/images/50-case-cox-automotive/50-central-login-linked-accounts.jpeg)\n**Figure 2:** *Bridge ID as documented: one central login linked to one account per product. Authentication is shared; whether roles and dealer-entity mapping are shared is not documented, and the per-product relink process suggests they stay in each product.*\n\n**My reading is that Bridge ID is the cheapest correct first step, and that its limits are exactly the ones the FAQ reveals.** Linking accounts lets a dealer employee move between products without signing in again. It does not create a shared answer to \"which rooftops may this person see, in which products, with which role?\" Each product still owns its users, roles and mapping from users to dealers. A wrong link is fixed by product support, one product at a time.\n\nThe book separates two layers of identity that Bridge ID shows can be built at different times:\n\n| Layer | What it answers | What Bridge ID shows | What a portfolio needs eventually |\n| --- | --- | --- | --- |\n| **Platform identity** | Who is this person? Credentials, multi-factor authentication, federation, deprovisioning | Built and retrofitted over existing products, 2020–2021 | One login for every product, with federation to dealer groups' own identity providers |\n| **Tenancy and authorization** | Which dealer group, rooftops, products and roles does this person have? | Not documented; relinking per product suggests it stays local | One organization model (group → rooftop → user → role) that every product consumes ([Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)) |\n\n**Five years after the rollout, \"one login\" is still a headline.** Cox's 8 October 2026 release on embedding Fullpath's customer data platform into VinSolutions lists \"One less system to log into\" as the first benefit. It concerns a newly acquired product, so it is not evidence that Bridge ID failed; it is evidence that each acquisition restarts the identity work.\n\n> **INFERENCE, NOT DOCUMENTED:** A plausible reason for the linking model is cost and risk. Replacing the user stores of eight products means migrating every user, every role and every integration that authenticates against them, at once or product by product, while the products keep shipping. Linking moves authentication to the center and leaves authorization where it was. The price is that dealer-group administration (who may see which rooftop in which product) stays fragmented until a shared tenancy model exists. Nothing in the public record says whether Cox has built one.\n\nCox's record also shows the consumer as a separate identity problem. An AWS Database Blog post from September 2020 describes Cox's Consumer Insights team choosing, in October 2019, an identity graph on Amazon Neptune for \"householding and lead mapping\" across business units, with \"approximately 0.5 billion edges and 0.4 billion vertices\". The 2026 Fullpath purchase continues that line. A portfolio group resolves three kinds of identity (vehicle, dealer and user, shopper), each with its own key, matching rules and, in Europe, lawful basis under the General Data Protection Regulation (GDPR) ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n## The Shared Kernel: VIN Decode, Federated APIs and the Data Marketplace\n\nIf identity of people is the first shared thing, identity of vehicles is the second. A **vehicle identification number (VIN)** is the 17-character identifier assigned at manufacture ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)). **VIN decoding** turns it into make, model, year, engine and, with build data, trim and options ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)).\n\n**From API silos to a graph.** At PlatformCon in June 2024, Brendan McNichols, Senior Director of Architecture, presented \"Cox Automotive's journey from API silos to a unified API strategy\". The talk listing says Cox \"grew through acquisitions\" while customers expect the brands to work together, and that the platform team set out to turn separate endpoints into a composable API platform. It framed the work as product-driven rather than technology-driven, with changes to governance, and used Apollo Federated GraphQL. **GraphQL federation** composes the schemas of many services into one graph that clients query through a single gateway, while each service keeps its own data.\n\n**The VIN decoder as a joined service.** Apollo's customer story (undated, read October 2026) describes Cox Automotive Data Services (CADS), \"a center of excellence\" managing hundreds of APIs for Autotrader, KBB, Manheim and vAuto, with API complexity from \"15 companies over 15 years\". Its VIN decoder was a REST API with complex business logic that sat outside the federated graph. Apollo Connectors brought it into the graph without a rewrite, so that teams could decode a VIN, get a vehicle ID and join valuations in one query. Apollo reports 2 days to integrate, about six engineer-years avoided, 99.95% uptime and 80% less troubleshooting time. These are a vendor's numbers in a vendor's story.\n\n![A product team app sends one query to a graph gateway; the gateway sends a VIN to an existing VIN decoder, gets a vehicle ID back, and passes it to valuation and to listings and auctions, each with its own database.](assets/images/50-case-cox-automotive/50-federated-graph-vin-key.jpeg)\n**Figure 3:** *The documented pattern: an existing VIN decoder wrapped into a federated graph so that one query resolves a VIN to a vehicle ID and joins valuations. Each service keeps its own storage; the graph shares the key, not the database.*\n\n**My reading: the VIN decoder is the shared kernel of a vehicle-data portfolio, and Cox's story treats it that way.** The important output is not the decoded attributes but the **vehicle ID**, a key that other services accept. Once valuation, listing and auction services join on that key, a client can combine them without knowing which acquired company built each one. That is the same move the book makes with Axleby's Anchor and its Axleby Vehicle Key (AVK), and it rests on the same precondition: every product must resolve to the shared key, not keep its own.\n\n**The data marketplace.** An AWS Storage Blog post from December 2024 says Cox \"builds data products from their S3 aggregated data\", used \"from analytics to powering vehicle valuations in Kelley Blue Book or Autotrader\", and that internal builders \"can get petabytes of data from the Cox Automotive Data Marketplace\". A Databricks customer story (undated, seen as a search summary) reports that Cox's enterprise data services team runs about 300 orchestration jobs, about 120 of them scheduled, and uses Unity Catalog and Delta Sharing for governance and sharing. Both are vendor-authored.\n\n> **INFERENCE, NOT DOCUMENTED:** A federated graph and a data marketplace are complementary. The graph serves request-time joins for applications (decode this VIN, value this car now); the marketplace serves bulk history for analytics and model training. What neither shows publicly is how licenses and purposes are enforced when one brand's data is used by another, for example whether a dealer's CRM data may train a consumer valuation model ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)).\n\n**What federation does not fix.** Federation joins services at query time; it does not reconcile what they mean. If two acquired products define \"vehicle in stock\" or \"dealer\" differently, a federated graph exposes both definitions side by side. My reading is that this is why the PlatformCon talk emphasizes governance and product framing over technology: the graph is the cheap part, and agreeing on the shared types is the expensive part ([Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html)).\n\n## Data as a Product: DRiVEQ and the Manheim Index\n\n**Seeing both sides of the transaction.** In February 2022 Cox launched **DRiVEQ** as the brand for its data intelligence. Chief Product Officer Marianne Johnson said: \"Through DRiVEQ, we've unified data streams from across all of our businesses into a single platform.\" The launch listed annual scale: about 2.3 billion online visits, 80 million leads, 27 million vehicle sales, 48 million credit applications, 4.4 million trade-in requests, 18 billion vehicle valuation requests, 30 million in-market VINs, more than 100 million service records and 3.5 million condition reports. The DRiVEQ brand does not appear in the 2026 Cox releases read for this chapter, but the \"2.3 billion online interactions a year\" figure is still in Cox's October 2026 boilerplate.\n\n**My reading is that this list, not any single product, is Cox's moat.** It spans wholesale outcomes (auction sales, condition reports), retail intent (visits, leads, trade-in requests), financing (credit applications) and after-sale behavior (service records). A competitor with one product sees one or two of these. A valuation trained on wholesale and retail signals can be checked against what cars actually sold for, which is the full-stack version of the book's argument in [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html): valuation quality depends on observing transactions, not only asking prices.\n\n![Left, an observer sees a car only through one window showing the asking price; right, the same car is seen through four windows: auction sale, lead, credit application and service record.](assets/images/50-case-cox-automotive/50-both-sides-of-the-transaction.jpeg)\n**Figure 4:** *A single-product rival sees one or two signals about a car; a portfolio spanning wholesale, retail, finance and service sees the outcome as well as the asking price.*\n\n**An index with a published method.** The **Manheim Used Vehicle Value Index (MUVVI)** is a monthly measure of US wholesale used-vehicle prices. Manheim's summary methodology, published in January 2023, documents it:\n\n| Element | Documented rule (Manheim, 2023) | Why it matters architecturally |\n| --- | --- | --- |\n| Sample | \"All Manheim U.S. sales that fall into one of the 20 market classes\"; heavy trucks, motorcycles and similar excluded | The population is defined, so changes in coverage are visible |\n| Outliers | A sale is an outlier when \"both price *and* mileage are outside of 2.6 standard deviations\" for its model year, make and body | Outlier handling is a published rule, not a hidden judgement |\n| Mileage | Per-market-class linear regression of price on miles, from the current month; adjusts for the gap to the class's 24-month average mileage | Separates a change in prices from a change in the cars being sold |\n| Weighting | A 24-month rolling average of sales by market class (originally fixed 1998 weights) | Mix shifts do not move the index by themselves |\n| Seasonality | \"The current iteration of Census X methodology\" | Month-to-month changes are comparable |\n| Rebase | From January 2023, base January 1997 = 100 instead of January 1995; percent changes since January 2015 unchanged | A methodology change is published, and comparability is preserved |\n\nCox's May 2020 release describes the index as the industry's only seasonally adjusted measure of used-vehicle values adjusted for mix and mileage, with full monthly data \"released the fifth business day of the month\". That release put April 2020 at 125.8, down 11.41% month on month, on the old base: the early-pandemic shock, measured and published within a week of the month's end.\n\n**Why this is the counter-example to the Confident Valuation.** The failure pattern is a valuation without stated confidence, comparables or back-testing that stays trusted after the market moves ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)). The MUVVI is an index, not a per-car valuation, but its discipline transfers. A rebase that keeps historical percent changes intact is a **backward-compatible restatement**, the property any versioned data product needs ([Selling Insight: Enrichment, Market Insight and Predictive Data Products](data-products-and-insights.html)).\n\n**What the public record does not show** is how KBB, vAuto or the Manheim Market Report compute per-vehicle values, how they are back-tested, or how quickly they react to a shock like the 2020 fall. The index methodology is published; the per-car models are not.\n\n## Downstream of a Rival's System of Record: Dealertrack, CDK and Reynolds\n\nCox owns a DMS, but not the dominant one. The Seventh Circuit's November 2017 opinion in *Authenticom v. CDK Global* recorded US DMS shares at that time as CDK over 40%, Reynolds and Reynolds around 30% and Dealertrack roughly 17%. Those are 2017 figures recited by a court, not current market data.\n\nThat position put Cox on both sides of the DMS data-access dispute. **Dealer data access** here means reading and writing a dealer's stock, deals, customers and service records held in the DMS, which products such as inventory tools, CRMs and service schedulers need. Cox was a DMS vendor through Dealertrack and one of the largest buyers of DMS data access for vAuto, VinSolutions, Xtime and Dealer.com, most of whose dealer customers ran CDK or Reynolds.\n\nCDK Global's quarterly report filed in February 2021 records the litigation. The cases were consolidated in the Northern District of Illinois; plaintiffs included Authenticom, Motor Vehicle Software Corporation, a putative dealership class, a putative vendor class led by AutoLoop, and **Cox Automotive and multiple subsidiaries**, who filed on 11 December 2017. The allegations concerned \"anti-competitive agreements\" between CDK and Reynolds \"relating to the manner in which the defendants control access to, and allow integration with, their respective Dealer Management System\". CDK settled with Cox on 10 July 2019 for a one-time cash payment; the amount was not disclosed. The court record and the wider dispute belong to [CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html); this chapter takes only Cox's side of it.\n\n**My reading is that this is the clearest public example of DMS Hostage at portfolio scale.** A group with 40,000 dealer clients (2018), its own DMS and dozens of products could not choose the system of record for most of its customers. Owning a minority DMS did not remove the dependency; it added a conflict of interest, because Cox's products had to integrate with rivals' systems while Dealertrack competed with them.\n\n![A portfolio of product tiles connects freely to its own short DMS tower at 17%, but reaches two much taller rival towers at over 40% and about 30% only through gated pipes.](assets/images/50-case-cox-automotive/50-minority-dms-dependency.jpeg)\n**Figure 5:** *Owning a DMS at about 17% of the US market did not remove the dependency: most of the portfolio's dealer customers ran CDK or Reynolds, so its products still needed their access.*\n\n**The European DMS exit points the same way.** Dealertrack bought more than 99% of incadea, a European DMS provider, in January 2015, months before Cox bought Dealertrack. Trade press reported in 2017 that Cox launched incadea in the UK under its Retail Solutions group, alongside Modix and Xtime. Cox then separated and sold incadea, which joined Volaris, part of Constellation Software, in December 2018. Volaris's 2022 account says incadea had changed ownership \"at least four times\". So Cox held a European DMS for about three years and exited.\n\n> **INFERENCE, NOT DOCUMENTED:** Cox has not published its reasons for selling incadea. A plausible reading, consistent with the book's argument in [Living With the DMS: Dealer Management System Integration](dms-integration.html) and [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html), is that a European DMS is a country-by-country product (accounting rules, tax, original-equipment-manufacturer (OEM) certification per brand and country, registration interfaces) that shares little code or data with remarketing, digital retail or valuation. It adds a large, slow-moving product to a portfolio without supplying the cross-product data the rest of the group needs. Integrating with DMS vendors through sanctioned interfaces is usually cheaper than owning one, unless the DMS is the core business.\n\n## Europe: Remarketing, Retail Software and No Dealer Platform in the Low Countries\n\nCox's European footprint is real but narrow, and it is shaped by remarketing (B2B selling of used vehicles from lessors, fleets, manufacturers and dealers) rather than dealer workflow software.\n\n**What Cox runs in Europe (as of October 2026).** Cox Automotive Europe's website (read October 2026, © 2026 Cox Automotive UK Limited) describes \"2,000+ team members\" with a head office in Leeds and lists these brands: Codeweavers (digital retail and finance tools for manufacturers, retailers and lenders), Dealer Auction (UK digital remarketing), eVA Valuations & Appraisals, EV Battery Solutions (battery lifecycle services for manufacturers and fleets), Manheim (auction, inspection and vehicle services, including in Spain and Portugal), Manheim Express (dealer-to-dealer digital auctions in continental Europe), Movex (UK vehicle transport), NextGear Capital (stock funding in the UK and Ireland) and RMS Automotive (remarketing software for large fleet operators).\n\n| Business | What the public record says | Date of evidence |\n| --- | --- | --- |\n| **eVA** | \"eVA blends Cox Automotive's vast wholesale data sets with trusted retail sources to deliver accurate, real-time valuations\"; 10m+ valuations to date, 950+ dealerships, 10 integration partners; listing to Manheim and Dealer Auction \"in just a few clicks\" | Product page, read 2026-10 |\n| **Manheim Express** | Digital dealer-to-dealer auctions in continental Europe; 500+ vendors across Germany, 400+ cars listed per week | Product page, read 2026-10 |\n| **Manheim Express export platform** | From 1 January 2025, a B2B platform for cross-border used-car exports within the EU covering purchasing, documents and logistics, focused on used electric vehicles | AUTOHAUS, 2025 |\n| **pkwNOW** | German dealer-to-dealer auction founded 2015 with about 350 dealers, bought by Manheim Deutschland GmbH in June 2021; Cox then aimed at 100,000 vehicle sales a year in Europe by 2023 | GÖRG, 2021 |\n| **Codeweavers** | UK e-commerce and finance software, acquired about 2020 alongside Modix, Cox's digital marketing and retail business | International Fleet World, c. 2020 |\n| **incadea** | European DMS; owned via Dealertrack 2015–2018, then sold | Volaris, 2022 |\n\nThe 2026 European site does not list Modix, Xtime or pkwNOW by name. This book found no source on what became of them, so it makes no claim either way.\n\n**What this means for the book's four markets.** In the **United Kingdom** Cox is a significant remarketing, valuation, finance and transport player, but the consumer portal is Auto Trader Group's, not Cox's. In **Germany** its documented presence is dealer-to-dealer auctions (Manheim Express, pkwNOW). In the **Netherlands and Belgium** this book found no verified Cox dealer software, data or portal business. In the **United States** Cox spans the whole cycle in Figure 1.\n\n**My reading: Cox's Europe is the remarketing half of its US model, without the portal, the CRM or the DMS.** That matches the book's view in [Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html): in Europe, portals, valuation data and DMS sit with different owners in each country, and no group spans them as Cox does in the US. The eVA product does show the US logic transferring: a valuation that blends the group's own wholesale data with retail signals and hands off to its own auctions.\n\n## Reading the Sequence: Six Layers in Eight Years\n\nPut in order, the dated record describes a sequence. My reading is that the order is not accidental: each layer makes the next one cheaper.\n\n![A rising staircase of six dated steps: 2018 infrastructure, 2019 governance, 2020-21 login, 2022 data, 2024 API graph, 2026 embedded features.](assets/images/50-case-cox-automotive/50-six-integration-layers.jpeg)\n**Figure 6:** *Cox's documented integration layers, dated by their public sources. Each took one to two years to appear in public, and the dates mark announcements, not completion.*\n\n| Layer | What it shares | What it leaves per product | Evidence |\n| --- | --- | --- | --- |\n| Infrastructure | Cloud provider, data center exit, operations skills | Databases, accounts, release cadence | Amazon, 2018 |\n| Governance | A risk and maturity score per platform, a quarterly improvement cycle | Architecture choices inside each platform | re:Invent report, 2019 |\n| Identity | Authentication | Users, roles, dealer mapping (as far as public) | Bridge ID page, read 2026 |\n| Data | A data lake and data marketplace; a data brand | Operational stores | Cox, 2022; AWS, 2024 |\n| APIs | A federated graph and a shared vehicle key | Service storage and logic | PlatformCon, 2024; Apollo, n.d. |\n| Embedded features | One product's capability inside another's screen | The acquired product's back end | Cox, 2026 |\n\n**The sequence is slow even with large resources.** Cox had more than 2,000 engineers in 2019, and the layers appear one to two years apart. A program that promises to unify identity, vehicle key, data and APIs for an acquired estate in 18 months is moving faster than the best-documented real case.\n\n**Every layer is additive, and each needs more agreement than the last.** Moving to one cloud needs no agreement about meaning; a login needs agreement on who a person is; a data platform on what a lead, a sale and a vehicle are; embedded features need one product to trust another's data in front of a customer. None of the layers replaces a product, which is the right default for a portfolio that must keep selling everything. The cost the record does not show is that per-product stores remain, so tenancy, consent and license rules must be enforced in many places.\n\n## Trade-offs the Case Illustrates\n\n| Choice | What Cox's record shows | When it is right | When it fails |\n| --- | --- | --- | --- |\n| **Buy breadth across the value chain** | 20+ brands from portal to floorplan finance; data no single-product rival has | The group can turn hand-offs into shared data and cross-sell | Integration lags acquisitions, and customers see ten vendors under one logo |\n| **Link identities rather than replace user stores** | Bridge ID: one account per product attached to a central login | Many products must keep shipping; authentication is the urgent pain | Dealer-group administration stays fragmented; each acquisition restarts the work |\n| **Federate APIs over existing services** | Apollo Federation; VIN decoder wrapped, not rewritten | Services work and the problem is composition, not correctness | Two products mean different things by the same type; the graph exposes the conflict |\n| **Publish the methodology of a data product** | MUVVI sample, outlier, mileage, weighting and rebase rules | The product is sold as a market reference and must be trusted by rivals | Per-car models stay unpublished, so the discipline does not reach the decisions dealers act on |\n| **Own a DMS** | Dealertrack at about 17% (2017); incadea owned and sold within three years | The DMS is the core business, or market share makes it the system of record | Minority share leaves the rest of the portfolio dependent on rivals' access terms |\n| **Integrate with rivals' systems of record, and litigate when access closes** | Cox sued CDK in 2017 and settled in 2019 | Access is a right the dealer can grant and the courts or regulators protect | Access depends on the rival's goodwill and pricing |\n\n## Failure Modes the Record Exposes\n\n1. **Identity unification that stops at authentication.** A linked login leaves roles and rooftop mapping in each product, so a dealer group that reorganizes rooftops changes permissions product by product. The public record does not show this solved.\n2. **Every acquisition restarts integration.** Without an integration contract that new brands must adopt, Fullpath in 2026 needed the same \"no extra login\" work as the brands before it.\n3. **Dependency on a rival's system of record.** Cox's CRM, inventory and service products depended on DMS access controlled by competitors, and settling that took Cox from 2017 to 2019.\n\n## Where the Public Evidence Stops\n\nNo public source found for this book answers these questions.\n\n| Question | What is public | What is not |\n| --- | --- | --- |\n| How far did the AWS migration get? | The 2018 \"all in\" release; the 2016 start; a UK data platform on Azure (2021) | Completion, current footprint, where the Dealertrack DMS runs |\n| Does Bridge ID share roles and dealer entities? | One account per product linked to a central login; per-product relinking; OIDC federation for dealers with their own identity provider | A shared tenancy or authorization model across products |\n| How are acquired products' data joined? | A data marketplace on S3 (2024); Databricks jobs and catalog (vendor story) | How licenses, consent and purpose are enforced across brands |\n| How is the vehicle key shared? | VIN decode returns a vehicle ID joinable with valuations (Apollo story) | Whether every product resolves to that ID, and how conflicts are resolved |\n| How are per-car valuations built and tested? | The MUVVI methodology (2023) | KBB, vAuto and Manheim Market Report model methods, back-testing and drift handling |\n| What is the current European portfolio? | The 2026 Cox Automotive Europe brand list | What became of Modix, Xtime and pkwNOW; any Netherlands or Belgium business |\n| Why was incadea sold? | Ownership dates (2015–2018) | Cox's reasons |\n| Why did headcount fall from 34,000+ (2018) to 29,000+ (2026)? | The two figures | Any explanation |\n\n## The Chief Architect's View\n\nCox's record gives me five decision rules for a group built by acquisition.\n\n**Measure the estate before sharing anything.** Cox's scorecard over 200+ platforms came before its shared login and its graph. I would make a per-product risk and maturity rating the first deliverable of any integration program, reviewed quarterly, with the work done by product teams in their normal roadmap, as Cox described in 2019.\n\n**Build the two identity layers on purpose, and in order.** A linked login is a good first step. I would ship it with a written plan for the second layer: one organization model (group, rooftop, user, role) that every product consumes, with a date. The test I would apply: when a dealer group closes a rooftop, how many products must an administrator touch?\n\n**Make the vehicle key the shared kernel, and require it.** The documented VIN-to-vehicle-ID-to-valuation query is the pattern. The rule I use: a product that does not resolve to the shared vehicle key cannot publish vehicle facts to other products. Federation joins services; it does not oblige them to agree, so the obligation must be a governance rule, not a technology choice.\n\n**Own data on both sides of the transaction; integrate with systems of record you cannot dominate.** Cox's strongest asset is the combination of wholesale, retail, lead and credit signals. Its weakest position was dependence on rivals' DMS access. I would buy products that add observed transactions to the group's data, and integrate through sanctioned interfaces with DMS vendors rather than buy a minority DMS.\n\n**Publish the method of anything sold as a reference.** The MUVVI's published sample, outlier rules and rebase are what make it quotable by competitors and regulators. I would require a methodology page and a change log for every index, valuation product and market report the group sells, and keep restatements backward-compatible.\n\n## Comparing the Case to the Book's Patterns and to Axleby\n\nCox's record supports most of the book's patterns and qualifies one.\n\n| Book pattern or claim | Cox's record | Verdict |\n| --- | --- | --- |\n| An acquired estate needs one identity and tenancy model ([Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html), [Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)) | Bridge ID unified login, with OIDC federation for dealers' own identity providers; no public shared tenancy model; \"no extra login\" still sold in 2026 | Supported: the missing second layer is the visible cost |\n| The vehicle key is the shared kernel ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) | VIN decode returns a vehicle ID that joins valuations in one query | Supported |\n| Integrate an acquired portfolio by strangling and wrapping, not rewriting ([Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths](modernizing-the-platform.html)) | Federated graph over existing services; decoder wrapped \"without a rewrite\" | Strongly supported |\n| Valuations and indices need stated method, normalization and change control ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)) | MUVVI methodology with outlier, mileage, weighting, seasonality and rebase rules | Strongly supported for the index; per-car models not public |\n| Integrate with DMS vendors rather than own one ([Living With the DMS: Dealer Management System Integration](dms-integration.html)) | Dealertrack at a minority share; litigation over rivals' access; incadea sold within three years | Supported |\n| One platform from many products in a few years ([One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html)) | Six layers over about eight years at more than 2,000 engineers | Qualified: the real case is slower than most integration plans assume |\n\nAxleby's choices sit close to Cox's documented practice in places and diverge deliberately in others. All Axleby facts below are fictional.\n\n| Axleby choice (2027) | Cox parallel | What the case suggests |\n| --- | --- | --- |\n| **Axleby ID** (Keycloak with organizations) and **Gatekeeper** (OpenFGA-based authorization) ship together in Year 1 of One Dossier, replacing three login systems | Bridge ID links accounts; shared authorization not documented | Axleby builds the second identity layer at the same time as the first. That is harder in Year 1 but avoids repeating the work for each later acquisition |\n| **Anchor** and the **AVK** become the only vehicle key across products in Year 1 | VIN decode returns a vehicle ID in the federated graph | Same kernel. Axleby goes further by making the key mandatory, which Cox's public record does not show |\n| **One Dossier**: a three-year program (2027–2029, €38 million) with about 300 engineers | Six layers over eight years with more than 2,000 engineers | Axleby is attempting identity, vehicle key, metering and licensing in Year 1 alone, faster than the best-documented real case. Ines Marchetti's plan needs an explicit fallback if Year 1 slips |\n| **Tradefloor** hands B2B deals to auction partners; Axleby owns no auctions | Manheim, Dealer Auction and Manheim Express own wholesale outcomes and feed eVA valuations | Axleby's Vantage sees asking prices and register sale events, but not hammer prices. Partner auction results under license would close part of the gap |\n| Integrates with **DriveDesk** (1,900 Lotwise rooftops) and other DMS products through adapters; owns no DMS | Owned Dealertrack; litigated over CDK access; sold incadea | Supports Axleby's choice. The DriveDesk Outage (November 2027, 12 days) shows the dependency still needs a fallback ([CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html)) |\n| **Charter** puts license and purpose checks in the request path of every data API (2027) | Data marketplace and catalog; cross-brand license enforcement not public | Charter answers a question Cox's record leaves open. A group whose brands share data needs it before the data marketplace, not after |\n| **Showroomly** (UK, acquired 2023) keeps its own users and leads until Years 2–3 | Each acquisition restarts integration (Fullpath, 2026) | Axleby should write an acquisition integration contract (identity, vehicle key, metering, licensing) that any future purchase adopts in its first year |\n\n**The sharpest lesson for Axleby is about data, not software.** Cox's advantage is that it observes wholesale and retail outcomes for the same cars. Axleby's Pulse harvests or receives about 2.3 million adverts a day and matched 61% of them to a VIN-keyed vehicle in 2026, but those are asking prices. The EV Overvaluation of 2026, when Vantage overvalued used battery-electric vehicles by 9.5% for 14 weeks, is the kind of error transaction data catches sooner. [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html) weighs whether Axleby should buy, license or partner for wholesale outcomes; this case is the strongest public evidence that it matters.\n\n## Questions to Ask\n\n1. Do we have a measured inventory of every product platform we own, with a risk and maturity rating reviewed on a fixed cycle? Who owns the scorecard?\n2. When a dealer group closes or reorganizes rooftops, how many products must an administrator change, and how long does it take?\n3. Is there a single vehicle key that every product must resolve to before it shares vehicle facts? Which products still keep their own?\n4. Does our API layer share types, or only a gateway? Which types do two of our products define differently today?\n5. Which of our data products (indices, valuations, market reports) has a published methodology and change log? Which restatements broke historical comparisons?\n6. Which customer-facing workflows depend on another vendor's system of record, and on what contractual or legal basis do we have access? What happens if the terms change?\n7. When we acquire the next product, what must it adopt in its first year (identity, organization model, vehicle key, metering, license checks), and is that written down?\n8. For every dataset shared between our brands, can we show the license and purpose that allows the use?\n\nCox shows a portfolio group trying to make many products behave as one, while depending on dealer management systems it does not control. The next case, [CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html), follows the vendor at the other end of that dependency: a DMS that became a platform, a gatekeeper and, in June 2024, a single point of failure for about 15,000 dealerships.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [Cox Enterprises Announces Formation of Cox Automotive](https://www.coxautoinc.com/press-releases/cox-enterprises-announces-formation-cox-automotive/), Cox Automotive, 2014. Formation date, five business areas, 20+ brands, Schwartz quote.\n- [Cox Automotive Corporate Fact Sheet (April 2018)](https://www.coxautoinc.com/wp-content/uploads/2018/08/Cox-Automotive-Corporate-Fact-Sheet-April-2018.pdf), Cox Automotive, 2018. Acquisition timeline and 2018 scale figures.\n- [Dealertrack Technologies Form 10-Q (Q2 2015)](https://www.sec.gov/Archives/edgar/data/0001333513/000114420415047853/v417547_10q.htm), Dealertrack / SEC, 2015. Merger agreement with Cox; incadea acquisition.\n- [Bridge ID](https://www.coxautoinc.com/bridgeid/), Cox Automotive, n.d., accessed 2026-10. Supported products, account-linking model, rollout text, relinking via product support.\n- [Bridge Federation Single Sign On](https://www.coxautoinc.com/bridge/federation/), Cox Automotive, n.d., accessed 2026-10. OIDC federation for dealerships and lender partners with their own identity provider; users must already be Bridge users.\n- [Cox Automotive Goes All-In on AWS](https://press.aboutamazon.com/2018/4/cox-automotive-goes-all-in-on-aws), Amazon, 2018. Migration scope, 40+ data centers, services used.\n- [Cox Automotive case study](https://aws.amazon.com/solutions/case-studies/cox-automotive-case-study/), AWS, n.d. (c. 2021), accessed 2026-10. Migration begun in 2016; vendor-authored.\n- [Cox Automotive scales digital personalization using an identity graph powered by Amazon Neptune](https://aws.amazon.com/blogs/database/cox-automotive-scales-digital-personalization-using-an-identity-graph-powered-by-amazon-neptune/), AWS Database Blog, 2020. Consumer householding graph, 2019 choice, graph size.\n- [Adapting to change with data patterns on AWS: the curate cloud data pattern](https://aws.amazon.com/blogs/storage/adapting-to-change-with-data-patterns-on-aws-the-curate-cloud-data-pattern/), AWS Storage Blog, 2024. Cox Automotive Data Marketplace on S3; vendor-authored.\n- [Cox Automotive customer story](https://apollographql.com/customers/cox-automotive), Apollo GraphQL, n.d., accessed 2026-10. CADS, VIN decoder brought into the federated graph, claimed results; vendor-authored.\n- [Cox Automotive Lakeflow Jobs customer story](https://www.databricks.com/customers/coxautomotive/lakeflow-jobs), Databricks, n.d. (search summary). About 300 orchestration jobs, Unity Catalog, Delta Sharing; vendor-authored.\n- [Cox Automotive Introduces DRiVEQ](https://www.coxautoinc.com/news/driveq-launch), Cox Automotive, 2022. Data unification statement and annual data scale.\n- [Summary Methodology for the Manheim Used Vehicle Value Index](https://site.manheim.com/wp-content/uploads/sites/2/2023/07/Used-Vehicle-Summary-Methodology.pdf), Manheim / Cox Automotive, 2023. Sample, outlier, mileage, weighting, seasonal adjustment and rebase rules.\n- [Manheim Used Vehicle Value Index (April 2020)](https://www.coxautoinc.com/market-insights/muvvi/), Cox Automotive, 2020. Publication schedule; April 2020 reading.\n- [Cox Automotive to Acquire Fullpath](https://www.coxautoinc.com/press-releases/cox-automotive-to-acquire-fullpath-bringing-ai-native-data-and-marketing-infrastructure-to-the-industrys-largest-dealer-network/), Cox Automotive, 2026. Agreement date, 40,000+ dealer relationships, CDP role.\n- [Cox Automotive's VinSolutions Embeds Fullpath's AI-Powered Customer Data Platform](https://www.coxautoinc.com/wp-content/uploads/2026/10/PRESS-RELEASE_VinSolutionsFPCDP.pdf), Cox Automotive, 2026. \"One less system to log into\"; 2026 boilerplate (29,000+ employees, brands, 2.3 billion interactions).\n- [Cox Automotive Europe](https://www.coxautoinc.eu/), Cox Automotive UK Limited, n.d., accessed 2026-10. European brand list, 2,000+ team members, countries.\n- [eVA Valuations & Appraisals](https://www.coxautoinc.eu/our-products/eva-valuations-appraisals/) and [Manheim Express](https://www.coxautoinc.eu/our-products/manheim-express/), Cox Automotive UK Limited, n.d., accessed 2026-10. eVA data blend and figures; Manheim Express scope and figures.\n- [Customer Focus Takes the Driver's Seat](https://www.volarisgroup.com/home/customer-focus-takes-the-driver-s-seat), Volaris Group, 2022. incadea joining Volaris in December 2018.\n- [CDK Global Form 10-Q (quarter to 31 December 2020)](https://www.sec.gov/Archives/edgar/data/1609702/000160970221000005/cdk-20201231.htm), CDK Global / SEC, 2021. MDL parties, Cox filing date and settlement date.\n\n### Standards, regulation and official documentation\n\n- [Authenticom, Inc. v. CDK Global, LLC, Nos. 17-2540 and 17-2541](https://caselaw.findlaw.com/court/us-7th-circuit/1879150.html), US Court of Appeals for the Seventh Circuit, 2017. 2017 DMS market shares as recited by the court.\n\n### Research and practitioner sources\n\n- [re:Invent 2019 ARC212-R session report: Cox Automotive Well-Architected results on 200+ platforms](https://dev.classmethod.jp/articles/reinvent-2019-coxautomotive-well-architected-results/), Classmethod (DevelopersIO), 2019. 27 brands, 53 data centers, 2,000+ engineers, 350 teams, scorecard and quarterly cycle; third-party report in Japanese.\n- [Cox Automotive's journey from API silos to a unified API strategy](https://2024.platformcon.com/talks/cox-automotives-journey-from-api-silos-to-a-unified-api-strategy), PlatformCon / B. McNichols, 2024. API unification across acquired brands; Apollo Federation.\n- [DataOps Unleashed: The Evolution of a Data Platform](https://www.brighttalk.com/webcast/17674/482367), BrightTALK, 2021. Cox Automotive UK data platform moved to Azure Databricks.\n- [Cox Automotive closes $4 billion Dealertrack acquisition](https://ajc.com/2015/10/01/cox-automotive-closes-4-billlion-dealertrack-acquisitition), Atlanta Journal-Constitution, 2015. Deal size and closing.\n- [Cox Automotive launches open platform incadea DMS in the UK](https://www.am-online.com/news/supplier-news/2017/04/10/cox-automotive-launches-open-platform-incadea-dms-in-the-uk), AM Online, 2017. incadea UK launch (not fetched; widely reported).\n- [Cox Automotive expands digital retail services in Europe via acquisition](https://internationalfleetworld.com/cox-automotive-expands-digital-retail-services-in-europe-via-acquisition), International Fleet World, c. 2020. Codeweavers acquisition.\n- [GÖRG berät Cox Automotive bei Übernahme von pkwNOW](https://www.goerg.de/de/aktuelles/veroeffentlichungen/30-07-2021/goerg-beraet-cox-automotive-bei-uebernahme-von-pkwnow), GÖRG, 2021. pkwNOW purchase, ManEx, European volume target.\n- [Gebrauchtwagenhandel in der EU wächst: Manheim Express startet B2B-Plattform](https://www.autohaus.de/nachrichten/gw-trends/gebrauchtwagenhandel-in-der-eu-waechst-manheim-express-startet-b2b-plattform-3614199), AUTOHAUS, 2025. Cross-border export platform from 1 January 2025.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

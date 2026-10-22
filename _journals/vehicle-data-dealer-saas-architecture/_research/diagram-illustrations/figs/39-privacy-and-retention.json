@@ -1,0 +1,20 @@
+[
+ {
+  "id": "39-two-roles",
+  "visual_goal": "Show Axleby as processor for dealer tenant data and controller for vehicle facts and Odolo, with reuse of dealer data crossing to the controller side only through an explicit gate.",
+  "prompt": "A left-to-right diagram of two large rounded zones side by side, separated by a vertical wall with one gate in it. Left zone, blue, titled 'Processor'; right zone, green, titled 'Controller'. Inside the left zone, a folder of customer cards labeled 'Dealer data'. Inside the right zone, a generic car beside a document, labeled 'Vehicle facts'. One single straight horizontal arrow starts at 'Dealer data', passes through the gate in the wall, and ends inside the right zone; the arrow is labeled 'registered reuse', and the gate shows a clipboard with a checkmark. Below the left zone, one arrow pointing down from the left zone to a small storefront labeled 'Dealer answers'. Below the right zone, one arrow pointing down from the right zone to a small desk labeled 'Axleby answers'. These seven labels are the only words in the image.",
+  "alt": "Dealer data enters the processor side and vehicle facts the controller side; dealer data crosses to the controller side only through a registered-reuse gate; requests on the processor side are answered by the dealer, on the controller side by Axleby."
+ },
+ {
+  "id": "39-erasure-fan-out",
+  "visual_goal": "Show erasure as a fan-out from Tidemark to stores, with a ledger replayed on restore and checked before recomputation, and confirmations returned as evidence.",
+  "prompt": "A top-to-bottom fan-out diagram. Top center: a request envelope labeled 'Erasure command' with one arrow down to a central hub labeled 'Tidemark'. From 'Tidemark', one arrow left to a ledger book labeled 'Erasure ledger'. From 'Tidemark', one arrow down to a cluster of database cylinders labeled 'Operational stores'. From 'Operational stores', one arrow down to a warehouse box labeled 'Warehouse'. From 'Tidemark', one arrow right to a stamped certificate labeled 'Evidence'. Below 'Erasure ledger', two boxes side by side: on the left a gear box labeled 'Recomputation jobs', on the right an archive box labeled 'Backups'. 'Erasure ledger' sends two separate arrows down: one arrow directly to 'Backups' with the arrow label 'replay on restore', and one arrow directly to 'Recomputation jobs' with the arrow label 'check first'. 'Backups' and 'Recomputation jobs' are not connected to each other. These ten labels are the only words in the image.",
+  "alt": "An erasure command reaches Tidemark, which writes the erasure ledger, deletes in operational stores that propagate to the warehouse, and returns evidence; the ledger is replayed on restore of backups and checked before recomputation jobs."
+ },
+ {
+  "id": "39-request-workflow",
+  "visual_goal": "Show the request workflow splitting by controller: Axleby erases its own hits, forwards dealer hits, and the dealer instructs Tidemark.",
+  "prompt": "A left-to-right swimlane illustration with five vertical lanes headed by icons and labels: a generic person labeled 'Requester', a case folder labeled 'Charter case', a magnifier labeled 'Subject locator', a hub labeled 'Tidemark', and a small storefront labeled 'Dealer'. Messages from top to bottom: an arrow from 'Requester' to 'Charter case' labeled 'erasure request'; an arrow from 'Charter case' to 'Subject locator' labeled 'locate'; a return arrow from 'Subject locator' to 'Charter case' labeled 'hits'; an arrow from 'Charter case' to 'Tidemark' labeled 'erase own hits'; an arrow from 'Charter case' to 'Dealer' labeled '2 working days'; an arrow from 'Dealer' back to 'Tidemark' labeled 'instruction'; a return arrow from 'Tidemark' to 'Charter case' labeled 'confirmations'; a final arrow from 'Charter case' to 'Requester' labeled 'answer'.",
+  "alt": "Swimlanes for requester, Charter case, subject locator, Tidemark and dealer: the case locates hits, Tidemark erases Axleby's own hits, dealer hits are forwarded within 2 working days, the dealer instructs Tidemark, and confirmations lead to the answer."
+ }
+]

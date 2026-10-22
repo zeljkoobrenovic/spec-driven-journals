@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Volumes, Peaks and Paid Lookups: Scalability and Operating Cost</title>
+    <meta name="description" content="Where does a vehicle data and dealer SaaS platform need to scale, and what does it cost to serve a dealer, a lookup and a report? The load comes in a few predictable shapes that capacity planning can name, and the cost is mostly paid upstream data, which caching under the license and costing each call path control far more than compute tuning does.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Volumes, Peaks and Paid Lookups: Scalability and Operating Cost">
+    <meta property="og:description" content="Where does a vehicle data and dealer SaaS platform need to scale, and what does it cost to serve a dealer, a lookup and a report? The load comes in a few predictable shapes that capacity planning can name, and the cost is mostly paid upstream data, which caching under the license and costing each call path control far more than compute tuning does.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/scale-and-cost.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/36-scale-and-cost/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="reliability-and-dependencies.html" title="When the Register Is Down: Reliability With External Dependencies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="observability-and-data-operations.html" title="Seeing the Platform: Observability, Data Quality Operations and Support">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VII — OPERATIONS: Running the Platform</p>
+        <h1>Volumes, Peaks and Paid Lookups: Scalability and Operating Cost</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  30 min read · <a class="spec-link" href="scale-and-cost.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/36-scale-and-cost/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/36-scale-and-cost/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="reliability-and-dependencies.html" title="When the Register Is Down: Reliability With External Dependencies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="observability-and-data-operations.html" title="Seeing the Platform: Observability, Data Quality Operations and Support">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Volumes, Peaks and Paid Lookups: Scalability and Operating Cost", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "Where does a vehicle data and dealer SaaS platform need to scale, and what does it cost to serve a dealer, a lookup and a report? The load comes in a few predictable shapes that capacity planning can name, and the cost is mostly paid upstream data, which caching under the license and costing each call path control far more than compute tuning does.", "permalink": "scale-and-cost", "timetoread": "30 min read", "icon": "assets/icons/36-scale-and-cost.png", "logo": "assets/images/36-scale-and-cost/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Name the workload shapes of a vehicle data and dealer SaaS platform and plan capacity for each. You will also take the cost of one lookup, one rooftop, one publish and one report apart into compute, paid upstream data, licenses and people, and build the attribution that keeps those numbers honest.\n\n> **WHY THE BUSINESS CARES:** A data business whose average lookup looks profitable can still lose money on whole classes of calls, customers and batches, and only finds out when the supplier invoice arrives. Private-equity owners and CFOs price, bundle and renew contracts on cost to serve, so a wrong cost model becomes a wrong price list.\n\n> **WHY ARCHITECTS SHOULD CARE:** The decisions that set the cost of a lookup are architectural: what may be cached under which license, where batch traffic queues, which calls coalesce, and which tags travel from the gateway into the meter. Cloud tuning comes later and moves the number much less.\n\n> **KEY POINTS:**\n>\n> * **Name the workload shapes before you size anything.** The load comes in a handful of predictable shapes: the weekday business hour, the nightly recomputation, the Monday stock edit, the month-end register peak, the consumer spike and the API client's batch burst. Each needs its own lane, admission rule and upstream budget. Averages size nothing.\n> * **The cost of a lookup is mostly someone else's invoice.** At Axleby, paid upstream data is about two-thirds of the €0.031 average lookup, and 3% of calls (the build-data cache misses) carry 45% of the cost. The license decides what may be kept and for how long, so caching under the license is the biggest cost lever the architecture has.\n> * **Cost per call path, not cost per call.** An average hides a loss-making tail: misses, no-hits, retries and batches. Meter every call with tenant, client, product and upstream tags, reconcile against supplier invoices, and set spend caps that trip before the invoice does.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Unmetered Call** — when usage is rebuilt from logs at month-end, the upstream cost of a call is invisible too, and nobody can say which client, batch or product loses money.\n> * **License Blindness** — the cheapest lookup is a cached one, and caching beyond what the source license allows turns a cost saving into a breach.\n> * **Borrowed Uptime** — a batch burst that exhausts a shared upstream quota or rate limit takes interactive dealers down with it.\n\n<br>\nA plate lookup looks like the cheapest thing a vehicle data platform does: a key, a cache, a JSON document, a few milliseconds of compute. Sometimes it is. But the same request can also make the platform buy build data from a specification provider, pay a history source for an odometer trail, wait on a register's rate-limited API, and then return \"no hit\" to a client who is not charged under the contract. **The marginal cost of a lookup ranges over two orders of magnitude**, and which end a call lands on is decided by the cache, the license and the client's traffic pattern, not by the code path.\n\nThe dealer half has the opposite profile. A Lotwise rooftop pays a fixed monthly fee per module, and its cost to serve is spread across a monolith, a syndication queue, an image store, a support desk and the history reports bundled into its plan. Its costs are diffuse rather than spiky. They are hard to see because nobody tags them.\n\nThis chapter owns **workload shape**, **cost to serve** and the deep treatment of **cost per lookup**, which [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) introduces. It builds on the dependency map of [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html), uses the meter of [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html) and the license register of [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), and leaves telemetry plumbing to [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html).\n\n## Setting the Scene at Axleby: The Saturday Batch\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), had never measured what a lookup cost. It had a cloud bill, a supplier bill and a lookup count, held by three different people.\n\nOn **Saturday 15 May 2027**, Rijnstaal Verzekeringen, a fictional insurer and Axleby Data API client, ran a portfolio re-check. In **41 minutes** it sent **1.1 million** plate-to-specification calls to JSON API v1, about **450 calls a second**. That is half again the weekday peak hour of about **310 calls a second**, on a Saturday night when the on-call engineer expected near silence. The API held. Specbook, the specification resolver, did not have a resolved specification for **19%** of the vehicles, because an insurer's portfolio holds older cars, imports and models that dealers rarely look up. So Specbook fetched build data from the commercial build-data provider for about **209,000** vehicles, at an average of **€0.46** a request.\n\nNobody noticed until the provider's mid-month usage statement reached Lena Vos (Billing and Finance Systems Lead). Lena and Marta Nowak (Head of Platform and SRE) worked out the batch from the logs:\n\n| Item (Rijnstaal batch, 15 May 2027) | Calculation | Amount |\n| --- | --- | --- |\n| Billable calls | 1.1 million minus about 27,500 no-hits (no-hit-no-fee) | 1,072,500 |\n| Revenue | 1,072,500 × €0.09 list price | **€96,525** |\n| Build-data fetches | 209,000 × €0.46 | €96,140 |\n| Compute on the call path | 1.1 million × about €0.0015 | €1,650 |\n| Shared platform and support allocation | 1.1 million × €0.007 | €7,700 |\n| **Cost** | | **€105,490** |\n| **Result** | | **about −€9,000** |\n\nThe batch lost money while every dashboard stayed green. The insurer paid list price, the API met its latency target, and the build-data provider delivered. The loss came from **the gap between a flat per-call price and a cost that depends on whether the platform already knows the car**.\n\n![At night an insurer's flood of plate calls enters the servers, the monitoring screen shows all green and the engineer is calm, while a long supplier invoice spills out with a loss tag.](assets/images/36-scale-and-cost/36-saturday-batch.jpeg)\n**Figure 1:** *In the Saturday Batch every dashboard stayed green while 209,000 build-data fetches turned €96,525 of revenue into a loss of about €9,000.*\n\nInes Marchetti (Group Chief Architect) asked Marta and Lena for one number and one picture: the fully loaded cost of an average billable lookup, broken down by call path, for the second quarter of 2027. The number became known inside Axleby as **the €0.031 lookup**. The picture changed the One Dossier priorities more than the number did.\n\n## Concepts: Workload Shape, Unit Cost and Cost to Serve\n\n### Workload shape\n\nA **workload shape** is the profile of one kind of demand over time. It has a rate curve (average, peak and the ratio between them), a trigger (a clock, a calendar event, a client's job, a broadcast), a latency tolerance, and a set of resources it consumes, including **upstream quotas and spend**. Two workloads with the same daily volume can need very different capacity. An evenly spread data feed needs almost none. A batch that arrives in forty minutes needs a lane of its own.\n\nThe rule I use: **size from shapes, not from totals.** Axleby's 2.6 million billable lookups a day average about 30 a second. The weekday peak hour runs at about 310 a second, roughly ten times the daily average, because dealers, insurers and lessors work business hours. The Saturday batch ran at fifteen times the average with no warning.\n\n### Unit cost\n\nA **unit cost** is the cost of one unit of a business output: a lookup, a report, a publish, a rooftop-month. The FinOps Foundation separates *resource-efficiency* unit metrics (cost per gigabyte, per vCPU) from *business* unit metrics such as \"cost per tenant, cost per transaction, cost to serve\". It treats fully loaded costs, which include \"costs outside of direct technology use\", as a sign of a mature practice ([FinOps Foundation, n.d.](https://www.finops.org/framework/capabilities/unit-economics/)). For a vehicle data platform, a unit cost has four components:\n\n1. **Compute, storage and network** on the call path, including the data stores it reads.\n2. **Upstream data**: fees paid per request to build-data providers, history sources, valuation inputs and registers, including fees for requests that return nothing.\n3. **Amortized licenses**: fixed fees for bulk datasets and register access, spread over the units they serve.\n4. **Shared platform and people**: gateway, identity, observability, on-call, support and the legacy data center, allocated by a stated rule.\n\nThe cheapest of these, compute, is the one teams measure first.\n\n### Cost per lookup and cost to serve\n\n**Cost per lookup** is the fully loaded unit cost of one billable data call, reported as an average and, more usefully, **per call path**. A call path is the route a call actually takes: a cache hit, a build-data miss, a paid history source, a no-hit. **Cost to serve** is the fully loaded cost of one customer over a period: a rooftop-month, an API client's year, a dealer group's contract. Microsoft gives the two reasons to measure per-tenant consumption: to know \"the actual cost to serve each tenant\" and \"the amount to charge the tenant\" ([Microsoft Learn, 2024](https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/measure-consumption)). The two measurements share their tags and must not share a store, as the architecture section explains.\n\n### Pass-through cost\n\nA **pass-through cost** is an upstream fee that the platform passes on to the client explicitly, as a surcharge or a separate line, instead of absorbing it in a blended price. Register fees on a transaction are a common example. Axleby Trade charges €6.50 plus the register's own fee for a registration in a new name. Whether build data or paid history should be passed through is a pricing decision with architectural consequences: a pass-through needs a meter that knows, per call, which upstream was paid.\n\n## The Workload Shapes of a Vehicle Platform\n\nAxleby's platform carries seven distinct shapes. The volumes come from the scenario ledger. The ratios marked *(assumption)* are illustrative planning figures, not Axleby facts.\n\n| Workload shape | Trigger | Axleby volume | Peak profile | Latency tolerance | Upstream exposure |\n| --- | --- | --- | --- | --- | --- |\n| **Interactive lookups** (dealer screens, partner software) | Business hours | 2.6 million billable lookups a day | Weekday peak hour about 310 calls/s, ~10× the daily average | Sub-second | Build data on miss; history sources; register APIs |\n| **API client batch bursts** | Client's job scheduler | Rijnstaal: 1.1 million calls in 41 minutes | 450 calls/s, unannounced | Minutes to hours, if the client is told | High: older and rarer vehicles miss the cache |\n| **Nightly recomputation** | Clock | Pricing signals for about 350,000 Lotwise stock vehicles | A 01:00–05:00 window *(assumption)* | Done before dealers open | Low: internal market data |\n| **Monday-morning stock edits** | Week start | 352,000 stock vehicles; 1.4 million channel operations a day | About 3× the hourly average, 08:00–11:00 Monday *(assumption)* | Minutes (publish lag) | Portal rate limits |\n| **Month-end register peaks** | Calendar, sales targets | 1.25 million register transactions a year | About 4× the daily average at month- and quarter-end | Same day | Register transaction channel |\n| **Consumer spikes** | Media coverage, weekends, attacks | Odolo: about 2.1 million free checks a month | Enumeration in August 2027: about 9 million requests in 6 days, ~20× normal | Seconds | Register mirror (cheap); paid sources on full reports |\n| **Market-data ingestion** | Harvest and partner feeds | About 2.3 million adverts a day | Spread over the day; reprocessing runs are large *(assumption)* | Hours | Partner feed limits |\n\nThree observations shape the rest of this chapter.\n\n**First, only two shapes are expensive per unit.** Interactive lookups and batch bursts reach paid upstreams. Nightly recomputation, stock edits and market-data ingestion cost compute and storage, which scale cheaply. Registration peaks cost register fees, but those are passed through. So capacity planning for the cheap shapes is ordinary engineering. **Capacity planning for the expensive shapes is a commercial question:** how much upstream spend can this traffic trigger, and who pays for it?\n\n**Second, the shapes collide.** The nightly valuation run finishes about when Monday stock edits begin, so a slow night makes Monday morning worse. Month-end register peaks fall on the same days that dealers push stock and appraisals to meet targets. A batch client that schedules its job for \"quiet\" weekend hours can land on Odolo's Sunday-evening consumer traffic *(assumption)*. Microsoft's description of the noisy-neighbor antipattern covers this case: performance also degrades when many small tenants peak at once, and the documented mitigations include throttling, moving non-time-sensitive work off-peak and capping query cost ([Microsoft Learn, 2025](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor)).\n\n**Third, upstream limits are shared, platform-wide budgets.** The UK DVSA MOT history API publishes a quota of 500,000 requests a day, an average of 15 requests a second and a burst of 10. A key that exceeds the daily quota is restricted \"for 24 hours\" ([DVSA, n.d., accessed 2026-10](https://documentation.history.mot.api.gov.uk/mot-history-api/rate-limits/)). A batch client that drains such a quota at 23:00 does not slow itself down. It takes away MOT (roadworthiness test) history from every Showroomly dealer until the next day. That is **Borrowed Uptime** created by a capacity decision, and [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html) treats it as a dependency budget.\n\n## Architecture: Lanes, Caches and a Cost Meter\n\n### Separate lanes by shape\n\nThe core structural decision is to give each expensive shape its own **lane**: a path with its own admission control, queue, concurrency limit and upstream budget. AWS describes the general pattern as rate limiting \"to shape unplanned increases in traffic\" combined with quotas enforced \"at a per-tenant or per-workload granularity\", and load shedding as \"the act of cheaply rejecting work instead of spending limited resources on it\" ([AWS Builders' Library, 2020](https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/)).\n\n![Dealer screens enter through the API gateway and client batch jobs through a batch lane queue paced by budget; both reach the lookup service and Specbook cache, and cache misses go through the upstream budget broker to paid providers, with spend per client recorded in Meterline.](assets/images/36-scale-and-cost/36-lanes-and-broker.jpeg)\n**Figure 2:** *Interactive and batch traffic share the lookup service but not the queue. Every cache miss goes through one upstream budget broker, which paces requests per source, counts spend per client, and writes cost events next to usage events, so a batch cannot drain the shared quota or spend without a record.*\n\nThe **upstream budget broker** is the component most platforms lack. It is a thin service, or a library with shared state, that every call to a paid or quota-limited upstream passes through. It does four things:\n\n- **Paces** requests per upstream with a token bucket sized to the contract or the published limit.\n- **Reserves** headroom for interactive traffic, so the batch lane can use only what the interactive lane leaves unused.\n- **Counts spend** per client and per product as it happens and enforces **spend caps**. OWASP lists a missing \"third-party service providers' spending limit\" as a cause of API4:2023, Unrestricted Resource Consumption ([OWASP, 2023](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/)).\n- **Coalesces** concurrent requests for the same vehicle into one upstream purchase.\n\nPlacing it in one service, rather than in each adapter, is what makes the numbers trustworthy. An adapter-level counter cannot see the other adapters' spend against the same contract.\n\n### Cache paid data within the license\n\nThe cheapest upstream call is the one the platform does not make. But a vehicle data platform cannot cache freely. What it may keep is set by contract. The platform-operations brief puts the line well: separate **\"facts we may keep\"** (decoded VIN specification, the platform's own derived valuations) from **\"facts we rent\"** (third-party report content under per-request terms). Contract-limited caching is ordinary in data licensing. Google's Places API terms, a non-automotive example, forbid caching content \"beyond the allowed exceptions\" while allowing place IDs to be stored indefinitely ([Google, n.d., updated 2026-10](https://developers.google.com/maps/documentation/places/web-service/policies)). No vehicle-data provider's caching clauses are public. What follows treats them as variables a contract sets.\n\nA license-aware cache stores, with every entry, the **source, license, fetch time, permitted retention and permitted purposes**. It enforces retention in the cache layer, not in application code. At Axleby, Charter (the license and purpose register from [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)) holds the rules, and Specbook's cache reads them. Three entry types matter for cost:\n\n| Cache entry | Example | Typical constraint | Cost effect |\n| --- | --- | --- | --- |\n| **Owned or open fact** | Dutch register open data in the register mirror; vPIC decode tables | None beyond the source's terms; NHTSA offers downloadable vPIC databases ([NHTSA, n.d.](https://vpic.nhtsa.dot.gov/api/)) | Lookup cost is compute only |\n| **Licensed fact with retention** | Build data per VIN | Contract sets retention (Axleby until 2027: 30 days) and permitted reuse | Each expiry is a repurchase |\n| **Rented content** | Third-party history records in a report | Often per-request use only *(assumption: no public clause)* | No reuse; cost is per report |\n| **Negative answer** | \"Plate not found\", \"no MOT record\" | Short time-to-live (TTL) | Stops repeated no-hits becoming spend |\n\nAWS's caching guidance covers two cost failures that matter here. A **cold cache** after a deployment or a cache-fleet failure sends \"a surge of traffic to downstream services\", which here means a surge of purchases. And a missing **negative cache**, with \"a different TTL than positive cache entries\", raises failure rates ([AWS Builders' Library, 2019](https://aws.amazon.com/builders-library/caching-challenges-and-strategies/)). For a paid upstream, a cache-fleet failure is a cost incident as well as a latency incident.\n\n### Meter cost where you meter usage\n\nThe usage meter of [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html) records what a client may be invoiced for. The **cost meter** records what each call cost the platform: which upstream was paid, how much, under which contract. Both meters need the same tags, set at the gateway from the verified credential: tenant, rooftop or client, product, call path and upstream. Both need lossless storage. Microsoft warns that APM tools sample and that \"for billing and metering purposes, choose a data store that gives you a high level of accuracy\" ([Microsoft Learn, 2024](https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/measure-consumption)). Axleby writes cost events into Meterline next to usage events, keyed by the same request id.\n\n![Five sources, usage events, upstream cost events, cloud billing export, supplier invoices with monthly reconciliation and support tickets, feed a cost model that produces cost per call path, cost to serve and spend alerts.](assets/images/36-scale-and-cost/36-cost-model-sources.jpeg)\n**Figure 3:** *The cost model joins five sources on shared tags. Usage and upstream cost events are exact and per request; the cloud bill and people costs are allocated by stated rules; supplier invoices reconcile the broker's counts every month. The outputs are a cost per call path, a cost to serve per customer, and alerts that act before the invoice arrives.*\n\nCloud costs come from the provider's billing export. The FinOps Foundation's FOCUS specification, \"an open specification that normalizes billing datasets across AI, cloud, SaaS, data center, and other technology vendors\" ([FinOps Foundation, n.d., accessed 2026-10](https://focus.finops.org/)), gives a common schema, which matters for a group that runs on AWS, Google Cloud, a co-located data center and Snowflake. Allocation of shared costs follows \"account structures, tags, labels and derived metadata\", with an explicit shared-cost rule and showback or chargeback ([FinOps Foundation, n.d.](https://www.finops.org/framework/capabilities/allocation/)).\n\n**Tags on metrics need care.** Ten thousand tenant ids as a metric label, multiplied by endpoints and status codes, can make the observability bill itself a cost-to-serve problem. OpenTelemetry's guidance shows how seven attributes with thirty values each produce billions of combinations ([OpenTelemetry, n.d.](https://opentelemetry.io/docs/specs/otel/metrics/supplementary-guidelines/)). AutoScout24 reported in September 2024 that its move to Karpenter cut Kubernetes EC2 costs by almost 50%, while its Datadog custom-metrics costs rose ([AutoScout24, 2024](https://tech.autoscout24.com/blog/posts/impact-of-karpenter/)). The rule I use: **tenant and client ids on traces, logs and cost events; only tier and product on metrics.** Per-tenant views come from the event stores, not from metric labels.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Interactive plate lookup | Read-your-own-purchase: a fetched spec is visible to the next call | p99 under 800 ms *(assumption)* | Licensed retention, labeled with fetch date | Highest; degrade to cached fact with age label |\n| Batch lane lookup | Same results as interactive | Completion within an agreed window, e.g. 6 hours *(assumption)* | As interactive | May pause when the upstream budget is exhausted |\n| Upstream spend counter | Exactly once per purchase | Visible within 1 minute *(assumption)* for caps | Real time | Fail closed for batch, open for interactive with alert |\n| Cost events in Meterline | Lossless, idempotent on request id | Minutes | Daily cost model | Durable queue; never sampled |\n| Nightly pricing signals | Snapshot of the market as of the run | Finished before 06:00 *(assumption)* | Once a day | Retry within the window; flag stale signals |\n| Cost reports and unit costs | Reconciled with invoices monthly | Next day | Daily, restated monthly | Internal |\n\n## In Practice: The €0.031 Lookup\n\n### Taking the average apart\n\nMarta's team tagged every billable lookup in April–June 2027 with its call path. Lena's team allocated the AWS and data-center bills, supplier invoices and support costs to those paths. The result is Axleby's fictional cost model for Q2 2027. The per-path shares and unit costs are Axleby illustrations, not documented industry figures:\n\n| Call path | Share of billable lookups | Direct cost per call (compute + upstream) | Contribution to average |\n| --- | --- | --- | --- |\n| Identity or specification, resolved in Specbook | 46.5% | €0.0015 | €0.0007 |\n| Specification with build-data fetch (miss) | **3.0%** | **€0.462** | **€0.0139** |\n| Valuation from Vantage | 22% | €0.006 | €0.0013 |\n| Register-backed status (inspection, recall, owner count) | 18% | €0.002 | €0.0004 |\n| History block with a paid source | 6% | €0.070 | €0.0042 |\n| No-hit (any product, not billed) | 4.5% | €0.080 | €0.0036 |\n| **Direct average** | 100% | | **€0.0240** |\n| Shared platform, Connect XML data center, observability, on-call, support | | | €0.0070 |\n| **Fully loaded average** | | | **€0.031** |\n\nGrouped by component, the €0.031 is about **€0.021 of upstream data**, **€0.003 of compute and storage** and **€0.007 of shared platform and people**. At 2.6 million billable lookups a day, the data half spends roughly **€29 million a year** serving lookups, about €20 million of it paid to upstream providers.\n\n![One lookup coin of €0.031 cut into three wedges: a large orange upstream data slice, a medium teal shared platform and people slice, and a thin blue compute slice.](assets/images/36-scale-and-cost/36-where-the-lookup-cost-goes.jpeg)\n**Figure 4:** *About two-thirds of the €0.031 lookup is upstream data and only about a tenth is compute, so the cost lever is the license and the cache, not the cloud bill.*\n\nFour findings came out of the table.\n\n1. **The cloud bill was the wrong denominator.** The first answer anyone had given the board was the AWS bill for JSON API v1 divided by its calls: under half a cent. That number was correct and almost useless. Compute is about a tenth of the cost of a lookup.\n2. **Three percent of calls carry 45% of the cost.** A plate-to-specification call that misses Specbook costs €0.462 against a list price of €0.09. Each one loses about €0.37 before overhead. This is \"the €46 per hundred\" problem from [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html), seen from the cost side.\n3. **No-hit-no-fee has a cost line.** A no-hit is free for the client but not for Axleby: the build-data provider and some history sources charge for the attempt, so a no-hit costs €0.08 on average and earns nothing. The No-Hit Credit of 2026 ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) was about revenue. This was the cost side of the same rule.\n4. **The misses are not random.** **41%** of build-data fetches were *repurchases*: vehicles whose build data Axleby had bought before, and whose 30-day retention under the build-data license had expired. Another **6%** were *duplicates*: two concurrent requests for the same VIN, usually inside a batch, each buying the same data.\n\nThe fourth finding moved the conversation from engineering to procurement. The cache hit rate was capped by a contract clause, not by memory or code.\n\n### What Axleby changed\n\nInes took four changes to the One Dossier steering group in July 2027. The projected effects below are Axleby planning figures, which means they are assumptions:\n\n| Change | Mechanism | Projected effect on the average |\n| --- | --- | --- |\n| **Renegotiate build-data retention** | Retain resolved build data per VIN for the life of the vehicle within Axleby products; the provider prices the first fetch higher (about €0.58) | Removes repurchases: about −€0.0034 |\n| **Coalesce concurrent fetches** | The upstream budget broker holds one in-flight purchase per VIN and source; other requests wait for it | Removes duplicates: about −€0.0006 |\n| **Negative cache and no-hit pre-checks** | Cache \"not found\" answers for 24 hours *(assumption)*; check the register mirror before paying for a plate that does not exist | Halves paid no-hits: about −€0.0018 |\n| **Batch lane with pass-through on misses** | Batch endpoint with a completion window; clients see a quote of the expected misses, and misses above a stated rate carry a surcharge | Protects margin on batches; no change to the average |\n\nTogether the first three bring the projected average to about **€0.025 by the end of 2028**. Retiring the Connect XML data center by the end of 2029 removes part of the €0.007 shared cost. The larger effect is on the tail. Under the new terms, a Rijnstaal-style batch would buy build data once per VIN, ever. The client would also see the expected miss surcharge before submitting.\n\nThree objections were raised, and each changed the design. Priya Raman (VP Data and Valuation) asked whether life-of-vehicle retention would leave specification facts stale. It would not: factory build data does not change after production, and corrections arrive as correction events ([A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html)). Femke de Boer (Head of Data Governance and Privacy) required the retained data to stay inside Axleby products, with resale to API clients counted per call. The retention right is therefore a Charter rule, not a cache setting. Tomás Ferreira (Product Director, Lotwise) asked that dealers never see a surcharge. The batch lane is therefore offered to API clients only. Lotwise appraisals stay in the interactive lane and inside the plan.\n\n### Cost to serve a Lotwise rooftop\n\nThe same method, applied to a rooftop-month, gives a different picture. The figures are an Axleby model for a typical NL independent with Stock & Pricing, Syndication and Appraise (€417 a month at list). Every line is an assumption except the volumes taken from the ledger:\n\n| Cost line | Basis | Per rooftop per month |\n| --- | --- | --- |\n| Lotwise Classic compute, MySQL, network | Allocated by active users and requests | €8.40 |\n| Lookups at stock-in and appraisal | About 22 stock-ins (1.9 million a year over 7,200 rooftops) and about 60 appraisal lookups × €0.031 | €2.54 |\n| History reports in the Appraise bundle | About 17 of 25 used × €0.62 assembly and source cost | €10.54 |\n| Syndication through Relay | About 5,900 channel operations (1.4 million a day over 7,200 rooftops) × €0.0006 | €3.54 |\n| Images: storage, renditions, CDN, portal transfer | Allocated by photo count | €4.10 |\n| Leads intake and routing | About 47 leads × €0.02 | €0.94 |\n| Nightly pricing signals | 49 vehicles × 30 nights × €0.0008 | €1.18 |\n| Support | About 0.8 tickets × €14 | €11.20 |\n| Shared platform, identity, observability, security | Flat allocation | €6.90 |\n| **Total** | | **about €49** |\n\nTwo lines dominate, and neither is compute: **support** and **bundled data**. That changes where an architect looks. Self-service fixes for the commonest tickets (channel errors, a failed DMS sync, a wrong specification) reduce cost to serve more than any right-sizing of the monolith. And the bundle of 25 reports is a cost commitment that grows with dealer usage, so the meter must see bundled reports as usage with cost, even though they are invoiced at zero.\n\nThe model also shows **where the average rooftop is the wrong unit**. A trader or exporter running 400 appraisals a month costs several times the average in lookups and reports. A Velto-sized group with DriveDesk integration, routing rules and a group-wide feed costs more per rooftop in support and integration operations. Microsoft notes that per-tenant cost estimates are reasonable when each tenant uses less than about 2% of a deployment ([Microsoft Learn, 2024](https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/measure-consumption)). That fits independents. Large groups and large API clients deserve measured cost, because their contracts are negotiated.\n\n### Cost per publish and per report\n\n**Cost per publish** is the cost of one channel operation (insert, update or delete of an advert on one portal). At Axleby it averages well under a tenth of a cent in compute *(assumption)*, so the unit itself is not the issue. The issue is **amplification**. One price change on a car advertised on 5.3 channels is five or more operations. A portal that cannot fetch images by URL turns each photo change into binary uploads per channel. A retry loop against a failing portal multiplies operations without publishing anything. The cost-relevant metric is **operations per effective change**. [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) owns the desired-state design that drives it down, and the same design ends the Zombie Listing.\n\n**Cost per report** is dominated by sources. A business history report at €4.95 carries an assembly and source cost of about €0.62 in Axleby's model *(assumption)*: healthy. An Odolo consumer report at €12.95 (VAT included) carries the same data cost plus payment fees, refunds and consumer support *(assumption)*. Its margin depends more on the payment channel and refund rate than on the data.\n\n### Storage growth\n\nStorage grows quietly and compounds. Three classes dominate at Axleby, each with its own growth driver and retention rule:\n\n| Data class | Growth driver | Illustrative growth | Retention driver | Cost lever |\n| --- | --- | --- | --- | --- |\n| **Vehicle images** | 1.9 million stock-ins a year × about 30 photos × originals and renditions | Roughly 250 TB a year *(assumption: 4.5 MB per photo with renditions)* | Business need: adverts end, dossiers keep a few photos | Tier or delete after sale; keep renditions only where reused |\n| **History events** (Tracewell) and the register mirror | New events per VIN; 41 million vehicles | Moderate, steady *(assumption)* | Product value; privacy rules in [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html) | Columnar storage; bitemporal compaction |\n| **Ledgers and usage events** (valuation ledger, Meterline, access audit) | 2.6 million billable lookups a day plus reports and transactions | Hundreds of GB a year raw, far less compressed *(assumption)* | Dispute windows, fiscal retention, audit | Columnar store; never delete inside retention |\n\nImages are the expensive class, and almost all of their reads happen in the weeks a car is in stock. Average days-to-turn at Axleby is 58. Object-storage tiering fits that pattern: Amazon S3 Intelligent-Tiering moves objects not accessed for 30 consecutive days to an Infrequent Access tier and, after 90 days, to Archive Instant Access, for a small monitoring charge per object, with objects under 128 KB not auto-tiered ([AWS, n.d., accessed 2026-10](https://aws.amazon.com/s3/storage-classes/intelligent-tiering/)). The more valuable decision is a **retention rule** per image class. Sold-car advert photos beyond the dossier's few reference images have no business purpose once the sale is settled, and keeping them is a cost and a privacy exposure, because number plates and people appear in photos.\n\nThe ledgers are the opposite case: small, and never to be trimmed for cost. Usage events are the evidence behind an invoice, and [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html) explains why the aggregate must never be the only record.\n\n## Failure Handling: When Cost and Capacity Go Wrong\n\nCost failures behave like reliability failures: they are silent, they compound, and they are found late. Axleby now treats a **cost anomaly** as an incident class with an on-call owner.\n\n**Duplicates.** A retried call to a paid upstream can buy the same data twice. The defense is an **idempotent purchase**: the broker keys each purchase on VIN, source and license window. A retry after an ambiguous timeout first asks \"did we already buy this?\" from the broker's purchase log before calling out. The same discipline the Month-End Register Outage forced on register transactions ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)) applies to every paid call.\n\n**Concurrent misses.** Two requests for the same unknown VIN, a few milliseconds apart, are a conflict. Without coalescing, both win and both pay. With coalescing, the second waits on the first's result. The broker needs a timeout on the wait, so one slow purchase does not stall a batch.\n\n**Incomplete records.** A provider can return partial build data, such as engine and body without equipment, and still charge. Specbook stores the partial answer with an \"edition unknown\" state ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)) and a retry-after time agreed with the provider. Refetching on every request turns one incomplete record into a stream of paid calls.\n\n**Retry storms.** Retries multiply load, and against a paid upstream they also multiply spend. Google's SRE guidance caps retries at three attempts per request and keeps a per-client retry ratio of about 10% ([Google, 2016](https://sre.google/sre-book/handling-overload/)). For paid upstreams I would set a lower budget and count retries as spend in the broker.\n\n**Partial failures in the meter.** If cost events are lost, the cost model undercounts. The broker's purchase log is reconciled monthly against each supplier's invoice. A gap above an agreed tolerance (0.5% *(assumption)*) opens an investigation, because the gap is either a lost event or a supplier billing error, and both are money.\n\n**Upstream outages and cold caches.** When a provider recovers, every request that failed during the outage comes back at once. When a cache fleet restarts, every hit becomes a miss. Both are **purchase surges**. The broker's token bucket protects the upstream. The spend cap protects the margin. Warming the cache from the purchase log, by replaying recent VINs from stored results rather than buying again, protects both. [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html) covers the degraded modes: serve the cached fact with its age, queue the batch.\n\n**Runaway clients and attackers.** The Plate Enumeration Attack of August 2027 is a security incident ([Protecting Dealers and Data: Security for a Vehicle Data Platform](vehicle-platform-security.html)) with a cost tail: leaked trial keys on JSON API v1 could trigger paid fetches. Trial credentials get a zero upstream budget: they read owned and open facts only. Spend caps per client trip within minutes, not at the monthly invoice.\n\n## Trade-offs: Paying for Data, Caching It and Pricing It\n\n| Option | How it works | Right when | Costs and risks |\n| --- | --- | --- | --- |\n| **Fetch per request, short retention** | Buy build data or history per call; keep it for the license window | Low and unpredictable volume; the license is cheap per call | Repurchases; cost tracks traffic; batches lose money at flat prices |\n| **Fetch once, retain per VIN** | Negotiate long retention within the platform's own products | High repeat demand for the same vehicles; facts that do not change | Higher first-fetch price; retention must be enforced as a license rule |\n| **Prefetch on first registration** | Buy data for new vehicles as the register mirror shows them | Most lookups concern vehicles registered in the platform's markets | Pays for vehicles nobody asks about; imports still miss |\n| **Flat-fee or tiered bulk license** | Pay a fixed fee for unlimited or banded use | Volume is high and stable | Commitment risk if volume falls; harder exit |\n| **Derive from own catalog** | Infer specification from register type data and the platform's catalog | Facts the register carries well | **Spec Guesswork** where edition and options matter |\n| **Blended per-call price** | One list price per call type | Cost per path is predictable and the mix is stable | Batches and rare vehicles erode margin silently |\n| **Pass-through or miss surcharge** | Charge misses, or upstream fees, separately | Batch clients; contracts that already price upstream | Complex invoices; a meter that knows paths is required |\n| **Batch lane with completion window** | Accept batches on a separate endpoint, paced by budget | Insurers, lessors, fleet enrichment | Clients must accept delay; needs quoting and status |\n\nMy recommendation for a platform like Axleby: **retain per VIN where the license can be bought, prefetch only where the register mirror predicts demand, and price batches separately.** It rests on three assumptions: repeat demand for the same vehicles is high, factory build data does not change, and the platform's own products are the main consumers. It does not hold for a pure reseller of third-party reports, whose rented content cannot be retained at any price. Nor does it hold for a market where most lookups concern vehicles the platform never sees twice.\n\nA second trade-off concerns **capacity strategy for the cheap shapes**. The choice is to overprovision for the weekday peak, autoscale, or schedule work around the peaks:\n\n| Strategy | Fits | Watch |\n| --- | --- | --- |\n| Headroom for the peak hour | Interactive lookups, lead intake | Idle cost at night and weekends |\n| Autoscaling on queue depth | Monday edits, syndication, market ingestion | Scale-up lag at the 08:00 edge; cold caches on new nodes |\n| Scheduled windows | Nightly signals, reprocessing, insight builds | Window overruns colliding with morning traffic |\n| Reserved or committed capacity | Steady base load | Commitments outliving the architecture (Connect XML) |\n\n## Across Markets: What Changes by Country\n\nThe method of this chapter is the same in every market. What changes is **where paid data enters, what may be kept, and when the peaks fall**.\n\n| Factor | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Register data for lookups** | NL: RDW open data can be mirrored, so status lookups cost compute ([RDW open data, accessed 2026-10](https://opendata.rdw.nl/resource/m9d7-ebf2.json)). BE: register data through a partner *(Axleby: via a partner; fee basis assumed per request)* | No open vehicle-level register data; specification and history come from commercial providers | DVSA MOT history API with a 500,000-a-day quota; DVLA VES API with limits per usage plan and registration closed when accessed ([DVLA, n.d.](https://developer-portal.driver-vehicle-licensing.api.gov.uk/apis/vehicle-enquiry-service/vehicle-enquiry-service-description.html)) | vPIC decoding is free and downloadable; history is licensed per report from commercial providers |\n| **Main upstream cost driver** | Build data on misses; register transaction fees (passed through) | Specification and valuation inputs from commercial providers on more calls | Quota rather than fees on public APIs; paid history sources | Per-report history licenses |\n| **Caching posture** | Mirror open register data; license build-data retention | Retention set entirely by commercial contracts | Respect per-key quotas; no bulk mirror where terms forbid | Decode tables cached freely; report content rented |\n| **Calendar peaks** | Month-end and quarter-end register transactions (Axleby: ~4×); year-end tax changes *(assumption)* | Month- and quarter-end sales targets *(assumption)* | Plate-change months, March and September, are commonly the busiest *(industry practice)* | Month- and quarter-end retail pushes; weekends *(assumption)* |\n| **Shared-quota risk** | Low for mirrored data | Contract rate limits per provider | High: one key per company, daily lock-out | Provider rate limits |\n\n**Judgement.** The lanes, the broker, the license-aware cache and the cost model are common platform services. What is market-specific is **configuration**, not code: the upstream catalog with its prices, limits and retention per market, the calendar of peaks that drives capacity schedules, and the pass-through rules per product. Germany is structurally the most expensive market per lookup for a platform without its own register mirror, because more calls reach a paid source. The UK is the most quota-constrained. A group that prices the same API identically in all four markets is cross-subsidizing, and it should decide to do so on purpose.\n\n## The Chief Architect's View\n\nThe decisions in this chapter sit between engineering, procurement and pricing, which is why they go unmade. At group scale I would make five of them explicit.\n\n1. **One owner for unit cost.** Cost per lookup and cost to serve need an owner who can change prices, contracts and architecture together. At Axleby that is a standing review of Marta's platform team, Lena's billing team and Priya's data products, reporting to the One Dossier steering group monthly. FinOps practice is a forum, not a dashboard.\n2. **Licenses are architecture inputs.** Every new data source passes a cost and retention review before integration: price per request, price per no-hit, retention, permitted reuse and rate limits. A clause like \"30 days\" belongs in Charter and in the cost model on day one. Procurement and architecture sign the contract together.\n3. **Every paid call goes through the broker.** No adapter calls a paid upstream directly. This is the cost equivalent of \"every tenant query carries a tenant id\", and it should be enforced at review and at the network level.\n4. **Price list and cost model move together.** A new product or bundle is not approved without its cost per path and its worst-case client. The \"25 reports included\" in Lotwise Appraise is a cost commitment. The no-hit-no-fee rule is a cost commitment. Both deserve a number before they reach a contract.\n5. **Track unit cost as a fitness function.** Cost per lookup, upstream share, repurchase rate and operations per effective change belong with the platform's other long-term measures ([Built for the Next Shock: Evolving the Platform Over a Decade](evolving-the-vehicle-platform.html)). A rising repurchase rate is an early signal of a license or cache regression. A rising support cost per rooftop is an early signal of a workflow problem.\n\nWhat to watch over years: supplier price changes, which arrive as contract renewals rather than as incidents. Consolidation among build-data and history providers, which weakens negotiating positions. The end of legacy stacks, whose shared cost shrinks only when they are actually switched off. And new data classes, such as connected-vehicle and battery-health data ([Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html), [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html)), which arrive with new per-call fees.\n\n## Questions to Ask\n\n1. What is the fully loaded cost of an average lookup, and what is it for the most expensive call path? Who produced both numbers, and from which sources?\n2. Which share of lookups reaches a paid upstream, and what share of total cost do they carry?\n3. For every paid source: what may we keep, for how long, for which purposes, and what does a no-hit cost us?\n4. What fraction of upstream purchases are repurchases or duplicates?\n5. Can one client's batch exhaust a shared upstream quota or rate limit, and what stops it?\n6. Where is the spend cap per client and per product, and how quickly does it trip?\n7. Do cost events and usage events share a request id and lossless storage, and are they reconciled with supplier invoices?\n8. What does it cost to serve our smallest rooftop, our largest group and our largest API client, and which of those is measured rather than estimated?\n9. Which workload shapes collide on our busiest day of the year, and has anyone rehearsed that day?\n10. What retention rule applies to sold-car images, and who owns it?\n\nCost per lookup is one of the measures that operators watch. The next page, [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html), shows how the platform sees the rest: publish lag, lead delivery, data quality and the support console that turns a dealer's complaint into a trace.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Impact of Karpenter](https://tech.autoscout24.com/blog/posts/impact-of-karpenter/), AutoScout24 Tech Blog, 2024: almost 50% EC2 cost reduction and rising observability costs.\n- [Amazon S3 Intelligent-Tiering](https://aws.amazon.com/s3/storage-classes/intelligent-tiering/), Amazon Web Services, n.d., accessed 2026-10: access-tier thresholds and monitoring charge.\n- [Places API policies](https://developers.google.com/maps/documentation/places/web-service/policies), Google, n.d. (updated 2026-10), accessed 2026-10: example of contract-limited caching of licensed data.\n\n*Standards, regulation and official documentation*\n\n- [MOT history API rate limits](https://documentation.history.mot.api.gov.uk/mot-history-api/rate-limits/), Driver and Vehicle Standards Agency, n.d., accessed 2026-10: quota, rate and lock-out rules.\n- [Vehicle Enquiry Service API description](https://developer-portal.driver-vehicle-licensing.api.gov.uk/apis/vehicle-enquiry-service/vehicle-enquiry-service-description.html), DVLA, n.d., accessed 2026-10: limits per usage plan, closed registrations.\n- [RDW open data: registered vehicles](https://opendata.rdw.nl/resource/m9d7-ebf2.json), RDW, live dataset, accessed 2026-10: Dutch register data available for mirroring.\n- [vPIC API](https://vpic.nhtsa.dot.gov/api/), NHTSA, n.d., accessed 2026-10: rate control and downloadable databases.\n- [OWASP API4:2023 Unrestricted Resource Consumption](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/), OWASP, 2023: third-party spending limits.\n- [FOCUS specification](https://focus.finops.org/), FinOps Foundation, n.d., accessed 2026-10: normalized billing data across vendors.\n- [Metrics supplementary guidelines](https://opentelemetry.io/docs/specs/otel/metrics/supplementary-guidelines/), OpenTelemetry, n.d., accessed 2026-10: cardinality explosion.\n\n*Research and practitioner sources*\n\n- [Unit Economics](https://www.finops.org/framework/capabilities/unit-economics/), FinOps Foundation, n.d., accessed 2026-10: business unit metrics and fully loaded costs.\n- [Allocation](https://www.finops.org/framework/capabilities/allocation/), FinOps Foundation, n.d., accessed 2026-10: tags, shared-cost strategy, showback and chargeback.\n- [Measure the consumption of each tenant](https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/measure-consumption), Microsoft Learn, 2024: cost to serve, estimation threshold, accuracy of billing data.\n- [Noisy Neighbor antipattern](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor), Microsoft Learn, 2025: simultaneous peaks and resource governance.\n- [Fairness in multi-tenant systems](https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/), AWS Builders' Library, 2020: rate limits, per-tenant quotas, load shedding.\n- [Caching challenges and strategies](https://aws.amazon.com/builders-library/caching-challenges-and-strategies/), AWS Builders' Library, 2019: cold caches, downstream surges, negative caching.\n- [Handling Overload](https://sre.google/sre-book/handling-overload/), Google SRE book, 2016: retry budgets and per-client limits.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

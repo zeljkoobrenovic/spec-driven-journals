@@ -1,0 +1,20 @@
+[
+ {
+  "id": "17-stock-lifecycle",
+  "visual_goal": "Show the commercial stock lifecycle with advertising as a separate parallel track, not a state.",
+  "prompt": "Upper two thirds: a left-to-right chain of seven rounded state tiles: blue 'Purchased', grey 'In transit', orange 'In reconditioning', green 'Ready', teal 'Reserved', blue 'Sold', green 'Delivered'. Arrows: 'Purchased' to 'In transit'; 'In transit' to 'In reconditioning'; 'In reconditioning' to 'Ready'; 'Ready' to 'Reserved' labeled 'deposit'; one curved arrow from 'Reserved' back to 'Ready' labeled 'lapsed'; 'Reserved' to 'Sold' labeled 'invoiced'; 'Sold' to 'Delivered' labeled 'handed over'; one curved arrow from 'Ready' back to 'In reconditioning' labeled 'new defect'. Lower third: a separate thin horizontal band running underneath the whole chain, labeled 'Advertising track', drawn as a lane with a small megaphone icon, green under 'In reconditioning' and 'Ready', turning grey from 'Reserved' onward.",
+  "alt": "Commercial states run from Purchased through In transit, In reconditioning, Ready, Reserved and Sold to Delivered; an advertising track runs in parallel and turns off from Reserved onward."
+ },
+ {
+  "id": "17-dossier-hub",
+  "visual_goal": "Show the dossier service as the hub that owns the stock item, timeline and documents, with modules, facts and events around it.",
+  "prompt": "A hub-and-spoke illustration. Center: a large folder-shaped box labeled 'Dossier service' containing three small icons (a car tag, a timeline strip, a document). Left: a screen labeled 'Dealer UI' with one arrow into 'Dossier service'. Bottom left: a plug box labeled 'DMS adapter' with one arrow into 'Dossier service' labeled 'owned fields only'. Top: a box labeled 'Module orchestrator' with one arrow from 'Dossier service' up into it, labeled 'commands with receipts'. Top right: a box with a car silhouette labeled 'Vehicle facts', with one arrow from 'Dossier service' to it labeled 'reads by AVK'. Right: a pipe-shaped box labeled 'Event backbone', with one arrow from 'Dossier service' into it. From 'Event backbone' two arrows out to the far right: one to a box labeled 'Pricing', one to a list box labeled 'Stock list'.",
+  "alt": "The dossier service sits at the center: the dealer UI and the DMS adapter (owned fields only) write to it, it sends commands with receipts to the module orchestrator, reads vehicle facts by AVK, and emits events that pricing and the stock list consume."
+ },
+ {
+  "id": "17-concurrent-writes",
+  "visual_goal": "Show conditional writes on one stock item: the second reservation fails, the repricing rule is told to re-read, and the DMS retry is a duplicate.",
+  "prompt": "A left-to-right swimlane illustration with five vertical lanes, each headed by an icon and a label: a person icon labeled 'Breda', a person icon labeled 'Tilburg', a central folder labeled 'Dossier service', a gear labeled 'Repricing rule', and a plug labeled 'DMS adapter'. Horizontal arrows between each lane and the central 'Dossier service' lane, top to bottom: from 'Breda' to 'Dossier service' labeled 'reserve v41'; back to 'Breda' in green labeled 'reserved v42'; from 'Tilburg' to 'Dossier service' labeled 'reserve v41'; back to 'Tilburg' in orange labeled 'conflict'; from 'Repricing rule' to 'Dossier service' labeled 'set price'; back to 'Repricing rule' in orange labeled 'conflict'; from 'DMS adapter' to 'Dossier service' labeled 'sold'; from 'DMS adapter' to 'Dossier service' labeled 'retry'; back to 'DMS adapter' in grey labeled 'duplicate'.",
+  "alt": "Swimlanes: Breda reserves at version 41 and gets version 42; Tilburg's reservation at version 41 conflicts; the repricing rule's write conflicts; the DMS adapter's sold signal is accepted and its retry is a duplicate."
+ }
+]

@@ -1,0 +1,20 @@
+[
+ {
+  "id": "47-writer-flip",
+  "visual_goal": "Show the per-rooftop writer flip: the router sends each rooftop's writes to exactly one writer; CDC feeds a read model before the flip; after it, the Dossier service publishes events that back-sync the legacy tables and feed new consumers.",
+  "prompt": "A left-to-right flow illustration. Far left: a dealer screen icon labeled 'Lotwise screens'. One arrow into a railway-switch box labeled 'Ownership router'. From the router two arrows: one up-right labeled 'not yet flipped' into an old grey database cylinder labeled 'Lotwise Classic', and one down-right labeled 'flipped' into a modern blue service box labeled 'Dossier service'. From 'Lotwise Classic' one arrow down labeled 'CDC' into a box with a checkmark labeled 'Read model'; one arrow from 'Read model' into 'Dossier service'. 'Read model' sends exactly one arrow, downward into 'Dossier service'. One arrow from 'Dossier service' right labeled 'outbox events' into a horizontal pipe labeled 'Event backbone'. From 'Event backbone' one dashed orange arrow curving back up to 'Lotwise Classic' labeled 'back-sync', and one arrow right into a small cluster of service boxes labeled 'Consumers'. These are the only words in the image.",
+  "alt": "Lotwise screens go through an ownership router to Lotwise Classic for unflipped rooftops or to the Dossier service for flipped ones; CDC feeds a read model into the Dossier service, whose outbox events reach the event backbone, back-syncing Classic and feeding consumers."
+ },
+ {
+  "id": "47-parallel-run",
+  "visual_goal": "Show the parallel run: the client gets the legacy answer at once; the new path runs on the pinned facts; a comparator records differences in a store where they are classified.",
+  "prompt": "A left-to-right swimlane illustration with five vertical lanes, each headed by a small icon and a label: a laptop labeled 'Client', an old grey server labeled 'Legacy path', a modern blue server labeled 'New path', a balance scale labeled 'Comparator', and a filing drawer labeled 'Difference store'. Horizontal arrows from top to bottom: from 'Client' to 'Legacy path' labeled 'lookup'; a return arrow from 'Legacy path' to 'Client' labeled 'answer served'; from 'Legacy path' to 'New path' labeled 'pinned facts'; from 'New path' to 'Comparator' labeled 'new answer'; from 'Legacy path' to 'Comparator' labeled 'legacy answer'; from 'Comparator' to 'Difference store' labeled 'differences'. Beside 'Difference store' at the bottom, three small sorting trays labeled 'legacy wrong', 'new wrong' and 'policy undecided'. These are the only words in the image.",
+  "alt": "Swimlanes: the client gets the legacy answer; the legacy path passes pinned facts to the new path; the comparator receives both answers and records differences, which are sorted into legacy wrong, new wrong and policy undecided."
+ },
+ {
+  "id": "47-client-sunset-states",
+  "visual_goal": "Show the client sunset state machine: a main path from inventoried to closed, a stalled state reviewed monthly that returns to planning, moves to a paid extension or ends in termination.",
+  "prompt": "A state map of rounded tiles. Along the top, a straight left-to-right green path of six tiles: 'Inventoried', 'Planned', 'Testing', 'Compared', 'Cut over', 'Closed', each joined to the next by one arrow. Below the middle, one orange tile labeled 'Stalled'. Two separate downward arrows enter 'Stalled': one diagonal arrow from 'Planned' and one straight arrow from 'Testing'. One arrow from 'Stalled' back up to 'Planned' labeled 'new date'. To the right of 'Stalled', a teal tile labeled 'Extended', with one arrow from 'Stalled' to 'Extended' and one arrow from 'Extended' up to 'Cut over'. Below 'Stalled', a red tile labeled 'Terminated', with one arrow from 'Stalled' down to it. These are the only words in the image.",
+  "alt": "Client states: inventoried, planned, testing, compared, cut over and closed in a line; planned or testing clients can stall, and stalled clients return to planning, take a paid extension to cut-over, or are terminated."
+ }
+]

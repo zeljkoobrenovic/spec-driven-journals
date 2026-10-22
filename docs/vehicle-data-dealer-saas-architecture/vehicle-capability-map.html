@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mapping the Business: A Capability Map From Identify to Insight</title>
+    <meta name="description" content="Which business capabilities does a vehicle data and dealer SaaS platform need, and which should the data half and the workflow half share? Draw the map from the value chain, not the org chart; classify each capability as differentiating, parity or commodity; and share first the parity capabilities that carry the keys (vehicle, account, meter, license), because every differentiating capability depends on them.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Mapping the Business: A Capability Map From Identify to Insight">
+    <meta property="og:description" content="Which business capabilities does a vehicle data and dealer SaaS platform need, and which should the data half and the workflow half share? Draw the map from the value chain, not the org chart; classify each capability as differentiating, parity or commodity; and share first the parity capabilities that carry the keys (vehicle, account, meter, license), because every differentiating capability depends on them.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/vehicle-capability-map.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/03-vehicle-capability-map/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="dealer-and-data-economics.html" title="Margins, Days and Lookups: The Economics of Dealers, Data and SaaS">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="vehicle-bounded-contexts.html" title="Drawing the Lines: Bounded Contexts, Entities and Sources of Truth">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — MARKET: The Business of Vehicle Data and Dealer Software</p>
+        <h1>Mapping the Business: A Capability Map From Identify to Insight</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  32 min read · <a class="spec-link" href="vehicle-capability-map.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/03-vehicle-capability-map/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/03-vehicle-capability-map/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="dealer-and-data-economics.html" title="Margins, Days and Lookups: The Economics of Dealers, Data and SaaS">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="vehicle-bounded-contexts.html" title="Drawing the Lines: Bounded Contexts, Entities and Sources of Truth">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Mapping the Business: A Capability Map From Identify to Insight", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "Which business capabilities does a vehicle data and dealer SaaS platform need, and which should the data half and the workflow half share? Draw the map from the value chain, not the org chart; classify each capability as differentiating, parity or commodity; and share first the parity capabilities that carry the keys (vehicle, account, meter, license), because every differentiating capability depends on them.", "permalink": "vehicle-capability-map", "timetoread": "32 min read", "icon": "assets/icons/03-vehicle-capability-map.png", "logo": "assets/images/03-vehicle-capability-map/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Build a business capability map for a group that sells vehicle data and dealer software, from a reference model of 28 capability blocks plus the eight capabilities that model lacks, and turn it into a heat map that decides where to invest, what to share and what to buy.\n\n> **WHY THE BUSINESS CARES:** A group assembled by acquisition pays several times for the same capability (three logins, three billing paths, two API stacks) while underinvesting in the few that decide whether a dealer or data client chooses it. The capability map is how the CEO and CFO see that spending in one picture.\n\n> **WHY ARCHITECTS SHOULD CARE:** The map is the first artifact in which \"share the vehicle key\" and \"do not share release cadence\" become checkable claims. It feeds bounded contexts, sourcing decisions, team design and the integration sequence of the whole portfolio.\n\n> **KEY POINTS:**\n>\n> * **Map what the business must be able to do, not what its systems are called.** A capability map that copies the product list or the org chart hides duplication. Axleby's v1 map has 6 domains and 39 capabilities, and nine of them were implemented two or three times by acquired products.\n> * **Classify twice: by investment class and by scope.** Differentiating, parity and commodity decide how much to invest and whether to build; shared, data-half, workflow-half and market-specific decide where a capability lives. The two classifications answer different questions, and conflating them is how \"identity is not strategic\" becomes three login systems.\n> * **Share the parity capabilities that carry keys first.** Eight of Axleby's 18 shared capabilities are parity, not differentiating: accounts, entitlements, metering, licensing, ingestion, specification, onboarding and events. They carry the keys that every differentiating capability, from valuation to history, needs. Sharing them first is cheaper and less contested than merging the capabilities that make each brand distinct.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Acquisition Archipelago** — a map drawn product by product shows five healthy products; a map drawn capability by capability shows nine capabilities built more than once and a customer nobody can see whole.\n> * **The Unmetered Call** — when metering is a feature of each product rather than a shared capability, each product counts a \"no hit\" its own way.\n> * **License Blindness** — the reference model checks licenses at only 3 of its 28 blocks; drawn as a capability, governance has to cover every interface that releases data.\n\n<br>\nA vehicle data and dealer SaaS group sells many things: a plate lookup, a history report, a valuation, a stock module, an advert on sixty portals, a registration in a new owner's name, a market dashboard. Its product list says what it charges for. It does not say **what the business must be able to do** to deliver them, which of those abilities each product reinvents, and which ones decide whether a dealer or data client chooses this group over another.\n\nA **business capability** is what the business must be able to do to deliver value, described independently of the people, processes and systems that currently do it. \"Value a used car\" is a capability; Vantage is a system that implements it; Wertlauf is the team that built it; the appraisal screen in Lotwise is one place it is used. A **capability map** arranges capabilities in levels, usually two or three, and a **heat map** colors each one by a judgement: how much it differentiates, how well it works, who owns it. A **shared capability** is one that both halves of the platform, the data half and the workflow half, consume and that has one implementation and one owner.\n\nThis chapter owns those three terms. It builds on the participants and value chain in [Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html) and the economics in [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html), and hands the next step, turning capabilities into bounded contexts with sources of truth, to [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html). Sourcing decisions continue in [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html), and the December 2027 revision of the map in [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html).\n\n## Setting the Scene at Axleby: Five Products, One Board Question\n\nAxleby is the fictional vehicle data and dealer software group this book follows ([Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)). In February 2027 its CEO, Anouk Willems, asked Ines Marchetti, the Group Chief Architect, a question that sounded simple. Axleby's board, on which Harrowgate Capital holds the majority, would meet on **16 March 2027** to decide on the **One Dossier** program, a €38 million, three-year proposal from Ines and the CTO Ruben Dekker. Anouk wanted one page that showed \"what we do, what we do twice, and what we do better than anyone.\"\n\nThe product view did not answer it. Each of Axleby's five brands (Axleby Data, Lotwise, Showroomly, Axleby Trade and Odolo) had its own roadmap and could show a healthy product. Tomás Ferreira, Product Director of Lotwise, wanted dealer-visible features every quarter. Priya Raman, VP Data and Valuation, wanted investment in valuation drift monitoring after the **EV Overvaluation** of 2026, when Vantage overvalued used battery-electric vehicles (BEVs) by 9.5% for 14 weeks. Lena Vos, Billing and Finance Systems Lead, wanted the three billing paths merged after the **No-Hit Credit** (€186,000 to 41 API clients). Each request was sound. Together they were a list without a priority.\n\nInes ran a two-day workshop in Utrecht on **22–23 February 2027** with the brand directors, Hendrik Maes (Partner Integrations), Marta Nowak (Platform and SRE), Femke de Boer (Data Governance) and Lena. She brought two things: a reference capability model of the domain, built from public sources, and a rule. **Every system Axleby runs had to be placed under a capability, and every capability had to name its consumers.** Systems that landed under the same capability were duplicates; capabilities with no system were gaps; capabilities used by more than one brand were candidates for sharing.\n\nThree findings came out of the first afternoon.\n\n- **Nine capabilities were implemented two or three times.** Accounts and login had three implementations, billing three paths, vehicle data APIs two stacks, and vehicle identity was keyed three ways (Lotwise's stock id plus plate, Connect XML's plate and Anchor's Axleby Vehicle Key, AVK). Register data was held in Turnstile's mirror and in Connect XML's own tables. Syndication, dealer websites and lead inboxes existed in both Lotwise and Showroomly, and every product kept its own entitlements.\n- **Eight capabilities the group needed had no clear home in the reference model.** DMS (dealer management system) integration, events and webhooks, onboarding and configuration, observability and data operations, ingestion and entity resolution, provenance and data quality, connected-vehicle data and vehicle identity resolution as a capability of its own.\n- **The incidents clustered.** The EV Overvaluation (2026), the No-Hit Credit (2026), the **License Breach** (January 2027) and the **Zombie Golf** (February 2027, a sold Golf live on 4 portals for 4 days, drawing 37 leads) each sat in a capability that was either duplicated, unowned or missing from the model.\n\n![Left: five product islands each with their own padlock, meter and key. Right: five products on one shared foundation with one padlock, one meter and one key.](assets/images/03-vehicle-capability-map/03-archipelago-to-foundation.jpeg)\n**Figure 1:** *Drawn product by product, Axleby showed five healthy brands; drawn capability by capability, it showed nine capabilities, from logins and billing to vehicle keys, implemented two or three times.*\n\nThe workshop started from the ecosystem map Ines, Hendrik and Femke had drawn in January and February: every source, channel, partner and client class with its contract, including 21 commercial data-supplier contracts ([Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html)). The page Ines took to the board on 16 March was **capability map v1**. The rest of this chapter explains how it was built, what it says and what it decided.\n\n## Concepts: Capabilities, Levels and Heat\n\nCapability mapping is established enterprise-architecture practice: Ulrich Homann's 2006 Microsoft paper treated capabilities as the stable \"what\" of a business, and The Open Group's TOGAF series has a guide to capability maps. Eric Evans's domain-driven design (2003) separates the **core domain**, why customers choose you, from **supporting** and **generic** subdomains; Simon Wardley's maps add evolution from novel to custom-built to product to commodity. This chapter uses those ideas in a deliberately small form.\n\n| Term | Definition used in this book | Not to be confused with |\n| --- | --- | --- |\n| **Capability** | A stable ability the business needs to deliver value, named as a noun phrase about the business (\"vehicle valuation\", \"register transactions\") | A system (Vantage), a team (Wertlauf), a product (Lotwise Appraise) or a process step (\"enter the mileage\") |\n| **Level 1 (domain)** | A group of capabilities that serve one part of the value chain or one shared purpose; six in Axleby's v1 map | A business unit or brand |\n| **Level 2 (capability)** | The unit of ownership, investment and sharing decisions; 39 in v1 | A microservice; one capability may need several services |\n| **Level 3** | A sub-capability drawn only where a sharing or sourcing decision needs it | Detail for completeness; v1 drew none |\n| **Investment class** | Differentiating, parity or commodity (defined below) | The capability's current health |\n| **Condition** | How well the capability works today: green, amber, red or grey | Its importance |\n| **Scope** | Who consumes it: shared (both halves), data half, workflow half | Who happens to build it today |\n| **Market flag** | Whether the capability's rules, sources or partners differ by country | Whether it is sold in several countries |\n\nThree investment classes do most of the work.\n\n- **Differentiating:** decides whether a dealer or data client chooses the group; earns the best engineers, build as the default and its own accuracy metrics. At Axleby: valuation, history, identity resolution.\n- **Parity:** must match competitors to stay in the deal, but doing it better wins little; deserves exactly one good implementation, often on bought components. At Axleby: syndication, accounts, metering.\n- **Commodity:** standardized; buy, rent or delegate to a partner. At Axleby: observability tooling, file enrichment, financing referral.\n\n**Parity is not a polite word for unimportant.** The Zombie Golf happened in syndication, a parity capability; the No-Hit Credit in metering, another. A parity capability that fails costs as much as a differentiating one. What differs is the investment logic: a parity capability should be built once and well, and nobody should compete on it inside the group.\n\n## The Reference Model: 28 Blocks in Five Groups\n\nThe book's research began with a reference domain model of a vehicle data and dealer SaaS platform that the author built from the public product pages of one Dutch vehicle-data company (the public record of that company is the subject of [VWE: A Dutch Vehicle Data Company Becomes a Dealer Platform](case-vwe.html)). Its capability blocks, data stores and dependencies were **inferred from public product behavior, not taken from any company's architecture documentation**, so the model is used here as a generic reference, with neutral names, and never as a description of that company. [Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html) maps every block to the chapters that cover it.\n\nThe model has **28 capability blocks** in five groups, with 140 modules and 55 dependencies between blocks.\n\n| Reference group | Blocks (neutral names) | What the group does |\n| --- | --- | --- |\n| **Vehicle data foundation** (8) | Register connector and mirror; vehicle identity and specification; vehicle history; EV battery health; damage calculation; market and transaction data; valuation; registration-tax calculation | Who and what the vehicle is, what happened to it, what it is worth |\n| **Dealer operations** (7) | Vehicle dossier and workflow hub; stock and pricing; trade-in appraisal; advert syndication; dealer website and lead capture; sales administration; financing referral | The dealer's car from purchase to delivery |\n| **Registration, trade and remarketing** (4) | Register transactions; plates and materials webshop; import and export documents; B2B trade exchange | Official paperwork and trader-to-trader sales |\n| **Data products and channels** (6) | Vehicle data API gateway; file enrichment; market insight dashboards; change-of-ownership scoring; consumer plate check; consumer travel documents | Data sold to enterprises, developers and consumers |\n| **Platform and commerce** (3) | Accounts, identity and entitlements; subscription and transaction billing; data licensing and governance | The shared commercial and compliance backbone |\n\nThe model's dependency graph states the book's central claim in miniature. The register connector has the most incoming dependencies (10), followed by identity and specification (8), valuation (6) and billing (5). **One register connection, one specification resolver and one valuation engine feed every product; the workflow blocks are thin over them.**\n\nThe model is also instructive where it is inconsistent. Its data-licensing block is called from only **3 of 28 blocks**, although its own target architecture enforces licenses \"at every data interface\", and only **5 blocks** record billable usage, although at least ten produce something a customer pays for. Those gaps become License Blindness and the Unmetered Call. **Drawn as capabilities, licensing and metering are obviously shared**; drawn as blocks with edges, they look like features of whichever block remembered to call them.\n\n## What the Reference Model Lacks, and Why It Belongs\n\nA model built from one company's public product pages describes what that company sells, not everything a platform must be able to do. Comparing it with the research for this book (registers in five markets, DMS ecosystems, syndication standards, SaaS tenancy, connected-vehicle regulation) found eight capabilities a real platform needs that the model lacks or buries inside another block.\n\n| Added capability | Why the platform needs it | Evidence it is real | Owning chapter |\n| --- | --- | --- | --- |\n| **Vehicle identity resolution** | Plates move on import, re-registration and personalization; an identity graph keyed by vehicle identification number (VIN) is a capability, not a lookup | Every market studied keys registers by plate and history by VIN | [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) |\n| **Ingestion and entity resolution** | Registers, suppliers, portals and dealers send overlapping, late and wrong data; validation, quarantine and survivorship need one implementation | Register snapshots, supplier files and harvested adverts arrive in different shapes and rhythms | [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html) |\n| **Provenance and data quality** | A fact without source, date, license and confidence cannot be shown, corrected or defended | Corrections must reach every copy; reports carry liability | [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) |\n| **Connected-vehicle data** | The EU Data Act applies from 12 September 2025 and gives users and their chosen third parties access to vehicle-generated data | Regulation (EU) 2023/2854 | [Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html) |\n| **DMS integration** | Franchised dealers keep accounting, deals and often stock in a DMS the platform does not control | CDK's 2024 outage and the Authenticom litigation show the stakes | [Living With the DMS: Dealer Management System Integration](dms-integration.html) |\n| **Events and webhooks** | Stock, price, sold and corrected-fact changes must reach portals, DMS, clients and the warehouse in order | The model lists events on data assets but no capability publishes them | [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html) |\n| **Onboarding and configuration** | Dealer groups arrive with hundreds of users, a DMS and channel accounts; configuration must replace code forks | Group onboarding is an integration project, not a sign-up | [From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html) |\n| **Observability and data operations** | Health per tenant, per channel and per data source, and a support view across products | The model names availability KPIs but no capability measures them | [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html) |\n\nThree other gaps were left out of the map deliberately, and the reason is part of the method. **Lease contract administration** is a different business (fleet management software) that Axleby does not sell; **marketplace payments and escrow** stay with auction partners because Tradefloor hands deals off; **fraud prevention** is treated as a cross-cutting concern of security, not a capability a customer buys ([Protecting Dealers and Data: Security for a Vehicle Data Platform](vehicle-platform-security.html)). A capability map should contain what the business must do, and saying \"we do not do this\" is a decision worth recording.\n\n## Capability Map v1 (March 2027)\n\nMap v1 has **6 level-1 domains and 39 level-2 capabilities**. Thirty-one come from the 28 reference blocks: three blocks split in two (the advert editor became merchandising, separate from syndication; website and lead capture became dealer websites and lead management; accounts became accounts and tenancy, separate from authorization and entitlements), and the buying app inside stock and pricing folded into appraisal. Eight are the additions above. The reference model's data-products group was split so that consumer products form their own domain, because consumers are a different customer with different law ([The Consumer Door: Plate Checks, Reports and B2C Services](consumer-vehicle-checks.html)).\n\n![Vehicle Data Foundation feeds facts and values to Dealer Platform, Registration and Trade, Data Products and Consumer; dealer stock and sales and ownership changes flow back; Platform Foundations underpin the products.](assets/images/03-vehicle-capability-map/03-capability-map-level1.jpeg)\n**Figure 2:** *Capability map v1 at level 1: the vehicle data foundation feeds every domain and learns from the dealer platform and registration domains, while platform foundations answer the same three questions (who, may they, what was used) for every product.*\n\nThe feedback arrows matter as much as the forward ones. Dealer stock and sales are the best ground truth the market data and valuation capabilities have, and register transactions are the moment a sale becomes a fact ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)). A map that draws data flowing only from the data half to the workflow half misses why the two halves belong in one group.\n\n### The 39 capabilities and their heat\n\nThe heat map uses four attributes per capability. **Class:** D differentiating, P parity, C commodity. **Condition** in March 2027: **Green** = one implementation that meets its consumers' needs; **Amber** = works, but implemented more than once or on a known fragile path; **Red** = an incident in the previous 12 months whose fix is not yet in place, or a blocker for One Dossier's year-1 goals; **Grey** = needed but owned by nobody, or a reference capability Axleby does not offer. **Scope:** Shared, Data (data half), Workflow (workflow half). **Mkt:** ● where sources, rules or partners differ by country.\n\n| # | Capability | Axleby system(s), March 2027 | Class | Condition | Scope | Mkt |\n| --- | --- | --- | --- | --- | --- | --- |\n| **A** | **Vehicle Data Foundation** | | | | | |\n| A1 | Register access and mirror | Turnstile; Connect XML's own register tables | D | Amber | Shared | ● |\n| A2 | Vehicle identity resolution *(added)* | Anchor (AVK); Lotwise stock id plus plate; Connect XML plate | D | Amber | Shared | |\n| A3 | Specification and equipment | Specbook with licensed build data | P | Amber | Shared | ● |\n| A4 | Vehicle history | Tracewell | D | Amber | Shared | ● |\n| A5 | Ingestion and entity resolution *(added)* | Per-source loaders in Tracewell, Pulse and Connect XML | P | Amber | Shared | |\n| A6 | Provenance and data quality *(added)* | None as a capability | D | Grey | Shared | |\n| A7 | Market data | Pulse | D | Amber | Shared | ● |\n| A8 | Vehicle valuation | Vantage | D | Red | Shared | ● |\n| A9 | Condition and damage estimation | Licensed estimation partner through Lotwise | P | Amber | Workflow | |\n| A10 | EV battery health | None (PDF attachments) | D | Grey | Shared | |\n| A11 | Connected-vehicle data *(added)* | None | D | Grey | Data | ● |\n| A12 | Registration-tax calculation | Axleby Trade calculators | P | Green | Workflow | ● |\n| **B** | **Dealer Platform** | | | | | |\n| B1 | Appraisal and acquisition | Lotwise Appraise | D | Amber | Workflow | |\n| B2 | Inventory and vehicle dossier | Lotwise Classic | D | Red | Shared | |\n| B3 | Pricing and stock signals | Lotwise Stock & Pricing | D | Amber | Workflow | |\n| B4 | Merchandising and media | Lotwise advert editor | P | Amber | Workflow | ● |\n| B5 | Listing syndication | Relay; Showroomly feeds | P | Red | Workflow | ● |\n| B6 | Dealer websites | Lotwise Website & Leads; Showroomly | P | Amber | Workflow | |\n| B7 | Lead management and routing | Switchboard; Lotwise and Showroomly inboxes | P | Amber | Workflow | |\n| B8 | Sales administration and documents | Lotwise Sales Admin | P | Green | Workflow | ● |\n| B9 | Financing referral | Lender partner through Lotwise | C | Green | Workflow | ● |\n| B10 | DMS integration *(added)* | DriveDesk and file adapters in Lotwise | P | Red | Workflow | ● |\n| **C** | **Registration and Trade** | | | | | |\n| C1 | Register transactions | Axleby Trade back office and retry queue | D | Amber | Shared | ● |\n| C2 | Import and export documents | Axleby Trade | P | Green | Workflow | ● |\n| C3 | Plates and trade materials | Axleby Trade webshop | C | Green | Workflow | ● |\n| C4 | Business-to-business (B2B) trade exchange and remarketing | Tradefloor | P | Amber | Workflow | |\n| **D** | **Data Products and Distribution** | | | | | |\n| D1 | Vehicle data APIs | Connect XML; JSON API v1 | P | Red | Data | |\n| D2 | File enrichment | Axleby Data batch jobs | C | Green | Data | |\n| D3 | Market insight and dashboards | Axleby Insight; Rooftop Benchmark | D | Amber | Data | ● |\n| D4 | Change-of-ownership prediction | Horizon (NL; data protection impact assessment under way) | P | Amber | Data | ● |\n| D5 | Events and webhooks *(added)* | None external; RabbitMQ and MSK internally | P | Grey | Shared | |\n| **E** | **Consumer** | | | | | |\n| E1 | Consumer vehicle checks | Odolo | P | Amber | Data | ● |\n| E2 | Consumer travel documents | Not offered (Odolo refers to partners) | C | Grey | — | |\n| **F** | **Platform Foundations** | | | | | |\n| F1 | Accounts, organizations and tenancy | Axleby Portal accounts; Lotwise users; Showroomly users | P | Red | Shared | |\n| F2 | Authorization and entitlements | Per product | P | Amber | Shared | |\n| F3 | Onboarding and configuration *(added)* | Manual, per product | P | Amber | Shared | |\n| F4 | Usage metering and billing | Connect XML invoice run; Lotwise billing; Showroomly billing tool | P | Red | Shared | |\n| F5 | Data licensing and purpose governance | Being built after the License Breach (Charter) | P | Red | Shared | |\n| F6 | Observability and data operations *(added)* | Datadog; Grafana and Prometheus | C | Amber | Shared | |\n\nThe counts are the board's summary, and they are canonical for this book.\n\n| Attribute | v1 count (of 39) |\n| --- | --- |\n| Investment class | **13 differentiating, 21 parity, 5 commodity** |\n| Condition | **6 green, 20 amber, 8 red, 5 grey** (4 missing, 1 not offered) |\n| Scope | **18 shared, 6 data half, 14 workflow half**, 1 not offered |\n| Market-specific | **18**, of which 4 exist only in the Netherlands (registration tax, register transactions, import and export documents, plates) |\n| Implemented more than once | **9** (register data, identity keys, syndication, dealer websites, lead inboxes, data APIs, accounts, entitlements, billing) |\n| Added beyond the reference model | **8** |\n\n### Where the classes fall\n\nThe most useful cut of the table is class by scope.\n\n| | Shared | Data half | Workflow half |\n| --- | --- | --- | --- |\n| **Differentiating** | **9:** register access, identity resolution, history, provenance, market data, valuation, battery health, vehicle dossier, register transactions | **2:** connected-vehicle data, market insight | **2:** appraisal, pricing |\n| **Parity** | **8:** specification, ingestion, events, accounts, entitlements, onboarding, metering, licensing | **3:** data APIs, ownership prediction, consumer checks | **10:** damage, registration tax, merchandising, syndication, websites, leads, sales documents, DMS integration, import and export documents, trade exchange |\n| **Commodity** | **1:** observability | **1:** file enrichment | **2:** financing referral, plates and materials |\n\nNot offered: consumer travel documents (commodity). Two observations shaped the board discussion.\n\n**Most differentiating capabilities are shared.** Nine of the 13 sit in the shared column. Valuation, history and identity are what both halves sell: Axleby Data sells them by the call, and Lotwise sells them inside appraisal and pricing. This is the economic argument of [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) in map form: **data is the feature that makes the workflow worth paying for, and the workflow is the channel that sells the data.**\n\n**Eight of the 18 shared capabilities are parity, and they carry the keys.** Accounts carry the customer key, identity resolution the vehicle key, metering the usage key, licensing the purpose key. A differentiating capability cannot be shared well until those keys are: Vantage cannot charge an appraisal correctly without Meterline, cannot show a history-adjusted value without the AVK, and cannot serve an insurer without a license check. This is why One Dossier's year 1 is mostly parity work.\n\n![Valuation and history rooms on the upper floor rest on four foundation blocks: customer key, vehicle key, usage key and purpose key.](assets/images/03-vehicle-capability-map/03-parity-keys-foundation.jpeg)\n**Figure 3:** *Eight of the 18 shared capabilities are parity, but they carry the customer, vehicle, usage and purpose keys that every differentiating capability rests on, which is why One Dossier's year 1 is mostly parity work.*\n\n## Architecture: From Map to Platform Decisions\n\nA capability map is not an architecture diagram, but it decides several architecture questions directly. The first is which capabilities become shared platform services with one owner, one contract and many consumers.\n\n![First, a sorter assigns each capability to differentiating, parity or commodity; then every class passes a second test, same answer about the same car or customer, which sorts it into shared or half-owned.](assets/images/03-vehicle-capability-map/03-two-questions-classify.jpeg)\n**Figure 4:** *Two questions, asked separately: the investment class decides how much to spend and whether to build; the \"same answer about the same car or customer\" test decides whether the capability is shared. A parity capability can be shared, and a differentiating one can stay with one half.*\n\nThe sharing test is narrow on purpose. It asks whether both halves need **the same answer about the same car or the same customer**, not whether they need similar functionality. Lotwise and Showroomly both need dealer websites, but no Lotwise screen needs to know what a Showroomly website shows; the websites are a candidate for consolidation, not a shared capability. Lotwise and the JSON API both need to know which car a plate denotes today, and if they disagree, a dealer's stock and an insurer's report describe different cars. That is a shared capability.\n\n### What each shared capability must promise\n\nA shared capability serves consumers with different needs: a lane-side appraisal wants an answer in seconds, a nightly revaluation of 350,000 stock items wants throughput, an insurer's batch wants a contract that does not change. The v1 map recorded, for each shared capability on the critical path, the promise its consumers depend on. Owning chapters set the final targets; values marked *(assumption)* are illustrative.\n\n| Shared capability (system) | Consumers in March 2027 | Latency | Freshness | Consistency | Availability |\n| --- | --- | --- | --- | --- | --- |\n| Register access (Turnstile) | All five products | Mirror read p95 ≤ 100 ms *(assumption)*; live status calls in seconds | Mirror at least daily; theft and inspection status asked live | Mirror is a labeled copy; transactions only against the register | Mirror serves when the register is down; transactions queue ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)) |\n| Identity resolution (Anchor) | All five products | p95 under 80 ms *(assumption)* | Plate assignments time-bounded; resolved as of a date | One AVK per car; merges and splits published as events | Degrade to last resolution with confidence tier ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) |\n| Vehicle history (Tracewell) | Lotwise, Axleby Data, Odolo | Report assembly in seconds *(assumption)* | Per source; coverage stated in the report | Every report a stored snapshot | Partial reports labeled, never \"clean\" by default ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)) |\n| Valuation (Vantage) | Lotwise, Axleby Data, Odolo, Tradefloor | Within a lane lookup of p95 ≤ 2 s end to end *(assumption)* | Model retrained weekly | Every issued valuation in the valuation ledger with model version | Cached last value with age, never a silent default ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)) |\n| Accounts and entitlements | All five products (three logins in 2027) | Token check in-process | Entitlement change effective within minutes *(assumption)* | One account and tenant key per customer | Fail closed for writes and register transactions ([Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html)) |\n| Metering | All five products (three billing paths in 2027) | Off the request path | Visible to the client within 24 h *(assumption)* | Exactly-once effect, idempotent on a business key | Lossless; separate from telemetry ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) |\n| Licensing check | Data APIs, enrichment, reports, insight | p99 under 2 ms, evaluated in process in the request path *(assumption)* | License changes effective before the next call | One decision recorded per release of data | Fail closed for licensed sources ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)) |\n\nThe table is where \"shared\" stops being a slogan. Consumers with incompatible promises, such as a lane answer in seconds and an auditable batch revaluation, need two serving paths over one model and one ledger, not two valuation engines.\n\n### What the map says must not be shared\n\nThe two halves share **the vehicle, the dossier, the account, the entitlements, the meter, the license check and the events**, and do not share **release cadence, customer-facing workflow and external API contracts** ([Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html)). On the map, the 14 workflow-half capabilities ship on Lotwise's monthly rhythm, while the 6 data-half capabilities change on a versioned, announced schedule that 640 API clients can plan for. Shared capabilities must serve both rhythms, so their contracts are versioned and their owner is a platform team, not either half ([Who Owns What: Organizing Engineering for a Data and SaaS Platform](organizing-engineering.html)).\n\n## In Practice: How Real Portfolios Show Their Capabilities\n\nNo vehicle-data or dealer-software company publishes its internal capability map. What the public record shows is how portfolios were grouped, which capabilities they made shared and in which order. Three documented examples are useful; each says something different about the map.\n\n**Cox Automotive grouped brands by business line, then shared capabilities later.** When Cox Enterprises announced the formation of Cox Automotive on 21 August 2014, it grouped more than 20 brands into five areas: auctions and wholesale, financial services, media, software and international. That is a portfolio view by business line, not a capability map. Cox's later public record shows shared capabilities being added across those lines: Bridge ID, a single sign-on whose undated page (read October 2026) describes a rollout to all users at the end of 2020 and the beginning of 2021, and which works by linking each product's existing account; and, in a 2024 PlatformCon talk, a move \"from API silos to a unified API strategy\" because Cox \"grew through acquisitions\" while customers expect the brands to work together. Apollo's undated customer story (read October 2026) says Cox's VIN decoder sat outside the federated API graph until it was connected without a rewrite, so teams could decode a VIN and join valuations in one query. [Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html) tells this history in full.\n\n> **INFERENCE, NOT DOCUMENTED:** In capability-map terms, Cox's public record reads as identity first, then vehicle identification and data access as shared capabilities, layered over product-owned systems. Cox has not published a capability map, and nothing here describes its internal classification.\n\n**Auto Trader UK built a capability ladder in dependency order.** Auto Trader's results releases date its retailer modules. In April 2022 it launched Retail Essentials, \"the first module of our Auto Trader Connect platform\", using its \"proprietary taxonomy data\" to describe vehicles and real-time stock management (FY2023 results, June 2023). Specification-adjusted valuations followed in April 2023, trended valuations in April 2024, the Co-Driver generative-AI tools in its 2025 financial year, and Deal Builder, which lets buyers value a part-exchange, apply for finance and reserve a car (FY2025 results, May 2025). **My reading** is that the order follows the capability dependencies: specification before valuation, valuation before trended valuation, specification and features before AI descriptions, all of them before transactions. [Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html) develops this reading. On Axleby's map the same chain runs A3 → A8 → B3 → B4 → B8.\n\n**CDK Global's portfolio has the opposite shape.** Its fiscal 2021 annual report described a dealer management system with \"layered applications\" around it for nearly 15,000 North American retail locations. A DMS-centered map has one dominant capability, the dealer's system of record, and its strategic question is who controls access to it ([CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html)). Axleby owns no DMS, so DMS integration (B10) is a parity capability whose risk is dependence, not control ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n\nThe lesson is about **time and order**: Cox's documented steps took years each. A capability map makes the order visible early; it does not make the work faster.\n\n## The Axleby Worked Example: Reading the Map for One Car\n\nThe board did not need 39 rows; it needed to see what the map meant for one customer. Ines used **Autobedrijf Brandsma**, an independent dealer in Leeuwarden with about 55 cars in stock, on Lotwise since 2014, and one trade-in.\n\nSietse Brandsma appraises a trade-in on his forecourt. The appraisal (B1) needs the register (A1), identity (A2), specification (A3), history (A4), damage (A9) and valuation (A8). It needs his account and modules (F1, F2), a metered history report (F4) inside his Appraise bundle of 25 reports a month, and a license check if the history includes a partner's data (F5). If he buys the car, it becomes a stock item (B2), gets a price (B3), an advert (B4) on several channels (B5) and leads (B7). When he sells it, he registers it in the buyer's name (C1) from the dossier, and that ownership change returns to market data (A7).\n\nIn March 2027, the map showed four places where this one car crossed a duplicate or a gap.\n\n| Step | Capability | What happened in March 2027 | Cost or risk (Axleby figures) |\n| --- | --- | --- | --- |\n| Identify | A2 identity | Lotwise keyed the car by stock id plus plate; reports were ordered by plate | Plate re-typed across screens; reports linked to stock by heuristics ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)) |\n| Specify | A3 specification | Each trigger could buy build data again | About €0.46 per build-data request ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)) |\n| Bill | F4 metering | History report counted by the Lotwise bundle; an API client's identical call counted by Connect XML or JSON API v1 under different no-hit rules | The No-Hit Credit: €186,000 to 41 clients in 2026 ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) |\n| Sell | B5 syndication | Deletes queued behind failed updates | The Zombie Golf: 4 portals, 4 days, 37 leads, 9 test drives ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)) |\n\nThe point was not the incidents. It was that **every troubled step was a shared or parity capability**, while the steps where Brandsma finds Axleby better than a competitor (the appraisal, the pricing signal, the register transaction from the dossier) depended on them. \"What we do better than anyone\" had an answer, 13 differentiating capabilities, but it could not be delivered consistently until the parity foundations under it were one.\n\nThe map also showed how widely each shared capability is used. Counting the five products that consume each one:\n\n| Shared capability | Consumed by | Products consuming |\n| --- | --- | --- |\n| Register access (A1) | Lotwise, Showroomly (UK lookups), Axleby Data, Axleby Trade, Odolo | 5 |\n| Identity resolution (A2) | All five | 5 |\n| Accounts (F1) | All five, in three login systems plus Odolo's consumer accounts | 5 |\n| Metering and billing (F4) | All five, in three billing paths | 5 |\n| Valuation (A8) | Lotwise, Axleby Data, Odolo, Axleby Trade (Tradefloor) | 4 |\n| Vehicle history (A4) | Lotwise, Axleby Data, Odolo | 3 |\n\nA capability consumed by five products and implemented three times is the clearest case for consolidation on any map. This table, more than the heat colors, is what moved the board.\n\n## How Capability Maps Fail, and How to Recover\n\nA capability map fails quietly: it looks finished, gets presented once and stops being true. Six failure modes recur, each with a detection signal and a recovery.\n\n| Failure | How it shows | Detection | Recovery |\n| --- | --- | --- | --- |\n| **The org chart in disguise** | Capabilities named after brands or teams (\"Lotwise features\", \"Wertlauf models\") | A capability with exactly one team and one product and no consumers outside it | Rename as a business ability; list consumers; merge where two names hide one ability |\n| **Duplicates under two names** | \"Lead inbox\" and \"enquiry management\" on the same map | Two capabilities with the same inputs, outputs and consumers | Merge; record the merge in the map's changelog |\n| **Conflicting owners** | Two directors claim valuation, or nobody claims provenance | The ownership column has two names or none | One accountable owner per capability, decided by the Chief Architect with the CTO; consumers are not owners |\n| **Incomplete map** | DMS integration, events or onboarding missing because the reference model lacked them | Systems or incidents that cannot be placed under any capability | Add the capability, mark it \"added\", state why it belongs |\n| **Everything is differentiating** | Every director classifies their own area as D | More than about a third of capabilities rated D *(assumption: a rule of thumb, not a standard)* | Ask \"would a customer leave if this were merely as good as a competitor's?\"; require a named competitor comparison for every D |\n| **The stale map** | A map from last year guides this year's sourcing | The map's date is older than the last major incident or acquisition | Revise on a fixed calendar and after every acquisition, incident review or market entry |\n\nThe \"everything is differentiating\" failure deserves its own note, because the heat map is political. A director whose capability is classed parity hears \"your team is less important\". Ines handled it at the workshop by separating the class from the condition and from the budget: **parity capabilities with red condition got more year-1 money than differentiating ones with amber condition.** Metering (parity, red) was funded ahead of market insight (differentiating, amber). The class says how to invest; the condition says where to invest first.\n\nOne duplicate was contested: Showroomly's team argued that UK syndication deserved its own capability. The workshop kept one (B5) with a market flag, on the rule that **a market difference is a rule set or an adapter, not a separate capability**, unless the business itself differs.\n\n## Trade-offs: How to Draw and Use the Map\n\nSeveral approaches compete for the same purpose. Each answers a slightly different question.\n\n| Approach | What it shows | Strength | Weakness | When it fits |\n| --- | --- | --- | --- | --- |\n| **Product portfolio map** (brands and modules) | What the group sells | Matches revenue lines and P&L ownership | Hides duplication across brands; no sharing signal | Commercial planning; investor reporting |\n| **Capability map with heat** (this chapter) | What the business must be able to do, how well, and how much it differentiates | Stable over reorganizations; exposes duplicates and gaps | Political; easy to let go stale; says nothing about runtime | Investment and sharing decisions; acquisition integration |\n| **Wardley map** | Components on a value chain by evolution stage | Shows drift toward commodity; good for sourcing timing | Harder to read for boards; needs a user need anchor | Strategy and sourcing over several years ([Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html)) |\n| **Bounded-context map** | Models, languages and sources of truth, with their relationships | Directly drives service and team boundaries | Too detailed for business prioritization | Design of contexts, contracts and anti-corruption layers ([Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html)) |\n| **System landscape diagram** | What runs where and calls what | Operationally accurate | Encodes today's accidents; no business classification | Operations, migration and dependency analysis |\n\nI would use the first three together and in that order of audience: the portfolio map for the board's revenue view, the capability map for investment and sharing, a Wardley-style evolution view for sourcing timing. The capability map is the one that should outlive reorganizations, so it is the one to keep under version control.\n\nA second trade-off is **how fine to draw it**. Ten capabilities turn every sharing decision into an argument about sub-parts; two hundred cannot be held in anyone's head or kept current. The rule I use: **draw a capability where one owner can be accountable for it and sharing or sourcing is a single decision**. That gave Axleby 39. Level 3 is drawn only when a capability contains parts with different classes or scopes, such as valuation's differentiating model and commodity serving layer. v1 drew none; [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html) shows where v2 needed it.\n\nA third trade-off is **classifying by today's market or tomorrow's**. Register access is differentiating for Axleby because its contractual data-supply and transaction relationship with the Dutch register dates from 1999. But the RDW (the Dutch vehicle authority) publishes basic plate data as open data, and free plate apps compete on it. The map records register access as differentiating with a **watch note**: plate lookups drift toward commodity, while transactions and validated mirrors stay differentiating. Wardley's evolution axis tracks that drift; the heat map records only the current judgement.\n\n## Market-Specific Capabilities\n\nPart I chapters do not carry an \"Across Markets\" section, but the map has to show which capabilities change by country, because every market flag implies an adapter, a rule set or a separate product. Eighteen of the 39 capabilities carry the flag.\n\n| Form of market variation | Capabilities | What varies | Design response |\n| --- | --- | --- | --- |\n| **Different registers and sources** | A1 register access, A3 specification, A4 history, A7 market data, E1 consumer checks | Register access regimes (RDW, DIV, KBA, DVLA and DVSA, US state registers), type codes, history sources, portal landscape | One capability, per-market adapters behind one contract ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)) |\n| **Different models and rules** | A8 valuation, D3 market insight, D4 ownership prediction | Price levels, segment definitions, disclosure and privacy limits | One engine, per-market models and rule sets |\n| **Different law** | A11 connected-vehicle data, B4 merchandising, B8 sales documents, B9 financing referral | EU Data Act (not UK), advert disclosures, VAT margin scheme, consumer-credit rules | Versioned market packs of rules and templates ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)) |\n| **Different partners** | B5 syndication, B10 DMS integration | Portals and DMS products per country | One capability, adapters per partner ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html), [Living With the DMS: Dealer Management System Integration](dms-integration.html)) |\n| **Netherlands only** | A12 registration tax, C1 register transactions, C2 import and export documents, C3 plates and materials | Dutch registration tax (*BPM*, *belasting van personenauto's en motorrijwielen*), the Dutch register's transaction channel | Market-specific capabilities; no generic version until a second market is entered ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)) |\n\nThe judgement the map encodes is that **most market variation belongs inside a capability, not beside it**. Only the four Netherlands-only capabilities are market-specific products, and the map marks them so that nobody generalizes them prematurely: a \"pan-European register transaction capability\" would be designed for one market's rules and three markets' hopes.\n\n## The Chief Architect's View\n\nThe map is a governance instrument as much as an analysis. Five decisions follow from it.\n\n1. **Own the map in architecture, decide the classes with the business.** The Group Chief Architect owns the map, its definitions and its changelog. Investment classes are agreed with the brand directors and the CFO; disputed classes go to the CTO. *At Axleby:* Ines owns it; Anouk and the CFO signed off the v1 classes before the board meeting.\n2. **Fund by condition within class.** The class decides the investment logic (build and differentiate, build once, or buy); the condition decides the order. *At Axleby:* year-1 money went first to the red shared parity capabilities: accounts (Axleby ID), metering (Meterline) and licensing (Charter), plus identity resolution (the AVK as the only vehicle key) and the dossier.\n3. **Make every shared capability a product with a contract.** One owner, a versioned interface, the promise table above, a consumer list and a deprecation policy. A shared capability without a contract becomes a shared database.\n4. **Record what is not offered.** Consumer travel documents are on the map as grey, with the reason: Odolo refers consumers to sticker and insurance partners instead. The record stops the same idea from being re-proposed every quarter without its history, and makes a later decision to enter visible.\n5. **Revise on a calendar and on events.** v1 was dated March 2027 and set for revision by the end of the year; [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html) presents v2 of December 2027. Every acquisition, market entry, major incident review and supplier change triggers an out-of-cycle review of the affected rows.\n\n**What to watch:** the number of capabilities implemented more than once (9 in v1); the share of differentiating capabilities with red or amber condition; the number of capabilities with no owner; the number of products consuming each shared capability through its contract rather than a private copy; and capabilities drifting from differentiating to parity as competitors and open data catch up.\n\n## Questions to Ask\n\n1. Does your capability map name abilities of the business, or products and teams under another name?\n2. For each capability, how many systems implement it, and who are its consumers?\n3. Which capabilities are differentiating, and can you name the competitor you are better than for each one?\n4. Which shared capabilities carry a key (vehicle, customer, usage, license), and are they shared already?\n5. Which incidents of the last twelve months fall under capabilities that are duplicated, unowned or missing from the map?\n6. What does each shared capability promise its consumers in latency, freshness, consistency and availability, and is that promise written down?\n7. Which capabilities differ by market, and is each difference an adapter, a rule set or a genuinely separate product?\n8. What has the business decided not to do, and is that decision on the map?\n9. When was the map last revised, and was it after your last acquisition and your last major incident?\n\nMap v1 says what Axleby must be able to do and which capabilities the two halves should share. It does not yet say where the lines between models fall, which context is the source of truth for a vehicle, a stock item or a lead, or how those contexts translate at their borders. [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html) draws those lines.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [Cox Enterprises announces formation of Cox Automotive](https://www.coxautoinc.com/press-releases/cox-enterprises-announces-formation-cox-automotive/), Cox Automotive, 2014 — five business areas grouping more than 20 brands.\n- [Bridge ID](https://www.coxautoinc.com/bridgeid/), Cox Automotive, n.d., accessed 2026-10 — single sign-on across Cox products, per-product account linking, 2020–2021 rollout.\n- [Cox Automotive's journey from API silos to a unified API strategy](https://2024.platformcon.com/talks/cox-automotives-journey-from-api-silos-to-a-unified-api-strategy), PlatformCon, 2024 — integration of APIs across acquired brands.\n- [Cox Automotive customer story](https://apollographql.com/customers/cox-automotive), Apollo GraphQL, n.d., accessed 2026-10 — VIN decoder joined to the federated graph (vendor case study).\n- [Full year results, year ended 31 March 2023](https://plc.autotrader.co.uk/media/3dbbyupi/fy-press-release-fy23-final_no_pw-0106.pdf), Auto Trader Group plc, 2023 — Retail Essentials (April 2022) and Valuations (April 2023) as Connect modules.\n- [Full year results, year ended 31 March 2025](https://plc.autotrader.co.uk/media/umddcnxx/full-year-press-release-fy25.pdf), Auto Trader Group plc, 2025 — trended valuations, Co-Driver, Deal Builder.\n- [CDK Global Form 10-K for fiscal 2021](https://www.sec.gov/Archives/edgar/data/1609702/000160970221000058/cdk-20210630.htm), CDK Global / SEC, 2021 — DMS with layered applications for nearly 15,000 retail locations; historical anchor.\n\n### Standards, regulation and official documentation\n\n- [Regulation (EU) 2023/2854 (Data Act)](http://publications.europa.eu/resource/celex/32023R2854), EU Publications Office, 2023 — access to connected-product data, applicable from 12 September 2025.\n- [TOGAF Series Guide: Business Capabilities](https://pubs.opengroup.org/togaf-standard/business-architecture/business-capabilities.html), The Open Group, n.d., accessed 2026-10 (registration required) — capability maps as a business-architecture viewpoint.\n- [Open Data RDW: registered vehicles](https://opendata.rdw.nl/d/m9d7-ebf2), RDW, n.d., accessed 2026-10 — plate-level register data published as open data.\n\n### Research and practitioner sources\n\n- Ulrich Homann, *A Business-Oriented Foundation for Service Orientation*, Microsoft MSDN, 2006 — business capabilities as the stable \"what\" of a business (cited from secondary references; the original page is archived).\n- Eric Evans, *Domain-Driven Design: Tackling Complexity in the Heart of Software*, Addison-Wesley, 2003 — core, supporting and generic subdomains.\n- [Wardley Maps](https://medium.com/wardleymaps), Simon Wardley, 2016–2018 (open book, CC BY-SA) — evolution from genesis through custom-built and product to commodity.\n- [Evolution](https://docs.onlinewardleymaps.com/docs/map-features/evolution), Online Wardley Maps documentation, n.d., accessed 2026-10 — summary of the four evolution stages.\n- The author's Productscape reference model of a vehicle data and dealer SaaS platform (2026), built from public product pages; block structure, counts and dependencies are the author's inference ([Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html)).\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

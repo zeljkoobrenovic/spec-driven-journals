@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reading the Market: Advert Harvesting, Sale Detection and Transaction Data</title>
+    <meta name="description" content="How do you build a reliable picture of the used-car market from adverts and transactions? Keep every observation with its source and rights, resolve adverts into market vehicles across portals and relists, treat a de-listing as evidence of a sale rather than a sale, and publish segment statistics together with their coverage.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Reading the Market: Advert Harvesting, Sale Detection and Transaction Data">
+    <meta property="og:description" content="How do you build a reliable picture of the used-car market from adverts and transactions? Keep every observation with its source and rights, resolve adverts into market vehicles across portals and relists, treat a de-listing as evidence of a sale rather than a sale, and publish segment statistics together with their coverage.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/market-data.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/11-market-data/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-3.html" title="Part III — VALUE: Market Data, Valuation and Condition">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="valuation-engine.html" title="What Is It Worth? Building and Governing a Valuation Engine">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — VALUE: Market Data, Valuation and Condition</p>
+        <h1>Reading the Market: Advert Harvesting, Sale Detection and Transaction Data</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  32 min read · <a class="spec-link" href="market-data.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/11-market-data/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/11-market-data/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="part-3.html" title="Part III — VALUE: Market Data, Valuation and Condition">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="valuation-engine.html" title="What Is It Worth? Building and Governing a Valuation Engine">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Reading the Market: Advert Harvesting, Sale Detection and Transaction Data", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How do you build a reliable picture of the used-car market from adverts and transactions? Keep every observation with its source and rights, resolve adverts into market vehicles across portals and relists, treat a de-listing as evidence of a sale rather than a sale, and publish segment statistics together with their coverage.", "permalink": "market-data", "timetoread": "32 min read", "icon": "assets/icons/11-market-data.png", "logo": "assets/images/11-market-data/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Build the market side of a vehicle data platform: where market observations come from and what the law lets you do with them, how adverts become market vehicles across portals and relists, how sales are inferred, and how stand-time, market days' supply and segment statistics are computed honestly enough to feed valuation and pricing.\n\n> **WHY THE BUSINESS CARES:** Dealers price, buy and stock against market data every day, and valuations are trained on it. If de-listings are counted as sales and duplicates as supply, the platform tells a dealer that a segment sells in 31 days when it takes 52, and the dealer buys the wrong cars at the wrong price.\n\n> **WHY ARCHITECTS SHOULD CARE:** Market data is the one vehicle dataset assembled mostly from sources the platform does not control and may not freely use. Its correctness depends on identity resolution, its legality on per-source rights, and its usefulness on knowing what it does not see. All three are architecture decisions.\n\n> **KEY POINTS:**\n>\n> * **A de-listing is evidence of a sale, not a sale.** Model each advert as a listing lifecycle, cluster listings into market vehicles across portals and relists, and infer the outcome with a confidence, confirmed by register ownership changes or dealer sales where a market provides them. In Axleby's Dutch audit only 68% of de-listings were sales.\n> * **Every observation carries its source and its rights.** The EU database right (*Innoweb*, 2013; *CV-Online*, 2021), terms of use and competition law decide what may be harvested, combined and shown. Tag each observation with its source, method and terms version so a source can be purged, and keep dealer-derived prices aggregated and delayed.\n> * **Publish coverage with every statistic.** One match rate hides where the market is invisible. Report identity match, cluster coverage and segment coverage per market and source, fall back up a segment hierarchy when evidence is thin, and say \"insufficient data\" rather than publishing a confident number.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Cloned Identity** — one car advertised on four portals and relisted twice becomes six cars of supply and two sales.\n> * **License Blindness** — harvested adverts and dealers' own sale prices flow into products and API responses that their sources never allowed.\n> * **The Confident Valuation** — valuations trained on market statistics that carry no coverage or confidence inherit the market data's blind spots without showing them.\n\n<br>\nThere is no register of used-car prices. In the Netherlands, Belgium, Germany and the United Kingdom, the state records who holds a car but not what anyone paid for it; in the United States, the wholesale auctions see transaction prices, retail mostly does not. **Everything the industry knows about the retail used-car market is inferred** from adverts, from changes of keeper, from dealers' own systems and from auctions. Each of these sources sees part of the market, with its own lag and its own bias.\n\nMarket data is still the input that the rest of the value chain leans on. Valuations are trained on it and use it for comparables ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)). Pricing tools compare a dealer's asking price with it ([Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html)). Importers, lessors and other data clients buy segment statistics ([Selling Insight: Enrichment, Market Insight and Predictive Data Products](data-products-and-insights.html)). **A wrong market picture becomes a wrong price in every one of those products at once**, and it does so quietly, because aggregates look plausible even when the counting beneath them is wrong.\n\nThis chapter owns the **market data lake**, **sale detection**, **stand-time** and **market days' supply**. It builds on [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html), which owns the landing zone and the matching tiers, and on [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) and [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html). It hands license enforcement to [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) and the use of market data in valuations to [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html).\n\n## Setting the Scene at Axleby: What Sixty-One Percent Means\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), runs its market data in **Pulse**, a market data lake on Databricks on AWS. In 2026 Pulse harvested or received about **2.3 million** advert observations a day across the Netherlands, Belgium, Germany and the United Kingdom, plus ownership-change events from the Dutch register mirror. One number summarized its quality in every board pack: **61%** of adverts matched to a vehicle in Anchor, the group's identity graph keyed by vehicle identification number (VIN).\n\nIn February 2027, after the review of the EV Overvaluation had shown that Pulse's falling battery-electric asking prices were a leading signal nobody had wired to Vantage ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)), Ines Marchetti, Group Chief Architect, asked Priya Raman, VP Data and Valuation, a simple question before Vantage was allowed to depend on Pulse: **what does 61% mean, and what does Pulse not see?**\n\nPriya's team broke the number down. The figures are Axleby illustrations.\n\n| Market | Advert observations a day (2026) | Matched to a vehicle in Anchor | Main reason for the gap |\n| --- | --- | --- | --- |\n| Netherlands | 0.80 million | 86% | Plates are often readable in Dutch adverts and resolve through the register mirror |\n| Belgium | 0.30 million | 40% | Plates rarely shown; VIN rarely shown; no open register to resolve against |\n| Germany | 0.80 million | 38% | Plates usually masked; VIN rarely published |\n| United Kingdom | 0.40 million | 73% | Showroomly stock carries registration marks; harvested adverts often do not |\n| **All** | **2.30 million** | **61%** | |\n\nBy source, the same 2.3 million broke down into about **1.55 million** harvested public adverts, **0.35 million** received from portals under data agreements, and **0.40 million** first-party observations of Lotwise and Showroomly dealers' own stock.\n\nFirst, **61% was a rate per observation, not per car**. The same car was observed once per portal per day. A Dutch car advertised on four sites counted four times in the denominator and, if its plate was readable, four times in the numerator.\n\nSecond, **Pulse counted every de-listing as a sale**. When an advert disappeared, Pulse recorded a sale on that day at the last asking price. Relists, moves between portals and transfers between a group's rooftops all became sales. Market days' supply and stand-time, the two metrics Lotwise showed dealers next to every car, were computed from those counts.\n\nThird, **the gaps were not random**. Germany and Belgium were matched at under 40%, so any Vantage segment check that used only matched adverts was mostly a Dutch and British check.\n\n![A car lot lit by one spotlight: the Netherlands (86%) and United Kingdom (73%) zones are bright, Belgium (40%) and Germany (38%) are mostly dark, and the spotlight sign reads 61%.](assets/images/11-market-data/11-match-rate-spotlight.jpeg)\n**Figure 1:** *One 61% match rate averaged a well-lit Dutch and British market with Belgian and German markets that Pulse could barely see.*\n\nInes's request to the company board, when it approved One Dossier in March 2027, was therefore not \"raise the match rate\". It was: **define what a market observation is, what may be done with it, how a sale is inferred and with what confidence, and what every statistic must say about its own coverage.**\n\n## The Words This Chapter Owns\n\n| Term | Definition in this book |\n| --- | --- |\n| **Market observation** | One sighting of one advert or market event from one source at one time, with provenance (source, method, observed-at, terms version). Append-only. |\n| **Listing** | One advert on one channel under one listing id, from first to last observation. A car can have many listings over its life. |\n| **Market vehicle** | A cluster of listings believed to be the same physical car on offer: across portals, across relists, across rooftops of one group. Resolved to an Axleby Vehicle Key (AVK) when identity allows; otherwise a cluster id. |\n| **Market data lake** | The store of market observations and everything derived from them (listings, market vehicles, inferred sales, segment statistics), with per-observation provenance and rights tags so that any figure can be traced to, and rebuilt without, any source. |\n| **Sale detection** | Inferring that a market vehicle left the market because it was sold, with an outcome state, a confidence and a confirmation source where one exists. |\n| **Stand-time** | Days from the first observation of a market vehicle on any channel to its inferred sale. Not the same as **days-to-turn**, the dealer's own stock-in to sale ([Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html)). |\n| **Market days' supply** | Market vehicles currently on offer in a segment divided by the average daily inferred sales in that segment over a trailing window, usually 30 days. |\n| **Segment** | A versioned grouping of vehicles for statistics: make, model, generation, fuel, body, power band, age band, mileage band and region, arranged as a hierarchy with fallbacks. |\n| **Coverage** | The share of the real market a statistic is based on, estimated per segment, market and source. |\n\nThe definitions of stand-time and days' supply follow public practice. Cox Automotive computes US used-vehicle days' supply \"based on the daily sales rate for the most recent 30-day period\" from its vAuto inventory data ([Cox Automotive, January 2022](https://www.coxautoinc.com/market-insights/used-vehicle-days-supply/); the source is more than three years old, so the current definition may differ). Auto Trader UK exposes \"Days to Sell\" and a \"price-adjusted days to sell\" through its APIs ([Auto Trader UK help center, 2024, updated 2026](https://help.autotrader.co.uk/hc/en-gb/articles/21946149296029-Introduction-to-Vehicle-Metrics)). Neither publishes how it decides that a car was sold.\n\n## Where Market Data Comes From\n\nSix kinds of source feed a market data lake.\n\n| Source | What it sees | Identity | Price meaning | Typical rights |\n| --- | --- | --- | --- | --- |\n| **Harvested public adverts** | Most retail supply on public portals | Plate or VIN sometimes; often neither | Asking price | Database right, terms of use, competition and privacy law; see next section |\n| **Portal data agreements** | One portal's adverts, often with history and de-listing dates | Better than harvesting; portal ids | Asking price | Contract: purposes, redistribution, retention |\n| **First-party dealer stock** (Lotwise, Showroomly) | The platform's own dealers' stock, costs, price changes and sales | VIN, plate, stock id | Asking price **and** realized sale price | Dealer contract; competition law limits on sharing |\n| **Register ownership changes** | That a vehicle changed keeper, and when | Plate (NL), VIN in some feeds | None | Register terms; per-vehicle access varies sharply by country |\n| **Auction and B2B results** | Wholesale and trade clearing prices | VIN | Transaction price, as-is | Auction or exchange contract |\n| **Aggregate statistics** | Counts of transfers by segment and month | None per vehicle | None | Publisher's terms |\n\n**Only first-party dealer data and auctions see a transaction price.** Everything else is an asking price, and asking prices inherit dealer pricing behavior. Axleby owns no auctions; its B2B exchange, Tradefloor, hands deals to auction partners, so Pulse sees Tradefloor's own clearing prices for about **48,000** deals a year but no auction hammer prices ([Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html) draws the contrast).\n\n**Per-vehicle confirmation of a sale exists in only one of Axleby's markets.** The Dutch register publishes, per plate, the date of the latest registration in a holder's name (*datum_tenaamstelling*) in its open vehicle dataset, alongside the export indicator and the odometer judgement ([RDW open data, dataset metadata queried October 2026](https://opendata.rdw.nl/api/views/m9d7-ebf2.json)). The dataset is a snapshot keyed by plate, not an event log, so changes are found by comparing snapshots ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html) owns the register mirror). Germany publishes ownership-change counts, not per-vehicle events: the Federal Motor Transport Authority (*Kraftfahrt-Bundesamt*, KBA) counts a *Besitzumschreibung* (registration to a new keeper) whenever an already registered vehicle changes keeper, and reported **6.03 million** for passenger cars in 2023, 93.4% of them private ([KBA, n.d., accessed 2026-10](https://www.kba.de/DE/Statistik/Fahrzeuge/Besitzumschreibungen/besitzumschreibungen_node.html)). The UK has quarterly used-car transaction counts that the Society of Motor Manufacturers and Traders (SMMT) derives from Driver and Vehicle Licensing Agency (DVLA) data: **7.81 million** in 2025, with the caveat that the DVLA \"periodically revises historic data\" ([SMMT, n.d., accessed 2026-10](https://www.smmt.co.uk/vehicle-data/used-car-sales/)). DVLA keeper data is released only for \"reasonable cause\", such as parking enforcement, not for market statistics ([DVLA INF266, 2022](https://assets.publishing.service.gov.uk/media/624dabc7e90e0729f6bf8167/inf-266-release-of-information-from-dvlas-registers.pdf)).\n\n### Portal consolidation changes the source map\n\nOn 28 November 2025 Emerce reported that AutoTrack and Gaspedaal.nl, combined since 2019 in a joint venture of two Dutch publishers, had \"come into the hands of\" AutoScout24; both keep their brands, and AutoTrack's dealers move to AutoScout24's technology platform ([Emerce, 2025](https://www.emerce.nl/nieuws/autotrack-gaspedaalnl-onderdeel-autoscout24)). AutoScout24's listing API already exposes the consequence: its channel values include `AutoTrack`, a listing \"displayed on both platforms\", and `AutoTrackShared`, \"an existing shared listing displayed on both platforms\"; a `mobile_de` channel, added in November 2022, marks a listing for export to its German competitor ([AutoScout24 Listing Creation API, n.d., changelog to 2026-10-19](https://listing-creation.api.autoscout24.com/docs)). Germany's competition authority recorded in October 2026 that consumers and dealers \"often use several platforms in parallel\" and that \"many platforms also offer dealers a data export to other platforms\" ([Bundeskartellamt, 2026](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html), author's translation).\n\nFor a market data lake this has three consequences. **Cross-portal duplicates are now partly created by the portals themselves**, not only by dealers who multi-home, so a listing seen on two sites may be one listing with two displays. **Source concentration rises**: one portal group's terms of use, API changes or commercial decisions can remove a large share of a market's observations overnight. And **the history of the Dutch market has come full circle**: Gaspedaal was the meta-search engine whose harvesting of AutoTrack produced the leading European case on database rights, and the two now belong to the same group.\n\n![One car is published on two portals; one portal shares it to a third and exports it to a fourth, and an aggregator indexes two of them; all five observations flow into Pulse, which merges them into one market vehicle.](assets/images/11-market-data/11-one-car-five-observations.jpeg)\n**Figure 2:** *One car on sale can produce five observations a day. Dealers create two of them; portal shared displays, portal-to-portal exports and aggregators create the rest. Supply counted per listing overstates the market.*\n\n## What the Law Allows\n\nIn market data, legal analysis is an architecture input. This section summarizes the frame; it is not legal advice.\n\n### The EU database right and the car-advert cases\n\nThe Database Directive gives the maker of a database that shows \"a substantial investment in either the obtaining, verification or presentation of the contents\" a right to prevent \"extraction and/or re-utilisation of the whole or of a substantial part\" of it, and, under Article 7(5), \"repeated and systematic extraction\" of insubstantial parts that conflicts with normal exploitation ([Directive 96/9/EC, 1996](http://publications.europa.eu/resource/celex/31996L0009)). Three Court of Justice of the European Union (CJEU) judgments decide how it applies to market data, two of them on Dutch references.\n\n- ***Innoweb v Wegener* (C-202/12), 19 December 2013.** GasPedaal.nl, a meta-search engine over car-advert sites, ran about 100,000 searches a day on AutoTrack.nl, which held 190,000 to 200,000 used cars, translating user queries in real time and merging duplicates. The Court held that such an operator re-utilizes the whole or a substantial part of the database when it offers essentially the same search functionality, searches all of the content in real time and presents the results in its own format ([CJEU, 2013](http://publications.europa.eu/resource/celex/62012CJ0202)).\n- ***Ryanair v PR Aviation* (C-30/14), 15 January 2015.** Where a database is protected neither by copyright nor by the database right, the Directive does not stop its maker \"from laying down contractual limitations on its use by third parties\" ([CJEU, 2015](http://publications.europa.eu/resource/celex/62014CJ0030)). Terms of use matter even where the right does not.\n- ***CV-Online Latvia v Melons* (C-762/19), 3 June 2021.** A specialized search engine that copies and indexes a freely accessible database extracts and re-utilizes it, and the maker may prohibit that where it creates \"a risk to the possibility of redeeming\" the investment. The Court asked for a fair balance and noted that aggregators \"contribute to the smooth functioning of competition and to the transparency of offers and prices\" ([CJEU, 2021](http://publications.europa.eu/resource/celex/62019CJ0762)).\n\nThe 2013 case is old but still directly on point. Together the three judgments draw a line an architect can design against. **Re-presenting another portal's adverts as a competing search or listing product is the high-risk end**: that is the *Innoweb* fact pattern. **Aggregated statistics that do not substitute for the portal's own product sit at the lower-risk end**, but systematic copying can still be prohibited where it threatens the portal's investment, and terms of use can bite on their own.\n\n### The United Kingdom and the United States\n\nThe UK kept the right after Brexit. Regulation 16 of the Copyright and Rights in Databases Regulations 1997 makes it an infringement to extract or re-utilise \"all or a substantial part of the contents\", and says that \"repeated and systematic extraction or re-utilisation of insubstantial parts\" may amount to the same ([SI 1997/3032, regulation 16](https://www.legislation.gov.uk/uksi/1997/3032/regulation/16/made)). CJEU judgments after 2020, such as *CV-Online*, do not bind UK courts.\n\nThe US has no database right. The Supreme Court held in *Feist v Rural* (1991) that \"facts are not copyrightable\" and rejected the \"sweat of the brow\" theory for compilations ([Supreme Court, 1991](https://www.law.cornell.edu/supremecourt/text/499/340)). The risk sits in contract and in access law instead. In *hiQ v LinkedIn*, scraping public data was found likely to fall outside the Computer Fraud and Abuse Act, yet hiQ was found in breach of LinkedIn's user agreement and settled in December 2022 with a $500,000 judgment, an injunction and deletion of the scraped data ([Proskauer, 2022](https://www.proskauer.com/blog/hiq-and-linkedin-reach-proposed-settlement-in-landmark-scraping-case)).\n\n### Competition law and the dealer's own prices\n\nA platform that collects realized sale prices from thousands of competing dealers and shows each what its competitors did sits close to an information exchange between competitors. The European Commission's 2023 Horizontal Guidelines say that exchanges of aggregated information, \"where the attribution of information to particular undertakings is sufficiently difficult or uncertain\", are less likely to restrict competition, that \"collection and publication of aggregated market information … by a trade association or market intelligence firm may benefit competitors and customers alike\", and that information becomes historical, and less sensitive, when it is \"several times older than the average length of the pricing cycles\" ([Commission Guidelines, OJ C 259, 21 July 2023, paras 391–394](http://publications.europa.eu/resource/celex/52023XC0721%2801%29)). The architecture consequence is direct: **dealer-derived prices leave the platform only aggregated across enough dealers and cars that no one dealer can be singled out, and only after a delay**.\n\n### Personal data in adverts\n\nPrivate-seller adverts carry names and phone numbers, and plates are personal data by default in this book ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)). Market statistics need neither the seller nor, after matching, the plate. **Drop person fields at the door, keep the plate only as a matching key with restricted access, and store the seller type** (dealer or private) as the attribute statistics actually use.\n\n### What this means for the design\n\n> **The rule I use:** prefer licensed feeds and dealer-consented data to harvesting; never build a product that re-presents another portal's adverts; and record, for every observation, the source, the method, the time and the terms version under which it was obtained, so that one source can be removed without rebuilding the business.\n\nWhen a contract ends or a portal objects, the platform must find every observation from that source and everything derived from it. Without per-observation provenance the only safe response is to delete everything.\n\n## Architecture: Pulse as an Observation Store\n\nThe rebuild Axleby approved in March 2027, called Pulse v2 here, has six components.\n\n| Component | Responsibility | Owns | Design rule |\n| --- | --- | --- | --- |\n| **Collectors and feed adapters** | Harvest public adverts, receive portal feeds, take first-party stock events, read register snapshot diffs | Nothing durable; writes to landing | One adapter per source with a completeness check per run |\n| **Observation store** | Append-only market observations with provenance and rights tags | Market observations | Never update in place; partition by source and day; purge by source |\n| **Listing lifecycle builder** | Turns observations into listings: first seen, price changes, last seen, gone | Listings | A listing is \"gone\" only after two complete harvests without it |\n| **Market vehicle resolver** | Clusters listings across portals, relists and rooftops; attaches clusters to AVKs | Market vehicles | Deterministic links first; probabilistic clustering with thresholds; cluster ids are stable |\n| **Sale inference** | Assigns outcome states with confidence; confirms against register changes and first-party sales | Inferred outcomes | Versioned classifier; outcomes revisable; precision measured against ground truth |\n| **Segment statistics** | Supply, inferred sales, stand-time, days' supply, price distributions per segment, with coverage and evidence counts | Segment statistics | Minimum-evidence rule and fallback hierarchy; every row stamped with window and classifier version |\n\nMatching mechanics, landing and quarantine belong to [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html). Charter, Axleby's license and purpose register, sits on the output side: every observation carries a rights tag, and Charter decides which tags may flow into which product ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)).\n\n![Sources land in a landing zone, then an append-only observation store with rights tags, then market vehicles, sale inference and segment statistics, which feed valuation and pricing and insight products through a Charter rights check.](assets/images/11-market-data/11-pulse-observation-store.jpeg)\n**Figure 3:** *Pulse v2 keeps raw observations append-only and derives listings, market vehicles, inferred sales and statistics from them. Rights are tagged at the observation and checked where data leaves the lake.*\n\n### Requirements per interaction\n\nThe figures marked as assumptions are illustrative targets, not documented values.\n\n| Interaction | Consistency | Latency | Freshness | Availability and degradation |\n| --- | --- | --- | --- | --- |\n| Harvest and feeds → observation store | Idempotent per source, listing id and observation day | Batch | Daily for harvests; hourly for partner feeds *(assumption)* | A missing or partial source run is marked incomplete and never read as removals |\n| Lotwise stock events → Pulse | Exact, via the dossier event stream | Minutes | Real time | Backlog replays from the outbox ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)) |\n| Register snapshot diff → sale confirmation | Eventually consistent | Daily batch | NL only; changes typically visible within days *(assumption)* | Register mirror outage delays confirmation, not inference |\n| Sale inference | Revisable; every revision versioned | Nightly | Probable outcome after 14 days; confirmed when evidence arrives | Outcomes stay \"pending\" rather than defaulting to \"sold\" |\n| Segment statistics → Vantage and Lotwise pricing | Versioned daily snapshot | Nightly | Daily; weekly segment signals for drift monitoring | Serve the last good snapshot flagged as stale for up to 3 days *(assumption)* |\n| Comparables for a lane-side appraisal | Read from the latest snapshot | p95 under 300 ms *(assumption)* | Yesterday | Degrade to segment statistics without comparables |\n| Insight products to data clients | Aggregated, rights-checked | Scheduled | Monthly; dealer-derived prices at least 30 days old | Delay delivery rather than ship an unchecked extract |\n| Purge of one source | Complete, with a report | Days | — | Statistics rebuilt without the source and marked with a new version |\n\n## From Adverts to Market Vehicles\n\nMatching an advert to a known vehicle answers \"which car is this?\" Supply, stand-time and sale detection need a different answer: \"how many cars are on offer, and when did each one leave?\" **That answer does not need a VIN.** A cluster of listings that are confidently the same car can be counted even if Anchor never learns which car it is.\n\nPulse v2 builds clusters in four passes, cheapest and most certain first.\n\n1. **Known publications.** Relay, Axleby's syndication engine, knows which portal listing id it created for which Lotwise stock item ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)). For Lotwise-published adverts the link from listing to stock item to AVK is exact, not inferred. With **5,100** Dutch rooftops on Lotwise, this covers a large share of Dutch dealer supply.\n2. **Identity keys.** A readable VIN, or a plate resolved through the plate assignment valid at the observation date, attaches the listing to an AVK through the tiers in [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html).\n3. **Portal-declared sharing.** Where a portal declares that one listing is displayed on two sites, as AutoScout24's shared AutoTrack channel does, the two observations are one listing, not two.\n4. **Probabilistic clustering.** Within a block of make, model, first-registration year and fuel, listings are compared on mileage (with tolerance growing with the gap in dates), power, color, equipment, seller and location, and on image similarity where images are licensed for that use. Above an upper threshold they join a cluster; between thresholds they stay separate and are counted with a duplication adjustment.\n\nThe thresholds are a choice about which error is cheaper. **For supply counts, a missed merge inflates supply; for sale detection, a false merge hides a sale.** Pulse clusters for statistics more loosely than Inlet, Axleby's ingestion pipeline, attaches adverts to an AVK: a wrong cluster is diluted across a segment, while a wrong attachment would put another car's mileage into a history report.\n\nTwo cases need explicit rules. **Intra-group transfers**: when a car moves from one rooftop of a dealer group to another, its listing usually ends and a new one starts at the new rooftop. The same VIN, or the same Relay stock lineage, joins them into one market vehicle; otherwise the transfer becomes a sale and a new arrival. **Relists**: dealers re-advertise cars to appear fresh in \"newest first\" sorting. The relist joins the existing market vehicle, and stand-time keeps running.\n\n## Sale Detection: From Disappearance to Outcome\n\nA listing that stops appearing has an outcome, and \"sold\" is only one of several. Pulse v2 models the outcome as a state with a confidence, not as a boolean.\n\n![State map: Live goes to Gone after two absent harvests; Gone returns to Live through relisted, live elsewhere or transferred, becomes Sold probable after 14 days, and is Sold confirmed only on evidence.](assets/images/11-market-data/11-listing-outcome-states.jpeg)\n**Figure 4:** *A listing that disappears enters \"Gone\", not \"Sold\". It becomes a sale only when no reappearance explains it, and it is confirmed only by evidence from outside the portals.*\n\nThe signals available differ in speed and certainty.\n\n| Signal | What it proves | Lag | Where available | Main false positive |\n| --- | --- | --- | --- | --- |\n| Advert removal | That the advert left one channel | Hours to a day | Every market | Relists, moves, holds, harvest gaps |\n| Absence from all channels for 14 days | That the car left the visible market | Two weeks | Every market | Long holds, private sale off-market, cars exported |\n| Register change of holder | That the car was registered to someone else | Days | NL per vehicle; DE and UK only as aggregates | Transfers between companies of one group; lease company changes |\n| Dealer sale in the platform's own sales administration | That the dealer recorded a sale, with price | Same day | First-party dealers only | Canceled deals; sales recorded late |\n| Auction or B2B result | Wholesale sale with price | Same day | Where the platform sees auctions | Unsold lots relisted |\n\n**Ground truth comes from first-party data.** Lotwise records about **1.9 million** stock-ins a year and, where rooftops use Sales Admin, the sale date and price. For Lotwise-published adverts Pulse knows the true outcome, so the sale-inference classifier can be trained and its precision measured per market and segment, with the caveat that the sample follows Lotwise's customer mix.\n\n**The 14-day window is a trade-off, not a constant.** A shorter window detects sales sooner and mistakes more holds and relists for sales; a longer one is more precise and makes stand-time and supply lag the market. Pulse publishes both: a provisional figure that includes probable sales weighted by the classifier's probability, and a settled figure 21 days later.\n\n## Stand-Time, Days' Supply and Segments\n\n### Stand-time without survivor bias\n\nStand-time is computed per market vehicle, from first observation on any channel to inferred sale, and it keeps running through relists and transfers. Two traps remain.\n\n**Censoring.** A median computed only over cars that have sold is biased toward the fast sellers, because the slow ones are still on offer. When a segment slows, that median moves late, which is the opposite of what a drift signal needs. Pulse v2 estimates stand-time with a survival estimator (Kaplan–Meier) that counts live cars as censored observations, and reports the median and the share of cars still unsold after 30, 60 and 90 days.\n\n**Left truncation.** A car first seen when a new source starts has an unknown true start; clusters that began in a source's first 30 days are excluded from stand-time.\n\n### Market days' supply\n\nDays' supply is market vehicles on offer divided by average daily inferred sales over the trailing 30 days. Dealers use it to decide how deep to stock a model. It is also where two counting errors can hide each other: duplicates inflate the numerator, and counting de-listings as sales inflates the denominator.\n\n### Segments, minimum evidence and coverage\n\nA statistic for \"2022 Volkswagen ID.3 Pro, 40,000–60,000 km, Utrecht province\" may rest on four cars. Manheim's public rule is the model: a Manheim Market Report value needs at least six transactions in the past year and two in the past 90 days for a trim, and otherwise falls back to related trims with a \"Small Sample Size\" flag ([Manheim MMR Help, modified 2026](https://site.manheim.com/tutorials/manheim-market-report-help)). Pulse v2 applies the same idea to market statistics: Axleby's rule is that a segment needs at least 30 market vehicles on offer and 10 inferred sales in the window, or it falls back one level up the hierarchy (edition → model generation → model → segment class; province → country), and the response names the level used.\n\n**Coverage** cannot be measured directly, because nobody knows the full market, but it can be estimated. Lotwise-published adverts are a known sample: if Pulse's harvest of a portal finds 92% of the adverts Relay knows it published there, the harvest's recall on that portal is about 92%. Where two independent sources overlap, the overlap estimates total supply in the way ecologists estimate a population from two catches (capture–recapture). In the Netherlands, register snapshot diffs give a second check on sales. Each statistic carries a coverage band, and Vantage uses only segment statistics whose coverage is above its threshold.\n\n## In Practice\n\n### What public sources show\n\nPublic examples show what companies measure; none of them describes how sales are inferred from de-listings, and the research for this book found no provider that publishes the precision of its sale detection.\n\n- **Cox Automotive** estimates US retail used-vehicle sales from inventory movement: its January 2026 report says the estimates \"are based on observed unit changes tracked by vAuto\", with full-year volume \"based on registrations and other sources\". The same note adds that \"the 2024 implied sold and days' supply numbers affected by the CDK outage have been normalized\" ([Cox Automotive, January 2026](https://www.coxautoinc.com/insights/used-retail-vehicle-sales-december-2025/)). The outage note is the clearest public evidence that **inferred sales break when an upstream feed stops**, and that the inference must be corrected afterwards.\n- **Auto Trader UK** bases its Retail Price Index on \"circa 800,000 daily pricing observations across the whole retail market\" ([Auto Trader Group, July 2023](https://plc.autotrader.co.uk/news-views/press-releases/retail-price-index-june-2023/); the release is more than three years old, and the index's method may have changed since). In the same release it reported used battery-electric prices down 19.1% year on year, with supply up 174%: the kind of segment signal that should reach a valuation engine's drift monitor in days.\n- **Indicata**, Autorola's market-data product, was described in 2017 trade press as tracking price development, stocking days and market days' supply from overnight sweeps of online used-car listings ([AM Online, 2017](https://www.am-online.com/news/technology/2017/09/11/autorola-s-used-vehicle-management-software-indicata-receives-uk-launch)). The source is old; the current method is not public.\n\n> **INFERENCE, NOT DOCUMENTED:** A product that computes days' supply from listing sweeps must decide when a disappeared listing counts as sold, and must deduplicate across portals to count supply. Neither Cox's, Auto Trader's nor Indicata's public material says how. The outcome-state model in this chapter is the author's reference design, not a description of these companies' systems.\n\n### Axleby worked example: the Dutch de-listing audit\n\nIn April 2027 Priya's team ran Pulse's first audit against ground truth. They took every de-listing in the first quarter of 2027 of a Dutch advert that Pulse had matched to an AVK, **212,000** in all, and followed each car for 21 days through Pulse's own observations, the register snapshot diffs and, for Lotwise-published adverts, Lotwise's sales records. Axleby Trade's register transactions were left out: they are customer data processed on dealers' behalf, and Charter does not permit their use for market statistics. The results are Axleby illustrations.\n\n| What a Dutch de-listing turned out to be (Q1 2027) | Share |\n| --- | --- |\n| Sold to a new holder: registration in a new name (*tenaamstelling*) within 21 days | 57% |\n| Sold into the trade or exported: export indicator set, or the car seen again at a trader or exporter | 11% |\n| Still advertised on another channel | 12% |\n| Relisted on the same channel under a new listing id within 14 days | 9% |\n| Transferred to another rooftop of the same dealer group | 3% |\n| No signal within 21 days: held, withdrawn or unknown | 8% |\n\n**Only 68% of de-listings were sales.** Old Pulse had overcounted sales by about half (1 ÷ 0.68 ≈ 1.47).\n\nThe team then recomputed one segment that mattered after the EV Overvaluation: three- to five-year-old battery-electric cars in the Netherlands, first quarter of 2027.\n\n| Metric | Old Pulse (per listing, de-listing = sale) | Pulse v2 (market vehicles, inferred outcomes) |\n| --- | --- | --- |\n| Cars on offer | 9,800 listings | 6,100 market vehicles |\n| Sales per day | 290 de-listings | 197 inferred sales |\n| Market days' supply | 33.8 days | 31.0 days |\n| Median stand-time | 31 days (sold cars only, clock restarted at relist) | 52 days (survival estimate, clock kept through relists) |\n\nThe table is the reason for the chapter's third key point. **Days' supply barely moved, because the two errors canceled**: duplicates inflated supply by a factor of 1.6 and de-listings inflated sales by 1.47. Stand-time, which has no such cancellation, was wrong by three weeks. And the cancellation was luck: in the German segments, where cross-portal exports are common and matching is weaker, the two factors differed and days' supply was off by a third.\n\n![A balanced scale with supply inflated 1.6 times on one side and sales inflated 1.47 times on the other keeps days' supply steady; beside it, a stand-time timeline shows 31 days against 52 days.](assets/images/11-market-data/11-errors-cancel.jpeg)\n**Figure 5:** *Duplicates inflated supply by 1.6 and de-listings inflated sales by 1.47, so days' supply looked right by luck; stand-time had no such cancellation and was 31 days instead of 52.*\n\nPulse v2 went live in stages between April and October 2027. By the fourth quarter it reported three numbers instead of one: **AVK match 64%** of observations, **cluster coverage 93%** (observations assigned to a market vehicle, with or without an AVK), and segment coverage per segment and market. It publishes weekly segment signals (median asking price, price-cut rate, survival-based stand-time and days' supply, each with coverage) to Vantage's drift monitor ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n\n## Failure Handling\n\n**Missing harvests.** The most damaging failure in market data is a harvest that silently returns less. If a portal blocks the collector for a night, or changes its page layout so that half the adverts no longer parse, every advert not seen looks like a disappearance, and a de-listing rule turns a technical failure into thousands of sales. Pulse v2 checks every run for completeness against the source's trailing seven-day volume and against Relay's known publications. An incomplete run is marked as such, and **a listing becomes \"Gone\" only after two complete runs without it**. Layout and contract changes are detected by the same checks, so the dealer is not the first to notice (**Feed Roulette**).\n\n**Upstream outages that stop the truth.** Cox's note on the 2024 CDK outage shows the other direction: when dealers' systems stop updating inventory, inferred sales and supply move although the market did not. Pulse marks first-party sources degraded during a dealer management system (DMS) outage. During **the DriveDesk Outage** of November 2027, when **1,900** Lotwise rooftops lost DMS sync for 12 days, their stock in Lotwise stayed live because Lotwise was the fallback system, and Pulse excluded those rooftops' DMS-driven status changes from sale confirmation until reconciliation ended ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n\n**Conflicting observations.** One market vehicle may show different prices on different portals on the same day. Pulse keeps every observation and uses the price from the channel with the freshest confirmed update; a large spread usually means a stale channel, a **Zombie Listing** risk for [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html), not a market fact.\n\n**Incomplete records.** Adverts without mileage, edition or first-registration date count at the segment level they can be placed in, never in a finer one by guessing; where Specbook, Axleby's specification resolver, says \"edition unknown\", the advert stays at model level ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)).\n\n**Corrections that arrive later.** Outcomes are revisable, every revision is versioned, and statistics are recomputed for the affected windows. A corrected input fact, such as the mileage error of **the Odometer Correction** in May 2027, reaches Pulse's derived statistics through the same lineage that finds affected valuations ([A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html)).\n\n**Source withdrawal.** When a data agreement ends or a portal objects, the purge path runs: delete or quarantine the source's observations, rebuild listings, clusters and statistics without them, version the result, and report which products' figures changed. Axleby rehearsed this in September 2027 by rebuilding the third quarter's Belgian statistics without one partner feed; the rebuild took 31 hours; two-thirds of the Belgian segment medians moved by less than 1%, and most of the rest were thin segments that fell back one level.\n\n**Retries and idempotency.** Harvest and feed loads are idempotent per source, listing id and observation day, so a re-run of a failed night replaces that night rather than doubling it ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)).\n\n## Trade-Offs\n\n### Which sources to build on\n\n| Source strategy | Coverage | Identity | Price meaning | Legal and commercial risk | When it is right |\n| --- | --- | --- | --- | --- | --- |\n| **Harvest public adverts** | Broad and quick to extend | Weak outside markets that show plates | Asking | Database right, terms, concentration on few portals | As a complement, for statistics that do not substitute for the portal, under counsel |\n| **Portal data agreements** | One portal deep | Better; portal ids and history | Asking | Contract dependence on a competitor-supplier | Where one or two portals dominate a market |\n| **First-party dealer data** | Your dealers only | Exact | Asking and realized | Competition law on exchange; dealer trust | Always, as ground truth and core signal; aggregated and delayed outward |\n| **Register changes** | Whole national fleet | Plate or VIN | None | Register terms and purpose rules | Where per-vehicle data is legally available (NL) |\n| **Auction and B2B results** | Wholesale only | Exact | Transaction | Contract | Where the platform owns or partners with auctions |\n| **Buy a market-data product** | Provider's | Provider's | Provider's | License limits on redistribution | Markets where you have no first-party base |\n\nAxleby's 2027 policy follows from the table: first-party and register data as the core in the Netherlands and Belgium; data agreements before harvesting wherever a portal will sign one; no harvesting of aggregator sites, which duplicate other sources and resemble the *Innoweb* pattern; and no single portal group supplying more than a quarter of a market's observations without a contract.\n\n### How to define a sale\n\n| Definition | Speed | Precision | Where it works | Verdict |\n| --- | --- | --- | --- | --- |\n| De-listing = sale | Next day | Low (68% in Axleby's audit) | Everywhere | Not acceptable for statistics anyone acts on |\n| Absent everywhere for N days | N days | Medium | Everywhere | Acceptable with cross-portal clustering |\n| Register-confirmed only | Days to weeks | High for transfer, no price | NL per vehicle | Ground truth for NL; too narrow alone |\n| Classifier over all signals, trained on first-party outcomes | Provisional next day; settled at 21 days | Measured | Wherever first-party sample exists | The default; publish provisional and settled figures |\n\n### How fresh to be\n\nHarvesting more often costs crawl capacity and legal exposure (Article 7(5) addresses repeated and systematic extraction) and buys little: segment statistics move over days, not hours. **Daily observation is enough for statistics**; intraday freshness matters only for first-party stock, which arrives as events anyway. The exception is a product that shows a dealer the live competing adverts for one car, which is an *Innoweb*-shaped product and a decision for counsel, not for the data team.\n\n## Across Markets: What Changes by Country\n\n| | Netherlands | Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- | --- |\n| **Portal structure** | Consolidating: AutoScout24 took over AutoTrack and Gaspedaal.nl (Nov 2025); Marktplaats | 2dehands/2ememain (same API as Marktplaats); AutoScout24.be | mobile.de and AutoScout24 compete; AutoScout24 can export to mobile.de; dealers multi-home (Bundeskartellamt 2026) | One dominant portal, Auto Trader, which also sells valuations and metrics | Several marketplaces; inventory reaches them mostly through dealer software feeds |\n| **Per-vehicle sale confirmation** | Register open data: date of registration in the current name, export indicator, per plate | Not verified as available to market-data providers | None; KBA publishes monthly aggregate keeper changes (6.03M cars, 2023) | None for market use; SMMT quarterly transactions from DVLA data (7.81M, 2025) | Auctions see wholesale; retail inferred from dealer inventory (Cox, vAuto) |\n| **Identity in adverts** (Axleby's observation for Europe) | Plate often readable; resolves through the register mirror | Rarely plate or VIN | Rarely plate or VIN | Registration mark in first-party stock; varies in harvested adverts | VIN commonly published (industry practice) |\n| **Transaction prices** | First-party dealer data | First-party dealer data | First-party data; DAT reports manufacturer and customer transaction values (2024) | First-party data; portal's own trade valuations | Wholesale auctions (Manheim index on 5M+ transactions) |\n| **Legal frame for harvesting** | EU database right; *Innoweb* and *Ryanair* came from Dutch references | EU database right | EU database right | UK database right (Reg. 16, SI 1997/3032); post-2020 CJEU rulings not binding | No database right (*Feist*, 1991); contract and access law (*hiQ*, 2022) |\n| **Competition law on dealer data** | EU Horizontal Guidelines 2023 | Same | Same | UK competition law (not reviewed here) | US antitrust (not reviewed here) |\n\n**What stays common:** the observation store with provenance and rights tags, listing lifecycles, market-vehicle clustering, outcome states with confidence, survival-based stand-time, the segment hierarchy with minimum evidence, coverage estimation and the purge path. None of these depends on the country.\n\n**What becomes a market adapter or a rule set:** the collectors and feed adapters per portal; the identity tiers that work (plate-at-date in the Netherlands and the UK, clustering-only in Germany and Belgium); the confirmation sources (register diffs in the Netherlands, none per vehicle elsewhere); and the rights rules per source.\n\n**What is a product decision:** in the UK, a dominant portal publishes its own days-to-sell and valuations, so Showroomly integrates them where dealers license them rather than competing with a thinner Pulse picture ([Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html)). In Germany, Axleby's market data serves Wertlauf's data clients and must state its lower coverage. The Netherlands is where Pulse can be strongest, because register confirmation and Lotwise's dealer base are both there.\n\n## The Chief Architect's View\n\n**Treat market data as a regulated supply chain, not a scraping job.** The decisions that matter are about sources and rights. I would put four in writing, owned by the VP Data and Valuation and reviewed by the Head of Data Governance and Privacy (Femke de Boer at Axleby) and counsel each year:\n\n1. **The source policy**: which sources are licensed, harvested or excluded per market; the concentration limit per portal group; the response when a portal objects.\n2. **The outward rule for first-party data**: minimum aggregation per published cell, delay for dealer-derived prices, and the dealer contract clause that permits it. Axleby set at least five rooftops and 20 cars per published cell and a 30-day delay on dealer-derived sale prices, and updated the Lotwise terms in 2027 to describe that use.\n3. **The sale definition**: the outcome states, windows and classifier, versioned, with precision published internally per market.\n4. **The coverage contract**: what every statistic must carry, and the thresholds below which consumers such as Vantage must not use it.\n\n**Measure the market data the way you measure a model.** Sale inference is a classifier and supply is an estimate; both need ground truth, back-tests and drift checks. The ground truth is first-party data: here the dealer software half is the data half's most valuable source ([Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html)).\n\n**Watch portal consolidation as an architecture risk.** When the portals a market data lake depends on also sell dealer tools and valuations, they become competitors and suppliers at once. Source diversity, first-party data and register data are the hedge. The VWE case reads the Dutch consolidation the same way ([VWE: A Dutch Vehicle Data Company Becomes a Dealer Platform](case-vwe.html)).\n\n**What to watch:** the share of observations per portal group; harvest completeness per run; sale-inference precision per market; the gap between provisional and settled figures; segment coverage for segments Vantage depends on; and any change in portal terms, APIs or ownership.\n\n## Questions to Ask\n\n1. Is our match rate per observation, per listing or per car, and what are cluster coverage and segment coverage per market?\n2. When an advert disappears, what do we record, and how do we know what share of disappearances were sales?\n3. What happens to our sales counts on a night when one portal's harvest returns half its usual volume?\n4. For every observation, can we name the source, the method, the time and the terms under which we obtained it, and can we rebuild our statistics without one source?\n5. Which products re-present other portals' adverts to users, and has counsel reviewed them against *Innoweb*?\n6. How are our dealers' own sale prices aggregated and delayed before anyone outside their business sees them?\n7. Which segment statistics does the valuation engine consume, and what coverage and evidence thresholds gate that use?\n8. Which single portal group's decision could remove more than a quarter of a market's observations, and what is our plan if it happens?\n\nPulse now says what it saw, how sure it is, and what it could not see. The next chapter turns that picture into a price: [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) shows how Vantage uses Pulse's comparables and segment signals, and how a valuation stays honest when one segment moves.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Used retail vehicle sales, December 2025](https://www.coxautoinc.com/insights/used-retail-vehicle-sales-december-2025/), Cox Automotive, 2026. Sales estimated from vAuto inventory changes over 30 days; 49 days' supply; CDK-outage normalization.\n- [Used vehicle days' supply](https://www.coxautoinc.com/market-insights/used-vehicle-days-supply/), Cox Automotive, 2022. Days' supply defined on the most recent 30-day sales rate.\n- [Manheim Market Report (MMR) Help](https://site.manheim.com/tutorials/manheim-market-report-help), Manheim (Cox Automotive), modified 2026. Minimum-transaction rule and small-sample flag.\n- [Manheim Used Vehicle Value Index](https://site.manheim.com/en/services/consulting/used-vehicle-value-index.html), Manheim, 2025. Index built on more than 5 million transactions a year.\n- [Introduction to Vehicle Metrics](https://help.autotrader.co.uk/hc/en-gb/articles/21946149296029-Introduction-to-Vehicle-Metrics), Auto Trader UK, 2024, updated 2026. Days to Sell and related metrics as API outputs.\n- [Retail Price Index, June 2023](https://plc.autotrader.co.uk/news-views/press-releases/retail-price-index-june-2023/), Auto Trader Group plc, 2023. About 800,000 daily pricing observations; used-EV price fall and supply growth.\n- [Autorola's used vehicle management software Indicata receives UK launch](https://www.am-online.com/news/technology/2017/09/11/autorola-s-used-vehicle-management-software-indicata-receives-uk-launch), AM Online, 2017. Market days' supply from overnight listing sweeps (evidence more than three years old).\n- [Produktbeschreibung SilverDAT valuateFinance](https://dynamic-www.dat.de/fileadmin/de/download/rechtliches/produktbeschreibung-silverdat-valuatefinance.pdf), Deutsche Automobil Treuhand, 2024. Transaction values reported by manufacturers and customers as a data basis (author's translation).\n- [AutoScout24 Listing Creation API documentation](https://listing-creation.api.autoscout24.com/docs), AutoScout24, n.d., changelog to 2026-10-19. Shared AutoTrack channels and `mobile_de` export channel.\n- [AutoTrack en Gaspedaal.nl onderdeel van AutoScout24](https://www.emerce.nl/nieuws/autotrack-gaspedaalnl-onderdeel-autoscout24), Emerce, 2025. Dutch portal consolidation, November 2025.\n\n*Standards, regulation and official documentation*\n\n- [Directive 96/9/EC on the legal protection of databases](http://publications.europa.eu/resource/celex/31996L0009), European Parliament and Council, 1996. Article 7 sui generis right.\n- [*Innoweb BV v Wegener ICT Media BV*, C-202/12](http://publications.europa.eu/resource/celex/62012CJ0202), Court of Justice of the EU, 2013. Car-advert meta-search engine re-utilises a substantial part of the database.\n- [*Ryanair Ltd v PR Aviation BV*, C-30/14](http://publications.europa.eu/resource/celex/62014CJ0030), Court of Justice of the EU, 2015. Contractual limits on unprotected databases.\n- [*CV-Online Latvia v Melons*, C-762/19](http://publications.europa.eu/resource/celex/62019CJ0762), Court of Justice of the EU, 2021. Search engines copying and indexing; risk to the investment; fair balance.\n- [Copyright and Rights in Databases Regulations 1997, regulation 16](https://www.legislation.gov.uk/uksi/1997/3032/regulation/16/made), UK Government, 1997. UK database right infringement.\n- [*Feist Publications v Rural Telephone Service*, 499 U.S. 340](https://www.law.cornell.edu/supremecourt/text/499/340), US Supreme Court, 1991 (via Cornell LII). Facts are not copyrightable.\n- [Guidelines on the applicability of Article 101 TFEU to horizontal co-operation agreements](http://publications.europa.eu/resource/celex/52023XC0721%2801%29), European Commission, 2023. Aggregated and historical information exchange, paras 391–394.\n- [Freigabe mobile.de / Carwow](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html), Bundeskartellamt, 2026. Multi-homing and platform data exports in Germany.\n- [Open data dataset metadata, Gekentekende voertuigen](https://opendata.rdw.nl/api/views/m9d7-ebf2.json), RDW, queried October 2026. Date of registration in the current name, export indicator, odometer judgement per plate.\n- [Besitzumschreibungen](https://www.kba.de/DE/Statistik/Fahrzeuge/Besitzumschreibungen/besitzumschreibungen_node.html), Kraftfahrt-Bundesamt, n.d., accessed 2026-10. Definition and 2023 count of keeper changes.\n- [Release of information from DVLA's registers (INF266)](https://assets.publishing.service.gov.uk/media/624dabc7e90e0729f6bf8167/inf-266-release-of-information-from-dvlas-registers.pdf), DVLA, 2022. Reasonable-cause release of keeper data.\n\n*Research and practitioner sources*\n\n- [Used car sales data](https://www.smmt.co.uk/vehicle-data/used-car-sales/), SMMT, n.d., accessed 2026-10. UK used-car transactions derived from DVLA data; 2025 total; revisions.\n- [hiQ and LinkedIn reach proposed settlement in landmark scraping case](https://www.proskauer.com/blog/hiq-and-linkedin-reach-proposed-settlement-in-landmark-scraping-case), Proskauer Rose, 2022. US scraping dispute outcome.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

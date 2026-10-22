@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost</title>
+    <meta name="description" content="How should condition be captured and priced into buying and selling decisions? Capture it once as dated, attributable evidence, keep machine detections apart from human findings, and derive the lessee charge, the trade grade, the repair estimate and the reconditioning cost from that evidence with versioned rules, then measure the estimates against what the work actually cost.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost">
+    <meta property="og:description" content="How should condition be captured and priced into buying and selling decisions? Capture it once as dated, attributable evidence, keep machine detections apart from human findings, and derive the lessee charge, the trade grade, the repair estimate and the reconditioning cost from that evidence with versioned rules, then measure the estimates against what the work actually cost.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/condition-and-damage.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/13-condition-and-damage/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="valuation-engine.html" title="What Is It Worth? Building and Governing a Valuation Engine">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ev-battery-health.html" title="The Battery Question: EV State of Health and Battery Data">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — VALUE: Market Data, Valuation and Condition</p>
+        <h1>Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  35 min read · <a class="spec-link" href="condition-and-damage.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/13-condition-and-damage/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/13-condition-and-damage/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="valuation-engine.html" title="What Is It Worth? Building and Governing a Valuation Engine">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ev-battery-health.html" title="The Battery Question: EV State of Health and Battery Data">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How should condition be captured and priced into buying and selling decisions? Capture it once as dated, attributable evidence, keep machine detections apart from human findings, and derive the lessee charge, the trade grade, the repair estimate and the reconditioning cost from that evidence with versioned rules, then measure the estimates against what the work actually cost.", "permalink": "condition-and-damage", "timetoread": "35 min read", "icon": "assets/icons/13-condition-and-damage.png", "logo": "assets/images/13-condition-and-damage/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Take condition apart into evidence, findings and derived views; design guided capture, AI-assisted damage detection with human review, and the service that turns one inspection into a condition report, a damage estimate and a reconditioning cost; and see how those numbers enter buying, selling and dispute decisions.\n\n> **WHY THE BUSINESS CARES:** Two cars with the same plate history and mileage can differ by a thousand euros in panels, tires and paint. A dealer who misses that pays it out of gross profit, a lessor who cannot prove it writes off the damage charge, and a trade seller who did not disclose it pays the buyer's claim.\n\n> **WHY ARCHITECTS SHOULD CARE:** Condition is the only vehicle fact the platform creates itself, at a moment that cannot be repeated, often on a phone in a yard. It feeds valuation, appraisal offers, trade listings, lessee invoices and tax evidence. If it is stored as a grade and a PDF, every one of those decisions inherits a number nobody can recompute or defend.\n\n> **KEY POINTS:**\n>\n> * **Store evidence, derive everything else.** An inspection produces dated, attributable observations: photos with capture metadata, measurements and damage items located on a panel map. The grade, the lessee charge, the repair estimate and the reconditioning cost are views computed from those items by versioned rules, so they can be recomputed when a rule changes and defended when a party disputes them.\n> * **A repair estimate is not a reconditioning cost.** Insurer-grade estimating prices repair to pre-damage condition with manufacturer parts and labor times; reconditioning prices what a retailer will actually spend to make the car sellable. Use the first for claims and lessee charges, the second for buying decisions, and calibrate the second against the dealer's own invoices.\n> * **AI detection is a second opinion with a confidence score, not a grader.** Keep machine detections and human-confirmed findings as separate states, route low-confidence items to a person, and measure the detector on your own confirmed outcomes, because no vendor publishes accuracy figures you can rely on.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **Provenance Amnesia** — a damage finding without photo, capture time, inspector and method cannot support a lessee charge, a trade claim or a tax valuation, so it is written off or argued from memory.\n> * **The Confident Valuation** — a maximum purchase price that subtracts a reconditioning guess, never compared with the actual cost, looks precise and is systematically wrong.\n> * **The Sticky Error** — a missed or invented damage item spreads into the valuation, the trade listing and the buyer's dossier unless every consumer refers to the finding, not a copy of it.\n\n<br>\nEvery valuation in this book assumes a condition. A retail value assumes the car is ready for retail; a trade value assumes it is sold as is; a lessor's residual assumes average condition at contract end. The car on the yard has its own condition: a dented door, two worn tires, a repainted rear quarter panel nobody mentioned. **The gap between the assumed condition and the actual one is money**, and someone pays it: the dealer in reconditioning cost, the lessee in damage charges, the trade buyer in a claim, or the platform in credibility.\n\nCondition is also different from every other fact in Part II. Identity, specification and history arrive from registers, manufacturers and data suppliers, and the platform's job is to resolve and reconcile them. **Condition is observed by the platform's own users, once, at a specific place and time.** A scratch photographed at return on 3 May cannot be re-photographed on 3 May after the car has been repaired or sold. If the evidence is weak, nothing upstream can correct it.\n\nThis chapter owns the **condition report**, the **damage estimate** and the **reconditioning cost**. It feeds the condition line of [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) and the reconditioning term of the maximum purchase price, which [Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html) turns into an offer. It hands the reconditioning workflow's stages to [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), damage settlement and trade disputes to [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html), and battery health, the condition question specific to electric cars, to [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html).\n\n## Setting the Scene at Axleby: One Car, Three Inspections\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), sells to **Fleetmoor Lease**, a lessor in the Netherlands and Belgium with about **64,000** vehicles and about **14,000** returns a year. Fleetmoor inspects each returned car at one of its two return centers, near Utrecht and near Antwerp, using a contracted inspection firm; in early 2027 the inspectors used that firm's app. The inspection does two jobs. It decides what the lessee, usually the driver's employer, is charged for damage beyond the return standard. And it becomes the condition report on **Tradefloor**, Axleby Trade's business-to-business (B2B) exchange, where Fleetmoor sold **8,600** returns to dealers and traders in 2026 and handed another 2,900 to auction partners ([Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html)).\n\nIn April 2027 Bas Hendriks, Fleetmoor's remarketing manager, brought a quarter's numbers to a meeting with Ines Marchetti (Axleby's Group Chief Architect), Tomás Ferreira (Product Director, Lotwise) and Daan Visser (Product Manager, Axleby Trade). All figures are Axleby illustrations.\n\n| Fleetmoor, Q1 2027 | Value |\n| --- | --- |\n| Returns inspected | 3,520 |\n| Returns with a damage charge to the lessee | 1,970 (56%) |\n| Charges contested by the lessee | 418 (21% of charged) |\n| Contested charges waived for lack of evidence | €121,000 |\n| Returns sold on Tradefloor | 2,240 |\n| Condition claims raised by Tradefloor buyers | 262 (11.7%), average settlement €590, about €155,000 in total |\n\nThe claims broke down into four groups: **damage not in the report** (39%), **tires** worse than reported (24%), **previous repairs** such as repainted panels that the report did not mention (21%), and **missing items and warning lights** (16%).\n\nBas brought one car to make it concrete: a 2023 Peugeot 308 SW with 92,400 km, returned in February. The return inspection recorded a door dent and a curbed rim and charged the lessee €260. The Tradefloor report, generated from the same inspection, graded the car \"B\" and listed the same two items. The buying dealer in Zwolle inspected it on arrival with Lotwise Appraise and found a repainted left rear quarter panel and two tires at 2.3 mm. His reconditioning came to €1,290 against the €610 he had expected, and he filed a claim for €480.\n\n**Three parties had inspected the same car, and nobody's record could be compared with anybody else's.** The return app stored a PDF and 24 unpositioned photos, the Tradefloor grade was a judgement on an unwritten scale, and the dealer's appraisal held free-text notes. Fleetmoor could not show that the repaint predated the return, so it could neither charge the lessee nor reject the claim.\n\nInes framed the question for One Dossier: **how should Axleby capture condition once, as evidence every party can check, and turn it into the charge, the grade, the repair estimate and the reconditioning cost each decision needs?** The answer became **Gauge**, the group's condition service, and **Lotwise Inspect**, its guided-capture component, piloted at Fleetmoor's return centers from **14 June 2027** and also used by the rebuilt Lotwise Appraise ([Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html)) and the stock-in check. **Handback**, the return and settlement workflow that [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html) describes, followed as a prototype in October 2027.\n\n## Concepts: Evidence, Findings and Views\n\n### The terms this chapter owns\n\n- **Inspection.** One capture session on one vehicle, keyed by the Axleby Vehicle Key (AVK, the internal identity key from [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)), with a purpose (appraisal, stock-in, lease return, trade listing, pre-delivery), a location, an inspector, a device and a start and end time.\n- **Observation.** A raw piece of evidence from an inspection: a photo, a video, a measurement (tread depth, paint-layer thickness, odometer reading), a checklist answer or a diagnostic readout. Observations are immutable.\n- **Finding** (damage item). A claim about the car, located on a **panel map** (a fixed vocabulary of components and zones), with a damage type (scratch, dent, chip, crack, corrosion, wear, missing item, previous repair), a size or severity, and links to the observations that support it. A finding has a source (human, machine detection, imported report) and a review state.\n- **Condition report.** A versioned, read-only document derived from one inspection's confirmed findings for a stated purpose and audience: a trade report for buyers, a return report for the lessee, an appraisal report for the dealer's file. It names the rubric version it was produced under.\n- **Condition grade.** A summary score computed from findings by a published rubric. It is a view, never the source.\n- **Damage estimate.** A priced repair plan for a set of findings: operations, parts, labor time, paint and their prices, produced from a repair-cost catalog or by an assessor. It answers \"what does it cost to restore this to pre-damage condition?\"\n- **Reconditioning cost** (recon cost). The estimated, and later actual, cost to make a car ready for retail at a given dealer: mechanical work, cosmetic repairs, tires, servicing, cleaning and preparation, priced at that dealer's methods and rates. It answers \"what will this dealer spend before the car can be sold?\"\n\nThe separation between observations, findings and views is the design. **Observations are facts about what was captured. Findings are claims about the car. Grades, charges and estimates are opinions computed under a rule set.** When a rule changes, opinions are recomputed; when a claim is disputed, it is re-reviewed against its observations; the observations themselves never change.\n\n![Three stacked layers: locked photos and gauge readings as observations, pins on a car outline as findings, and four computed cards as views.](assets/images/13-condition-and-damage/13-evidence-findings-views.jpeg)\n**Figure 1:** *Observations never change, findings are claims reviewed against them, and grades, charges and estimates are views recomputed from confirmed findings.*\n\n### Wear is not damage, and grades do not map\n\nThe first vocabulary problem is the line between **wear and damage**. The British Vehicle Rental and Leasing Association (BVRLA) publishes an industry Fair Wear and Tear standard for lease returns. Its public page (n.d., accessed 2026-10) defines fair wear and tear as deterioration from normal usage and says it \"is not to be confused with damage which occurs as a result of a specific event or series of events such as impact, inappropriate stowing of items, harsh-treatment, negligent acts or omissions\" ([BVRLA](https://www.bvrla.co.uk/home/support/products-and-services/bvrla-fair-wear-tear-guides)). Its consumer guidance says customers \"are not charged at end of lease for any refurbishment that arises from normal wear and tear\" ([BVRLA](https://www.bvrla.co.uk/home/consumer-advice/returning-your-leased-vehicle)). The thresholds themselves are in a copyrighted guide sold to members, so a platform implements a lessor's return standard as **licensed or customer-supplied rule content**, not as code.\n\nThe second is that **grading scales disagree**:\n\n| Scale | Where | Direction | Status of evidence |\n| --- | --- | --- | --- |\n| NAAA Condition Grade Scale, 0–5 | US wholesale auctions (National Auto Auction Association) | 5 is best | Widely reported; basis of Manheim's AutoGrade, which in 2014 was offered to NAAA member auctions as a standardized grade computed from submitted damage data ([Manheim, 2014](https://press.manheim.com/2014-01-17-Aasc-Announces-Standardized-Vehicle-Condition-Grading-Technology)) |\n| NAMA grades 1–5 | UK and Australian auctions (National Association of Motor Auctions) | **1 is best** | Widely reported; not read in primary form |\n| Clean / Average / Below | Cap HPI trade values, UK | Three bands from a points checklist with age-dependent tolerances | Reported in 2011; may have changed |\n| Excellent / Great / Good / Fair / Poor | Auto Trader UK Valuations API | Five levels | Documented in Auto Trader's help center (2024, updated 2026) |\n| Recorded condition, repairs, previous owners | DAT valuation, Germany | Input fields, not a grade | DAT product description (2024) |\n\nThe AutoGrade and Cap HPI sources are over ten years old: evidence that grading by points over findings is established practice, not descriptions of today's products. The lesson: **a grade from one scale cannot be translated into another without the findings behind it.** A \"3.5\" and a \"Good\" are not the same thing at different precision. Store the findings and compute each scale with its own rubric, and a new buyer's scale is a new rubric, not a migration.\n\n### Repair estimate versus reconditioning cost\n\nInsurer-grade estimating systems, such as DAT's damage calculation in Germany and Solera's Audatex and Qapter products internationally, price a repair from the manufacturer's parts prices, labor times and paint operations. DAT's Austrian product page for its weDAT platform (n.d., accessed 2026-10) describes its repair-cost calculation as a full determination of repair costs \"on the basis of the original manufacturer data\", including linked operations and paint items ([DAT Austria](https://www.datgroup.com/de-at/produkte/wedat/); author's translation from German). That is the right basis for an insurance claim and usually for a lessee damage charge, because both restore the car to its pre-damage state.\n\nA retailer rarely does that. It repairs a door dent without paint by paintless dent repair (PDR), touches up a bumper with a small-area repair, refurbishes a rim rather than replacing it, and leaves cosmetic wear the retail standard tolerates. No provider found in the research publishes a reconditioning-cost model; in dealer tools the estimate is commonly a dealer-maintained rate card driven by the inspection. vAuto's own content cites an average **$600** gap between reconditioning estimates and actual cost (vendor content, undated), which is the size of error that turns a profitable trade-in into a loss.\n\n| | Damage estimate | Reconditioning cost |\n| --- | --- | --- |\n| Question | What restores the car to pre-damage condition? | What will this dealer spend to make it sellable? |\n| Pricing basis | Manufacturer parts, labor times and paint, from a licensed catalog or an assessor | The dealer's own methods, rates, sublet prices and retail standard |\n| Includes | Damage only | Damage, wear the dealer chooses to fix, tires, servicing, cleaning, preparation, inspection fees |\n| Used for | Insurance claims, lessee charges, BPM valuation evidence in the Netherlands, total-loss decisions | Maximum purchase price, reconditioning approval, gross margin |\n| Checked against | Assessor review, repairer invoice | The dealer's actual repair orders and invoices |\n| Typical error | Overstates retail spend for cosmetic damage | Understates hidden mechanical work |\n\n**Never use one as the other without a calibration.** A buying tool that subtracts an insurer-grade estimate from the retail value underbids every car with cosmetic damage; a lessee charge built from a dealer's PDR rate card undercharges and invites the argument that the lessor priced damage it never repaired. BVRLA guidance says charges \"can still be applied\" when the lessor decides not to repair, so the charge must rest on a defensible estimate, not on what the next owner spent.\n\n## Capture: Guided Inspection\n\nCondition data is only as good as the capture, and capture happens on phones in yards, in bad light, under time pressure. Guided capture turns an inspector's walk-around into a structured session.\n\n**A fixed shot list, then close-ups.** Lotwise Inspect asks for a fixed set of positioned shots (four corners, each side, roof where possible, each wheel, interior front and rear, dashboard with the ignition on, odometer, trunk, keys and documents), then a close-up for every finding, tapped onto the panel map. A fixed list makes two inspections of the same car comparable, and the dashboard shot makes warning lights evidence rather than memory. The BVRLA's own advice to drivers points at the same capture conditions: good light, a clean and dry car, every panel examined along the body line ([BVRLA](https://www.bvrla.co.uk/home/consumer-advice/returning-your-leased-vehicle)).\n\n**Measurements, not adjectives.** Tread depth per tire in millimeters (the EU minimum in the main grooves has been **1.6 mm** since Council Directive 89/459/EEC, [CELEX 31989L0459](http://publications.europa.eu/resource/celex/31989L0459); a return standard or a retail standard is usually stricter). Paint-layer thickness per panel from a coating gauge, because a panel markedly thicker than its neighbors indicates a respray; Gauge records the reading and lets a rubric decide what counts as a previous repair, rather than hard-coding a threshold. Odometer reading with a photo. Battery state of health for electric cars from a certified test ([The Battery Question: EV State of Health and Battery Data](ev-battery-health.html)). Diagnostic fault codes where a reader is connected ([Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html)).\n\n**Capture metadata on every observation.** Device, app version, timestamp from the device and from the server on receipt, location, inspector identity, and a content hash computed on the device. The hash and the two timestamps are what later let Fleetmoor show that a photo was taken at return and not altered.\n\n**Offline first.** Return centers, auction lanes and customer driveways have poor connectivity. Inspect is an offline-capable progressive web app (PWA) component: it stores observations on the device, uploads in the background with resumable uploads and an idempotency key per observation, and marks an inspection complete only when the server holds every mandatory observation. The appraisal workflow that uses the same component belongs to [Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html).\n\n**Drive-through scanners.** At volume sites, fixed camera arches capture a car's exterior, underbody and tires in seconds; UVeye and ProovStation, described in the next section, are documented examples. For an architecture, a scanner is one more capture device: its images and detections enter Gauge as observations and machine findings with the scanner's identity and model version, exactly like a phone.\n\n## AI Damage Detection and Human Review\n\n### What is documented\n\n| Provider | What its own public material says | Source and date |\n| --- | --- | --- |\n| **Tractable** | Image-based damage assessment for insurers, repairers, recyclers, fleets and dealers; \"certainty scores accompany every estimate, factoring in visibility, image quality, and damage severity\" | [Tractable](https://tractable.ai/), n.d., accessed 2026-10 |\n| **DAT FastTrackAI** | Photo-based damage detection with \"automated recording of component, type of damage and severity\" and transfer into an initial damage calculation, in DAT's software \"from September 1, 2026\"; also offered inside the weDAT platform | [DAT AI Bundle](https://www.dat.de/ai-bundle-en/), n.d., accessed 2026-10; [DAT Austria, weDAT](https://www.datgroup.com/de-at/produkte/wedat/), n.d. |\n| **Solera Qapter** | An AI-powered modular suite for insurers and repairers with \"damage detection algorithms\" and \"photo-based estimating\" | [Qapter](https://www.qapter.com/), n.d., accessed 2026-10 |\n| **UVeye** (with Cox vAuto) | Drive-through inspection of exterior, underbody and tires, integrated into dealer appraisal tools | [Cox Automotive](https://www.coxautoinc.com/press-releases/cox-automotives-vauto-and-uveye-bring-ai-powered-vehicle-inspections-to-market/), January 2026 |\n| **ProovStation** | Drive-through scanning that detects, locates, measures and labels damage, compares with a previous scan, and blurs faces for the EU General Data Protection Regulation (GDPR) | [ProovStation](https://proovstation.com/), n.d., accessed 2026-10 |\n\nAll five are vendor descriptions. **None of the pages read for this chapter publishes detection accuracy, false-positive rates or error by damage type.** The public research datasets are small: CarDD, published in 2022, has 4,000 high-resolution images with over 9,000 annotated instances across six damage categories ([Wang et al., arXiv 2211.00945](https://arxiv.org/abs/2211.00945)). Treat any accuracy claim as something to measure on your own confirmed findings.\n\n### Detections are not findings\n\nThe rule that keeps AI useful is to give machine output its own state. A detection says \"a model with version v, on observation o, saw a dent of severity s on the front left door with confidence c\". It does not say there is a dent.\n\n![Detected-by-model and recorded-by-inspector findings move to Confirmed or Rejected; confirmed findings can be disputed and upheld or overturned, or superseded by a repair.](assets/images/13-condition-and-damage/13-finding-lifecycle.jpeg)\n**Figure 2:** *The lifecycle of a finding. Machine detections and inspector entries both start as unconfirmed; only confirmed findings feed charges, grades and estimates, and a repair supersedes a finding rather than deleting it.*\n\nTwo design rules follow, besides recording the model version on every detection.\n\n1. **Route by confidence and consequence.** A low-confidence detection on a panel already recorded by the inspector can be merged automatically; a high-consequence finding (structural damage, a previous repair, anything that raises a lessee charge above an illustrative €250 *(assumption)*) needs a named reviewer. Tractable's per-estimate certainty score is the public example of the pattern.\n2. **Use the model as a second opinion on the inspector, and the inspector as ground truth for the model.** Each confirmed or rejected detection is a labeled example. Within three months, Gauge's confirmation and rejection rates per damage type, panel, color and light condition are a better accuracy measure than any vendor brochure.\n\nMy reading is that the binding obligations here come less from AI regulation than from contract and consumer law: a lessee or buyer can contest a charge, and the platform must show the human decision behind it. AI governance across products is in [AI on the Forecourt: Agents, Assistants and Automation](ai-in-dealer-workflows.html).\n\n## Architecture: Gauge\n\n### Components\n\n| Component | Responsibility | Design rule |\n| --- | --- | --- |\n| **Lotwise Inspect** (at return centers, in Appraise and the stock-in check) | Guided capture on phones and tablets; offline queue; panel-map tagging | Mandatory shot list per purpose; capture metadata and device hash on every observation |\n| **Scanner adapters** | Drive-through and lane scanners at partner sites | Scanner images and detections enter as observations and machine findings with device and model version |\n| **Evidence store** | Originals in object storage; metadata, hashes and lineage in PostgreSQL | Write once; originals never modified; derived renditions stored beside them |\n| **Image pipeline** | Renditions for screens, plate and face blurring for shared views, quality checks (blur, exposure, framing) | Runs asynchronously; quality failures go back to the inspector while the car is still there |\n| **Detection gateway** | Calls the damage-detection provider or model; normalizes output to the panel map | Detections stored as unconfirmed findings with confidence and model version |\n| **Findings and review** | The finding lifecycle; review queues by confidence and consequence | Only confirmed findings feed views; every state change has an actor and reason |\n| **Rubric engine** | Computes grades, lessee charges and report contents from confirmed findings | Rubrics are versioned content (return standards, trade grades, buyer scales), never code branches per customer |\n| **Estimating** | Damage estimates via a licensed repair-cost catalog; reconditioning estimates via each dealer's rate card | Catalog calls only where the decision needs them; recon rate cards owned by the tenant |\n| **Condition API and events** | Reports, findings and estimates to Vantage, Lotwise, Tradefloor, Odolo and API clients | Consumers reference finding and report ids, never copies; `condition.report.issued`, `finding.disputed` and `recon.actual.recorded` events |\n\n![Inspect and scanners send hashed observations to the evidence store; detections and inspector findings meet in findings and review; confirmed findings feed the rubric engine and estimating, which serve the condition API to consumers, who return recon actuals and disputes.](assets/images/13-condition-and-damage/13-gauge-architecture.jpeg)\n**Figure 3:** *Gauge stores evidence once and derives every view from confirmed findings. Consumers get reports and estimates by reference, and reconditioning actuals and disputes flow back to the findings they concern.*\n\nThe boundary that matters most is between Gauge and [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html). Gauge is the system of record for inspections the platform's users perform. Tracewell, the history event store, receives a **summary event** for each issued report (inspection date, purpose, structural damage yes or no, previous repairs found, odometer reading), keyed by AVK, with a pointer back to Gauge. Tracewell does not copy photos or itemized findings: they belong to the tenant who paid for the inspection, and whether a later owner or a consumer report may see them is a license and purpose question for [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html).\n\nThe second boundary is with workflows that capture. Handback owns the return and its settlement (appointment, handover checklist, lessee acknowledgement, charge letter, dispute deadlines), and Lotwise Appraise owns the appraisal and the offer. Both use Inspect for capture, keep their evidence and findings in Gauge and ask Gauge for grades, charges and estimates, so **there is one evidence model and many workflows, not one condition model per product**.\n\n### Requirements per interaction\n\n| Interaction | Latency | Freshness | Consistency | Availability |\n| --- | --- | --- | --- | --- |\n| Capture at the car (shot, tag, measure) | Instant on device; upload in background | n/a | Inspection complete only when the server holds every mandatory observation with a matching hash | Fully offline for a shift *(assumption: 8 hours, 300 photos)* |\n| Image quality feedback | Under 30 s after upload *(assumption)* | n/a | Per observation | Degrades to \"check later\" without blocking capture |\n| Machine detection | Under 2 min per inspection *(assumption)* | Model version pinned per run | Detections never overwrite inspector findings | If the provider is down, the inspection proceeds without detections and is queued for a later run |\n| Review and report issue | Same day for returns and trade listings *(assumption)* | Report built from confirmed findings at issue time | Report is immutable and versioned; a correction issues a new version | Review queue survives outages; no report without review of high-consequence items |\n| Recon estimate into appraisal | Under 2 s from confirmed findings *(assumption)* | Dealer rate card version in force | Estimate id and rate-card version written to the valuation ledger | Falls back to a segment default with a flag if findings are incomplete |\n| Recon actuals back from workshop or dealer management system (DMS) | Daily | Repair orders as closed | Matched to estimate lines by finding id where possible | Late arrivals accepted; variance computed when complete |\n\n### Image pipelines and storage\n\nImages are most of the bytes and most of the privacy risk. Assume, for sizing, a return inspection of 60 photos at 3 MB and an appraisal or stock-in inspection of 30 photos at 2.5 MB *(assumptions)*. Fleetmoor's 14,000 returns are then about **2.5 TB** a year; if half of Lotwise's **1.9 million** annual stock-ins get a Gauge inspection, that adds about **71 TB** a year. The volume is manageable; the rules are what matter.\n\n- **Originals are evidence; renditions are for screens.** Keep originals write-once with their hash, in the region of the tenant's cell ([Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)). Serve resized renditions; never re-encode an original in place.\n- **Blur before sharing.** Photos taken in yards capture other cars' plates, people and occasionally addresses. The image pipeline produces blurred renditions for every view that leaves the tenant: Tradefloor buyers, consumer reports, partner APIs. DAT's weDAT page lists automatic anonymization of number plates in image processing for inspection reports (n.d., accessed 2026-10), and ProovStation blurs faces; both treat it as a standard feature. Whether the car's own plate stays visible in a trade report is a product decision; other plates and faces are blurred.\n- **Tier by age, delete by purpose.** Hot storage while the car is in stock or a dispute window is open, then archive tier. Retention follows the longest purpose: the lessee dispute window, the trade claim window, tax evidence where a report supports a Dutch BPM valuation, and the dealer's own record-keeping duty. Delete or anonymize after that ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n## Pricing Condition Into Decisions\n\n### Maximum purchase price and reconditioning\n\n[What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) defines the **maximum purchase price** (MPP) as expected retail transaction price minus reconditioning cost, transport and preparation, holding cost for the expected days to sell, and target gross margin. Condition enters that formula twice, and the second entry is the one most tools miss.\n\n1. **Reconditioning cost** comes straight from Gauge's recon estimate.\n2. **Reconditioning time** extends days to sell. Every day in the workshop is a day of holding cost before the car can earn anything. [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) puts Axleby's illustrative holding cost at about **€8.8 per car-day**. A car that needs a body-shop slot with a six-day queue carries about €53 more cost than one that needs only cleaning, before any advert is live.\n\nThe formula also creates a **double-counting trap**. A retail value assumes a retail-ready car. If the valuation applies a condition adjustment for a dent and the MPP also subtracts the cost of fixing that dent, the dealer pays for the dent twice and underbids. Gauge prevents it by tagging each confirmed finding as **reconditionable** (the dealer will fix it and the recon estimate prices it) or **residual** (it will remain after reconditioning and affects retail value: a respray that a buyer's paint gauge will find, an accident history, a structural repair). When Lotwise Appraise asks Vantage for a value to compute an MPP, it passes the recon estimate id, and Vantage applies condition lines only for residual findings. When a caller has no recon estimate, such as an API client valuing an as-is car, Vantage applies the full grade-based condition line and says so in the answer.\n\n### Recon cost and time in the stock record\n\nOnce the car is bought, the estimate becomes a set of **recon lines** on the stock item, each with an estimate, an approval, and later an actual from the workshop or the DMS repair order ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), [Living With the DMS: Dealer Management System Integration](dms-integration.html)). Gauge keeps the link from each recon line to the finding it fixes. That link makes three things computable:\n\n- **Recon variance** per line, per finding type, per rooftop and per segment: actual minus estimate.\n- **Rate-card calibration**: when PDR on doors runs 30% over the card at a rooftop for a quarter, the card is wrong, not the inspector.\n- **Finding closure**: a repair order closed against a finding moves it to \"superseded by repair\", so the dossier and any later trade report show both the damage and its repair.\n\n![Confirmed findings split into reconditionable (recon estimate) and residual (condition line); both feed the maximum purchase price, and approved recon lines produce actuals and variance that calibrate the recon estimate.](assets/images/13-condition-and-damage/13-two-paths-into-mpp.jpeg)\n**Figure 4:** *Condition enters the buying decision through two separate paths: reconditionable findings through the recon estimate, residual findings through the valuation. Actual costs return to calibrate the rate card, closing the loop that makes estimates honest.*\n\n### Condition reports for trade and remarketing\n\nOn a B2B exchange the buyer usually cannot see the car before bidding; the condition report is the product description. The design follows from the claims Fleetmoor saw:\n\n- **The report shows findings with photos, not only a grade.** A trader bids on the photos of the damage he will repair.\n- **Tires, paint readings and warning lights are mandatory sections.** These were 61% of Fleetmoor's Q1 claims between them; a report that omits a section must say \"not inspected\", never leave it blank.\n- **The report names its rubric and its inspection date.** A buyer claim is judged against what was disclosed then, under the rubric then.\n- **Claims attach to findings.** A claim says \"this finding was missing\" or \"this finding was understated\", with the buyer's own photos as observations. The claims workflow, deadlines and settlement belong to [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html); Gauge supplies the evidence and records the outcome against the finding.\n\n## In Practice\n\n### What public sources show\n\n- **Manheim, US (2014).** AutoGrade computed a standardized grade from damage data submitted by auctions; ADESA's Paul Lips said it would \"calculate a consistent objective grade the same way, every time\" ([Manheim, 2014](https://press.manheim.com/2014-01-17-Aasc-Announces-Standardized-Vehicle-Condition-Grading-Technology)). What has lasted is the separation of damage data from the grade computed from it.\n- **Cox Automotive and UVeye, US (January 2026).** Drive-through scanning integrated into vAuto's appraisal, pricing and inventory tools for service-lane acquisition, with the release citing 125 users and more than 850 vehicles acquired in the first wave ([Cox Automotive, 2026](https://www.coxautoinc.com/press-releases/cox-automotives-vauto-and-uveye-bring-ai-powered-vehicle-inspections-to-market/)). Condition capture moved to where trade-ins arrive.\n- **DAT, Germany and Austria (2026).** FastTrackAI detection feeds an initial damage calculation inside DAT's existing software and weDAT ([DAT](https://www.dat.de/ai-bundle-en/)). In the German-speaking markets, damage AI is entering through the estimating system dealers and assessors already use, not as a separate tool.\n- **CarMax and Carvana, US (2026).** CarMax inspects \"the engine and all major systems\" and uses stand-alone reconditioning centers ([CarMax 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm)); Carvana's inspection covers \"controls, features, brakes, tires, and cosmetics\" ([Carvana 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm)). The largest retailers treat inspection and reconditioning as an industrial process with its own sites.\n\n> **INFERENCE, NOT DOCUMENTED:** None of these companies describes its internal data model for condition. The evidence-findings-views model in this chapter is a reference architecture; it is consistent with what Manheim's 2014 grading service and Tractable's per-estimate certainty scores imply, but no source shows that any of them is built this way.\n\n### Axleby: the Peugeot 308, recomputed\n\nWhen Gauge went live at Fleetmoor's Utrecht return center, the team re-inspected a sample of returns twice: once the old way and once with Inspect. A car very like Bas's Peugeot showed what changes. The table lists the confirmed findings for a 2023 Peugeot 308 SW at 92,400 km and the four views Gauge derived from them. All prices are Axleby illustrations.\n\n| Confirmed finding | Lessee charge (Fleetmoor return standard v3) | Damage estimate (licensed catalog) | Recon estimate (Zwolle dealer rate card) | Tag |\n| --- | --- | --- | --- | --- |\n| Front left door, dent 30 mm, paint intact | €165 | €640 (repair and repaint) | €140 (PDR) | Reconditionable |\n| Front right rim, curbed | €95 | €180 | €110 | Reconditionable |\n| Rear bumper, scratches within standard | €0 (wear) | €420 | €160 (small-area repair) | Reconditionable |\n| Windshield chip, 6 mm, outside driver's view | €0 (wear) | €690 (replacement) | €60 (resin repair) | Reconditionable |\n| Two tires at 2.3 mm | €0 (above return minimum of 2.0 mm) | n/a | €240 | Reconditionable |\n| Left rear quarter panel, paint reading about 2.5× its neighbors | Referred: previous repair, no damage report on file | n/a | €0 (repair looks sound) | **Residual** |\n| Service due, cleaning, preparation | n/a | n/a | €580 | n/a |\n| **Total** | **€260** | **€1,930** | **€1,290** | |\n\nFour things changed compared with February.\n\n- **The respray became a finding with evidence.** The coating-gauge readings and close-ups were observations, captured and hashed at return. Fleetmoor's contract required lessees to report repairs, so the finding went to a reviewer, who raised it with the lessee; and the trade report disclosed it, so no buyer could claim it later. Vantage applied a residual condition line of −€350 *(Axleby illustration)* to the retail value, because a buyer's own paint gauge will find it.\n- **The tires were measured, not described.** 2.3 mm is inside Fleetmoor's return standard, so the lessee owes nothing, and outside most dealers' retail standard, so the recon estimate includes two tires. Both are true; the old report could say only \"tires OK\".\n- **The insurer-grade estimate stayed out of the buying decision.** At €1,930 it would have underbid the car by about €640 against the dealer's own rate card. It remained available for a disputed lessee charge, where repair to pre-damage condition is the right basis.\n- **The dealer's €1,290 matched the estimate.** The Zwolle dealer's February surprise was the €680 gap between his €610 guess and his €1,290 bill. With the findings disclosed and priced at his own rate card, the estimate he bid on was the bill he paid.\n\n![One car with marked damage splits into two paths: a body shop priced at €1,930 as the repair estimate and a dealer workshop priced at €1,290 as the recon cost.](assets/images/13-condition-and-damage/13-two-prices-one-car.jpeg)\n**Figure 5:** *The same confirmed findings on the Peugeot 308 priced two ways: €1,930 to restore it to pre-damage condition, €1,290 for the Zwolle dealer to make it sellable.*\n\n### Axleby: what the pilot changed\n\nBy the fourth quarter of 2027 both return centers used Inspect and Gauge, Tradefloor issued its condition reports from Gauge, and Handback ran as a prototype on about 200 Dutch returns. The comparison below is Axleby illustration.\n\n| Fleetmoor | Q1 2027 | Q4 2027 |\n| --- | --- | --- |\n| Returns inspected | 3,520 | 3,410 |\n| Charges contested (share of charged) | 21% | 9% |\n| Contested charges waived for lack of evidence | €121,000 | €34,000 |\n| Tradefloor buyer claims (share of sold) | 11.7% | 4.3% |\n| Machine detections per car not recorded by the inspector | n/a | 1.4, of which 23% confirmed on review |\n\nThe last row is the honest one. Most machine detections that the inspector had not recorded were reflections, dirt or duplicates; about a quarter were real, mostly small scratches on lower panels and roof edges. **The model did not replace the inspector; it made the inspector's misses visible and measurable**, and its rejection rate by damage type became the input for the next vendor review.\n\nOn the dealer side, Lotwise rooftops on the rebuilt Appraise that record recon actuals saw their mean variance fall from **+€310** in Q2 2027 to **+€95** in Q4 *(Axleby illustration)*, once Inspect findings replaced free-text appraisal notes and rate cards were recalibrated each quarter. The remaining variance sat mostly in mechanical work an exterior inspection cannot see. The 2028 pilot's further targets, such as return-to-sale time, belong to [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html).\n\n## Evidence, Retention and Disputes\n\nCondition data is contested more than any other vehicle fact, because money changes hands on it between parties with opposite interests. Design every record for the day it is disputed.\n\n**What makes a finding defensible.** A finding holds up when the platform can show: the photo or measurement it rests on; when it was captured (device and server timestamps); where and by whom; that the observation has not changed since (the hash); which version of which rubric turned it into a charge or a grade; and who confirmed it. Each item answers a specific objection a lessee or a buyer will raise. Fleetmoor's Q1 waiver of €121,000 was the price of missing those answers.\n\n**Reports are immutable and versioned.** A condition report, once issued to a buyer or a lessee, is never edited. A corrected finding issues a new report version that names the one it supersedes, and Gauge notifies every consumer that referenced the old version. This is the same discipline [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) applies to history reports, and it is what stops a corrected finding from becoming **The Sticky Error**.\n\n**Disputes are workflows on findings.** A lessee contesting a charge or a buyer filing a claim attaches to specific findings and can add their own observations. The decision, the decider and the reason are recorded on the finding. Disputes that overturn findings feed the same quality metrics as rejected machine detections.\n\n**Tax evidence in the Netherlands.** An importer reducing the Dutch registration tax on cars and motorcycles (*belasting van personenauto's en motorrijwielen*, BPM) for a used import may use a valuation report (*taxatierapport*) only for vehicles with more than normal damage or not in a price list. The report must come from an independent recognized appraiser after a thorough physical inspection, and must date from within one month before the Dutch register's inspection. In July 2026 the tax authority announced extra checks, because published case law showed that importers often claimed non-existent or exaggerated damage, and it may require the car to be presented ([SRA, 2026](https://www.sra.nl/nieuws/004501/2026/07/extra-controles-bpm-aangiftes); author's translation from Dutch). For a platform whose inspections may support such a report, that means damage evidence with the appraiser's identity and the inspection date, retained for the tax authority's review period. Axleby Trade's BPM engine owns the calculation ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)).\n\n## Failure Handling\n\n| Failure | Detection | Recovery |\n| --- | --- | --- |\n| **Duplicate uploads** (app retries after a dropped connection) | Idempotency key per observation plus content hash | Second copy acknowledged and discarded; one observation |\n| **Duplicate findings** (inspector and model record the same dent; two close-ups tagged twice) | Same panel, zone and type within one inspection | Merged into one finding with both sources linked; the reviewer sees the merge |\n| **Conflicting inspections** (return report says tires 3.1 mm; buyer measures 2.3 mm a week later) | A new inspection's findings differ from the last issued report on the same AVK | Both kept with dates and inspectors; the dispute workflow decides; neither overwrites the other |\n| **Incomplete inspection** (mandatory shots missing, no paint readings) | Shot-list and section checks before completion | Inspection cannot complete; if issued anyway by override, the report says \"not inspected\" per missing section and the grade is withheld |\n| **Wrong vehicle** (photos taken of the neighboring car) | Vehicle identification number (VIN) plate photo or scan mismatch with the inspection's AVK; scanner plate reading | Inspection quarantined; findings not issued until the VIN is confirmed ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) |\n| **Detection provider outage or timeout** | Gateway timeouts and error rates | Inspection proceeds on inspector findings; detection queued and run later; the report never waits for the model |\n| **Detection model update shifts rates** | Detection and confirmation rates per model version and damage type | Pin the version per inspection; review a new version on a shadow sample before switching |\n| **Partial upload** (inspection marked done on the phone, half the originals missing on the server) | Server-side completeness check against the device manifest | Inspection stays \"uploading\"; the inspector is alerted while the car is still on site |\n| **Catalog or rate card changes mid-dispute** | Version recorded on every estimate | Disputes are settled on the version in force at issue; recompute only for new reports |\n| **Recon actual never arrives** (repair done outside the DMS) | Recon lines open after the car is sold | Excluded from variance metrics rather than counted as zero; the rooftop sees the gap |\n\nTwo rules carry across the table. **The car moves on, so capture must finish while it is there**: every check that can fail should fail on the phone, not in the back office a day later. And **no view without confirmed evidence**: a grade, a charge or an estimate computed from unconfirmed or missing findings is withheld or flagged, never presented as if it were complete.\n\n## Trade-Offs\n\n**Who captures, and how.**\n\n| Approach | Strengths | Weaknesses | Right when |\n| --- | --- | --- | --- |\n| **Inspector with free-form app or paper** | Cheap to start; flexible | Not comparable across inspectors; weak evidence; grades are opinions | Low volume, no disputes, no trade use |\n| **Guided capture on a phone** (fixed shot list, panel map, measurements) | Comparable; defensible; works anywhere, offline | Needs training and discipline; longer than a glance | Appraisals, stock-ins, lease returns, trade listings: the default |\n| **Drive-through scanner** | Seconds per car; consistent images; underbody and tires | Fixed sites; capital cost; no interior or mechanical | High-volume return centers, auctions, large service lanes |\n| **Self-inspection by driver or seller** | No inspector cost; early warning | Self-interested evidence; poor capture | Pre-return estimates and consumer trade-in offers, always followed by a verified inspection before money changes hands |\n\n**How damage is priced.**\n\n| Approach | Strengths | Weaknesses | Right when |\n| --- | --- | --- | --- |\n| **Licensed repair-cost catalog** (manufacturer parts and labor) | Accepted by insurers, assessors and courts; precise per operation | Per-call cost; overstates retail recon for cosmetic damage | Lessee charges, insurance, tax evidence |\n| **Dealer rate card per finding type** | Reflects actual methods and prices; cheap | Only as good as its calibration; differs by dealer | Recon estimates in buying decisions |\n| **Model trained on recon actuals** | Learns hidden costs per segment | Needs linked findings and actuals at volume; drifts with labor prices | A group with years of linked recon data |\n| **Flat allowance by age and segment** | Trivial | Wrong for every individual car | No inspection available; must be labeled as such |\n\nMy recommendation for a group like Axleby is guided capture as the default, scanners where a site sees hundreds of cars a week, the licensed catalog only where the decision needs a repair-to-pre-damage price, and dealer rate cards calibrated quarterly against linked actuals for buying decisions. That recommendation assumes the platform can link recon actuals to findings for most rooftops; where the DMS keeps repair orders out of reach, the rate card cannot be calibrated and the estimate should carry a wider range.\n\n## Across Markets: What Changes by Country\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| Return and condition standards | Lessor-specific return standards; no industry-wide public standard verified for this chapter | Lessor contracts with independent expert assessment commonly used at lease end *(industry practice; not verified here)* | BVRLA Fair Wear and Tear standard for lease returns, sold to members | Auction grading on the NAAA 0–5 scale; lessor grounding inspections |\n| Damage estimating ecosystem | Insurer and assessor estimating systems with manufacturer data | DAT and Audatex estimating dominant among assessors and workshops; DAT FastTrackAI from September 2026 | Insurer estimating systems; auction grading on NAMA 1–5 (1 best) | Insurer estimating; auction condition reports; service-lane scanners (UVeye with vAuto, 2026) |\n| Official inspection evidence | NL: defects found at periodic inspection (*Algemene Periodieke Keuring*, APK) published per plate in the open data of the Dutch vehicle authority RDW ([RDW, queried 2026-10-22](https://opendata.rdw.nl/resource/a34c-vvps.json)); BE: Car-Pass shows post-accident inspection data ([Car-Pass, n.d.](https://www.car-pass.be/en)) | Periodic inspection results not public per vehicle *(not verified here)* | MOT (Ministry of Transport test) history shows \"what parts failed at each test, and if any parts had minor problems\" ([GOV.UK, n.d.](https://www.gov.uk/check-mot-history)) | State inspection regimes vary; no national per-vehicle record used here |\n| Regulatory use of condition | NL: damage valuation report as BPM evidence for imports, with extra checks announced July 2026 | Expert reports (*Gutachten*) in insurance and disputes *(practice)* | Auto Trader shows price labels only on dealer adverts because dealer cars are protected by the Consumer Rights Act and assumed retail standard ([Auto Trader, 2025](https://help.autotrader.co.uk/hc/en-gb/articles/28407654789533)) | Arbitration rules at auctions *(practice)* |\n| Units | mm, µm, km | mm, µm, km | mm, µm, miles | inches and 32nds for tread, miles |\n\n**What stays common:** the evidence-findings-views model, the finding lifecycle, guided capture with metadata and hashes, the separation of repair estimate and recon cost, immutable versioned reports, and dispute workflows on findings.\n\n**What becomes a rule set:** the return standard and trade grade (BVRLA-based rubrics in the UK, lessor rubrics in the Benelux, NAAA or NAMA scales for auction partners), tread and other units, the official inspection sources a report may cite, and retention rules tied to tax evidence. **What becomes an adapter:** the repair-cost catalog per market, scanner vendors per site, and the detection provider. A UK lessor's return standard should be a new rubric version in Gauge, not a Showroomly fork.\n\n## The Chief Architect's View\n\n**Decide that condition is a platform capability, not a feature of each product.** Before Gauge, Axleby had condition in four places: the Fleetmoor contractor's app, Tradefloor's report form, Lotwise Appraise notes and DriveDesk repair orders. One Dossier makes Gauge the system of record for inspections and every product a consumer of its reports. Tomás Ferreira's Lotwise team owns Gauge; Priya Raman's valuation team owns the residual condition lines in Vantage; Daan Visser owns the trade-report rubric with Tradefloor's buyers.\n\n**Own the rubric content as a governed asset.** Return standards, trade grades and rate cards change prices for lessees, buyers and dealers. Version them, effective-date them, require approval for changes, and keep them out of code: the tenant-level settings belong in the configuration service ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)). A lessor that wants a stricter tire threshold gets a new rubric version, not a code path.\n\n**Decide the evidence policy before the first dispute.** Which observations are mandatory per purpose, how long originals are kept per purpose, who may see unblurred images, and what a lessee or buyer may request. Femke de Boer, Axleby's Data Protection Officer, signs off the blurring and retention rules; the trade and lease product owners sign off the dispute windows.\n\n**Buy detection, own the ground truth.** Damage detection is a fast-moving vendor market; switching providers should be an adapter change. What Axleby must own is the confirmed-findings dataset that measures any provider, and the right to use its customers' images for that measurement, which is a contract question ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html)).\n\n**Watch these over the long term:** dispute and claim rates per purpose and per inspector; detection confirmation rates by model version and damage type; recon variance by rooftop and segment; the share of stock items with recon actuals linked to findings; inspection completion while the car is on site; and the share of valuations that used a recon estimate rather than a default. If the actuals-linked share falls, the rate cards stop learning and the MPP becomes a confident guess again.\n\n## Questions to Ask\n\n1. Can you show, for any issued condition report, the original photos and measurements behind each finding, with capture time, inspector, device and an unchanged hash?\n2. Are grades, charges and estimates computed from findings by versioned rules, or typed in by the inspector? Could you regrade last year's returns under a new rubric?\n3. Do machine detections have their own state, model version and confidence, and do you measure confirmation and rejection rates on your own reviewed findings?\n4. Which decisions use an insurer-grade repair estimate and which use a reconditioning estimate, and is that written down?\n5. Does your maximum purchase price subtract reconditioning cost and holding cost for reconditioning time, and how do you prevent condition being deducted twice?\n6. What share of your stock items have recon actuals linked to the findings they repaired, and what is the variance by rooftop and segment?\n7. When a condition report is corrected, which consumers learn about it: the valuation ledger, the trade listing, the buyer's dossier, the history summary?\n8. Which faces and plates are blurred in which views, how long are originals kept per purpose, and who decided?\n9. If the detection provider is down for a day, do inspections, reports and appraisals continue?\n\nThe condition question that dominates the value of a used electric car is one no walk-around photo can answer: how much capacity the battery has left. [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html) takes up state of health, how it is measured and certified, and how a platform should store and use it.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Cox Automotive's vAuto and UVeye bring AI-powered vehicle inspections to market](https://www.coxautoinc.com/press-releases/cox-automotives-vauto-and-uveye-bring-ai-powered-vehicle-inspections-to-market/) — Cox Automotive, 2026 — drive-through scanning integrated into vAuto appraisal, pricing and inventory; first-wave figures.\n- [AASC announces standardized vehicle condition grading technology](https://press.manheim.com/2014-01-17-Aasc-Announces-Standardized-Vehicle-Condition-Grading-Technology) — Manheim, 2014 — AutoGrade offered to NAAA member auctions; grade computed from damage data (evidence over ten years old).\n- [Tractable](https://tractable.ai/) — Tractable, n.d., accessed 2026-10 — image-based damage assessment with certainty scores per estimate.\n- [AI Bundle: FastTrackAI](https://www.dat.de/ai-bundle-en/) — Deutsche Automobil Treuhand (DAT), n.d., accessed 2026-10 — photo-based damage detection with component, type and severity, from 1 September 2026.\n- [weDAT](https://www.datgroup.com/de-at/produkte/wedat/) — DAT Austria, n.d., accessed 2026-10 — browser platform combining VIN lookup, repair-cost calculation on manufacturer data, valuation, and automatic plate anonymization in inspection images.\n- [Qapter](https://www.qapter.com/) — Solera, n.d., accessed 2026-10 — AI damage detection and photo-based estimating for insurers and repairers.\n- [ProovStation](https://proovstation.com/) — ProovStation, n.d., accessed 2026-10 — drive-through scanning, comparison with previous scans, face blurring.\n- [UVeye](https://uveye.com/) — UVeye, n.d., accessed 2026-10 — automated inspections for dealers, auctions, rental and fleets (vendor claims).\n- [CarMax, Inc. Form 10-K for fiscal 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm) — CarMax, 2026 — inspection of major systems; stand-alone reconditioning centers.\n- [Carvana Co. Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm) — Carvana, 2026 — inspection scope; inventory starts at the reconditioning site.\n- [Auto Trader help article on price indicators and private adverts](https://help.autotrader.co.uk/hc/en-gb/articles/28407654789533) — Auto Trader UK, 2025 — dealer cars assumed retail standard under the Consumer Rights Act.\n- [Car-Pass](https://www.car-pass.be/en) — Car-Pass, n.d., accessed 2026-10 — Belgian odometer history and post-accident inspection data.\n- [How recon estimates hurt your appraisal success](https://www.vauto.com/resources/how-recon-estimates-hurt-your-appraisal-success/) — vAuto, n.d. — average $600 variance between recon estimates and actual cost (vendor content).\n\n*Standards, regulation and official documentation*\n\n- [BVRLA Fair Wear and Tear guides](https://www.bvrla.co.uk/home/support/products-and-services/bvrla-fair-wear-tear-guides) — British Vehicle Rental and Leasing Association, n.d., accessed 2026-10 — industry return standard; wear versus damage.\n- [Returning your leased vehicle](https://www.bvrla.co.uk/home/consumer-advice/returning-your-leased-vehicle) — BVRLA, n.d., accessed 2026-10 — return inspection, charges, capture advice.\n- [Council Directive 89/459/EEC on the tread depth of tyres](http://publications.europa.eu/resource/celex/31989L0459) — Council of the European Communities, 1989 — 1.6 mm minimum in the main grooves.\n- [Check the MOT history of a vehicle](https://www.gov.uk/check-mot-history) — GOV.UK, n.d., accessed 2026-10 — failed parts and minor problems per test.\n- [Open Data RDW: Geconstateerde Gebreken](https://opendata.rdw.nl/resource/a34c-vvps.json) — RDW, queried 2026-10-22 — defects found at inspection, per plate, with defect code and date.\n- [Extra controles bpm-aangiftes](https://www.sra.nl/nieuws/004501/2026/07/extra-controles-bpm-aangiftes) — SRA, 2026 — conditions for BPM valuation reports and the announced extra checks on claimed damage.\n\n*Research and practitioner sources*\n\n- [CarDD: A New Dataset for Vision-based Car Damage Detection](https://arxiv.org/abs/2211.00945) — Wang et al., 2022 (IEEE T-ITS 2023) — size of public damage-detection datasets.\n- [Cap releases used car condition benchmarking criteria for trade valuations](https://www.fleetnews.co.uk/news/2011/8/8/cap-releases-used-car-condition-benchmarking-criteria-for-trade-valuations/40309) — Fleet News, 2011 — points-based Clean/Average/Below grading (evidence over ten years old).\n- [Introduction to Current Valuations](https://help.autotrader.co.uk/hc/en-gb/articles/21923133513117-Introduction-to-Current-Valuations) — Auto Trader UK, 2024, updated 2026 — five-level condition enum in the Valuations API.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Many Sources to One Record: Ingestion, Normalization and Entity Resolution</title>
+    <meta name="description" content="How should data enter a vehicle platform, be validated and reconciled, and become one record per vehicle? Pick batch or event-driven ingestion per source from stated freshness, volume, cost and replay requirements; land everything raw and immutable; quarantine instead of dropping or passing; resolve vehicles deterministically by VIN before matching probabilistically; and compute the golden record as a rebuildable view under explicit survivorship rules.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="From Many Sources to One Record: Ingestion, Normalization and Entity Resolution">
+    <meta property="og:description" content="How should data enter a vehicle platform, be validated and reconciled, and become one record per vehicle? Pick batch or event-driven ingestion per source from stated freshness, volume, cost and replay requirements; land everything raw and immutable; quarantine instead of dropping or passing; resolve vehicles deterministically by VIN before matching probabilistically; and compute the golden record as a rebuildable view under explicit survivorship rules.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/ingestion-and-entity-resolution.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/09-ingestion-and-entity-resolution/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="vehicle-history.html" title="What Happened to This Car: Damage, Odometer, Title and Service History">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="provenance-and-data-quality.html" title="Where Did This Fact Come From? Provenance, Freshness and Data Quality">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — VEHICLE: Identity, Specification and History</p>
+        <h1>From Many Sources to One Record: Ingestion, Normalization and Entity Resolution</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  37 min read · <a class="spec-link" href="ingestion-and-entity-resolution.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/09-ingestion-and-entity-resolution/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/09-ingestion-and-entity-resolution/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="vehicle-history.html" title="What Happened to This Car: Damage, Odometer, Title and Service History">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="provenance-and-data-quality.html" title="Where Did This Fact Come From? Provenance, Freshness and Data Quality">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "From Many Sources to One Record: Ingestion, Normalization and Entity Resolution", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How should data enter a vehicle platform, be validated and reconciled, and become one record per vehicle? Pick batch or event-driven ingestion per source from stated freshness, volume, cost and replay requirements; land everything raw and immutable; quarantine instead of dropping or passing; resolve vehicles deterministically by VIN before matching probabilistically; and compute the golden record as a rebuildable view under explicit survivorship rules.", "permalink": "ingestion-and-entity-resolution", "timetoread": "37 min read", "icon": "assets/icons/09-ingestion-and-entity-resolution.png", "logo": "assets/images/09-ingestion-and-entity-resolution/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow vehicle data from a register change, a supplier file, a harvested advert or a dealer's stock entry to one resolved record per vehicle. You will compare batch and event-driven ingestion against explicit requirements, and see how landing, quarantine, normalization, entity resolution and survivorship rules fit together.\n\n> **WHY THE BUSINESS CARES:** A valuation, a history report and an advert are only as right as the record beneath them. One supplier batch with the wrong unit can reach thousands of valuations and adverts before anyone notices; the cost of that correction falls on the dealer's trust and on the data client's contract.\n\n> **WHY ARCHITECTS SHOULD CARE:** Ingestion decides three things that are expensive to change later: which identifier every record is keyed by, whether a bad load can be replayed or only patched, and whether the \"current\" value of a fact is computed from evidence or simply the last thing written.\n\n> **KEY POINTS:**\n>\n> * **Choose the ingestion mode per source, from requirements.** Freshness, volume, cost and replay decide it, not architectural fashion. A product cannot be fresher than its source, most vehicle-data suppliers publish batches, and streaming a nightly file buys nothing. Stream what changes inside the platform, take batches as batches, and turn every accepted record into the same change event at the landing boundary.\n> * **Land raw, validate at the door, and quarantine instead of dropping or passing.** An immutable landing zone with batch manifests makes every load idempotent and every correction a replay. Contracts that check plausibility (units, jumps, volumes), not only schema, stop a wrong batch at the gate instead of in a dealer's advert.\n> * **The golden record is a view, not a table you overwrite.** Keep every source's record and every match decision, resolve vehicles by VIN first and probabilistically only where the VIN is missing, and compute the current value of each attribute with explicit, versioned survivorship rules that can be re-run when a rule or a source changes.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Sticky Error** — a load that overwrites the current value in place leaves nothing to replay, so a wrong batch can only be patched, and the patch never reaches every copy.\n> * **The Cloned Identity** — records matched by plate instead of VIN or plate-at-date fuse two cars or split one, and every downstream report inherits the merge.\n> * **Provenance Amnesia** — rows landed without batch, source record id and observation date cannot be traced, held or reversed when a source turns out to be wrong.\n\n<br>\nA vehicle platform does not own most of the facts it sells. The register says when a car was first registered; a workshop aggregator says what its odometer showed in March; an insurer says it was damaged; a portal says it was advertised and then removed; a dealer says it has a panoramic roof. Each source names the car its own way, publishes on its own schedule and is wrong in its own way.\n\n**Ingestion** is how those facts enter the platform; **entity resolution** is how the platform decides which physical car each fact is about; **survivorship** is how it decides, attribute by attribute, which fact to believe. Together they turn many partial, late and sometimes contradictory records into one record per vehicle that valuations, history reports, adverts and API clients can read.\n\nThis chapter owns the **ingestion pipeline**, **quarantine**, the **survivorship rule** and the **golden record**. It builds on [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), which owns the VIN, the plate assignment and the identity graph, and on [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html), which owns the history event. It hands the provenance envelope, freshness service level objectives (SLOs) and data contracts to [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html), and the full correction workflow to [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html).\n\n## Setting the Scene at Axleby: The File That Arrived on Time\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), held its post-incident review of **the Odometer Correction** in June 2027. In May, a nightly batch from **Kilometra**, a fictional odometer and service-record supplier, had recorded miles as kilometers for **2,870** UK-imported vehicles. The batch was corrected **11 days** later. By then **6,140** valuations, **412** history reports (**96** of them to consumers) and **1,180** live adverts carried the wrong mileage. [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) follows that error outward through every product; this chapter takes the other direction and asks how it got in.\n\nThe facts on the table were plain. Kilometra's file arrives at about 02:10 Central European Time (CET) every night with about **410,000** readings, of which about **34,000** concern UK-imported vehicles. Tracewell, Axleby's history event store, loaded it in about 40 minutes. Its loader checked the file's schema, which was correct: the `reading_value` column held integers and the `unit` column held `km`. It then upserted each reading into a per-vehicle table and set the vehicle's current odometer to **the newest reading by date**. Vantage, the valuation engine, read that current value in the 03:00 restock run. No step compared a reading with the vehicle's earlier readings. No step kept the file as received.\n\nIn the same week, Axleby's register mutation feed, the Dutch registration, inspection and status changes that Turnstile, the register gateway, derives each morning by diffing the register's daily open-data snapshots ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)), had carried about **95,000** change events a working day, ordered per plate, gap-checked and without error. Hendrik Maes, Head of Partner Integrations, proposed the obvious remedy: buy a push event feed from Kilometra, quoted at **€95,000 a year**, and treat it like the register feed.\n\nPriya Raman, VP Data and Valuation, asked the question that turned the review: **was the file late?** It had arrived on time every night for three years. The error was in what the platform did with what arrived: it trusted the schema, overwrote, and threw the evidence away. A push feed would have delivered the same wrong unit faster, with no file to hold.\n\n![Left: an on-time file overwrites the current odometer and is thrown away. Right: the file is kept in a vault, records are stacked, the current value is computed, and the vault can be replayed.](assets/images/09-ingestion-and-entity-resolution/09-overwrite-versus-land-raw.jpeg)\n**Figure 1:** *The Kilometra file arrived on time; the damage came from overwriting the current value and discarding the file, which left nothing to hold or replay.*\n\nInes Marchetti, Group Chief Architect, wrote the question for the architecture forum: **how should data enter the platform, be validated and reconciled, and become one record per vehicle, so that a wrong source is stopped at the door or, failing that, reversed by replay rather than patched by hand?** Her answer became **Inlet**, Axleby's shared ingestion pipeline, specified in July 2027 as part of the first year of the One Dossier program.\n\n## Six Ways Vehicle Data Arrives\n\nSources differ less in format than in **shape**: whether they publish snapshots or changes, whether they carry a VIN, and whether they can be asked again.\n\n| Source type | Axleby example | Arrival shape | Identifier carried | Typical trouble |\n| --- | --- | --- | --- | --- |\n| **Register mutation feed** | Dutch register changes that Turnstile derives from daily snapshots; UK MOT (annual roadworthiness test) daily deltas | Change events, ordered per plate, at the source's daily rhythm | Plate; registration dates | A missed or partial snapshot; changes between two snapshots are invisible |\n| **Register bulk data** | The Dutch register's open dataset of registered vehicles | Full dataset, refreshed by the publisher | Plate; no VIN | No guarantee of availability or currency; schema changes without notice |\n| **Partner files** | Kilometra readings; insurer damage files | Nightly or weekly files, full or delta | VIN usually; sometimes only a foreign plate | Semantic drift (units, codes), duplicates, truncated files |\n| **Partner APIs on demand** | Build data per VIN for Specbook (about **€0.46** a request); UK MOT history by plate or VIN | Request and response | VIN or plate in the request | Per-call cost, quotas, outages; license limits on caching |\n| **Adverts** | Pulse: about **2.3 million** harvested or portal-fed adverts a day | Daily snapshots or portal feeds | Often no VIN; plate sometimes masked | Duplicates across portals; dealer-typed specifications |\n| **Dealer and user input** | Lotwise stock-ins (**1.9 million** a year), DMS stock exports, dealer corrections, Odolo complaints | Interactive writes; periodic DMS files | Plate typed or scanned; VIN when the dealer has it | Typos; options claimed, not evidenced |\n\nConnected-vehicle data from manufacturers is a seventh shape, high-volume and consent-bound; [Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html) owns it. Market data harvesting and its legal limits belong to [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html); this chapter covers only how adverts are matched to vehicles.\n\nTwo properties of this table drive the rest of the chapter. First, **only sources queried by VIN reliably carry one**: build data always, supplier files usually. The Dutch open register dataset has no VIN column ([RDW open data, dataset metadata queried October 2026](https://opendata.rdw.nl/api/views/m9d7-ebf2.json)); the UK Driver and Vehicle Licensing Agency (DVLA) Vehicle Enquiry Service returns neither model nor VIN ([DVLA developer portal, n.d., accessed 2026-10](https://developer-portal.driver-vehicle-licensing.api.gov.uk/apis/vehicle-enquiry-service/vehicle-enquiry-service-description.html)); adverts often mask both. Entity resolution is the main path, not an edge case. Second, **most sources cannot be asked again**: a removed advert cannot be re-harvested, and a register feed reaches back only as far as the register allows. Anything the platform does not keep on arrival it cannot replay later.\n\n## The Words This Chapter Owns\n\n| Term | Definition used in this book |\n| --- | --- |\n| **Ingestion pipeline** | The path every external fact takes into the platform: receive, land raw, validate, normalize, resolve to a vehicle, store as a per-source record, and publish a change. One pipeline with per-source adapters, not one pipeline per product. |\n| **Landing zone** | Immutable storage of exactly what arrived (file, message or API response), with a batch or message id, a content hash, the arrival time and the source. Nothing downstream edits it. |\n| **Quarantine** | A holding area for records or whole batches that failed a contract check. Quarantined data is kept, visible, counted and releasable after a fix; it is neither dropped nor passed on. |\n| **Source record** | One source's statement about one vehicle at one time, normalized, linked to its landing batch and to the vehicle it was resolved to. |\n| **Entity resolution** | Deciding which real-world entity, here a physical vehicle identified by its Axleby Vehicle Key (AVK), a source record is about. Deterministic when a trustworthy key exists; probabilistic otherwise. |\n| **Match decision** | The stored outcome of resolution for one source record: the AVK, the rule or model and version that decided, the score, and who confirmed it if a human did. |\n| **Survivorship rule** | A per-attribute rule that chooses the current value from competing source records: precedence by source class, recency, plausibility and tie-breakers, with a version number. |\n| **Golden record** | The resolved current view of one vehicle: for each attribute, the surviving value plus a pointer to the source record it came from. A **view computed from source records**, rebuildable at any time, never the place where facts are written. |\n\nThe **VIN** (vehicle identification number, ISO 3779), the **plate assignment** and the **AVK** are owned by [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html); the **provenance envelope** (source, observed-at, ingested-at, license and confidence on every fact) by [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html). Inlet is where the envelope is filled in.\n\n## Batch or Event-Driven: Deciding From Requirements\n\n### Four ingestion modes\n\nBatch versus streaming hides two other modes a vehicle platform needs.\n\n- **Batch**: a bounded set of records (a file, a dataset snapshot) arrives and is processed as a unit, with a natural \"complete\" signal: the manifest says 410,212 rows, and 410,212 rows were read.\n- **Micro-batch**: small batches on a short schedule, typical of dealer management system (DMS) stock exports every 15 minutes that must be diffed against the previous snapshot to find what changed.\n- **Event-driven**: change events are pushed as they happen (a register change, a price edit, a lead). There is no natural end; completeness must be inferred from sequence numbers, watermarks or heartbeats.\n- **Request-time lookup**: the platform asks the source at the moment a decision needs the fact (build data for one VIN, a theft check before purchase). Freshness is perfect and cost is per call.\n\nThe question is **which mode each source and product requirement calls for**, and how to give downstream consumers one model regardless.\n\n### The comparison, against stated requirements\n\nThe table compares batch and event-driven ingestion on the requirements that decide the choice. The figures in it are **assumptions** for a platform of Axleby's size, not measurements.\n\n| Requirement | Batch (files, snapshots) | Event-driven (push stream) | What decides it |\n| --- | --- | --- | --- |\n| **Freshness** | Bounded by the schedule: a nightly file gives data 2–26 hours old *(assumption)* | Seconds to minutes after the source changes | The product's need **and the source's own freshness**: a stream over a source that updates nightly is still nightly |\n| **Volume** | Efficient for large, periodic volumes: 410,000 readings in one 40-minute load | Efficient for steady, small changes: Lotwise's 1.9 million stock-ins a year, plus their edits, arrive one at a time through the working day | Peak shape matters more than total: month-end peaks in register transactions, about 4× the daily average, raise change volume and need consumer headroom |\n| **Cost** | Low fixed cost: object storage plus a scheduled job; supplier files are often in the base license | Always-on consumers and broker capacity; suppliers may charge more (Kilometra's quote: €95,000 a year) | Marginal value of the freshness gained, per product |\n| **Replay** | Natural: keep the file and reload it. The unit of replay matches the unit of error | Possible only while the log retains the events, or if events are also archived to the landing zone | How long errors take to find: 11 days in the Odometer Correction, so replay must reach back weeks, not hours |\n| **Completeness check** | Easy: manifest row count, checksum, expected arrival time | Hard: gaps need sequence numbers per partition and periodic reconciliation against a snapshot | Whether the source can provide sequence numbers or snapshots |\n| **Ordering** | Within the file, by observation date; across files, by batch | Per key if partitioned by vehicle; across partitions, none | Whether consumers need per-vehicle order (yes, for odometer and status) |\n| **Blast radius of a bad source** | One batch, held as a unit | A trickle, already consumed by the time a pattern is visible | Whether plausibility checks need the whole set (unit drift is visible as a pattern, not in one record) |\n\nThree conclusions follow, and they are the ones Axleby's forum adopted.\n\n**First, freshness is bounded by the source.** Kilometra's garages upload readings during the day; a push feed would have moved their arrival a few hours earlier on average. No Axleby product needs an odometer reading within hours: valuations are recomputed nightly. The €95,000 bought nothing the products could use.\n\n**Second, batches are the better unit for catching semantic errors.** The miles-as-kilometers error was visible only as a pattern: 2,870 UK-imported vehicles whose new reading was lower than their previous one by a ratio close to 1.609. One reading at a time, each looked like a possible rollback; as a batch segment, the pattern was unmistakable. **Plausibility checks that compare distributions need a bounded set**; for streams that means windows, which reintroduce batch semantics.\n\n**Third, replay must be designed in, whatever the mode.** Axleby archives both kinds: files land as files, and stream events are also written to the landing zone in hourly segments, so any source can be replayed from Inlet's own storage.\n\nThe pattern that results is **batch at the edge, events inside**. Each source is ingested in the mode it naturally publishes in; once a record has passed validation and resolution, Inlet emits the same change event for it, keyed by AVK, whatever its arrival mode. Tracewell, Specbook, Vantage and Relay consume one change model. This is a version of what Jay Kreps called the Kappa architecture in 2014: rather than keeping a separate batch path and stream path in sync, which he found \"really, really hard\", reprocess by replaying the log through the same code ([O'Reilly Radar, 2014](https://www.oreilly.com/radar/questioning-the-lambda-architecture/)). The evidence is twelve years old, but the argument against two code paths has not aged.\n\n### Axleby's decision, source by source\n\nThe freshness targets below are Axleby's product requirements, stated as **assumptions** for this example.\n\n| Source | Product need | Natural shape | Inlet mode | Reason |\n| --- | --- | --- | --- | --- |\n| Dutch register changes | Status and ownership in Anchor within an hour of the daily snapshot's publication, for screening *(assumption)*; blocking facts asked live | Daily snapshot, diffed by Turnstile into change events | Event-driven consumption of Turnstile's mutation feed, with a periodic full reconciliation against the snapshot | The source publishes daily; Turnstile turns it into events once, and decisions that need current status ask the register live |\n| Theft and export status at purchase | Current at the moment of decision | Request and response | Request-time lookup, never cached for decisions | Cached \"not stolen\" is a liability, not a saving |\n| Kilometra readings | Next morning's valuations and reports | Nightly file | Batch, held as a unit until validated | Freshness bounded by source; replay and pattern checks favor files |\n| Insurer damage files | Within a week for reports *(assumption)* | Weekly delta files | Batch | Same reasoning; weekly is the source's cadence |\n| Build data | At the moment of appraisal or stock-in | Request and response, €0.46 a call | Request-time lookup, cached per license | Paying for build data on every VIN in Anchor would cost about €19 million (41 million × €0.46), for cars nobody asked about |\n| Adverts for Pulse | Daily market picture; sale detection within a day | Daily snapshots, some portal feeds | Batch per portal per day | Market analytics and valuation training run daily |\n| Lotwise stock-ins and edits | Seconds: they drive adverts and leads | Interactive writes | Event-driven via an outbox ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)) | The platform's own changes, needed downstream immediately |\n| DMS stock exports (DriveDesk) | 15 minutes for sold status *(assumption)* | Periodic snapshot files | Micro-batch with snapshot diffing | The DMS publishes snapshots; [Living With the DMS: Dealer Management System Integration](dms-integration.html) owns the adapter |\n\nRequest-time lookup is ingestion too: the response lands, is validated and resolved like any file, and becomes a source record.\n\n## Architecture: The Ingestion Pipeline\n\nInlet has six stages. Each has one job, writes its result before the next stage reads it, and can be re-run from the stage before.\n\n![Sources land raw in a landing zone, pass validation (failures go to quarantine and are released back), are normalized, resolved to an AVK and stored as source records, from which the golden record is computed and change events flow out.](assets/images/09-ingestion-and-entity-resolution/09-inlet-pipeline.jpeg)\n**Figure 2:** *Inlet's pipeline. Every source lands raw before anything else happens; validation can send a record or a whole batch to quarantine; resolution attaches each record to a vehicle; and the golden record is computed from per-source records, never written directly.*\n\n### Landing and raw retention\n\nEvery arrival lands first, unchanged: the Kilometra file as delivered, the register events in hourly segments, each build-data response, each advert snapshot. The landing record carries a **batch id**, a **content hash**, the **source**, the **arrival time** and, for files, the supplier's **manifest** (row count, period covered, file sequence number). Inlet's landing zone is object storage in AWS eu-central-1 with write-once retention.\n\nTwo rules make the landing zone useful rather than merely large. **Nothing downstream may read a source except through the landing zone**, so that a replay sees exactly what the first load saw. And **retention follows the license**, not the storage budget: Charter, Axleby's license and purpose register, holds the retention period per source, and the landing zone enforces it ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)). A raw zone that ignores licenses turns a replay capability into a compliance problem.\n\n### Contract validation and quarantine\n\nA **data contract** states what a source must deliver: schema, code lists, units, expected volume, arrival time and quality thresholds ([Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) owns the contract itself). Inlet checks four layers of it, because schema checks alone would have passed the Odometer Correction.\n\n| Layer | Example check | Scope | On failure |\n| --- | --- | --- | --- |\n| **Delivery** | Manifest row count matches rows read; file sequence has no gap; arrived before 04:00 | Batch | Hold the whole batch; alert the integration owner |\n| **Schema** | Columns, types, required fields, code lists (`unit` in {km, mi}) | Record | Quarantine the record |\n| **Semantics** | Reading not lower than the previous official reading; reading not above a plausible ceiling for the vehicle's age; VIN check-sum valid where the VIN format has one | Record, compared with history | Quarantine the record; flag as a rollback candidate only if the source is official |\n| **Distribution** | Median reading per age band and origin within 0.85–1.15 of the trailing 30 days (the Kilometra **batch gate**, [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)); share of records failing semantic checks per supplying workshop chain below a threshold; volume within the usual range | Batch segment | Hold the segment; release the rest |\n\nThe fourth layer is the one most pipelines lack. One reading lower than the last is a possible rollback and belongs in a history report; two thousand from one segment, all lower by the same ratio, are a supplier error. **Only a check that looks at the segment can tell the two apart.**\n\nPublic evidence for this practice comes mostly from behavioral data, not vehicle data, but the mechanism is the same. In June 2026, Auto Trader UK's engineering team described validating events against its schema registry and sending events that fail into a separate failed-events table, from which a PySpark pipeline recovers them, rather than dropping them ([Auto Trader Engineering, 2026](https://medium.com/autotrader-engineering/recovering-failed-snowplow-events-using-a-domain-modelled-pyspark-pipeline-752e52e90109)). AutoScout24 described its DataRunner pipeline framework in September 2023 as integrating Great Expectations for data checks and DataHub for metadata ([AutoScout24 tech blog, 2023](https://tech.autoscout24.com/blog/posts/datarunner/)). Neither covers vehicle data from external suppliers; applying the pattern there is my recommendation.\n\nA batch's state is visible to the integration team and to the supplier's account manager.\n\n![Batch states: Landed goes to Validating, then to Accepted, Held (whole batch, after a delivery failure, back to Validating on redelivery) or Partially held (one segment, then Accepted); a corrected batch supersedes an accepted one.](assets/images/09-ingestion-and-entity-resolution/09-batch-lifecycle.jpeg)\n**Figure 3:** *The life of a batch in Inlet. A delivery failure holds the whole batch; a distribution failure holds only the failing segment; a corrected redelivery supersedes the original rather than editing it.*\n\nQuarantine has costs. A held segment delays good data, so thresholds are tuned per source; a quarantine nobody reviews is a silent drop with extra steps, so every held record has an owner, an age and an alert; and release is a **replay through the same validation**, not a bypass.\n\n### Normalization\n\nNormalization turns each source's representation into the platform's, while keeping the original value beside it.\n\n- **Identifiers**: VINs to upper case, with spaces and separators removed. A VIN containing I, O or Q is invalid under the standard and is not \"corrected\" by guessing. Plates are normalized per country format, and the country is always stored with the plate.\n- **Units and quantities**: odometer to kilometers with the original value and unit kept; power to kilowatts; prices to amount, currency, and whether VAT is included.\n- **Codes and catalogs**: fuel, body, color and damage types map to Axleby's code lists; make, model and version strings map to Specbook's catalog ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)) where possible and stay unmapped, with a reason, where not.\n- **Time**: every record gets an **observation time** (when the fact was true or observed, as the source states it) separate from the **ingestion time**. A workshop reading taken on 3 March and delivered on 9 March is a 3 March fact. The bitemporal model in [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) depends on this split.\n\n**Normalization must never destroy information**: the Odometer Correction is exactly the case where someone later needs to know what the source actually said.\n\n### Entity resolution: which car is this?\n\nEvery source record must be attached to an AVK, or explicitly left unattached. Inlet resolves in tiers, cheapest and most certain first. The VIN, the plate assignment and the merge-and-split mechanics belong to [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html); LISTED's [One Property, Three Listings: Duplicates and Entity Resolution](../listing-systems-architecture/entity-resolution.html) treats the clustering and governance of listing matches in depth. This section covers what the pipeline does with them.\n\n| Tier | Rule | Typical source | Action |\n| --- | --- | --- | --- |\n| **1. Valid VIN** | Normalized VIN, structurally valid, found in Anchor | Build data, insurer files, most Kilometra records | Attach to the AVK; deterministic |\n| **2. New valid VIN** | Valid VIN not yet in Anchor | Imports, new registrations | Create a vehicle in Anchor, attach |\n| **3. Plate at date** | Plate plus country, resolved through the plate assignment valid **at the observation time** | Register events, UK-import records with only a UK plate, dealer stock-ins without VIN | Attach if exactly one assignment matches and make agrees |\n| **4. Probabilistic** | Score over make, model, first-registration month, fuel, power, color, mileage band, seller location | Adverts, dealer-typed records | Auto-attach above the upper threshold; review queue between thresholds; leave unattached below |\n| **5. Unresolved** | No tier succeeds | Masked adverts, malformed records | Keep as an unattached source record; retry when Anchor changes |\n\nTier 3 carries the lesson of **the Cloned Plate** in 2026, when Tracewell merged a clone's damage events into the genuine car's history ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) tells the story). A plate identifies a registration, not a car, and only for a period. Resolving by \"the vehicle that has this plate now\" attaches a 2019 workshop reading to whichever car carries the plate in 2027. **Resolving by plate at the observation date** attaches it to the car that carried the plate when the reading was taken, and refuses when two vehicles claim the same plate in overlapping periods.\n\nTier 4 is where probabilistic record linkage belongs. The theory is Fellegi and Sunter's 1969 model ([*Journal of the American Statistical Association*, 1969](https://doi.org/10.1080/01621459.1969.10501049)). For each compared field, it estimates how likely agreement is among true matches and among non-matches. It then adds up the evidence into a match weight and sets two thresholds that divide links, possible links for review, and non-links. Splink, an open-source Python implementation from the UK Ministry of Justice, applies the model at scale without labeled training data. Its documentation describes linking a million records on a laptop in about a minute and Spark back ends for more than 100 million records ([Splink documentation, n.d., accessed 2026-10](https://moj-analytical-services.github.io/splink/index.html); Linacre et al., [*International Journal of Population Data Science*, 2022](https://doi.org/10.23889/ijpds.v7i3.1794)).\n\nTwo vehicle-specific choices make the model work. **Blocking**, the cheap filter that limits which pairs are compared at all, should use attributes that are rarely wrong and always present: make plus first-registration year plus fuel type is a common block. Comparing every advert with every one of 41 million vehicles is not an option. **Comparison features** should reflect how vehicle data goes wrong: mileage compared as a band, with a tolerance that grows with the gap in dates; power compared with a small tolerance because sources round differently; color compared loosely because \"anthracite\" and \"gray\" are the same paint.\n\nThe thresholds are a staffing decision as much as a statistical one. If the review band admits 3,000 records a night and a reviewer needs a minute each, the queue needs 50 person-hours a day and will not be worked. Axleby sized its review band to about **200 records a day** for Kilometra and dealer records, and accepted that adverts below the upper threshold stay unattached; Pulse can live with an unmatched advert, but Tracewell cannot live with a wrong merge. [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html) discusses what Pulse's **61%** match rate means for valuation.\n\n![A cascade of three funnels, Valid VIN, Plate at date and Probabilistic score, each attaching records to an AVK; the probabilistic tier sends its middle band to a review queue and the rest stays unattached.](assets/images/09-ingestion-and-entity-resolution/09-resolution-tiers.jpeg)\n**Figure 4:** *Resolution tiers in Inlet. A valid VIN decides deterministically; a plate decides only through the assignment valid at the observation date; probabilistic scoring is reserved for records with neither, and its middle band goes to people.*\n\nEvery outcome is stored as a **match decision**: source record, AVK, tier, rule or model version, score, and reviewer if any. Match decisions are data, not log lines. When a model version turns out to merge too eagerly, Inlet can list every decision it made, re-resolve them under the new version and emit corrections for the records that moved. [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) owns the merge and split of vehicles in Anchor; Inlet's job is to make sure that the evidence for every attachment can be found and reversed.\n\nVehicles are not the only entities to resolve. **Dealers and rooftops** are matched across portal accounts, DMS ids and company numbers ([Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)); **consumers** in leads are constrained by the General Data Protection Regulation (GDPR) and belong to [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html). Keep the three resolvers separate: different keys, error costs and legal bases.\n\n### Per-source records, survivorship and the golden record\n\nAfter resolution, each fact is stored as a **source record**: what this source said about this vehicle, observed when, landed in which batch. Several source records usually speak to the same attribute. The **survivorship rule** chooses which one is current.\n\nVehicle attributes come in two kinds, and they need different treatment.\n\n- **Single-valued attributes** (first-registration date, fuel type, current odometer, edition, color) have one current value. Survivorship picks it.\n- **Event sets** (damage events, inspections, ownership changes, readings) accumulate. Nothing \"wins\"; duplicates are merged by a deduplication key (for a damage event: source, claim reference, date, and a near-date tolerance across sources), and the set is the answer. [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) owns how events become a report.\n\nAxleby's survivorship rules for a few attributes, version 3 as adopted after the June 2027 review:\n\n| Attribute | Candidates | Rule | Tie-breaker | Losing values |\n| --- | --- | --- | --- | --- |\n| First-registration date | Register, build data, dealer | Register for the vehicle's first market; build data if no register record | Earliest official date | Kept and shown on conflict |\n| Edition and factory options | Build data, catalog decode, dealer entry | Build data (as-built) beats catalog decode; dealer entry adds post-factory equipment as its own fact | Most recent build-data response | Kept; dealer claims shown as \"dealer stated\" |\n| Current odometer | Official readings (inspection, register), commercial readings (Kilometra, auctions, dealers) | Newest reading that passed semantic checks; a commercial reading wins only if it is consistent with the official readings before it | Official over commercial on the same date | Kept; inconsistent readings feed the rollback judgement, not the current value |\n| Color | Register, dealer, advert | Register color class; dealer's paint name as a separate attribute | — | Kept |\n| Export and scrapped status | Register | Register only | — | Not applicable |\n\nThe odometer row is the direct fix for the ingestion side of the Odometer Correction. Under version 2, \"newest by date\" let any reading set the current value. Under version 3, a commercial reading that contradicts the official readings before it cannot become the current value; it becomes evidence, and [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)'s **odometer judgement** decides what it means.\n\nThe **golden record** is the result of applying these rules to all source records of one vehicle. Axleby materializes it beside Anchor for read speed, as a projection: Anchor's own write path stays identity only, and each attribute's evidence stays with the context that owns it, odometer in Tracewell and edition in Specbook ([Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html)). Its rows are always **recomputed** from source records and never edited by hand or by a loader. Each value carries a pointer to its source record and the rule version that chose it. Three properties follow from that design:\n\n- **Rules can change.** When version 3 replaced version 2, Inlet recomputed the golden record for all 41 million vehicles in a background job and emitted change events only where values changed.\n- **Sources can be withdrawn.** A superseded batch or an ended license marks source records inactive, and the affected golden records are recomputed.\n- **Disputes can be answered.** Why does the platform say the car was first registered in 2018? A source record, a date and a rule, not \"that is what the table says\".\n\nA golden record that loaders write directly offers none of these; it is the classic route to **the Sticky Error**.\n\n### Late, out-of-order and duplicate data\n\nVehicle data arrives late as a matter of course: workshop readings days after the visit, insurer claims weeks after the accident. Three rules keep late data harmless.\n\n1. **Order by observation time, not arrival time.** Survivorship and history use the observation time. A reading from 3 March that arrives after one from 10 March slots in before it; it does not become current.\n2. **Make every load idempotent.** The idempotency key for a source record is (source, source record id, source version), or a content hash where the source has no version. Re-delivering a file, replaying a segment or receiving a stream event twice produces the same source records, not duplicates. For files, Inlet also refuses a second batch with the same content hash unless it is explicitly marked as a redelivery.\n3. **Partition change events by AVK.** Downstream consumers then see changes to one vehicle in order, while volume spreads across partitions. Dealer-level keys would put a 46-rooftop group's whole stock on one partition.\n\nA correction from a source is **a new source version, not an edit**. When Kilometra redelivered the corrected May batch, it arrived as a new batch that superseded the original. Its records got new source versions; survivorship recomputed the 2,870 vehicles and emitted change events. [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) follows what downstream products then had to do with those events.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Register change → Anchor | Per-vehicle order; at-least-once with idempotent apply | Seconds per event | Within an hour of the daily snapshot's publication *(assumption)* | A missed snapshot leaves the previous day in place, with its age shown; reconcile periodically against the full snapshot |\n| Kilometra file → Tracewell | Batch-atomic per segment | Minutes per batch | Next morning, before the 03:00 restock valuations *(assumption)* | A held segment delays only that segment |\n| Dealer stock-in → AVK resolution | Synchronous read of Anchor | p95 under 800 ms *(assumption)* | Current | Degrade to \"unresolved, retry\" without blocking the stock-in |\n| Advert snapshot → Pulse match | Eventually consistent | Hours | Daily | Late portal files skip a day, not the whole run |\n| Golden record → consumers | Per-vehicle order; consumers idempotent | Seconds after survivorship | Follows the source | Consumers replay from the log |\n\n## In Practice\n\n### What automotive platforms have published\n\nNo vehicle-data company has published its ingestion or vehicle entity resolution in detail; the public evidence comes from adjacent pipelines at automotive marketplaces.\n\n- **Auto Trader UK** described in August 2026 an in-house customer data platform built in 2021 that ingests behavioral events through Kafka. It is moving segment logic to models deployed \"in real-time using Spark Structured Streaming\", with profile state served from Bigtable ([Auto Trader Engineering, 2026](https://medium.com/autotrader-engineering/real-time-personalisation-on-autotrader-50d0cda4b778)). Its June 2026 post on failed-event recovery, cited above, is the clearest public example of quarantine and replay in the industry.\n- **AutoScout24** described DataRunner in September 2023 as built on AWS Glue, Athena, Airflow and PySpark, integrated with DataHub and Great Expectations, to support \"decentralized ownership\" and \"data as product\" ([AutoScout24, 2023](https://tech.autoscout24.com/blog/posts/datarunner/)).\n- **Cox Automotive** chose an identity graph on Amazon Neptune in 2019 for consumer \"householding and lead mapping\". About 0.4 billion vertices and 0.5 billion edges were reported, and the householding process \"creates a full data set every day\" ([AWS Database Blog, 2020](https://aws.amazon.com/blogs/database/cox-automotive-scales-digital-personalization-using-an-identity-graph-powered-by-amazon-neptune/)). This is consumer, not vehicle, identity, and the evidence is six years old. Its interest here is the choice to **rebuild the resolved set daily in batch** rather than maintain it incrementally.\n\n> **INFERENCE, NOT DOCUMENTED:** None of these sources says how these companies resolve vehicle records from suppliers and adverts, or how they apply survivorship. The pattern this chapter recommends (land raw, validate in layers, resolve by VIN then plate-at-date then probabilistically, compute the current view) is the author's reference architecture, consistent with the published evidence but not described by any of these companies.\n\nIn the **medallion** vocabulary Databricks documents (Bronze raw, Silver cleaned and standardized, Gold consumption-ready; [Databricks glossary, n.d., accessed 2026-10](https://www.databricks.com/glossary/medallion-architecture)), Inlet's landing zone is Bronze, its source records Silver and its golden record a Gold view. The rule the vocabulary implies is the one that matters: **every Silver and Gold job must be re-runnable from Bronze.**\n\n### Axleby worked example: the May batch under Inlet\n\nIn September 2027, with Inlet's Kilometra adapter live, Axleby's data engineering team replayed the original, uncorrected May 2027 batch from the landing zone through the new pipeline in a test environment. The goal was to see where it would have stopped.\n\n**Delivery checks** passed. The manifest said 409,866 rows, the file had 409,866 rows, the sequence number followed the previous night's, and it arrived at 02:08.\n\n**Schema checks** passed. Every row had a valid unit code; the unit was simply wrong.\n\n**Semantic checks** flagged 3,410 records whose reading was lower than the vehicle's previous official reading. Of these, 2,870 were UK-imported vehicles. The other 540 were scattered across NL, BE and DE workshops, at about the nightly norm for transcription errors and genuine rollback candidates *(assumption: the typical nightly rate was measured over the three months before May)*.\n\n**Distribution checks** split. The median batch gate did not fire: 2,870 wrong readings among about 34,000 UK-import records moved no age band's median by more than 5%, because medians are built to ignore a minority. The failure-rate check per supplying workshop chain did. The wrong readings all came from one UK workshop chain's export, and in that chain's segment of **3,050** records, **94%** failed the semantic check against a threshold of **0.5%** *(assumption)*. For 2,790 of the 2,870 the ratio of previous reading to new reading lay between 1.55 and 1.67, close to 1.609 kilometers per mile. Inlet held the 3,050 records and released the other 406,816 to Tracewell on time. **A distribution check is only as sharp as its segments**: the narrower the segment matches how a source can fail (one export, one workshop chain), the smaller the error it can see.\n\n![A conveyor of record crates passes a checkpoint; one workshop chain's crate is lifted into a padlocked pen labeled 3,050 held, while the rest continue as 406,816 released.](assets/images/09-ingestion-and-entity-resolution/09-segment-held.jpeg)\n**Figure 5:** *The median gate missed the wrong readings, but one workshop chain's segment failed at 94%, so Inlet held its 3,050 records and released the other 406,816 on time.*\n\n**Resolution** would have mattered too. About **93%** of Kilometra records carry a valid VIN and resolved in tier 1. Most of the remaining 7% were UK-import records that carried only the plate the car had in the UK when the reading was taken. Under the old loader they were matched to \"the vehicle with this plate\", which for re-registered imports was either nothing or, in **118** cases, a different UK vehicle that had since been given the same retained plate. Under tier 3, plate-at-observation-date attached most of them correctly and sent the conflicting cases to the review queue. The 118 cases are a small Cloned Identity of their own, and nobody had noticed them.\n\n**The outcome**: an alert at about 02:50, a redelivery the next night, and no valuation, report or advert reading the wrong mileage. **What the replay could not prove is that every future error will form a pattern.** A unit error confined to a few dozen vehicles would pass the distribution check and surface only as rollback candidates, which is why the history side must treat inconsistent readings as evidence for a judgement, not as truth.\n\nInlet's Kilometra adapter, landing storage and validation add about **€2,100 a month** in cloud cost *(assumption)*, against €95,000 a year for a push feed that would not have caught the error.\n\n## Failure Handling\n\n| Failure | How it shows up | Detection | Recovery |\n| --- | --- | --- | --- |\n| **Duplicate delivery** (same file twice, stream redelivery) | Double counts; repeated events in history | Content hash on landing; idempotency key on source records | Ignore the duplicate; no downstream effect |\n| **Truncated or partial file** | Fewer vehicles updated; missing readings | Manifest row count and checksum | Hold the batch; request redelivery; earlier data stays current |\n| **Missing batch** | Nothing arrives; stale data that looks fine | Freshness check per source against the expected arrival time | Alert at the SLO, not at job failure; products show the age of the data |\n| **Schema drift** (new column, renamed code) | Records fail schema checks | Schema layer | Quarantine; update the adapter; replay from landing |\n| **Semantic drift** (unit, code meaning, scale) | Plausible-looking wrong values | Semantic and distribution layers | Hold the segment; supplier redelivers; supersede, do not edit |\n| **Conflicting sources** | Two values for one attribute | Survivorship sees both | Rule decides; the loser is kept and shown where the conflict matters to a buyer |\n| **Incomplete records** (no VIN, no date) | Records cannot be resolved or ordered | Resolution tier 5; missing observation time | Keep unattached; retry when Anchor changes; never invent a date from arrival time without marking it |\n| **Wrong merge** (two cars as one) | Contradictory history; a complaint | Identity conflict checks; audits of match decisions | Reverse the match decisions; re-resolve; recompute affected golden records; reissue reports ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) |\n| **Source outage** (a snapshot not published, or Turnstile's feed stalled) | Gap in the mutation feed | Missing snapshot version; heartbeat missing | Keep the previous day with its age shown; the next snapshot diff catches up; a full reconciliation against the snapshot finds what the feed missed |\n| **Retry storm or backfill overload** | Live ingestion slows behind a replay | Lag per source; queue depth | Separate replay capacity from live capacity; rate-limit backfills |\n\nTwo lines need more than a sentence.\n\n**Reconciliation against a snapshot** is what makes an event-driven feed trustworthy. The Dutch register publishes its registered-vehicles dataset as open data under Creative Commons Zero (CC0). When I checked in October 2026 it held about 16.87 million records and had been updated that morning ([RDW open data, queried 2026-10-22](https://opendata.rdw.nl/api/views/m9d7-ebf2.json)). Turnstile derives its mutation feed from these snapshots, so the feed inherits the RDW's terms: \"no guarantees on availability, currency and continuity\" ([RDW, n.d., accessed 2026-10](https://www.rdw.nl/over-rdw/dienstverlening/open-data/bijsluiter)). That is why decision-time facts are asked live, and why Inlet periodically compares Anchor's registration state with a full snapshot: a diff that missed a day, or a consumer that dropped an event, shows up as a difference at almost no cost. **A stream without a reconciliation baseline cannot prove it is complete.**\n\n**Replay capacity** must be planned. Recomputing a supplier's last three weeks, or all 41 million golden records, competes with live load. Axleby runs replays on separate, lower-priority compute and caps the change events a replay may emit per minute; otherwise a rule change floods Relay and the webhook senders.\n\n## Trade-offs\n\nThe record-model choice matters as much as the ingestion mode.\n\n| Option | How it works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **Overwrite in place** | Loaders update one current table | Simplest; fast reads; no extra storage | No replay; no explanation; corrections are patches; source withdrawal impossible | Never for data that is sold or that drives prices; acceptable for internal caches that can be rebuilt from elsewhere |\n| **Per-source records plus computed golden view** | All source records kept; golden record recomputed by rules | Explainable; reversible; rules can change; supports bitemporal history | More storage; recompute cost; rule governance needed | The default for vehicle facts that feed valuations, reports, adverts or contracts |\n| **No golden record** (consumers resolve) | Consumers read source records and choose | Maximum flexibility; no central rules | Every product resolves differently; adverts, reports and valuations disagree (**Spec Guesswork**) | Only for analytics teams studying the sources themselves |\n\nAnd for resolution:\n\n| Option | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- |\n| **Deterministic only** (VIN, plate-at-date) | Explainable; no false merges from scoring | Leaves adverts and dealer records without VIN unresolved | Sources that drive history and reports |\n| **Probabilistic for all** | Highest match rate | False merges inside the history of real cars; costly reviews | Never as the first tier for vehicles |\n| **Tiered** (deterministic first, probabilistic for the remainder, review band) | Match rate where it is cheap to be wrong, certainty where it is not | Two mechanisms to govern; thresholds to tune | The default; set thresholds per consumer, stricter for Tracewell than for Pulse |\n\nThe recommendation in both tables rests on three requirements: facts are sold and must be explainable, errors are found days or weeks late and must be reversible, and different consumers tolerate different error rates. **If a platform only serves internal analytics and never sells a fact, overwrite-in-place with periodic rebuilds can be enough**; the moment a fact appears on a paid report or drives a price, it is not.\n\n## Across Markets: What Changes by Country\n\nThe pipeline itself (landing, validation layers, quarantine, resolution tiers, survivorship machinery) is the same everywhere. What changes is which sources exist, what they key on, and how much resolution each market needs.\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Register data shape** | NL: the RDW (Netherlands Vehicle Authority) publishes an open bulk dataset under CC0 without VIN, plus paid per-plate business access (*OVI-zakelijk*) at €0.07–0.18 a lookup; BE: no open bulk register examined | Central register at the Kraftfahrt-Bundesamt (KBA, the federal motor transport authority) not open for individual vehicles | DVLA bulk anonymized data under contract with \"reasonable cause\"; Vehicle Enquiry Service closed to new registrations when checked | No national register of individual vehicles; state departments of motor vehicles (DMVs); the National Motor Vehicle Title Information System (NMVTIS) through approved providers |\n| **Odometer sources** | NL: register judgement per plate, not readings; BE: Car-Pass, the statutory mileage register, which received 345.5 million readings in 2025 | Inspection readings at the KBA, not public; commercial sources | Driver and Vehicle Standards Agency (DVSA) history of MOT (annual roadworthiness test) readings by API: 500,000 requests a day, 15 a second on average | Title odometer statements via NMVTIS; commercial history providers |\n| **Usual matching key** | Plate (a Dutch plate usually stays with the car); type-approval number, variant and version | HSN/TSN (*Herstellerschlüsselnummer* and *Typschlüsselnummer*, manufacturer and type key numbers) for the model; plates change on re-registration | Plate, but personalized and retained plates move between cars | VIN, present almost everywhere |\n| **Resolution difficulty** | Low for domestic cars; high for imports | Moderate: VIN often present in commercial data, plate unreliable | High for plate-only sources because plates move | Low for VIN-bearing sources |\n| **Natural ingestion mode** | Snapshot diffs turned into a change feed, plus live lookups at decision time | Partner files and request-time lookups | API lookups within quota; partner files | Partner and aggregator files; request-time lookups |\n\nSources: [RDW open data licence, n.d.](https://www.rdw.nl/over-rdw/dienstverlening/open-data/bijsluiter); [RDW OVI-zakelijk, n.d.](https://www.rdw.nl/over-rdw/dienstverlening/betaald-toegang-tot-ongevoelige-kentekengegevens); [Car-Pass, 2025 figures](https://www.car-pass.be/en); [KBA central vehicle register, n.d.](https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html); [DVLA, *Release of information from DVLA's registers*, 2022](https://assets.publishing.service.gov.uk/media/624dabc7e90e0729f6bf8167/inf-266-release-of-information-from-dvlas-registers.pdf); [DVSA MOT history API rate limits, n.d.](https://documentation.history.mot.api.gov.uk/mot-history-api/rate-limits/); all accessed 2026-10. The plate-behavior and resolution-difficulty rows are the author's judgement from industry practice.\n\nThe judgement: **keep one pipeline and make three things market-specific**: source adapters and contracts; blocking keys and comparison features (plate-at-date in NL, HSN/TSN in DE, a wide plate-reuse window in the UK, VIN-first in the US); and a market rule set inside survivorship (which register is authoritative for first registration, which odometer sources count as official). The two-way NL/BE odometer exchange and imports from Germany and the UK make **cross-border resolution the hardest case in Axleby's markets**: a car arrives with a VIN, a foreign plate history, and readings in another unit and another register. That is where tier 3 needs the foreign plate assignments, which [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) models as time-bounded edges, and where Kilometra's error appeared.\n\n## The Chief Architect's View\n\n**One ingestion platform, many adapters.** The pull at group scale is for each product, and each acquisition, to keep its own loader. That is how **the Acquisition Archipelago** reaches the data half: three vehicle keys, three ideas of \"current mileage\". I would insist that every external fact enters through one pipeline with one landing contract and one resolver; product teams own their adapters, the platform team owns the stages.\n\n**Survivorship rules are product decisions with an owner.** Which odometer reading counts, whether a dealer's claim can override build data: these change what a dealer pays and what a buyer is told. At Axleby, Priya Raman owns the rule set for vehicle facts. Changes go through the architecture forum with a recompute impact estimate (how many golden records change, and which clients will receive events), and every rule set has a version that appears in the golden record.\n\n**Quarantine is an operational function.** It needs owners per source, an age limit, a dashboard visible to supplier managers and a weekly review. Hendrik Maes's integration team owns supplier quarantine; Tomás Ferreira's Lotwise team owns dealer-input quarantine. The metric I watch is **quarantine age**, not volume: a growing backlog of old held records means the gate has become a drop.\n\n**Raw retention is negotiated, not assumed.** Femke de Boer reviews retention per source in Charter. Where a supplier forbids keeping raw data beyond a short window, negotiate a longer one or accept that late-found errors can only be corrected, not replayed.\n\n**What to watch.** Per source: freshness against SLO, quarantine rate and age, resolution rate by tier, review-queue age, and the false-merge rate from a monthly sample audit. Per pipeline: replay time for the largest source and recompute time for the full golden record. If a full recompute takes longer than a weekend, rule changes will start to be avoided, and the golden record will drift toward overwrite-in-place in practice.\n\n## Questions to Ask\n\n1. For each source, what freshness does the product that uses it actually need, and how fresh is the source itself?\n2. Can we replay any source from our own storage for at least as long as it takes to find its errors? What does the license allow?\n3. Which checks would catch a wrong unit or a shifted code in a schema-valid file? Do any of them look at the distribution, not just single records?\n4. When a batch fails, do we hold the whole batch, a segment or single records, and who is alerted and who releases it?\n5. How do we resolve a record that has a plate but no VIN, and does the plate lookup use the assignment valid at the observation date?\n6. Where are match decisions stored, and can we list, reverse and re-resolve every decision made by a given model version?\n7. Is the golden record ever written directly by a loader or a person? If so, how do we explain or reverse a value?\n8. What happens downstream when a survivorship rule changes: how many records are recomputed, how long does it take, and how many events do clients receive?\n9. How do we know an event stream is complete, and what snapshot do we reconcile it against?\n10. Who owns the survivorship rules, and who owns quarantine for each source?\n\nInlet answers how a fact gets in and which car it belongs to. It does not yet answer where each fact came from, how old it is, what license it carries and how good its source has been. Those questions belong to [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html), which turns the source record into a provenance envelope and the contract checks into data-quality operations.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [Recovering failed Snowplow events using a domain-modelled PySpark pipeline](https://medium.com/autotrader-engineering/recovering-failed-snowplow-events-using-a-domain-modelled-pyspark-pipeline-752e52e90109) — Auto Trader UK Engineering, 2026; schema validation, failed-events table and recovery pipeline.\n- [Real-time personalisation on Autotrader](https://medium.com/autotrader-engineering/real-time-personalisation-on-autotrader-50d0cda4b778) — Auto Trader UK Engineering, 2026; Kafka and Spark Structured Streaming customer data platform.\n- [DataRunner](https://tech.autoscout24.com/blog/posts/datarunner/) — AutoScout24, 2023; pipeline framework with Great Expectations and DataHub.\n- [Cox Automotive scales digital personalization using an identity graph powered by Amazon Neptune](https://aws.amazon.com/blogs/database/cox-automotive-scales-digital-personalization-using-an-identity-graph-powered-by-amazon-neptune/) — AWS Database Blog, 2020; consumer identity graph size and daily rebuild.\n\n### Standards, regulation and official documentation\n\n- [Open Data RDW: Gekentekende voertuigen, dataset metadata](https://opendata.rdw.nl/api/views/m9d7-ebf2.json) — RDW, queried 2026-10-22; record count, CC0 licence, no VIN column, update time.\n- [Bijsluiter open data](https://www.rdw.nl/over-rdw/dienstverlening/open-data/bijsluiter) — RDW, n.d., accessed 2026-10; terms of reuse and absence of availability guarantees.\n- [Betaald toegang tot ongevoelige kentekengegevens (OVI-zakelijk)](https://www.rdw.nl/over-rdw/dienstverlening/betaald-toegang-tot-ongevoelige-kentekengegevens) — RDW, n.d., accessed 2026-10; per-plate paid business access and prices.\n- [Vehicle Enquiry Service API description](https://developer-portal.driver-vehicle-licensing.api.gov.uk/apis/vehicle-enquiry-service/vehicle-enquiry-service-description.html) — DVLA, n.d., accessed 2026-10; fields returned, no VIN or model, registrations closed.\n- [Release of information from DVLA's registers (INF266)](https://assets.publishing.service.gov.uk/media/624dabc7e90e0729f6bf8167/inf-266-release-of-information-from-dvlas-registers.pdf) — DVLA, 2022; reasonable cause and bulk anonymized data.\n- [MOT history API rate limits](https://documentation.history.mot.api.gov.uk/mot-history-api/rate-limits/) — DVSA, n.d., accessed 2026-10; daily quota and request rates.\n- [Zentrales Fahrzeugregister](https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html) — Kraftfahrt-Bundesamt, n.d., accessed 2026-10; contents of the German central register.\n- [Car-Pass](https://www.car-pass.be/en) — Car-Pass, 2025 annual figures, accessed 2026-10; odometer readings received.\n\n### Research and practitioner sources\n\n- [Questioning the Lambda Architecture](https://www.oreilly.com/radar/questioning-the-lambda-architecture/) — Jay Kreps, O'Reilly Radar, 2014; reprocessing by log replay (Kappa architecture).\n- [A Theory for Record Linkage](https://doi.org/10.1080/01621459.1969.10501049) — Ivan P. Fellegi and Alan B. Sunter, *Journal of the American Statistical Association*, 1969; probabilistic record linkage model.\n- [Splink documentation](https://moj-analytical-services.github.io/splink/index.html) — UK Ministry of Justice, n.d., accessed 2026-10; probabilistic linkage at scale without training data.\n- [Splink: Free software for probabilistic record linkage at scale](https://doi.org/10.23889/ijpds.v7i3.1794) — Robin Linacre et al., *International Journal of Population Data Science*, 2022; method and performance.\n- [Medallion architecture](https://www.databricks.com/glossary/medallion-architecture) — Databricks, n.d., accessed 2026-10; Bronze, Silver and Gold layers.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

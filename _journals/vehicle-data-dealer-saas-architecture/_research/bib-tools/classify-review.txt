@@ -1,0 +1,620 @@
+===== Vehicle data market, dealer economics and domain design 60
+   Author's wor | Productscape vehicle-data-and-dealer-saas-platform domain mo |  | introduction
+   Product and  | Bridge ID | coxautoinc.com | where-vehicle-pl
+   Regulation a | Odometer manipulation in motor vehicles: revision of the EU  | oeil.europarl.europa.eu | where-vehicle-pl
+   Court or com | Authenticom v. CDK Global and Reynolds and Reynolds | courtlistener.com | where-vehicle-pl
+   Practitioner | Zillow, facing big losses, quits flipping houses | nytimes.com | where-vehicle-pl
+   Company fili | Mobility Global separation 8-K exhibit | sec.gov | vehicle-data-eco
+   Company fili | Used retail vehicle sales, December 2025 | coxautoinc.com | vehicle-data-eco
+   Product and  | VWE API documentation | vwe.nl | vehicle-data-eco
+   Product and  | VWE: over VWE | vwe.nl | vehicle-data-eco
+   Company fili | Customer focus takes the driver's seat | volarisgroup.com | vehicle-data-eco
+   Practitioner | Porsche Informatik s'implante en France | journalauto.com | vehicle-data-eco
+   Product and  | Autoflex | autoflex.nl | vehicle-data-eco
+   Product and  | Loco-Soft | loco-soft.de | vehicle-data-eco
+   Regulation a | RDW open data: general information | rdw.nl | vehicle-data-eco
+   Regulation a | Kentekenregister is basisregistratie voertuigen | rdw.nl | vehicle-data-eco
+   Regulation a | Understanding the NMVTIS vehicle history report | vehiclehistory.bja.ojp.gov | vehicle-data-eco
+   Regulation a | NMVTIS system overview | vehiclehistory.bja.ojp.gov | vehicle-data-eco
+   Standard or  | Auto-Lead Data Format specification 1.0 | adfxml.info | vehicle-data-eco
+   Encyclopedia | Kelley Blue Book | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Reynolds and Reynolds | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | HPI | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Eurotax | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Carfax | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | AutoScout24 | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Vehicle identification number | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Deutsche Automobil Treuhand | de.wikipedia.org | vehicle-data-eco
+   Encyclopedia | mobile.de | de.wikipedia.org | vehicle-data-eco
+   Company fili | Penske Automotive Group Form 10-K for 2025 | sec.gov | dealer-and-data-
+   Company fili | Mobility Global Form 10-Q, quarter ended 30 June 2026 | sec.gov | dealer-and-data-
+   Product and  | MarktReport Q4/2025 | autoscout24.de | dealer-and-data-
+   Product and  | Schadeverleden | vwe.nl | dealer-and-data-
+   Company fili | Q4 and FY 2025 results | ayvens.com | dealer-and-data-
+   Product and  | How recon estimates hurt your appraisal success | vauto.com | dealer-and-data-
+   Practitioner | Dale Pollak shifts gears on used car selling tactics | canadianautodealer.ca | dealer-and-data-
+   Practitioner | Umbruch auf dem Gebrauchtwagenmarkt | autohaus.de | dealer-and-data-
+   Practitioner | Gebrauchtwagenmarkt 2025: Mehr als 6,5 Millionen Halterwechs | autohaus.de | dealer-and-data-
+   Practitioner | Verkoopcijfers 2025 | autoreview.nl | dealer-and-data-
+   Practitioner | Traxio 2025 used-car registrations | bx1.be | dealer-and-data-
+   Practitioner | Used EV sales surge as UK used car market grows again | am-online.com | dealer-and-data-
+   Practitioner | Used vehicle sales expected to dip in 2026 | niada.com | dealer-and-data-
+   Practitioner | NIADA's UCIR shows independent used sales top 9.8 million in | niada.com | dealer-and-data-
+   Practitioner | FCA publishes motor finance redress scheme policy statement | slaughterandmay.com | dealer-and-data-
+   Product and  | Pricing models for a multitenant solution | learn.microsoft.com | dealer-and-data-
+   Product and  | Measure the consumption of each tenant | learn.microsoft.com | dealer-and-data-
+   Practitioner | Unit Economics | finops.org | dealer-and-data-
+   Product and  | Send usage events | docs.metronome.com | dealer-and-data-
+   Product and  | Idempotent requests | docs.stripe.com | dealer-and-data-
+   Company engi | Cox Automotive's journey from API silos to a unified API str | 2024.platformcon.com | vehicle-capabili
+   Product and  | Cox Automotive customer story | apollographql.com | vehicle-capabili
+   Standard or  | TOGAF Series Guide: Business Capabilities | pubs.opengroup.org | vehicle-capabili
+   Book         | Ulrich Homann, *A Business-Oriented Foundation for Service O |  | vehicle-capabili
+   Book         | Eric Evans, *Domain-Driven Design: Tackling Complexity in th |  | vehicle-capabili
+   Book         | Wardley Maps | medium.com | vehicle-capabili
+   Product and  | Evolution | docs.onlinewardleymaps.com | vehicle-capabili
+   Standard or  | STAR press release on XML standards | starstandard.org | vehicle-bounded-
+   Book         | Domain-Driven Design Reference | domainlanguage.com | vehicle-bounded-
+   Practitioner | BoundedContext | martinfowler.com | vehicle-bounded-
+   Research     | How Do Committees Invent? | melconway.com | vehicle-bounded-
+   Book         | Team Topologies: Organizing Business and Technology Teams fo |  | vehicle-bounded-
+   Practitioner | Effective Aggregate Design | dddcommunity.org | vehicle-bounded-
+===== Vehicle identity, registers, specification and history 85
+   Regulation a | 49 CFR Part 565, Vehicle Identification Number (VIN) Require | ecfr.gov | where-vehicle-pl
+   Regulation a | Open Data RDW: registered vehicles | opendata.rdw.nl | vehicle-data-eco
+   Regulation a | Car-Pass | car-pass.be | vehicle-data-eco
+   Regulation a | Zentrales Fahrzeugregister | kba.de | vehicle-data-eco
+   Regulation a | Vehicle Enquiry Service API | developer-portal.driver-vehicle-licensing.api.gov.uk | vehicle-data-eco
+   Regulation a | MOT history API: bulk and delta downloads | documentation.history.mot.api.gov.uk | vehicle-data-eco
+   Regulation a | Directive 1999/37/EC on registration documents for vehicles | publications.europa.eu | vehicle-data-eco
+   Regulation a | Car-Pass FAQ | car-pass.be | dealer-and-data-
+   Regulation a | MOT history API specification | documentation.history.mot.api.gov.uk | vehicle-identity
+   Regulation a | vPIC API | vpic.nhtsa.dot.gov | vehicle-identity
+   Regulation a | 49 CFR 565.13, 565.15, 565.16 | law.cornell.edu | vehicle-identity
+   Regulation a | Commission Regulation (EU) No 19/2011 | publications.europa.eu | vehicle-identity
+   Research     | The roadworthiness package (COM(2025) 179 and 180) | europarl.europa.eu | vehicle-identity
+   Regulation a | Informatiemap voor de voertuigbranche 2026 | rdw.nl | vehicle-identity
+   Regulation a | Personalised vehicle registration numbers | gov.uk | vehicle-identity
+   Regulation a | Vehicle identification number | gov.uk | vehicle-identity
+   Regulation a | 'Q' registration numbers | gov.uk | vehicle-identity
+   Regulation a | 28 CFR 25.54 | law.cornell.edu | vehicle-identity
+   Practitioner | 'Car cloning is a menace of modern day motoring' | bbc.co.uk | vehicle-identity
+   Encyclopedia | Car cloning | en.wikipedia.org | vehicle-identity
+   Encyclopedia | Vehicle registration plates of the Netherlands | en.wikipedia.org | vehicle-identity
+   Encyclopedia | Vehicle registration plates of Belgium | en.wikipedia.org | vehicle-identity
+   Encyclopedia | Vehicle registration plates of Germany | en.wikipedia.org | vehicle-identity
+   Encyclopedia | Vehicle registration plates of the United States | en.wikipedia.org | vehicle-identity
+   Court or com | NewPort Capital mag VWE overnemen (ACM/22/179803) | acm.nl | registers-and-of
+   Practitioner | Digitale Zulassungsservices (advertorial) | autohaus.de | registers-and-of
+   Regulation a | Providers voor digitale diensten | rdw.nl | registers-and-of
+   Regulation a | Bijsluiter | rdw.nl | registers-and-of
+   Regulation a | catalog metadata | opendata.rdw.nl | registers-and-of
+   Regulation a | Betaald toegang tot ongevoelige kentekengegevens | rdw.nl | registers-and-of
+   Regulation a | RDW neemt ook Duitse tellerstanden op in kentekenregister | rdw.nl | registers-and-of
+   Regulation a | § 35 StVG | gesetze-im-internet.de | registers-and-of
+   Regulation a | Großkundenschnittstelle: Informationsbroschüre | landkreis-eichstaett.de | registers-and-of
+   Regulation a | Vehicle licensing statistics: notes and definitions | gov.uk | registers-and-of
+   Regulation a | MOT history API documentation | documentation.history.mot.api.gov.uk | registers-and-of
+   Regulation a | authentication | documentation.history.mot.api.gov.uk | registers-and-of
+   Regulation a | NMVTIS FAQ | vehiclehistory.bja.ojp.gov | registers-and-of
+   Regulation a | Council compromise text on roadworthiness testing (ST 15613  | data.consilium.europa.eu | registers-and-of
+   Product and  | VIN-Abfrage über SilverDAT: Anleitung Österreich | datgroup.com | specification-an
+   Practitioner | VIN-Abfrage: DAT erhöht Marktabdeckung weiter | autohaus.de | specification-an
+   Product and  | VINView and VINView Pro | jato.com | specification-an
+   Product and  | OEM Build Data | auto.dev | specification-an
+   Product and  | cap Code – Vehicle Identification | cap-hpi.com | specification-an
+   Product and  | Seller API documentation | services.mobile.de | specification-an
+   Practitioner | Listing Creation API data models and changelog | listing-creation.api.autoscout24.com | specification-an
+   Product and  | Advertisement API v1 | api.marktplaats.nl | specification-an
+   Regulation a | DecodeVinValues response | vpic.nhtsa.dot.gov | specification-an
+   Regulation a | fuel dataset | opendata.rdw.nl | specification-an
+   Product and  | HSN und TSN | huk.de | specification-an
+   Standard or  | Car (schema.org type) | schema.org | specification-an
+   Practitioner | About CARFAX (archived copy) | web.archive.org | vehicle-history
+   Product and  | What is the Experian AutoCheck Score? | experian.com | vehicle-history
+   Practitioner | HPI Check | home.hpicheck.com | vehicle-history
+   Product and  | autoDNA | autodna.com | vehicle-history
+   Regulation a | Kilometerstand controleren | rdw.nl | vehicle-history
+   Regulation a | RDW registreert kilometerstanden | rdw.nl | vehicle-history
+   Regulation a | Tellerstand registreren | rdw.nl | vehicle-history
+   Regulation a | Tellerstand corrigeren | rdw.nl | vehicle-history
+   Regulation a | Positief effect van Duitse tellerstanden in kentekenregister | rdw.nl | vehicle-history
+   Regulation a | NMVTIS for consumers | vehiclehistory.bja.ojp.gov | vehicle-history
+   Regulation a | Who must report to NMVTIS | vehiclehistory.bja.ojp.gov | vehicle-history
+   Regulation a | 580.17 | ecfr.gov | vehicle-history
+   Regulation a | 49 CFR 573.15 | ecfr.gov | vehicle-history
+   Research     | Odometer tampering: measures to prevent it | car-pass.be | vehicle-history
+   Product and  | What is a write-off? | motorcheck.co.uk | vehicle-history
+   Practitioner | Ohio appeals court rejects class-action settlement with Carf | citizen.org | vehicle-history
+   Company engi | Recovering failed Snowplow events using a domain-modelled Py | medium.com | ingestion-and-en
+   Company engi | Real-time personalisation on Autotrader | medium.com | ingestion-and-en
+   Company engi | DataRunner | tech.autoscout24.com | ingestion-and-en
+   Company engi | Cox Automotive scales digital personalization using an ident | aws.amazon.com | ingestion-and-en
+   Practitioner | Questioning the Lambda Architecture | oreilly.com | ingestion-and-en
+   Research     | A Theory for Record Linkage | doi.org | ingestion-and-en
+   Product and  | Splink documentation | moj-analytical-services.github.io | ingestion-and-en
+   Research     | Splink: Free software for probabilistic record linkage at sc | doi.org | ingestion-and-en
+   Product and  | Medallion architecture | databricks.com | ingestion-and-en
+   Product and  | Forecast accuracy (Auto Trader help centre) | help.autotrader.co.uk | provenance-and-d
+   Standard or  | PROV-DM: The PROV Data Model | w3.org | provenance-and-d
+   Standard or  | OpenLineage object model | openlineage.io | provenance-and-d
+   Standard or  | Open Data Contract Standard | bitol-io.github.io | provenance-and-d
+   Standard or  | ISO/IEC 25012 data quality model | iso25000.com | provenance-and-d
+   Regulation a | 25.55 | law.cornell.edu | provenance-and-d
+   Regulation a | 25.56 | law.cornell.edu | provenance-and-d
+   Practitioner | Bitemporal History | martinfowler.com | provenance-and-d
+   Research     | Temporal features in SQL:2011 | doi.org | provenance-and-d
+   Product and  | What is a Data Contract? | datamesh-manager.com | provenance-and-d
+===== Market data, valuation, condition and connected cars 69
+   Regulation a | Regulation (EU) 2023/1542 concerning batteries and waste bat | publications.europa.eu | introduction
+   Company fili | Used vehicle days' supply | coxautoinc.com | market-data
+   Practitioner | Manheim Market Report (MMR) Help | site.manheim.com | market-data
+   Practitioner | Manheim Used Vehicle Value Index | site.manheim.com | market-data
+   Product and  | Introduction to Vehicle Metrics | help.autotrader.co.uk | market-data
+   Company fili | Retail Price Index, June 2023 | plc.autotrader.co.uk | market-data
+   Practitioner | Autorola's used vehicle management software Indicata receive | am-online.com | market-data
+   Practitioner | Produktbeschreibung SilverDAT valuateFinance | dynamic-dat.de | market-data
+   Practitioner | AutoTrack en Gaspedaal.nl onderdeel van AutoScout24 | emerce.nl | market-data
+   Court or com | Innoweb BV v Wegener ICT Media BV*, C-202/12 | publications.europa.eu | market-data
+   Court or com | Ryanair Ltd v PR Aviation BV*, C-30/14 | publications.europa.eu | market-data
+   Court or com | CV-Online Latvia v Melons*, C-762/19 | publications.europa.eu | market-data
+   Regulation a | Copyright and Rights in Databases Regulations 1997, regulati | legislation.gov.uk | market-data
+   Regulation a | Guidelines on the applicability of Article 101 TFEU to horiz | publications.europa.eu | market-data
+   Court or com | Freigabe mobile.de / Carwow | bundeskartellamt.de | market-data
+   Regulation a | Besitzumschreibungen | kba.de | market-data
+   Company fili | Used car sales data | smmt.co.uk | market-data
+   Practitioner | hiQ and LinkedIn reach proposed settlement in landmark scrap | proskauer.com | market-data
+   Practitioner | Unlock the Full Potential of MMR | site.manheim.com | valuation-engine
+   Company fili | Manheim forecast: growth in used vehicle values expected to  | coxautoinc.com | valuation-engine
+   Company fili | Manheim forecast (December 2021 index) | coxautoinc.com | valuation-engine
+   Company fili | December 2023 Manheim Used Vehicle Value Index | coxautoinc.com | valuation-engine
+   Practitioner | Used Vehicle Value Index summary methodology | site.manheim.com | valuation-engine
+   Company fili | Cox Automotive introduces DRiVEQ | coxautoinc.com | valuation-engine
+   Practitioner | Definitions of our values | b2b.kbb.com | valuation-engine
+   Product and  | Introduction to Current Valuations | help.autotrader.co.uk | valuation-engine
+   Product and  | Introduction to Future Valuations | help.autotrader.co.uk | valuation-engine
+   Product and  | How do you work out the future trended valuation? | help.autotrader.co.uk | valuation-engine
+   Product and  | Why do I have a Price Indicator on my advert? | help.autotrader.co.uk | valuation-engine
+   Practitioner | J.D. Power completes Autovista Group acquisition | collisionweek.com | valuation-engine
+   Company fili | Hertz Global Holdings Form 8-K | sec.gov | valuation-engine
+   Company fili | Zillow Group Q3 2021 results (8-K exhibit) | sec.gov | valuation-engine
+   Company fili | Zillow Group Form 10-K FY2021 | sec.gov | valuation-engine
+   Company fili | Vroom announces wind-down of ecommerce operations | sec.gov | valuation-engine
+   Regulation a | Regulation (EU) 2024/1689 (Artificial Intelligence Act) | publications.europa.eu | valuation-engine
+   Regulation a | Regulation (EU) 2026/1744 (Digital Omnibus on AI) | publications.europa.eu | valuation-engine
+   Practitioner | De digitale omnibus: gevolgen voor AVG, Data Act, AI Act | dirkzwager.nl | valuation-engine
+   Research     | ProbSAINT: Probabilistic Tabular Regression for Used Car Pri | arxiv.org | valuation-engine
+   Practitioner | Hertz is selling 20,000 electric vehicles | kcbd.com | valuation-engine
+   Company fili | AASC announces standardized vehicle condition grading techno | press.manheim.com | condition-and-da
+   Product and  | Tractable | tractable.ai | condition-and-da
+   Product and  | AI Bundle: FastTrackAI | dat.de | condition-and-da
+   Product and  | weDAT | datgroup.com | condition-and-da
+   Product and  | Qapter | qapter.com | condition-and-da
+   Product and  | ProovStation | proovstation.com | condition-and-da
+   Product and  | UVeye | uveye.com | condition-and-da
+   Product and  | Auto Trader help article on price indicators and private adv | help.autotrader.co.uk | condition-and-da
+   Practitioner | BVRLA Fair Wear and Tear guides | bvrla.co.uk | condition-and-da
+   Practitioner | Returning your leased vehicle | bvrla.co.uk | condition-and-da
+   Regulation a | Council Directive 89/459/EEC on the tread depth of tyres | publications.europa.eu | condition-and-da
+   Regulation a | Check the MOT history of a vehicle | gov.uk | condition-and-da
+   Regulation a | Open Data RDW: Geconstateerde Gebreken | opendata.rdw.nl | condition-and-da
+   Practitioner | Extra controles bpm-aangiftes | sra.nl | condition-and-da
+   Research     | CarDD: A New Dataset for Vision-based Car Damage Detection | arxiv.org | condition-and-da
+   Practitioner | Cap releases used car condition benchmarking criteria for tr | fleetnews.co.uk | condition-and-da
+   Company fili | Cox Automotive Deploying Industry-First, VIN-Specific EV Bat | coxautoinc.com | ev-battery-healt
+   Product and  | AVILOO Certified | aviloo.com | ev-battery-healt
+   Product and  | State of Health report: (PH)EV battery condition | vwe.xmedia.nl | ev-battery-healt
+   Regulation a | Regulation (EU) 2024/1257 (Euro 7) | publications.europa.eu | ev-battery-healt
+   Regulation a | 40 CFR 86.1815-27, Battery durability | law.cornell.edu | ev-battery-healt
+   Practitioner | Battery Passport access rights feedback | eurobat.org | ev-battery-healt
+   Product and  | UN GTR No. 22 summary | horiba.com | ev-battery-healt
+   Practitioner | Arnold Clark adds Moba battery health checks to servicing of | evpowered.co.uk | ev-battery-healt
+   Product and  | Smartcar: Getting started | smartcar.com | connected-vehicl
+   Product and  | High Mobility | high-mobility.com | connected-vehicl
+   Product and  | Fleet clearance activation process | docs.high-mobility.com | connected-vehicl
+   Practitioner | Access to data | figiefa.eu | connected-vehicl
+   Practitioner | General Motors sued by Texas Attorney General | abc7news.com | connected-vehicl
+   Practitioner | Texas sues General Motors alleging illegal selling of driver | wxyz.com | connected-vehicl
+===== The dealer workflow: stock, pricing, channels, leads and DMS 112
+   Company fili | AutoNation Form 10-K for 2025 | sec.gov | vehicle-data-eco
+   Company fili | CarMax Form 10-K, fiscal year ended 28 February 2026 | sec.gov | dealer-and-data-
+   Company fili | Carvana Form 10-K for 2025 | sec.gov | dealer-and-data-
+   Company fili | OPENLANE Form 10-K for 2025 | sec.gov | dealer-and-data-
+   Regulation a | Council Directive 2006/112/EC (VAT Directive) | publications.europa.eu | dealer-and-data-
+   Regulation a | Using the VAT margin scheme for second-hand vehicles | gov.uk | dealer-and-data-
+   Regulation a | Directive (EU) 2023/2225 on credit agreements for consumers | publications.europa.eu | dealer-and-data-
+   Practitioner | NADA Data 2025 | nada.org | dealer-and-data-
+   Product and  | mobile.de Seller API | services.mobile.de | vehicle-bounded-
+   Practitioner | AutoScout24 Listing Creation API | listing-creation.api.autoscout24.com | vehicle-bounded-
+   Product and  | Autotrader Connect developer documentation | developers.autotrader.co.uk | vehicle-bounded-
+   Court or com | CDK Global v. Brnovich | storage.courtlistener.com | vehicle-bounded-
+   Regulation a | 49 CFR 580.5 | law.cornell.edu | vehicle-history
+   Practitioner | Huge £112.9m loss revealed for BCA and We Buy Any Car owner | cardealermagazine.co.uk | vehicle-acquisit
+   Regulation a | Voertuig in bedrijfsvoorraad zetten | rdw.nl | vehicle-acquisit
+   Regulation a | Tellerstand controleren | rdw.nl | vehicle-acquisit
+   Regulation a | Tell DVLA you've sold, transferred or bought a vehicle | gov.uk | vehicle-acquisit
+   Regulation a | 49 USC 30502 | law.cornell.edu | vehicle-acquisit
+   Product and  | Full third-party cookie blocking and more | webkit.org | vehicle-acquisit
+   Product and  | Background Synchronization API | developer.mozilla.org | vehicle-acquisit
+   Company fili | AutoNation, Inc. Form 10-Q for Q2 2024 | sec.gov | inventory-and-ve
+   Company fili | Sonic Automotive Form 10-Q for Q2 2024 | sec.gov | inventory-and-ve
+   Regulation a | Consumer Rights Act 2015, section 22 | legislation.gov.uk | inventory-and-ve
+   Regulation a | 49 CFR 580.8, Odometer disclosure statement retention | law.cornell.edu | inventory-and-ve
+   Regulation a | Dealers' Guide to the Used Car Rule | ftc.gov | inventory-and-ve
+   Regulation a | Fahrzeug-Zulassungsverordnung §41, rote Kennzeichen | gesetze-im-internet.de | inventory-and-ve
+   Regulation a | Fahrzeug-Zulassungsverordnung §16, Außerbetriebsetzung | gesetze-im-internet.de | inventory-and-ve
+   Regulation a | Erkenning bedrijfsvoorraad voor voertuigen aanvragen | ondernemersplein.overheid.nl | inventory-and-ve
+   Regulation a | Handelaarsplaat | vlaanderen.be | inventory-and-ve
+   Product and  | How do I price my car as a dealer? | help.autotrader.co.uk | used-car-pricing
+   Regulation a | Directive (EU) 2019/2161 | publications.europa.eu | used-car-pricing
+   Regulation a | Preisangabenverordnung § 11 | gesetze-im-internet.de | used-car-pricing
+   Regulation a | Unfair commercial practices (CMA207) | gov.uk | used-car-pricing
+   Regulation a | 16 CFR 233.1, Former price comparisons | ecfr.gov | used-car-pricing
+   Practitioner | New way to price cars doesn't play beat the clock | wardsauto.com | used-car-pricing
+   Product and  | Marktplaats API 1.0 documentation | api.marktplaats.nl | merchandising
+   Product and  | Vehicle ads image guidelines | support.google.com | merchandising
+   Product and  | vehicle ads attributes | support.google.com | merchandising
+   Regulation a | Preisangabenverordnung §17 | gesetze-im-internet.de | merchandising
+   Regulation a | Consumer Credit sourcebook, CONC 3.5 | handbook.fca.org.uk | merchandising
+   Regulation a | 12 CFR 1026.24, Advertising (Regulation Z) | consumerfinance.gov | merchandising
+   Regulation a | Directive 1999/94/EC on fuel economy and CO2 information for | publications.europa.eu | merchandising
+   Regulation a | Pkw-Energieverbrauchskennzeichnungsverordnung (Pkw-EnVKV) | gesetze-im-internet.de | merchandising
+   Regulation a | Directive 2005/29/EC on unfair commercial practices | publications.europa.eu | merchandising
+   Regulation a | Digital Markets, Competition and Consumers Act 2024, section | legislation.gov.uk | merchandising
+   Product and  | Ad Stream documentation | services.mobile.de | listing-syndicat
+   Company fili | CarGurus, Inc. Form 10-K for FY2025 | sec.gov | listing-syndicat
+   Company engi | Actor Pattern Controlling Connection Pool in Kotlin to Honor | cargurus.dev | listing-syndicat
+   Product and  | Vehicle ads overview | support.google.com | listing-syndicat
+   Product and  | Vehicle Listings: feed setup | developers.google.com | listing-syndicat
+   Product and  | Automotive Ads catalog reference | developers.facebook.com | listing-syndicat
+   Product and  | Consumer Acknowledgements and Publisher Confirms | rabbitmq.com | listing-syndicat
+   Company engi | Timeouts, retries, and backoff with jitter | aws.amazon.com | listing-syndicat
+   Product and  | Lead API documentation, version 2026-06-25 | services.mobile.de | leads-and-crm
+   Product and  | API solutions for Lead Management Systems | api.marktplaats.nl | leads-and-crm
+   Product and  | Lead Delivery Service webhook v3 | api.marktplaats.nl | leads-and-crm
+   Company fili | Sonic Automotive Form 8-K, July 2024 | sec.gov | leads-and-crm
+   Practitioner | Auto-Lead Data Format Usage by LeadDriver, release 1.1 | ldti.syndication.kbb.com | leads-and-crm
+   Standard or  | STAR Announces New Sales Lead Standards API for Automotive | starstandard.org | leads-and-crm
+   Regulation a | Directive 2002/58/EC (ePrivacy Directive) | publications.europa.eu | leads-and-crm
+   Regulation a | Gesetz gegen den unlauteren Wettbewerb, § 7 | gesetze-im-internet.de | leads-and-crm
+   Regulation a | Privacy and Electronic Communications (EC Directive) Regulat | legislation.gov.uk | leads-and-crm
+   Regulation a | 47 CFR 64.1200, delivery restrictions | law.cornell.edu | leads-and-crm
+   Practitioner | The Short Life of Online Sales Leads | hbr.org | leads-and-crm
+   Practitioner | SmartCompany summary | smartcompany.com.au | leads-and-crm
+   Practitioner | Dealerships' responsiveness to internet leads hits record hi | autoremarketing.com | leads-and-crm
+   Practitioner | Hundreds of car dealers claim they have cancelled Auto Trade | cardealermagazine.co.uk | leads-and-crm
+   Company fili | Lithia & Driveway 2025 results | investors.lithiadriveway.com | deals-and-sales-
+   Regulation a | Regulation (EU) No 910/2014 (eIDAS) | publications.europa.eu | deals-and-sales-
+   Regulation a | Umsatzsteuergesetz § 25a Differenzbesteuerung | gesetze-im-internet.de | deals-and-sales-
+   Regulation a | Abgabenordnung § 147 | gesetze-im-internet.de | deals-and-sales-
+   Regulation a | Bürgerliches Gesetzbuch § 476 | gesetze-im-internet.de | deals-and-sales-
+   Regulation a | Wet op de omzetbelasting 1968 | wetten.overheid.nl | deals-and-sales-
+   Regulation a | Using the global accounting VAT margin scheme | gov.uk | deals-and-sales-
+   Regulation a | VAT in the Digital Age | taxation-customs.ec.europa.eu | deals-and-sales-
+   Regulation a | UCC § 9-105 Control of electronic chattel paper | law.cornell.edu | deals-and-sales-
+   Regulation a | 16 CFR 433.2 Holder Rule | law.cornell.edu | deals-and-sales-
+   Regulation a | Voertuig op naam van een klant zetten | rdw.nl | registration-and
+   Regulation a | Personenauto: hoe bereken ik de bpm? | belastingdienst.nl | registration-and
+   Regulation a | Bpm afschrijving gebruikte motorrijtuigen | belastingdienst.nl | registration-and
+   Regulation a | Teruggaaf bpm bij export gebruikt motorrijtuig | belastingdienst.nl | registration-and
+   Regulation a | Wie moet de belasting op de inverkeerstelling betalen? | vlaanderen.be | registration-and
+   Regulation a | What is exportation | taxation-customs.ec.europa.eu | registration-and
+   Regulation a | Vehicle tax rate tables | gov.uk | registration-and
+   Regulation a | Electronic Lien and Title Program | dmv.ca.gov | registration-and
+   Company engi | Designing robust and predictable APIs with idempotency | stripe.com | registration-and
+   Product and  | Fortellis home page | fortellis.io | dms-integration
+   Product and  | Automotive Partner Cloud | tekion.com | dms-integration
+   Product and  | Keyloop Developer | developer.keyloop.io | dms-integration
+   Product and  | About us | keyloop.com | dms-integration
+   Product and  | Pinewood Technologies Group FY24 Annual Report | pinewood.ai | dms-integration
+   Product and  | incadea home page | incadea.com | dms-integration
+   Product and  | Reynolds & Reynolds integration | dealerfunnel.com | dms-integration
+   Company fili | 8-K, June 2024 | sec.gov | dms-integration
+   Company fili | 8-K, June 2024 | sec.gov | dms-integration
+   Court or com | FTC challenges CDK Global's proposed acquisition of competit | ftc.gov | dms-integration
+   Encyclopedia | Dealer-Management-System | dewiki.de | dms-integration
+   Practitioner | Reynolds and Reynolds announces the Reynolds Certified Inter | fi-magazine.com | dms-integration
+   Practitioner | CDK agrees to $100M settlement in dealership class action | repairerdrivennews.com | dms-integration
+   Practitioner | Tekion slams CDK with a federal antitrust lawsuit | cbtnews.com | dms-integration
+   Practitioner | Motive Retail's MIX platform joins Dealertrack's integration | autoremarketing.com | dms-integration
+   Practitioner | STAR introduces new API to standardize sales lead data | autoremarketing.com | dms-integration
+   Company fili | Hertz Global Holdings Form 10-K for fiscal 2025 | sec.gov | b2b-trade-and-re
+   Product and  | Autorola home page | autorola.com | b2b-trade-and-re
+   Product and  | Manheim UK home page | manheim.co.uk | b2b-trade-and-re
+   Product and  | Cox Automotive Europe | coxautoinc.eu | b2b-trade-and-re
+   Product and  | Manheim Express | coxautoinc.eu | b2b-trade-and-re
+   Practitioner | Cox Automotive launches tool to check batteries of EVs runni | autoremarketing.com | b2b-trade-and-re
+   Regulation a | Council Directive (EU) 2018/1910 | publications.europa.eu | b2b-trade-and-re
+   Regulation a | BPM | belastingdienst.nl | b2b-trade-and-re
+   Product and  | Omvang autoleasepark stabiliseert in 2025 | vna-lease.nl | b2b-trade-and-re
+   Practitioner | Gebrauchtwagenhandel in der EU wächst: Manheim Express start | autohaus.de | b2b-trade-and-re
+===== Tenancy, access, billing, data licensing and data law 86
+   Regulation a | Regulation (EU) 2023/2854 (Data Act) | publications.europa.eu | introduction
+   Regulation a | Regulation (EU) 2016/679 (General Data Protection Regulation | publications.europa.eu | where-vehicle-pl
+   Regulation a | 18 U.S.C. § 2721, Driver's Privacy Protection Act | law.cornell.edu | where-vehicle-pl
+   Regulation a | §39 StVG | gesetze-im-internet.de | vehicle-data-eco
+   Regulation a | Belgian e-invoicing | einvoice.belgium.be | dealer-and-data-
+   Regulation a | Gegevens die de RDW registreert | rdw.nl | registers-and-of
+   Regulation a | Release of information from DVLA's registers (INF266) | assets.publishing.service.gov.uk | registers-and-of
+   Regulation a | vehicle history providers | vehiclehistory.bja.ojp.gov | registers-and-of
+   Court or com | Judgment in C-319/22, *Gesamtverband Autoteile-Handel v Scan | publications.europa.eu | vehicle-history
+   Regulation a | Directive 96/9/EC on the legal protection of databases | publications.europa.eu | market-data
+   Court or com | Feist Publications v Rural Telephone Service*, 499 U.S. 340 | law.cornell.edu | market-data
+   Regulation a | Guidelines 01/2020 on processing personal data in the contex | edpb.europa.eu | ev-battery-healt
+   Regulation a | Guidance on vehicle data, accompanying Regulation (EU) 2023/ | publications.europa.eu | ev-battery-healt
+   Regulation a | Regulation (EU) 2018/858 | publications.europa.eu | connected-vehicl
+   Regulation a | Delegated Regulation (EU) 2021/1244 | publications.europa.eu | connected-vehicl
+   Regulation a | Procedure file 2025/0097(COD) | oeil.secure.europarl.europa.eu | connected-vehicl
+   Regulation a | § 25 TDDDG | gesetze-im-internet.de | connected-vehicl
+   Regulation a | Privacy and Electronic Communications Regulations 2003, regu | legislation.gov.uk | connected-vehicl
+   Court or com | FTC finalizes order with General Motors and OnStar | ftc.gov | connected-vehicl
+   Regulation a | California Consumer Privacy Act | oag.ca.gov | connected-vehicl
+   Regulation a | Budget 2025 | gov.uk | deals-and-sales-
+   Practitioner | Germany: guidelines for complying with first phase of e-invo | kpmg.com | deals-and-sales-
+   Practitioner | Car dealerships are being disrupted by a multi-day outage af | clickondetroit.com | tenancy-and-deal
+   Practitioner | Jaarbericht 2025 | com-back.vanmossel.com | tenancy-and-deal
+   Product and  | AWS Key Management Service pricing | aws.amazon.com | tenancy-and-deal
+   Product and  | SaaS Lens: Silo, Pool, and Bridge Models | docs.aws.amazon.com | tenancy-and-deal
+   Product and  | SaaS Tenant Isolation Strategies: tier-based isolation | docs.aws.amazon.com | tenancy-and-deal
+   Product and  | SaaS Architecture Fundamentals: control plane vs. applicatio | docs.aws.amazon.com | tenancy-and-deal
+   Product and  | Tenancy models for a multitenant solution | learn.microsoft.com | tenancy-and-deal
+   Product and  | Tenant lifecycle considerations | learn.microsoft.com | tenancy-and-deal
+   Product and  | Noisy Neighbor antipattern | learn.microsoft.com | tenancy-and-deal
+   Product and  | Row Security Policies | postgresql.org | tenancy-and-deal
+   Product and  | Filters | doctrine-project.org | tenancy-and-deal
+   Product and  | Multi-tenant applications | docs.citusdata.com | tenancy-and-deal
+   Product and  | Baggage | opentelemetry.io | tenancy-and-deal
+   Regulation a | FTC Safeguards Rule: What Your Business Needs to Know | ftc.gov | tenancy-and-deal
+   Regulation a | Automobile Dealers and the FTC's Safeguards Rule: FAQs | ftc.gov | tenancy-and-deal
+   Regulation a | 16 CFR 314.4 | law.cornell.edu | tenancy-and-deal
+   Regulation a | Betriebsverfassungsgesetz §87 | gesetze-im-internet.de | tenancy-and-deal
+   Regulation a | Wet op de ondernemingsraden | wetten.overheid.nl | tenancy-and-deal
+   Company engi | Multi-tenant data isolation with PostgreSQL Row Level Securi | aws.amazon.com | tenancy-and-deal
+   Product and  | Bridge Federation Single Sign On | coxautoinc.com | identity-access-
+   Product and  | CDK Unify | cdkglobal.com | identity-access-
+   Product and  | Support for CIAM and Multi-tenancy (Keycloak Organizations) | keycloak.org | identity-access-
+   Product and  | Keycloak 26.0.0 released | keycloak.org | identity-access-
+   Product and  | What is OpenFGA | openfga.dev | identity-access-
+   Product and  | Query consistency | openfga.dev | identity-access-
+   Product and  | Auth0 Organizations overview | auth0.com | identity-access-
+   Product and  | Use SCIM to provision users and groups | learn.microsoft.com | identity-access-
+   Standard or  | OpenID Connect Core 1.0 | openid.net | identity-access-
+   Standard or  | RFC 7644: SCIM Protocol | rfc-editor.org | identity-access-
+   Standard or  | RFC 8693: OAuth 2.0 Token Exchange | rfc-editor.org | identity-access-
+   Standard or  | RFC 9700: Best Current Practice for OAuth 2.0 Security | rfc-editor.org | identity-access-
+   Standard or  | NIST SP 800-63B-4: Authentication and Authenticator Manageme | pages.nist.gov | identity-access-
+   Standard or  | OWASP API Security Top 10 2023: API1 Broken Object Level Aut | owasp.org | identity-access-
+   Research     | Zanzibar: Google's Consistent, Global Authorization System | usenix.org | identity-access-
+   Practitioner | Feature Toggles (aka Feature Flags) | martinfowler.com | identity-access-
+   Practitioner | Report on Pinewood Technologies' purchase of Lithia's North  | autoremarketing.com | onboarding-and-c
+   Product and  | Platform multitenant architecture | architect.salesforce.com | onboarding-and-c
+   Product and  | Reducing skipped records in ServiceNow upgrades | servicenow.com | onboarding-and-c
+   Regulation a | Do you know how to tell DVLA online that you've sold or tran | insidedvla.blog.gov.uk | onboarding-and-c
+   Product and  | Recording usage | docs.stripe.com | billing-and-mete
+   Product and  | Configure meters | docs.stripe.com | billing-and-mete
+   Company fili | Stripe completes Metronome acquisition | stripe.com | billing-and-mete
+   Product and  | Query-based billing | docs.withorb.com | billing-and-mete
+   Product and  | What is the Direct Debit Guarantee? | stripe.com | billing-and-mete
+   Product and  | SEPA timings | gocardless.com | billing-and-mete
+   Regulation a | Directive (EU) 2015/2366 on payment services (PSD2) | publications.europa.eu | billing-and-mete
+   Standard or  | IFRS 15 Revenue from Contracts with Customers | ifrs.org | billing-and-mete
+   Practitioner | E-Rechnungen: Ende der Übergangsfrist | ihk.de | billing-and-mete
+   Court or com | South Dakota v. Wayfair, Inc., 585 U.S. (2018) | supremecourt.gov | billing-and-mete
+   Regulation a | KADOE Fee Paying Contract, version 4.0 | assets.publishing.service.gov.uk | data-licensing-a
+   Regulation a | KADOE API guide | developer-portal.driver-vehicle-licensing.api.gov.uk | data-licensing-a
+   Standard or  | ODRL Information Model 2.2 | w3.org | data-licensing-a
+   Standard or  | SP 800-162: Guide to Attribute Based Access Control | csrc.nist.gov | data-licensing-a
+   Product and  | Open Policy Agent documentation | openpolicyagent.org | data-licensing-a
+   Regulation a | Can we identify an individual indirectly? | ico.org.uk | data-licensing-a
+   Regulation a | Automatic number plate recognition guidance | ico.org.uk | data-products-an
+   Regulation a | § 2725 | law.cornell.edu | data-products-an
+   Court or com | Judgment C-582/14 *Breyer | publications.europa.eu | privacy-and-rete
+   Court or com | Judgment C-413/23 P *EDPS v SRB | publications.europa.eu | privacy-and-rete
+   Regulation a | Guidelines 07/2020 on the concepts of controller and process | edpb.europa.eu | privacy-and-rete
+   Regulation a | Right to erasure | ico.org.uk | privacy-and-rete
+   Regulation a | Adequacy decisions | commission.europa.eu | privacy-and-rete
+   Court or com | Press release 106/25, *Latombe v Commission* (T-553/23) | curia.europa.eu | privacy-and-rete
+   Regulation a | Data (Use and Access) Act 2025 | legislation.gov.uk | privacy-and-rete
+===== Vehicle data APIs, events and data products 48
+   Company fili | Information Statement of Mobility Global | sec.gov | vehicle-data-eco
+   Company engi | APIs at Stripe: versioning | stripe.com | vehicle-data-api
+   Company engi | Introducing Stripe's new API release process | stripe.com | vehicle-data-api
+   Standard or  | AIP-185: API versioning | google.aip.dev | vehicle-data-api
+   Standard or  | AIP-181: Stability levels | google.aip.dev | vehicle-data-api
+   Standard or  | AIP-180: Backwards compatibility | google.aip.dev | vehicle-data-api
+   Product and  | Microsoft Azure REST API guidelines | github.com | vehicle-data-api
+   Standard or  | RFC 9457 Problem Details for HTTP APIs | rfc-editor.org | vehicle-data-api
+   Standard or  | RFC 9745 The Deprecation HTTP Response Header Field | rfc-editor.org | vehicle-data-api
+   Standard or  | RFC 8594 The Sunset HTTP Header Field | rfc-editor.org | vehicle-data-api
+   Standard or  | RateLimit header fields for HTTP (draft -11) | datatracker.ietf.org | vehicle-data-api
+   Standard or  | OpenAPI Specification 3.1.0 | spec.openapis.org | vehicle-data-api
+   Standard or  | JSON Schema specification | json-schema.org | vehicle-data-api
+   Standard or  | STAR standards overview | starstandard.org | vehicle-data-api
+   Company engi | Fairness in multi-tenant systems | aws.amazon.com | vehicle-data-api
+   Practitioner | Listing Creation API FAQ | listing-creation.api.autoscout24.com | events-webhooks-
+   Product and  | Webhooks | docs.stripe.com | events-webhooks-
+   Company fili | CDK Global introduces new modern API tools | businesswire.com | events-webhooks-
+   Company engi | Make data migration easy with Debezium and Apache Kafka | adevinta.com | events-webhooks-
+   Standard or  | CloudEvents specification 1.0 | github.com | events-webhooks-
+   Standard or  | partitioning extension | github.com | events-webhooks-
+   Practitioner | CNCF announces the graduation of CloudEvents | cncf.io | events-webhooks-
+   Standard or  | Standard Webhooks specification | github.com | events-webhooks-
+   Standard or  | Standard Webhooks | standardwebhooks.com | events-webhooks-
+   Product and  | About change tracking | learn.microsoft.com | events-webhooks-
+   Practitioner | What do you mean by "Event-Driven"? | martinfowler.com | events-webhooks-
+   Practitioner | Pattern: Transactional outbox | microservices.io | events-webhooks-
+   Product and  | Outbox event router | debezium.io | events-webhooks-
+   Product and  | SQL Server connector | debezium.io | events-webhooks-
+   Product and  | Schema evolution and compatibility | docs.confluent.io | events-webhooks-
+   Product and  | De VWE Change of Ownership Lead Generator | vwe.nl | data-products-an
+   Product and  | Marktinzicht | vwe.nl | data-products-an
+   Product and  | automotiveMastermind homepage | automotivemastermind.com | data-products-an
+   Product and  | Aggregation policies | docs.snowflake.com | data-products-an
+   Product and  | Aggregation analysis rule | docs.aws.amazon.com | data-products-an
+   Regulation a | Neuzulassungen | kba.de | data-products-an
+   Product and  | CARFAX Europe, Dutch site | carfax.eu | consumer-vehicle
+   Product and  | App Store Review Guidelines | developer.apple.com | consumer-vehicle
+   Product and  | ML Kit | developers.google.com | consumer-vehicle
+   Regulation a | Directive (EU) 2019/770 on contracts for the supply of digit | publications.europa.eu | consumer-vehicle
+   Regulation a | Directive 2011/83/EU on consumer rights | publications.europa.eu | consumer-vehicle
+   Regulation a | Consumer Rights Act 2015, section 42 | legislation.gov.uk | consumer-vehicle
+   Regulation a | Consumer Contracts Regulations 2013, regulation 37 | legislation.gov.uk | consumer-vehicle
+   Regulation a | 35. BImSchV, § 2 | gesetze-im-internet.de | consumer-vehicle
+   Regulation a | Crit'Air certificate | service-public.gouv.fr | consumer-vehicle
+   Practitioner | Carfax motion to dismiss denied in DPPA crash-report data sa | dataprivacyandsecurityinsider.com | consumer-vehicle
+   Standard or  | OWASP API Security Top 10, API6: Unrestricted Access to Sens | owasp.org | consumer-vehicle
+   Product and  | Particulier | vwe.nl | case-vwe
+===== Reliability, scale, observability, security and privacy 50
+   Company fili | AutoNation Form 8-K (CDK incident) | sec.gov | where-vehicle-pl
+   Company fili | AutoNation Form 8-K (update and EPS estimate) | sec.gov | where-vehicle-pl
+   Standard or  | OWASP API Security Top 10 (2023) | owasp.org | where-vehicle-pl
+   Regulation a | rate limits | documentation.history.mot.api.gov.uk | registers-and-of
+   Practitioner | Car dealers report CDK impact to SEC | cyberscoop.com | dms-integration
+   Practitioner | The CDK Global outage: explaining how it happened | techtarget.com | dms-integration
+   Standard or  | API4:2023 Unrestricted Resource Consumption | owasp.org | billing-and-mete
+   Company engi | SLOs for Critical User Interactions | tech.autoscout24.com | reliability-and-
+   Regulation a | Onderhoud en storingen | rdw.nl | reliability-and-
+   Regulation a | Business Partner Automation program | dmv.ca.gov | reliability-and-
+   Standard or  | OWASP API10:2023 Unsafe Consumption of APIs | owasp.org | reliability-and-
+   Regulation a | #StopRansomware Guide | cisa.gov | reliability-and-
+   Product and  | REL12-BP05 Conduct game days regularly | docs.aws.amazon.com | reliability-and-
+   Company engi | Avoiding fallback in distributed systems | aws.amazon.com | reliability-and-
+   Company engi | Exponential backoff and jitter | aws.amazon.com | reliability-and-
+   Book         | Service Level Objectives | sre.google | reliability-and-
+   Book         | Handling Overload | sre.google | reliability-and-
+   Book         | Addressing Cascading Failures | sre.google | reliability-and-
+   Practitioner | Circuit Breaker | martinfowler.com | reliability-and-
+   Book         | Release It! Second Edition | pragprog.com | reliability-and-
+   Company engi | Impact of Karpenter | tech.autoscout24.com | scale-and-cost
+   Product and  | Amazon S3 Intelligent-Tiering | aws.amazon.com | scale-and-cost
+   Product and  | Places API policies | developers.google.com | scale-and-cost
+   Standard or  | FOCUS specification | focus.finops.org | scale-and-cost
+   Standard or  | Metrics supplementary guidelines | opentelemetry.io | scale-and-cost
+   Practitioner | Allocation | finops.org | scale-and-cost
+   Company engi | Caching challenges and strategies | aws.amazon.com | scale-and-cost
+   Practitioner | CDK Global cyberattack cripples 15,000 US auto dealerships | helpnetsecurity.com | observability-an
+   Book         | Monitoring Distributed Systems | sre.google | observability-an
+   Practitioner | OpenTelemetry project page | cncf.io | observability-an
+   Product and  | Traces: span links | opentelemetry.io | observability-an
+   Standard or  | Trace Context | w3.org | observability-an
+   Product and  | Freshness checks | docs.soda.io | observability-an
+   Regulation a | FTC amends Safeguards Rule to require non-banking financial  | ftc.gov | observability-an
+   Regulation a | Wet op de ondernemingsraden, art. 27 | wetten.overheid.nl | observability-an
+   Practitioner | CDK Global paid ransom, blockchain analysis suggests | cyberscoop.com | vehicle-platform
+   Practitioner | CDK Global cyberattack impacts thousands of US car dealershi | bleepingcomputer.com | vehicle-platform
+   Product and  | Secret scanning partner program | docs.github.com | vehicle-platform
+   Standard or  | API2 broken authentication | owasp.org | vehicle-platform
+   Standard or  | API9 improper inventory management | owasp.org | vehicle-platform
+   Regulation a | Directive (EU) 2022/2555 (NIS2) | publications.europa.eu | vehicle-platform
+   Regulation a | Commission Implementing Regulation (EU) 2024/2690 | publications.europa.eu | vehicle-platform
+   Regulation a | Cyberbeveiligingswet (NIS2) | ncsc.nl | vehicle-platform
+   Regulation a | NIS-2-regulierte Unternehmen | bsi.bund.de | vehicle-platform
+   Regulation a | Cyber Security and Resilience Bill | gov.uk | vehicle-platform
+   Regulation a | Cyber Essentials overview | ncsc.gov.uk | vehicle-platform
+   Standard or  | SOC suite of services | aicpa-cima.com | vehicle-platform
+   Practitioner | Hacking Kia: Remotely Controlling Cars With Just a License P | samcurry.net | vehicle-platform
+   Practitioner | Web Hackers vs. The Auto Industry | samcurry.net | vehicle-platform
+   Practitioner | Gratis parkeren op kenteken inbreuk op privacy? | binnenlandsbestuur.nl | privacy-and-rete
+===== End-to-end journeys 1
+   Regulation a | Fix mistakes on your MOT record | gov.uk | journey-data-cor
+===== Architecture method, organization, modernization and AI 43
+   Product and  | Occasion Manager | vwe.nl | dealer-and-data-
+   Company fili | Cox Automotive's vAuto and UVeye bring AI-powered vehicle in | coxautoinc.com | condition-and-da
+   Company fili | Schneller zum Abschluss: Plattform-Update Sommer 2026 | newsroom.mobile.de | leads-and-crm
+   Regulation a | Regulation (EU) 2022/2554 (DORA) | publications.europa.eu | build-buy-or-par
+   Company fili | Cox Automotive Goes All-In on AWS | press.aboutamazon.com | one-platform-fro
+   Company fili | Cox Automotive's VinSolutions Embeds Fullpath's AI-Powered C | coxautoinc.com | one-platform-fro
+   Company fili | International Business of CDK Global Becomes Keyloop | kyodonewsprwire.jp | one-platform-fro
+   Company engi | re:Invent 2019 ARC212-R session report: Cox Automotive Well- | dev.classmethod.jp | one-platform-fro
+   Practitioner | StranglerFigApplication | martinfowler.com | one-platform-fro
+   Product and  | Auto Trader case study | istio.io | organizing-engin
+   Court or com | Judgment in Case C-518/15, Matzak | publications.europa.eu | organizing-engin
+   Court or com | Judgment in Case C-344/19, Radiotelevizija Slovenija | publications.europa.eu | organizing-engin
+   Regulation a | 29 CFR 785.17 On-call time | law.cornell.edu | organizing-engin
+   Regulation a | Works Constitution Act (Betriebsverfassungsgesetz), English  | gesetze-im-internet.de | organizing-engin
+   Regulation a | Kodeks pracy, art. 151⁵ | lexlege.pl | organizing-engin
+   Practitioner | Team Topologies key concepts | teamtopologies.com | organizing-engin
+   Practitioner | How to Move Beyond a Monolithic Data Lake to a Distributed D | martinfowler.com | organizing-engin
+   Practitioner | Scaling the Practice of Architecture, Conversationally | martinfowler.com | organizing-engin
+   Practitioner | Documenting Architecture Decisions | cognitect.com | organizing-engin
+   Book         | Being On-Call | sre.google | organizing-engin
+   Company engi | How the UK's largest automotive marketplace is innovating wi | cloud.google.com | modernizing-the-
+   Practitioner | Monolith to microservices: CARFAX, Solo and AWS | solo.io | modernizing-the-
+   Company engi | Decomposition Journey at CarGurus: From Monolith to Microser | cargurus.dev | modernizing-the-
+   Product and  | Deprecating password authentication | developer.github.com | modernizing-the-
+   Company engi | Scientist: Measure Twice, Cut Over Once | github.blog | modernizing-the-
+   Company engi | Online migrations at scale | stripe.com | modernizing-the-
+   Practitioner | Patterns of Legacy Displacement | martinfowler.com | modernizing-the-
+   Practitioner | Parallel Change | martinfowler.com | modernizing-the-
+   Company fili | Cox Automotive integrates CRM, service and inventory acquisi | coxautoinc.com | ai-in-dealer-wor
+   Company fili | Cox Automotive to acquire Fullpath | coxautoinc.com | ai-in-dealer-wor
+   Company engi | From Slack to Diagnosis: Building an AI Debugging Agent for  | tech.autoscout24.com | ai-in-dealer-wor
+   Standard or  | Model Context Protocol specification: Authorization | modelcontextprotocol.io | ai-in-dealer-wor
+   Standard or  | OWASP Top 10 for LLM Applications: LLM06 Excessive Agency | genai.owasp.org | ai-in-dealer-wor
+   Practitioner | I Am Robot: California's New Law Requires Disclosure of Use  | perkinscoie.com | ai-in-dealer-wor
+   Practitioner | Airline ordered to compensate a BC man because its chatbot p | mondaq.com | ai-in-dealer-wor
+   Practitioner | Chevrolet Dealer's Chatbot Agrees to Sell Tahoe for $1 | cata.info | ai-in-dealer-wor
+   Practitioner | EU AI Act Omnibus Agreement: Postponed High-Risk Deadlines a | gibsondunn.com | ai-in-dealer-wor
+   Company fili | Retail Price Index, December 2023 | plc.autotrader.co.uk | evolving-the-veh
+   Company engi | Why you should be testing your architecture | medium.com | evolving-the-veh
+   Company fili | Mobility Global 8-K exhibit | sec.gov | evolving-the-veh
+   Book         | Residues: Time, Change, and Uncertainty in Software Architec | leanpub.com | evolving-the-veh
+   Book         | Building Evolutionary Architectures, 2nd edition | thoughtworks.com | evolving-the-veh
+   Research     | Model Cards for Model Reporting | arxiv.org | toolkit
+===== Company records and case evidence 56
+   Company fili | Full year results for the year ended 31 March 2025 | plc.autotrader.co.uk | introduction
+   Company fili | Full year results for the year ended 31 March 2026 | plc.autotrader.co.uk | introduction
+   Company fili | Cox Automotive Corporate Fact Sheet | coxautoinc.com | where-vehicle-pl
+   Practitioner | Wallets tied to CDK ransom group received $25 million | cyberscoop.com | where-vehicle-pl
+   Company fili | Cox Enterprises announces formation of Cox Automotive | coxautoinc.com | vehicle-data-eco
+   Company fili | CDK Global Form 10-K for fiscal 2021 | sec.gov | vehicle-data-eco
+   Practitioner | AutoScout24 neemt AutoTrack en Gaspedaal over | autorai.nl | vehicle-data-eco
+   Encyclopedia | CDK Global | en.wikipedia.org | vehicle-data-eco
+   Encyclopedia | Auto Trader Group | en.wikipedia.org | vehicle-data-eco
+   Company fili | Full year results, year ended 31 March 2023 | plc.autotrader.co.uk | vehicle-capabili
+   Company fili | CDK Global Form 10-Q, quarter ended 31 December 2020 | sec.gov | dms-integration
+   Practitioner | Autorola reprend une filiale de VWE Automotive | journalauto.com | b2b-trade-and-re
+   Company fili | VWE Automotive neemt XRAY Automotive over | vwe.nl | one-platform-fro
+   Company fili | Dealertrack Technologies Form 10-Q (Q2 2015) | sec.gov | case-cox-automot
+   Company engi | Cox Automotive case study | aws.amazon.com | case-cox-automot
+   Company engi | Adapting to change with data patterns on AWS: the curate clo | aws.amazon.com | case-cox-automot
+   Company engi | Cox Automotive Lakeflow Jobs customer story | databricks.com | case-cox-automot
+   Company fili | Manheim Used Vehicle Value Index (April 2020) | coxautoinc.com | case-cox-automot
+   Product and  | eVA Valuations & Appraisals | coxautoinc.eu | case-cox-automot
+   Company engi | DataOps Unleashed: The Evolution of a Data Platform | brighttalk.com | case-cox-automot
+   Practitioner | Cox Automotive closes $4 billion Dealertrack acquisition | ajc.com | case-cox-automot
+   Practitioner | Cox Automotive launches open platform incadea DMS in the UK | am-online.com | case-cox-automot
+   Practitioner | Cox Automotive expands digital retail services in Europe via | internationalfleetworld.com | case-cox-automot
+   Practitioner | GÖRG berät Cox Automotive bei Übernahme von pkwNOW | goerg.de | case-cox-automot
+   Product and  | How Fortellis works | fortellis.io | case-cdk-global
+   Company fili | Equifax among inaugural developers in Fortellis | investor.equifax.com | case-cdk-global
+   Practitioner | CDK Global unveils technology updates at NADA Show | autoremarketing.com | case-cdk-global
+   Company fili | Keyloop acquires leading DMS provider SERTI | prnewswire.co.uk | case-cdk-global
+   Practitioner | Keyloop completes the acquisition of Automotive Transformati | silicon.co.uk | case-cdk-global
+   Practitioner | Keyloop reaches 50+ certified partners in its global partner | am-online.com | case-cdk-global
+   Company fili | Form 10-Q, August 2024 | sec.gov | case-cdk-global
+   Company fili | Form 10-Q, July 2024 | sec.gov | case-cdk-global
+   Company fili | Tekion files lawsuit against CDK Global's anticompetitive pr | businesswire.com | case-cdk-global
+   Research     | Dealer losses due to CDK cyberattack | andersoneconomicgroup.com | case-cdk-global
+   Regulation a | Attorney General Mark Brnovich's office obtains victory in d | azag.gov | case-cdk-global
+   Practitioner | CDK Global names Sudhakar Ramakrishna CEO | cbtnews.com | case-cdk-global
+   Regulation a | Full year results for the year ended 31 March 2024 (RNS) | data.fca.org.uk | case-auto-trader
+   Product and  | Autotrader Connect | autotrader.co.uk | case-auto-trader
+   Company engi | Unifying SQL transformation logic with a custom semantic mod | medium.com | case-auto-trader
+   Company engi | How buyers are affected by an AI-driven product: Price Indic | engineering.autotrader.co.uk | case-auto-trader
+   Company engi | Auto Trader UK customer story | cloud.google.com | case-auto-trader
+   Product and  | VWE homepage | vwe.nl | case-vwe
+   Product and  | MijnVWE | vwe.nl | case-vwe
+   Product and  | Finnik Zakelijk Taxeren | vwe.nl | case-vwe
+   Product and  | Vehicle characteristics | vwe.nl | case-vwe
+   Company fili | VWE krijgt nieuwe aandeelhouder: Main Capital Partners neemt | vwe.nl | case-vwe
+   Company fili | Main Capital Partners acquires a majority stake in VWE Autom | main.nl | case-vwe
+   Company fili | VWE Automotive and Main Capital Partners transaction | williamblair.com | case-vwe
+   Company fili | VWE en DAT Nederland lanceren weDAT | vwe.nl | case-vwe
+   Company fili | VWE kiest Financial Lease Partner als nieuwe financieringspa | vwe.nl | case-vwe
+   Company fili | VWE Automotive acquires AVN Group | vwe.nl | case-vwe
+   Company fili | VWE Automotive and NewPort Capital are entering into a colla | vwe.nl | case-vwe
+   Product and  | Indicata — company | indicata.com | case-vwe
+   Product and  | Autotelex homepage | autotelex.nl | case-vwe
+   Practitioner | Main Capital strikes deal for majority stake in VWE Automoti | pehub.com | case-vwe
+   Product and  | How the carVertical service works (NL help) | carvertical.com | case-vwe

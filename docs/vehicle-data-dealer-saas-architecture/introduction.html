@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Introduction: Architecture for Decisions About One Car</title>
+    <meta name="description" content="What is an architecture book about vehicle data and dealer software for, and how should you read it? It argues that such a platform sells decisions about one physical car, each only as good as the identity, provenance and freshness of the facts beneath it, compares the data half and the workflow half and five markets wherever their machinery differs, and routes you from the decision on your desk to the chapters that answer it.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Introduction: Architecture for Decisions About One Car">
+    <meta property="og:description" content="What is an architecture book about vehicle data and dealer software for, and how should you read it? It argues that such a platform sells decisions about one physical car, each only as good as the identity, provenance and freshness of the facts beneath it, compares the data half and the workflow half and five markets wherever their machinery differs, and routes you from the decision on your desk to the chapters that answer it.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/introduction.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/introduction/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-next" href="where-vehicle-platforms-go-wrong.html" title="Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Preface</p>
+        <h1>Introduction: Architecture for Decisions About One Car</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  23 min read · <a class="spec-link" href="introduction.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/introduction/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/introduction/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-next" href="where-vehicle-platforms-go-wrong.html" title="Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Introduction: Architecture for Decisions About One Car", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "What is an architecture book about vehicle data and dealer software for, and how should you read it? It argues that such a platform sells decisions about one physical car, each only as good as the identity, provenance and freshness of the facts beneath it, compares the data half and the workflow half and five markets wherever their machinery differs, and routes you from the decision on your desk to the chapters that answer it.", "permalink": "introduction", "timetoread": "23 min read", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Learn what this book argues, who it is for and how its ten parts are organized; find the chapter for the decision in front of you; see how it compares the data half with the workflow half, and five markets with each other; and learn to tell the six kinds of statement apart.\n\n> **WHY THE BUSINESS CARES:** The business earns its money on decisions other people make with its facts: a dealer's buying price, an asking price, an insurer's acceptance, a lessor's reserve. It loses money and trust every time a fact belongs to the wrong car, has no known source, is out of date or stays wrong after a correction.\n\n> **WHY ARCHITECTS SHOULD CARE:** The facts about one car cross registers, manufacturers, insurers, workshops, portals, dealer management systems and dozens of the platform's own products. The Chief Architect is one of the few people who sees all of them, and must decide what a data business and a software business under one roof should share.\n\n> **KEY POINTS:**\n>\n> * **The platform sells decisions about one physical car.** What it is, what happened to it, what it is worth, what to pay, what to ask, where to advertise it and who now owns it. Judge the architecture by how reliably the facts beneath those decisions travel: keyed to the right car, carrying their source, date and license, fresh enough for the decision, and corrected everywhere they spread.\n> * **Two halves need each other and pull apart, and five markets differ in the same places.** Vehicle data services sell facts by the call; dealer SaaS sells workflow by the rooftop. Share the vehicle key, the dossier, accounts, meters, licenses and events; keep release cadence, workflows and external contracts apart. Markets change registers, sources and rules, so keep one core and write a market adapter or rule set for each difference.\n> * **Ten parts form a learning path, and a routing table lets you start with the decision on your desk.** Every statement says what kind of statement it is: dated documented fact, industry practice, labeled inference, the author's recommendation, labeled assumption, or an illustration from Axleby, the fictional group the book follows.\n\n<br>\nOn a Saturday morning, a buyer sits at the desk of an independent used-car dealer with three pieces of paper in front of him. The portal advert he answered shows a 2022 plug-in hybrid estate in the higher trim, at €27,950. The consumer history report he bought the night before, by plate, says **\"no damage recorded\"**. The dealer's own screen shows the same car at €26,450, in the lower trim, with a repaired rear quarter panel photographed at appraisal. The buyer asks a simple question: **which of these is true?**\n\n![A buyer at a dealer's desk compares a portal advert at €27,950, a history report stamped no damage recorded and a dealer screen at €26,450 showing a repaired panel, asking which is true.](assets/images/introduction/introduction-three-papers.jpeg)\n**Figure 1:** *The buyer's Saturday question: an advert, a history report and the dealer's screen describe one car three ways, and no team owns the answer.*\n\nOn Monday every team can show that its system worked. The portal displayed the last feed it received, two price changes old because an update had failed silently. The history report was correct about the sources it checked; the repair was paid privately and never reached an insurer. The valuation was right for the edition the appraiser picked from a drop-down list, which was the wrong one. Nobody owns the buyer's question, because it is about **one physical car and the facts different systems hold about it**.\n\nThe reasons are architectural. The specification was never resolved from the VIN (vehicle identification number), so the edition was a guess. The report did not say which sources it had checked, so \"no damage recorded\" read as \"no damage\". The advert held a copy of the price, and nothing compared what the portal showed with what the dealer intended. **The buyer's question is an architecture question**: an identity never resolved, a provenance never shown, a copy never reconciled.\n\nThis book is about answering that kind of question, and about designing vehicle data and dealer software platforms where it is asked less often.\n\n## Who This Book Is For\n\nThe book is written for people who are accountable for how the systems of a vehicle data or dealer software business fit together:\n\n- **Chief and enterprise architects** of vehicle-data companies, dealer-software vendors and groups that run both.\n- **Principal and staff engineers, and data, valuation, integration and platform-engineering leads**, who own one step of a car's journey and need to understand the steps on either side of it.\n- **Product and engineering directors** of portals, lessors, insurers, remarketing businesses and dealer groups that build their own tooling.\n\nThe book takes the perspective of **a Chief Architect of a group that sells both vehicle data and dealer software**. Most of the reasoning applies to a company that sells only one; the trade-offs are drawn at group scale, where keying a car two ways becomes visible.\n\n**What it assumes.** Architecture literacy: you know what an API, an event stream, a cache, a data warehouse and a cloud region are, and you have made and defended architecture decisions. The book does not explain them.\n\n**What it does not assume.** Automotive retail, register, valuation and regulatory vocabulary. Rooftops, days-to-turn, maximum purchase price, the margin scheme, registration in a new name (*tenaamstellen*), the dealer management system (DMS), the Dutch national odometer registry (NAP), state of health (SoH) for batteries and the EU Data Act are each defined where they first matter, in the chapter that owns them.\n\n## The Argument: Decisions About One Car\n\nA vehicle data and dealer SaaS platform sells **decisions about one physical car**. Seven questions recur, in roughly the order a car meets them in a dealer's hands:\n\n| Decision | The question | The facts it rests on | Where the book answers it |\n| --- | --- | --- | --- |\n| **Identify** | What is this car, exactly? | VIN, plate assignments, edition and factory options | [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html) |\n| **Check** | What happened to it? | Damage, odometer readings, title brands, inspections, ownership changes | [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html), [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html) |\n| **Value** | What is it worth? | Comparable market evidence, condition, battery health, the valuation model's confidence | [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html), [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html) |\n| **Buy** | What should the dealer pay? | Value range, reconditioning cost, holding cost, target margin, VAT regime | [Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html) |\n| **Price** | What should the dealer ask? | Price position against the market, stand-time, demand | [Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html) |\n| **Advertise** | Where, and with what words and pictures? | The dossier, the resolved specification, the price, channel rules | [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html), [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) |\n| **Transfer** | Who owns it now? | The deal, the registration transaction, proof from the register | [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html), [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) |\n\nEach decision is **only as good as the facts beneath it**, and four properties make a fact fit to decide on:\n\n1. **It belongs to the right car**: keyed to the physical vehicle, not to a plate that moves between cars or a stock number that changes when a car moves rooftop.\n2. **Its source is known**: who said it, when, under which license and with what confidence.\n3. **It is fresh enough for the decision**: a register status for a sale must be live; a specification decoded last year is still good.\n4. **It is corrected everywhere it spread**: a supplier's fix reaches every valuation, report, advert and client copy built on the wrong value.\n\nThe book's central claim follows: **the architecture is judged by how reliably those facts travel**: from registers, manufacturers, insurers, workshops and portals into one vehicle record; from that record into valuations, adverts, leads, contracts and official transactions; and back out, corrected, when a fact turns out to be wrong.\n\n![Sources feed one vehicle record; it feeds the data half and the workflow half, both of which feed decisions; decisions return new facts to the record, and a correction arrives at the record.](assets/images/introduction/introduction-facts-into-decisions.jpeg)\n**Figure 2:** *Facts flow into one vehicle record and out into decisions made by both halves; the decisions produce new facts, and a correction must travel the same paths back.*\n\nThe chapters work on one property or one decision at a time. The last chapter of Part IX, [Built for the Next Shock: Evolving the Platform Over a Decade](evolving-the-vehicle-platform.html), draws them into twelve **fitness functions** a group can measure every quarter, among them identity merge precision, correction propagation time, publish and withdrawal lag, lead delivery, segment valuation bias, cost per lookup and register outcome certainty.\n\n## Two Halves That Need Each Other\n\n**Vehicle data services**, the data half, sell authoritative facts and derived judgements (identity, specification, history, condition, valuation, market insight) by the call, the report, the file and the license. Their hard problems are **identity, provenance, licensing, freshness and accuracy**. One wrong fact in the data half is sold thousands of times.\n\n**Dealer SaaS**, the workflow half, sells software that dealers use to buy, stock, price, advertise, sell and register cars, usually by the **rooftop** (one physical dealership location) and the month. Its customers range from one-person lots to groups with a hundred rooftops. Its hard problems are **workflow fit, tenancy, integration and distribution**: syndicating stock to dozens of portals, routing leads into customer relationship management (CRM) systems and DMS products the platform does not control, and billing a mix of subscriptions and per-lookup fees. One broken hop in the workflow half stops a dealer.\n\nThe halves need each other. [Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html) shows that **data is what makes dealer software worth paying for, and dealer software is how data reaches the people who decide**, producing new data with every appraisal, advert and sale; Auto Trader UK bundles valuations into retailer packages, and Cox Automotive estimates US retail sales from its inventory software's stock observations. [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) turns that into requirements: a dealer's thin gross shrinks every day a car stands, and a data provider earns cents on calls whose upstream cost may exceed the price.\n\nThe halves also pull apart: the data half needs external contracts that clients rely on for years, while the workflow half ships dealer-facing changes every week. The book's working rule, argued in [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html), [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html) and [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html), is **share the car, the customer and the meter; keep the release cadence, the workflow and the external contract**:\n\n| | Share across both halves | Keep separate per half or product |\n| --- | --- | --- |\n| **What** | Vehicle identity and the vehicle key; the vehicle dossier and its facts; accounts, tenants and entitlements; usage metering; the license and purpose register; the domain-event backbone | Release cadence; customer-facing workflows and screens; API contracts for external data clients; channel and supplier adapters as owned products |\n| **Why** | Same meaning in both halves; built twice, each one produces a failure pattern (two keys clone cars, two meters disagree) | They change at different speeds; sharing them couples a weekly dealer release to a five-year client contract |\n| **Where it is argued** | [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html), [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html), [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html) | [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html), [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html), [Living With the DMS: Dealer Management System Integration](dms-integration.html), [Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths](modernizing-the-platform.html) |\n\nA group that treats the halves as unrelated businesses pays twice for identity, accounts, meters and licenses, and its dealers type the same plate into three screens.\n\n## Five Markets, One Core\n\n**Registers, privacy positions, valuation providers, portals and DMS markets differ by country**, and the differences reach deep into the design. The book compares four columns: **the Netherlands and Belgium, Germany, the United Kingdom and the United States**. [Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html) describes each market's shape:\n\n| Market | The shape that matters for architecture |\n| --- | --- |\n| **Netherlands / Belgium** | The Netherlands has an open, plate-keyed register (the RDW, *Rijksdienst voor het Wegverkeer*) with open data, a transaction channel for providers the book calls authorized information providers ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html) defines the term; it is not RDW's own title); data vendors there also sell dealer software. Belgium has a separate register and a mandatory mileage certificate (Car-Pass). |\n| **Germany** | A closed register at the Federal Motor Transport Authority (KBA), so no national mirror; two incumbent valuation and specification houses; DMS markets shaped by manufacturers. |\n| **United Kingdom** | One dominant portal that also sells data and software to retailers; open roadworthiness-test (MOT) history; a register, the Driver and Vehicle Licensing Agency (DVLA), with scarce live lookups. |\n| **United States** | No national vehicle register; history built by contributory networks and state title systems; a concentrated DMS market and the Driver's Privacy Protection Act on register data. |\n\nEvery chapter in Parts II to VII has a section titled **\"Across Markets: What Changes by Country\"**: a comparison table with those four columns, and a judgement on what stays common and what becomes a **market adapter**, a **rule set** or, rarely, a **separate product**. Where the markets are genuinely the same for a topic, the chapter says so in a paragraph rather than inventing differences.\n\nThe comparison rule the chapters keep arriving at is **one core, many adapters**. The identity graph is the same everywhere; plate normalization and cache lifetimes are per market ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)). The register gateway's credential, answer-class and audit model is common, but the Netherlands supports a full mirror and a synchronous transaction relay, the UK a mirror of inspection data, and Germany no mirror at all ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)). The meter and rating engine are common; price books, tax calculation, invoice channels and collection connectors are adapters ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)). Retention periods and breach clocks are country rule sets loaded per legal entity ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)). A market difference that seems to demand a fork of the core is a signal to look for the missing adapter.\n\nThe book's fictional group has no US customers. **The US column describes what a group entering that market would meet**, and it is there because US precedent (DMS access disputes, title brands, privacy law) shapes the whole industry.\n\n## How the Book Is Organized\n\nThe book opens with three preface pages, follows the car through seven parts, walks four end-to-end journeys in Part VIII, turns to the Chief Architect's agenda in Part IX, tests the patterns against public cases in Part X and ends with reference material. Each part's argument fits in a sentence:\n\n| Section | The part's argument | Chapters |\n| --- | --- | --- |\n| **Preface** | What the book is for, how vehicle platforms fail, and which group the examples follow | This page, [Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong](where-vehicle-platforms-go-wrong.html), [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html) |\n| **[Part I — MARKET: The Business of Vehicle Data and Dealer Software](part-1.html)** MARKET | **Nobody sees the whole car**; the economics of dealers, data and software become latency, freshness, accuracy and metering requirements; map capabilities, share the key-carrying ones first, and draw boundaries where words change meaning | 1–4: ecosystem, economics, capability map, bounded contexts and sources of truth |\n| **[Part II — VEHICLE: Identity, Specification and History](part-2.html)** VEHICLE | **Key the car, not the plate, and keep every fact with its source**; the golden record is a view | 5–10: identity, registers, specification, history, ingestion, provenance |\n| **[Part III — VALUE: Market Data, Valuation and Condition](part-3.html)** VALUE | **A value is a typed, evidenced answer with a confidence, not a number**; de-listings, inspections, battery readings and connected-car data are evidence with a method, a source and rights, not facts | 11–15: market data, valuation, condition, battery health, connected cars |\n| **[Part IV — DEALER: The Used-Car Workflow](part-4.html)** DEALER | **Every dealer action is a decision with a record**, and every hop to a portal, CRM, register or DMS must be confirmed, not assumed | 16–25: buying, stock, pricing, adverts, syndication, leads, deals, registration, DMS, B2B trade |\n| **[Part V — SAAS: Tenants, Access and the Commercial Model](part-5.html)** SAAS | **The tenant, the entitlement, the meter and the license are the commercial backbone**, shared by both halves and enforced on every request | 26–30: tenancy, identity, onboarding, billing, licensing |\n| **[Part VI — DISTRIBUTION: APIs, Events and Data Products](part-6.html)** DISTRIBUTION | **Sell blocks with outcomes, publish facts as events, and back every push with a pull**; aggregation is not anonymization, and a free check must yield nothing worth reselling | 31–34: APIs, events, data products, consumer checks |\n| **[Part VII — OPERATIONS: Running the Platform](part-7.html)** OPERATIONS | **The platform's availability is borrowed from registers, suppliers, portals and DMS vendors**, so design around budgets, labeled copies and honest queues | 35–39: reliability, cost, observability, security, privacy |\n| **[Part VIII — JOURNEYS: End-to-End Scenarios](part-8.html)** JOURNEYS | **Flows fail between systems, not inside them** | 40–43: inventory to portal, data correction, lead to DMS, sale to registration |\n| **[Part IX — LEADERSHIP: The Chief Architect's Agenda](part-9.html)** LEADERSHIP | **The Chief Architect decides what to share, buy, reorganize and retire**, and in what order | 44–49: sourcing, portfolio integration, organization, modernization, AI, evolution |\n| **[Part X — PRACTICE: How Others Built It](part-10.html)** PRACTICE | **The public record is richest on contracts, access and outages and silent on engines** | 50–53: Cox Automotive, CDK Global, Auto Trader UK, VWE |\n| **Reference** | The coverage map, templates, definitions and sources | [Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html), [Field Kit: Templates for the Vehicle Platform Architect](toolkit.html), [Glossary](glossary.html), [Bibliography](bibliography.html) |\n\n![A map of the book: Part I as the foundation, Parts II–III and Part IV as two blocks exchanging facts, Parts V–VII as the shared backbone, Part VIII as a road crossing both, Part IX steering the backbone and Part X testing Part IX.](assets/images/introduction/introduction-book-map.jpeg)\n**Figure 3:** *Parts II and III build the data half and Part IV the workflow half; Parts V to VII are the shared backbone that lets both halves run as one platform; Part VIII crosses every boundary; Part IX decides how the whole changes, and Part X tests it against the public record.*\n\nPart I is the one part not to skip: later chapters justify their targets by pointing back to it. Each chapter follows the same shape: opening callouts with three key points and the failure patterns it addresses; an Axleby scene that poses the question; concepts, architecture, documented practice and a worked example; failure handling, trade-offs and the \"Across Markets\" comparison; the Chief Architect's view; questions for a design review; and Sources and Evidence.\n\n### The JOURNEYS part\n\nDealers do not experience contexts; they experience flows, and **flows fail between systems, not inside them**. Part VIII follows four flows end to end:\n\n- [From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory](journey-inventory-to-portal.html): a trade-in through identity, appraisal, stock-in and pricing to an advert on seven channels, reconciled against what each portal shows.\n- [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html): a supplier's wrong odometer batch, and how the correction reaches every valuation, report, advert and API client that used it.\n- [From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html): a portal enquiry through deduplication, routing and a CRM adapter to a salesperson who acknowledges it, and its outcome back to attribution and, where the portal accepts it, to the portal.\n- [From Signed Contract to New Owner: Sale, Registration and Delisting](journey-sale-to-registration.html): a signed contract through withdrawn adverts, payment and a register transaction to delivery and the history event that records the new owner.\n\nEach journey has a sequence diagram, an owner and a consistency and latency requirement per hop, at least four failure cases with detection and recovery, the metrics that prove it works, and a short section on what changes in another market.\n\n## Start With the Decision in Front of You\n\nThe parts are a learning sequence for a first reading. If a decision is already waiting, find the row that matches it, read the chapter in the **Start with** column, and follow the **Then** column in order if you need more. Return to Part I whenever a term or a number is unfamiliar.\n\n| Your immediate need | Start with | Then |\n| --- | --- | --- |\n| The board asks whether the data business and the acquired dealer-software products should run on one platform | [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html) | [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html), [Drawing the Lines: Bounded Contexts, Entities and Sources of Truth](vehicle-bounded-contexts.html), [Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html) |\n| A history report mixed two cars, or the same car appears as several records across products | [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) | [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html), [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html), [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) |\n| Valuations, adverts and reports disagree about a car's edition and options, and the build-data invoice keeps growing | [What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html) | [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html), [Volumes, Peaks and Paid Lookups: Scalability and Operating Cost](scale-and-cost.html) |\n| A supplier sent a wrong batch, and the fix must reach every report, valuation, advert and client copy | [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) | [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html), [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html), [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html) |\n| Valuations drifted after the market moved, and dealers or a lessor say the numbers are wrong | [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) | [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html), [Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html) |\n| Appraisers keep buying cars at prices the market does not support | [Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html) | [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html), [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) |\n| Sold cars stay live on portals, or a portal's format change is discovered by a dealer | [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) | [From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory](journey-inventory-to-portal.html), [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html), [Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html) |\n| Leads disappear between portals, inboxes, CRMs and the DMS, and every hop reports success | [Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html) | [From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html), [Living With the DMS: Dealer Management System Integration](dms-integration.html), [Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html) |\n| A DMS vendor changes its access terms, or goes offline for weeks | [Living With the DMS: Dealer Management System Integration](dms-integration.html) | [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html), [CDK Global: The DMS as Platform, Gatekeeper and Single Point of Failure](case-cdk-global.html), [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) |\n| The register's transaction channel failed at month-end, and some registrations were submitted twice | [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) | [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html), [From Signed Contract to New Owner: Sale, Registration and Delisting](journey-sale-to-registration.html), [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html) |\n| A large dealer group wants single sign-on, group dashboards, its own isolation and a few special fields | [Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html) | [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html), [From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html), [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html) |\n| API clients dispute invoices, no-hit rules differ by product, or a batch client costs more than it pays | [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html) | [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html), [Volumes, Peaks and Paid Lookups: Scalability and Operating Cost](scale-and-cost.html), [Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html) |\n| A client resold data, or a supplier asks what was done with its data and for whom | [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) | [Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html), [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html), [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html) |\n| A legacy XML API and a dealer monolith must be retired while hundreds of clients and dealers depend on them | [Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths](modernizing-the-platform.html) | [Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html), [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html), [Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html) |\n| A scraper walks the free plate check, or leaked API keys turn up in a public sample | [Protecting Dealers and Data: Security for a Vehicle Data Platform](vehicle-platform-security.html) | [The Consumer Door: Plate Checks, Reports and B2C Services](consumer-vehicle-checks.html), [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html), [Volumes, Peaks and Paid Lookups: Scalability and Operating Cost](scale-and-cost.html) |\n| A consumer asks for everything about her and her cars to be deleted, or a regulator asks who scores owners' plates | [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html) | [Selling Insight: Enrichment, Market Insight and Predictive Data Products](data-products-and-insights.html), [Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html), [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) |\n| Dealers want AI agents to screen stock or make offers on their behalf | [AI on the Forecourt: Agents, Assistants and Automation](ai-in-dealer-workflows.html) | [Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html), [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), [Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html) |\n\nTwo rows start somewhere unexpected, on purpose. The overpaying row starts with acquisition, because the maximum purchase price is where a valuation's uncertainty becomes money. The build-data row starts with specification, because the cheapest paid lookup is the one the resolver decides not to buy.\n\n## How to Read the Evidence\n\n**Company-aware but company-neutral.** The book draws on the public record of Cox Automotive, CDK Global, Reynolds and Reynolds, Tekion, Keyloop, Auto Trader UK, Carfax, DAT, Autovista, VWE, mobile.de, AutoScout24 and others; on standards such as ISO 3779 for the VIN; and on regulation from the GDPR and the EU Data Act to the US Driver's Privacy Protection Act.\n\n**Six kinds of statement.** Architecture writing becomes unreliable when facts, habits, guesses, opinions, examples and estimates blur into one voice, so every chapter keeps them apart:\n\n| Kind of statement | What it is | How to recognize it |\n| --- | --- | --- |\n| **Documented fact** | A company's public statement, a filing, a regulation, a standard, a date, an official statistic | Linked inline, with the **year of publication** in the sentence, and listed in Sources and Evidence. Regulations cite the official text and dates of application. |\n| **Industry practice** | What vehicle-data and dealer-software businesses commonly do | Phrased as \"commonly\" or \"a typical pattern is\", with no invented percentages. |\n| **Reference-architecture inference** | How a system like this is plausibly built, reasoned from engineering principles | When it concerns a real company, it is labeled **INFERENCE, NOT DOCUMENTED**. |\n| **Recommendation** | My judgement as a Chief Architect | First person (\"I would\"), with the reasoning and the conditions under which it does not hold. Argue with it. |\n| **Illustration** | An example set at Axleby | Labeled fictional in each chapter; its numbers agree across the book. |\n| **Labeled assumption** | An illustrative volume, latency target or cost that is neither documented nor an Axleby fact | Marked \"assume…\" in the text or *(assumption)* in a table. Follow the reasoning; do not use it as a benchmark. |\n\nTwo distinctions are easy to lose. An Axleby figure, such as the €0.031 average cost of a lookup, is an illustration, not a benchmark. And a recommendation that sounds like a fact, such as \"a de-listing is evidence of a sale, not a sale\", is still a recommendation, with reasoning and exceptions.\n\n**Why claims carry dates.** Companies' statements about their own products change fast. In its [full-year results for the year to March 2025](https://plc.autotrader.co.uk/media/umddcnxx/full-year-press-release-fy25.pdf) (May 2025), Auto Trader Group said its Deal Builder product would become \"part of our core advertising proposition\" and would \"no longer be monetised per transaction\". A year later, its [results for the year to March 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf) (May 2026) described the response to a November 2025 dealer protest: \"pausing auto-rollout\", holding listening sessions and \"introducing 'request a reservation'\". Both were true when written; a chapter citing only the first, undated, would miss the most instructive consequence ([Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html)).\n\nRegulation moves on a published timetable, and the book is set in 2027, so dates decide what applies. The EU Data Act's rules on sharing a connected car's data with a third party at the user's request have applied since 12 September 2025, while its access-by-design duty covers only products placed on the market after 12 September 2026 ([Regulation (EU) 2023/2854](http://publications.europa.eu/resource/celex/32023R2854), Art. 50). The EU battery passport applies to batteries placed on the market from 18 February 2027 ([Regulation (EU) 2023/1542](http://publications.europa.eu/resource/celex/32023R1542), Art. 77), so it reaches used-car lots only as those cars come back from lease ([The Battery Question: EV State of Health and Battery Data](ev-battery-health.html), [Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html)). Ownership moves too: Keyloop was CDK Global's international business, Carfax moved with S&P Global Mobility into Mobility Global Inc., spun off from S&P Global and trading since 1 July 2026, and VWE sold its auction subsidiary ATC to Autorola in 2026. So every company and regulatory claim carries its date, evidence older than about three years is flagged, and renamed companies are given their former names once.\n\n**As of October 2026.** Facts were checked against public sources in October 2026 unless a chapter says otherwise; check the source before relying on a date-sensitive statement.\n\n## What the Book Draws On\n\nThe book uses three kinds of material, and no other.\n\n- **A domain model, used as a research map.** The book started from a Productscape domain model in my sibling repository that describes one real Dutch company, VWE Automotive, from public sources only: 28 product bricks (named business capabilities), 140 modules, 29 data assets, personas and stressors. Its notes say that brick internals were **inferred from product behavior, not from VWE's architecture documentation**, and that its metrics are modeled seed values. The book uses it for vocabulary, actors, workflows, capabilities and stressors, and **never presents the model's bricks, modules, metrics or structure as facts about VWE or any company.** VWE appears only as a public case study, [VWE: A Dutch Vehicle Data Company Becomes a Dealer Platform](case-vwe.html), built from dated public sources; the running example is fictional, not a disguised VWE. [Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html) maps every brick to chapters and lists the capabilities the book added because the model lacks them or treats them thinly, from DMS and CRM integration to events, onboarding, observability and connected-vehicle data.\n- **The public record of the named companies**: filings, engineering posts, talks and developer documentation, each cited with its publication year.\n- **Standards, regulation and research**: ISO standards, EU and national legal texts, register and regulator documentation, and published research.\n\n**No internal material.** Nothing here comes from confidential documents or inside knowledge of any company. Where a chapter needs a situation the public record cannot supply, it uses Axleby.\n\n## Axleby and the Toolkit\n\n**Axleby Group is fictional.** It is a privately held vehicle-data and dealer-software group headquartered in Utrecht, with **€214 million of revenue in 2026**, assembled from a register-data business and the companies it bought. **Axleby Data** sells identity, specification, history, valuation and market data by the call, the report and the license to 640 API clients; **Wertlauf** in Munich supplies the valuation models; **Lotwise** sells dealer software to 7,200 rooftops in the Netherlands, Belgium and Germany, and **Showroomly** to 1,350 in the UK; **Axleby Trade** handles register transactions and a B2B trade exchange; **Odolo** sells consumer vehicle checks. Beneath them sit five products with three login systems and two vehicle keys, and two API stacks with two metering rules. In March 2027 its board approves **One Dossier**, a €38 million program (2027–2029) that makes one vehicle key, one login, one meter and one license check the foundation, then rebuilds syndication on events and retires the legacy XML API by the end of 2029. [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html) introduces its systems, people and the eleven recurring incidents the chapters reuse, from the Cloned Plate and the Zombie Golf to the €186,000 No-Hit Credit. Axleby is a composite of patterns, not a disguise for any company. When Ines Marchetti, its Group Chief Architect, decides, ask what the equivalent would be in your platform.\n\nThe **[Field Kit: Templates for the Vehicle Platform Architect](toolkit.html)** collects the book's templates, from the capability map and the provenance envelope card to the channel adapter contract and the architecture decision record; start with the one that changes this week's decision. The [Glossary](glossary.html) defines the book's terms, including Dutch and German register terms, and names the chapter that owns each one.\n\n## What the Book Leaves to Others\n\nThree neighboring subjects appear only where they touch the architecture:\n\n- **The DMS's own domains**: dealer accounting, parts, workshop and service management. The DMS is a system the platform integrates with and survives without ([Living With the DMS: Dealer Management System Integration](dms-integration.html)), not one it builds.\n- **Lending and insurance**: credit decisions, regulated consumer-credit contracts and claims handling. The platform refers financing to lenders who own the decision ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)) and treats insurers as data sources and clients.\n- **New-car sales and manufacturer ordering.** Manufacturers appear as sources of build data, connected-car data and franchise requirements, not as a retail flow the book designs.\n\n## The Failure Patterns\n\nVehicle platforms rarely fail through one bad decision. They sell the wrong car at the wrong price through recurring patterns that each looked reasonable when chosen. The next page, [Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong](where-vehicle-platforms-go-wrong.html), names fifteen of them in four families:\n\n- **Vehicle facts**: **The Cloned Identity**, **Spec Guesswork**, **Provenance Amnesia**, **The Sticky Error** and **The Confident Valuation**.\n- **Dealer workflow**: **The Zombie Listing**, **Feed Roulette**, **The Leaky Lead** and **DMS Hostage**.\n- **Commercial**: **The Tenant Blur**, **The Unmetered Call** and **License Blindness**.\n- **Platform**: **Borrowed Uptime**, **The Acquisition Archipelago** and **Customization Creep**.\n\nEach comes with its warning signs, mechanism, cost, the half it hits hardest and the chapters that address it. The patterns travel in chains that usually start with a missing key, contract or owner. The buyer at the dealer's desk met three at once: **Spec Guesswork** in the guessed edition, **Provenance Amnesia** in a report that did not say what it had checked, and **Feed Roulette** in a portal update that failed without anyone noticing. Every chapter opens by naming the patterns it works on.\n\n## A Living Journal\n\nThis book is a living journal, and a work in progress, that I revise as I learn more through [my work](https://obren.io). Every chapter has a \"View spec\" link in its byline that opens the specification it was written against, including its open questions. Read the book as current thinking with its limits stated, not as a finished text.\n\nI developed the book through AI-mediated authoring: I set the concept, the structure, the chapter contracts and the arguments; AI tools supported research against public sources, drafting from those contracts, consistency checks across chapters and editing; I reviewed and decided. The specs and the scripts used to build this site are in the [book's GitHub repository](https://github.com/zeljkoobrenovic/spec-driven-journals). The content, its judgements and its errors are my responsibility.\n\n## Where to Go Next\n\nIf you read in order, turn next to [Wrong Car, Wrong Price: Fifteen Ways Vehicle Platforms Go Wrong](where-vehicle-platforms-go-wrong.html). Then read [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html), so that every chapter's opening scene lands in a group you know, and begin Part I with [Who Knows What About a Car: The Vehicle Data and Dealer Software Ecosystem](vehicle-data-ecosystem.html). Either way, keep the buyer at the dealer's desk in mind: which of the three papers is true, and who could have told him? Every chapter is part of the answer, and part of the design of a platform whose facts about a car can be trusted.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Full year results for the year ended 31 March 2025](https://plc.autotrader.co.uk/media/umddcnxx/full-year-press-release-fy25.pdf), Auto Trader Group plc, 2025: Deal Builder made part of the core advertising package and no longer charged per transaction.\n- [Full year results for the year ended 31 March 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), Autotrader Group plc, 2026: the response to the November 2025 dealer protest, including pausing auto-rollout and introducing \"request a reservation\".\n\n*Standards, regulation and official documentation*\n\n- [Regulation (EU) 2023/2854 (Data Act)](http://publications.europa.eu/resource/celex/32023R2854), European Parliament and Council, 2023: Article 50 dates of application (12 September 2025; access by design for products placed on the market after 12 September 2026).\n- [Regulation (EU) 2023/1542 concerning batteries and waste batteries](http://publications.europa.eu/resource/celex/32023R1542), European Parliament and Council, 2023: Article 77, the battery passport from 18 February 2027.\n\n*Research and practitioner sources*\n\n- Productscape vehicle-data-and-dealer-saas-platform domain model (author's sibling repository, 2026): the research map the book started from, built from public sources and mapped in [Domain Coverage: From the Productscape Model to Chapters](domain-coverage.html). Not a description of VWE's or any company's systems.\n\nCompany, regulatory and research sources for each topic are listed in the chapter that owns the topic and collected in the [Bibliography](bibliography.html). Axleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drawing the Lines: Bounded Contexts, Entities and Sources of Truth</title>
+    <meta name="description" content="Where should service and team boundaries go in a vehicle data and dealer SaaS platform, and which context is the source of truth for each entity? Draw contexts around the meanings that differ (a sold car means five things), give every principal entity exactly one owner and an opaque key, label every copy by its kind and age, and let all contexts conform to one vehicle identity while translating at every external edge.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Drawing the Lines: Bounded Contexts, Entities and Sources of Truth">
+    <meta property="og:description" content="Where should service and team boundaries go in a vehicle data and dealer SaaS platform, and which context is the source of truth for each entity? Draw contexts around the meanings that differ (a sold car means five things), give every principal entity exactly one owner and an opaque key, label every copy by its kind and age, and let all contexts conform to one vehicle identity while translating at every external edge.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/vehicle-bounded-contexts.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/04-vehicle-bounded-contexts/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="vehicle-capability-map.html" title="Mapping the Business: A Capability Map From Identify to Insight">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-2.html" title="Part II — VEHICLE: Identity, Specification and History">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — MARKET: The Business of Vehicle Data and Dealer Software</p>
+        <h1>Drawing the Lines: Bounded Contexts, Entities and Sources of Truth</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  33 min read · <a class="spec-link" href="vehicle-bounded-contexts.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/04-vehicle-bounded-contexts/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/04-vehicle-bounded-contexts/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="vehicle-capability-map.html" title="Mapping the Business: A Capability Map From Identify to Insight">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-2.html" title="Part II — VEHICLE: Identity, Specification and History">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Drawing the Lines: Bounded Contexts, Entities and Sources of Truth", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "Where should service and team boundaries go in a vehicle data and dealer SaaS platform, and which context is the source of truth for each entity? Draw contexts around the meanings that differ (a sold car means five things), give every principal entity exactly one owner and an opaque key, label every copy by its kind and age, and let all contexts conform to one vehicle identity while translating at every external edge.", "permalink": "vehicle-bounded-contexts", "timetoread": "33 min read", "icon": "assets/icons/04-vehicle-bounded-contexts.png", "logo": "assets/images/04-vehicle-bounded-contexts/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Draw the bounded contexts of a platform that sells vehicle data and dealer software, and build the two artifacts later chapters rely on: the entity–owner table (entities, identifiers, sources of truth, allowed copies, lifecycles) and the context map, with anti-corruption layers toward registers, suppliers, portals and dealer management systems (DMS).\n\n> **WHY THE BUSINESS CARES:** When nobody owns \"the car's mileage\", \"the customer\" or \"sold\", dealers re-type plates, sold cars stay on portals, corrections never reach the reports already sold, and invoices cannot be explained. Clear ownership lets a group sell one dossier instead of five products that disagree.\n\n> **WHY ARCHITECTS SHOULD CARE:** Boundaries outlive technologies. A wrong one turns every feature into a distributed transaction and every acquisition into another copy of the vehicle and the customer; a right one lets teams ship separately while facts stay consistent where the business needs it.\n\n> **KEY POINTS:**\n>\n> * **Draw boundaries where words change meaning, not where products or nouns are.** \"Sold\" means five different things to market data, the stock book, the DMS, the register and the trade exchange. Each meaning gets its own context and its own event name; translation happens at the boundary, not in a shared column.\n> * **One owner per entity, one opaque key, and every copy labeled.** Each principal entity has exactly one context that may change it and an identifier that encodes nothing. Every other context holds a reference, a decision snapshot, an observation or a rebuildable projection, and says which, with its age.\n> * **Conform inside, translate outside.** Every internal context conforms to one vehicle identity (the AVK) and one tenant hierarchy, because those are the two keys the business joins on. Every external system (register, supplier, portal, DMS) sits behind an anti-corruption layer, because its model is not yours and its terms change.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Acquisition Archipelago** — five products with five vehicle and customer records exist because each acquisition kept its own boundary, and nobody decided which context owns the shared entities.\n> * **The Sticky Error** — copies without a declared kind, owner or age cannot be found when the source fact is corrected.\n> * **The Cloned Identity** — contexts that key vehicles by plate or by their own stock id cannot agree which car a fact belongs to.\n\n<br>\nEvery architecture conversation about a vehicle platform eventually reaches one question: **who is allowed to say this is true?** Is the mileage the dealer's typed reading, the register's inspection reading or the supplier's workshop reading? Is the car sold when the salesperson clicks, when the DMS posts the invoice or when the register records a new keeper?\n\nDomain-driven design (DDD) answers with the **bounded context**: a part of the system inside which every term has one meaning and one model, owned by one team. Martin Fowler's 2014 summary: \"Different contexts may have completely different models of common concepts\", and large models stay workable by \"being explicit about their interrelationships\" ([Fowler, 2014](https://martinfowler.com/bliki/BoundedContext.html)). This chapter makes that explicit for a platform that sells **decisions about one physical car**, through two artifacts: the **entity–owner table** and the **context map**.\n\nThe capability map in [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html) says what the business must be able to do. This chapter says where the lines go, which part owns which fact and how facts cross the lines; the inside of each context belongs to the chapter that owns it.\n\n## Setting the Scene at Axleby: Five Meanings of \"Sold\"\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), approved its One Dossier program in March 2027: one dossier in Lotwise, its dealer software for the Netherlands, Belgium and Germany, and one account across products. On **22 April 2027**, Ines Marchetti, Group Chief Architect, opened the program's first architecture forum with one word: **sold**. She had asked five teams to define it in one sentence.\n\n| Team | System | \"Sold\" meant | What happened in early 2027 |\n| --- | --- | --- | --- |\n| Market data (Munich) | Pulse, the market data lake | The advert disappeared | An April 2027 audit found only **68%** of Dutch de-listings were sales ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)) |\n| Lotwise (Ghent) | Lotwise Classic, the dealer monolith | Stock status set to sold | Set by hand, by a DMS file or not at all; the Zombie Golf stayed live on **4** portals for **4** days ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)) |\n| DMS integrations (Ghent) | DriveDesk, Velto's dealer management system | The deal was posted with an invoice | DriveDesk's sold row matched no Lotwise stock item after a rooftop transfer ([Living With the DMS: Dealer Management System Integration](dms-integration.html)) |\n| Axleby Trade (Utrecht) | Trade back office | The register confirmed the car in the buyer's name (*tenaamstellen*) | On 31 March, **214** transactions were submitted twice after ambiguous timeouts ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)) |\n| Tradefloor (Utrecht) | B2B trade exchange | A buyer clicked \"buy now\" | A binding contract, sometimes before the seller's stock book knew |\n\nEach answer was correct **inside its own context**. Failures came where one context consumed another's word as its own: Pulse read a de-listing as a sale, Lotwise read a missing DMS signal as \"still for sale\", and Vantage, the valuation engine, could not tell a sale price from a last asking price.\n\n![One car in the center surrounded by five separated workstations whose speech bubbles read Advert gone, Stock status, Invoice posted, Register confirmed and Buy now.](assets/images/04-vehicle-bounded-contexts/04-five-meanings-of-sold.jpeg)\n**Figure 1:** *\"Sold\" meant five different things to five Axleby teams, and each meaning was correct inside its own context; failures came when one context read another's word as its own.*\n\nInes then showed a census her architects had run *(Axleby illustration)*: every entity that two or more products stored. They found **29** principal entities. For **11** of them, two or more systems accepted writes. For **4**, nobody could name an owner: current mileage, reconditioning cost at DMS-connected rooftops, \"the customer\" at Velto Mobility Group (a 46-rooftop dealer group), and whether a channel listing was live. Vehicles were keyed three ways: Lotwise stock id plus plate, plate in Connect XML (the 2006 SOAP platform), and the Axleby Vehicle Key (AVK) in Anchor, the 2024 identity graph keyed by vehicle identification number (VIN).\n\nHer question: **for each of the 29 entities, which context may change it, what is its key, which copies may exist, and who moves it through its lifecycle?** The architecture board approved version 1 of the answer, the **entity–owner table**, on **3 June 2027**. This chapter reconstructs it, with the decisions the board made where teams disagreed.\n\n## Concepts: Contexts, Subdomains and Sources of Truth\n\n### Bounded context and ubiquitous language\n\nA **bounded context** is an explicit boundary within which a model and its language (the **ubiquitous language**, in Eric Evans's term) are consistent. In practice it is a unit of ownership: one team, one model, one store it alone writes, and published interfaces for everyone else. It is not a microservice: Lotwise Classic holds several contexts in one MySQL database, and One Dossier separates them over three years.\n\nThe test for a boundary is **polysemy**: one word, several meanings. Fowler's example is \"meter\" at a utility ([Fowler, 2014](https://martinfowler.com/bliki/BoundedContext.html)). A vehicle platform has its own:\n\n| Word | Meanings in different contexts |\n| --- | --- |\n| **Sold** | De-listed (market data); stock transition (dossier); deal posted (DMS); keeper changed (register); binding trade acceptance (business-to-business, B2B, trade) |\n| **Mileage** | Dealer-typed reading (appraisal); official reading (register inspection); supplier reading (history); surviving current value (golden record); valuation input (ledger) |\n| **Customer** | Paying organization (billing); tenant (tenancy); enquirer (leads); buyer on a contract (sales); DMS customer number (DMS) |\n| **Vehicle** | Physical car (identity); stock stay (dossier); advert (channel); market-vehicle cluster of adverts (market data) |\n\nEach context keeps its own meaning and names its events precisely: `stockitem.state_changed` to Sold is not `registration.completed`, and neither is Pulse's `SoldProbable`. Translation between them is explicit code at a boundary.\n\n### Core, supporting and generic subdomains\n\nA **subdomain** is a part of the business problem; a bounded context is a part of the solution. Evans's DDD Reference (2015) gives the investment rule. For the **core domain**: \"Make the core small. Apply top talent to the core domain.\" For **generic subdomains**: \"Factor out generic models of these subdomains and place them in separate modules\", and give them \"lower priority than the core domain\" ([Evans, 2015](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)). **Supporting subdomains** are specific to the business but not where it wins.\n\nFor a group that sells decisions about one car, the core is narrow: **knowing which car it is, what it is, what happened to it and what it is worth, and holding the dealer's record of the car while it is in stock.** Billing, login and observability are generic: adopt standard products. Registers, portals, DMS adapters, leads and documents are supporting: they must work and carry market rules, but they are not where the group wins. The heat map in [Mapping the Business: A Capability Map From Identify to Insight](vehicle-capability-map.html) classifies investment; the subdomain type classifies modeling effort. Where the two disagree, discuss it.\n\n### Entity, identifier and owner\n\nAn **entity** is a business object with identity and a lifecycle. Each principal entity has:\n\n- an opaque, never-reused **identifier** (it encodes no plate, rooftop or country, because those change);\n- a **source of truth**, the one context whose committed state is the answer and which alone may change it;\n- a **lifecycle owner**, the context that moves it through its states (normally the same);\n- a list of the **copies** other contexts may hold, each with a declared kind.\n\nI use **source of truth** for the context that owns the answer and **system of record** for the store where it keeps it. The difference matters in migration: in 2027 the stock item's source of truth is the dossier context, while its system of record is still a MySQL table in Lotwise Classic.\n\nAn outside source can be authoritative without being the source of truth inside the platform. The Dutch register, kept by the RDW (*Rijksdienst voor het Wegverkeer*, the national vehicle authority), has been the national base register for vehicles since 1 July 2008: government bodies must use it and may not keep their own copies ([RDW, n.d.](https://www.rdw.nl/over-rdw/organisatie/kerntaken/kentekenregister-is-basisregistratie-voertuigen)). That is a source-of-truth rule written into law. A private platform cannot avoid copies, so one context owns its view of the register and records which answer it received and when ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)).\n\n### Four kinds of copy\n\n\"Never copy\" is not a rule anyone can follow; \"copy only in a declared way\" is. Every copy of another context's data at Axleby has one of four kinds, and the kind sets its update rule.\n\n| Kind | What it is | Example | Update rule |\n| --- | --- | --- | --- |\n| **Reference** | The owner's key, plus what the user typed | A stock item holds the AVK | Resolved through the owner; redirected on merge |\n| **Decision snapshot** | Id and version of a fact used for a decision | The appraisal used history report version 3 | Never updated; a correction adds \"true now\" beside \"known then\" |\n| **Observation** | Another party's claim, kept as evidence | DriveDesk's model text; a dealer's \"service book complete\" | Stored with source and time; may feed the owner's ingestion |\n| **Projection** | A read model rebuilt from the owner's events | Group stock list; register mirror replica | Rebuildable; lag measured and shown |\n\nA cache is a projection with a time limit; a copy that fits no kind is an accidental second source of truth. The worst the census found was a Lotwise Classic cache of Dutch register data with a median entry age of **11 days**. On **14 April 2027** Autobedrijf Brandsma, a one-rooftop independent in Leeuwarden, agreed a €9,800 trade-in because a 19-day-old entry said the transfer was possible, and the register refused the stock-in (the Three Copies review, [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)). The cache was retired by September 2027.\n\n![An owner's master folder linked to four copies stamped Reference, Snapshot, Observation and Projection, each with a clock tag, and one unstamped faded copy with a question mark.](assets/images/04-vehicle-bounded-contexts/04-four-kinds-of-copy.jpeg)\n**Figure 2:** *Every copy of another context's data declares its kind (reference, decision snapshot, observation or projection) and its age; a copy that fits no kind is an accidental second source of truth.*\n\n## Axleby's Contexts\n\nThe board grouped Axleby's contexts into five families (all names are Axleby's):\n\n| Family | Context | Type | 2027 home → target | Owning hub |\n| --- | --- | --- | --- | --- |\n| **Vehicle facts** | Vehicle identity | Core | Anchor | Utrecht |\n| | Register access | Supporting | Turnstile (gateway and mirror) | Utrecht |\n| | Specification | Core | Specbook | Utrecht |\n| | Vehicle history | Core | Tracewell, fed by the Inlet ingestion pipeline | Utrecht |\n| | Condition and battery | Supporting | Gauge; the battery-health service | Utrecht |\n| | Connected data | Supporting | Mandate (consent) and Signalyard (telemetry) | Utrecht |\n| **Value** | Market data | Supporting | Pulse | Munich |\n| | Valuation | Core | Vantage and its valuation ledger | Munich |\n| **Dealer workflow** | Stock and dossier | Core | Lotwise Classic → Dossier service | Ghent |\n| | Pricing | Supporting | Rules in Lotwise → pricing service (2028) | Ghent |\n| | Syndication | Supporting | Relay → Relay 2 (2028) | Ghent |\n| | Leads | Supporting | Switchboard | Ghent |\n| | Sales and documents | Supporting | Lotwise Sales Admin | Ghent |\n| | Register transactions | Supporting | Axleby Trade back office | Utrecht |\n| | B2B trade | Supporting | Tradefloor | Utrecht |\n| | DMS integration | Supporting | Hitch (anti-corruption layer) | Ghent |\n| **Commercial control plane** | Tenancy | Supporting | Tenant directory | Kraków |\n| | Identity and access | Generic | Axleby ID (Keycloak), Gatekeeper (OpenFGA), entitlement service | Kraków |\n| | Configuration | Supporting | Baseline and Runway | Kraków |\n| | Metering and billing | Generic, with supporting metering rules | Meterline, rating engine, invoice run (Connect XML until cut-over) | Utrecht |\n| **Governance** | Licensing | Supporting | Charter | Utrecht |\n\nShowroomly (Leeds) keeps its own stock, leads and users in 2027 and moves onto the shared contexts in 2028–29. Odolo, the consumer app, owns only consumer orders. Two systems are deliberately not contexts. **Inlet**, the shared ingestion pipeline ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)), owns landing, validation and match decisions, not facts. **Connect XML** owns nothing new after 2027; it is a legacy channel, sunset on 31 December 2029.\n\n**Pricing** is supporting because Axleby's pricing advantage comes from valuation and market data; the rules are copyable configuration. **Licensing** is supporting, but no fact context ships without Charter in the request path ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)).\n\n## The Entity–Owner Table\n\nThis is the chapter's central artifact, split into three tables. \"Allowed copies\" uses the four kinds above; owning chapters define each entity in depth.\n\n### Vehicle facts and value\n\n| Entity | Identifier | Source of truth | Allowed copies | Lifecycle |\n| --- | --- | --- | --- | --- |\n| **Vehicle** | AVK (opaque, 26 characters, never reused); VIN as evidence | Vehicle identity (Anchor) | References everywhere; the plate and VIN \"as typed\" beside them | Provisional → Confirmed ↔ Suspect → Merged (tombstone) or Split ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) |\n| **Plate assignment** | (country, plate, valid from, valid to) | Vehicle identity, fed by register access | Projections in search; never a foreign key | Opened and closed by register or document evidence |\n| **Register record** | The register's key (Dutch plate, UK registration mark) | The register; inside the platform, register access (Turnstile) | Mirror projection; theft and awaiting-inspection status asked live, never mirrored | Follows the register's snapshot or change feed |\n| **Specification** | AVK plus specification version | Specification (Specbook) | Decision snapshots (valuation, advert, deal); rendered advert text as a projection | Resolution states from identified to disputed ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)) |\n| **History event and odometer judgement** | Event id; AVK plus the source's key; judgement rule version | Vehicle history (Tracewell) | References in reports; judgements as decision snapshots | Events append-only, corrections supersede; judgements recomputed ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)) |\n| **History report** | Report id plus version | Vehicle history (snapshot store) | Reference in the dossier and in usage events | Issued → superseded by a new version |\n| **Current vehicle facts (golden record)** | AVK plus attribute | Each attribute's owning context; computed by Inlet survivorship rules | It *is* a projection, materialized beside Anchor for read speed | Recomputed from source records, never written |\n| **Condition report, battery observation** | Report id; observation id | Condition and battery (Gauge; battery-health service) | Decision snapshots in appraisal, trade listing, valuation | Superseded, never edited ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html), [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html)) |\n| **Consent grant** | Grant id; one per vehicle and purpose | Connected data (Mandate) | References in telemetry and promoted readings | Requested → pending → active → revoking → ended ([Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act](connected-vehicle-data.html)) |\n| **Market observation and listing lifecycle** | Observation id; market-vehicle cluster id | Market data (Pulse) | Aggregates only outside the context | Live → Gone, Relisted, LiveElsewhere, Transferred, SoldProbable, SoldConfirmed ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)) |\n| **Valuation** | Valuation id | Valuation (Vantage ledger) | Decision snapshots in dossier, deal, trade listing; outcome links appended in the ledger | Issued; superseded, never edited ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)) |\n\n### Dealer workflow\n\n| Entity | Identifier | Source of truth | Allowed copies | Lifecycle |\n| --- | --- | --- | --- | --- |\n| **Stock item and dossier** | Stock item id; one open per tenant and AVK per stay; dealer stock number as a label | Stock and dossier; field ownership per rooftop with the DMS | Projections (stock lists, websites); references in leads, deals, listings | Nine commercial states, Appraised to Delivered or Written off ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)) |\n| **Asking price** | Stock item id plus price event | Stock and dossier (pricing proposes) | Projections in channels and websites | Each change with author, reason and rule version ([Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html)) |\n| **Channel listing** | (stock item, channel); portal listing id; creation key | Syndication (desired state); the portal (actual state) | Observations of portal state; the dossier's advertising track | Desired present or absent, observed state reconciled ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)) |\n| **Trade listing, sale-right lease, trade deal** | Listing id; lease id with fencing token; trade deal id | B2B trade (Tradefloor) | The buyer receives a copy of agreed dossier facts at sale | Unoffered → Leased → Accepted → Released ([Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html)) |\n| **Lead and interaction** | Lead id; source ids as references | Leads (Switchboard) | Delivered copies in an external customer relationship management (CRM) system, with receipts | New → routed → worked → won or lost ([Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html)) |\n| **Prospect** | Per dealer legal entity | Leads | None across legal entities or tenants | Linked, never merged across entities |\n| **Deal and issued documents** | Deal id; invoice number per series | Sales and documents; the DMS for DMS-connected franchised rooftops | References from the dossier; accounting export | Draft → Quoted → Signed → Invoiced → Delivered → Closed, or Canceled ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)) |\n| **Buyer (customer master)** | Per legal entity: DMS customer id or Sales Admin customer id | The dealer's system of record: DMS if connected, else Sales Admin | Snapshot on the deal | The dealer is controller; the platform processes |\n| **Register transaction** | Transaction id; idempotency key from the dealer's click | Register transactions (Axleby Trade ledger) | Dossier register track; proof by reference | Queued → Submitted → Confirmed, Rejected or Ambiguous, then probe ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)) |\n| **Register authority** | Legal entity plus recognition | Register transactions (authority register) | Read by the access decision path as a gate | Granted, expired, withdrawn |\n| **DMS cross-reference** | (DMS, rooftop, external id) with validity interval | DMS integration (Hitch) | None | Edge opened and closed on transfer, restock, buy-back ([Living With the DMS: Dealer Management System Integration](dms-integration.html)) |\n\n### Accounts, commerce and governance\n\n| Entity | Identifier | Source of truth | Allowed copies | Lifecycle |\n| --- | --- | --- | --- | --- |\n| **Tenant, legal entity, region, rooftop** | Opaque ids; rooftop ids global | Tenancy (tenant directory) | Projections in every context, refreshed by lifecycle events | Versioned, effective-dated; `rooftop.closed` with successor, `rooftop.transferred` ([Dealers, Groups and Rooftops: Tenancy Models for Dealer SaaS](tenancy-and-dealer-groups.html)) |\n| **User, API client, membership, relationship** | Subject id; client id; Gatekeeper tuple | Identity and access (Axleby ID, Gatekeeper) | Subject id in audit records; short-lived decision caches | Invited → active → disabled; provisioned by SCIM (System for Cross-domain Identity Management) where federated ([Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html)) |\n| **Entitlement** | (tenant, rooftop, product, feature, effective dates) | Identity and access (entitlement service), derived from subscriptions | Local caches filled by `entitlement.changed` | Effective-dated; derived, never edited |\n| **Configuration** | Setting key plus version at a hierarchy node | Configuration (Baseline) | Effective-config caches | Versioned, inherited, lockable ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)) |\n| **Usage event, invoice** | Usage id derived from client request reference, stock-keeping unit (SKU) and billing account; invoice number | Metering and billing (Meterline, rating, invoice run) | Rated usage references events; usage views are projections | Immutable; corrections are reversal events or credit notes ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) |\n| **Source license, client grant, access decision** | License class; grant id; decision id | Licensing (Charter) | Decision ids on responses and usage events | Rules effective-dated; audit append-only ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)) |\n\nThree rules sit under every row. **Exactly one context writes each entity**; an unavoidable second writer (a DMS posting the sale) goes through the owner's command interface. **The owner mints opaque identifiers**; stock numbers, plates and invoice numbers are labels or legal numbers, not join keys. **The owner publishes its changes** on the One Dossier event backbone ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)), so every copy can be correct.\n\n## The Contested Rows\n\nSix rows were contested. Earlier team design notes reflect one side or the other; these are the decisions the board recorded.\n\n**1. When is a stock item Sold?** Sold on a signed contract, or on the invoice? The decision: **signing the contract reserves the stock item, and it becomes Sold when the deal's conditions are met and the invoice is issued** (or at delivery, where the dealer configures it), as [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) defines. Reserved already withdraws every advert in the same transaction, so nothing is lost by waiting; and the Sold moment then coincides with the tax document, which every downstream consumer (pricing, market statistics, the valuation ledger's sale price) can rely on. A signed deal that falls through returns the car to Ready without a credit note. At DMS-connected rooftops a sale posted in the DMS counts as a Sold signal from whichever side sees it first ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)).\n\n**2. Who owns a franchised dealer's stock?** The DMS team's default was \"the DMS owns stock existence and status\"; the dossier team's was \"the dossier owns the stock item\". Both were right about different entities. The DMS owns the **accounting stock unit** (its number, purchase cost, posting status); the dossier owns the **stock item**, the platform's record of the stay that every module references. Hitch's cross-reference links them, the DMS stock-in usually creates the stock item, and field ownership per rooftop decides who writes cost, status and price.\n\n**3. Is the tenant the legal entity or the organization?** The July 2027 tenancy decision made the tenant the **contracting organization**, with legal entities as versioned children. A stock item therefore belongs to a tenant and is **owned by one legal entity** within it: the entity decides invoices, value-added tax (VAT) and register authority; the tenant decides isolation.\n\n**4. Who owns \"current mileage\"?** Inlet materializes a golden record beside Anchor; the history team claimed the odometer. The decision: **each attribute belongs to the context that owns its evidence** (odometer to vehicle history, registration status to register access, edition to specification). The golden record is a **projection** computed by Inlet's versioned survivorship rules and stored beside Anchor for read speed; nobody writes it directly.\n\n**5. Who owns register authority?** The identity team listed the authority register among its access gates; the Trade team built it in its transaction service. The **register transactions context owns it**, because recognitions, certificates and customer mandates are legal evidence about register acts and change with register rules. The access path reads it as a gate.\n\n**6. Who owns \"the customer\"?** Three entities, three owners: the **prospect** (an enquirer, per dealer legal entity, owned by leads), the **buyer** (a party to a contract, owned by the DMS when connected, Sales Admin otherwise) and the **tenant** (Axleby's paying customer, owned by tenancy). A prospect becomes a buyer by reference when a deal is signed; people are never merged across legal entities, because the dealer is the controller of each entity's customer data.\n\n## The Context Map\n\nA **context map** shows the contexts and, for each pair that integrates, who is upstream, who is downstream and which pattern governs the seam. Four of the DDD Reference's patterns matter here.\n\n- **Conformist**: the downstream adopts the upstream model as is. Evans describes it as eliminating \"the complexity of translation between bounded contexts by slavishly adhering to the model of the upstream team\" ([Evans, 2015](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)). Usually a compromise; here, a deliberate choice for two models.\n- **Anti-corruption layer (ACL)**: \"an isolating layer to provide your system with functionality of the upstream system in terms of your own domain model\", translating \"in one or both directions\" ([Evans, 2015](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)).\n- **Open host service and published language**: a documented, versioned protocol many downstreams use.\n- **Customer–supplier**: the downstream's needs shape the upstream's plan.\n\n![Inside a dashed boundary, vehicle facts feed valuation and stock and dossier as conformist relations and the control plane feeds stock and dossier; registers, data suppliers, portals and DMS products connect only through anti-corruption layers on the boundary, and data clients reach vehicle facts through an open host.](assets/images/04-vehicle-bounded-contexts/04-context-map.jpeg)\n**Figure 3:** *Axleby's context map, simplified. Every external system sits behind an anti-corruption layer; every internal context conforms to two shared models, the vehicle identity and the tenant hierarchy; data clients get a published language that Axleby versions on its own schedule.*\n\nThe map makes three choices I would make again.\n\n**Conform to vehicle identity and tenancy on purpose.** Every context stores the AVK and honors Anchor's confidence tiers (Confirmed, Corroborated, Asserted, Suspect), and carries the tenant context from the control plane. These are the two keys the business joins on: which car, whose data. Letting each context translate its own vehicle key is how the census found three. It is not a **shared kernel** (a schema both teams edit): only Anchor writes the graph.\n\n**Translate at every external edge.** Registers, suppliers, portals and DMS products have their own models, change them on their own schedules and impose contract terms. Turnstile, Inlet's adapters, Relay's 61 channel adapters and Hitch each translate one external family. When DriveDesk calls a car a \"Golf 1.5 eTSI Style\", that text is an observation for specification, not a fact ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n\n**Publish one language outward, separately from the internal one.** Data clients consume JSON API v2 and webhooks ([Data as a Product: Designing Vehicle Data APIs](vehicle-data-apis.html)), translated from internal events by a gateway that filters by tenant, entitlement and license, so internal events can change without breaking a lessor's integration. Here the two halves deliberately do *not* share: dealer features ship monthly, external contracts change on an announced schedule.\n\nThe absent arrows are decisions too: nothing runs from syndication to the DMS or from billing into any product's database. **Contexts that have no reason to talk should not be able to.**\n\n## How a Car Moves Through the Contexts\n\nDealers describe a car's path in six words: in stock, advertised, reserved, sold, delivered, registered. That path is several state machines, owned by different contexts and joined by events.\n\n![Swimlanes for seven contexts: sales marks the stock item sold, the dossier answers with version 41 and publishes version 41 events to syndication, leads, DMS integration and register transactions; register transactions reports completion and only then sends a usage event to metering.](assets/images/04-vehicle-bounded-contexts/04-one-sale-across-contexts.jpeg)\n**Figure 4:** *One sale across seven contexts. The only synchronous, conditional write is the transition the deal requests on the stock item; everything else follows from events keyed by the stock item or the transaction, and the fee is metered only when the register confirms.*\n\n| Transition | Owner | Trigger | Coupled effect, same transaction | Downstream reactions (events) |\n| --- | --- | --- | --- | --- |\n| Purchased | Stock and dossier | Accepted offer or DMS stock-in | Stock item with AVK and VAT regime | Register stock-in (NL), pricing |\n| Advertised | Syndication | Desired state \"present\" | — | `listing.published` per channel |\n| Reserved | Stock and dossier | Signed contract, deposit or hold | Advertising set to withdrawn | Withdrawals; trade lease refused |\n| Sold | Stock and dossier | Deal conditions met and invoice issued, or DMS sale signal | Advertising withdrawn if not already | Registration created (Sales Admin rooftops), Hitch command, valuation ledger outcome link |\n| Delivered | Stock and dossier | Handover, payment confirmed, the market's register step done | — | Document retention clock starts |\n| Registered | Register transactions | Register confirmation | Proof stored | `registration.completed`; fee metered |\n| Market sale | Market data | Register ownership change, or 14 days' absence | — | SoldConfirmed or SoldProbable |\n\n**The dossier does not command the portals, and the deal does not command the register.** The dossier changes what should be true; syndication makes it true. The sold event creates the registration at Sales Admin rooftops (a dealer click for DMS-originated sales in 2027); register transactions decide when to submit and report back. The one synchronous cross-context write, deal to stock item, exists because double-selling a car is the failure no event can repair afterwards.\n\n### Requirements across the seams\n\n| Interaction across a boundary | Consistency | Latency *(assumption)* | Freshness | Availability when the owner is down |\n| --- | --- | --- | --- | --- |\n| Resolve plate or VIN to AVK | Read from owner; plate resolved as of a date | p95 under 80 ms | Assignment age shown; re-checked per market rule | Cached resolution, tier lowered to Asserted; no paid history on Asserted |\n| Deal signs, stock item reserves or sells | Strong, conditional on stock item version | p95 under 300 ms | Current | Must work without DMS, portals or registers |\n| Stock transition reaches syndication, leads, DMS | At least once, versioned, keyed by stock item | Seconds; withdrawal on portals within the publish-lag targets | Lag measured per consumer | Events wait in the outbox |\n| Vehicle fact corrected reaches valuations, reports, adverts | At least once; consumers query their decision snapshots | Internal consumers within an hour | Correction age tracked | Corrections queue; nothing silently overwritten |\n| Usage event reaches metering | At least once, deduplicated by derived id | Minutes | 48-hour late-event cut-off | Outboxes hold 72 hours of peak usage |\n| License check on a data response | Synchronous, in the request path | p99 under 2 ms, in process | Rules effective-dated | Fail closed for restricted classes |\n\nThe first row is the most often under-specified. Without Anchor, a dealer should still be able to appraise a car, but nobody should sell a history report on an unconfirmed identity: degradation follows the tier contract, not a timeout setting.\n\n## Teams, Conway and the Acquired Products\n\nMelvin Conway's 1968 thesis was that \"organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations\" ([Conway, 1968](https://www.melconway.com/Home/Committees_Paper.html)). Axleby illustrates it: five products, three of them acquired, produced three vehicle keys, three logins and three billing paths, each mirroring the company it came from. The response is to **give each context one owning team and change the map and the org chart together**, what Matthew Skelton and Manuel Pais's *Team Topologies* (IT Revolution, 2019) discusses as the \"inverse Conway maneuver\". At Axleby that meant three moves *(Axleby illustrations)*:\n\n- **Vehicle facts went to one group in Utrecht**, with Munich keeping valuation and market data; Lotwise's own plate lookups and Connect XML's register tables ended with the Three Copies review.\n- **Dealer workflow stayed in Ghent, one team per context**, with Hendrik Maes's partner-integrations group owning the external adapters (channels, DMS, supplier connectors) as products.\n- **The control plane went to Marta Nowak's platform organization in Kraków**: tenancy, identity, configuration and the tagging standards that put tenant and rooftop on every flow.\n\nA context owned by two teams is owned by none: the census's four ownerless entities each sat between two hubs.\n\n## In Practice\n\n### What public sources show\n\nNo vehicle-data or dealer-software company publishes its context map, but the public record shows the forces that shape one.\n\n**The DMS as the dealer's system of record.** In 2017 the US Court of Appeals for the Seventh Circuit wrote that dealers use a DMS to track \"accounting, payroll, inventory, sales, parts, service, finance, and insurance\" ([Authenticom v. CDK Global, 2017](https://www.courtlistener.com/opinion/4440779/authenticom-incorporated-v-reynolds-and-reynolds-company/)); the Ninth Circuit in 2021 called its core \"a database containing information about a dealer's customers, vehicles, accounting, parts, and services\" ([CDK Global v. Brnovich, 2021](https://storage.courtlistener.com/pdf/2021/10/25/cdk_global_llc_v._mark_brnovich.pdf)). A dealer product that claims those entities competes with the DMS; one that ignores them breaks when the DMS changes. Field-level ownership is the practical answer.\n\n**Portals already model three identities for one advert.** mobile.de's Seller API offers a seller key, `internalNumber`, unique per seller; AutoScout24 offers `offerReferenceId`; Auto Trader UK's Connect API offers `externalStockId` ([mobile.de Seller API, n.d.](https://services.mobile.de/manual/seller-api.html); [AutoScout24 Listing Creation API, n.d.](https://listing-creation.api.autoscout24.com/docs); [Autotrader Connect, n.d.](https://developers.autotrader.co.uk/documentation), all accessed 2026-10). The portal owns its listing id, the platform owns its key, and the external-id field is the published seam; the channel listing carries both.\n\n**A published language for the dealer side exists in the US.** STAR (Standards for Technology in Automotive Retail) said in 2019 that it had developed \"over 200 XML message formats covering over 35 business areas\" ([STAR, 2019](https://www.starstandard.org/?p=811)). Its nouns (StockUnit, Deal, SalesLead, RepairOrder) make a good canonical vocabulary for the DMS integration context even in Europe, where no pan-European standard was found.\n\n**Registers publish keyed snapshots, not identity.** The Dutch register's main open dataset held **16,870,710** rows on 22 October 2026, keyed by plate, with about 100 columns and no VIN column ([RDW open data, queried 2026-10-22](https://opendata.rdw.nl/api/views/m9d7-ebf2.json)). Identity cannot adopt the register's key; it must bridge plates to VINs with evidence, which is why register access and vehicle identity are separate contexts.\n\n**An acquired portfolio joins at the vehicle key.** At PlatformCon 2024, Cox Automotive's Brendan McNichols described a move \"from API silos to a unified API strategy\" in a company that \"grew through acquisitions\" ([PlatformCon, 2024](https://2024.platformcon.com/talks/cox-automotives-journey-from-api-silos-to-a-unified-api-strategy)). Apollo's undated customer story says Cox's VIN decoder was brought into a federated GraphQL graph so that, in the vendor's account, teams can decode a VIN, get a vehicle id and join valuations in one query ([Apollo, n.d., accessed 2026-10](https://apollographql.com/customers/cox-automotive)).\n\n> **INFERENCE, NOT DOCUMENTED:** The Cox evidence suggests the vehicle identifier is the join that makes an acquired portfolio composable, the role the AVK plays at Axleby. Neither source describes Cox's internal boundaries or ownership rules; federation joins services at query time but does not decide which service owns a fact ([Cox Automotive: Building a Portfolio Into a Platform](case-cox-automotive.html)).\n\n### Axleby: following the Octavia through the table\n\nThe Lotwise Dossier was designed against one car: a 2020 Škoda Octavia Combi traded in at Velto's Tilburg rooftop on **8 March 2027** for **€14,200** and moved to Breda two days later. In April 2027 it existed as six records in four systems, joined only by a plate ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)). Under version 1 of the table it looks like this *(Axleby illustration, early 2028)*:\n\n| Fact about the Octavia | Owning context | What other contexts hold |\n| --- | --- | --- |\n| Which car it is | Vehicle identity: one AVK, Confirmed by the register | The AVK, and the plate as typed at trade-in |\n| Odometer history and one 2023 damage event | Vehicle history | The appraisal holds history report version 3 as a decision snapshot |\n| Trade value on 8 March | Valuation ledger | The dossier holds the valuation id; the ledger appends outcome links |\n| The stay at Velto | Stock and dossier: one stock item; rooftop moved Tilburg → Breda, same legal entity | DriveDesk's accounting stock unit, linked by Hitch's cross-reference |\n| Capitalized cost **€15,513** | DriveDesk for cost lines (DMS-owned fields at this rooftop) | The dossier shows them read-only with source and age |\n| Asking price **€17,950** | Stock and dossier, proposed by pricing | Channel listings on five channels hold the price as a projection |\n| Seller released from liability (*vrijwaren*) | Register transactions, with proof | The dossier's register track shows it by reference |\n\nIn a 2,000-car sample from the first quarter of 2027, **38%** of history reports and **44%** of register transactions could be linked to a stock item only by plate-and-date heuristics. The AVK backfill then linked **97.2%** of Lotwise stock items automatically, **2.1%** after a VIN prompt and **0.7%** by manual review; since **December 2027** no stock item exists without an AVK. The link is a key, not a guess.\n\nThe table also changed what a correction costs. When a Kilometra batch recorded miles as kilometers for **2,870** UK-imported vehicles in May 2027 (the Odometer Correction), **6,140** valuations, **412** history reports and **1,180** live adverts carried wrong mileage for 11 days. The ledger and report store hold decision snapshots with reading ids, so finding those was a query; the adverts held an undeclared copy, so finding them was not. Advert mileage is now a projection of vehicle history, rebuilt on `vehicle.fact.corrected` ([A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html)).\n\n## Failure Handling: When Boundaries Leak\n\nBoundaries fail in a few recognizable ways, and each needs detection, not only a rule.\n\n**A second writer appears.** An import, a support script or an adapter writes a field another context owns. In the Margin-Scheme Error, a Tradefloor-to-Lotwise stock import defaulted the VAT regime to the margin scheme, and **1,240** ex-lease cars were invoiced under the margin scheme at **186** rooftops ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)). Detection: every write path declares the context it acts for; the owner records non-owner writes as observations; a nightly **writer audit** lists every source that wrote each field. A second writer is a ticket for the board, not a quiet merge.\n\n**Copies drift from the owner.** Every copy carries its kind, the owner's version and its age; reconciliation jobs compare projections with owners where drift costs money (channel listings, DMS stock, register mirror). Copies that cannot state their age are retired.\n\n**The owner corrects, merges or splits.** Every consumer must act on `vehicle.merged`, `vehicle.split` and `vehicle.fact.corrected` ([Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html)) and report, per event, how many records it re-pointed or recomputed. A consumer that reports nothing for a correction that touched its records is out of contract.\n\n**A record arrives incomplete.** The rule in every context: **hold, do not key by the wrong thing.** Hitch quarantines VIN-less DMS rows; Lotwise allows an Asserted identity for workflow but not for paid history; Pulse keeps unmatched adverts as observations.\n\n**The same act arrives twice across a boundary.** Every cross-context command carries an idempotency key derived from the business act (the dealer's click, the client's request reference, the DMS source version), and every consumer keeps an inbox of processed event ids. Where the external side is not idempotent, the owner adds an **Ambiguous** state and probes before retrying; the 214 double submissions of 31 March 2027 came from treating a timeout as a failure.\n\n**The owner is down.** Each row needs a degraded rule decided in advance: identity down → cached resolutions at a lower tier; Gatekeeper down → cached view decisions for 30 seconds, writes fail closed; DMS down → the dossier runs a DMS-absent mode and reconciles before releasing queued commands, as during the **12-day** DriveDesk Outage of November 2027 ([Living With the DMS: Dealer Management System Integration](dms-integration.html)); register down → queue, never fake a confirmation.\n\n**A boundary moves during migration.** When a context leaves Lotwise Classic, two systems briefly hold the same entity: run both with comparison, keep one declared writer at every moment, and state the cut-over criterion in numbers (Meterline's is two clean months of shadow rating, [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)). The strangler plan in [Changing the Engine While Dealers Drive: Modernizing Legacy APIs and Monoliths](modernizing-the-platform.html) depends on it.\n\n## Trade-offs\n\n### How to draw the boundaries\n\n| Approach | What it looks like | Strengths | Where it fails | When it is right |\n| --- | --- | --- | --- | --- |\n| **Product-shaped** | Each product or acquisition is a context with its own vehicle, customer and billing | Fast for each team; no coordination | Five records per car; the Acquisition Archipelago; every cross-product feature is an integration project | The first year after an acquisition, while the map is being drawn |\n| **Entity services** | One service per noun: vehicle service, customer service, stock service | Simple to explain; matches the database | Business rules span several services; transitions become distributed transactions; every change touches many teams | Rarely; only for true reference data with no lifecycle rules |\n| **Shared database, modules in code** | One schema, contexts as packages | Transactions across everything; no events to build | Any team can write any table; ownership is a convention nobody enforces; one migration blocks all | Small teams, one product, one release train |\n| **Capability-aligned contexts, shared identity and control plane** | Contexts around meanings and lifecycles; conform to AVK and tenancy; ACL at external edges | One join for the car and the customer; teams ship separately; external changes contained | Needs an event backbone, a governed map and a board willing to decide contested rows | A group with several products, two halves and external dependencies: Axleby's case |\n\nThe recommendation rests on three requirements Axleby wrote down: (1) every fact about one car must be joinable without heuristics across products; (2) a register, portal or DMS change must be absorbed in one adapter; (3) the dealer and data halves must release independently. For one product, one market and twenty engineers, the third requirement vanishes and a modular monolith with enforced table ownership is the better choice.\n\nFor vehicle identity, this rules out a **shared kernel** and **per-context key translation** (three keys in 2027); **conformity to a published identity service** adds a critical-path dependency, contained by cached resolution and tier-based degradation.\n\n## Where Boundaries Differ by Market\n\nThe context map is the same in every market; what changes is the external edge. These are the differences that move a boundary.\n\n| Boundary question | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **What the plate identifies** | NL: the vehicle for its Dutch life; BE: the owner, who moves it to the next car | The keeper's registration; usually deregistered on sale | The vehicle, except private plates moved or retained | Varies by state |\n| **Register context's edge** | NL: open snapshot plus a provider channel; BE: through a partner | No open register; offices and services | MOT (roadworthiness test) history API with change feed | State Departments of Motor Vehicles (DMVs) plus NMVTIS (the national title information system), VIN-keyed |\n| **Who completes \"registered\"** | NL: the dealer's recognized entity, synchronously | Office or service, asynchronously | Keeper or motor trader online | Dealer or service provider at the DMV |\n| **DMS position at the dealer edge** | Long tail of local vendors; many independents without a DMS | Manufacturer-shaped DMS products per brand | Few vendors for groups, plus a tail | Concentrated; certified integration programs with fees |\n| **Registration tax context** | NL: registration tax (BPM); BE: regional tax on putting into use (BIV) | None at registration; annual vehicle tax *(general practice)* | Vehicle Excise Duty (VED) | State sales and title fees |\n\nSources: the country sections of [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), [The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html), [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html), and [Living With the DMS: Dealer Management System Integration](dms-integration.html), which carry the primary citations.\n\n**What is common** is every internal context and every entity in the table. **What is market-specific** lives at the edge: a register adapter and rule set per market, a plate-assignment rule inside vehicle identity, a tax rule set, and adapter sets for DMS products and portals. Belgium tests the model: if plates were keys, a Belgian owner's second car would inherit the first car's history; with time-bounded plate assignments it is a market rule. A US expansion would add content (title brands, titles and liens) but no new context.\n\n## The Chief Architect's View\n\n**What to decide.** In order: the **two shared models** every context conforms to (the vehicle key with its tiers, the tenant hierarchy with its context); the **entity–owner table**, with a team and a degraded rule per row; and the **contested rows**, written down with reasons, because the next acquisition will reopen them.\n\n**Who decides.** The architecture board, chaired by the Group Chief Architect, owns the table; each team is accountable for its rows. A row change is a decision record naming the affected consumers and a migration plan for copies, and it updates the event catalog, because an entity's owner owns its events ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)).\n\n**What to watch.** Four signals:\n\n- **Writers per field**, from the writer audit: a second writer is an incident in slow motion.\n- **Undeclared copies**: the census runs every quarter, not once.\n- **Heuristic joins** by plate and date or by name and postcode: each is a missing reference.\n- **Correction reach**: the share of consumers confirming recomputation within target per correction, the Sticky Error made measurable.\n\n**Long term.** Revisit boundaries when the business changes shape, not the technology: a market adds adapters, an acquisition adds a context to absorb, a product line adds entities. One Dossier's later years move stock state out of Lotwise Classic and Showroomly onto shared contexts; each step moves a system of record without moving a source of truth, which is why the table distinguishes them. Capability map v2 (December 2027, [One Dossier, One Account: Integrating an Acquired Product Portfolio](one-platform-from-many-products.html)) builds on this table.\n\n## Questions to Ask\n\n1. For each of your principal entities, which one context may change it, and can every team name it without looking it up?\n2. How many vehicle keys exist across your products today, and how many queries join on plate, stock number or date?\n3. Which words in your platform have more than one meaning (\"sold\", \"mileage\", \"customer\"), and does each meaning have its own event name?\n4. For every copy of another context's data, is it a reference, a decision snapshot, an observation or a projection, and does it show its age?\n5. When an upstream fact is corrected, which consumers recompute, and how do you know each one did?\n6. Which external systems (registers, suppliers, portals, DMS) reach your internal model without an anti-corruption layer?\n7. What is the degraded behavior of each entity when its owner is unavailable, and who decided it?\n8. Where your stock book meets a dealer's DMS, is ownership decided per field and per rooftop, or not at all?\n\nThe lines are drawn; the next part of the book follows the most important of them inward. [Part II — VEHICLE: Identity, Specification and History](part-2.html) opens the vehicle facts family, and [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html) begins with the decision every other context conforms to: how a platform knows which physical car it is talking about.\n\n## Sources and Evidence\n\n### Company, product and investor sources\n\n- [Cox Automotive's journey from API silos to a unified API strategy](https://2024.platformcon.com/talks/cox-automotives-journey-from-api-silos-to-a-unified-api-strategy) — PlatformCon, Brendan McNichols, 2024. Supports Cox's acquisition-driven API landscape and its move to a composable API platform.\n- [Cox Automotive customer story](https://apollographql.com/customers/cox-automotive) — Apollo GraphQL, n.d., accessed 2026-10. Vendor account of bringing the VIN decoder into a federated graph; vendor claims.\n- [mobile.de Seller API](https://services.mobile.de/manual/seller-api.html) — mobile.de, n.d., accessed 2026-10. Supports the seller-key field `internalNumber`.\n- [AutoScout24 Listing Creation API](https://listing-creation.api.autoscout24.com/docs) — AutoScout24, n.d., accessed 2026-10. Supports the `offerReferenceId` external reference.\n- [Autotrader Connect documentation](https://developers.autotrader.co.uk/documentation) — Auto Trader UK, n.d., accessed 2026-10. Supports `externalStockId` as the partner's own stock key.\n- [STAR press release on XML standards](https://www.starstandard.org/?p=811) — STAR, 2019. Supports the scale of STAR's message formats as a published dealer-side language.\n\n### Standards, regulation and official documentation\n\n- [Kentekenregister is basisregistratie voertuigen](https://www.rdw.nl/over-rdw/organisatie/kerntaken/kentekenregister-is-basisregistratie-voertuigen) — RDW, n.d., accessed 2026-10. Supports the base-register rule that government bodies use the register and keep no copies.\n- [Gekentekende voertuigen dataset metadata](https://opendata.rdw.nl/api/views/m9d7-ebf2.json) — RDW open data, queried 2026-10-22. Supports the plate-keyed snapshot without a VIN column.\n- [Authenticom v. CDK Global](https://www.courtlistener.com/opinion/4440779/authenticom-incorporated-v-reynolds-and-reynolds-company/) — US Court of Appeals, Seventh Circuit, 2017. Supports the DMS's scope as the dealer's system of record.\n- [CDK Global v. Brnovich](https://storage.courtlistener.com/pdf/2021/10/25/cdk_global_llc_v._mark_brnovich.pdf) — US Court of Appeals, Ninth Circuit, 2021. Supports the description of the DMS core database.\n\n### Research and practitioner sources\n\n- [Domain-Driven Design Reference](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf) — Eric Evans, Domain Language, 2015 (summaries of the 2003 book). Supports the definitions of core domain, generic subdomains, conformist and anti-corruption layer.\n- [BoundedContext](https://martinfowler.com/bliki/BoundedContext.html) — Martin Fowler, 2014. Supports the definition of bounded contexts, polysemy and context maps.\n- [How Do Committees Invent?](https://www.melconway.com/Home/Committees_Paper.html) — Melvin E. Conway, *Datamation*, 1968. Supports Conway's law.\n- *Team Topologies: Organizing Business and Technology Teams for Fast Flow* — Matthew Skelton and Manuel Pais, IT Revolution, 2019. Supports the inverse Conway maneuver and team ownership of contexts.\n- [Effective Aggregate Design](https://www.dddcommunity.org/library/vernon_2011/) — Vaughn Vernon, DDD Community, 2011. Supports drawing consistency boundaries along true business invariants.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

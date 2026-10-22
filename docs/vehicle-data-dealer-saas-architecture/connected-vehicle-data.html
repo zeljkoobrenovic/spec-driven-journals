@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act</title>
+    <meta name="description" content="What does connected-vehicle data change for a vehicle data platform, and how should it be integrated? It adds a fresh, high-trust source of odometer, fault-code and battery readings, but every reading arrives under a right granted by a particular user for a particular purpose, so the platform must model that right per vehicle, keep raw telemetry apart from history, and promote readings into shared history only where the right allows it.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act">
+    <meta property="og:description" content="What does connected-vehicle data change for a vehicle data platform, and how should it be integrated? It adds a fresh, high-trust source of odometer, fault-code and battery readings, but every reading arrives under a right granted by a particular user for a particular purpose, so the platform must model that right per vehicle, keep raw telemetry apart from history, and promote readings into shared history only where the right allows it.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/connected-vehicle-data.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/15-connected-vehicle-data/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="ev-battery-health.html" title="The Battery Question: EV State of Health and Battery Data">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-4.html" title="Part IV — DEALER: The Used-Car Workflow">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — VALUE: Market Data, Valuation and Condition</p>
+        <h1>Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  32 min read · <a class="spec-link" href="connected-vehicle-data.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/15-connected-vehicle-data/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/15-connected-vehicle-data/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="ev-battery-health.html" title="The Battery Question: EV State of Health and Battery Data">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-4.html" title="Part IV — DEALER: The Used-Car Workflow">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Data From the Car Itself: Connected Vehicles, Telematics and the EU Data Act", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "What does connected-vehicle data change for a vehicle data platform, and how should it be integrated? It adds a fresh, high-trust source of odometer, fault-code and battery readings, but every reading arrives under a right granted by a particular user for a particular purpose, so the platform must model that right per vehicle, keep raw telemetry apart from history, and promote readings into shared history only where the right allows it.", "permalink": "connected-vehicle-data", "timetoread": "32 min read", "icon": "assets/icons/15-connected-vehicle-data.png", "logo": "assets/images/15-connected-vehicle-data/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn what data a connected car can provide and through which routes, what the EU Data Act, type-approval law, ePrivacy and the GDPR require of a platform that receives it, and how to build a consent registry, per-source connectors and a governed path from raw telemetry into the vehicle history.\n\n> **WHY THE BUSINESS CARES:** A lessor that knows each car's real mileage every day can price excess kilometers, plan returns and set auction reserves on facts instead of drivers' self-reports. A history provider that can show \"mileage confirmed by the manufacturer two days ago\" sells a stronger report. Both lose that advantage, and the customer's trust, if the data is used beyond what the customer agreed to.\n\n> **WHY ARCHITECTS SHOULD CARE:** Connected-vehicle data is the first large vehicle-data source whose usage rights are tied to an individual vehicle and an individual user, not to a supplier contract. The data model, the storage split, the revocation path and the audit all follow from that. A platform that treats it as one more supplier feed builds a compliance problem into its history store.\n\n> **KEY POINTS:**\n>\n> * **The right travels with the reading.** Under the EU Data Act a third party receives car data only at the request of the vehicle's user, and may use it only for the purpose agreed with that user (Art. 6). So the unit of governance is a **consent grant per vehicle**: user, data holder, recipient, purpose, data categories and validity. Every reading must point to the grant it was received under.\n> * **Keep telemetry and history apart, and promote between them deliberately.** Raw connected signals belong in a purpose-scoped store that is deleted when the purpose ends. Only readings the grant allows, at a coarse granularity, become history events alongside register and workshop readings. The promotion step is where license, privacy and data quality meet.\n> * **Coverage is partial and the car can say no.** Coverage depends on brand, model year, hardware, connectivity subscription and the car's own privacy setting, and some readings are stale repeats. \"No connected data\" says nothing about the car, and a connected reading is strong evidence, not proof. Ownership changes end the grant, and revocation must reach every copy.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **License Blindness** — readings obtained for one lessor's remarketing quietly become part of a history database sold to everyone, against the purpose the user agreed to.\n> * **Provenance Amnesia** — a connected reading stored without its route, grant and signal timestamp cannot be defended when it disagrees with an inspection, or deleted when the grant ends.\n> * **Borrowed Uptime** — an appraisal that waits synchronously on a manufacturer backend inherits that backend's outages and activation delays.\n\n<br>\nEvery other source in this book observes the car from the outside. A register records what a business reported. An inspection records what a tester read off the dashboard. An advert records what a dealer typed. **A connected car reports on itself**: its odometer, its warning lamps, its battery, sometimes its position, every day or every few minutes, through the manufacturer's backend. It is the most precise odometer and condition source a platform can get, and since September 2025 the EU Data Act lets the car's user have it shared with a third party of their choice.\n\nThe catch is in the phrase \"of their choice\". The data is not offered to the market. It reaches a platform because **a specific user asked for it to be shared, for a specific purpose**, and the Data Act binds the recipient to that purpose. The architecture problem is therefore not ingestion. It is **keeping the right attached to every reading** as the reading moves from a connector into telemetry, into history events, into valuations and reports, and out again when the right ends.\n\n![Envelopes from a connected car each carry a grant tag; most go to a telemetry cabinet, a few pass a narrow gate into a history vault, and one with a cut tag stops at a barrier.](assets/images/15-connected-vehicle-data/15-right-travels-with-reading.jpeg)\n**Figure 1:** *Every connected reading carries the grant it arrived under, and that grant decides whether it may stay in telemetry, move into history, or must stop.*\n\nThis chapter owns **connected-vehicle data**, **data holder** and **consent grant (vehicle)**. It builds on [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html), whose event model receives the readings, and [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html), whose pipeline they pass through. It hands battery state of health to [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html), the license and purpose register to [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) and retention and erasure in depth to [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html).\n\n## Setting the Scene at Axleby: Fleetmoor Asks for the Car's Own Odometer\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), has no connected-car data in 2026. In June 2027 **Bas Hendriks**, remarketing manager at **Fleetmoor Lease**, asked for it. Fleetmoor leases about **64,000** vehicles in the Netherlands and Belgium and takes back about **14,000** a year, most of which it sells through Tradefloor, Axleby's B2B trade exchange ([Trader to Trader: B2B Exchanges, Auctions and Lease Remarketing](b2b-trade-and-remarketing.html)). Two numbers hurt Bas. Fleetmoor charged excess kilometers on its leases from the readings drivers typed into its driver portal each month, and disputes about those charges were rising. And Vantage valued each return from the last mileage Fleetmoor knew, which could be four weeks old.\n\nFleetmoor owns the cars. Under the Data Act that makes it a **user**, entitled to ask each manufacturer to share the cars' data with a third party. Bas wanted Axleby to be that third party: a daily odometer reading for every car whose lease ended within 18 months, plus warning lamps and battery data for the electric cars.\n\n**Priya Raman** (VP Data and Valuation) saw a second prize. After the Odometer Correction of May 2027, when a supplier batch put wrong mileage on **2,870** UK-imported vehicles, Tracewell needed readings it could trust more than commercial files. Manufacturer readings from 8,000 to 10,000 Fleetmoor cars would feed the odometer judgement in every history report those cars ever appeared in, including the reports a dealer buys when the car is resold.\n\n**Femke de Boer** (Head of Data Governance and Privacy) stopped that sentence halfway. The data would arrive because Fleetmoor asked for it, for Fleetmoor's remarketing. Selling it inside history reports to other customers was a different purpose. The Data Act permits that only if it is agreed with the user. And the readings, daily and per car, described the movements of identifiable lessees and their employees.\n\n**Hendrik Maes** (Head of Partner Integrations) added the practical problem: no single route reached all of Fleetmoor's brands, and each route had its own activation process, data dictionary and failure modes.\n\n**Ines Marchetti**, Group Chief Architect, framed the question for the design review: **what must Axleby store about each car's right to data, how does a reading travel from a manufacturer into Fleetmoor's service and possibly into shared history, and what happens when the car is sold?**\n\n## What a Connected Car Can Tell You\n\n**Connected-vehicle data** is data a vehicle generates about its use and condition and sends through an electronic communications service or exposes on a physical port. In the Data Act's terms the vehicle is a **connected product**: an item that \"obtains, generates or collects data concerning its use or environment\" and can communicate it \"via an electronic communications service, physical connection or on-device access\" (Regulation (EU) 2023/2854, [Art. 2(5)](http://publications.europa.eu/resource/celex/32023R2854), 2023). The Commission's September 2025 vehicle-data guidance says which kinds of vehicle data are in scope and which are not ([European Commission, C/2025/5026, 2025](http://publications.europa.eu/resource/celex/52025XC05026)):\n\n| Data category | Data Act status (Commission guidance, 2025) | Value to a vehicle data platform | Sensitivity |\n| --- | --- | --- | --- |\n| **Odometer value** | In scope: pre-processed data (para 34) | Very high: history, valuation, lease mileage | Low alone; higher at daily granularity, because it reveals use |\n| **Fault codes and malfunction lamps** | In scope (para 34) | High: condition at appraisal and return | Low |\n| **Battery level** and component wear (brake pads) | In scope (para 34) | Medium; state of health belongs to [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html) | Low |\n| **Time or distance to next service** | In scope unless predicted (para 34) | Medium: reconditioning cost | Low |\n| **GNSS location** (global navigation satellite system) | In scope (para 34) | Low for history and valuation | **High**: the European Data Protection Board (EDPB) calls location \"particularly revealing of the life habits of data subjects\" |\n| **Raw sensor and CAN-bus signals** | In scope: raw data (para 33) | Low for this platform | Varies |\n| **Driving or eco-scores**, crash-severity analysis | Out of scope: inferred or derived (para 35) | Tempting for risk products | High |\n\nTwo lines in that table decide most of what follows. **Odometer values and fault codes are in scope**, so a user can direct them to a platform. **Driving scores are out of scope**: they are the manufacturer's derived data and the Data Act gives nobody a right to them. A history and valuation platform needs the first kind and should not want the second.\n\nThe terms this chapter uses:\n\n- **User**: a person or organization that \"owns a connected product or to whom temporary rights to use that connected product have been contractually transferred\" (Art. 2(12)). An owner, a lessee and a renter can all be users. The registered keeper is not automatically one.\n- **Data holder**: the party that has the right or obligation to use and make available the product data, in practice the manufacturer or its backend. The data holder owes the user access and must share with a third party at the user's request (Arts. 4 and 5).\n- **Third party** or data recipient: the party the user chooses to receive the data. When Fleetmoor directs a manufacturer to share with Axleby, Axleby is the third party.\n- **Readily available data**: data the data holder \"lawfully obtains or can lawfully obtain ... without disproportionate effort\" (Art. 2(17)). The guidance treats data that reaches a manufacturer's backend \"notably under the 'extended vehicle' concept\" as readily available (paras 39–40).\n- **Consent grant (vehicle)**: this book's term for the platform's record of one right to receive one vehicle's data. It records the vehicle, the user who granted it, the data holder and route, the recipient, the purpose, the data categories, the legal basis, the validity and the state. It is a deliberately broad term. Legally, the right behind it may be a Data Act user request, an ePrivacy consent to read the car, a GDPR consent, a contract with a fleet owner, or several of these at once. The record stores which.\n\n## The Rules a Receiving Platform Lives Under\n\n### The EU Data Act\n\nThe Data Act applies in stages ([Regulation (EU) 2023/2854, Art. 50](http://publications.europa.eu/resource/celex/32023R2854), 2023):\n\n| Obligation | Who owes it | Applies from | What it means for a vehicle platform |\n| --- | --- | --- | --- |\n| Pre-contract information about the product's data (Art. 3(2)) | **The seller, renter or lessor**, \"which may be the manufacturer\" | **12 September 2025** | A dealer or lessor that sells or leases a connected car must tell the customer what data it generates, where it is stored and how to access it, before the contract |\n| Access by design (Art. 3(1)) | Manufacturers | Products **placed on the market after 12 September 2026** | New cars must make data available \"by default, easily, securely, free of charge\" and, where feasible, directly to the user. Older cars are reached through Articles 4 and 5 |\n| User access on request (Art. 4) | Data holder | 12 September 2025 | Free of charge to the user, same quality as the data holder has |\n| Sharing with a third party at the user's request (Art. 5) | Data holder | 12 September 2025 | The route a platform like Axleby uses |\n| Third-party obligations (Art. 6) | **The receiving platform** | 12 September 2025 | Use only for the purposes agreed with the user, erase when no longer needed, no onward sharing without the user's contract |\n| Compensation on fair, reasonable and non-discriminatory (FRAND) terms (Arts. 8–9) | Data holder to recipient | 12 September 2025 | The recipient may pay \"reasonable\" compensation that \"may include a margin\"; for small and medium-sized recipients it may not exceed cost |\n\nArticle 6 is the operative text for a receiving platform. The third party processes the data \"only for the purposes and under the conditions agreed with the user\" and erases it \"when they are no longer necessary for the agreed purpose\" (Art. 6(1)). It may not use the data for profiling unless that is \"necessary to provide the service requested by the user\", may not pass it to another third party except under a contract with the user, and may not use it to develop a competing product or to derive insights about the data holder's economic situation (Art. 6(2)). Pooling Fleetmoor's readings into a history database sold to other customers is therefore lawful only if Fleetmoor, the user, agrees to it as a purpose, and, for personal data, only with a valid basis under the General Data Protection Regulation (GDPR).\n\nThree more provisions shape the commercial side. Access is **free to the user**; compensation runs between the data holder and the third party (Arts. 4(1), 5(1), 9). The compensation cap for small and medium-sized enterprises (Art. 9(4)) does not help a group of Axleby's size. And data holders may protect **trade secrets** by agreeing protective measures with the recipient, and may withhold or suspend sharing, with written reasons and notice to the competent authority, when no agreement is reached (Arts. 5(9)–(11)). The Commission's guidance is non-binding and expressly does not interpret the type-approval rules or the GDPR. In September 2025 it promised separate guidelines on reasonable compensation; this chapter did not verify whether they have been adopted.\n\n### Type-approval access and SERMI\n\nBefore the Data Act, the main legal route to car data was the type-approval regulation. Regulation (EU) 2018/858 obliges manufacturers to give independent operators \"unrestricted, standardised and non-discriminatory access\" to on-board diagnostics (OBD) information and repair and maintenance information (RMI), including access to \"the remote diagnosis services used by manufacturers and authorised dealers and repairers\", at \"reasonable and proportionate\" fees ([Regulation (EU) 2018/858, Arts. 61 and 63](http://publications.europa.eu/resource/celex/32018R0858), 2018). Security-related functions (key coding, immobilizers) are reached through the **Security-Related Repair and Maintenance Information (SERMI)** scheme, applicable from 30 July 2023, which certifies each operator and employee ([Delegated Regulation (EU) 2021/1244](http://publications.europa.eu/resource/celex/32021R1244), 2021).\n\nFor this chapter the point is the **purpose**. The RMI regime exists for repair and maintenance. The Court of Justice of the European Union (CJEU) held in *Scania* (C-319/22, 2023) that Article 61 is a \"legal obligation\" under the GDPR for manufacturers to release VINs (vehicle identification numbers) to independent operators ([CJEU, 2023](http://publications.europa.eu/resource/celex/62022CJ0319)). That is a basis for the manufacturer to release, not a license for a recipient to republish service history to buyers. Tag anything obtained this way \"repair and maintenance\" and keep it out of reports.\n\n### ePrivacy and the GDPR\n\nThe EDPB's guidelines on connected vehicles treat the car as **terminal equipment**. Storing information in it, or \"gaining access to information already stored\" in it, requires the user's prior consent under Article 5(3) of the ePrivacy Directive, unless an exemption applies. Further processing still needs a basis under the GDPR, for which consent \"will generally be the most adequate\" ([EDPB Guidelines 01/2020, version 2.0, 2021](https://www.edpb.europa.eu/system/files/documents/2021-03/edpb_guidelines_202001_connected_vehicles_v2.0_adopted_en.pdf), paras 12–15). The guidelines predate the Data Act, so read them as a floor.\n\nTwo consequences matter for the architecture. When the manufacturer reads the car, the ePrivacy consent step is the manufacturer's. When a **dealer plugs a reader into the OBD port** at an appraisal, the dealer is gaining access to the terminal equipment and needs the customer's consent unless the read is strictly necessary for a service the customer explicitly asked for. That is reference-architecture judgement from the EDPB's reasoning, not a ruling. Second, readings tied to a VIN are personal data for any party that can link the VIN to a person (*Scania*), and a lessor can always link its car to its lessee.\n\n### The dealer's own Data Act duty\n\nArticle 3(2) is the Data Act's most direct hook on the **workflow half** of the platform. A dealer selling a connected car, or a lessor leasing one, has owed the customer pre-contract data information since 12 September 2025: the type, format and estimated volume of data the car generates, whether it is generated continuously, whether it is stored on the device or a remote server and for how long, and how the user can access, retrieve or erase it. No source found for this chapter describes how dealers are meeting the duty in practice. The obvious design, and my recommendation, is for dealer software to attach the manufacturer's data-information sheet for the model and model year to the deal and record its delivery before signature, as one more pre-contract document in [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html). The software cannot write the sheet; only the manufacturer knows the data. It can make sure the right sheet reaches the right buyer and prove that it did.\n\n## Routes to the Data\n\nThere is no single place to get connected-car data. Each route has its own consent model, latency, coverage and price, and a platform will usually need more than one.\n\n| Route | How it works | Consent or clearance model | Latency and freshness | Coverage | Best for |\n| --- | --- | --- | --- | --- | --- |\n| **Manufacturer backend or data portal** | The vehicle talks only to the manufacturer's server; third parties call the manufacturer's web services. ISO 20077 and ISO 20078 describe this \"extended vehicle\" pattern | Manufacturer's own process; Data Act request by the user | Near real time to daily, per brand | One brand per integration | High-volume fleets of a few brands |\n| **Aggregator, consumer-consented** | A developer API across many brands; the driver logs in with their manufacturer account and grants scopes | Smartcar describes \"an OAuth 2.0 consent flow that lets your users link their vehicles\", with permissions such as `read_odometer` ([Smartcar, n.d.](https://smartcar.com/docs/getting-started/introduction)) | Seconds to minutes for an on-demand read | Smartcar states \"over 40 OEM brands\" (vendor claim) | One car, one person, now: a trade-in appraisal |\n| **Aggregator, fleet-cleared** | A business registers VINs; the manufacturer approves each one | High Mobility documents an asynchronous activation with states `pending`, `approved`, `rejected`, `revoking`, `revoked` and others that \"can take several days or more\", and rejection when the vehicle's \"privacy mode is enabled\" ([High Mobility, n.d.](https://docs.high-mobility.com/docs/getting-started/fleet-clearance/activation-process.md)) | Days to activate; then streamed or polled | High Mobility states \"over 22 OEMs\" (vendor claim) | Lessors' and dealers' own fleets and stock |\n| **Aftermarket dongle or OBD reader** | A device on the OBD port reads the car directly | ePrivacy consent of the person who controls the car at that moment | Immediate, while plugged in | Any car with an OBD port; depth varies by brand | Appraisal and return inspections |\n| **Statutory channel** | Manufacturers report readings to a public registry | By law | Quarterly where it exists | All connected cars of reporting manufacturers | Reaching connected readings through a register |\n\nThe statutory row is small today and may grow. Belgium's Car-Pass, the statutory mileage registry, already receives readings \"from manufacturers and importers (including readings from connected vehicles, shared quarterly)\" ([Car-Pass FAQ, n.d., accessed 2026-10](https://www.car-pass.be/en/faq)). The Council's compromise text of 27 November 2025 on the revision of the EU roadworthiness rules would require manufacturers to \"transmit the odometer readings of connected vehicles which they have produced every three months\" to national registers, but would give access to the registration-certificate holder and authorities, not to data companies ([Council of the EU, ST 15613/25, 2025](https://data.consilium.europa.eu/doc/document/ST-15613-2025-INIT/en/pdf)). The European Parliament confirmed its mandate to negotiate on 21 May 2026, and the file was still awaiting Parliament's first-reading position in October 2026 ([European Parliament Legislative Observatory, 2025/0097(COD), accessed 2026-10](https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0097(COD))). If it passes, registers become a route to quarterly connected readings for every car, and bilateral feeds remain the route to daily ones.\n\nNote the two different consent models in the aggregator rows. **Consumer consent** is a person granting a scope for a car they drive, in one session. **Fleet clearance** is a business registering a car it owns, approved by the manufacturer over days. A dealer platform needs both: consumer consent for a trade-in at appraisal, fleet clearance for its dealers' stock and its lessors' fleets. They must not merge. **An appraisal consent must never silently become a stock-monitoring right after the dealer buys the car**, because at that moment the user changes.\n\nThe independent aftermarket federation FIGIEFA argues that the extended-vehicle model makes the manufacturer a \"self-appointed gatekeeper\" and wants sector-specific rules ([FIGIEFA, n.d., accessed 2026-10](https://www.figiefa.eu/en/access-to-data.html)); no Commission proposal had appeared by October 2026. For the next few years, **the manufacturer's backend stays the main route, priced by each manufacturer within the Data Act's FRAND terms**.\n\n## Architecture: A Consent Registry, Connectors and a Governed Promotion\n\nThe design Axleby adopted for the pilot has four parts. **Mandate** is the consent and data-rights registry: one record per consent grant, with its state. **Signalyard** holds the connectors and a purpose-scoped telemetry store. The **promotion service** decides which readings may become history events in Tracewell, the history event store described in [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html). **Charter**, Axleby's license and purpose register ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)), answers whether a consuming product may use what it asks for.\n\n![A user grants a right in Mandate, which activates Signalyard connectors; manufacturer signals become readings with a grant id in the telemetry store, which serves Fleetmoor's service and feeds a promotion service that writes coarse readings to Tracewell history when Mandate allows it; ownership changes end the grant.](assets/images/15-connected-vehicle-data/15-consent-connectors-promotion.jpeg)\n**Figure 2:** *Readings enter through connectors that only run under an active grant, land in a purpose-scoped telemetry store that serves the user's own service, and reach shared history only through a promotion step that checks the grant. An ownership change ends the grant.*\n\n### Components and boundaries\n\n| Component | Responsibility | Owns | Does not own |\n| --- | --- | --- | --- |\n| **Mandate** | Records consent grants; runs their state machine; sends activation and revocation to routes; answers \"is there an active grant for this vehicle, recipient, purpose and category?\" | Consent grants, disclosure texts shown, grant events | Source licenses and client purposes (Charter); person data beyond the grantor reference |\n| **Signalyard connectors** | One per manufacturer backend or aggregator: authentication, activation calls, webhooks, polling, the route's data dictionary, mapping to canonical signals | Route contracts and raw deliveries | Which vehicle a VIN belongs to (Anchor) |\n| **Telemetry store** | Canonical signals per vehicle, tagged with grant id, signal time and receipt time; deletion by grant | Raw and normalized telemetry | History events; anything after the grant's retention date |\n| **Promotion service** | Selects readings the grant allows to become history, at the granularity the grant allows, and writes them as history events | Promotion rules and their versions | The odometer judgement (Tracewell's rules) |\n| **Tracewell** | History events and judgements | Promoted readings as history events, with source class `manufacturer` | Raw telemetry |\n\nThe boundary that matters most is between the telemetry store and Tracewell. **Telemetry is the user's data, held for the user's purpose. History is the platform's data, held for the vehicle's life.** Every reading starts on the telemetry side. It crosses to history only when the grant names a history purpose, and only in the form the grant names. That one rule turns Femke's objection into a design: Fleetmoor's daily readings serve Fleetmoor, and a deliberately smaller set serves everyone.\n\n### The consent grant\n\n| Field | Example | Why it exists |\n| --- | --- | --- |\n| `grant_id` | UUID | Every reading carries it; deletion and audit follow it |\n| `avk`, `vin` | Axleby Vehicle Key; VIN as given to the route | Routes are VIN-keyed; Anchor resolves the AVK |\n| `grantor` and `grantor_role` | Fleetmoor Lease (owner); a private seller (driver) | The user under Art. 2(12), and the basis for ending the grant when the role ends |\n| `data_holder`, `route` | Brand X backend via its data portal | Which connector, which terms, which compensation |\n| `recipient` | Axleby Data | Onward sharing needs the user's contract |\n| `purposes` | `fleet-remarketing`; `history-contribution` | Purpose binding under Art. 6(1); checked by Charter |\n| `categories` | odometer, warning lamps, battery; **not** location | Minimization; the route is asked only for these |\n| `legal_basis` | Data Act Art. 5 request; contract with lessor; GDPR basis for drivers' data | Different bases have different end conditions |\n| `disclosure_version` | Text version shown or signed, with time | Proof of what the user agreed to |\n| `valid_from`, `valid_until`, `end_trigger` | 2027-09-06; lease end + 90 days; `ownership_change` | Revocation without a human |\n| `retention` | Telemetry: 90 days after grant end; promoted events: vehicle life | Erasure when no longer needed |\n| `state` | `requested`, `pending`, `active`, `rejected`, `revoking`, `ended` | Ingestion checks state at read time, not only at activation |\n\nThe state machine is short, but each transition must reach the route and the stores.\n\n![A consent grant goes from Requested to Pending, then Active or Rejected; Active moves to Revoking when ownership changes or the purpose ends, and to Ended once telemetry is purged.](assets/images/15-connected-vehicle-data/15-consent-grant-states.jpeg)\n**Figure 3:** *A consent grant per vehicle. Activation is asynchronous and can be refused by the car itself. Revocation is a state of its own, because the route must confirm and the telemetry must be purged before the grant counts as ended.*\n\n### Normalizing to the history event model\n\nThe history event model in [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) already has the fields a connected reading needs: `occurred_on` (valid time), `recorded_at` (transaction time), `source`, `source_class` and `licence_class`. Connected readings add three things: the **grant id**, the **route**, and the **signal timestamp**, which is often different from the time the reading reached Axleby.\n\n| Connected signal | History event | Promotion rule (Fleetmoor grant) | Why |\n| --- | --- | --- | --- |\n| Odometer, daily | `odometer_reading`, source class `manufacturer` | One reading per vehicle per calendar month (the last of the month), plus the reading on the return date | Monthly is enough for the odometer judgement and reveals far less about use than daily |\n| Warning lamps and fault codes | Not promoted | Stay in telemetry for Fleetmoor's return inspection | Condition at return belongs in the condition report ([Condition Changes Everything: Inspection, Damage Estimation and Reconditioning Cost](condition-and-damage.html)), not in history |\n| Battery level and battery data | Not promoted by this grant | Battery evidence goes through [The Battery Question: EV State of Health and Battery Data](ev-battery-health.html) with its own method and consent | Values from different methods must not mix |\n| Location | Not collected | Not requested from any route | Not needed for any agreed purpose |\n\nThe promotion rule is a function of the grant, not of the source: another lessor's grant might allow none, and a consumer appraisal grant never does. So promotion is a service with versioned rules, not a filter inside a connector.\n\n![Dense daily droplets fill a telemetry reservoir that feeds Fleetmoor's dashboard; a sieve lets only a few monthly drops into a history vault.](assets/images/15-connected-vehicle-data/15-telemetry-sieve.jpeg)\n**Figure 4:** *Daily readings stay in purpose-scoped telemetry for the lessor's own service; only the readings the grant allows, at month-end granularity, pass into shared history.*\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Fleet activation (Fleetmoor uploads VINs) | Each VIN's grant state is authoritative in Mandate | Asynchronous; days per route | Not applicable | Retry per VIN; report pending and rejected per VIN to the user |\n| Daily odometer for the lessor's service | Per-vehicle order by signal time | Within 24 hours of the signal *(assumption)* | Daily | Gaps backfilled where the route allows; otherwise shown as gaps |\n| On-demand read at appraisal (consumer consent) | Read-only; result tied to the appraisal | p95 under 10 s *(assumption)* | Live or the backend's last value, with its signal time | Never blocks the appraisal; falls back to the dashboard reading typed by the dealer |\n| Promotion to history | Exactly once per selected reading | Daily batch | Monthly per vehicle | Replayable from the telemetry store until its retention ends |\n| Revocation after ownership change | Grant state wins over any queued reading | Route revoke within 24 hours of the register event *(Axleby target)* | Not applicable | Readings received after the end are deleted and logged |\n\n## In Practice: The Fleetmoor Pilot\n\n### Design decisions\n\nThe pilot contract, signed in June 2027 and live on **6 September 2027**, settled Femke's objection in writing. Fleetmoor, as user, granted two purposes. **Fleet remarketing** covered daily odometer, warning lamps and battery data, held in Signalyard for Fleetmoor's mileage and returns service until 90 days after each car was sold. **History contribution** allowed the promotion service to write one month-end reading and the return-date reading per car into Tracewell, where they would be kept for the vehicle's life and could appear in any history report. Location was excluded from both. For the remarketing purpose Axleby acts on Fleetmoor's behalf; for the history contribution it decides the purpose itself. That split of roles, processor for one and controller for the other, is the kind of decision [Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html) owns. Fleetmoor's new lease terms told lessees and their drivers about both purposes. Whether a lessee, who is also a \"user\" under Article 2(12), could object to the history purpose was left as an open question for counsel.\n\nHendrik's team built connectors for two routes: the data portal of one manufacturer group with a large share of Fleetmoor's fleet, and one fleet-clearance aggregator covering most other brands. Both are priced per vehicle per month. Axleby pays the routes and charges Fleetmoor a fee per active vehicle. Meterline, Axleby's usage metering service ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)), meters active grants per month, not readings.\n\n### What the first three months showed\n\nAll figures are Axleby illustrations.\n\n| Measure | Value | What it taught |\n| --- | --- | --- |\n| VINs submitted (leases ending by end of 2028) | **11,600** | — |\n| Of brands reachable by the two routes | **9,400** (81%) | Coverage is a brand-portfolio question before it is a technical one |\n| Grants active after 21 days | **7,950** (69% of submitted) | Activation took a median of 4 days *(Axleby)* |\n| Rejected | **830** | Privacy mode switched on, no connectivity hardware, or a lapsed connectivity subscription |\n| Still pending or in error after 21 days | **620** | Many needed the car to be driven, or a software update, before activation completed |\n| Daily readings that repeated an earlier value with a new delivery time | **5.8%** | Backends re-send the last known value for parked or offline cars |\n| Driver-portal readings more than 1,500 km away from the connected reading | **6.9%** | The case for the pilot, in one number |\n| Returns with connected data, September–November | **1,020** | — |\n| Return-inspection reading within 100 km of the last connected reading | **97.8%** | The other 22: 14 data lags or instrument-cluster replacements, 8 mistyped inspection entries |\n\nTwo results changed Fleetmoor's process. Excess-kilometer invoices for cars with active grants now use the connected reading at the lease-end date, and Vantage values returns from a reading that is at most a day or two old instead of up to four weeks. Tradefloor condition sheets for those cars show **\"Mileage confirmed by manufacturer data on [date]\"** next to the inspection reading. Fleetmoor is the seller, so it can authorize that disclosure about its own car.\n\nIn Tracewell, promoted readings rank as a manufacturer source, below official register and inspection readings and above commercial files ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)). About **21,000** were promoted by the end of November 2027: few next to other odometer sources, valuable for their trust, not their volume.\n\n### Public reference points\n\nThree public examples put the pilot in context.\n\n- **A statutory registry already uses connected readings.** Car-Pass, which takes manufacturers' quarterly connected readings, reported **345.5 million** odometer readings received in 2025 ([Car-Pass, 2026](https://www.car-pass.be/en)). In Belgium, daily connected readings compete with a statutory source that already sees quarterly ones.\n- **The manufacturer is the consent bottleneck, and the car can refuse.** High Mobility's documentation shows activation taking days, depending on software updates, and failing when privacy mode is on ([High Mobility, n.d.](https://docs.high-mobility.com/docs/getting-started/fleet-clearance/activation-process.md)). The pilot's 830 rejections are that documentation in production.\n- **Enrollment at the point of sale carries enforcement risk.** In January 2026 the US Federal Trade Commission (FTC) finalized an order against General Motors over allegations that it used \"a misleading enrollment process\" for OnStar and Smart Driver and sold drivers' geolocation and driving-behavior data. The order bans GM from disclosing such data to consumer reporting agencies for five years and requires \"affirmative express consent\" before collecting, using or sharing connected-vehicle data ([FTC, 2026](https://www.ftc.gov/node/327916)). In August 2024 the Texas Attorney General sued GM over the collection and sale of driving data ([ABC7, 2024](https://abc7news.com/post/general-motors-sued-texas-attorney-general-ken-paxton-files-lawsuit-car-maker-alleging-illegal-selling-driver-data/15185046/)), and press reports said enrollment was steered during vehicle setup ([WXYZ, 2024](https://www.wxyz.com/news/texas-sues-general-motors-alleging-illegal-selling-driver-data)); the case status was not verified for this chapter. When enrollment happens on a dealer's premises, dealer software that records which disclosure the customer saw, on which screen and what they agreed to protects the dealer as well as the manufacturer.\n\n## Failure Handling\n\nConnected data fails in ways a supplier file does not, because the car, the manufacturer and the user can each stop the flow.\n\n![Swimlanes for Turnstile, Mandate, Route, Signalyard and Tracewell: an ownership change at 09:14 makes Mandate revoke the route and stop ingest; Signalyard deletes later readings, Tracewell keeps promoted events, and the grant ends.](assets/images/15-connected-vehicle-data/15-revocation-on-sale.jpeg)\n**Figure 5:** *Revocation on an ownership change. The register event, not a sales-system status, ends the grant. Readings signaled after the end time are deleted. Promoted history events stay, because the history purpose was granted for the vehicle's life.*\n\n**Ownership changes outside the platform.** By the end of November 2027, **640** pilot cars had been sold. **23** kept streaming for between 1 and 11 days after the sale. The first revocation trigger was the Tradefloor deal, and those 23 cars were sold outside Tradefloor, mostly to the drivers who had leased them. For a privately bought car the new owner is a different user, and Axleby had no right to that car's data. The fix moved the trigger to the register: for Dutch cars, the ownership change on Turnstile's register change stream; for Belgian cars, where Axleby has no comparable change stream, Fleetmoor's daily fleet list, reconciled each night against active grants. About 140 readings received after the sales were deleted. Femke's team assessed the incident as a personal-data breach unlikely to result in a risk (odometer only, no location, deleted within a day of discovery) and documented it without notifying the regulator. The lesson is general: **the grant must end on the most authoritative ownership signal available, and a nightly reconciliation must catch what the signal misses**.\n\n**Duplicates across routes.** During the overlap when Hendrik's team moved some brands from the aggregator to the manufacturer's portal, about **1,140** vehicles had grants on both routes and the same readings arrived twice. Readings are deduplicated on vehicle, signal time, value and data holder, and the second arrival is recorded as a second attestation. A vehicle should have one active grant per data holder; Mandate now refuses a second unless the first is revoking.\n\n**Stale repeats.** The 5.8% of readings that repeated an old value with a new delivery time would have looked like a parked car with fresh readings. Signalyard stores the signal time from the backend as `occurred_on` and drops a reading whose signal time and value match one it already holds. Where a route gives no signal time, the reading is stored with a lower trust flag and never promoted.\n\n**Conflicts with official readings.** A connected reading that is lower than an earlier reading is not automatically a rollback. In the pilot, the drops came from instrument-cluster replacements, where the new cluster starts from a different value. Tracewell's classifying odometer rule from [What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html) handles this if the connected reading carries its source class and the workshop event is present. When a connected reading and an inspection reading on the same day disagree by more than a tolerance, both stay in the log and the judgement says which it trusted and why.\n\n**Incomplete coverage.** Rejected, pending and unreachable vehicles are 31% of the pilot's submissions. Reports and valuations must treat \"no connected data\" as **no evidence**, never as a negative signal about the car. A rejected grant because of privacy mode says something about the user's choice, nothing about the mileage.\n\n**Route outages and backfill.** A manufacturer backend or aggregator outage stops readings for every vehicle on that route. Connectors record the gap per route. Where a route offers history retrieval, Signalyard backfills up to its window. Where it does not, the gap stays visible in the lessor's service. Appraisals never wait on a route: a consumer-consented read that times out falls back to the dashboard reading the dealer types, flagged as such. That keeps the route's availability out of the appraisal's critical path ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)).\n\n**Schema changes and trade-secret withholding.** Routes change their data dictionaries. Connectors validate each delivery against the route's contract and quarantine unknown or changed fields, following the validation layers in [From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html). A data holder may also suspend sharing over trade-secret measures under Article 5(10). Mandate needs a state for \"suspended by data holder\" with the holder's written reasons attached, so the user can be told why their service stopped.\n\n## Trade-Offs\n\n| Decision | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| **Route** | Direct manufacturer integrations | Aggregator | A few brands make up most of the fleet and volumes justify per-brand work | Many brands, small volumes, or a consumer flow that needs one consent screen |\n| **What to store** | Full telemetry kept long-term | Purpose-scoped telemetry plus coarse promoted history | Never for a third party: Art. 6(1) requires erasure when the purpose ends | Always, with promotion rules per grant |\n| **Granularity of history** | Every reading | One per month plus event dates (sale, return, inspection) | The user's own service needs daily data | Shared history: enough for the odometer judgement, far less revealing |\n| **Consent unit** | Per vehicle | Per fleet contract | Consumer and dealer-stock grants; anything that can end with a sale | Never alone; a fleet contract is the legal frame, but each VIN still needs its own state |\n| **Appraisal read** | Remote read via consumer consent | OBD reader on the forecourt | The customer has the manufacturer app and is present | No app account, older car, or no route for the brand; needs ePrivacy consent too |\n| **Revocation trigger** | Platform sales events | Register ownership changes plus nightly reconciliation | Never alone | Always; sales events can be an early warning |\n\nThe recommendation rests on three assumptions: the platform is a **third party** under the Data Act, not a data holder; its history products are sold to customers other than the user; and its users include both businesses and private people. If a platform only ever serves the user who granted the data, the promotion step collapses into a filter. If it operates a connected service of its own, such as a stock tracker that can lock cars, it may become a data holder with duties of its own.\n\n## Across Markets: What Changes by Country\n\n| Topic | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Legal right of the user to car data** | EU Data Act, applicable since 12 September 2025 | EU Data Act | No Data Act; access is contractual | No federal equivalent; access is contractual |\n| **Consent to read the car** | National implementations of ePrivacy Art. 5(3); EDPB 01/2020 | TDDDG (*Telekommunikation-Digitale-Dienste-Datenschutz-Gesetz*, the German telecommunications and digital services data protection act) § 25: access to terminal equipment only with consent, based on \"clear and comprehensive information\" ([TDDDG, accessed 2026-10](https://www.gesetze-im-internet.de/ttdsg/__25.html), translated) | Privacy and Electronic Communications Regulations (PECR) regulation 6, substituted from 5 February 2026 by the Data (Use and Access) Act 2025 ([legislation.gov.uk, accessed 2026-10](https://www.legislation.gov.uk/uksi/2003/2426/regulation/6)) | No general rule; FTC order against GM (2026) requires \"affirmative express consent\" from GM; California treats \"precise geolocation\" as sensitive personal information ([California AG, 2026](https://oag.ca.gov/privacy/ccpa)) |\n| **Statutory connected-odometer flow** | BE: manufacturers' quarterly connected readings to Car-Pass. NL: none found; the RDW registers readings from recognized businesses | None found | None found | None found |\n| **Pending change** | EU roadworthiness revision: quarterly connected readings to national registers (Council text, 2025; in negotiation) | Same | Not applicable | Not applicable |\n| **Security-related repair access** | SERMI, mandatory | SERMI, mandatory | SERMI voluntary, reported live from 1 April 2026 | No federal scheme; state right-to-repair laws (not verified for this chapter) |\n| **Main enforcement risk** | Purpose creep under Data Act Art. 6 and the GDPR | Same, with active state data protection authorities | UK GDPR and PECR; Information Commissioner's Office (ICO) guidance on vehicle identifiers under review | Deceptive-practice enforcement (FTC, state attorneys general) over enrollment and resale |\n\nSources beyond those cited in the table: Regulation (EU) 2023/2854; Delegated Regulation (EU) 2021/1244; Car-Pass FAQ; Council note 15613/25; the UK SERMI date is reported by the trade press via the research brief and was not read in primary form.\n\nThe judgement: **the consent grant, the telemetry–history split, the promotion service and the revocation path are common**. What differs is the legal basis recorded in the grant, the consent rule for reading the car, and the available routes. In the EU the user's Data Act right does most of the work and the platform's job is to honor its purpose. In the UK the same manufacturer portals may be reachable, but only by contract, so the grant's legal basis is the contract and PECR consent. In the US the binding constraint is not a data-access right but a consent and disclosure standard set by enforcement: the GM order is the practical benchmark for any platform that touches enrollment or resale. These are rule sets in Mandate and per-market connector configurations, not separate products. The one genuinely market-specific product decision is Belgian: where Car-Pass already holds quarterly connected readings, a platform's connected data sells on freshness and condition signals, not on mileage coverage.\n\n## The Chief Architect's View\n\n**Decide whether you are a third party or a data holder.** Today Axleby is a third party everywhere. A dealer-stock tracker with remote commands, or a Lotwise app that reads cars over Bluetooth, could make it a data holder for that product, with Article 4 and 5 duties toward users and their chosen third parties. I would make that a deliberate decision at the architecture forum, not a side effect of a product feature.\n\n**Put the right in the schema before the first reading arrives.** Mandate, the grant id on every reading and the telemetry–history split are cheap at 8,000 vehicles and nearly impossible to retrofit at 800,000.\n\n**Make promotion a governed release.** Each promotion rule is a decision about what a user agreed to share with everyone. Femke de Boer approves the rule's purpose and granularity. Priya Raman approves its effect on the odometer judgement. The rule is versioned, and Tracewell can remove every event a rule promoted if a grant turns out to be invalid.\n\n**Buy routes; own the consent grant and the canonical signals.** Aggregators and manufacturer portals will change prices, coverage and APIs, and the market will consolidate. I would treat routes as replaceable adapters ([Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html)) and keep Mandate, the canonical signal model and the promotion rules in-house, because those carry the legal and data-quality obligations that do not transfer.\n\n**Give the workflow half its Data Act jobs.** Article 3(2) information on deals, consent screens at appraisal and dealer-stock grants that end at sale are Lotwise and Showroomly features. They protect dealers and give the data half grants it can defend.\n\n**Watch four numbers.** Grant activation rate and median activation time per route; the share of readings that are stale repeats; the time from an ownership change to an ended grant; and the share of promoted readings that the odometer judgement ever overrides. The last one tells you whether the trust ranking was right.\n\n## Questions to Ask\n\n1. For every connected reading in your stores, can you name the grant, the user, the purpose and the route it arrived under?\n2. Is raw telemetry stored separately from shared history, and is its deletion driven by the grant's end rather than by a fixed retention period?\n3. Which signal ends a grant when a car is sold outside your own systems, and how quickly?\n4. Which purposes allow a reading to appear in a product sold to someone other than the user, and who approved that?\n5. Do you store the signal time from the manufacturer, and can you tell a fresh reading from a re-sent old one?\n6. When a consumer links their car at a trade-in appraisal, what stops that consent from continuing after the dealer buys the car?\n7. Does any appraisal, valuation or report call a manufacturer backend synchronously, and what does it do when the backend is down or the car is not activated?\n8. Do your dealers deliver the Data Act Article 3(2) pre-contract information when they sell or lease a connected car, and can you prove it per deal?\n9. Is there a product on your roadmap that would make you a data holder?\n\nConnected data closes Part III's tour of where facts about a car come from and how they become value. Part IV turns to the dealer, who uses those facts to buy, price, advertise and sell. It starts with [Part IV — DEALER: The Used-Car Workflow](part-4.html) and the appraisal in [Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html), where a consumer-consented connected read is one more piece of evidence on the forecourt.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Smartcar: Getting started](https://smartcar.com/docs/getting-started/introduction), Smartcar, n.d., accessed 2026-10 — consumer OAuth consent flow, odometer permission, brand-coverage claim (vendor statement).\n- [High Mobility](https://www.high-mobility.com/) and [Fleet clearance activation process](https://docs.high-mobility.com/docs/getting-started/fleet-clearance/activation-process.md), High Mobility, n.d., accessed 2026-10 — fleet clearance states, activation delays, rejection when privacy mode is on, OEM-partner claim (vendor statement).\n- [Car-Pass](https://www.car-pass.be/en) and [Car-Pass FAQ](https://www.car-pass.be/en/faq), Car-Pass vzw, 2026 (2025 figures) and n.d., accessed 2026-10 — statutory basis, quarterly connected readings from manufacturers, 345.5 million readings received in 2025.\n\n*Standards, regulation and official documentation*\n\n- [Regulation (EU) 2023/2854 (Data Act)](http://publications.europa.eu/resource/celex/32023R2854), European Parliament and Council, 2023 — definitions (Art. 2), pre-contract and design duties (Art. 3), user access and sharing (Arts. 4–5), third-party obligations (Art. 6), FRAND compensation (Arts. 8–9), dates of application (Art. 50).\n- [Guidance on vehicle data, accompanying Regulation (EU) 2023/2854 (C/2025/5026)](http://publications.europa.eu/resource/celex/52025XC05026), European Commission, 2025 — in-scope and out-of-scope vehicle data, readily available data, extended vehicle, functions out of scope.\n- [Regulation (EU) 2018/858](http://publications.europa.eu/resource/celex/32018R0858), European Parliament and Council, 2018 — RMI and OBD access for independent operators (Arts. 61, 63).\n- [Delegated Regulation (EU) 2021/1244](http://publications.europa.eu/resource/celex/32021R1244), European Commission, 2021 — SERMI and security-related RMI, applicable from 30 July 2023.\n- [Judgment in C-319/22, *Gesamtverband Autoteile-Handel v Scania*](http://publications.europa.eu/resource/celex/62022CJ0319), CJEU, 2023 — RMI duty as a GDPR legal obligation; VIN as personal data when linkable to a person.\n- [Guidelines 01/2020 on connected vehicles, version 2.0](https://www.edpb.europa.eu/system/files/documents/2021-03/edpb_guidelines_202001_connected_vehicles_v2.0_adopted_en.pdf), European Data Protection Board, 2021 — vehicle as terminal equipment, consent for access, location data; evidence predates the Data Act.\n- [Council note ST 15613/25 on the roadworthiness revision](https://data.consilium.europa.eu/doc/document/ST-15613-2025-INIT/en/pdf), Council of the EU, 2025 — proposed quarterly transmission of connected-car odometer readings.\n- [Procedure file 2025/0097(COD)](https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0097(COD)), European Parliament Legislative Observatory, accessed 2026-10 — negotiation mandate confirmed 21 May 2026; awaiting first-reading position.\n- [§ 25 TDDDG](https://www.gesetze-im-internet.de/ttdsg/__25.html), German Federal Ministry of Justice, current text, accessed 2026-10 — consent for access to terminal equipment (translated).\n- [Privacy and Electronic Communications Regulations 2003, regulation 6](https://www.legislation.gov.uk/uksi/2003/2426/regulation/6), legislation.gov.uk, current text (substituted 5 February 2026), accessed 2026-10 — UK rule on access to terminal equipment.\n- [FTC finalizes order with General Motors and OnStar](https://www.ftc.gov/node/327916), US Federal Trade Commission, 2026 — five-year ban on disclosure to consumer reporting agencies; affirmative express consent.\n- [California Consumer Privacy Act](https://oag.ca.gov/privacy/ccpa), California Attorney General, 2026 (page update) — precise geolocation as sensitive personal information.\n\n*Research and practitioner sources*\n\n- [Access to data](https://www.figiefa.eu/en/access-to-data.html), FIGIEFA, n.d., accessed 2026-10 — independent aftermarket's critique of the extended-vehicle model and call for sector-specific rules.\n- [General Motors sued by Texas Attorney General](https://abc7news.com/post/general-motors-sued-texas-attorney-general-ken-paxton-files-lawsuit-car-maker-alleging-illegal-selling-driver-data/15185046/), ABC7, 2024 — Texas lawsuit over the collection and sale of driving data (press report; case status not verified).\n- [Texas sues General Motors alleging illegal selling of driver data](https://www.wxyz.com/news/texas-sues-general-motors-alleging-illegal-selling-driver-data), WXYZ, 2024 — report that enrolment was steered during vehicle setup.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

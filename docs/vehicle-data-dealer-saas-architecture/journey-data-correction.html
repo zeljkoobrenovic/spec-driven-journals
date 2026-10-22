@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A Fact Was Wrong: Propagating a Vehicle Data Correction</title>
+    <meta name="description" content="When a supplier corrects a vehicle fact, how does the correction reach every valuation, report, advert, insight file and client copy the wrong fact already reached? Contain the suspect fact versions at once, record at the moment of use which fact versions each artifact consumed so the impact graph is a query, recompute derived state but never rewrite what was issued, and tell exactly the people and systems that received the wrong fact.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="A Fact Was Wrong: Propagating a Vehicle Data Correction">
+    <meta property="og:description" content="When a supplier corrects a vehicle fact, how does the correction reach every valuation, report, advert, insight file and client copy the wrong fact already reached? Contain the suspect fact versions at once, record at the moment of use which fact versions each artifact consumed so the impact graph is a query, recompute derived state but never rewrite what was issued, and tell exactly the people and systems that received the wrong fact.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/journey-data-correction.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/41-journey-data-correction/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="journey-inventory-to-portal.html" title="From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="journey-lead-to-dms.html" title="From Portal Enquiry to Dealer System: Routing a Lead End to End">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VIII — JOURNEYS: End-to-End Scenarios</p>
+        <h1>A Fact Was Wrong: Propagating a Vehicle Data Correction</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  35 min read · <a class="spec-link" href="journey-data-correction.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/41-journey-data-correction/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/41-journey-data-correction/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="journey-inventory-to-portal.html" title="From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="journey-lead-to-dms.html" title="From Portal Enquiry to Dealer System: Routing a Lead End to End">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "A Fact Was Wrong: Propagating a Vehicle Data Correction", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "When a supplier corrects a vehicle fact, how does the correction reach every valuation, report, advert, insight file and client copy the wrong fact already reached? Contain the suspect fact versions at once, record at the moment of use which fact versions each artifact consumed so the impact graph is a query, recompute derived state but never rewrite what was issued, and tell exactly the people and systems that received the wrong fact.", "permalink": "journey-data-correction", "timetoread": "35 min read", "icon": "assets/icons/41-journey-data-correction.png", "logo": "assets/images/41-journey-data-correction/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Walk one supplier correction from detection to closure: containment, the bitemporal correction, the impact graph across valuations, reports, adverts, prices, insight files and API answers, the per-artifact choice between recomputing, superseding and annotating, the notices to dealers, consumers and data clients, the legal and audit trail, and the failure cases that break the path.\n\n> **WHY THE BUSINESS CARES:** A vehicle data business sells accuracy, and it is judged on how it handles the day accuracy fails. An insurer that settled claims on a wrong mileage, a dealer whose car was flagged as clocked, and a consumer who paid for a wrong report each ask what they were told, when, and what has been done about it. A fast, complete and documented answer keeps the client. A slow one loses the client and invites a lawyer.\n\n> **WHY ARCHITECTS SHOULD CARE:** Correcting the source takes a few seconds. Finding everything built on the old value is the expensive part, and a platform can do it only if every consumer recorded which fact version it used, at the time it used it. That decision is made in the valuation ledger, the report store, the advert renderer and the usage meter long before any incident. It cannot be added afterwards.\n\n> **KEY POINTS:**\n>\n> * **Contain first, correct second.** Mark the suspect fact versions *disputed* within an hour of seeing the pattern, so nothing new is built on them, without waiting for the supplier's corrected file. In May 2027 Axleby waited three days for the redelivery. At the incident's average rate that added about 1,700 valuations to the clean-up.\n> * **The impact graph is recorded at the moment of use, never reconstructed afterwards.** Every valuation, report snapshot, advert render, price event and billable API answer stores the fact versions it consumed. A correction then becomes a forward query from the superseded versions to artifacts and recipients. Axleby's 2027 analysis took eleven days by hand. Its 2028 dry run took 38 minutes.\n> * **Recompute derived state; never rewrite what was issued; tell only those who received it.** Current values, judgements and live adverts are recomputed. Issued valuations, reports and API answers stay as they were and gain a linked successor. Notices go to the recipients the access audit names. Each notice says what changed, not the corrected value itself, so a correction never hands licensed data to a client that did not buy it.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Sticky Error** — the Odometer Correction fixed the source in eleven days, but the wrong mileage lived on in issued valuations, consumer reports, advert text and clients' databases for weeks.\n> * **Provenance Amnesia** — Tracewell overwrote the wrong readings in place, so the correction erased the evidence needed to find what the error had touched.\n> * **License Blindness** — a correction that pushes corrected facts to every client would hand licensed data to clients who never received it; the audience must come from the access audit.\n\n<br>\nThis chapter starts where the data chapters stop: on the day a stored fact turns out to be wrong. **A vehicle fact spreads by design.** A mileage reading becomes a current odometer, then an odometer judgement, then a valuation, then a purchase offer, an advert price, a history report, an API answer in an insurer's claims system and a row in an importer's monthly insight file. Each copy was correct when it was made, by the rules the platform had then.\n\n![A stone labeled Reading drops into a pond; ripples carry an odometer, a valuation, a report and an advert outward toward clients on the shore.](assets/images/41-journey-data-correction/41-correction-ripple.jpeg)\n**Figure 1:** *A vehicle fact spreads by design: one reading becomes an odometer, a valuation, a report, an advert and a client's copy, and a correction has to reach every ring.*\n\nThe question is narrow and hard: **when a supplier corrects a fact, how does the correction reach every place the fact went?** One half of the answer is mechanical: an append-only correction, a correction event and an **impact graph** that turns \"what did this touch?\" into a query. The other half is a decision per kind of artifact: recompute, supersede, annotate, notify or refund.\n\nThis chapter owns the **correction event** and the **impact graph**, and follows the Odometer Correction of May 2027 end to end. It builds on bitemporal facts and the provenance envelope ([Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)), batch validation and replay ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)), report snapshots and odometer judgements ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)), the valuation ledger ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)), advert composition ([Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html)), the event backbone and webhooks ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)), data-quality monitors ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)) and rectification under data-protection law ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)).\n\n## Setting the Scene at Axleby: Eleven Days, Then Eleven More\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), loads a nightly file from **Kilometra**, a fictional odometer and service-record supplier. Kilometra aggregates workshop readings, including readings for cars later imported from the UK. The file of 12–13 May 2027 held a catch-up export from one UK workshop chain: **3,050** readings taken between December 2026 and May 2027. The readings were in miles, and the file's `unit` column said `km`. Tracewell, Axleby's history event store, loaded the batch in the night of **13 May 2027**. Its loader checked the schema, upserted each reading and set each vehicle's current odometer to the newest reading by date. For **2,870** UK-imported vehicles the current odometer dropped to about 62% of its true value.\n\nVantage, the valuation engine, valued the cars too high. Tracewell's old odometer flag saw readings below the previous MOT (the UK's annual roadworthiness test) reading and printed \"possible rollback\" in history reports. In Lotwise, Axleby's dealer software, the nightly dossier re-sync copied the wrong value into stock records whose mileage the dealer had never confirmed, and from there into adverts.\n\n**Detection came from a customer.** On Wednesday **19 May**, a dealer in Venlo called Lotwise support. A prospective buyer had bought an Odolo report on the dealer's 2018 Volvo XC60, a UK import. Odolo is Axleby's consumer vehicle-check app. The report showed a reading of 61,300 km on 2 February 2027 after an MOT reading of 96,367 km in October 2026, and it said \"possible rollback\". The dealer had typed 99,120 km at stock-in in March, read from a dashboard that showed miles. Support logged a single-vehicle data issue; two similar tickets and an Odolo complaint followed on 20 May. On Friday **21 May**, the data team of Priya Raman, VP Data and Valuation, saw the pattern. Every affected reading came from one workshop chain and one batch, and each sat at about 1/1.609 of the neighboring readings. Hendrik Maes, Head of Partner Integrations, called Kilometra the same afternoon. Kilometra confirmed the chain's export error and promised a corrected redelivery.\n\nAxleby then made the decision this chapter argues against: **it waited**. Tracewell had no batch reference and no status on its readings, so suppressing \"the readings from that batch\" meant hand-written SQL against a recorded-date window. The team chose not to risk it. The corrected batch loaded on Monday **24 May** at 02:44, **11 days** after the bad one. The loader overwrote each wrong reading in place.\n\nBy then **6,140** issued valuations, **412** history reports (**96** of them sold to consumers through Odolo) and **1,180** live adverts carried the wrong mileage. **Nobody could list them.** Finding them took another eleven days of manual work: joins between the valuation ledger and 30-day API logs, a scan of report snapshots, and Lotwise database queries by vehicle and date window. The dossier re-sync fixed the adverts' structured mileage on 25 May. But **307** adverts also stated the mileage in dealer-written text. A text search found them on 7 June, and **41** were still live with the wrong figure on 14 June ([Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html)). The API clients got an email. In June, **Rijnstaal Verzekeringen**, a fictional insurer that settles total-loss claims with Axleby valuations, wrote to ask what it had been told about each affected car. Answering took six working days ([Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)).\n\nInes Marchetti, Group Chief Architect, framed the question for the architecture forum in July 2027: **when any vehicle fact is corrected, how does the platform contain it, find everything built on it, decide what to recompute and whom to tell, and prove afterwards that it did, in hours rather than weeks?** The answer was approved as the **correction journey design record** in August 2027. It introduced **Retrace**, the correction-case and impact service described below. Parts of it ran for real on a second case in October 2027. The whole journey was rehearsed on the event backbone in 2028.\n\n| Date (2027) | Day | What happened | What should have happened |\n| --- | --- | --- | --- |\n| Thu 13 May, 02:47 | 0 | Bad batch loaded; current odometers drop for 2,870 vehicles | Per-chain distribution check holds the chain's 3,050 records ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)) |\n| 13–19 May | 0–6 | About 560 valuations, 37 reports and 107 advert updates a day built on wrong readings | Nothing built: segment quarantined |\n| Wed 19 May | 6 | First dealer ticket, handled as a single-vehicle issue | Ticket links to an open quality alert, or opens a pattern search |\n| Fri 21 May | 8 | Pattern found; Kilometra confirms | Fact versions marked *disputed* within one hour; correction case opened |\n| 21–24 May | 8–11 | Wait for redelivery; error keeps spreading | Contained: new artifacts use the prior reading, marked provisional |\n| Mon 24 May, 02:44 | 11 | Corrected batch overwrites wrong readings in place | Corrected versions appended; old versions superseded |\n| 24 May – 3 June | 11–21 | Manual impact analysis | Impact query; internal fan-out within one hour |\n| 7 and 14 June | 25, 32 | 307 advert texts found; 41 still live | Stale-content scan flags dealer text at fan-out time |\n| June | — | Rijnstaal's questions take six working days | Per-client answer list is a by-product of the case |\n\n## Concepts: What a Correction Is and What It Touches\n\n[Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html) distinguishes four kinds of change to a vehicle fact: new observation, late observation, correction and retraction. This journey handles the last two. A **correction** keeps the fact's valid time and replaces its value: the 2 February reading was 98,653 km, not 61,300 km. A **retraction** withdraws a fact with no successor, for example a reading attached to the wrong vehicle. Both close the old fact version in transaction time and leave it readable. The terms this chapter adds:\n\n| Term | Definition |\n| --- | --- |\n| **Fact version** | One recorded state of one vehicle fact of one Axleby Vehicle Key (AVK, the internal vehicle id), with its own id, valid time, recorded and superseded times, source and status ([Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)). Artifacts reference versions, never \"the fact\". |\n| **Disputed** | A status on a fact version that is suspected wrong but not yet corrected. Disputed versions are excluded from current values and new derivations. Issued artifacts that used them are not touched yet. |\n| **Correction case** | The unit of work and of accountability. It records the cause, the superseded or disputed versions, the decisions per artifact class, the notices sent, the completion of every consumer and the closure. One supplier error is one case, whether it touches 1 vehicle or 3,000. |\n| **Correction event** | `vehicle.fact.corrected`: an immutable, per-vehicle event saying that fact versions were superseded or retracted, published by the context that owns the fact. It names the case, the attribute, the old and new version ids and the window in which the old version was served. It is **thin**: no values. |\n| **Impact edge** | A record, written by a consumer when it uses a fact version, that links the version to the artifact built on it, and the artifact to its recipient. |\n| **Impact graph** | All impact edges taken together. A correction's **impact set** is the forward closure from the superseded versions through derived facts to artifacts and recipients. |\n| **Issued artifact** | Anything that left the platform's control or was relied on: a valuation returned to a caller, a report delivered, an API answer, an offer made, a monthly file delivered. Issued artifacts are never edited. |\n| **Live artifact** | Something the platform still renders and can change: a current odometer, an advert, a dossier view, a price suggestion. Live artifacts are recomputed. |\n\nThis distinction drives every decision in the journey. **A live artifact is wrong until it is recomputed. An issued artifact remains a true record of what was said**, so its remedy is a successor plus a notice, not an edit. Rewriting an issued valuation would destroy the evidence Rijnstaal asked for.\n\n![Left: a live advert card being recomputed. Right: a sealed issued document left unchanged, linked to a successor document, with a notice envelope sent out.](assets/images/41-journey-data-correction/41-live-versus-issued.jpeg)\n**Figure 2:** *A live artifact is wrong until it is recomputed; an issued artifact stays a true record of what was said and gains a linked successor and a notice instead of an edit.*\n\n## Architecture: Contain, Correct, Trace, Act, Tell, Close\n\n### Components and ownership\n\nThe journey crosses eight contexts. Retrace owns none of the facts or artifacts. It owns the case, the impact query and the completion record.\n\n| Component | Owner | Role in the journey |\n| --- | --- | --- |\n| **Inlet**, ingestion pipeline ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)) | Data platform | Lands the corrected batch; checks `corrects_record_id`; holds segments |\n| **Tracewell**, history store ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)) | History team | Appends corrected versions, marks superseded or disputed ones; recomputes odometer judgements; emits `vehicle.fact.corrected` through its outbox |\n| **Retrace**, correction cases and impact | Data operations (Priya Raman) | Opens cases, runs the impact query, applies the per-class policy, tracks completion and residuals, assembles the audit pack |\n| **Vantage** and the valuation ledger ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)) | Valuation team | Re-values affected entries as linked successors; reports which ones led to actions |\n| **Report store** in Tracewell | History team | Supersedes report snapshots; triggers reissue notices |\n| **Lotwise Dossier**, advert composer, pricing ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html), [Pricing to Turn: Market-Based Pricing, Signals and Repricing](used-car-pricing.html)) | Lotwise | Re-renders adverts, flags dealer text, re-proposes prices, notifies dealers |\n| **Public event gateway**, Charter, Meterline ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html), [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html), [Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)) | Platform, governance, billing | Computes the external audience from the access audit; sends thin webhooks; credits re-fetches |\n| **Pulse** and insight files ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), [Selling Insight: Enrichment, Market Insight and Predictive Data Products](data-products-and-insights.html)) | Market data | Recomputes affected statistics; restates frozen monthly releases |\n\n### The impact graph\n\nAxleby's impact graph is **federated, not central**. Each owning store keeps its own edges in a shape it already had: the valuation ledger's reading version per entry, report snapshots' event versions, `fact_version` on Meterline usage events and on advert renders (both from October 2027), the reference valuation id on price events, and release id plus recipient per insight-file delivery. Retrace holds one thing centrally: a registry of these **impact adapters**. Each adapter answers \"given these fact versions and this time window, which artifacts and recipients?\" with the same result shape.\n\n![Superseded readings feed derived facts, which feed valuations, reports and adverts; readings also feed API answers; reports reach dealers and consumers, adverts reach portals and API answers reach data clients.](assets/images/41-journey-data-correction/41-impact-graph.jpeg)\n**Figure 3:** *The impact graph of the Odometer Correction. Every arrow is an edge some store recorded when it used the fact; the correction's reach is the forward closure from the superseded versions, and its audience is the last column.*\n\nThe query runs in two passes. The first walks derived facts inside the vehicle contexts: survivorship and the odometer judgement say which derived versions changed ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)). The second asks every adapter, in parallel, for artifacts that cite any superseded version, original or derived, **within the served window**. The window runs from the moment the bad version became readable to the moment it stopped being served. For the Odometer Correction that was 13 May, 02:47 to 24 May, 02:44. With containment it would have closed on 21 May.\n\nTwo rules keep the query honest. **An adapter that cannot answer reports a gap, never zero**: adverts rendered before October 2027 have no version edges, so their adapter queries by vehicle and date window and labels the answer *approximate*. And **the impact set is a snapshot**, re-run before the case closes, because consumers keep writing during fan-out.\n\n> **INFERENCE, NOT DOCUMENTED:** No vehicle-data company has published how it finds the reports, valuations or client answers affected by a corrected fact. The federated impact graph and correction case here are the author's reference architecture. They apply record-level lineage, an idea that dataset-level standards such as OpenLineage do not cover. OpenLineage models datasets, jobs and runs ([OpenLineage object model, n.d., accessed 2026-10](https://openlineage.io/docs/spec/object-model)). It can say which job read a batch, but not which of 6,140 valuations used which reading.\n\n### The correction event\n\nThe event is per vehicle, thin and owned by the context that owns the fact. For the worked Volvo it reads:\n\n```\ntype: vehicle.fact.corrected          (CloudEvents 1.0; extensions avk, entityversion)\nsubject: <AVK of the Volvo>\ndata:\n  correction_case: CC-2027-0007\n  kind: correction                    (or retraction)\n  attribute: odometer.reading\n  observed_at: 2027-02-02\n  superseded_versions: [k1]\n  current_version: k2                 (null for a retraction)\n  served_window: 2027-05-13T00:47Z .. 2027-05-24T00:44Z\n  reason: source_unit_error\n```\n\nThree choices matter. **The event carries version ids, not values**: consumers re-read the fact through the owning API with its license decision, and external subscribers get the same shape, filtered to vehicles they received ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)). **It carries the served window**, so a consumer can decide for itself whether anything it holds is affected. **It carries the case id**, which links every downstream action back to one accountable record. Disputing a version emits `vehicle.fact.disputed` with the same shape. Lifting the dispute without a correction emits it again with status `active`.\n\n### The success path, step by step\n\nThe target journey as the design record specifies it, using the Odometer Correction as the case. Steps 1–3 use Inlet and envelope v1 (2027). Steps 5–9 use the event backbone. Internal topics arrived in Q2 2028; `vehicle.fact.corrected` reached data clients in Q4 2028 ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)).\n\n![Swimlanes for Kilometra, Inlet, Tracewell, Retrace, the event backbone and consumers: Retrace disputes the readings first, the redelivery lands, the correction fans out through the backbone, consumers report completion and Retrace closes the case.](assets/images/41-journey-data-correction/41-correction-journey-swimlanes.jpeg)\n**Figure 4:** *The correction journey. Containment happens before the supplier's fix arrives; the correction fans out through the backbone; Retrace tracks the impact set and closes the case only when every consumer has reported and the residual sweep is empty.*\n\n| # | Step | Owner | Identifiers crossing | Consistency | Latency target |\n| --- | --- | --- | --- | --- | --- |\n| 1 | **Detect**: per-chain semantic failure rate, a dispute from a client, or a support ticket matched to a pattern | Inlet; data operations | `batch_ref`, `workshop_chain_id`, AVK | — | Batch errors: at load. Single disputes: one business day *(assumption)* |\n| 2 | **Contain**: mark fact versions *disputed*; derived values fall back to the prior version and are labeled provisional | Tracewell on data operations' decision | Fact version ids | Strong, one transaction per batch | Under 1 hour from decision *(assumption)* |\n| 3 | **Open case**: cause, scope, owner, first impact estimate | Retrace | Case id | — | Same hour |\n| 4 | **Correct**: supplier redelivers with `corrects_record_id`; Inlet validates and lands | Kilometra; Inlet | Source record ids, new batch ref | Batch-atomic per segment | Notice within 1 business day (contract v2); redelivery as agreed |\n| 5 | **Supersede and re-derive**: append versions, recompute survivorship and judgements, emit events | Tracewell | Old and new version ids, AVK | Per-AVK order, at least once | Minutes |\n| 6 | **Trace**: impact query over all adapters | Retrace | Version ids, served window | Snapshot, re-run before close | Under 15 minutes for 3,000 vehicles *(assumption)* |\n| 7 | **Act**: re-value, supersede reports, re-render adverts, re-propose prices, restate statistics, credit usage | Each owning context | Artifact ids with case id | At least once, idempotent per (case, artifact) | Internal within 1 hour ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)) |\n| 8 | **Tell**: dealers, consumers, data clients, portals | Lotwise, Odolo, gateway | Recipient ids, notification id | At least once, deduplicated per (case, artifact, recipient) | Clients within 24 hours; consumers same day *(assumption)* |\n| 9 | **Reconcile and close**: completion per consumer, residual sweep, acknowledgements, audit pack | Retrace | Case id | Complete or explicitly waived | Close within 30 days *(assumption)* |\n\n**Containment pays for itself.** A dispute is cheap to lift if the supplier says the readings were right; waiting has a price that grows by the day. At the incident's average rates, each day added about **560** valuations, **37** reports and **107** advert updates to the work list ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)).\n\nDetection itself belongs to the neighbors, with one canonical caveat. The first gate built after the incident compared median readings per age band against the trailing 30 days. The September 2027 replay showed it **would not have fired**: 2,870 wrong readings among about 34,000 UK-import records moved no median by more than 5%. The check that did fire was **per supplying workshop chain**: 94% of the chain's 3,050 records failed the semantic check ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)). A unit error confined to one chain is invisible in aggregate and obvious in its own segment.\n\n### Recompute, supersede, annotate: the policy per artifact class\n\nMost of the design record is this table. It is a policy, signed off by Priya Raman for data, Tomás Ferreira (Product Director, Lotwise) for the dealer product and Femke de Boer (Head of Data Governance and Privacy) for legal wording. Retrace applies it per case and records every deviation.\n\n| Artifact class | Live or issued | Action | Who is told | Odometer Correction |\n| --- | --- | --- | --- | --- |\n| Current odometer, odometer judgement | Live | Recompute | Nobody directly; events | 2,870 vehicles |\n| Restock price-position signals | Live | Recompute next night | Nobody | Not issued valuations; outside the 6,140 |\n| Issued valuation | Issued | **Successor valuation** under the original model version, linked; original annotated \"input superseded\" | Only where it led to an action or left the platform | 6,140 entries |\n| Offer, maximum purchase price, purchase | Issued (dealer's decision) | Show the successor beside the original | Dealer | See the worked example |\n| Advert price set against the valuation | Live, dealer-owned | **Re-propose**, never change automatically | Dealer | 212 adverts *(Axleby illustration)* |\n| Advert structured fields | Live | Re-render; Relay sends updates to portals | Portals through Relay | 1,180 adverts |\n| Dealer-written advert text | Live, dealer-owned | Stale-content flag; republication blocked until edited | Dealer | 307 adverts |\n| History report | Issued | **Superseding version**, linked; old one retrievable | Holder: dealer or consumer | 412 reports, 96 consumer |\n| API answer | Issued, outside the platform | Thin notice; free re-fetch | Data clients that received it | 19 clients, 2,310 lookups |\n| Billable usage | Issued | Credit per policy | Finance; client invoice | `data_correction` credit |\n| Pulse statistics, daily figures | Live | Recompute affected windows | Nobody | Rebuilt nightly |\n| Monthly insight release | Issued | Restatement in next release with delta table | Recipients of the release | Below materiality in May |\n| Training snapshot | Internal | Exclude superseded versions from the next retrain | Model card | One weekly retrain affected |\n\nThree of these rows carry the argument.\n\n**Successor, not overwrite, for valuations.** Vantage re-values each affected entry with the **original model version** and the corrected reading. This isolates the effect of the correction from the market's movement since. Re-valuing with today's model would mix two changes and make the difference unexplainable to a dealer or an insurer. The new entry links to the old one. The old entry gains an annotation, and its answer is never changed ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n\n**Materiality decides the notice, not the recompute.** Everything affected is recomputed; recomputation is cheap. A notice goes out only where the difference is material and someone relied on the artifact. For valuations the design record sets materiality at a change of more than 2% or €250, whichever is larger *(Axleby illustration)*. A unit error of 1.609 clears that bar for almost every car, so in this case nearly everything was material. Without a threshold, a small correction would flood dealers with notices about €40 differences, and they would learn to ignore them.\n\n**Dealer-owned decisions are proposed, never made.** The platform can show that a price's reference was wrong and propose a new price, but it does not reprice a car on a portal or withdraw a dealer's offer to a private seller.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Dispute → current values | Strong per batch; derived values fall back atomically | Under 1 hour | Current | If Tracewell's write path is down, the gateway suppresses the attribute instead |\n| Correction → internal consumers | At least once, idempotent per (case, artifact) | Within 1 hour | Follows the source | Consumers replay from topics; a down consumer delays only itself |\n| Correction → data clients | Only to recipients in the access audit; thin | Within 24 hours | Feed keeps 30 days | Delivery failure never blocks internal correction |\n| Notice → consumers | Once per (case, report, consumer) | Same business day | — | Queued; reissued report available on login |\n\n## In Practice: Public Evidence and the Axleby Worked Example\n\n### What the public record shows\n\n**No vehicle-data company publishes how it propagates corrections.** The public evidence comes from the official odometer registers, which have correction procedures of their own, and from the published contracts of webhook and event systems.\n\nThe registers treat correction as **supersession with evidence, by a named party**:\n\n- The Dutch register RDW lets a recognized business correct the **last** reading it registered itself. Older readings are corrected by the RDW on request, with as much evidence as possible: a receipt, workshop history or service booklet. After approval the RDW changes the register within 10 working days ([RDW, *Tellerstand corrigeren*, n.d., accessed 2026-10](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/tellerstanden/tellerstand-corrigeren)).\n- Belgium's Car-Pass lets a garage correct a mistake electronically **once**; a further correction must be validated by a Car-Pass employee ([Car-Pass FAQ, n.d., accessed 2026-10](https://www.car-pass.be/en/faq)).\n- For the UK MOT, a mileage mistake reported within 28 days is fixed by the test center after it rechecks the vehicle. Later mistakes need evidence dated within one day of the test, through an online form ([GOV.UK, *Fix mistakes on your MOT record*, n.d., accessed 2026-10](https://www.gov.uk/getting-an-mot/correcting-mot-certificate-mistakes)).\n- In the US, a seller who knows the reading is wrong must disclose that \"the odometer reading does not reflect the actual mileage, and should not be relied upon\" ([49 CFR 580.5(e)(3), via Cornell LII, accessed 2026-10](https://www.law.cornell.edu/cfr/text/49/580.5)). The statement travels with the vehicle's title. It is not a quiet fix.\n\n**The pattern across all four: the wrong value is not erased; a corrected value with a named author and evidence supersedes it.** A history platform that receives these corrections must keep both versions. Otherwise its own report contradicts what the register shows the buyer.\n\nOn the notification side, webhook contracts deliver **at least once and unordered**. Stripe recommends **thin** events that the receiver re-fetches ([Stripe, Webhooks, n.d., accessed 2026-10](https://docs.stripe.com/webhooks)). Standard Webhooks tells receivers to use the `webhook-id` as an idempotency key ([Standard Webhooks specification, n.d., accessed 2026-10](https://github.com/standard-webhooks/standard-webhooks/blob/main/spec/standard-webhooks.md)). A correction event built on these contracts must expect duplicates, reordering and receivers that are down for days. The failure cases below are built on those three facts.\n\n### Axleby worked example: one Volvo through the journey\n\nThe Venlo dealer's 2018 Volvo XC60 is one of the 2,870 vehicles. Its odometer facts, as Tracewell holds them under envelope v1 (Axleby illustration):\n\n| Version | Observed | Recorded | Value | Source | Status |\n| --- | --- | --- | --- | --- | --- |\n| m1 | 9 Oct 2026 | 10 Oct 2026 | 96,367 km (59,880 miles, unit `MI`) | MOT file from the Driver and Vehicle Standards Agency (DVSA); official | active |\n| k1 | 2 Feb 2027 | 13 May 2027, 02:51 | 61,300 km (as delivered: `61300`, `km`) | Kilometra batch 2027-05-13 | superseded 24 May 2027 |\n| k2 | 2 Feb 2027 | 24 May 2027, 02:44 | 98,653 km (61,300 miles) | Kilometra redelivery, corrects k1 | active |\n| d1 | 22 Mar 2027 | 22 Mar 2027 | 99,120 km | Lotwise stock-in, dealer-entered | active |\n\nThe impact query from k1 over the served window returns (Axleby illustration, consistent with the case totals):\n\n| Artifact | Detail | Action under the policy |\n| --- | --- | --- |\n| Current odometer | Unchanged at 99,120 km: d1 (22 March) was newer than k1 (2 February) | None. **A newer reading protected the current value**; this car's harm was in its history and judgement |\n| Odometer judgement | Old flag: \"possible rollback\" (k1 below m1) | Recompute: consistent; flag removed |\n| Odolo consumer report | Sold 18 May, €12.95, rollback warning | Superseding report emailed; full refund |\n| Business report in the dealer's dossier | Viewed 19 May | Superseding version; dossier banner |\n| Valuations | None; the dealer had valued the car in March | — |\n| API answers | One lookup by a portal-pricing client on 17 May | Thin notice; free re-fetch |\n\n**The Volvo's current value was right and the car was still harmed**, because the error lived in its history. A process that checks only \"did the current value change?\" misses such cars, which is why the impact query starts from superseded versions.\n\nAcross the whole case, the 6,140 valuations split by where they went (Axleby illustration): **1,870** were returned to API clients, inside the 2,310 affected lookups; **3,980** were Lotwise appraisal, dossier and pricing-reference valuations; **290** sat inside history reports. Of the Lotwise valuations, the ledger's outcome links show **74** that led to purchase offers (**29** of them completed purchases) and **212** that served as the reference for advert prices. Those 286 needed a dealer notice. The rest needed a successor and an annotation only. **Outcome links turned a 6,140-row problem into a 286-row conversation with dealers.**\n\nOf the 412 reports, **271** had printed \"possible rollback\", **64** of them among the 96 consumer reports. For the dealers whose cars were affected, this was the reputational core of the incident: a report bought by their buyer suggested their car had been clocked. The design record therefore treats **any correction that removes a fraud or damage indication** as material whatever its size. The dealer whose stock carried the indication gets a notice and a corrected report free of charge.\n\n### Legal and reputational handling\n\nThree duties shape the notices. Femke de Boer's team owns their wording.\n\n- **Consumers.** A paid history report is digital content. Under the EU Digital Content Directive, a consumer facing a lack of conformity may have it \"brought into conformity\", receive \"a proportionate reduction in the price\" or terminate the contract, and conformity must be restored \"free of charge\" ([Directive (EU) 2019/770, Art. 14, 2019](http://publications.europa.eu/resource/celex/32019L0770)). Axleby went further than the minimum. It reissued all 96 reports **and** refunded all 96 without being asked: under €1,300 in total, less than the cost of handling the complaints. UK consumers buying Odolo UK reports have comparable rights: for non-conforming digital content, the Consumer Rights Act 2015 gives \"the right to repair or replacement\" and \"the right to a price reduction\" ([Consumer Rights Act 2015, s. 42](https://www.legislation.gov.uk/ukpga/2015/15/section/42)).\n- **Personal data.** This book treats plates and VINs as personal data by default ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)). The General Data Protection Regulation (GDPR) requires data to be \"accurate and, where necessary, kept up to date\", with \"every reasonable step\" taken to rectify inaccurate data \"without delay\". When data is rectified, the controller must \"communicate any rectification … to each recipient to whom the personal data have been disclosed, unless this proves impossible or involves disproportionate effort\" ([Regulation (EU) 2016/679, Art. 5(1)(d) and Art. 19, 2016](http://publications.europa.eu/resource/celex/32016R0679)). **The access audit is how Axleby shows it was neither impossible nor disproportionate.** Without the audit, the \"disproportionate effort\" exception becomes tempting, and it is hard to defend.\n- **Data clients.** Axleby's terms with Rijnstaal and other API clients cap liability and describe a correction duty on both sides. Axleby credited all affected calls and gave Rijnstaal per-call evidence. Rijnstaal reviewed its own settlements and found **9** that had used a valuation more than €500 too high ([Where Did This Fact Come From? Provenance, Freshness and Data Quality](provenance-and-data-quality.html)). The platform's job is to make that evidence fast and complete. What is owed is a contract question.\n\nEvery notice says **what was wrong, what is right now, since when, and what the recipient should do**, and **never blames the supplier**: the report carried Axleby's name. Supplier accountability lives in the contract; Kilometra's v2 of August 2027 added a unit per workshop chain, stable record ids, `corrects_record_id` and a correction notice within one business day.\n\n### The second case: 118 readings on the wrong cars\n\nThe September 2027 replay found that the old plate-only matching had attached **118** UK-import readings to a different vehicle that later carried the same retained plate ([From Many Sources to One Record: Ingestion, Normalization and Entity Resolution](ingestion-and-entity-resolution.html)). These were **retractions**: the versions on the wrong cars closed with no successor, and the readings re-attached to the right AVKs as new facts. Run as case CC-2027-0012 in October 2027, before the backbone existed, Retrace's first adapters found **14** reports (5 sold to Odolo UK consumers) and **37** issued valuations in the readings' lifetime (Axleby illustration). Notices went out within two working days. The case also exposed the gap the design record predicted: the advert adapter could answer only by vehicle and date window, and labeled its result approximate.\n\n## Failure Handling\n\nThe journey has its own failure modes on top of the neighbors'. The contract names three; the table covers the rest.\n\n### Correction arrives before the original\n\nInlet receives a record with `corrects_record_id` pointing to a record it has never seen. Kilometra sends a correction for a reading still in a held segment, or delivery files arrive out of sequence. **Detection:** the reference lookup fails. **Recovery:** park the correction as an *orphan* with a 72-hour timer *(assumption)*. When the original arrives, record it and supersede it **in the same transaction**, so it is never current and nothing derives from it. The impact set is then empty, and no case is opened. If the original never arrives, ask the supplier; after confirmation the corrected record becomes a plain observation. **The rule: a fact that was never served needs no correction journey**, which is why \"served window\" belongs in the event.\n\n### Correction to a fact already overwritten by a newer reading\n\nThe Volvo is this case. The corrected reading k1 is no longer current, because a newer reading (d1) took over, so the current value does not change. A process keyed on \"current value changed\" stops here and misses the history, the judgement, the reports and any valuation issued **before** d1 arrived. **Detection:** none needed; the impact query starts from the superseded version and its served window, not from the current value. **Recovery:** recompute the judgement, which depends on every reading, and trace artifacts as usual. A harder variant is the **chained correction**: a version that was itself a correction gets corrected again. The superseded set is then every version in the chain, and the served windows add up.\n\n### Client ignores the webhook\n\nA data client's endpoint returns `2xx`, but no re-fetch carrying the notification id follows. Or the endpoint fails for 72 hours and the subscription is disabled. Or the client is one of the **210** clients still using only Connect XML, Axleby's legacy SOAP/XML API, which get no events at all. **Detection:** Retrace tracks an acknowledgement per (case, client): a re-fetch with the notification id, or an explicit `POST /v2/corrections/{id}/ack` *(Axleby illustration)*. **Recovery:** after 7 days without acknowledgement *(assumption)* the client's account manager receives the list. XML-only clients get the same list by email from day one. **The platform cannot make a client correct its copy. It can prove it told the client**, and that proof is what Article 19 and the client contract both ask for. Data-client terms from the 2028 renewals add a duty to act on correction notices within a stated time.\n\n| Failure | How it happens | Detection | Recovery |\n| --- | --- | --- | --- |\n| **Duplicate correction** | Supplier redelivers the redelivery; replay of the case | Idempotency on (source, record id, source version); notices keyed (case, artifact, recipient) | No new versions; no second notice. The 2028 dry run sent 96 consumer emails twice before this key existed |\n| **Conflicting corrections** | Two corrections of one record disagree, or the supplier's value contradicts an official reading | Two successors for one version; semantic check against official readings | Version becomes **disputed**; report wording says so; data operations decides with evidence, as the registers do |\n| **Incomplete correction** | Supplier corrects part of the batch, or cannot say which records were wrong | Case scope vs corrected count | Uncorrected versions stay disputed and excluded; the case stays open with a named waiver if they never resolve |\n| **Partial fan-out failure** | One consumer (Relay, the report store) fails mid-way | Completion per consumer in the case | Consumer replays from its topic offset; case cannot close while any consumer is incomplete |\n| **Adapter blind spot** | A store kept no version edges (pre-October 2027 adverts) | Adapter returns *approximate* | Query by vehicle and window; widen the residual sweep for that class |\n| **Residual copies** | Dealer text, PDFs, exports, a client's warehouse | Residual sweep: stale-content scan, search for superseded values in text fields | Flag to owner; for live adverts, block republication; record what cannot be reached |\n| **Recipient beyond reach** | Car sold; buyer has no relation with Axleby | Outcome link shows sale | Notice to the dealer with the corrected report; the dealer decides whether to tell the buyer |\n| **Erasure meets correction** | The person linked to an affected record was erased | Erasure ledger lookup ([Plates Are Personal: Privacy, Retention and Data Subject Rights](privacy-and-retention.html)) | Correct the vehicle fact; never re-link the person to send a notice |\n| **Owning store down during fan-out** | Tracewell or Vantage unavailable | Backbone lag; case completion stalls | Events wait on topics; containment already holds; the gateway suppresses disputed attributes in the meantime |\n\n## Trade-offs\n\n**When to contain.**\n\n| Option | Gains | Costs | Right when |\n| --- | --- | --- | --- |\n| **Dispute on pattern evidence** (recommended) | Stops spread within an hour | Some provisional values; a false alarm must be lifted | A batch-level pattern or an official contradiction exists |\n| Wait for supplier confirmation | No false alarms | Error spreads for days; 2027 added three days | Single-vehicle dispute without corroboration |\n\n**How to find the impact.**\n\n| Option | Gains | Costs | Right when |\n| --- | --- | --- | --- |\n| **Write-time impact edges per store** (recommended) | Exact, fast, owned by each store | Every new consumer must record versions; storage | Facts feed issued, paid or relied-on artifacts |\n| Central lineage graph of all artifacts | One place to query | A second copy of every artifact's inputs; owner unclear | Few artifact types, one team |\n| Reconstruct from logs after the fact | No upfront cost | Eleven days in 2027; logs expire after 30–90 days | Never as the plan; only as the fallback |\n\n**What to send clients.**\n\n| Option | Gains | Costs | Right when |\n| --- | --- | --- | --- |\n| **Thin notice, free re-fetch** (recommended) | License-safe; re-fetch is audited and credited | Client must act; two calls | Licensed data; data clients with varied rights |\n| Corrected value in the event | One step | Licensed data pushed outside the request path; personal data in logs | Open data only |\n| Email to contacts | Works for XML-only clients | No proof of action; does not scale | Legacy clients until Connect XML's sunset |\n\nThe recommendation rests on two assumptions. Corrections are rare but large: a few cases a month *(assumption)*, occasionally thousands of vehicles. And issued artifacts carry money and liability. A platform that sells only live dashboards could recompute everything and notify nobody. A platform that sells valuations for settlements cannot.\n\n## Metrics That Prove the Journey Works\n\n| Metric | Definition | 2027 incident | Target *(Axleby illustration)* |\n| --- | --- | --- | --- |\n| **Detection latency** | Bad version recorded → case opened | 8 days | Batch errors at load; disputes within 1 business day |\n| **Containment time** | Case opened → versions disputed | Never contained | Under 1 hour |\n| **Exposure** | Artifacts built on the version, per day of exposure | ~560 valuations, 37 reports, 107 adverts a day | Zero for batch errors |\n| **Internal fan-out time** | Correction recorded → all internal consumers complete | 11 days, manual | Under 1 hour (dry run: 38 minutes) |\n| **Impact completeness** | Residuals found after closure ÷ impact set | 307 advert texts missed; 41 live after three weeks | Zero live residuals at closure |\n| **Client acknowledgement** | Notified clients that re-fetched or acknowledged within 7 days | Unknown | 90% *(assumption)*; rest escalated |\n| **Consumer reissue time** | Correction → corrected report sent | Weeks | Same business day |\n| **Evidence time** | Client asks \"what did you tell us?\" → per-call answer | 6 working days | Under 1 hour (Nov 2027 re-run: 40 minutes) |\n\n**Evidence time measures whether provenance is real.** If it takes days, the impact graph does not exist, whatever the diagrams say.\n\n## What Changes in Another Market\n\nThe journey is the same everywhere; sources of corrections, duties and wording change.\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| **Official odometer source corrects itself** | RDW: last reading by the business, older by RDW within 10 working days. Car-Pass: one electronic correction, then staff validation | No buyer-facing registry; corrections reach Axleby only from commercial suppliers | MOT: test center within 28 days; later with evidence via DVSA | Odometer disclosure at transfer; \"not actual mileage\" stays with the title |\n| **How Axleby learns of it** | Changed judgement or reading in register data and the snapshot diff | Supplier redelivery under contract | Changed test record in DVSA daily files *(inference: DVSA does not document how amendments appear)* | Title brand from providers of NMVTIS, the National Motor Vehicle Title Information System |\n| **What a correction can do** | Supersede a reading; recompute the judgement beside the register's own | Supersede commercial readings | Supersede; official wins over commercial | **Cannot remove** a title-level odometer brand; history must show both |\n| **Duty to tell recipients** | GDPR Art. 19 | GDPR Art. 19 | UK GDPR Art. 19 | No GDPR equivalent; California consumers have a right to correct under the California Consumer Privacy Act (CCPA) |\n| **Consumer remedy for a wrong report** | Digital Content Directive, national law | Same Directive | Consumer Rights Act 2015 | State consumer law; providers' buyback guarantees |\n\n**What is common:** the correction case, the event, the impact graph, the per-class policy and the residual sweep. **What is a market rule set:** which sources count as official and therefore win, how a register's own correction is detected, the notice wording and the consumer remedy. The US is the one real exception in kind. **A US title brand is a legal fact, not a data error to correct.** A history platform must show it even when its own readings say the mileage is genuine.\n\n## The Chief Architect's View\n\n**Make correction a product capability with an owner.** At Axleby, Priya Raman's data operations team owns Retrace, the policy table and every case. The architecture forum owns the design record. Femke de Boer owns notice wording and the legal tests. Lena Vos (Billing and Finance Systems Lead) owns the credit policy. Without one owner, each team corrects its own copy and nobody closes the case.\n\n**Put \"records its inputs\" in the definition of done for every consumer.** A new product that shows a vehicle fact, from an Odolo feature to a dealer-group export, must register an impact adapter before launch. **No adapter, no access to vehicle facts.**\n\n**Render, don't copy.** Every unversioned copy is a future residual, as the 307 advert texts showed ([Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html)).\n\n**Rehearse.** Run a correction game day twice a year on a synthetic case across all adapters, and score detection, containment, fan-out, completeness and evidence time. Axleby's 2028 dry run found two defects that customers would otherwise have found.\n\n**Watch three numbers:** containment time, residuals at closure and evidence time. If any is measured in days, the next correction will cost what the first one did.\n\n## Questions to Ask\n\n1. If a supplier told you now that last night's file was wrong, how long until nothing new is built on it, and who can make that call at 21:00 on a Friday?\n2. Can every valuation, report, advert render and billable answer name the fact versions it used? Which store cannot?\n3. Does your correction process start from superseded versions, or from changed current values? What does it miss for a car whose newer reading hid the error?\n4. Which artifacts do you recompute, which do you supersede, and which do you only annotate? Who signed that policy?\n5. When you notify data clients, does the audience come from an access audit, and does the notice carry the corrected value?\n6. How do you know a client acted on a correction, and what do your terms oblige them to do?\n7. Where can a fact live as free text: advert descriptions, PDFs, emails, exports? How would you find it there?\n8. How long would it take to tell an insurer, per call, what you returned, from which source, and what you believe now?\n9. When a correction removes a rollback or damage warning, who tells the dealer, and with what document?\n\nThis journey followed one fact outward from a supplier's file to every party that received it. The next journey follows a person's enquiry from a portal into a dealer's systems, where the risk is not a wrong fact spreading but a right one getting lost: [From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html).\n\n## Sources and Evidence\n\n**Company, product and investor sources**\n\n- [Webhooks](https://docs.stripe.com/webhooks), Stripe, n.d., accessed 2026-10: at-least-once, unordered delivery; thin events re-fetched by the receiver.\n- [Frequently asked questions](https://www.car-pass.be/en/faq), Car-Pass, n.d., accessed 2026-10: garage typing mistakes; one electronic correction, then validation by Car-Pass staff.\n\n**Standards, regulation and official documentation**\n\n- [Consumer Rights Act 2015, section 42](https://www.legislation.gov.uk/ukpga/2015/15/section/42), UK Parliament, 2015: repair or replacement and price reduction for non-conforming digital content.\n- [California Consumer Privacy Act](https://oag.ca.gov/privacy/ccpa), California Attorney General, n.d., accessed 2026-10: consumers' right to correct.\n- [Regulation (EU) 2016/679 (GDPR)](http://publications.europa.eu/resource/celex/32016R0679), 2016: Art. 5(1)(d) accuracy; Art. 16 rectification; Art. 19 duty to tell recipients of a rectification.\n- [Directive (EU) 2019/770 on contracts for the supply of digital content and digital services](http://publications.europa.eu/resource/celex/32019L0770), 2019: Art. 14 remedies, free bringing into conformity, price reduction, termination.\n- [Tellerstand corrigeren](https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/tellerstanden/tellerstand-corrigeren), RDW, n.d., accessed 2026-10: correction of the last reading by the business, older readings by RDW with evidence, within 10 working days.\n- [Fix mistakes on your MOT record](https://www.gov.uk/getting-an-mot/correcting-mot-certificate-mistakes), GOV.UK / DVSA, n.d., accessed 2026-10: 28-day route through the test center; later corrections with dated evidence.\n- [49 CFR 580.5, Disclosure of odometer information](https://www.law.cornell.edu/cfr/text/49/580.5), US Code of Federal Regulations via Cornell LII, accessed 2026-10: \"does not reflect the actual mileage\" disclosure.\n- [Standard Webhooks specification](https://github.com/standard-webhooks/standard-webhooks/blob/main/spec/standard-webhooks.md), Standard Webhooks, n.d., accessed 2026-10: webhook id as idempotency key, retries.\n- [OpenLineage object model](https://openlineage.io/docs/spec/object-model), OpenLineage, n.d., accessed 2026-10: dataset, job and run lineage, coarser than record-level impact.\n\n**Research and practitioner sources**\n\n- [Bitemporal History](https://martinfowler.com/articles/bitemporal-history.html), Martin Fowler, 2021: actual time and record time, the basis for keeping superseded versions readable.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

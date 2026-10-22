@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pricing to Turn: Market-Based Pricing, Signals and Repricing</title>
+    <meta name="description" content="How should a dealer platform help dealers set and change prices against the market? Treat each price as a decision with a reference, a reason and an owner. Compute price position and stand-time signals per car, express repricing as versioned rules with guardrails and a simulation step, and measure outcomes against a control group rather than counting price changes.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="Pricing to Turn: Market-Based Pricing, Signals and Repricing">
+    <meta property="og:description" content="How should a dealer platform help dealers set and change prices against the market? Treat each price as a decision with a reference, a reason and an owner. Compute price position and stand-time signals per car, express repricing as versioned rules with guardrails and a simulation step, and measure outcomes against a control group rather than counting price changes.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/used-car-pricing.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/18-used-car-pricing/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="inventory-and-vehicle-dossier.html" title="The Stock Book: Inventory Management and the Vehicle Dossier">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="merchandising.html" title="Making the Car Sellable Online: Photos, Descriptions and Equipment">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — DEALER: The Used-Car Workflow</p>
+        <h1>Pricing to Turn: Market-Based Pricing, Signals and Repricing</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  31 min read · <a class="spec-link" href="used-car-pricing.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/18-used-car-pricing/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/18-used-car-pricing/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="inventory-and-vehicle-dossier.html" title="The Stock Book: Inventory Management and the Vehicle Dossier">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="merchandising.html" title="Making the Car Sellable Online: Photos, Descriptions and Equipment">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Pricing to Turn: Market-Based Pricing, Signals and Repricing", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "How should a dealer platform help dealers set and change prices against the market? Treat each price as a decision with a reference, a reason and an owner. Compute price position and stand-time signals per car, express repricing as versioned rules with guardrails and a simulation step, and measure outcomes against a control group rather than counting price changes.", "permalink": "used-car-pricing", "timetoread": "31 min read", "icon": "assets/icons/18-used-car-pricing.png", "logo": "assets/images/18-used-car-pricing/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Take apart the pricing capability of a dealer platform: the price position and stand-time signals it computes, the repricing rules that act on them, the guardrails and approvals that keep rules safe, the price change as an event that reaches portals, websites and valuations, and the way to tell whether any of it made the dealer money.\n\n> **WHY THE BUSINESS CARES:** A used car loses value and costs money every day it stands. A price set too high costs days, and a price cut too early or too often gives gross away on cars that would have sold anyway. For a dealer group, the pricing desk is where the margin of thousands of cars is won or lost each week.\n\n> **WHY ARCHITECTS SHOULD CARE:** A price change is the most frequent commercial write in a dealer platform. It reads valuation, market data and the stock record, and its result fans out to every portal, the dealer's website, the valuation ledger and sometimes a consumer-law record. Whether price changes are explained, idempotent, bounded and measured is an architecture decision.\n\n> **KEY POINTS:**\n>\n> * **A price is a decision, not a field.** Store every price change with its author (a person or a rule version), its reason and the market reference it was made against. Without that, nobody can explain a price, undo a bad rule, prove a former price under consumer law, or learn which pricing worked.\n> * **Price against the market and the car, not against the calendar.** Age-step price cuts, the old \"velocity\" doctrine, cut cars that were already cheap and leave overpriced young cars alone. Compute a price position against a valuation with a stated confidence, combine it with stand-time, demand and cost signals, and act per car, as the doctrine's own author concluded in 2023.\n> * **Automate repricing only behind guardrails, simulation and a control group.** Rules need floors that know the VAT regime, step and frequency limits, a blast-radius stop, a pause when the valuation segment is under drift watch, and absolute target prices so that a retry cannot cut twice. Judge rules by gross, days-to-turn and aged stock against untreated rooftops, not by the number of prices changed.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **The Confident Valuation** — a repricing rule that treats a valuation as exact cuts or raises prices on numbers whose range, sample or segment status says they should not be trusted.\n> * **The Sticky Error** — a price computed from a wrong mileage or a wrong edition stays on every portal after the fact is corrected, unless each price records the facts it was based on.\n> * **Customization Creep** — group pricing desks demand their own repricing logic; without a versioned rule language with guardrails, each demand becomes a code path.\n\n<br>\nA used-car manager makes one decision more often than any other: **what to ask for each car, and when to change it**. The car was bought at a price the dealer can no longer change ([Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html)), and every day it stands it loses value and ties up money ([Margins, Days and Lookups: The Economics of Dealers, Data and SaaS](dealer-and-data-economics.html)). The asking price is the main lever left.\n\nPricing software turns that lever into a system. It compares each car with the market, raises **signals** for cars that are drifting (priced above comparable cars, standing too long, drawing no enquiries), proposes or applies new prices through **repricing rules**, and sends each change to portals and the dealer's website. Done well, it shortens stand-time without giving gross away. Done badly, it produces thousands of unexplained price cuts a week, each sent to six channels, and nobody can say whether they helped.\n\nThis chapter owns three terms: **price position**, the **stand-time signal** and the **repricing rule**. It builds on the valuation and its confidence from [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html), the market's supply and stand-time from [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html), and the stock item, its cost and its clocks from [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html). It hands the advert to [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html) and the channel mechanics to [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html).\n\n## Setting the Scene at Axleby: The Thursday Run\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), sells pricing to dealers inside Lotwise, its dealer software for the Netherlands, Belgium and Germany. The Lotwise Stock & Pricing module (€189 per rooftop per month) shows each car's price against the market and a list of signals. Every night Vantage, Axleby's valuation engine, recomputes about **350,000** stock cars; the results are stored as price-position signals, not as issued valuations ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n\n**Velto Mobility Group** joined Lotwise in 2026: 46 rooftops in the Netherlands and Belgium, 11 franchise brands, DriveDesk as its dealer management system (DMS), about **2,650** used cars in stock. Its used cars are priced by a **central pricing desk** of seven people under Mirjam Kuipers, the group used-car director. The desk brought its pricing method from its previous dealer-software vendor, and Lotwise's onboarding team rebuilt it as configuration ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)). Every Thursday the desk ran it across the group. The method had two parts:\n\n- An **age-step rule**: cut 2.5% at 30, 45 and 60 days in stock, then 1.5% a week from day 75 until the price reached cost plus €300, and offer the car on Tradefloor, Axleby's trade exchange, at day 90.\n- A weekly **re-anchoring and rounding** pass that moved every price with a group price index and rounded it to a price ending in 450 or 950.\n\nOn **Thursday 11 February 2027** the run changed **2,300** prices, most by less than €200. At an average of 5.3 channels per car, that put about 12,200 channel updates into Relay, Axleby's syndication engine, in one afternoon. Those updates were the ones that failed on an unmapped equipment code and blocked the deletes behind them: the **Zombie Golf**, a sold car that stayed live on four portals for four days ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)).\n\nThe Zombie Golf was fixed in Relay. But Mirjam asked a different question: her desk spent most of Thursday changing prices, and her aged stock was not falling. In April 2027, Tomás Ferreira, Lotwise's Product Director, and Ines Marchetti, the Group Chief Architect, reviewed Velto's first quarter of 2027 with her. The numbers below are Axleby illustrations.\n\n| Velto, Q1 2027 | Value |\n| --- | --- |\n| Price changes | about **29,400** (about 2,260 a week); median change €120; 81% decreases |\n| Price changes per car sold | **6.4** (about 4,600 cars sold) |\n| Decreases applied to cars already at or below 98% of Vantage's retail value | **41%** |\n| Cars under 21 days old priced above 106% of market, untouched until day 30 | **17%** of stock-ins |\n| Stock older than 90 days | **8.5%**; sold on Tradefloor at an average wholesale loss of €1,240 |\n| Days-to-turn (stock-in to sale) | **53** (Lotwise average 58) |\n| Gross given away by cuts on cars already at or below 98% *(rough estimate, see below)* | about **€520,000** |\n\nThe last figure is the weakest: it assumes those cars would have sold within the same week at their previous price, which some would not. But the pattern held under any assumption. **The rule cut prices by the calendar.** It cut cars that were already cheap and selling, and it ignored young cars that were too expensive until they were a month old. The weekly rounding pass changed hundreds of prices for no commercial reason and loaded Relay with work every Thursday. And nobody could say why a given car had its price, because Lotwise stored the current price and a bare list of earlier ones, with no author, reason or market reference.\n\n![Left: scissors cut the price tags of all three cars on calendar dates. Right: each car is measured against the market, and only the car priced above it is cut.](assets/images/18-used-car-pricing/18-calendar-vs-market.jpeg)\n**Figure 1:** *Velto's age-step rule cut prices by the calendar, including cars already below the market; price position acts only on the cars priced above it.*\n\nSo the question for the review was not \"how do we reprice faster\". It was **what should a price change record, what should trigger it, what should stop it, and how will we know whether it worked?**\n\n## Concepts: Position, Signals and Rules\n\n### The asking price and who owns it\n\nThe **asking price** is the price at which the dealer offers a car to consumers, on its own website and on portals. It is a field of the stock item, and the dossier owns it ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)); for DMS-connected rooftops, Lotwise remains the owner of price and price history ([Living With the DMS: Dealer Management System Integration](dms-integration.html)). Pricing software does not own the price. It owns **proposals** and **signals**, and it changes the price only through the dossier, like any other writer.\n\nThree other prices sit near it and must not be confused with it. The **valuation** is Vantage's estimate of what the car is worth, with a value type, a range and a confidence flag. The **target margin** is the planned front-end gross for this car, set at purchase from the maximum purchase price ([Buying Right: Trade-In Appraisal, Sourcing and Maximum Purchase Price](vehicle-acquisition.html)). The **transaction price** is what the buyer finally pays after negotiation and trade-in, recorded on the deal ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)). Pricing works in the gap between them.\n\n### Price position\n\n**Price position** is the asking price divided by a **market reference value** for the same car, expressed as a percentage: a car at 97% is asked 3% below the market reference. The industry also calls it *price-to-market*. It is the single most used number in used-car pricing, and it is only as good as its reference.\n\nThe reference must be the right value type: a **retail asking value** for a retail-ready car of this edition, mileage, options and condition, in this market and region ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) defines value types). A trade value gives a position that looks generous; a national average for the model ignores the options and the mileage. At Axleby the reference is Vantage's retail asking value for the stock item, computed nightly, with its 80% range, confidence flag and segment status. A position therefore carries three things, not one:\n\n| Part | Example | Why it matters |\n| --- | --- | --- |\n| Position | 97.6% | The headline number |\n| Reference and range | €18,400, 80% range €17,700–€19,100 | A position of 97.6% inside a ±4% range is not distinguishable from 100% |\n| Reference quality | `normal`; 14 comparables within 75 km; surface of last night | Rules may act only on references they can trust |\n\nPortals publish their own version of the same idea, and dealers see it as a constraint. Auto Trader UK labels each dealer advert with a **Price Indicator**: Higher, Fair, Good, Great or Lower price, or \"No analysis\" when there is no valuation or not enough specification data, with the label updating after a 15-minute delay (help center, 2024, updated September 2026). Its pricing guidance for dealers uses the same term, \"Price Position\", and says that \"cars selling quickest on Autotrader are priced at 99%-100% of the current market value\" and that \"overpricing to try and make a higher margin increases the number of days to sell\" (help center, 2023, updated August 2026). mobile.de's Seller API returns a **price rating** per advert with five labels, from `VERY_GOOD_PRICE` to `HIGH_PRICE`, plus `NO_RATING` when \"a realistic rating for the ad is not possible\"; it also offers a **preview** endpoint that rates an advert \"that has not been created yet\" (Seller API documentation, n.d., accessed 2026-10). **When a portal rates the price, the portal's valuation becomes a second reference the dealer cannot ignore**, and a pricing tool should show both.\n\n### Stand-time and the stand-time signal\n\n**Stand-time** is how long a car has been for sale; [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html) owns it as a market measure, computed from adverts across all dealers. Inside one dealer's stock, the same idea runs on several clocks: days since stock-in, since the car was ready, since its first live advert, and, for financed stock, until a curtailment date ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)). On Lotwise, a car waits about seven days on average between stock-in and its first advert, so the 58-day average stock-in-to-sale is 51 days from first advert.\n\nA **stand-time signal** is a per-car alert that a car has stood longer than it should, **given its segment, its price position and the market's current pace**. The calendar alone is not the signal. A sports car in a thin segment at 45 days may be on track; a five-year-old compact estate at 25 days with no enquiries is not. The signal compares the car's own clock with an **expected days-to-sell** for comparable cars at a comparable price position, taken from market data and the dealer's own history.\n\nStand-time is one of several signals. Axleby's design uses six, each with a definition, an input and an owner:\n\n| Signal | Fires when *(Axleby thresholds)* | Main inputs |\n| --- | --- | --- |\n| **Above market** | Position above 104% and outside the reference range, reference confidence `normal` | Valuation, asking price |\n| **Below market** | Position below 96% with at least average demand: gross may be left on the table | Valuation, leads and views |\n| **Stand-time** | Days since first advert beyond the 70th percentile of expected days-to-sell for the segment and position | Market stand-time, dealer history |\n| **No response** | Fewer enquiries in 14 live days than a quarter of the segment median | Leads ([Every Enquiry Counts: Lead Capture, Routing and CRM](leads-and-crm.html)), advert views |\n| **Stale price** | Price unchanged for 21 days while the reference moved more than 3% | Valuation history |\n| **Financial deadline** | Curtailment or internal age limit within 10 days | Stock item funding |\n\nA signal is information, not an action. The rules decide what to do with it.\n\n### Pricing strategies: from velocity to the individual car\n\nDealer pricing doctrine has changed, and many tools still embed the old one.\n\n**Velocity pricing** was popularized in the 2000s and 2010s by Dale Pollak, founder of vAuto (now part of Cox Automotive). It held that a used car should be priced to sell fast, with scheduled price cuts as it aged, to maximize turns \"even at the expense of gross profit per vehicle\". The \"60-day rule\", that no car should stand longer than 60 days, came out of that school; it is industry practice, not a published standard. In 2019 Pollak and vAuto described a different product, ProfitTime, as an \"investment-portfolio approach\" in which high-potential cars need not be repriced at day 15 or 30, used by about 600 dealers at the time ([Wards, 2019](https://www.wardsauto.com/news/archive-wards-new-way-to-price-cars-doesn-t-play-beat-the-clock/793537/)). In December 2023 he went further and told Canadian Auto Dealer about the velocity method: \"In retrospect, I was wrong. There was a race to the bottom.\" His replacement, which he calls **variable management**, classifies each car by expected potential on three factors (cost to market, market days' supply and local retail volume) into Bronze, Silver, Gold and Platinum tiers, and found that dealers were selling high-potential cars quickly and holding low-return ones ([Canadian Auto Dealer, 2023](https://canadianautodealer.ca/?p=63771)). **Velocity pricing is a documented historical practice, not current doctrine**, and its own author replaced it with per-car, return-based tiers.\n\nPublic retailers describe the same shift in their filings. CarMax's fiscal 2026 annual report (April 2026) says it \"systematically adjust[s] individual vehicle prices based on proprietary pricing algorithms in order to appropriately balance sales trends, inventory turns and gross profit achievement\", and targets \"a dollar range of gross profit per used unit\", set per vehicle by \"its probability of sale and its mileage relative to its age\" ([CarMax 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm)). Carvana's 2025 annual report (February 2026) states the link between days and price directly: lower average days to sale leads to \"fewer vehicle price reductions, and therefore higher average selling prices\" ([Carvana 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm)).\n\nThe architectural consequence is that **a pricing system must express targets and actions per car**, using that car's position, potential and cost, not one schedule for the whole stock. Velto's age-step rule was velocity pricing in configuration form.\n\n### The repricing rule\n\nA **repricing rule** is a versioned, declarative instruction that, for cars matching a scope and a signal, computes a proposed new asking price, subject to guardrails, and either proposes it to a person or applies it. It has six parts:\n\n| Part | Example (Velto, rule `vel-core` version 7) |\n| --- | --- |\n| **Scope** | Velto group, all NL and BE rooftops, retail stock, not reserved, not in the EV segment while its status is `watch` or `restricted` |\n| **Trigger** | Above-market signal, or stand-time signal with position above 100% |\n| **Target** | Move toward a target position by tier: high potential 100%, standard 98%, low potential 96% |\n| **Guardrails** | Floor and ceiling, maximum step 4%, at most one change per car per 7 days, no change under €100 |\n| **Mode** | Propose to the desk (default) or apply automatically (only for named, low-risk rules) |\n| **Version and owner** | Version 7, effective 18 June 2027, owner: Velto pricing desk; approved by Mirjam Kuipers |\n\nTwo design choices in that table carry most of the safety. **The rule computes an absolute target price, never a relative cut.** \"Set the price to €17,450, computed from the reference of last night\" can be retried, replayed or applied twice with the same result; \"cut 2.5%\" applied twice cuts 5%. And **the rule is configuration, not code**: it lives in Baseline, Axleby's tenant configuration service, with effective dates, inheritance from group to region to rooftop and locks, so a group's pricing method is one more versioned setting, not a fork ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)).\n\n## Architecture: Signals, Rules and the Price Event\n\n### Components\n\n| Component | Responsibility | Owns | Does not own |\n| --- | --- | --- | --- |\n| **Reference provider** | Supplies each stock car's market reference: Vantage retail asking value with range, confidence and segment status; licensed portal ratings where available | Nothing; reads [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) | The valuation |\n| **Signal generator** | Computes price position and the six signals per car, nightly and on relevant events (new cost, new price, new lead) | Signals with their inputs and dates | Prices |\n| **Rule engine** | Evaluates repricing rules from Baseline against signals; produces proposals; runs simulations | Proposals, rule runs | Rules' content (Baseline), prices |\n| **Pricing desk workspace** | Lists signals and proposals by group, region and rooftop; bulk approve, edit or reject with a reason | Approval decisions | Who may approve (authorization) |\n| **Dossier service** | Applies a price change conditionally on the stock-item version; records price history; emits the price event | Asking price, price history | Signals, proposals |\n| **Outcome service** | Joins price history to leads, sales, gross and days; compares treated and control rooftops | Outcome metrics per rule version | Decisions |\n\nWho may approve which proposal is an authorization question. A regional manager may reprice the rooftops of their region but not a neighbor's; a salesperson may propose but not apply. Gatekeeper, Axleby's relationship-based authorization service, answers it ([Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html)).\n\n![Vantage, Pulse and the dossier feed a signal generator; the rule engine turns signals into proposals for the pricing desk; the desk sets the price in the dossier; the price event goes to channels and outcomes, and outcomes judge the rules.](assets/images/18-used-car-pricing/18-pricing-loop.jpeg)\n**Figure 2:** *Pricing as a loop. Signals combine valuation, market and stock facts; rules turn signals into proposals; the dossier alone changes the price; the price event fans out to channels, the website, the valuation ledger and outcome measurement, which in turn judges the rules.*\n\nThe boundary that matters is between **advice** and **the price**. Signals and proposals can be recomputed, discarded and replayed. The price is a commercial fact with legal weight once advertised, and only the dossier writes it, conditional on the version the writer read. That is what lets a repricing rule and a salesperson reserving the same car collide safely: the rule's write fails on the version check, re-reads the car, sees it is reserved and skips it ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html), Figure 5).\n\n### The price change as an event\n\nEvery accepted price change emits one event, and the event carries the decision, not just the number:\n\n| Field | Example | Who needs it |\n| --- | --- | --- |\n| Stock item and AVK | stock item 8812207, AVK of the car | Every consumer |\n| New and previous price, currency, basis | €17,450 from €17,950, EUR, VAT margin scheme | Channels, website, price history |\n| Author | rule `vel-core` v7, run 2027-06-18-A, approved by a desk user; or a named user | Audit, outcome analysis |\n| Reason code | `above_market`, `stand_time`, `manual_negotiation_signal`, `cost_change` | Outcome analysis, dealer explanation |\n| Reference snapshot | Vantage value €18,400, range, `normal`, surface date | Explanation, [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) |\n| Idempotency key | run id + stock item, or the user command id | Every consumer |\n| Effective time | 2027-06-18 14:02 CEST | Price history and consumer-law evidence |\n\nThe event fans out to five consumers, each with different needs:\n\n1. **Channels.** Relay writes the new price into the desired state of each channel listing; the latest price wins, and intermediate prices may be skipped when changes arrive in bursts ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)). Coalescing matters here: a group run that changes a price twice within minutes should reach the portal once.\n2. **The dealer's website**, which reads Lotwise directly and should show the new price within a minute.\n3. **Price history** in the dossier: append-only, the evidence for every question about what was asked, when and why.\n4. **The valuation ledger**, which links list prices and price changes to the valuation they followed, so that back-tests can compare Vantage's value with the price at which the car finally sold ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n5. **Outcome measurement**, which needs the reason code and rule version to attribute results.\n\nPortals add effects the platform does not control. mobile.de recalculates its price rating when the advert changes (\"this can lead to a change in one direction or the other\"), and Auto Trader's Price Indicator follows the price after 15 minutes; a cut that moves a car from \"Fair\" to \"Good\" may matter more to enquiries than the euros. **Delete-and-recreate is never a pricing tool**: it resets the portal's price history and days on market ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)).\n\n### Requirements per interaction\n\nThe targets are Axleby's; latencies are illustrative assumptions.\n\n| Interaction | Consistency | Latency | Freshness | Availability |\n| --- | --- | --- | --- | --- |\n| Price position and signals in the stock list | Stamped with signal date and reference surface | p95 under 500 ms *(assumption)*, read from precomputed signals | Nightly; recomputed within 5 min of a new price, cost or lead | Show the last signals with their date; never block the stock list |\n| Manual price change by desk or rooftop | Strong, conditional on stock-item version; one event per accepted change | p95 under 300 ms *(assumption)* | Not applicable | Must work when Vantage, Pulse and Relay are down |\n| Repricing run (simulate, approve, apply) | Idempotent per run and stock item; absolute target prices | Under 30 min for a 3,000-car group *(assumption)* | Never on a market surface older than 24 hours | Pauses, never half-applies silently; per-car status |\n| Price change → portals | Latest price wins; intermediate prices may be skipped | p95 under 15 min, as for all updates in [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) | Reconciled daily against portal state | Degrades per channel |\n| Price change → website | Latest price wins | Under 1 min *(assumption)* | Live read | As the website |\n| Price history and evidence | Append-only; never updated in place | Query under 2 s *(assumption)* | Complete for every channel | Retained with the stock item (seven years in Axleby's schedule) |\n\nThe second row is the one dealers feel. **A price change is a local decision that must not wait for remote systems**: the dossier accepts it, and the remote effects follow with visible status.\n\n### Guardrails\n\nRules fail at scale, so the guardrails are the design. Axleby's minimum set:\n\n- **A VAT-aware floor.** The floor is the lowest price at which front-end gross after VAT meets the rule's minimum. Under the EU margin scheme, VAT is due on the selling price minus the purchase price, so the floor depends on the VAT regime recorded on the stock item ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)). A car without a known cost or VAT regime has no floor, and **a rule never reprices a car without a floor**; it raises a task.\n- **A ceiling**, usually the top of the reference range plus a margin, so a rule cannot raise prices beyond what the evidence supports.\n- **Step and frequency limits**: a maximum change per step (4% at Velto), at most one rule change per car per 7 days, and no change below €100 or 0.75%. These limits removed most of Velto's Thursday churn.\n- **Reference quality gates**: rules act only on references flagged `normal`; `thin_sample`, `fallback_model`, `spec_uncertain` or `stale_market` downgrade an automatic action to a proposal. **When Vantage puts a segment on `watch` or `restricted`, automatic repricing in that segment stops** and proposals carry the warning. Axleby learned in the 2026 EV Overvaluation that a drifting segment can look normal in a global metric ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n- **Blast-radius stop**: a run that would change more than 25% of a tenant's stock, or move the average price by more than 2%, pauses for named approval. It is the pricing equivalent of the truncated-feed guard in syndication.\n- **State exclusions**: reserved, sold, in a deal, or locked by the desk.\n- **Simulation before activation.** Every new rule version is first run against current stock and shown as a list: \"this version would change 412 prices today, average −2.1%, 31 blocked by floor\". The same simulation runs on the last quarter's history to estimate effect, with the caveat that history is no proof.\n\n![A price marker travels along a road bounded by a floor and a ceiling guardrail, past a step-limit sign and a segment-watch pause sign, toward a blast-radius barrier.](assets/images/18-used-car-pricing/18-guardrails-lane.jpeg)\n**Figure 3:** *Guardrails make a repricing rule safe: a VAT-aware floor, a ceiling, step limits, a pause for segments under watch and a blast-radius stop bound every automatic change.*\n\n![Swimlanes for the pricing desk, rule engine, dossier service and Relay: a simulation yields 412 proposals, 396 are approved, €17,450 is written at version 41 and applied as version 42, a retry is a duplicate, and Relay receives the latest price.](assets/images/18-used-car-pricing/18-repricing-run.jpeg)\n**Figure 4:** *A repricing run. The rule is simulated before it acts, proposals are approved in bulk with reasons, each write is an absolute price conditional on the version read, and a retry after a timeout is recognized as a duplicate rather than applied as a second cut.*\n\n### Proposals and approval\n\nAt Axleby, a proposal has a short life, because the facts behind it age:\n\n![Proposed goes to Approved, Rejected with a reason, Superseded by a newer proposal, or Expired after 24 hours; Approved goes to Applied at the expected version, or Expired when the version changed.](assets/images/18-used-car-pricing/18-proposal-states.jpeg)\n**Figure 5:** *The life of a price proposal. A proposal expires when its reference is a day old or the car changed underneath it, so an approval given on Monday is never applied to Tuesday's car.*\n\nRejections with reasons are training signal: when the desk keeps rejecting one rule's proposals for one model (\"the reference ignores the panoramic roof\"), the rejection log says which reference or rule to fix.\n\n## In Practice\n\n### What public sources show\n\n- **Central pricing in groups.** AutoNation's 2025 annual report (February 2026) describes \"our One Price used vehicle centralized pricing and appraisal strategy\" ([AutoNation 10-K, 2026](https://www.sec.gov/Archives/edgar/data/350698/000162828026007800/an-20251231.htm)). Central desks are a documented pattern in large groups; how they work inside is not public.\n- **Algorithmic pricing per car.** CarMax's description (2026, quoted above) is the clearest public statement that pricing is per vehicle, balanced between turn and gross, and adjusted for \"pricing elasticity\". Its earlier statement that \"generally 99% of our entire used vehicle inventory offered at retail is sold at retail\" (same report) shows what the wholesale exit is for: the cars that pricing could not sell.\n- **From calendar to potential.** Pollak's 2019 and 2023 interviews (above) document the change from age-based cuts to per-car potential tiers inside the company that popularized velocity pricing. The Wards evidence is seven years old and describes a product, not its current algorithm.\n- **Portals as price authorities.** Auto Trader UK's FY2026 results (May 2026) describe tools for retailers covering \"pricing, retail rating, market health, demand, supply, vehicle marketplace performance and predicted days to sell\", and price flags built on its specification-adjusted valuations ([Auto Trader Group, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)). mobile.de exposes price ratings, including a preview for an advert not yet created, to software partners through its Seller API. In both markets a dealer's software can ask the portal how it will judge a price before publishing it.\n- **The dealer tool as a market instrument.** Cox Automotive states (January 2026) that its monthly US retail used-sales estimates \"are based on observed unit changes tracked by vAuto\", from vAuto Live Market View data over the most recent 30 days ([Cox Automotive, 2026](https://www.coxautoinc.com/insights/used-retail-vehicle-sales-december-2025/)). A pricing tool that sees many dealers' stock is also a market data source; [Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html) and [Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html) decide what may be reused.\n\n> **INFERENCE, NOT DOCUMENTED:** None of these companies publishes how its pricing rules, guardrails or approval flows are built, how often its prices change, or how it measures the effect of a price change. The rule model, guardrails and event design in this chapter are a reference architecture consistent with their public statements, not a description of their systems.\n\n### Axleby: a single car\n\nThe **2020 Škoda Octavia Combi** traded in at Velto's Tilburg rooftop on 8 March 2027 shows the difference between the old rule and the new one ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) follows its cost layers). Capitalized cost was **€15,513**, the trade-in allowance **€14,200** under the margin scheme, and the desk set the asking price at **€17,950** on 21 March. On 4 April, day 27, the dossier showed (the reference and engagement figures are Axleby illustrations):\n\n| Item | Value |\n| --- | --- |\n| Vantage retail asking value | €18,400; 80% range €17,700–€19,100; `normal`; 14 comparables within 75 km |\n| Price position | 97.6% |\n| Enquiries | 9 in 14 days live; segment median 6 |\n| Signals | none |\n| Floor (front-end gross after margin VAT at least €600) | **€16,550** |\n\nThe floor is computed, not typed. At a price *P*, gross after VAT is *P* − €15,513 − (*P* − €14,200) × 21/121; setting that to €600 gives *P* ≈ €16,515, rounded up to €16,550. Under the old age-step rule, the Octavia would have been cut 2.5% on day 30, to €17,450 after rounding, although it was below the market, drawing more enquiries than its peers, and had no signal. Replayed through `vel-core` version 7, it is untouched. That one avoided cut is €500 of gross; across 41% of Velto's Q1 decreases it is the €520,000 estimate.\n\n### Axleby: the Velto pilot\n\nInes, Tomás and Mirjam agreed a pilot that respected the One Dossier plan: automated pricing signals are a Year 2–3 deliverable (2028–29), so in 2027 the work stayed inside Lotwise and kept a person in every decision.\n\n1. **Price history became decisions (May 2027).** Every price change in Lotwise now records author, reason code, rule version and reference snapshot, and emits a price event through the same path that feeds Relay. Earlier history was kept and marked \"reason unknown\".\n2. **Signals replaced the age calendar (June 2027).** The nightly restock run already produced positions; the signal generator added stand-time against expected days-to-sell, no-response and stale-price signals, with thresholds per segment.\n3. **`vel-core` version 7 ran in proposal mode** at 12 Velto rooftops from 18 June to 16 September 2027, with the guardrails above. The weekly rounding pass was retired; rounding now happens only when a price changes for a reason.\n4. **Twelve matched rooftops kept the old rule as a control**, chosen by brand mix, region and stock size.\n\nResults after 13 weeks (Axleby illustrations):\n\n| Measure | Pilot rooftops, before → during | Control rooftops, before → during |\n| --- | --- | --- |\n| Price changes per car sold | 6.1 → **2.2** | 6.3 → 6.0 |\n| Days-to-turn | 53 → **49** | 53 → 52 |\n| Front-end gross per car sold | +**€160** relative to control | baseline |\n| Stock older than 90 days | 8.3% → **5.6%** | 8.6% → 8.1% |\n| Desk hours on pricing per week (pilot rooftops) | 61 → 34 | — |\n| Proposals rejected by the desk | 9% (mostly options the reference missed) | — |\n\nThe control group is what makes the table credible. Summer stock turns faster in the Benelux, and the control rooftops improved by a day without any change. The pilot's three extra days and €160 per car are the effect worth attributing, and even that carries rooftop-selection noise. Velto adopted `vel-core` across all 46 rooftops in **November 2027**, still in proposal mode; automatic application for small, in-band moves is planned for 2028, when the pricing service moves out of Lotwise Classic onto the event backbone ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)).\n\nTwo side effects mattered as much as the gross. **Relay's Thursday peak disappeared**: Velto's weekly price changes fell from about 2,260 to about 800, and the remaining ones were spread across the week. And **the desk's work changed** from changing prices to reviewing exceptions: the 9% of proposals it rejected became the backlog for Vantage's option tables ([What Exactly Was Built: Specification, Trim and Equipment Data](specification-and-equipment.html)).\n\n### Group-wide volume\n\nAs an Axleby illustration, Lotwise recorded about 6.3 million price changes in 2026, about 3.3 per stock-in or 24,000 per working day. At 5.3 channels per car that is about 127,000 channel operations a day, close to a tenth of Relay's 1.4 million, concentrated on the days group desks run their rules. **Pricing design is also capacity design**: frequency limits and minimum changes remove load no adapter tuning would.\n\n## Failure Handling\n\n| Failure | Detection | Recovery |\n| --- | --- | --- |\n| **Duplicate application** (run retried after a timeout, user double-submits) | Idempotency key: run id + stock item, or command id | Absolute target price makes a replay harmless; dossier returns \"duplicate, no change\" |\n| **Conflicting updates** (rule versus salesperson, desk versus rooftop, car reserved meanwhile) | Version-conditional write; desk lock flag on the stock item | Rule re-reads and re-evaluates; a manual price wins over a rule for 7 days unless the desk lifts it; reserved cars are skipped |\n| **Incomplete records** (no cost, no VAT regime, edition unknown) | Missing floor; reference flagged `spec_uncertain` | No automatic action; task to the rooftop to complete the record; position shown with a wide range |\n| **Untrustworthy reference** (thin sample, stale surface, segment `watch` or `restricted`) | Reference flags and segment status on every signal | Automatic actions become proposals with a warning; runs never start on a surface older than 24 hours |\n| **Runaway rule** (wrong threshold, unit error, bad index) | Simulation diff; blast-radius stop; maximum step | Run pauses for approval; rollback by re-applying each car's previous price as a new event with reason `rollback`, never by editing history |\n| **Partial failure** (price applied, some channels failed) | Desired-state lag per channel listing ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)) | Relay converges each channel to the latest price; the dossier shows \"price live on 4 of 5 channels\" |\n| **Corrected fact** (wrong mileage or edition behind the reference) | Correction event names the fact versions it replaces; price events carry the reference snapshot | Find every price set against the wrong reference, re-propose, and tell the dealer which adverts showed the wrong price ([A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html)) |\n| **Portal rejects the price** (below a portal minimum, missing mandatory price fields) | Channel error classified as permanent | Parked without retry; desk sees the rule and the channel's reason |\n| **External outages** (Vantage, Pulse or Relay unavailable) | Health checks; surface age | Manual pricing continues; signals show their date; channel updates wait in desired state and send the latest price once on recovery |\n\nThe Odometer Correction of May 2027 shows why the reference snapshot belongs on the price event. A supplier batch recorded miles as kilometers for **2,870** UK-imported cars; by the time it was corrected, **1,180** live adverts carried the wrong mileage, and some of those cars had been repriced against valuations computed from it. Because price events from May 2027 carry the valuation id, and the valuation ledger holds the mileage reading id, finding the affected prices is a join, not an investigation.\n\n## Trade-Offs\n\n### Pricing strategy\n\n| Strategy | Strengths | Weaknesses | Right when |\n| --- | --- | --- | --- |\n| **Manual, by experience** | Captures local knowledge; no rule risk | Inconsistent; does not scale to a group; no record of reasons | Small independents with a few dozen cars |\n| **Age-step cuts (velocity)** | Simple; guarantees movement; easy to explain | Cuts cheap cars, ignores expensive young ones, gives gross away; abandoned by its own author | As a last-resort backstop for a financial deadline, not as the method |\n| **Market position target** | Market-anchored; explainable with comparables | Only as good as the reference; pushes everyone toward the same price | Dense segments with a trustworthy reference |\n| **Per-car potential or return tiers** | Matches price effort to each car's gross and turn potential; current documented direction | Needs good reference, demand and cost data; harder to explain | Groups with central desks and complete cost data |\n| **Fully algorithmic per car** | Consistent at scale; uses elasticity and probability of sale | Model risk, drift, a hard explanation problem; needs a pricing science team | Large retailers that own data and outcomes, as CarMax describes |\n\n### Automation level\n\n| Level | What happens | Risk | Fits |\n| --- | --- | --- | --- |\n| **Advice only** | Signals and suggested prices; people decide | Low; signals ignored | Independents; first rollout |\n| **Propose and approve** | Rules produce proposals; desk approves in bulk | Approval fatigue; rubber-stamping | Group desks; new rule versions |\n| **Automatic within bands** | Small in-band moves applied; the rest proposed | A wrong reference moves many prices quietly | Proven rule versions on `normal` segments, with blast-radius stops |\n| **Fully automatic** | Rules apply all changes | Runaway rules; drift spreads straight to every advert | Rarely; only with a control group and fast rollback |\n\nMy recommendation for Axleby is **per-car tiers with propose-and-approve as the default, and automatic application only for in-band moves on `normal` segments**, under three conditions: the stock item carries cost and VAT regime, Vantage's segment status is wired into the rules, and every rule version is measured against a control. If a market lacks a trustworthy reference, as in the UK where Showroomly dealers mostly price against Auto Trader, show the portal's rating as the reference and keep automation off.\n\nA third trade-off runs underneath: **which reference to price against**. The platform's own valuation is explainable and under its control; the portal's rating is what buyers see. Pricing to the portal alone hands the dealer's margin to the portal's model; ignoring it hands enquiries to competitors whose label reads \"Good price\". Show both, price against the own reference, and use the portal preview, where offered, to check the label before publishing.\n\n## Across Markets: What Changes by Country\n\n| | Netherlands / Belgium | Germany | United Kingdom | United States |\n| --- | --- | --- | --- | --- |\n| Reference dealers price against | Own-tool valuations from advert data spread over several portals (Marktplaats, 2dehands, AutoScout24, AutoTrack); aggregators such as VWE and Indicata | DAT and Schwacke values; mobile.de and AutoScout24 market data | Auto Trader valuations (one dominant portal) | Inventory tools such as vAuto; Manheim MMR, Kelley Blue Book, Black Book |\n| Portal price label | No seller-API documentation of a price label found for Marktplaats or 2dehands in this research | mobile.de price rating: five labels plus `NO_RATING`; preview before creation (Seller API, n.d.) | Auto Trader Price Indicator: five labels, \"No analysis\", exclusions, 15-minute delay (2024, updated 2026) | Marketplace deal labels are common practice; not verified here |\n| Announcing a price reduction | Directive 98/6/EC Article 6a: show the lowest price of the prior 30 days, applying since 28 May 2022 through national law | Same, as PAngV § 11, which exempts individual price reductions | No Article 6a after Brexit; misleading price claims fall under the Digital Markets, Competition and Consumers Act 2024 regime in force since April 2025 (CMA207 guidance, 2025) | FTC Guides Against Deceptive Pricing, 16 CFR 233.1: a former price must be bona fide, offered \"for a reasonably substantial period of time\" |\n| What drives the deadline | Bank lines, captive finance, lessor buy-backs | Bank lines, captive finance | Stocking finance | Floorplan with curtailments: age is a contractual deadline |\n| Units in signals | km; margin scheme or VAT | km; margin scheme or VAT | miles; margin scheme or VAT | miles; sales tax outside the price |\n\nThe price-reduction row matters to architecture. Article 6a of Directive 98/6/EC, inserted by Directive (EU) 2019/2161, says that \"any announcement of a price reduction shall indicate the prior price\", and that the prior price is \"the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction\". Germany implemented it as § 11 of its price indication ordinance (PAngV), which excludes \"individual price reductions\", such as a discount negotiated with one buyer. A dealer that shows \"was €17,950, now €17,450\" on its website or in an advert therefore needs, per car, the lowest price it applied in the previous 30 days. **The price history is a legal record, not a chart**, and the platform must answer \"lowest price in the last 30 days\" per car from its own events, including prices applied on any channel. It also kills a classic abuse: raising a price briefly in order to advertise a cut. The rule engine should refuse a version whose simulation shows raise-then-cut patterns within 30 days. Counsel should confirm per market whether a portal's automatic \"price reduced\" badge counts as the dealer's announcement.\n\n**What stays common:** the stock item's ownership of the price, the price event with author, reason and reference, signals, the rule model and guardrails, simulation, proposals and approval, and outcome measurement against a control.\n\n**What becomes a market adapter or rule set:** the reference source per market (Vantage, a licensed guide value, a portal valuation), the portal-rating integration per channel, the price-reduction disclosure rule and its lookback, rounding and price-ending conventions, units, and the financial-deadline inputs (US floorplan curtailments do not exist in the same form in Velto's world).\n\n**What may be a separate product decision:** in the UK, where one portal sells valuations and pricing tools to the same dealers, Showroomly integrates the portal's figures and adds signals and an audit trail; competing on the reference itself is a data-business decision ([Auto Trader UK: From Classifieds Portal to Data and Software Platform for Retailers](case-auto-trader-uk.html)).\n\n## The Chief Architect's View\n\n**Decide who owns the price, and enforce it.** The dossier owns the asking price; pricing owns proposals and signals; the DMS owns neither for Lotwise rooftops. Every writer, human or rule, goes through the same version-conditional command and produces the same event. A second write path, such as a bulk import that sets prices directly, would reopen every problem this chapter solves.\n\n**Make the reference explicit and graded.** A position is only as good as the valuation it divides by. Wire Vantage's range, confidence flags and segment status into the signals, so that pricing inherits the drift controls of [What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html) instead of re-learning them. Priya Raman owns the reference; Tomás Ferreira owns what dealers do with it.\n\n**Treat repricing rules as product configuration with a release process.** Versioned, simulated, approved, effective-dated, measured. A dealer group's pricing method is one of its most sensitive settings; it belongs in Baseline under the same \"no tenant-conditional code\" policy as everything else, not in a custom job.\n\n**Measure with a control, and publish the result to the dealer.** Price changes per car, days-to-turn, gross per unit, aged-stock share and wholesale losses, per rule version, against untreated rooftops or held-out cars. A group that cannot see what its rules earned will keep the rule it is used to. Velto kept the age-step rule for a year because nobody could show it what it cost.\n\n**Watch these over the long term:** the share of price changes with a reason code and reference (target 100%); price changes per car sold; the share of automatic actions taken on non-`normal` references (target zero); proposal rejection rates by segment; the gap between portal ratings and Vantage positions; and the lag from price change to portals. If the rejection rate climbs in one segment, the reference is drifting before the back-test shows it.\n\n## Questions to Ask\n\n1. Who may change a price, through which path, and does every change record author, reason, rule version and the market reference it used?\n2. What is the reference behind your price position: which value type, which edition and options, which region, and does the screen show its range and confidence?\n3. Which signals fire for a young car priced well above market, and how many days does it wait before anyone acts?\n4. Are repricing actions absolute target prices or relative cuts, and what happens if a run is retried after a timeout?\n5. What stops a wrong rule: floors that know the VAT regime, step and frequency limits, a blast-radius stop, a simulation step?\n6. Does automatic repricing pause when the valuation segment is under drift watch?\n7. Can you answer, per car and channel, \"what was the lowest price in the 30 days before this reduction\", from your own records?\n8. What share of syndication traffic is price changes, and which of them changed nothing a buyer would notice?\n9. How do you know a rule earned money: what control group, which metrics, over what period?\n10. When the portal's price label and your own position disagree, which one does the dealer see first, and why?\n\nThe price is now set and its reasons recorded. What the buyer sees, though, is not a price but an advert: photos, a title, an equipment list, a description, a financing example and the disclosures each market requires. The next chapter, [Making the Car Sellable Online: Photos, Descriptions and Equipment](merchandising.html), covers how those adverts are produced completely, accurately and at scale.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [CarMax Form 10-K, fiscal year ended 28 February 2026](https://www.sec.gov/Archives/edgar/data/1170010/000117001026000021/kmx-20260228.htm), CarMax / SEC, 2026. Algorithmic per-vehicle pricing balancing turn and gross; per-unit gross targets by probability of sale; share of retail inventory sold at retail.\n- [AutoNation Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/350698/000162828026007800/an-20251231.htm), AutoNation / SEC, 2026. One Price centralized pricing and appraisal.\n- [Carvana Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1690820/000169082026000009/cvna-20251231.htm), Carvana / SEC, 2026. Lower days to sale leads to fewer price reductions and higher selling prices.\n- [Used retail vehicle sales, December 2025](https://www.coxautoinc.com/insights/used-retail-vehicle-sales-december-2025/), Cox Automotive, 2026. Days' supply of 49; sales estimates based on vAuto-tracked unit changes.\n- [Full year results FY26](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), Autotrader Group plc, 2026. Retailer pricing and predicted-days-to-sell tools; price flags on specification-adjusted valuations.\n- [Why do I have a Price Indicator on my advert?](https://help.autotrader.co.uk/hc/en-gb/articles/19212037724957), Auto Trader UK, 2024, updated 2026. Labels, \"No analysis\", exclusions, 15-minute delay.\n- [How do I price my car as a dealer?](https://help.autotrader.co.uk/hc/en-gb/articles/13143564149021), Auto Trader UK, 2023, updated 2026. \"Price Position\"; quickest-selling cars priced at 99–100% of current market value; overpricing increases days to sell.\n- [Seller API documentation](https://services.mobile.de/manual/seller-api.html), mobile.de, n.d. (accessed 2026-10). Price rating labels, `NO_RATING`, preview endpoint, recalculation when images change.\n\n*Standards, regulation and official documentation*\n\n- [Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161), European Union, Official Journal, 2019. Article 2 inserts Article 6a into Directive 98/6/EC (prior lowest price over at least 30 days); application from 28 May 2022.\n- [Preisangabenverordnung § 11](https://www.gesetze-im-internet.de/pangv_2022/__11.html), Bundesministerium der Justiz, n.d. (accessed 2026-10). German implementation; exemption for individual price reductions (German).\n- [Unfair commercial practices (CMA207)](https://www.gov.uk/government/publications/unfair-commercial-practices-cma207), Competition and Markets Authority, 2025, updated November 2025. Guidance under the Digital Markets, Competition and Consumers Act 2024.\n- [16 CFR 233.1, Former price comparisons](https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-233/section-233.1), US Federal Trade Commission / eCFR, n.d. (accessed 2026-10). Bona fide former prices; fictitious reference prices.\n- [Council Directive 2006/112/EC (VAT Directive)](http://publications.europa.eu/resource/celex/32006L0112), European Union, 2006. Margin scheme for second-hand goods, which sets the VAT-aware price floor.\n\n*Research and practitioner sources*\n\n- [Dale Pollak shifts gears on used car selling tactics](https://canadianautodealer.ca/?p=63771), Canadian Auto Dealer, 2023. Pollak's reversal of velocity pricing and the variable-management tiers.\n- [New way to price cars doesn't play beat the clock](https://www.wardsauto.com/news/archive-wards-new-way-to-price-cars-doesn-t-play-beat-the-clock/793537/), Wards Auto, 2019. ProfitTime's investment-portfolio approach; no fixed day-15 or day-30 cuts.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

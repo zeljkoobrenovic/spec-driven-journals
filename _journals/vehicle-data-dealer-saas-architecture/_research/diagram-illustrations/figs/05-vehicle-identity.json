@@ -1,0 +1,23 @@
+[
+ {
+  "id": "05-identity-graph",
+  "visual_goal": "Show the identity graph: one vehicle node, with VINs and dated plate assignments attached as edges, and product records pointing to the node rather than to an identifier.",
+  "prompt": "A hub-and-spoke diagram with one large teal circular node in the center labeled 'AVK', with a small generic hatchback silhouette inside it. On the left, a tag-shaped box labeled 'VIN' with one arrow into 'AVK' labeled 'identifies'. Top left, a plate-shaped box labeled 'NL plate' with one arrow to a document box labeled 'NL registration', labeled '2019 to 2024'; one arrow from 'NL registration' into 'AVK'. Bottom left, a plate-shaped box labeled 'UK plate' with one arrow to a document box labeled 'UK registration', labeled 'from 2024'; one arrow from 'UK registration' into 'AVK'. On the right, two stacked record boxes: 'Stock items' with one arrow into 'AVK' labeled 'refers to AVK', and 'History events' with one arrow into 'AVK' labeled 'keyed by AVK'.",
+  "alt": "A central AVK vehicle node; a VIN identifies it, NL and UK plates attach to dated registrations that register it, and stock items and history events point to the AVK.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "05-vehicle-node-lifecycle",
+  "visual_goal": "Show the life of a vehicle node: provisional to confirmed or merged, confirmed to suspect on conflict, suspect back to confirmed or to split, split back to confirmed.",
+  "prompt": "A simple state map of five rounded tiles. Left: grey-blue 'Provisional'. Center: green 'Confirmed'. Bottom left: muted grey 'Merged' with a small plain rounded gravestone icon inside, no symbols on it. Right: orange 'Suspect'. Far right below 'Suspect': teal 'Split' with a small icon of one car becoming two. Exactly six arrows and no others: one from 'Provisional' to 'Confirmed' labeled 'VIN corroborated'; one from 'Provisional' down to 'Merged' labeled 'same car'; one from 'Confirmed' to 'Suspect' labeled 'conflicting signals'; one from 'Suspect' back to 'Confirmed' labeled 'review clears'; one from 'Suspect' down to 'Split' labeled 'second vehicle'; one from 'Split' back to 'Confirmed' labeled 'facts reassigned'. 'Merged' has one incoming arrow and no outgoing arrow.",
+  "alt": "Vehicle node states: Provisional becomes Confirmed or Merged; Confirmed moves to Suspect on conflicting signals; Suspect returns to Confirmed after review or goes to Split, which ends Confirmed after facts are reassigned.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "05-plate-resolution-path",
+  "visual_goal": "Show plate resolution at appraisal: the cache is checked first, a miss goes to the register through Turnstile, the answer is compared with the graph, and the dealer gets the AVK with tier and evidence age.",
+  "prompt": "A left-to-right swimlane illustration with four vertical lanes headed by icons and labels: a tablet labeled 'Dealer app', a hub labeled 'Anchor', a fast-storage box labeled 'Plate cache', and a gateway box labeled 'Turnstile'. Horizontal arrows top to bottom: one arrow from 'Dealer app' to 'Anchor' labeled 'resolve plate'; one arrow from 'Anchor' to 'Plate cache' labeled 'current assignment'; one return arrow from 'Plate cache' to 'Anchor' labeled 'miss'; one arrow from 'Anchor' to 'Turnstile' labeled 'register lookup'; one return arrow from 'Turnstile' to 'Anchor' labeled 'VIN and dates'; a small loop arrow on 'Anchor' labeled 'compare with graph'; one green return arrow from 'Anchor' to 'Dealer app' labeled 'AVK, tier Confirmed'.",
+  "alt": "Swimlanes for dealer app, Anchor, plate cache and Turnstile: a plate lookup misses the cache, goes to the register through Turnstile, is compared with the graph and returns the AVK with tier Confirmed.",
+  "aspect_ratio": "16:9"
+ }
+]

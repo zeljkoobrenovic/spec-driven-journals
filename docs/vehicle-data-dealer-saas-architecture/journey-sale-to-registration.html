@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Signed Contract to New Owner: Sale, Registration and Delisting</title>
+    <meta name="description" content="What has to happen, in which order and in which systems, between a buyer's signature and the moment the register names them as the car's new keeper? One correlated sale case carried across about ten hops, a hand-over gate that waits for the register's evidence rather than the platform's hope, and a dealer screen that shows commercial, channel and legal state side by side, so that an outage on the worst afternoon of the quarter delays deliveries without making the platform's record disagree with the register's.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting a Vehicle Data and Dealer SaaS Platform">
+    <meta property="og:title" content="From Signed Contract to New Owner: Sale, Registration and Delisting">
+    <meta property="og:description" content="What has to happen, in which order and in which systems, between a buyer's signature and the moment the register names them as the car's new keeper? One correlated sale case carried across about ten hops, a hand-over gate that waits for the register's evidence rather than the platform's hope, and a dealer screen that shows commercial, channel and legal state side by side, so that an outage on the worst afternoon of the quarter delays deliveries without making the platform's record disagree with the register's.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/journey-sale-to-registration.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/vehicle-data-dealer-saas-architecture/assets/images/43-journey-sale-to-registration/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="journey-lead-to-dms.html" title="From Portal Enquiry to Dealer System: Routing a Lead End to End">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-9.html" title="Part IX — LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VIII — JOURNEYS: End-to-End Scenarios</p>
+        <h1>From Signed Contract to New Owner: Sale, Registration and Delisting</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-22  ·  33 min read · <a class="spec-link" href="journey-sale-to-registration.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/43-journey-sale-to-registration/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/43-journey-sale-to-registration/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting a Vehicle Data and Dealer SaaS Platform</a><span class="nav-right"><a class="nav-prev" href="journey-lead-to-dms.html" title="From Portal Enquiry to Dealer System: Routing a Lead End to End">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-9.html" title="Part IX — LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "From Signed Contract to New Owner: Sale, Registration and Delisting", "date": "2026-10-22", "author": "Željko Obrenović", "excerpt": "What has to happen, in which order and in which systems, between a buyer's signature and the moment the register names them as the car's new keeper? One correlated sale case carried across about ten hops, a hand-over gate that waits for the register's evidence rather than the platform's hope, and a dealer screen that shows commercial, channel and legal state side by side, so that an outage on the worst afternoon of the quarter delays deliveries without making the platform's record disagree with the register's.", "permalink": "journey-sale-to-registration", "timetoread": "33 min read", "icon": "assets/icons/43-journey-sale-to-registration.png", "logo": "assets/images/43-journey-sale-to-registration/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Walk one used-car sale from signature to new owner through every context it touches: deal, stock item, syndication, lender, register transaction, proof, invoice, accounting export, vehicle history and market data. You will then replay the same journey on the afternoon of the Month-End Register Outage, seen from the showroom.\n\n> **WHY THE BUSINESS CARES:** The sale is where the dealer earns the margin and the platform earns its transaction fees. It is also where a mistake reaches a consumer directly: a buyer sent home without a car, a seller still liable for a car they sold, a registered car still advertised. Month-end is when most of these sales happen and when the platform is most likely to fail.\n\n> **WHY ARCHITECTS SHOULD CARE:** Each hop of this journey has its own owner, identifier and consistency rule, and each was designed well enough on its own. What the chapters on single contexts cannot show is what happens *between* the hops. Three state machines (commercial, channel, legal) must agree at one moment: when the keys change hands.\n\n> **KEY POINTS:**\n>\n> * **A sale is three state machines, and they agree only at the hand-over.** The deal and stock item say what was agreed, the channel listings say what the market sees, and the register says who is legally responsible for the car. Show all three on one screen, and let the car leave only when the register's evidence says the buyer is the keeper.\n> * **One sale case, one key chain, from the signature to the history record.** The deal id, stock item, Axleby Vehicle Key, transaction id, invoice number, fee line and ownership event must link without heuristics. Then a retry, a replay or a correction finds what it must change. On 31 March 2027 the links stopped at the transaction, and 214 acts that the register had completed showed \"rejected\" in Lotwise.\n> * **An outage is a customer-communication problem with an ordering constraint.** The register cannot be worked around, and should not be. The platform's job on the worst afternoon is to keep every hop that does not need the register working and to hold per-vehicle order. It must also tell the dealer, in words the dealer can repeat to the buyer, what is waiting and when it will be known.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-vehicle-platforms-go-wrong.html):**\n>\n> * **Borrowed Uptime** — the hand-over depends on a register channel that the platform cannot replace, and on the quarter's last afternoon an outage there becomes hundreds of postponed deliveries unless every other hop keeps working.\n> * **The Zombie Listing** — a sold car must leave every portal at reservation time, not when the register confirms, and at month-end the withdrawals compete with thousands of other stock changes.\n> * **The Unmetered Call** — a transaction fee emitted on submission, not on confirmation, turned 214 ambiguous timeouts into double charges on dealers' invoices.\n\n<br>\nPart IV described each step of the used-car workflow from the inside. [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) owns the deal and its documents, [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) the stock item and its tracks, [One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html) the withdrawal saga, and [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) the register transaction with its Ambiguous state and per-vehicle queue. [Living With the DMS: Dealer Management System Integration](dms-integration.html) covers the case in which a dealer management system (DMS) records the sale instead of Lotwise. This chapter re-teaches none of them. It follows **one car through all of them in order** and asks the questions only the journey view raises. Who owns each hop? Which identifier crosses which boundary? How fresh must each copy be? And what does the dealer see when one hop fails and the others do not?\n\nThe failure core is the **Month-End Register Outage** of **31 March 2027**. [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) tells it as a transaction-design story, and [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html) as a dependency story. Here it is told **from the showroom**: one buyer waiting for a car, one seller waiting for a release certificate, a dealer looking at a status that is wrong, and a support desk that learned about the outage from its customers.\n\n## Setting the Scene at Axleby: 16:00 in Leeuwarden\n\nAxleby, the fictional vehicle data and dealer software group this book follows (see [Meet Axleby: A Data Business and a Software Business Under One Roof](meet-axleby.html)), runs Lotwise, the dealer software used by **7,200** rooftops in the Netherlands, Belgium and Germany. In the Netherlands, its business line **Axleby Trade** submits official register transactions. In 2026 it carried **1.25 million** of them, at **€6.50** each plus the register's own fee, with month-end and quarter-end peaks of about **4×** the daily average.\n\nSietse Brandsma runs **Autobedrijf Brandsma**, an independent dealer in Leeuwarden with about 55 cars in stock. He has used Lotwise since 2014 and added Sales Admin, its sales-documents module, in January 2027. On Saturday 27 March 2027 he sold a 2019 Kia Niro hybrid for **€19,750** to a buyer from Drachten (all figures in this chapter are Axleby illustrations unless sourced). She paid a €500 deposit, financed €10,000 through **Merelstad Auto Finance**, Lotwise's fictional referral lender, and traded in a 2011 Opel Astra at **€1,800**. Collection was booked for **Wednesday 31 March at 16:00**, the last working day of the quarter.\n\nAt 14:31 that Wednesday, Sietse issued the invoice and clicked **Register in buyer's name**. At 14:33 the screen showed **Rejected**, with a register error code he did not recognize. Axleby's support line was busy. At 16:00 the buyer arrived in the Astra with her insurance arranged. Sietse told her the register had refused the registration, apologized, and asked her to come back the next day. She drove home in the Astra.\n\nThree things were true at 16:00 that nobody in the showroom knew:\n\n- **The register had registered the Niro in her name at 14:31.** From that moment she, not Brandsma, was the keeper on record, responsible for road tax, insurance and periodic inspection, for a car standing on Brandsma's lot.\n- **The \"rejection\" belonged to a second submission.** Axleby's worker had resent the message after a 30-second timeout. The register refused it because the car was no longer in Brandsma's stock, and the back office recorded that refusal as the outcome.\n- **The transaction channel had been slow since 14:20 and had stopped answering at about 15:05.** The banner that told dealers so went up at about 15:20, posted by hand.\n\n![Split scene: in the showroom the dealer's screen shows Rejected while the buyer waits; at the register, the open book already shows the car registered at 14:31.](assets/images/43-journey-sale-to-registration/43-showroom-contradiction.jpeg)\n**Figure 1:** *At 16:00 the dealer's screen said rejected while the register had named the buyer as keeper since 14:31; the failure lived between the systems.*\n\nOn Thursday at 09:40, an Axleby Trade operator working through the list of 214 queried the register, set the Niro's transaction to confirmed and produced the missing proof. Sietse phoned the buyer, and she collected the car at 11:00. The double fee was credited on the April invoice. One of the 214 had been resolved. It took **three people two working days** to finish the rest.\n\nInes Marchetti, Axleby's Group Chief Architect, noticed in the reconstruction that every system had behaved as designed: the deal was correct, the adverts had come down on Saturday, and the queue had kept order. **The failure lived between the systems.** So her question for the journey review was not \"how do we fix the queue\", which [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) answers. It was this: **for one sale, can anyone at Axleby or at the dealer see what each system believes, and can the car leave the lot only when those beliefs agree?**\n\n## The Journey at a Glance\n\nThe journey has ten hops and three state machines. The **commercial** state machine is the deal and stock item ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html), [The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)). The **channel** state machine covers each channel listing ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)). The **legal** state machine is the register transaction ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)). History and market data sit downstream and read the outcome.\n\n![Swimlanes for deal service, dossier, Relay, register and history: the deal reserves the car, the dossier withdraws adverts and requests registration, the register confirms, the keys are handed over, and history receives the ownership change last.](assets/images/43-journey-sale-to-registration/43-sale-success-path.jpeg)\n**Figure 2:** *The success path. Signing reserves the car and withdraws it at once; the invoice makes it sold; only the register's confirmation releases the hand-over. History and market data learn the outcome last, and from two sources.*\n\nThe table below is the journey's contract: who owns each hop, which identifiers cross the boundary, and what consistency and latency each hop needs. The latencies are Axleby's 2027 targets where the owning chapter sets them, and illustrative assumptions otherwise.\n\n| # | Hop | Owner | Identifiers that cross | Consistency | Latency target |\n| --- | --- | --- | --- | --- | --- |\n| 1 | Contract signed, stock reserved | Deal service → dossier | Deal id, stock item id and version | Strong, conditional write on the stock item | Under 2 s |\n| 2 | Adverts withdrawn | Dossier → Relay | Stock item id, channel listing ids | Must converge; desired state set in the reserve transaction | 99% confirmed within 10 min |\n| 3 | Finance approved, payment recorded | Finance referral ↔ lender; deal service | Application id, lender reference, payment ids | Exactly-once effect by idempotency key | Minutes to hours (lender) |\n| 4 | Invoice issued, stock sold | Document issuer, deal service → dossier | Invoice number, deal id | Strong; number allocated in the issuing transaction | Under 2 s |\n| 5 | Register transaction created | Dossier → Trade orchestrator | Transaction id, idempotency key, AVK, legal entity, mandate id | Idempotent per key; one open act per vehicle and type | Under 500 ms *(assumption)* |\n| 6 | Submission and outcome | Queue → Turnstile → register | Transaction id, register transaction code | Register state is the truth; Ambiguous resolved by probe | Bound by the register; 90 s timeout |\n| 7 | Proof and register track | Trade ledger → proof store, dossier | Transaction code, proof document hash | Only from Confirmed | Under 1 min *(assumption)* |\n| 8 | Hand-over, delivered | Dossier | Stock item id, delivery receipt | Guard: register track Confirmed | Seconds |\n| 9 | Fee, accounting export, DMS | Meterline; accounting export; Hitch | Fee event id (= transaction id), invoice number, DMS deal number | One fee per Confirmed act; export idempotent by document number | Same day; nightly |\n| 10 | Ownership event, sale detection | Tracewell, Pulse, valuation ledger | AVK, observed or reported flag, deal price link | Deduplicated across sources | Hours (own outcome) to days (open data) |\n\nTwo features of this table matter more than any single row.\n\nFirst, **the legal hop sits in the middle, not at the end**. Hops 1–4 can complete during a register outage, and so can hop 9 in part. Hop 8 must wait for hop 6. A design that puts hand-over before registration, or registration before the invoice, fails in different ways (see Trade-offs). Axleby's order follows the coupling rules in [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html): signing reserves, issuing the invoice (or delivery, per dealer setting) sells, and the *stock item sold* event starts the registration.\n\nSecond, **the hops run on different clocks**: minutes for withdrawal, hours for finance, seconds for the register on a normal day and an afternoon on a bad one, and days before the open data shows the owner change. A journey that reports \"done\" at the speed of its fastest hop will lie to someone.\n\n## The Sale Case: Three States and One Key Chain\n\n### Three state machines on one screen\n\nThe journey view adds no new aggregate, and it owns no new term. It adds a **read model**: a view, per stock item, that joins the three state machines and the hops between them. At Axleby this view is the dossier timeline in Lotwise and in **Pitwall**, the support console that went live in **September 2027** ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)).\n\n| Machine | Owned by | States the dealer sees | Question it answers |\n| --- | --- | --- | --- |\n| **Commercial** | Deal service and stock item | Signed, finance pending, invoiced; reserved, sold, delivered | What has been agreed and paid? |\n| **Channel** | Relay, per channel listing | Live, withdrawing, withdrawn, blocked, locked | What does the market still see? |\n| **Legal** | Trade ledger, per register act | Draft, blocked, queued, submitted, ambiguous, confirmed, rejected, manual | Who does the register name, and since when? |\n\nOn 31 March the Niro was *invoiced* and *sold* in the commercial machine and *withdrawn* on all channels. In the legal machine it was registered to the buyer in the register's record and rejected in Axleby's ledger. No screen put those facts side by side, and so nobody saw the contradiction until the reconstruction.\n\nThe rule I use is that **the dealer screen for a sale shows all three machines and the age of each fact**, in one row. \"Sold · withdrawn from 6 of 6 channels · registration waiting for the register since 14:31\" is a sentence a dealer can repeat to a buyer. \"Rejected\" with a code is not.\n\n![Three green status lights labeled Commercial, Channel and Legal are wired to an open gate where a car key passes from one hand to another.](assets/images/43-journey-sale-to-registration/43-three-machines-gate.jpeg)\n**Figure 3:** *A sale runs three state machines, and the keys change hands only when the commercial, channel and legal lines all agree.*\n\n### The key chain\n\nEach hop is idempotent on its own key, as the owning chapters require. The journey needs those keys to **link**, so that any later actor (a retry, a support agent, a correction, an auditor) can walk from any one of them to the others without guessing.\n\n![A chain of linked tiles: Deal id links to Stock item and Invoice number; Stock item links to Vehicle key and Transaction id; Transaction id links to Register code and Fee event; Register code links to Ownership event.](assets/images/43-journey-sale-to-registration/43-sale-key-chain.jpeg)\n**Figure 4:** *The sale case's key chain. Every arrow is a stored reference, not a lookup by plate and date. A fee, a proof or an ownership event can always be traced back to the deal and the click that caused it.*\n\nThe Q1 2027 dossier audit found **44%** of register transactions linkable to a stock item only by plate and date heuristics ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)). The Niro's transaction did not carry the deal id, so on Thursday the operator worked from the plate to the dealer, and from the dealer's phone number to whether a buyer was waiting.\n\nThree rules make the chain hold:\n\n1. **The idempotency key is born at the dealer's action and never re-minted.** The redesign that went live on **14 June 2027** carries one key from the click (or the *stock item sold* event) to the fee line ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)). The journey extends it one step back: the key is derived from the deal id and the act type, so a replayed sold event creates no second transaction.\n2. **Vehicle identity crosses every boundary as the AVK**, the opaque internal key from [Which Car Is This? VINs, Plates and the Vehicle Identity Graph](vehicle-identity.html), never as the plate. The queue lane, the history event and the market-data outcome all key on it.\n3. **Every downstream record stores the upstream id it came from.** A Meterline fee event carries the transaction id. An ownership event carries the transaction code when Axleby's own act produced it. A valuation-ledger outcome carries the deal id.\n\n## The Success Path, Hop by Hop\n\nThe walk-through uses Brandsma's Niro under the design Axleby ran from **June 2027**, with the numbers from the scene. Where March 2027 differed, the difference is stated.\n\n### Hops 1 and 2: signature, reservation, withdrawal\n\nOn Saturday the buyer signed the sales contract on a tablet. The deal service asked the dossier to reserve the Niro with the stock item version it had read. This **conditional write** is the deal's only hard dependency on stock ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)), and it must work with every external system down. In the same dossier transaction the advertising track's desired state became *withdrawn* ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)). Relay then converged each channel listing toward absence, and the Niro left Brandsma's website, Marktplaats, AutoScout24 and two other channels within minutes.\n\nFrom the journey's point of view, **withdrawal happens at reservation, not at registration or at sale**. A car reserved on Saturday and registered on Wednesday must not collect four days of leads. Sometimes the reservation arrives *from* a channel: Auto Trader's Connect documentation forbids partners to change a listing's lifecycle state once a buyer's reservation deal id is present ([Autotrader Connect, n.d.](https://developers.autotrader.co.uk/documentation)), so the journey then starts at hop 1 from the other side.\n\nAt Axleby's targets, 99% of withdrawals should be confirmed within 10 minutes. In June 2027 the 99th percentile was **6 hours 20 minutes**, because withdrawals waited behind failing updates in per-rooftop queues. After a withdrawal priority lane and per-advert ordering, it was **14 minutes** in September. The same reservation should stop Switchboard, the lead-routing service, from routing new leads for the car as if it were available ([From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html)).\n\n### Hop 3: finance and payment\n\nThe €10,000 Merelstad application went out with the buyer's consent on Saturday afternoon and was approved on Monday 29 March. The buyer signed the credit agreement in Merelstad's own flow, and the payout was scheduled for after delivery. She paid the balance of **€7,450** (€19,750 − €1,800 trade-in − €500 deposit − €10,000 financing) by bank transfer on Tuesday.\n\nThe journey adds one question to [Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html): **is the money a condition for the register act?** Once the register names the buyer as keeper, the dealer has handed over legal responsibility for a car it may not have been paid for. Axleby's default since June 2027 is a **release rule** per legal entity: the registration is created on *stock item sold* but stays in Draft until the deal's balance due is zero, with an approved financing payout counting as covered. A dealer may change the default; it is configuration in Baseline, the tenant configuration service, not code ([From Signed Contract to First Sale: Onboarding, Migration and Configuration](onboarding-and-configuration.html)). The second link is consumer-credit law. Under the second Consumer Credit Directive, a car loan arranged by the dealer is typically a *linked credit agreement*, and the consumer may withdraw from it within 14 calendar days ([Directive (EU) 2023/2225, 2023](http://publications.europa.eu/resource/celex/32023L2225)). That window outlasts registration. Failure case 5 shows what the journey does when it is used.\n\n### Hop 4: invoice and sold\n\nOn the morning of 31 March, Sietse issued the invoice from Brandsma's rooftop series in Sales Admin. In the same transaction the Niro moved from *reserved* to *sold*, and the outbox emitted *stock item sold*.\n\nFor a DMS-connected dealer such as Velto Mobility Group, the fictional 46-rooftop group on the DriveDesk DMS, hop 4 happens in DriveDesk. The *sold* status reaches the dossier through Hitch, Axleby's DMS integration layer, as an idempotent upsert, after a polling interval of up to 15 minutes ([Living With the DMS: Dealer Management System Integration](dms-integration.html)). The dossier accepts the first sold signal from either side and withdraws adverts at once. So **for DMS dealers the sold signal is up to 15 minutes old and may arrive twice**, and the registration's key must come from the DMS deal reference, whether the dealer's click or, later, the signal itself starts it.\n\n### Hop 5: the register transaction is created\n\nSince June 2027, the *stock item sold* event creates the registration in the buyer's name (*tenaamstellen*) for Sales Admin rooftops, keyed by the deal ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)). For sales that arrive from a DMS, the dealer still started the registration with a click throughout 2027. [Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html) counts that click among the eight ways Lotwise Classic told other systems about a sale, and records its failure mode: \"the dealer forgets\".\n\nThe orchestrator validates everything it can before the queue sees the act. The journey contributes one rule about **when** it validates: **at signing, not on hand-over day.** On Saturday the Lotwise screen already checked Brandsma's recognitions, the certificate's expiry, the Niro's register status from the mirror, and the buyer's digital authorization (*machtiging*). The buyer signs this authorization with DigiD, the Dutch government login, and it is valid for three months ([RDW, n.d.](https://www.rdw.nl/zakelijke-partners/bedrijven-met-rdw-erkenning/op-naam-zetten/voertuig-op-naam-van-een-klant-zetten)). A missing authorization found on Saturday costs a phone call. Found at 16:00 on Wednesday, it costs the delivery slot.\n\nA status read on Saturday is four days old by Wednesday, so the orchestrator **re-reads the live status at submission**; in April 2027 Brandsma agreed a trade-in on a 19-day-old cached \"transfer possible\" flag, and the register refused the stock-in ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)).\n\n### Hops 6 and 7: submission, outcome, proof\n\nThe transaction enters its vehicle lane (keyed by AVK), waits for its turn among Brandsma's and other dealers' acts, and is submitted when Turnstile reports the channel healthy. On a normal afternoon the confirmation returns in seconds with the register's transaction code. The ledger then moves the act to Confirmed, the proof store keeps the confirmation verbatim, and the outbox emits `registration.completed`. The dossier's register track and the deal's documents both consume that event ([Keeping Everyone in Step: Events, Webhooks and Synchronization](events-webhooks-and-sync.html)). The RDW (*Rijksdienst voor het Wegverkeer*, the Dutch vehicle authority) mails the buyer's registration card within five working days ([RDW, n.d.](https://www.rdw.nl/zakelijke-partners/bedrijven-met-rdw-erkenning/op-naam-zetten/voertuig-op-naam-van-een-klant-zetten)).\n\nThe trade-in follows the mirror path. When the buyer hands over the Astra, Sietse reads the odometer from the dashboard and submits the stock-in to trade stock with release of the seller (*vrijwaren*). The RDW requires him to print the **release certificate** (*vrijwaringsbewijs*) and give it to her ([RDW, 2026](https://www.rdw.nl/-/media/rdwnl/documenten/bedrijf-met-rdw-erkenning/toezichtbeleid/tbb-en-informatiemap-2026/informatiemap.pdf)). The Niro and the Astra are separate vehicles in separate lanes, so neither waits for the other. **The hand-over needs both.** The buyer should not leave with the Niro while the Astra is still registered to her, or leave the Astra without proof that she is no longer responsible for it.\n\n### Hop 8: the hand-over gate\n\nDelivery is the only hop at which all three machines must agree, and Axleby guards it explicitly. The dossier refuses the *delivered* transition unless:\n\n- the commercial machine says *sold*, with the balance covered;\n- the channel machine says *withdrawn* on every channel, or the remaining channels are marked *Blocked* with a reason the dealer has seen;\n- the legal machine says *Confirmed* for every register act the delivery depends on, here the Niro's registration and the Astra's stock-in.\n\n[The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html) names \"register or keeper change done where required\" as the guard for *delivered*; the journey turns it into a screen. Sietse sees one checklist with three lines, each with its time and source, and a **hand-over document** that the buyer receives with the keys. It states the register transaction code and date for her car and for her trade-in.\n\nThere is no override for the legal line in the Netherlands. The register's rules leave no room for one: during a disruption \"you can only register the vehicle once the disruption is over\" ([RDW, 2026](https://www.rdw.nl/-/media/rdwnl/documenten/bedrijf-met-rdw-erkenning/toezichtbeleid/tbb-en-informatiemap-2026/informatiemap.pdf)). The commercial and channel lines can be overridden by a manager with a recorded reason.\n\n### Hop 9: fee, accounting export, DMS\n\nTwo Axleby Trade fees follow, each €6.50 plus the register's fee, emitted to Meterline, Axleby's usage-metering service, **on confirmation only** and keyed on the transaction id ([Subscriptions, Lookups and No-Hit-No-Fee: Billing and Metering](billing-and-metering.html)). That night, Sales Admin's accounting export sends the invoice, the deposit, the expected Merelstad payout as a receivable and the Astra's purchase to Brandsma's accountant, idempotent by document number. For Velto, the deal lives in DriveDesk, which issues the invoice; Lotwise stores DriveDesk's deal and invoice numbers as references and never generates competing ones ([Living With the DMS: Dealer Management System Integration](dms-integration.html)).\n\nThe journey check here is a **reconciliation, not a flow**. Every Confirmed register act has exactly one fee line; every fee line has a Confirmed act; every *sold* stock item at a Dutch rooftop has a register act or a recorded reason for not needing one, such as a sale to a trader or an export. The third check catches the forgotten click.\n\n### Hop 10: history and market data\n\nTwo downstream consumers learn about the sale, from two sources, at two speeds.\n\n**Vehicle history.** Tracewell, the history event store ([What Happened to This Car: Damage, Odometer, Title and Service History](vehicle-history.html)), records an ownership change for the Niro's AVK. Axleby knows of the change within seconds from its own confirmed transaction. The public record shows it later: the Dutch open dataset carries only the date of the latest registration in a holder's name, keyed by plate, and recent changes appear with a delay of a few days ([The Authoritative Source: Vehicle Registers and Official Data Access](registers-and-official-data.html)). The two observations describe one event, and Tracewell merges them on AVK, event type and date. The transaction outcome sets the exact date and is flagged *reported*, while the snapshot diff is flagged *observed*. Tracewell stores no person fields, so neither the buyer's nor the dealer's name enters history.\n\nUsing the dealer's own transaction as evidence for a history product is a **purpose question**, not a technical one. Axleby carries the act on the dealer's behalf. My recommendation is to use the transaction outcome to *time and confirm* an event that the public record will carry anyway, and to record that purpose in Charter, Axleby's license and purpose register ([Allowed to Use It? Data Licensing, Purpose and Governance](data-licensing-and-governance.html)). History reports should not show an ownership change that only the dealer's transaction knows about.\n\n**Market data and valuation.** Pulse, Axleby's market-data lake, saw the Niro's adverts disappear on Saturday. Under its outcome model a disappeared listing is *Gone*, not *Sold* ([Reading the Market: Advert Harvesting, Sale Detection and Transaction Data](market-data.html)). The first-party sale recorded in Sales Admin moves it to *SoldConfirmed*, with price, and the register change confirms it again days later. A first-party sale is ground truth only once it has survived its cancellation window, so Pulse's settled figure, published 21 days later, is the one that counts. The deal price also lands in the Vantage valuation ledger as an outcome link for the valuations issued on this car. That link is the input to the per-segment bias checks that would have caught the EV Overvaluation sooner ([What Is It Worth? Building and Governing a Valuation Engine](valuation-engine.html)).\n\n## Replaying 31 March 2027 From the Showroom\n\n[Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html) owns the outage's mechanics: the channel was unavailable to Axleby from **14:20 to 20:00**. **3,100** transactions queued (1,610 registrations in buyers' names, 1,240 stock-ins with release, 180 export notifications, 70 plate and document requests). **214** were submitted twice, all in the slow first 45 minutes and the first 20 minutes after recovery (131 registrations, 83 stock-ins). The afternoon below adds what dealers and buyers saw. Times after 15:00 follow [When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html).\n\n| Time | Register channel | Axleby's systems | What dealers saw | What buyers and sellers experienced |\n| --- | --- | --- | --- | --- |\n| 14:20–15:05 | Slow; some messages answered late | 30 s timeout fires on committed acts; blind resubmission; rejection recorded as outcome | \"Rejected\" with a register code on some sales; normal confirmations on others | Some buyers told \"refused\" for cars already in their name |\n| about 15:05 | Stops answering | Session monitor marks channel down; queue holds in order | Transactions \"queued\" with no explanation | Waiting at the desk |\n| about 15:20 | Down | Banner in Lotwise and status page, posted by hand | Banner: register unavailable, do not resubmit | Dealers begin rescheduling collections |\n| 15:20–20:00 | Down | Queue grows to 3,100, first-in first-out across all dealers | No queue position, no estimate | Buyers sent home; sellers leave without release certificates |\n| 20:00–20:20 | Back, slowed by full-speed drain | Second window of blind resubmissions | Late confirmations, a few more \"rejected\" | Most dealers closed |\n| Evening | Normal | Queue drains in order | Confirmations overnight | Plates for late registrations made on 1 April |\n| 1–2 April | Normal | Three people query the register for each of the 214, correct status, produce proofs, credit fees | Corrected statuses, apologies by phone | Delayed collections; release certificates by post |\n\nThe table exposes three failures that only the journey view shows.\n\n**The legal machine contradicted the register, and nothing compared them.** For 131 buyers, the register named them as keeper while Lotwise said \"rejected\". No check compared the stock item's commercial state (sold, invoiced) with the register track's outcome. A registration \"rejected\" because \"the car is no longer in your stock\", for a car the dealer had just sold, is a contradiction a rule could have caught at 14:33.\n\n**The stock-ins left sellers exposed.** Brandsma bought a 2017 Peugeot 208 from a private seller at 15:40. The stock-in queued, the seller left at 16:00 with a printed \"submitted\" note instead of a release certificate, and the act was confirmed during the evening drain. Sietse posted the certificate on Thursday. Until a stock-in is confirmed, the register still names the seller as keeper, and **the platform's status page is the only place that seller can learn when that changed**. For the 83 double-submitted stock-ins, the register had released the sellers, but they held no proof, because \"rejected\" acts produce none.\n\n**The FIFO queue drained in submission order, not in the order of who was waiting.** Velto's central desk started a quarter-end batch of about **380** registrations for sales entered in DriveDesk between 14:00 and 15:00, and most of it was still queued when the channel stopped answering. In a single first-in, first-out queue, that batch sat ahead of every single-rooftop dealer whose buyer was standing in the showroom when the channel returned at 20:00. Axleby later estimated, from Sales Admin deals that carried a collection time, that about **430** hand-overs had been booked between 14:20 and 20:00. It could not count the DMS dealers' hand-overs, because their deals carried no collection time in Lotwise.\n\n### The same afternoon under the June 2027 design\n\nThe redesign changes each line of the table, and the journey view adds two rules of its own.\n\n![Swimlanes for Sietse, dossier, trade ledger and register: the submission at 14.31 loses its confirmation, the act becomes Ambiguous and the dealer sees 'being verified'; a probe shows the car registered to the buyer and the hand-over is released.](assets/images/43-journey-sale-to-registration/43-june-design-replay.jpeg)\n**Figure 5:** *The Niro under the June 2027 design. The timeout becomes \"being verified\", not \"rejected\". The dealer can tell the buyer something true, and the probe, not a resubmission, turns the ambiguity into a confirmation.*\n\n- **A sold car whose registration is \"rejected\" for a state reason raises a contradiction alert.** If the register refuses an act because the car is no longer in the dealer's stock, and the dossier says the dealer just sold that car, the outcome is treated as probe evidence and the act goes to *Manual*, never to *Rejected*. This repeats [Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)'s rule that a rejection after a retry is evidence, and it applies it across the boundary to the dossier as well.\n- **Lane priority comes from the hand-over, not the click.** Since June 2027 every Sales Admin deal carries a collection time, and DMS-originated sales get one from a field the dealer fills when starting the registration. The queue's per-vehicle lanes are drawn round-robin per legal entity, so Velto's batch shares capacity rather than taking it ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)), and lanes with a buyer due within two hours go first. During the paced drain after recovery, the queue revalidates each act before it submits it.\n\nOn **30 June 2027**, the next quarter-end, the ledger recorded **41** ambiguous outcomes. All were resolved by probe, and there were no double submissions. No buyer was told \"refused\" for a car registered in their name.\n\n### Telling the dealer, and the dealer telling the buyer\n\nOn 31 March, dealers learned about the outage from their buyers. Daan Visser, Axleby Trade's Product Manager, now owns the communication path as a product feature. The status the dealer sees is driven by the same channel health state as the queue ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)), so the banner, the queue and the status page cannot disagree.\n\n| Platform state | What the dealer's screen says | What Lotwise offers to send the buyer or seller |\n| --- | --- | --- |\n| Channel slow, act queued | \"Waiting for the register; your car is number 3 for your company\" | Nothing yet |\n| Channel down, act queued | \"Register unavailable since 15:05; registrations will be sent in order when it returns\" | \"The national register is temporarily unavailable. Your registration is ready and will be submitted as soon as it returns. We will confirm by message.\" |\n| Act ambiguous | \"Being verified with the register; do not resubmit\" | Nothing; the result normally arrives within minutes |\n| Confirmed after the buyer left | \"Confirmed at 20:41, proof available\" | \"Your car was registered in your name at 20:41. You can collect it from…\" |\n| Stock-in queued (seller) | \"Release pending; print the receipt\" | A receipt with the transaction id and a link to its status, then the release certificate by message or post once confirmed |\n\nTwo rules sit under the table. **The platform never tells a buyer that the register refused something it has not refused.** And **the seller of a trade-in is a stakeholder of the journey**, though they are no longer the dealer's customer. They stay liable until the stock-in is confirmed, and they need the proof.\n\n## Failure Cases\n\nThe register outage is the core, but the journey fails in other ways that no single chapter sees whole. Each case below lists its detection and recovery.\n\n**1. Ambiguous timeout during a brownout (the core case).** *Detection:* no confirmation within 90 seconds; the session monitor reports the channel slow. *Recovery:* Ambiguous, hold the lane, probe when the information channel answers, and resubmit only on a probe that shows no change. The journey adds the contradiction alert above and the \"being verified\" status. Hand-over stays blocked until the act is Confirmed, so a buyer is never handed a car on a guess.\n\n**2. Duplicate triggers for one registration.** A dealer clicks twice, a DMS sold signal arrives twice through Hitch's polling overlap, or an outbox relay redelivers *stock item sold*. *Detection:* the same idempotency key, derived from deal (or DMS deal reference) and act type, or the ledger's guard against a second open act of the same type for the same vehicle and legal entity. *Recovery:* return the existing transaction. The journey's contribution is the key's origin: a key minted by the worker, as in March, cannot detect a duplicate that arrived from upstream.\n\n**3. Conflicting state across a group's legal entities.** Velto moves about **9,000** cars a year between rooftops ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)), and its 46 rooftops belong to **7** legal entities. A car transferred in Lotwise from a rooftop of one entity to a rooftop of another is still in the first entity's trade stock at the register unless a dealer-to-dealer register act moved it. When the second rooftop sells it, the registration in the buyer's name is submitted under an entity that does not hold the car, and the register refuses it on hand-over day. *Detection:* at signing, the orchestrator compares the selling entity with the entity of the car's last confirmed register act in the ledger. Axleby carried that act, so its own ledger knows who holds the car. *Recovery:* the dossier proposes the missing inter-entity act ahead of the registration in the same vehicle lane, so order is preserved. Where the last act was carried by another provider, the check reports \"holder unknown\" instead of passing silently.\n\n**4. Incomplete records at hand-over.** The buyer's authorization has expired (signed more than three months earlier for a long-awaited import), the trade-in's transfer code is missing, or the odometer reading at stock-in was never entered. *Detection:* validation at signing, repeated before submission; a Blocked act names the missing field. *Recovery:* a task for the salesperson on the deal, with a deadline set from the collection time. The metric that matters is **blocked acts found on hand-over day**, which should trend to zero as validation moves to signing.\n\n**5. Cancellation after registration.** The buyer withdraws from the linked credit agreement within 14 days, cannot pay another way, and the dealer agrees to cancel the sale ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html) covers the deal side), or a UK buyer uses the short-term right to reject within 30 days ([Consumer Rights Act 2015, s22](https://www.legislation.gov.uk/ukpga/2015/15/section/22)). The register act cannot be deleted, because it changed who is responsible for the car. *Recovery is a chain of new acts, each owned by its context:* a credit note in Sales Admin, never an edited invoice ([Closing the Sale: Quotes, Contracts, Financing and Margin VAT](deals-and-sales-documents.html)); the same stock item reopened if the car returns within the window ([The Stock Book: Inventory Management and the Vehicle Dossier](inventory-and-vehicle-dossier.html)); a new stock-in from the buyer back into trade stock, with her transfer code, in the same vehicle lane ([Making It Official: Registration Transactions, Import, Export and Trade Documents](registration-and-trade-services.html)); re-advertising through Relay; a second ownership change in Tracewell, not the deletion of the first; and a *Relisted* outcome in Pulse that withdraws the first-party sale from ground truth. *Detection* is the credit note event. The journey check is that each of these steps happened, because nothing else would notice a missing one.\n\n**6. A sold car still live on one channel.** At month-end the Niro's withdrawal confirms on five channels, but a file-feed channel without status still shows it, or a channel holds a lock. *Detection:* the 15-minute sold-but-live job ([One Stock, Sixty Channels: Listing Syndication to Portals](listing-syndication.html)) and the hand-over checklist's channel line. *Recovery:* priority withdrawal; if the channel is Blocked, the dealer sees it and the hand-over proceeds with a recorded reason. A buyer's car should not stay in the showroom because a portal is slow, but the dealer must know the advert is still live, because it will draw leads.\n\n**7. A registration in the wrong name.** In March 2027 a Velto registration was submitted to the wrong buyer under the shared login `velto-noord-admin`, and nobody could say who had submitted it ([Who May Do What: Identity, Authorization and Entitlements](identity-access-and-entitlements.html)). *Detection:* the buyer, or a contradiction between the deal's buyer and the mandate used. *Recovery:* the register's correction procedure, carried out by people, and recorded as a new act linked to the old one. The journey's prevention is that the mandate is bound to the deal's buyer at signing, and that the act records the person who submitted it, not a shared login.\n\n**8. Downstream double counting.** The ownership change arrives twice: once from Axleby's own transaction and once from the open-data snapshot diff days later. A canceled sale also arrives as a sale and then a relist. *Detection:* Tracewell's deduplication key (AVK, event type, date within a tolerance) and Pulse's outcome states. *Recovery:* one event with two sources, flagged *reported* and *observed*. [A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html) follows what happens when such an event turns out to be wrong.\n\n## Trade-offs\n\n### When to submit the registration\n\n| Trigger | Gains | Costs | Right when |\n| --- | --- | --- | --- |\n| **At signing** | Earliest legal certainty; longest margin before hand-over | The buyer is keeper of a car they have not paid for or collected; cancellations need a reverse act | Never as the default; perhaps for business buyers who prepay |\n| **At invoice (*stock item sold*)**, gated by a release rule on payment | Registration finishes before collection on a normal day; the money rule is explicit | A register outage on hand-over day delays delivery | The default for Sales Admin rooftops (Axleby since June 2027) |\n| **At hand-over, with the buyer present** | No act for deals that fall through at the last minute | Every register delay is a delay at the desk; month-end peaks land at the counter | Low volume, or markets where the act is quick and rarely fails |\n| **By dealer click** | The dealer decides timing | Forgotten registrations; no link from deal to act | Only as a fallback; measured by sold-but-not-registered |\n\nI would trigger on *stock item sold* with a payment release rule and keep the click as a fallback. The requirement behind this is that **the legal act should finish before the buyer arrives on a normal day, and never before the dealer has the money**.\n\n### What to do when the register is down at hand-over\n\n| Option | What happens | Risk |\n| --- | --- | --- |\n| **Hold the car; buyer returns** | Hand-over blocked by the legal line; buyer messaged when confirmed | Lost goodwill, a second trip, a car on the lot that may already be the buyer's |\n| **Hand over with the act queued** | Buyer drives away; dealer trusts the queue | The car is still in the dealer's trade stock: the buyer drives a car the register does not name them for, and the dealer remains responsible for it. Axleby does not allow it in the Netherlands |\n| **Hand over on paper, register later by the buyer** | Dealer issues documents for the buyer to register at a counter, where the market allows | Re-typing, no proof in the dossier, and the act may fail days later |\n\nThe platform should make the first option tolerable rather than make the second possible. That means messages, a collection time that moves itself, and a confirmation that reaches the buyer at 20:41.\n\n### Where history learns about the sale\n\n| Source | Speed | Evidence | Right use |\n| --- | --- | --- | --- |\n| Axleby's own confirmed transaction | Seconds | Register's transaction code | Timing and confirmation of an event the public record will carry; the dealer's own dossier |\n| Open-data snapshot diff | Days | Observed change between two snapshots | The public, purpose-free source for history and market statistics |\n| First-party sale in Sales Admin | Same day | Dealer's own invoice, with price | Market-data ground truth after the cancellation window, under the dealer contract's terms |\n\nUsing all three is right only if Tracewell and Pulse keep one event per sale and record which source said what.\n\n## Metrics That Prove the Journey Works\n\nThe owning chapters each measure their hop. The journey needs measures that span hops, because each failure in this chapter happened between two systems.\n\n| Metric | Definition | Axleby target or value |\n| --- | --- | --- |\n| **Signature to keys** | Contract signed → *delivered*, per rooftop, median and 90th percentile | Reported per rooftop; no group target *(assumption)* |\n| **Sold to registered** | *Stock item sold* → register act Confirmed, Dutch rooftops | 95% within 15 minutes on working days *(assumption)* |\n| **Sold, not registered** | Sold stock items at Dutch rooftops with no register act and no exemption reason after 2 working days | Alert per rooftop; the forgotten-click detector |\n| **Reserved but live** | Reserved or sold cars with a channel listing not Withdrawn | 99% withdrawn within 10 minutes; alarm at 30 |\n| **Ambiguous outcomes** | Count per day and time to resolution | 41 on 30 June 2027, all resolved by probe |\n| **Contradictions** | Sold car whose register act is Rejected for a state reason | Zero tolerated; each one goes to Manual |\n| **Blocked on hand-over day** | Acts Blocked within 24 hours of the collection time | Trend to zero as validation moves to signing |\n| **Fee integrity** | Confirmed acts without exactly one fee line, and fee lines without a Confirmed act | Zero before the invoice run |\n| **Proof delivered** | Confirmed stock-ins whose release certificate reached the seller the same day | Tracked since June 2027 |\n| **History lag** | Confirmed act → ownership event in Tracewell, and → observed in open data | Seconds and days; both published |\n\nThe first three belong on Daan Visser's quarter-end dashboard; the rest are reviewed weekly. \"Ambiguous outcomes\" and \"contradictions\" are the two that would have turned 31 March from a two-day reconstruction into a work list at 14:33 ([Seeing the Platform: Observability, Data Quality Operations and Support](observability-and-data-operations.html)).\n\n## What Changes in Another Market\n\nThe journey's shape (reserve, withdraw, finance, invoice, register, hand over, observe) is common. What changes is who performs the legal hop, whether the dealer can see its outcome, and which documents must travel with the car.\n\n| Market | Who performs the legal hop | What the dealer platform can know | Journey-specific difference |\n| --- | --- | --- | --- |\n| **Netherlands** | The recognized dealer, through a provider or directly | The register's confirmation, synchronously | The hand-over gate on a Confirmed act works as described; no completion during a disruption |\n| **Belgium** | Commonly the buyer's insurer or broker requests the registration (not verified from a primary source); Axleby's Belgian acts run through a partner | Often only that the request was made | The seller must give a private buyer a Car-Pass, the odometer-history document; without it the buyer may have the sale annulled ([Car-Pass, n.d.](https://www.car-pass.be/en/faq)). The document belongs on the hand-over checklist |\n| **Germany** | Local registration offices; registration services or the buyer; large customers through the KBA's machine interface, whose requests can be *forwarded* or *escalated* for manual handling ([KBA, 2024](https://www.landkreis-eichstaett.de/fileadmin/Dateien/Website/Dateien/SG_52_Verkehrswesen_KFZ/Informationsbroschuere_GKS.pdf)) | Usually nothing, unless the dealer or its service transacts | The legal line is asynchronous: hours or days, with human steps; the hand-over gate becomes \"registration documents received\" |\n| **United Kingdom** | Keeper change notified to the DVLA (Driver and Vehicle Licensing Agency) online by keeper or motor trader | Online confirmation, if the dealer notifies | Vehicle tax does not transfer, and the buyer \"must tax a vehicle you've bought before you drive it\" ([GOV.UK, n.d.](https://www.gov.uk/sold-bought-vehicle)); the hand-over checklist adds the buyer's tax, and a 30-day right to reject keeps the sale open |\n| **United States** | Dealer or service provider at the state DMV (Department of Motor Vehicles); lenders through electronic lien and title where states offer it ([California DMV, n.d.](https://www.dmv.ca.gov/portal/vehicle-industry-services/electronic-lien-and-title-program/)) | Varies by state; title often follows weeks later *(industry practice)* | Odometer disclosure travels on the title ([49 CFR 580.5](https://www.law.cornell.edu/cfr/text/49/580.5)); the lien is part of the legal hop |\n\n**What is common and what is an adapter.** The three-machine read model, the key chain, the release rule, the hand-over checklist, the contradiction check and the journey metrics are platform. The legal line's states, its expected latency, its documents (Car-Pass, V5C, title) and whether the buyer may leave before it completes are a **market rule set**. The Dutch synchronous register is the strictest case and the easiest to observe. In Germany and the US the hop is slower and partly invisible, so the hand-over gate must accept weaker evidence and the journey's metrics must say so.\n\n## The Chief Architect's View\n\n**Give the journey an owner, not only its hops.** Each hop at Axleby has a product owner. On 31 March nobody owned the sale as a whole, and that is why the contradiction between \"sold\" and \"rejected\" had no home. Ines Marchetti gave the journey to Tomás Ferreira (Product Director, Lotwise), with Daan Visser owning the legal hop and Hendrik Maes the channel and DMS hops. The journey owner owns the read model, the hand-over checklist, the cross-hop metrics and the quarter-end game day.\n\n**Decide the order once, per market, as configuration.** Reserve at signing, withdraw at reservation, register on sale with a payment release, hand over on Confirmed: these are Axleby's Dutch defaults, held as a market pack in Baseline. A dealer may change the release rule; no dealer may remove the legal line from the hand-over in a market where the register requires it.\n\n**Invest in the links before the speed.** The redesign of June 2027 made the transaction service correct. The journey becomes observable only when every record carries its upstream id: 44% of register transactions linkable only by heuristics in Q1 2027 is the number to drive to zero, and the AVK backfill and Dossier service that complete it in December 2027 matter more to this journey than any latency gain.\n\n**Rehearse the worst afternoon.** A game day before every quarter-end replays 31 March: a slow channel for 45 minutes, an outage, a recovery. The test is not whether the queue survives. It is whether a dealer can tell a buyer the truth at 16:00, and whether a seller gets their release certificate by the next morning ([When the Register Is Down: Reliability With External Dependencies](reliability-and-dependencies.html)).\n\n**Watch the boundary with history and market data.** The sale's outcome is valuable to the data half. Decide in Charter which uses of the dealer's own transactions and sales are allowed, and keep the public record as the source for anything a third party sees.\n\n## Questions to Ask\n\n1. For one sale, can a dealer see the commercial, channel and legal states together, each with its time and source?\n2. Can we walk from an invoice number to its register transaction, fee line and ownership event without a plate lookup?\n3. Where is the idempotency key for the registration created, and would a replayed *sold* event or a duplicate DMS signal create a second act?\n4. What does the platform show a dealer whose register act timed out, and could that wording ever be \"rejected\" for an act the register completed?\n5. Does the hand-over transition check the register's evidence, and is the rule configured per market?\n6. Is the registration's release tied to payment, and who decided that rule for each legal entity?\n7. When the register is down, in what order will queued acts drain, and does a buyer waiting in a showroom go before a back-office batch?\n8. Can a seller who handed in a trade-in during an outage learn when they stopped being responsible for the car?\n9. Which acts of a canceled sale must happen (credit note, reverse stock-in, relist, second ownership event), and what checks that each one did?\n10. Which downstream products use the dealer's own transactions and sales, under which recorded purpose?\n\nThe journey ends when the register names a new keeper, and with it Part VIII's end-to-end walks: from trade-in to advert ([From Trade-In to Live Advert: Ingesting and Publishing Dealer Inventory](journey-inventory-to-portal.html)), from a wrong fact to its correction ([A Fact Was Wrong: Propagating a Vehicle Data Correction](journey-data-correction.html)), from enquiry to dealer system ([From Portal Enquiry to Dealer System: Routing a Lead End to End](journey-lead-to-dms.html)) and from contract to new owner. Each one exposed a decision that no single team at Axleby could take alone. Who owns the vehicle key, which product owns the sale, what the platform builds and what it buys: those decisions belong to the Chief Architect, and Part IX turns to them ([Part IX — LEADERSHIP: The Chief Architect's Agenda](part-9.html)), starting with [Build, Buy or Partner: Sourcing Vehicle Data and Platform Capabilities](build-buy-or-partner.html).\n\n## Sources and Evidence\n\n**Company, product and investor sources**\n\n- [Autotrader Connect developer documentation](https://developers.autotrader.co.uk/documentation), Autotrader, n.d., accessed 2026-10: stock lifecycle states and the rule that partners may not change the lifecycle state once a reservation deal id is present.\n- [Car-Pass: frequently asked questions](https://www.car-pass.be/en/faq), Car-Pass, n.d., accessed 2026-10: the seller's legal duty to give a private buyer a Car-Pass, and the buyer's right to have the sale annulled without one.\n\n**Standards, regulation and official documentation**\n\n- [Informatiemap voor de voertuigbranche](https://www.rdw.nl/-/media/rdwnl/documenten/bedrijf-met-rdw-erkenning/toezichtbeleid/tbb-en-informatiemap-2026/informatiemap.pdf), RDW, 2026: stock-in and release certificate, odometer duty, the rule that a vehicle can be registered only after a disruption ends.\n- [Voertuig op naam van een klant zetten](https://www.rdw.nl/zakelijke-partners/bedrijven-met-rdw-erkenning/op-naam-zetten/voertuig-op-naam-van-een-klant-zetten), RDW, n.d., accessed 2026-10: the buyer's digital authorization, its three-month validity and the card mailed within five working days.\n- [Directive (EU) 2023/2225 on credit agreements for consumers](http://publications.europa.eu/resource/celex/32023L2225), EU Publications Office, 2023: linked credit agreements and the 14-day right of withdrawal.\n- [Consumer Rights Act 2015, section 22](https://www.legislation.gov.uk/ukpga/2015/15/section/22), UK legislation, 2015: the 30-day short-term right to reject.\n- [Tell DVLA you've sold, transferred or bought a vehicle](https://www.gov.uk/sold-bought-vehicle), GOV.UK, n.d., accessed 2026-10: keeper notification by keeper or motor trader; tax does not transfer; the buyer must tax before driving.\n- [Großkundenschnittstelle: Informationsbroschüre für Zulassungsbehörden](https://www.landkreis-eichstaett.de/fileadmin/Dateien/Website/Dateien/SG_52_Verkehrswesen_KFZ/Informationsbroschuere_GKS.pdf), Kraftfahrt-Bundesamt, 2024: asynchronous request statuses, including forwarded and escalated.\n- [Electronic Lien and Title Program](https://www.dmv.ca.gov/portal/vehicle-industry-services/electronic-lien-and-title-program/), California DMV, n.d., accessed 2026-10: electronic titles and liens in one US state.\n- [49 CFR 580.5: Disclosure of odometer information](https://www.law.cornell.edu/cfr/text/49/580.5), US Government Publishing Office via Cornell LII, n.d., accessed 2026-10: odometer disclosure on title transfer.\n\n**Research and practitioner sources**\n\n- [Timeouts, retries and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/), Amazon Builders' Library, 2019: retrying at one point in the stack.\n- [Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency), Stripe, 2017: client-supplied idempotency keys carried through mutating requests.\n- [Pattern: Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html), Chris Richardson, microservices.io, n.d., accessed 2026-10: publishing state changes atomically and the need for idempotent consumers.\n\nAxleby is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

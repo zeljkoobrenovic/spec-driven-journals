@@ -1,0 +1,14 @@
+[
+ {
+  "id": "37-evidence-in-signals-out",
+  "visual_goal": "Show three separate pipelines (service telemetry, flow events, data monitors) feeding alerting, with business-flow monitors joining flow events and observed external state and feeding both alerting and the support console.",
+  "prompt": "A left-to-right flow diagram with three horizontal rows. Top row: at the left a single rectangular box with the words 'Services and adapters' written once inside it and no caption outside it, one blue arrow to a monitor-screen box labeled 'Telemetry backend'. Middle row: from 'Services and adapters' one teal arrow down into a long ribbon stream labeled 'Flow events'; a small radar-probe box labeled 'Synthetic probes' at the left sends one arrow into 'Flow events'; one green arrow from 'Flow events' into a gauge box labeled 'Flow monitors'. Bottom row: a funnel-shaped box labeled 'Ingestion pipelines' at the left with one orange arrow into a magnifier box labeled 'Data monitors' in the middle. At the far right, a bell box labeled 'Alerting' receives exactly three arrows: one from 'Telemetry backend', one from 'Flow monitors', one from 'Data monitors'. A headset console box labeled 'Pitwall' sits directly between 'Flow monitors' and 'Data monitors', just under 'Flow monitors', and receives exactly one short green arrow straight down from 'Flow monitors'. 'Data monitors' has only one outgoing arrow, to 'Alerting'. These nine labels are the only words in the image. Each label appears exactly once.",
+  "alt": "Services send telemetry to a backend and flow events to a stream; probes add observed external state; flow monitors read the stream and feed alerting and the Pitwall console; ingestion pipelines feed data monitors, which also feed alerting."
+ },
+ {
+  "id": "37-advert-operation-states",
+  "visual_goal": "Show one advert operation on one channel as a flow record with an explicit Unknown state, reached when no evidence arrives, and left only by late evidence.",
+  "prompt": "A simple state map of six rounded tiles arranged left to right. Far left: blue 'Requested'. Next: blue 'Sent'. Upper middle: teal 'Accepted'. Upper right: green 'Confirmed'. Lower middle: red 'Rejected'. Lower right: large orange 'Unknown' with a small question-mark cloud. Exactly seven arrows: one from 'Requested' to 'Sent'; one from 'Sent' up to 'Accepted'; one from 'Sent' down to 'Rejected'; one from 'Accepted' to 'Confirmed' labeled 'evidence'; one from 'Accepted' down to 'Unknown' labeled 'no evidence'; one from 'Unknown' up to 'Confirmed' labeled 'late evidence'; one curved arrow from 'Rejected' back to 'Requested' labeled 'retried'.",
+  "alt": "Requested goes to Sent, then Accepted or Rejected; Accepted becomes Confirmed with evidence or Unknown without it; Unknown can still become Confirmed on late evidence; Rejected operations are retried."
+ }
+]
