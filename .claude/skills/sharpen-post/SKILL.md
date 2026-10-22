@@ -1,6 +1,6 @@
 ---
 name: sharpen-post
-description: Make one post less vague and easier to follow. Works iteratively on a whole index.md (or modality file): first the opening, so it says why the post belongs in its book or journal, then the section-heading outline, then the paragraph order within each section, then the first sentence of every paragraph, then the sentences themselves. Writes in a plain, simple style, cuts needless words, and prefers deleting vague or confusing content to adding new content. May also tighten the post's spec.md when it is vague or out of step with the sharpened post. Use when asked to sharpen, tighten, de-vague, simplify, clarify or cut down a post in _journals/*/posts/*/.
+description: Make one post less vague, shorter and easier to follow. Works iteratively on a whole index.md (or modality file): first the opening, so it says why the post belongs in its book or journal, then the section-heading outline, then the paragraph order within each section, then the first sentence of every paragraph, then the sentences themselves. At every level it removes what the post does not need — needless sections, paragraphs, sentences and words — and prefers deleting vague, repeated or confusing content to adding new content. Writes in a plain, simple style. May also tighten the post's spec.md when it is vague or out of step with the sharpened post. Use when asked to sharpen, tighten, de-vague, simplify, clarify or cut down a post in _journals/*/posts/*/.
 ---
 
 # Sharpen Post
@@ -14,11 +14,44 @@ A reader who reads only the first sentence of each paragraph gets a faithful
 summary. Every remaining sentence
 says something specific in plain words.
 
-This is a **cutting pass**. Prefer removing to adding. When a passage is vague
-or confusing, first ask whether the post needs it at all. Delete it if not.
-Rewrite it in one plain sentence only if a needed point is buried in it. Add
-new material only to keep the flow intact, for example when the reader would
-otherwise miss a link between two sections.
+This is a **cutting pass**. Prefer removing to adding. Every section,
+paragraph, sentence and word must earn its place (see **The needless test**
+below). When a passage is vague, repeated or confusing, first ask whether the
+post needs it at all. Delete it if not. Rewrite it in one plain sentence only
+if a needed point is buried in it. Add new material only to keep the flow
+intact, for example when the reader would otherwise miss a link between two
+sections.
+
+## The needless test
+
+Apply one test at every level: **would the reader lose anything they need if
+this unit were gone?** A unit is needed if it carries at least one of:
+
+- a claim, fact, number, source or evidence label the post relies on;
+- a step in the post's argument, or a link between two steps;
+- the one example or case that makes a point concrete;
+- something the spec's success criteria require;
+- a fixed element of the house shape.
+
+If it carries none of these, delete it. If it carries one buried in filler,
+keep only that part: move the fact into a paragraph you keep, or cut the unit
+down to the sentence that holds it. A passage being well written, accurate or
+interesting is not a reason to keep it. Neither is "the reader might like to
+know", unless the spec's audience needs it.
+
+Typical needless units, by level:
+
+| Level | Usually needless |
+| --- | --- |
+| **Section** | Restates another section of this post. Re-teaches a topic another chapter owns (replace it with one sentence and a `[[link]]`). Background the spec's audience already knows. A tangent that serves neither the post's one-sentence argument nor the spec. A recap or "summary" section the house shape does not require. A grab-bag such as "Other Considerations" or "Further Aspects". |
+| **Paragraph** | Repeats the paragraph before it, or a point made elsewhere in the post. Announces or recaps ("In this section…", "As we saw…"). States a truth that would fit any post on the subject. A second or third example that makes the same point as the first. Explains what the audience already knows. Hedges or qualifies without adding a fact. |
+| **Sentence** | Restates the previous sentence or the heading. Pure transition ("Let us now turn to…"). States the obvious. Comments on the text itself ("This is an important point"). A hedge that the evidence does not need. |
+| **Word** | See the vague patterns and the needless-words table in step 5. |
+
+Work from the largest unit to the smallest. Deleting one needless section
+saves more, and removes more confusion, than trimming a hundred sentences, and
+it spares you from polishing text you then delete. Whenever you delete a
+section or paragraph that carried a claim, list it in the report.
 
 The work is iterative. Fix the structure before the paragraphs and the
 paragraphs before the sentences. Polishing a sentence that a later pass
@@ -225,8 +258,11 @@ Run `--headings` and read the outline as if it were the whole post.
   it works, then trade-offs, then what to do. Move whole sections when the
   order does not follow.
 - **Each section has one job.** Merge two sections that cover the same ground.
-  Delete a section that serves neither the post's one-sentence argument nor the
-  spec. Split a section that does two unrelated jobs only if both jobs stay.
+  Split a section that does two unrelated jobs only if both jobs stay.
+- **Delete needless sections.** Apply the needless test to every section
+  before you touch its paragraphs. A section that re-teaches what another
+  chapter owns becomes one sentence and a `[[link]]`. Before deleting, move any
+  fact it holds that the post needs into a section you keep.
 - **Use few heading levels.** A subsection with a single paragraph usually
   belongs in its parent.
 
@@ -247,6 +283,10 @@ For each section, read its paragraphs in order.
 - **Delete paragraphs that only announce or recap**, such as "In this section we
   will…", "As discussed above…" or "In summary…". Fixed preface or hand-off
   elements required by the house shape are the exception.
+- **Delete every other needless paragraph** (see the needless test): repeats,
+  generic truths, extra examples that make the same point, and explanations of
+  what the audience already knows. When two paragraphs make the same point,
+  keep the clearer one and move any fact unique to the other into it.
 
 ### 4. First sentences (the skim path)
 
@@ -265,10 +305,15 @@ Run the full skeleton and read the `P1, P2, …` lines alone, top to bottom.
   dialogue may open with action, but the paragraph that interprets a scene
   states its point first.
 
-### 5. Sentences (vagueness and needless words)
+### 5. Sentences (needless sentences, vagueness and needless words)
 
 Go through each paragraph. Work on a block with `**bold**` lead-in phrases as
 you would on a paragraph.
+
+**Needless sentences first.** Before rewording a sentence, ask whether the
+paragraph needs it. Delete sentences that restate the previous sentence or the
+heading, act only as transitions, state the obvious, comment on the text
+itself, or hedge without cause. Then reword what remains.
 
 **Vague → concrete or gone.** For every vague sentence, ask three questions:
 
@@ -361,7 +406,8 @@ Keep the report short:
 
 - prose words before → after;
 - the new heading outline, if it changed;
-- sections merged, moved or deleted;
+- sections merged, moved or deleted, and the number of paragraphs deleted as
+  needless;
 - spec changes, if any, with the reason for each;
 - each **deleted passage that carried a claim**, and every deliberate cut that
   `factcheck.py` reported, with a one-line reason, so the author can restore
@@ -381,6 +427,12 @@ script copies into `results.md`.
 ## Anti-patterns
 
 - Polishing sentences before the outline and paragraph order are right.
+- Trimming words inside a section or paragraph that should have been deleted
+  whole.
+- Keeping a passage because it is well written, accurate or interesting,
+  when the post does not need it.
+- Deleting a needless unit together with a fact the post needs elsewhere,
+  instead of moving the fact first.
 - Fixing vagueness by adding explanation when deleting would serve the reader
   better.
 - Inventing examples, numbers or sources to make a sentence concrete.
