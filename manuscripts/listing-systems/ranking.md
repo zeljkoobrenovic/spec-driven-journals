@@ -11,15 +11,15 @@
 
 > **KEY POINTS:**
 >
-> * **Separate the relevance model from the ranking policy.** The model estimates how likely a buyer is to act on each listing. The policy decides how freshness, paid products, diversity and exposure rules change that order. They need different owners, different change processes and different tests, and mixing them inside engine boost functions is how Paid-Rank Drift starts.
+> * **Separate the relevance model from the ranking policy.** The model estimates how likely a buyer is to act on each listing. The policy decides how freshness, paid products, diversity and exposure rules change that order. They need different owners, different change processes and different tests, and mixing them inside engine boost functions is how Multiplier Creep starts.
 > * **Paid visibility must compete under a relevance floor and be accounted for.** Fixed slots and score multipliers put irrelevant paid listings on top when inventory is sparse. A floor, a cap on paid positions and delivery events that billing can read keep paid products valuable to the sellers who buy them, and keep the order credible to the buyers who read it.
 > * **Ranking you cannot explain or measure is a liability.** Log the features as served and the positions shown, correct for position bias, judge changes on contacts and seller-side guardrails rather than clicks, and keep a plain-language description of the main parameters and of what payment does to them. EU consumer and platform law already requires that description.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Paid-Rank Drift** — Boosts for bumps, top listings and pro packages accumulate as multipliers in the ranking until paid listings that do not match the query fill the first screen.
+> * **Multiplier Creep** — Boosts for bumps, top listings and pro packages accumulate as multipliers in the ranking until paid listings that do not match the query fill the first screen.
 > * **Vanity Liquidity** — Ranking tuned on clicks and page views rewards eye-catching listings, while contacts per search and new sellers' first contacts fall.
-> * **The Unwatched Model** — A learning-to-rank model and its feature pipeline decide every listing's exposure, and nobody owns its evaluation, monitoring or the guardrails that keep it fair to both sides.
+> * **Set-and-Forget AI** — A learning-to-rank model and its feature pipeline decide every listing's exposure, and nobody owns its evaluation, monitoring or the guardrails that keep it fair to both sides.
 
 Every marketplace has an opinion about which listing comes first, whether it admits to one or not. Even "newest first" is a ranking policy: it favors sellers who post often, it makes the bump product possible, and it decides that a city bike listed a minute ago matters more than a better-matched one listed yesterday. **There is no neutral order**; there are only orders whose effects someone has measured, and orders whose effects nobody has.
 
@@ -87,7 +87,7 @@ Signals fall into families with different owners, update rates and risks. The ta
 | **Engagement** | Click-through rate, saves, contact rate, dwell on the detail page | Behavioral events ([Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform)) | Minutes to hours | Position bias, feedback loops |
 | **Seller** | Response rate and time, ratings, verification, tenure, trader status | Accounts, messaging, trust ([Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)) | Hours to days | Fan-out to every listing of a seller |
 | **Trust** | Risk score, duplicate cluster, pending reports | Trust and safety ([Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention), [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) | Seconds to hours | Demotion is a regulated restriction |
-| **Paid** | Bump timestamp, top-listing entitlement, package tier, sponsored bid | Entitlements ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)) | On purchase and expiry | Paid-Rank Drift; disclosure duties |
+| **Paid** | Bump timestamp, top-listing entitlement, package tier, sponsored bid | Entitlements ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)) | On purchase and expiry | Multiplier Creep; disclosure duties |
 | **Personal** | Past searches, viewed categories, price range, saved searches | User profile, consent state | Per session | Consent, filter bubbles, discrimination in housing |
 
 Two rules of thumb come from this table. First, **signals that change often should not live in the inverted index**. In segment-based engines such as Elasticsearch, OpenSearch and Solr, a partial update re-indexes the whole document, so engagement counters and bump timestamps cause update storms; [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) covers the mitigation. Second, **every signal in the "paid" and "trust" rows carries a legal duty**, which is a reason to apply them in a layer that can be logged and explained, not inside a score.
@@ -272,7 +272,7 @@ Every ranking experiment should report a fixed set of guardrail metrics beside i
 | **New listings with a contact within 48 hours** | Seller retention and supply | No significant decrease |
 | **Seller exposure concentration** (share of impressions held by the top 1% of sellers) | Two-sided fairness; flooding | Bounded increase |
 | **Paid-product delivery** (impressions delivered against impressions sold) | Revenue and dispute risk | Within contract terms |
-| **Paid share of first-page positions** | Paid-Rank Drift | Below the policy cap |
+| **Paid share of first-page positions** | Multiplier Creep | Below the policy cap |
 | **Contacts on unavailable listings** | Ghost Inventory reaching the top | No increase |
 | **Latency p99 of the ranking stage** | User experience; peak load | Within budget |
 
@@ -367,10 +367,10 @@ Ranking is one of the few components that every part of the business believes it
 
 **What to watch.**
 
-- Paid share of first-page positions per brand and country, monthly. It is the earliest indicator of Paid-Rank Drift.
+- Paid share of first-page positions per brand and country, monthly. It is the earliest indicator of Multiplier Creep.
 - New-listing first-contact rate. It is the supply-side health of ranking.
 - Delivery against sold for every paid visibility product. It is the revenue-risk indicator.
-- Model freshness and drift for each production ranker, with a named owner. A ranker that has not been retrained for a year is an Unwatched Model whatever its original quality ([Models in Production: ML Platforms and Use Cases](#ml-platform)).
+- Model freshness and drift for each production ranker, with a named owner. A ranker that has not been retrained for a year is Set-and-Forget AI whatever its original quality ([Models in Production: ML Platforms and Use Cases](#ml-platform)).
 - Regulatory change: the P2B repeal proposal, the Digital Fairness Act preparation, and national enforcement of the Omnibus paid-ranking rules.
 
 **The long-term consideration.** Ranking is increasingly consumed by machines as well as people: AI assistants and agents call marketplace search and present a shortlist ([AI Across the Listing Lifecycle](#ai-in-listing-systems)). When a third party re-ranks your results, your paid placements and your labels may not survive the trip. The ranking service's output contract, with reason codes and paid flags, is what lets the group negotiate and enforce how its order is presented elsewhere.

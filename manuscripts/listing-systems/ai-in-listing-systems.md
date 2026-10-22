@@ -19,7 +19,7 @@
 >
 > * **The Attribute Junkyard** — Generative listing assistants that write free text into attributes, unchecked against the dictionary, produce the junkyard faster than any seller could.
 > * **Moderation as an Afterthought** — An assistant that makes listing easier also makes fake listings easier, so trust and safety has to sit inside the assisted flow, not after it.
-> * **The Unwatched Model** — Prompts, model versions and providers change weekly; an AI feature without an evaluation set, a cost monitor and an owner degrades without anyone noticing.
+> * **Set-and-Forget AI** — Prompts, model versions and providers change weekly; an AI feature without an evaluation set, a cost monitor and an owner degrades without anyone noticing.
 
 For most of their history, listing marketplaces asked people to do the work of structure. A seller had to choose a category from a tree of 1,400 leaves, fill twenty attribute fields and write a description. A buyer had to translate "a family car that fits a dog and costs less than twenty thousand" into make, body type, price and mileage filters. Every chapter in Parts II to IV of this book is, in part, about the cost of that translation. **Generative AI is the first technology that can do much of the translation for them**, and that is where its value in listing systems lies.
 
@@ -216,7 +216,7 @@ The decisions Veldmark records for the channel in its **February 2028** decision
 | --- | --- | --- |
 | Which brands first | Hearthly France and Motorvane Germany | High-consideration journeys where conversational shortlists help; Tradeyard's buyers mostly browse |
 | What the tool returns | Public listing fields, price, location at the listing's published precision, a tracked link | Contact happens on Veldmark's surfaces, where messaging safety runs (see [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)) |
-| Contact through the assistant | Not offered | Moving contact off-platform recreates the Scam Inbox outside Veldmark's controls |
+| Contact through the assistant | Not offered | Moving contact off-platform recreates Fast Mail for Fraudsters outside Veldmark's controls |
 | Quotas | Per partner, with lower limits during Sunday 20:00–22:00 CET | Agent traffic must not compete with the peak (see [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale)) |
 | Attribution | Leads from assistant links tagged by channel and partner | Pros pay for leads and will ask where they came from |
 | Ranking | The same organic ranking as on site; paid placements labeled as such | Ranking transparency duties do not disappear in another company's interface (see [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)) |
@@ -328,7 +328,7 @@ The AI Act sits alongside the rules this book covers elsewhere: the DSA's limits
 - **Free-text attributes from a model.** Values outside the dictionary pour into the catalog; filters, facets and feeds disagree. The Attribute Junkyard, automated.
 - **The assistant that helps scammers.** Generation runs before the trust checks, so stolen photos become polished listings. Screening photos first and moderating assisted listings like any other prevents it; **Moderation as an Afterthought** is the default if nobody designs it in.
 - **Numbers from the language model.** A price, mileage, surface or valuation that a model generated rather than retrieved. Prices come from registered predictive models; explanations narrate retrieved facts.
-- **Prompt changes without regression tests.** Quality drops after a "small" prompt edit or a provider's model update, and nobody notices for weeks: **The Unwatched Model** in its generative form.
+- **Prompt changes without regression tests.** Quality drops after a "small" prompt edit or a provider's model update, and nobody notices for weeks: **Set-and-Forget AI** in its generative form.
 - **Agentic search as the default.** Five-to-ten-second responses on a browse-heavy site, with costs that scale with sessions instead of outcomes.
 - **Contact through the assistant.** Leads that start in an external assistant and move to e-mail or phone outside the marketplace, where messaging safety and attribution do not reach.
 - **Conversation data at the vendor.** Buyers' preferences, budgets and sometimes addresses stored by a model provider under terms nobody reviewed; leboncoin's documented rejection of a hosted assistant API for this reason is the right instinct.

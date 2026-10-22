@@ -17,7 +17,7 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — a search migration is where a group learns whether its index can be rebuilt from anything other than itself; if it cannot, the migration has to build that source first.
+> * **Search as System of Record** — a search migration is where a group learns whether its index can be rebuilt from anything other than itself; if it cannot, the migration has to build that source first.
 > * **Ghost Inventory** — while two systems run side by side, every removal must reach both, and every copy that listens to only one of them keeps serving listings that are gone.
 
 Part VIII's agenda turns here from decisions to code. [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) chose what Veldmark shares and [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering) gave each capability an owner, but Tradeyard's teams still ship through Yardstick, the monolith that launched the site in 2006. It still holds the listing table, renders the pages that search engines index, runs the jobs that send alerts and bills the bumps. It is also the reason a fraud rule takes three days to reach another country and why 140 engineers wait for the same deploy. **Modernization is not optional for such a marketplace; the only choice is how much liquidity it puts at risk.**
@@ -155,7 +155,7 @@ At Veldmark, accounts move with **Veldmark ID**, the group identity rolled out i
 A search migration changes the component buyers notice first. Three facts shape it:
 
 1. **Results will differ.** Different analyzers, scoring functions and tie-breaking change the order even on identical documents. A migration that demands identical results will never finish.
-2. **The index must be rebuildable from a source other than itself.** If the old index is the only complete projection of listings — Index-as-Database — the migration must first build that source, typically a replayable event stream or a compacted state topic. eBay Kleinanzeigen (now Kleinanzeigen) described in 2019 rebuilding its Elasticsearch cluster from a compacted Kafka topic in under 30 minutes ([Berlin Tech Blog, 2019](https://medium.com/berlin-tech-blog/microservices-and-kafka-part-2-b37dd08a7d8f)).
+2. **The index must be rebuildable from a source other than itself.** If the old index is the only complete projection of listings — Search as System of Record — the migration must first build that source, typically a replayable event stream or a compacted state topic. eBay Kleinanzeigen (now Kleinanzeigen) described in 2019 rebuilding its Elasticsearch cluster from a compacted Kafka topic in under 30 minutes ([Berlin Tech Blog, 2019](https://medium.com/berlin-tech-blog/microservices-and-kafka-part-2-b37dd08a7d8f)).
 3. **Analyzers carry history.** Synonyms, stopwords, decompounding and spelling tables encode years of tuning that nobody remembers adding.
 
 Relevance parity is therefore measured in layers:
@@ -254,7 +254,7 @@ The plan deliberately leaves Yardstick running some slices until 2029. Messaging
 
 The insertion flow is the slice that unblocks the most teams, because publication, moderation, entitlement checks and media all start there (see [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline)). It is also a write path, so its gates are strict.
 
-**G0, contract and catalog (Q4 2027).** The new listing service, built by Tradeyard's supply teams on the group developer platform, publishes the insertion API and emits Listing event contract v1 through a transactional outbox. It uses one schema per country, as the 2027 data-management decisions record (see [System of Record and Read Models: Listing Data Management](#listing-data-management)). The behavior catalog for insertion lists **146** behaviors. The supply teams decide to carry 82, change 23 and retire 41. Retired behaviors include a free relisting button that duplicated listings older than 30 days (a source of The Duplicate Echo) and a Belgian title template that appended the municipality in capitals.
+**G0, contract and catalog (Q4 2027).** The new listing service, built by Tradeyard's supply teams on the group developer platform, publishes the insertion API and emits Listing event contract v1 through a transactional outbox. It uses one schema per country, as the 2027 data-management decisions record (see [System of Record and Read Models: Listing Data Management](#listing-data-management)). The behavior catalog for insertion lists **146** behaviors. The supply teams decide to carry 82, change 23 and retire 41. Retired behaviors include a free relisting button that duplicated listings older than 30 days (a source of Seeing Double) and a Belgian title template that appended the municipality in capitals.
 
 **G1, shadow (January – March 2028).** Every Yardstick submission is replayed into the new service in dry-run mode, and the two outcomes are compared on category, normalized attributes, moderation route, entitlement result, fee and published document. In the first week **6.8%** of submissions differ. Most differences are expected (changed or retired behaviors). Nine behaviors appear that the catalog missed, among them a cron job that silently converted a price of €0 into "price on request" in Portugal, and a Polish rule that waived the vehicle insertion fee for accounts created before 2015. Each gets an owner and a decision. The gate threshold — unexplained differences below **0.5%** of submissions for two consecutive weeks — is met in mid-March.
 
@@ -274,7 +274,7 @@ The insertion flow is the slice that unblocks the most teams, because publicatio
 {id: modernization-and-migration--wave-3-search-with-relevance-parity}
 ### Wave 3: search, with relevance parity
 
-The search slice follows the September 2027 search platform decision: every application on Listing Search API v1 before its engine changes, documents built only from the event contract, and Tradeyard Portugal first (see [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)). Yardstick's Solr index is not the source of the new one; the compacted listing state topic is, so Index-as-Database does not arise.
+The search slice follows the September 2027 search platform decision: every application on Listing Search API v1 before its engine changes, documents built only from the event contract, and Tradeyard Portugal first (see [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)). Yardstick's Solr index is not the source of the new one; the compacted listing state topic is, so Search as System of Record does not arise.
 
 The parity gates for Tradeyard Portugal, set before the migration began:
 
@@ -347,7 +347,7 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 - **The rewrite that never ships.** A new platform is built beside the old one for two years with no traffic, chasing a feature list that grows as the old system keeps changing. When it finally launches, parity disputes take another year.
 - **Dual writes.** Application code writes to both systems "temporarily". A timeout after the first write leaves them inconsistent, and nobody knows which one is right. Use one writer and asynchronous propagation.
 - **Ghost Inventory between two systems.** A component listens only to the old system's removals, or only to the new one's. Sold listings stay in alerts, recommendations or partner feeds. Every consumer must read the contract stream, which carries removals from both.
-- **Index-as-Database revealed.** The team discovers mid-migration that the old index holds fields that exist nowhere else: counters, boosts, manual fixes. The new index cannot be built until those fields get a source and an owner.
+- **Search as System of Record revealed.** The team discovers mid-migration that the old index holds fields that exist nowhere else: counters, boosts, manual fixes. The new index cannot be built until those fields get a source and an owner.
 - **Analyzer amnesia.** A new engine launches with default analyzers; fifteen years of synonyms and stopwords disappear, and long-tail queries return nothing. Port analyzers with a test set of real queries.
 - **The SEO cliff.** URLs change "while we are at it", redirects are incomplete or chained, status codes for removed listings change, or pages move to client-side rendering. Organic traffic falls over weeks, after the old system is gone.
 - **Parity by spreadsheet.** Parity is asserted by a checklist of features, not measured on outcomes. The new flow has every button and publishes fewer listings.

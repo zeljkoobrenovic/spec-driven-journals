@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — AVIV's portals arrived over nine years as complete businesses, and the public record shows brands such as Immowelt and Immonet still operating side by side nine years after their 2015 combination.
-> * **The Platform Mandate** — A fully integrated European platform for portals with different feed standards, disclosures and pricing norms is the kind of central plan the 2025 shift toward local autonomy undid.
+> * **Deal-Shaped Architecture** — AVIV's portals arrived over nine years as complete businesses, and the public record shows brands such as Immowelt and Immonet still operating side by side nine years after their 2015 combination.
+> * **The Forced Fit** — A fully integrated European platform for portals with different feed standards, disclosures and pricing norms is the kind of central plan the 2025 shift toward local autonomy undid.
 > * **Vanity Liquidity** — AVIV's documented strategy measures supply acquisition (sellers identified, seller leads, commission share) rather than listing counts, which is the cure for this pattern in a lead-generation vertical.
 
 Most marketplace groups in this book's Part IX either built their platforms or bought marketplaces that already shared one. AVIV Group did neither. Axel Springer bought national property portals one at a time (SeLoger in France, Immoweb in Belgium, Immowelt in Germany, Logic-Immo in France again) together with an Israeli horizontal site, Yad2, and a French valuation business, Meilleurs Agents. It then gave them a common name and a common technology leadership, and in 2021 announced the goal of a European real-estate marketplace. **The case is a test of one question: how much of a property portal can be shared across countries?**

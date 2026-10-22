@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Entitlement Spaghetti** — when the account hierarchy does not say who bought a package for which branches, every service that checks entitlements makes up its own answer.
-> * **The Acquisition Archipelago** — each acquired brand brings its own seller accounts, and the group cannot even count how many businesses it serves.
+> * **Billing by Guesswork** — when the account hierarchy does not say who bought a package for which branches, every service that checks entitlements makes up its own answer.
+> * **Deal-Shaped Architecture** — each acquired brand brings its own seller accounts, and the group cannot even count how many businesses it serves.
 > * **Feed Roulette** — integrations authenticated with shared passwords and no scoped grants cannot be told apart, throttled or revoked one dealer at a time.
 
 Part II has modeled the listing as an aggregate with its category, attributes, media and location; the last governed subdomain it references is the seller account, and "seller" means something different in every vertical. On a general classifieds site it usually means a person with a phone number. On a real-estate portal it means an agency branch, staffed by agents, owned by a company that may be one franchisee in a national network, publishing through a software vendor's feed. On an automotive marketplace it means a dealer group with several sites, a DMS (dealer management system) vendor that uploads the stock, a head office that negotiates the package, and salespeople who answer the leads.

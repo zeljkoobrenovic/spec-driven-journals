@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Country Fork** — Copying a codebase per market turns every fraud rule, consent change and search fix into several projects, which this chapter replaces with tenancy and configuration.
-> * **The Platform Mandate** — A shared platform that cannot express a market's real differences gets routed around, which the configure–extend–fork ladder and adoption-led sharing prevent.
-> * **The Acquisition Archipelago** — Without a tenancy model, each acquired marketplace stays a separate stack because nothing exists for it to join.
+> * **The Copy-Paste Country** — Copying a codebase per market turns every fraud rule, consent change and search fix into several projects, which this chapter replaces with tenancy and configuration.
+> * **The Forced Fit** — A shared platform that cannot express a market's real differences gets routed around, which the configure–extend–fork ladder and adoption-led sharing prevent.
+> * **Deal-Shaped Architecture** — Without a tenancy model, each acquired marketplace stays a separate stack because nothing exists for it to join.
 
 Most marketplace groups grew one country at a time, by launching a site or buying a national leader, and each step was rational: local teams knew local buyers, law and competitors, and copying what worked in the last market was the fastest way into the next. The bill comes later. **Every market that was copied must later be changed separately**, and a group with ten copies of its insertion flow pays for each new rule, regulation and improvement ten times.
 
@@ -108,7 +108,7 @@ Marketplace groups use six platform models, and they are not a maturity ladder: 
 
 | Model | What is shared | Documented example | Where it works | Where it fails |
 | --- | --- | --- | --- | --- |
-| **Fork per country** | A starting codebase, copied and then evolved locally | The Schibsted-era model is widely described as local sites on a Blocket-derived code base; primary documentation is not available (see [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta)) | Fast market entry when nothing else exists | Every later improvement is built per copy: **the Country Fork** |
+| **Fork per country** | A starting codebase, copied and then evolved locally | The Schibsted-era model is widely described as local sites on a Blocket-derived code base; primary documentation is not available (see [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta)) | Fast market entry when nothing else exists | Every later improvement is built per copy: **the Copy-Paste Country** |
 | **Federation with coordinated choices** | Technology decisions and sometimes tools; each brand implements | In 2015 Marktplaats described how "Marktplaats and other eBay Classifieds Group (eCG) companies" jointly evaluated replacements for eBay's legacy search engine; Marktplaats then migrated itself in three months with two or three developers ([Marktplaats Technology, 2015, republished 2017](https://medium.com/marktplaats-technology/replacing-our-legacy-search-engine-with-elasticsearch-4ad03aeceb3d)) | Strong national brands with capable teams | Duplication of every implementation; slow convergence |
 | **Shared core with local configuration** | One codebase per vertical or region, configured per brand and country | OLX's 2026 frontend talk, "One-product, three brands", on "serving different countries from a single repo" ([OLX Tech, 2026](https://tech.olx.com/olx-masterclass-frontend-2026-068299a2df50)); Marktplaats, 2dehands and 2ememain "hosted on a multi-tenant platform, operated from our Amsterdam location" (Adevinta job posting, read October 2026) | Markets in one vertical with similar products | Markets whose products have really diverged |
 | **Global components beneath local products** | Capabilities with contracts; products stay local | Adevinta's 2019 rule and its shared infrastructure, data, OCR, media and experimentation services (see [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta)) | Multi-brand, multi-vertical groups | Components whose contracts leak one market's assumptions |
@@ -184,7 +184,7 @@ The configure–extend–fork ladder decides which mechanism a difference gets:
 | **Extend** | The difference is behavior at a known point | Brand (extension) on a group contract | Promote to the core if a second tenant needs it |
 | **Fork** | Neither works, and the market cannot wait | Brand, under a decision record | Expiry date and a plan to fold back or to leave the platform |
 
-The fork rung exists because pretending it does not is how shadow systems start. A fork that is declared, dated and reviewed is a managed exception. An undeclared fork is the Country Fork in miniature.
+The fork rung exists because pretending it does not is how shadow systems start. A fork that is declared, dated and reviewed is a managed exception. An undeclared fork is the Copy-Paste Country in miniature.
 
 {id: multi-country-platforms--release-by-tenant}
 ### Release by tenant
@@ -285,7 +285,7 @@ The rings were used for the first time for the group taxonomy and attribute serv
 | Trust and safety | Rules built four times | — | **Yes**, local policy as content | — | Shared pipeline, local policies |
 | Search | Upgrades done three times | — | **Yes**: engine, indexer, ranking service; relevance per brand | — | Shared OpenSearch for Tradeyard and Hearthly; Motorvane stays on Elasticsearch until 2029 |
 | Taxonomy and attributes | The Category Straitjacket | — | **Yes**, trees per tenant on one concept model | — | Group service, October 2027 |
-| Product catalog and entitlements | Entitlement Spaghetti risk | — | **Yes**, shared model and ledger; packages and prices per brand | — | Group catalog by Q2 2028 |
+| Product catalog and entitlements | Billing by Guesswork risk | — | **Yes**, shared model and ledger; packages and prices per brand | — | Group catalog by Q2 2028 |
 | Listing insertion flow | — | **Per brand**, configured per country | — | Possible within one brand only | Per brand |
 | Web and apps | — | **Per brand** | Shared SEO services ([Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)) | — | Per brand |
 | Packages, prices, sales | — | **Per brand and market** | — | — | Local |
@@ -342,7 +342,7 @@ Real estate is the hardest vertical to share across countries. National professi
 
 **What to watch.**
 
-- **Adoption without mandate.** For each global component, the share of eligible tenants and workloads using it, and the reasons of those that do not. A platform that only grows by mandate is heading for the Platform Mandate.
+- **Adoption without mandate.** For each global component, the share of eligible tenants and workloads using it, and the reasons of those that do not. A platform that only grows by mandate is heading for the Forced Fit.
 - **Country branches in code.** The count should fall as capabilities move to configuration; a rising count is an early sign of a new fork.
 - **Configuration health.** Keys without an owner, release toggles older than their expiry, values set at forbidden levels.
 - **Lead time from one tenant to all.** For a fraud rule, a consent change or a search improvement: the time from first tenant to last. On 7 March 2027 this was three days to Belgium and never to Poland or Portugal.

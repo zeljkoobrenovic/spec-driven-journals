@@ -19,7 +19,7 @@
 >
 > * **Vanity Liquidity** — Listing counts, sessions and page views rise while contacts per listing, time to first contact and sell-through get worse, and the dashboards reward the wrong teams.
 > * **Ghost Inventory** — Sold and expired listings stay searchable and alertable, inflating supply metrics and wasting the contacts and alerts that liquidity depends on.
-> * **The Duplicate Echo** — The same item or property counted several times makes supply look deeper than it is and splits the demand that should have gone to one listing.
+> * **Seeing Double** — The same item or property counted several times makes supply look deeper than it is and splits the demand that should have gone to one listing.
 
 A listing marketplace does not sell listings. Sellers can list anywhere, often for free. Buyers can browse anywhere, always for free. What a marketplace offers both sides is **the likelihood that a match will happen**: that a seller who lists a city bike on a Sunday evening will hear from a serious buyer within the hour, and that a buyer searching for a two-bedroom flat near a particular metro station will find one that is still available. That likelihood is **liquidity**, and it is the product every other system in this book exists to produce.
 
@@ -289,7 +289,7 @@ Two patterns stand out. **Vertical portals live with high supply multi-homing an
 
 **Ghosts counted as supply.** Expired and sold listings left visible make categories look fuller than they are, consume alerts and contacts and train buyers to ignore results. This is **Ghost Inventory**, and its cost appears in liquidity metrics only if the ghost share is measured in every channel: search, alerts, digests, recommendations, landing pages and partner feeds.
 
-**Duplicates counted as depth.** In real estate and dealer-heavy categories, multi-agency and multi-feed listings inflate supply and split demand. Hearthly's 1.7 listings per property meant its supply metrics overstated depth by 70%. That is **The Duplicate Echo**, and it is invisible until the unit of supply becomes the real-world entity.
+**Duplicates counted as depth.** In real estate and dealer-heavy categories, multi-agency and multi-feed listings inflate supply and split demand. Hearthly's 1.7 listings per property meant its supply metrics overstated depth by 70%. That is **Seeing Double**, and it is invisible until the unit of supply becomes the real-world entity.
 
 **Liquidity metrics that nobody owns.** When "contact" means one thing in the product analytics, another in the professional seller's reports and a third in the sales team's renewal deck, every discussion about liquidity becomes a discussion about definitions. Governed metric definitions are an architecture asset, not a reporting detail.
 

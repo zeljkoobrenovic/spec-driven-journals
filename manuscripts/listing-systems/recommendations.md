@@ -18,7 +18,7 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Ghost Inventory** — Recommendation lists computed overnight keep showing sold and removed listings long after search has dropped them.
-> * **The Unwatched Model** — Recommendation models decide which listings get exposure, yet they are rarely evaluated against contacts, coverage or seller concentration, and they often have no owner once the launch A/B test is over.
+> * **Set-and-Forget AI** — Recommendation models decide which listings get exposure, yet they are rarely evaluated against contacts, coverage or seller concentration, and they often have no owner once the launch A/B test is over.
 > * **Vanity Liquidity** — Carousels tuned for click-through send buyers to popular, eye-catching listings and leave most of the inventory unseen.
 
 In retail, a recommender learns that people who bought a kettle also bought a toaster, and the lesson stays useful for years because the same kettle is sold every day. In a listing marketplace there is no "same kettle". The Essen Volkswagen Golf with 48,000 kilometers exists once, for fifteen days, and then it is gone. **Every listing is a cold-start problem, and every recommendation is a bet on an item that may disappear before the buyer clicks.**
@@ -324,7 +324,7 @@ Recommendations look like a feature owned by a product squad. At group scale the
 
 **Who decides.** The discovery product owner of each brand owns the objective and the guardrails, as for ranking. The group data protection officer owns consent scope and cross-brand data use. The architecture advice forum reviews any recommender that uses data from more than one brand, or that sells placement.
 
-**What to watch.** Contacts on unavailable listings by surface (the Ghost Inventory indicator), new-listing exposure within 72 hours, weekly coverage, seller concentration and the retraining age of every production model. A recommender that nobody has retrained for a year is an Unwatched Model, whatever its launch results were ([Models in Production: ML Platforms and Use Cases](#ml-platform)).
+**What to watch.** Contacts on unavailable listings by surface (the Ghost Inventory indicator), new-listing exposure within 72 hours, weekly coverage, seller concentration and the retraining age of every production model. A recommender that nobody has retrained for a year is Set-and-Forget AI, whatever its launch results were ([Models in Production: ML Platforms and Use Cases](#ml-platform)).
 
 **The long-term consideration.** Recommendations increasingly reach users through channels the marketplace does not control: AI assistants that suggest "similar cars" from a marketplace's API, and agents acting for buyers ([AI Across the Listing Lifecycle](#ai-in-listing-systems)). A marketplace that exposes similar-listing retrieval as an API product needs the same availability guarantees, rate limits and attribution as its own carousel. Building the pipeline as a service with a contract, rather than as a detail-page feature, keeps that option open.
 

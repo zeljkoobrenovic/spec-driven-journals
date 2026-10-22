@@ -18,7 +18,7 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Vanity Liquidity** — Experiments judged on clicks, views or bump purchases rather than qualified contacts approve changes that move activity without creating matches.
-> * **Paid-Rank Drift** — Ranking and visibility experiments evaluated on revenue alone, with buyer-randomized designs, keep approving more paid prominence, because the cost lands on control sellers and on relevance outside the test's window.
+> * **Multiplier Creep** — Ranking and visibility experiments evaluated on revenue alone, with buyer-randomized designs, keep approving more paid prominence, because the cost lands on control sellers and on relevance outside the test's window.
 
 An A/B test rests on an assumption so basic that most tools never state it: **what happens to one unit does not depend on which group the other units are in.** Statisticians call it the stable unit treatment value assumption (SUTVA). In a search engine or a news site it is usually close enough to true. In a listing marketplace it is often false, because the units compete. Buyers compete for the same apartment in Lyon. Sellers compete for the first screen of a bike search in Rotterdam. A paid bump helps one listing only by moving another one down.
 

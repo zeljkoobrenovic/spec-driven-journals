@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Moderation as an Afterthought** — Replaces a queue bolted onto insertion with a platform that produces evidence by design.
-> * **The Scam Inbox** — Puts link, pattern and identity controls into the channel where scams close.
-> * **The Acquisition Archipelago** — Replaces four ban lists and four logins with shared signals and one group identity.
+> * **Fast Mail for Fraudsters** — Puts link, pattern and identity controls into the channel where scams close.
+> * **Deal-Shaped Architecture** — Replaces four ban lists and four logins with shared signals and one group identity.
 
 Part IV built surfaces that put listings in front of buyers within seconds. Fraudsters exploit that speed: a fake rental that reaches saved searches in minutes reaches the most motivated victims first. Part V turns to **the trust that makes contact between strangers possible**.
 

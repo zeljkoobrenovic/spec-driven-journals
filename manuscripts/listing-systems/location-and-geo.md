@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **The Attribute Junkyard** — free-text location strings ("R'dam centrum", "near the station") stand in for structured place references, so filters, alerts and landing pages each guess differently where a listing is.
-> * **The Country Fork** — every country builds its own address model, geocoder integration and privacy rule, so a cross-border search, a group map tile or a privacy fix has to be built four times.
-> * **The Duplicate Echo** — when locations are imprecise or inconsistent, the same property listed by three agencies cannot be grouped, because location is the first key every duplicate detector relies on.
+> * **The Copy-Paste Country** — every country builds its own address model, geocoder integration and privacy rule, so a cross-border search, a group map tile or a privacy fix has to be built four times.
+> * **Seeing Double** — when locations are imprecise or inconsistent, the same property listed by three agencies cannot be grouped, because location is the first key every duplicate detector relies on.
 
 A marketplace answers "where is it?" millions of times a day, and its wrong answers look like search bugs. A buyer searching "within 10 km of Utrecht" gets a city bike that is 14 km away, because the seller's postcode was resolved to the centroid of a different municipality. A landing page for "apartments in Lyon" leaves out flats in Villeurbanne, which buyers think of as Lyon but which is a separate commune. A private seller's home address can be worked out from distances in the app. None of these is a search-ranking problem. Each comes from how location was modeled.
 

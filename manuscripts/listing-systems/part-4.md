@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — Treats every index as a read model that regular drills prove can be rebuilt.
-> * **Paid-Rank Drift** — Moves boosts out of engine configuration into a governed policy with a relevance floor.
+> * **Search as System of Record** — Treats every index as a read model that regular drills prove can be rebuilt.
+> * **Multiplier Creep** — Moves boosts out of engine configuration into a governed policy with a relevance floor.
 > * **Ghost Inventory** — Re-checks availability at serving and send time on carousels, map tiles and digests.
 
 Part III ended with supply that is clean, deduplicated and searchable within a freshness target. Part IV turns to **the other side of the market**: the buyer who types three words, draws a shape on a map or saves a search and waits. Listing discovery looks like web search but behaves like a high-write operational system: documents live for days, most queries contain no text, and it is judged by how fast a new listing appears and a sold one disappears.

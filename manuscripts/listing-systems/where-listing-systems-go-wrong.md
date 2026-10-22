@@ -9,7 +9,7 @@
 >
 > * **Each pattern is locally rational.** A product team that hard-codes the first category tree, an integration engineer who accepts a dealer's feed as it is, a monetization team that adds one more ranking boost: each made a sensible choice under its own target. The failure is the accumulation, and only someone accountable for the whole marketplace sees it.
 > * **The cost shows up as lost liquidity, rarely in a project budget.** These patterns are paid for in contacts that never happen, alerts that point to sold items, scams that close in the inbox, and features built four times, long after the project that created them was declared a success.
-> * **The patterns travel in chains, and most chains start with a missing contract or a vanity metric.** Feed Roulette feeds Ghost Inventory and The Attribute Junkyard; Vanity Liquidity licenses Paid-Rank Drift and The Unwatched Model. Fixing the downstream symptom rarely holds; breaking the chain at its origin usually does.
+> * **The patterns travel in chains, and most chains start with a missing contract or a vanity metric.** Feed Roulette feeds Ghost Inventory and The Attribute Junkyard; Vanity Liquidity licenses Multiplier Creep and Set-and-Forget AI. Fixing the downstream symptom rarely holds; breaking the chain at its origin usually does.
 
 The [Introduction: Architecture for Liquidity](#introduction) treats a listing marketplace as a machine that turns fresh, trustworthy supply into matches with demand, and judges its architecture by **liquidity**: the probability that a listing finds a buyer, and a buyer finds the right listing, quickly (see [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). Sellers and partners put listings in; the platform models, enriches, checks and publishes them; buyers search, get alerted, contact and, in some models, pay. This page names the ways that machine loses liquidity, so the rest of the book can point back to them.
 
@@ -35,18 +35,18 @@ The patterns fall into four loose families. The **data** family (the first six) 
 | **The Category Straitjacket** | Adding, splitting or renaming a category needs a code release, a data migration and a cross-team meeting. |
 | **The Attribute Junkyard** | Attributes are free-form strings with no dictionary, so filters, facets and feeds disagree about what a listing is. |
 | **Ghost Inventory** | Sold, expired or removed listings stay searchable, alertable and contactable long after they are gone. |
-| **The Duplicate Echo** | The same item or property appears many times, from reposts, multiple feeds or multiple agencies, and crowds out everything else. |
+| **Seeing Double** | The same item or property appears many times, from reposts, multiple feeds or multiple agencies, and crowds out everything else. |
 | **Feed Roulette** | Partner and professional feeds are ingested without contracts, validation or feedback, so every import is a surprise. |
-| **Index-as-Database** | The search index has quietly become the system of record, and nobody can rebuild it from anything else. |
-| **Paid-Rank Drift** | Paid boosts and promotions accumulate in the ranking until relevance degrades and buyers stop trusting the order. |
+| **Search as System of Record** | The search index has quietly become the system of record, and nobody can rebuild it from anything else. |
+| **Multiplier Creep** | Paid boosts and promotions accumulate in the ranking until relevance degrades and buyers stop trusting the order. |
 | **Moderation as an Afterthought** | Trust and safety is bolted on after launch, as a queue that grows faster than the team that empties it. |
-| **The Scam Inbox** | Messaging and contact features ship without safety signals and become the main channel for fraud. |
-| **The Country Fork** | Each market runs its own copy of the codebase, and every improvement has to be built several times. |
-| **The Acquisition Archipelago** | Acquired marketplaces keep their entire stacks indefinitely, and the group pays for every capability several times. |
-| **The Platform Mandate** | A central platform is imposed on markets that it does not fit, and local teams route around it. |
+| **Fast Mail for Fraudsters** | Messaging and contact features ship without safety signals and become the main channel for fraud. |
+| **The Copy-Paste Country** | Each market runs its own copy of the codebase, and every improvement has to be built several times. |
+| **Deal-Shaped Architecture** | Acquired marketplaces keep their entire stacks indefinitely, and the group pays for every capability several times. |
+| **The Forced Fit** | A central platform is imposed on markets that it does not fit, and local teams route around it. |
 | **Vanity Liquidity** | The marketplace measures listings and visits instead of matches, contacts and sales, and optimizes the wrong thing. |
-| **Entitlement Spaghetti** | What a seller has paid for is checked ad hoc in many services, so nobody can say what was sold versus delivered. |
-| **The Unwatched Model** | A ranking, pricing, valuation or fraud model makes consequential decisions without evaluation, monitoring or an owner. |
+| **Billing by Guesswork** | What a seller has paid for is checked ad hoc in many services, so nobody can say what was sold versus delivered. |
+| **Set-and-Forget AI** | A ranking, pricing, valuation or fraud model makes consequential decisions without evaluation, monitoring or an owner. |
 
 The patterns are not spread evenly along the pipeline. Most of the data family strikes on the way in and in the copies that publication creates; the marketplace family strikes where buyers meet listings; the portfolio and measurement families sit underneath every stage.
 
@@ -60,6 +60,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 ### The Category Straitjacket
 
 *"We can have the new category live in about six weeks, once search, SEO and the app team have each done their part."* — a category product manager
+
+![A category tree bound in a straitjacket, hard-wired to six consumer systems, while a new E-bikes leaf waits six weeks on a calendar.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/category-straitjacket-six-weeks.jpeg)
+
+**Figure 3:** *The Category Straitjacket: category identifiers are wired into every consumer, so a new leaf waits about six weeks while each team does its part.*
 
 **What it looks like.** A **category taxonomy** is the tree of categories sellers list into and buyers browse (see [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies)). In a straitjacketed marketplace, category identifiers are embedded in code: in the insertion form, the search mapping, the moderation rules, the price lists, the ad-targeting setup and the SEO URL tables. Nobody versions the tree, so a change has no "from" and "to", only a release. Observable signs: lead time for a new leaf category is measured in weeks; catch-all "Other" leaves grow year after year; country trees drift apart because changing them together is too hard; taxonomy changes are bundled into one risky annual release.
 
@@ -78,6 +82,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 *"Just put it in the extra-fields column for now; we'll clean the data up after launch."* — a feed-integration engineer
 
+![A scrapyard of attribute tags where fuel appears as Benzin, Super, petrol and 1; a buyer filtering for petrol receives only one car while the rest stay hidden in the heap.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/attribute-junkyard-four-spellings.jpeg)
+
+**Figure 4:** *The Attribute Junkyard: the same fact under four spellings, so a buyer filtering for petrol never sees most of the cars.*
+
 **What it looks like.** **Attributes** are the structured facts on a listing: fuel type, mileage, number of rooms, frame size, energy class (see [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas)). In the Junkyard they are free-form key-value pairs with no **attribute dictionary**, the governed list of attributes with their types, units, allowed values and requiredness per category. The same fact arrives under several keys and in several formats: fuel as "Benzin", "Super", "petrol" and "1". Observable signs: the number of distinct keys grows faster than the number of categories; nobody can say which attributes a category requires; filters return different counts than facets; every partner export needs its own mapping table; the search mapping is so large that adding a field is risky.
 
 **Why it happens.** Flexible storage (a JSON document or an entity-attribute-value table) makes adding a key free, and that is the point of choosing it. Each country, team, feed adapter and campaign adds keys for its own need. The web form and the feed importer validate against different rules, or none. No team owns the dictionary, because attributes look like a detail of each feature. Generative listing assistants now add a new source: an assistant that writes free text into attribute fields fills the Junkyard faster than any seller could.
@@ -95,6 +103,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 *"It's marked sold in the database. Whatever the alert e-mail said this morning isn't our service."* — a listing-service engineer
 
+![A central bicycle listing is stamped sold; search has removed it, while ghost-like copies in alert e-mails, a carousel and a cache still advertise it.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/ghost-inventory-stale-copies.jpeg)
+
+**Figure 5:** *Ghost Inventory: Femke's bike leaves search a minute after it sells, but an alert digest assembled earlier from a snapshot still sends it to 214 users the next morning.*
+
 **What it looks like.** Sold, expired, withdrawn or removed listings remain visible somewhere: in search results and facet counts, in recommendation carousels computed overnight, in alert digests assembled from snapshots, in cached map tiles, on SEO pages that still answer `200 OK`, in partner feeds, and behind contact buttons that still work. Observable signs: the most common first message from buyers is "Is this still available?"; professionals complain about paying for leads on stock they sold days ago; nobody can state removal latency per consumer, only for the search index.
 
 **Why it happens.** Removal is the change teams design least. Publication gets a pipeline, a latency target and a dashboard; unpublication gets a flag. Each consumer copies listing state on its own schedule, and some read a database replica or a nightly dump rather than lifecycle events. Feeds send full snapshots irregularly, or deltas without deletes. Private sellers who sell offline do not come back to mark the item sold. Every copy is someone else's system.
@@ -103,18 +115,18 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **An illustration.** Femke, a private seller on Tradeyard Netherlands, sells her €240 city bike on **Monday 8 March 2027**; it is marked sold at 18:10 and removed from search at 18:11. The evening alert digest, assembled at 17:30 from a database replica snapshot and never re-checked, goes out on Tuesday at 07:00 to 214 users with the bike in it. A March 2027 audit finds about **41,000** Tradeyard Dutch listings a week still present in at least one downstream copy 24 hours after they ended. At Motorvane, the automotive brand, the Essen Volkswagen Golf sells on Thursday 29 April; the dealer feed's removal arrives **26 hours** later, and three e-mail enquiries arrive in between, two of them through a similar-cars carousel that was rebuilt only nightly.
 
-![A central bicycle listing is stamped sold; search has removed it, while ghost-like copies in alert e-mails, a carousel and a cache still advertise it.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/ghost-inventory-stale-copies.jpeg)
-
-**Figure 3:** *Ghost Inventory: Femke's bike leaves search a minute after it sells, but an alert digest assembled earlier from a snapshot still sends it to 214 users the next morning.*
-
 **The remedy direction.** Make removal a first-class lifecycle event with its own latency objective for every registered consumer, not just the search index; re-check availability at send time in alerts and digests; reconcile feeds and expire listings that are not renewed; and serve correct status codes for gone pages.
 
 **Where this book helps:** [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) sets removal objectives and the consumer registry; [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) carries removals as ordered events; [System of Record and Read Models: Listing Data Management](#listing-data-management) puts staleness budgets on read models and caches; [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) re-checks availability before sending; [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) reconciles feed state; [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture) handles sold and expired pages; [Recommendations for Inventory That Disappears](#recommendations) filters status at serving time instead of trusting a nightly job.
 
-{id: where-listing-systems-go-wrong--the-duplicate-echo}
-### The Duplicate Echo
+{id: where-listing-systems-go-wrong--seeing-double}
+### Seeing Double
 
 *"Three agencies hold the mandate, so three listings is correct. Isn't it?"* — a real-estate portal product owner
+
+![One Lyon flat at €389,000 listed by three agencies through two software vendors and a CRM; three map pins stack on one building and the buyer sees the same photo three times.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/seeing-double-lyon-flat.jpeg)
+
+**Figure 6:** *Seeing Double: one 68 m² Lyon flat at €389,000 arrives three times, from three agencies, and stacks three pins on one building.*
 
 **What it looks like.** The same item or property appears many times: reposted by a seller to look new, pushed through two channels by one dealer, listed by several agencies for the same flat, or copied by fraudsters with stolen photos. Observable signs: result pages repeat the same photos; listing counts grow faster than the number of distinct properties or vehicles; agencies complain that a competitor's copy outranks theirs; one alert sends the same flat three times; three pins stack on one building on the map.
 
@@ -133,6 +145,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 *"The dealer's file looked fine last night. We'll find out what happened when support opens."* — an ingestion on-call engineer
 
+![At night a van delivers a torn, truncated feed file into a roulette-wheel importer, and thousands of car listings fall off the shelf as unpublished.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/feed-roulette-truncated-file.jpeg)
+
+**Figure 7:** *Feed Roulette: at 02:40 a truncated nightly file for 286 dealers unpublishes 38,400 Motorvane listings, because nothing guards a full snapshot.*
+
 **What it looks like.** Professional and partner feeds (exports from a dealer management system, or DMS; real-estate software XML; bulk CSV files) are ingested without a **feed contract**, the agreed schema, semantics, validation rules and error reporting for a channel (see [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion)). Records are not validated against the same rules as the web form, writes are not idempotent, partners get no per-run error report, and nothing guards against a truncated file. Observable signs: partners learn about missing stock from their own customers; a bad file unpublishes thousands of listings overnight; listing identifiers change on re-import; support calls spike on Monday mornings; the importer is full of per-vendor special cases.
 
 **Why it happens.** Feeds are integrated one partner at a time, by whichever team won the commercial deal, as code adapters. The partner is a paying customer, so rejecting their data feels commercially risky. Full-snapshot semantics ("absence means delete") are easy to implement and dangerous without a guard. Error reporting to partners has no product owner. And the software vendors in the middle serve many portals at once, so they do the minimum each one requires.
@@ -145,10 +161,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) designs feed contracts, idempotency and mass-change guards; [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) provides the shared validation rules; [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) models integration partners and scoped grants; [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling) shows partners their errors; [mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces](#case-automotive) compares how automotive marketplaces expose dealer APIs.
 
-{id: where-listing-systems-go-wrong--index-as-database}
-### Index-as-Database
+{id: where-listing-systems-go-wrong--search-as-system-of-record}
+### Search as System of Record
 
 *"Don't touch the Solr collection. Some of those fields only exist there."* — a search engineer
+
+![Teams write counters and fixes directly into a wobbly Solr index tower that is the only copy; a rebuild during the Sunday-evening peak sends the latency gauge into the red.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/search-as-system-of-record-sunday-reindex.jpeg)
+
+**Figure 8:** *Search as System of Record: teams write view counters and fixes straight into Solr, so a Sunday-evening reindex pushes p99 latency to about 7 seconds.*
 
 **What it looks like.** The search index holds fields, corrections or enrichment results that exist nowhere else. "Published" is defined as "present in the index". Other services query the index because it is the only complete, denormalized view of a listing. Rebuilding it takes days, needs a frozen weekend, or is not possible at all. Observable signs: reindexing is scheduled for a "quiet" hour and treated as an event; mapping changes are postponed for quarters; nobody has run a rebuild drill; the answer to "why is this listing missing?" starts with a query against search.
 
@@ -162,10 +182,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) designs the rebuildable index and the search contract; [System of Record and Read Models: Listing Data Management](#listing-data-management) separates system of record from read models; [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) provides the replayable stream; [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) defines "published" independently of the index; [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) moves rebuilds off the peak; [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) names the owner of listing truth.
 
-{id: where-listing-systems-go-wrong--paid-rank-drift}
-### Paid-Rank Drift
+{id: where-listing-systems-go-wrong--multiplier-creep}
+### Multiplier Creep
 
 *"It's only a small multiplier, and top-listing customers expect to see results for their money."* — a monetization product manager
+
+![Five paid boosts bolted onto the ranking engine between 2016 and 2025 push gold paid listings over the first page, where they hold 38% of the positions.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/multiplier-creep-paid-first-page.jpeg)
+
+**Figure 9:** *Multiplier Creep: five paid layers added since 2016 leave paid listings holding 38% of Tradeyard Netherlands' first-page positions.*
 
 **What it looks like.** Each visibility product (bump, top listing, highlight, a "plus" package for professionals) is implemented as another multiplier, re-dated timestamp or reserved slot in ranking. Nobody caps the total, no relevance floor applies, and the organic cost of each boost is never measured. Over the years the default sort turns into a price list. Observable signs: the share of first-page positions held by paid listings rises year after year; contacts per search fall; new private listings increasingly get no contact at all; the ranking configuration contains boosts nobody can explain; paid labels are missing on some surfaces.
 
@@ -184,6 +208,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 *"Launch the category first. Trust and safety can add a queue once we see what comes in."* — a growth lead
 
+![Listings ride a fast conveyor into an alert broadcast tower and reach buyers' phones, a fraudulent one included, before a small review booth at the far end checks them.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/moderation-afterthought-queue-behind.jpeg)
+
+**Figure 10:** *Moderation as an Afterthought: alerts fan new listings out before any risk check, and a review queue added later sits behind publication.*
+
 **What it looks like.** **Trust and safety** (T&S) — policies, detection, enforcement and appeals — is added after launch as a queue in front of or behind publication (see [Trust and Safety as a Platform](#trust-and-safety-architecture)). Checks run only when a listing is created, not when it is edited; image checks run as a nightly batch after the listing is live; alerts fan out new listings before any risk check; the statements of reasons that the EU Digital Services Act (DSA) requires are produced by exporters after the fact. Observable signs: the review backlog grows faster than the team; time to action on reports is measured in hours; nobody knows the share of live listings that violate policy; each brand's transparency numbers are computed differently.
 
 **Why it happens.** T&S is seen as a cost center, while launches belong to growth teams with growth targets. Checks are bolted on serially, so every new one slows publication, which makes teams reluctant to add them. Policies are not versioned, so decisions cannot be explained later. Regulation is treated as reporting rather than as a design requirement.
@@ -196,10 +224,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [Trust and Safety as a Platform](#trust-and-safety-architecture) designs the shared moderation pipeline and its metrics; [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) tiers checks by risk instead of queuing them serially; [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) places the risk gate before fan-out; [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) turns DSA obligations into records; [Who Is on the Other Side? Identity and Verification](#identity-and-verification) builds verification into onboarding; [Photos Sell: Media Pipelines for Listings](#media-pipeline) screens images before publication; [AI Across the Listing Lifecycle](#ai-in-listing-systems) keeps T&S inside AI-assisted flows.
 
-{id: where-listing-systems-go-wrong--the-scam-inbox}
-### The Scam Inbox
+{id: where-listing-systems-go-wrong--fast-mail-for-fraudsters}
+### Fast Mail for Fraudsters
 
 *"Messaging is a delivery problem. Fraud is for trust and safety, once users report it."* — a messaging-team lead
+
+![A winged express envelope carries a fake payment link through an unguarded gate to Femke's phone; a timeline shows delivery at 20:11, her report at 20:19 and suspension at 20:26.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/fast-mail-fraudster-payment-link.jpeg)
+
+**Figure 11:** *Fast Mail for Fraudsters: a fake payment link from a domain registered that day reaches Femke at 20:11; only her report at 20:19 stops it.*
 
 **What it looks like.** Chat and contact features are built for delivery speed alone. Messages arrive instantly with clickable links; nobody checks whether a domain was registered this morning; anyone with a fresh e-mail address can message any seller; payment is negotiated in the conversation and made off the platform; user reports are the only control. Observable signs: rising reports of fake "payment received" or courier links; scam messages that impersonate the platform's own brand; banks, not the marketplace, holding the best data on losses.
 
@@ -213,10 +245,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) designs safety scanning into the messaging architecture; [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) provides risk scoring and step-up friction; [Who Is on the Other Side? Identity and Verification](#identity-and-verification) decides how much to know about who sends the first message; [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) moves money into a protected flow; [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) explains why the contact-ending model concentrates fraud in the inbox.
 
-{id: where-listing-systems-go-wrong--the-country-fork}
-### The Country Fork
+{id: where-listing-systems-go-wrong--the-copy-paste-country}
+### The Copy-Paste Country
 
 *"Poland has its own release train. If you want the fix there, file a ticket with their team."* — a group product director
+
+![A photocopier has produced four drifting copies of one marketplace; an anti-phishing rule reaches NL on Sunday and BE on Wednesday, and never PL or PT.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/copy-paste-country-rule-rollout.jpeg)
+
+**Figure 12:** *The Copy-Paste Country: a March 2027 anti-phishing rule reaches the Netherlands on Sunday, Belgium on Wednesday, and Poland and Portugal never.*
 
 **What it looks like.** Each market runs its own copy of the codebase, or its own copy of the reference data that the code depends on: category tree, address model, rule set, ranking configuration. Improvements are built several times or not at all; a fix in one country does not reach the others; versions drift until they can no longer share anything. Observable signs: the same feature appears in several backlogs; regulatory changes are implemented as country code paths; country category trees have different leaves for the same goods; a group-wide fraud rule needs one deploy per country.
 
@@ -230,10 +266,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) designs tenancy and configuration over code; [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) harmonizes country trees; [Where Is It? Location, Geocoding and Privacy](#location-and-geo) replaces country address models with one place model; [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) puts country rules in configuration; [From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution) explains where the copy-paste model came from; [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta) and [OLX Group: Regional Platforms, Verticalization and Retreat](#case-olx) show two groups working their way out of it.
 
-{id: where-listing-systems-go-wrong--the-acquisition-archipelago}
-### The Acquisition Archipelago
+{id: where-listing-systems-go-wrong--deal-shaped-architecture}
+### Deal-Shaped Architecture
 
 *"They're profitable and the deal closed last month. Let's not touch their stack for now."* — a corporate-development lead
+
+![Four acquired brands as islands, each with its own login, trust-and-safety shield, search, catalog and warehouse; a fraudster banned on one island rows across to another.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/deal-shaped-architecture-four-of-everything.jpeg)
+
+**Figure 13:** *Deal-Shaped Architecture: Veldmark enters 2027 with four identity systems, four trust-and-safety stacks and three data warehouses, so a phisher banned on one brand stays active on another.*
 
 **What it looks like.** Acquired marketplaces keep their whole technology stack: identity, trust and safety, search, product catalog, billing, data warehouse. "For now" has no end date. The group pays for every capability several times and cannot answer group-level questions: how many businesses it serves, whether a fraudster banned on one brand is active on another, what a "contact" is. Observable signs: several logins, several ban lists, several warehouses and several contact definitions; synergy targets that appear in board decks but not in any funded roadmap.
 
@@ -247,10 +287,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) sets the consolidation sequence and tests synergy cases; [Map What the Marketplace Does Before What Runs It](#business-capabilities) makes the duplication visible; [Who Is on the Other Side? Identity and Verification](#identity-and-verification) designs one group identity; [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) replaces several catalogs with one model; [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) governs shared definitions; [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution) keeps every acquisition separable over a decade; [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta) and [eBay Classifieds Group: Shared Platforms, Local Brands and a Sale](#case-ebay-classifieds) show the public record of one large integration.
 
-{id: where-listing-systems-go-wrong--the-platform-mandate}
-### The Platform Mandate
+{id: where-listing-systems-go-wrong--the-forced-fit}
+### The Forced Fit
 
 *"The group platform is the standard from the first quarter. Your roadmap items go into our backlog."* — a central platform director
+
+![A central crane forces a list-shaped search block into a map-shaped real-estate socket; it does not fit, and the team keeps its own map workshop running behind.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/forced-fit-list-platform-map-vertical.jpeg)
+
+**Figure 14:** *The Forced Fit: a list-shaped search platform would have missed Hearthly, where 61% of French search sessions open the map, and pushed its teams to keep their own geo stack.*
 
 **What it looks like.** A central platform is imposed on markets or verticals it was not designed for. Adoption is by decree and measured by migrations completed. Local teams comply on paper and route around it in practice: a shadow stack behind an adapter, an "exception" that becomes permanent, features waiting in the central backlog. Observable signs: low voluntary adoption; a growing exceptions list; duplicate systems kept "temporarily" alongside the platform; local roadmaps blocked on a central team.
 
@@ -269,6 +313,10 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 *"Live listings are up eight percent and sessions are at a record. The marketplace has never been healthier."* — a marketplace general manager
 
+![A dashboard celebrates listings up 8% while a small gauge shows the contact index falling from 100 to 37; a busy marketplace square produces just one handshake.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/vanity-liquidity-contact-index.jpeg)
+
+**Figure 15:** *Vanity Liquidity: live listings rise while Tradeyard's contact index falls from 100 to 37 once only qualified contacts count.*
+
 **What it looks like.** The marketplace reports activity: live listings, visits, page views, messages sent, alerts sent, indexed URLs. It does not report outcomes: qualified contacts per listing, time to first contact, share of listings that sell, search sessions that end in a contact (see [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). Each team optimizes the activity metric it controls. Observable signs: "contact" is defined differently by each brand; dashboards show growth while contacts per listing fall; ranking and recommendation models are trained on clicks; alerts are measured by volume sent; professionals' impressions rise while their renewals fall.
 
 **Why it happens.** Activity metrics are easy to count, always grow with traffic, and sit inside one team's system. Outcome metrics need joins across systems and agreed definitions, and in classifieds the transaction itself is often invisible to the platform.
@@ -281,16 +329,20 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) defines the liquidity metrics; [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) governs the contact definition; [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) judges tests on outcomes with guardrails; [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) trains on two-sided contact labels; [How Listing Marketplaces Make Money](#monetization-models) builds revenue plans on contacts, not page views; [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) counts qualified, deduplicated leads; [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) explains why each model ends at a different outcome; [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution) replaces program milestones with marketplace fitness functions.
 
-{id: where-listing-systems-go-wrong--entitlement-spaghetti}
-### Entitlement Spaghetti
+{id: where-listing-systems-go-wrong--billing-by-guesswork}
+### Billing by Guesswork
 
 *"Is this dealer allowed 150 cars or 163? It depends which service you ask."* — a dealer-support agent
 
-**What it looks like.** An **entitlement** is what a seller has the right to receive because of what they bought: listing slots, bumps, top positions, statistics, features (see [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)). In Entitlement Spaghetti those rights are checked ad hoc: package conditions in the insertion service, in the search query, in the listing-card template, in the billing export and in the CRM, each with its own logic. Paid flags are stored as listing fields. Observable signs: credits issued after disputes; nobody can produce "sold versus delivered" for one seller; a new product needs changes in five services; promotions are implemented as code branches.
+![A dealer feed of 163 cars: 150 are published and 13 are stopped, but billing counts the whole feed and charges €117 of overage.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/billing-by-guesswork-dealer-overage.jpeg)
+
+**Figure 16:** *Billing by Guesswork: Autohaus Ruhrblick's feed has 163 cars, 150 are published, and the billing export still charges €117 of overage for the 13 that never went live.*
+
+**What it looks like.** An **entitlement** is what a seller has the right to receive because of what they bought: listing slots, bumps, top positions, statistics, features (see [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)). In Billing by Guesswork those rights are checked ad hoc: package conditions in the insertion service, in the search query, in the listing-card template, in the billing export and in the CRM, each with its own logic. Paid flags are stored as listing fields. Observable signs: credits issued after disputes; nobody can produce "sold versus delivered" for one seller; a new product needs changes in five services; promotions are implemented as code branches.
 
 **Why it happens.** The first visibility product is implemented as a flag on the listing, which is cheap and correct for one product. Each later product adds a condition wherever it is needed. Catalog, entitlements and billing belong to different teams, and acquired brands bring their own.
 
-**What it costs.** **Trust**: overbilling, or delivering less than was sold, damages the relationship with the professional sellers who provide most of the revenue. **Speed**: launching a product or a price change takes months. **Cost**: credits, audits and support. **Liquidity**: paid effects leak into ranking without bounds, which is one route to Paid-Rank Drift. No marketplace has published an entitlement failure, but published results show how precise entitlements must be. Rightmove reported that "more than 50% of independent agents purchased incremental product above their package commitment" in 2025 ([Rightmove full-year results, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)), which means committed bundles and metered extras on one invoice. Autotrader's 2026 results explain revenue per retailer partly through a "stock" lever, the number of paid vehicles advertised ([Autotrader Group, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)): when billing follows live inventory, inventory accuracy is billing accuracy.
+**What it costs.** **Trust**: overbilling, or delivering less than was sold, damages the relationship with the professional sellers who provide most of the revenue. **Speed**: launching a product or a price change takes months. **Cost**: credits, audits and support. **Liquidity**: paid effects leak into ranking without bounds, which is one route to Multiplier Creep. No marketplace has published an entitlement failure, but published results show how precise entitlements must be. Rightmove reported that "more than 50% of independent agents purchased incremental product above their package commitment" in 2025 ([Rightmove full-year results, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)), which means committed bundles and metered extras on one invoice. Autotrader's 2026 results explain revenue per retailer partly through a "stock" lever, the number of paid vehicles advertised ([Autotrader Group, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)): when billing follows live inventory, inventory accuracy is billing accuracy.
 
 **An illustration.** Motorvane's "Pro 150" package gives a dealer 150 listing slots and 20 boosts a month for €1,450, with €9 per car per month for overage. Autohaus Ruhrblick's August 2027 feed contains 163 cars. The feed importer publishes 150 and skips the rest; the billing export counts feed rows and charges €117 of overage for 13 cars that were never published. A 14-month audit in October 2027 finds **1,140** dealers overbilled by about **€212,000**, all credited.
 
@@ -298,10 +350,14 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 **Where this book helps:** [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) designs the catalog, entitlement ledger and enforcement points; [How Listing Marketplaces Make Money](#monetization-models) shows what each revenue model requires; [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) says which organization and branch holds an entitlement; [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling) shows professionals what they hold and used; [Selling Attention: Display, Native and Retail-Media Advertising](#advertising-platforms) keeps sponsored placements in the same ledger; [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) keeps paid state out of the listing itself.
 
-{id: where-listing-systems-go-wrong--the-unwatched-model}
-### The Unwatched Model
+{id: where-listing-systems-go-wrong--set-and-forget-ai}
+### Set-and-Forget AI
 
 *"The model has been running since 2021, and nobody has complained."* — a data-science manager
+
+![A data leader takes inventory of a dim warehouse of 146 model robots, many without owners or monitoring; a valuation robot is stopped at a barrier before a door marked with money.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/set-and-forget-ai-model-inventory.jpeg)
+
+**Figure 17:** *Set-and-Forget AI: Veldmark's first model inventory finds 146 production models, 23 without a named owner and 41 without monitoring.*
 
 **What it looks like.** Models make consequential decisions: they order results, approve or hold listings, merge duplicates, fill attributes, estimate prices and values, score fraud. Some run without an evaluation set, without drift monitoring, without prediction logs, without a named owner or a way to roll back. Observable signs: nobody can list all production models; a model's use expands (from informing a badge to deciding a price) without new validation; labels are years old; an AI feature's prompt and model version change weekly with no regression test.
 
@@ -322,21 +378,21 @@ The patterns rarely appear alone. Most marketplaces show several, and they feed 
 
 ![Diagram: The patterns form chains](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/fig04-patterns-form-chains-most-downstream-symptoms.jpeg)
 
-**Figure 4:** *The patterns form chains; most downstream symptoms, such as ghost listings or paid results crowding the first page, trace back to a missing contract, a missing owner or the wrong metric.*
+**Figure 18:** *The patterns form chains; most downstream symptoms, such as ghost listings or paid results crowding the first page, trace back to a missing contract, a missing owner or the wrong metric.*
 
 Four chains appear most often.
 
-**The supply chain: Feed Roulette → The Attribute Junkyard, Ghost Inventory and The Duplicate Echo.** A feed without a contract delivers values nobody validated, so the Junkyard grows; it delivers removals late or not at all, so ghosts accumulate; and when it re-creates listings under new identifiers, the same car or flat appears twice. Teams then fund three downstream fixes for one upstream gap. At Veldmark, the truncated-snapshot incident of 8 March 2027 produced all three in one morning. **Break the chain at the contract**, not at the index.
+**The supply chain: Feed Roulette → The Attribute Junkyard, Ghost Inventory and Seeing Double.** A feed without a contract delivers values nobody validated, so the Junkyard grows; it delivers removals late or not at all, so ghosts accumulate; and when it re-creates listings under new identifiers, the same car or flat appears twice. Teams then fund three downstream fixes for one upstream gap. At Veldmark, the truncated-snapshot incident of 8 March 2027 produced all three in one morning. **Break the chain at the contract**, not at the index.
 
 ![Left: three teams mop up three different puddles fed by an unguarded inlet. Right: a contract gate at the inlet keeps the flow orderly and the floor dry.](listing-systems-architecture/posts/where-listing-systems-go-wrong/assets/images/where-listing-systems-go-wrong/break-chain-at-origin.jpeg)
 
-**Figure 5:** *Funding three downstream fixes while the upstream gap stays open brings the symptoms back; breaking the chain at its origin, a contract, an owner or a metric definition, holds.*
+**Figure 19:** *Funding three downstream fixes while the upstream gap stays open brings the symptoms back; breaking the chain at its origin, a contract, an owner or a metric definition, holds.*
 
-**The monetization chain: Vanity Liquidity and Entitlement Spaghetti → Paid-Rank Drift.** When the business measures revenue and clicks but not contacts per search, every boost looks like a gain. When paid effects are conditions scattered across services rather than bounded fields, nothing stops another multiplier being added. The drift then degrades the relevance that paid products depend on. The remedy is not a ranking rewrite alone but a measurement change (governed contact metrics with two-sided guardrails) and an entitlement change (explicit, capped paid effects).
+**The monetization chain: Vanity Liquidity and Billing by Guesswork → Multiplier Creep.** When the business measures revenue and clicks but not contacts per search, every boost looks like a gain. When paid effects are conditions scattered across services rather than bounded fields, nothing stops another multiplier being added. The drift then degrades the relevance that paid products depend on. The remedy is not a ranking rewrite alone but a measurement change (governed contact metrics with two-sided guardrails) and an entitlement change (explicit, capped paid effects).
 
-**The trust chain: Moderation as an Afterthought and The Duplicate Echo → The Scam Inbox.** A platform that checks listings only at creation, and treats copied photos as harmless duplicates, lets a fake listing reach the inbox, where the scam closes. Link scanning in the inbox helps; re-scoring on edit, routing photo matches to fraud review and gating alerts help earlier and more cheaply.
+**The trust chain: Moderation as an Afterthought and Seeing Double → Fast Mail for Fraudsters.** A platform that checks listings only at creation, and treats copied photos as harmless duplicates, lets a fake listing reach the inbox, where the scam closes. Link scanning in the inbox helps; re-scoring on edit, routing photo matches to fraud review and gating alerts help earlier and more cheaply.
 
-**The portfolio pendulum: The Country Fork and The Acquisition Archipelago → The Platform Mandate → back again.** A group that grew by copying and acquiring ends up paying for everything several times. Under synergy pressure it mandates a central platform that does not fit everyone; local teams route around it, and the shadow stacks recreate the archipelago. The public record of large classifieds groups shows this pendulum swinging in both directions within a few years. The way off the pendulum is to **share platforms, not products**: centralize the uniform, expensive layers, configure the differences, and earn adoption.
+**The portfolio pendulum: The Copy-Paste Country and Deal-Shaped Architecture → The Forced Fit → back again.** A group that grew by copying and acquiring ends up paying for everything several times. Under synergy pressure it mandates a central platform that does not fit everyone; local teams route around it, and the shadow stacks recreate the archipelago. The public record of large classifieds groups shows this pendulum swinging in both directions within a few years. The way off the pendulum is to **share platforms, not products**: centralize the uniform, expensive layers, configure the differences, and earn adoption.
 
 Two patterns sit at the roots of most chains. **Vanity Liquidity** is a measurement failure: without a governed definition of a match, every team optimizes something easier. **Feed Roulette** and **The Category Straitjacket** are contract failures: without a governed contract for what enters the platform and how it is classified, every downstream system compensates on its own. That is why this book defines liquidity metrics in Part I and contracts in Parts II and III before it discusses search, ranking or AI.
 
@@ -348,18 +404,18 @@ Two patterns sit at the roots of most chains. **Vanity Liquidity** is a measurem
 | The Category Straitjacket | Lead time to add or split a leaf category, end to end | Taxonomy owner, product |
 | The Attribute Junkyard | Distinct attribute keys per category, and the share used on fewer than 0.1% of listings | Attribute dictionary owner |
 | Ghost Inventory | Removal latency per registered consumer; share of contacts and clicks on unavailable listings | Listing platform team |
-| The Duplicate Echo | Listings per distinct real-world entity, per vertical | Listing data domain owner |
+| Seeing Double | Listings per distinct real-world entity, per vertical | Listing data domain owner |
 | Feed Roulette | Share of partner runs with a machine-readable error report; mass-change holds per month | Ingestion team |
-| Index-as-Database | Time of the last successful full rebuild drill, and its duration | Search platform |
-| Paid-Rank Drift | Paid share of first-page positions, trended; contacts per search | Ranking owner with monetization |
+| Search as System of Record | Time of the last successful full rebuild drill, and its duration | Search platform |
+| Multiplier Creep | Paid share of first-page positions, trended; contacts per search | Ranking owner with monetization |
 | Moderation as an Afterthought | Sampled prevalence of violating listings; median time to action on reports | Head of trust and safety |
-| The Scam Inbox | Fraud reports per thousand conversations; share of risky messages held before delivery | Messaging and fraud teams |
-| The Country Fork | Features implemented more than once across markets in the last year | Group architecture |
-| The Acquisition Archipelago | Capabilities served by more than one stack, with run cost | Group architecture, finance |
-| The Platform Mandate | Voluntary adoption rate and open exceptions to the platform | Platform product manager |
+| Fast Mail for Fraudsters | Fraud reports per thousand conversations; share of risky messages held before delivery | Messaging and fraud teams |
+| The Copy-Paste Country | Features implemented more than once across markets in the last year | Group architecture |
+| Deal-Shaped Architecture | Capabilities served by more than one stack, with run cost | Group architecture, finance |
+| The Forced Fit | Voluntary adoption rate and open exceptions to the platform | Platform product manager |
 | Vanity Liquidity | Whether "qualified contact" has one governed definition, and which dashboards use it | Data governance, CPO |
-| Entitlement Spaghetti | Number of services that evaluate package rules; credits issued for billing disputes | Monetization platform |
-| The Unwatched Model | Production models without an owner, an evaluation set or monitoring | Head of data and ML |
+| Billing by Guesswork | Number of services that evaluate package rules; credits issued for billing disputes | Monetization platform |
+| Set-and-Forget AI | Production models without an owner, an evaluation set or monitoring | Head of data and ML |
 
 These are not targets in themselves. Duplicate rates can fall because clustering hides legitimate listings; moderation backlogs can shrink because thresholds were loosened. **Read each indicator with the mechanism in mind.**
 
@@ -370,14 +426,14 @@ The names are meant to be used in rooms where decisions are made. In a design re
 
 Three habits keep the names useful rather than accusatory: **name the mechanism, not the person**; **pair every pattern with a measure** from the table above; and **look for the upstream pattern** before funding a downstream remedy, because the cheapest fix is usually a contract, an owner or a metric definition, not a new system.
 
-Some duplication, divergence and payment for visibility is legitimate. Three agencies listing one flat is the market working, not The Duplicate Echo, as long as the platform shows it once. A country-specific rental rule required by law is not The Country Fork, if it is configuration over shared code. Paid placement is not Paid-Rank Drift when it is labeled, bounded and measured. The test is whether the variation was **decided, owned and measured**, or simply accumulated.
+Some duplication, divergence and payment for visibility is legitimate. Three agencies listing one flat is the market working, not Seeing Double, as long as the platform shows it once. A country-specific rental rule required by law is not The Copy-Paste Country, if it is configuration over shared code. Paid placement is not Multiplier Creep when it is labeled, bounded and measured. The test is whether the variation was **decided, owned and measured**, or simply accumulated.
 
 {id: where-listing-systems-go-wrong--the-patterns-across-the-book}
 ## The Patterns Across the Book
 
-The matrix below maps each chapter to the patterns it addresses. **●** means the pattern is one of the chapter's main concerns: it is named in the chapter's opening callout. **○** means the chapter treats the pattern in passing. The column codes are: **CS** The Category Straitjacket, **AJ** The Attribute Junkyard, **GI** Ghost Inventory, **DE** The Duplicate Echo, **FR** Feed Roulette, **ID** Index-as-Database, **PR** Paid-Rank Drift, **MA** Moderation as an Afterthought, **SI** The Scam Inbox, **CF** The Country Fork, **AA** The Acquisition Archipelago, **PM** The Platform Mandate, **VL** Vanity Liquidity, **ES** Entitlement Spaghetti, **UM** The Unwatched Model. The "Where this book helps" lines above name the chapters that do the main work for each pattern; the matrix lists every chapter that names it.
+The matrix below maps each chapter to the patterns it addresses. **●** means the pattern is one of the chapter's main concerns: it is named in the chapter's opening callout. **○** means the chapter treats the pattern in passing. The column codes are: **CS** The Category Straitjacket, **AJ** The Attribute Junkyard, **GI** Ghost Inventory, **SD** Seeing Double, **FR** Feed Roulette, **SR** Search as System of Record, **MC** Multiplier Creep, **MA** Moderation as an Afterthought, **FM** Fast Mail for Fraudsters, **CP** The Copy-Paste Country, **DA** Deal-Shaped Architecture, **FF** The Forced Fit, **VL** Vanity Liquidity, **BG** Billing by Guesswork, **SF** Set-and-Forget AI. The "Where this book helps" lines above name the chapters that do the main work for each pattern; the matrix lists every chapter that names it.
 
-| Chapter | CS | AJ | GI | DE | FR | ID | PR | MA | SI | CF | AA | PM | VL | ES | UM |
+| Chapter | CS | AJ | GI | SD | FR | SR | MC | MA | FM | CP | DA | FF | VL | BG | SF |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | **Part I — Marketplace** | | | | | | | | | | | | | | | |
 | [1 Marketplace taxonomy](#marketplace-taxonomy) | | | | | | | | | ● | | | ● | ● | | |
@@ -440,7 +496,7 @@ The matrix below maps each chapter to the patterns it addresses. **●** means t
 | [50 Property portals](#case-property-portals) | | | | ● | ● | | | | | | | | | | ● |
 | [51 Automotive marketplaces](#case-automotive) | | | | | ● | | | | | | | | ○ | ● | ● |
 
-Read down a column to find every chapter that helps with one pattern; read across a row to see what a chapter is defending against. Three columns are dense: **Ghost Inventory**, **Vanity Liquidity** and **The Unwatched Model** appear in almost every part, because removal, measurement and automated decisions cut across the whole pipeline. That density is itself a finding: these three need an owner at group level, not only in one team.
+Read down a column to find every chapter that helps with one pattern; read across a row to see what a chapter is defending against. Three columns are dense: **Ghost Inventory**, **Vanity Liquidity** and **Set-and-Forget AI** appear in almost every part, because removal, measurement and automated decisions cut across the whole pipeline. That density is itself a finding: these three need an owner at group level, not only in one team.
 
 The rest of the book works through the remedies. Before that, meet the group whose marketplaces show every one of these patterns in 2027, and the program that sets out to fix them: [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark).
 

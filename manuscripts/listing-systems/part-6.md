@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Scam Inbox** — Puts a synchronous safety gate between the sender and the recipient of every message.
-> * **Paid-Rank Drift** — Turns boosts, top slots and sponsored listings into explicit, capped effects under one relevance floor.
-> * **Entitlement Spaghetti** — Replaces package checks scattered across services with one entitlement ledger and its delivery evidence.
+> * **Fast Mail for Fraudsters** — Puts a synchronous safety gate between the sender and the recipient of every message.
+> * **Multiplier Creep** — Turns boosts, top slots and sponsored listings into explicit, capped effects under one relevance floor.
+> * **Billing by Guesswork** — Replaces package checks scattered across services with one entitlement ledger and its delivery evidence.
 
 Part V made contact between strangers safe enough to happen. Part VI turns to **what the marketplace earns from it**. A classifieds site usually steps aside before the sale, so it charges for access to attention: the right to list, a better position, a package of slots, a lead, an advertisement.
 

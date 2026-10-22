@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Ghost Inventory** — removals that travel by polling, nightly dumps or best-effort messages arrive late or never, so sold listings stay searchable and alertable.
-> * **Index-as-Database** — when the search index is the only complete projection of listing changes, nothing else can rebuild it; a replayable event stream is the alternative source.
-> * **The Acquisition Archipelago** — four brands with four messaging technologies and four event vocabularies mean every group capability integrates four times.
+> * **Search as System of Record** — when the search index is the only complete projection of listing changes, nothing else can rebuild it; a replayable event stream is the alternative source.
+> * **Deal-Shaped Architecture** — four brands with four messaging technologies and four event vocabularies mean every group capability integrates four times.
 
 A listing is written by one party and read by many. The seller or a dealer's feed changes the price once; search must re-index it, saved-search alerts must decide whether to notify watchers, the market-value model must re-score it, the trust-and-safety system must check whether the change is suspicious, the sitemap must update `lastmod`, the warehouse must record it, and a partner syndication feed may need to carry it. **The architecture question is not how to store the listing but how to move its changes**, because that movement is where freshness, removal latency and consistency are won or lost.
 

@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — Gives every acquired marketplace an integration option and a consolidation sequence, so the group stops paying for each capability several times.
-> * **The Platform Mandate** — Makes shared platforms internal products with owners, contracts and migration help, so marketplaces adopt them instead of routing around them.
-> * **The Unwatched Model** — Registers every AI use with an owner, an evaluation set, a cost per outcome and a kill switch.
+> * **Deal-Shaped Architecture** — Gives every acquired marketplace an integration option and a consolidation sequence, so the group stops paying for each capability several times.
+> * **The Forced Fit** — Makes shared platforms internal products with owners, contracts and migration help, so marketplaces adopt them instead of routing around them.
+> * **Set-and-Forget AI** — Registers every AI use with an owner, an evaluation set, a cost per outcome and a kill switch.
 
 Part VII built the distributed system underneath the marketplaces. Part VIII turns to **the Chief Architect's agenda**: the work that decides whether that system ever exists outside a diagram. It asks in what order the earlier chapters' decisions are carried out, who owns them, how a live business moves onto them, and how a group knows, years later, that they still serve their purpose.
 

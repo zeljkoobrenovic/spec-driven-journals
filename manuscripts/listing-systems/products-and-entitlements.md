@@ -11,15 +11,15 @@
 
 > **KEY POINTS:**
 >
-> * **Keep catalog, price, entitlement and bill apart.** The catalog says what can be sold, the pricing engine what it costs this seller now, the entitlement ledger what this account or listing holds now, and billing what is owed. Merging any two produces Entitlement Spaghetti and turns every annual price event into a code release.
+> * **Keep catalog, price, entitlement and bill apart.** The catalog says what can be sold, the pricing engine what it costs this seller now, the entitlement ledger what this account or listing holds now, and billing what is owed. Merging any two produces Billing by Guesswork and turns every annual price event into a code release.
 > * **An entitlement is a ledger, not a counter.** Grants, consumptions, releases, expiries and refunds are append-only entries with idempotency keys. Enforcement points read derived *effects* (a slot, a boost weight, a label, an expiry) from fast read models fed by events, never the contract or the price.
 > * **Prove that what was sold was delivered.** Insertion, ranking, rendering and lead routing emit delivery events, and a daily reconciliation compares them with grants and invoice lines. This is revenue assurance, a dispute answer and the evidence for paid-ranking disclosure, all from one pipeline.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Entitlement Spaghetti** — package checks written as conditions in the insertion service, the search query and the card template mean that nobody can say what a seller holds, or prove what they received.
-> * **Paid-Rank Drift** — when paid effects are not explicit, capped fields, every new product adds another unbounded multiplier to ranking.
-> * **The Acquisition Archipelago** — four acquired brands with four catalogs, four ways of counting slots and four billing integrations pay four times for one capability and still cannot sell a cross-brand package.
+> * **Billing by Guesswork** — package checks written as conditions in the insertion service, the search query and the card template mean that nobody can say what a seller holds, or prove what they received.
+> * **Multiplier Creep** — when paid effects are not explicit, capped fields, every new product adds another unbounded multiplier to ranking.
+> * **Deal-Shaped Architecture** — four acquired brands with four catalogs, four ways of counting slots and four billing integrations pay four times for one capability and still cannot sell a cross-brand package.
 
 [How Listing Marketplaces Make Money](#monetization-models) showed that every revenue model needs the same commercial core: something that defines what can be sold, something that prices it, something that records what a seller holds, and something that bills for it. This chapter designs that core, and with it Part VI's test for every paid product: proof that what was sold was delivered. **A seller who paid for a "Top listing" and never appeared on top, or a dealer billed for cars the platform refused to publish, is a customer the marketplace has wronged.** At scale, these wrongs are rarely bad intent. They come from architecture: the same commercial fact counted in several places, by several teams, with several definitions. The effects this core produces are what [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) blends into the result order, and what [Selling Attention: Display, Native and Retail-Media Advertising](#advertising-platforms) must share with sponsored listings.
 
@@ -166,7 +166,7 @@ The **effect projector** consumes ledger events and publishes effect changes. In
 
 **A paid effect that outlives its listing is Ghost Inventory with a price tag.** If a sold bike keeps its top slot because the `ListingSold` event reached search but not the effect projector, a buyer sees a sold item in a paid position. The fix is that the projector consumes listing lifecycle events too, and that sold, removed or blocked listings carry no paid fields, whatever the ledger says about remaining days.
 
-Two consistency rules apply to every effect. **Effects tolerate bounded staleness; the ledger does not.** A top-listing effect that appears 20 seconds after payment is acceptable. A slot granted twice is not. And **the index is never the record**: if the search index is rebuilt ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), effects are re-projected from the ledger, never copied from the old index. That rule is what keeps the paid fields from drifting into Index-as-Database.
+Two consistency rules apply to every effect. **Effects tolerate bounded staleness; the ledger does not.** A top-listing effect that appears 20 seconds after payment is acceptable. A slot granted twice is not. And **the index is never the record**: if the search index is rebuilt ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), effects are re-projected from the ledger, never copied from the old index. That rule is what keeps the paid fields from drifting into Search as System of Record.
 
 {id: products-and-entitlements--enforcement-points}
 ### Enforcement points
@@ -352,7 +352,7 @@ Real estate's hardest problem is hierarchy. Agence Rhône Habitat's 14 branches 
 
 **What to watch.** The daily reconciliation's unexplained difference, by brand, in euros. The time from a catalog change to its effect in production, a measure of whether products are really data. The share of revenue computed from ledger entries rather than legacy counts, which tracks the migration. Effect-projection lag at the Sunday peak. Credits issued for under-delivery, which should rise briefly after launch, when the system starts finding what was always there, and then fall.
 
-**The long-term consideration.** Every acquisition brings a catalog, an entitlement scheme and a billing integration. A group that has Tally can price the integration of an acquired marketplace's monetization as a content migration plus a shadow month. A group without it starts again each time, which is how the Acquisition Archipelago forms ([After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation)).
+**The long-term consideration.** Every acquisition brings a catalog, an entitlement scheme and a billing integration. A group that has Tally can price the integration of an acquired marketplace's monetization as a content migration plus a shadow month. A group without it starts again each time, which is how Deal-Shaped Architecture forms ([After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation)).
 
 {id: products-and-entitlements--questions-to-ask}
 ## Questions to Ask

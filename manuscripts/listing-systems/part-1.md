@@ -20,8 +20,8 @@
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Vanity Liquidity** — Defines success as matches per cell, not listings and visits.
-> * **The Platform Mandate** — Shows why a platform built around one model or vertical fails the others.
-> * **The Acquisition Archipelago** — Gives a group the capability vocabulary to see what it pays for several times.
+> * **The Forced Fit** — Shows why a platform built around one model or vertical fails the others.
+> * **Deal-Shaped Architecture** — Gives a group the capability vocabulary to see what it pays for several times.
 
 This book starts with the business, not the systems, because **in a listing marketplace the business model decides the architecture** more directly than in most industries. A classifieds site whose job ends at the contact, a portal that sells qualified leads and a marketplace that holds buyers' money need different identity, trust, payment and data systems, even when their search pages look alike.
 

@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Unwatched Model** — Valuation, pricing, ranking and fraud models make consequential decisions, and in most groups nobody can list them all, let alone name an owner and a monitor for each.
-> * **The Platform Mandate** — A central ML platform imposed on teams with working stacks gets routed around; one adopted for its features, models registered first and migrated later, gets used.
+> * **Set-and-Forget AI** — Valuation, pricing, ranking and fraud models make consequential decisions, and in most groups nobody can list them all, let alone name an owner and a monitor for each.
+> * **The Forced Fit** — A central ML platform imposed on teams with working stacks gets routed around; one adopted for its features, models registered first and migrated later, gets used.
 > * **Vanity Liquidity** — Models trained on clicks and views learn to produce clicks and views; the label decides what the marketplace optimizes, so it needs the same scrutiny as the model.
 
 Every listing marketplace above a modest size runs dozens of models, and few of them were planned as a portfolio. A category predictor arrived with a new insertion flow, a fraud model after a bad quarter, a learning-to-rank model when the search team hired its first data scientist, a price estimate because a competitor had one. Each was built on whatever stack its team knew. A few years later the group has more models than anyone can list, **training data that nobody can reproduce**, and a valuation model being pulled into business decisions it was never validated for.
@@ -271,7 +271,7 @@ My rule for Veldmark: **share the platform and the registry everywhere, share mo
 | Open-source golden path on the shared Kubernetes platform (Kubeflow or similar, MLflow) | Portable across clouds; matches the Adevinta pattern | Needs a platform team; upgrades are yours | The group runs a shared Kubernetes platform and has several clouds |
 | Hybrid: one registry and monitoring layer over heterogeneous training and serving | Governance first, migration later; low disruption | Two kinds of support; standards must be enforced at the registry | Groups after acquisitions, which is to say most groups |
 
-Veldmark chooses the hybrid. The decision of **Tuesday 9 November 2027** makes one group model registry (MLflow) and one prediction-log and monitoring standard mandatory for every production model, regardless of where it trains. New models at Tradeyard and Motorvane use a golden path on AWS: SageMaker for training jobs, serving on the shared EKS platform, features from the event backbone. Hearthly keeps Vertex AI while it stays on Google Cloud, and Keybridge keeps Azure Machine Learning, but their models are registered in the group registry and log predictions to the same standard. **Registration first, migration later** is how a central ML platform avoids becoming **The Platform Mandate**: teams adopt it because registering takes a day, and migration happens when the golden path is better than what they have.
+Veldmark chooses the hybrid. The decision of **Tuesday 9 November 2027** makes one group model registry (MLflow) and one prediction-log and monitoring standard mandatory for every production model, regardless of where it trains. New models at Tradeyard and Motorvane use a golden path on AWS: SageMaker for training jobs, serving on the shared EKS platform, features from the event backbone. Hearthly keeps Vertex AI while it stays on Google Cloud, and Keybridge keeps Azure Machine Learning, but their models are registered in the group registry and log predictions to the same standard. **Registration first, migration later** is how a central ML platform avoids becoming **The Forced Fit**: teams adopt it because registering takes a day, and migration happens when the golden path is better than what they have.
 
 {id: ml-platform--build-or-buy-for-individual-capabilities}
 ### Build or buy for individual capabilities
@@ -308,7 +308,7 @@ The jobs row matters for Veldmark because Tradeyard runs small jobs sections in 
 {id: ml-platform--failure-modes}
 ## Failure Modes
 
-- **The model nobody can list.** No registry, so nobody knows which models exist, who owns them or what they cost. Priya's 23 ownerless models are the measurable form of **The Unwatched Model**.
+- **The model nobody can list.** No registry, so nobody knows which models exist, who owns them or what they cost. Priya's 23 ownerless models are the measurable form of **Set-and-Forget AI**.
 - **The undeclared consumer.** A price model built for a badge is used as a ranking feature, a fraud feature and a sales-targeting input, and a change for one consumer breaks the other three.
 - **Tier creep.** An inform-tier model is pulled into a commit-tier use because it exists and looks accurate. Zillow Offers is the documented extreme; smaller versions include automatic pricing of pro packages from a demand model.
 - **Training on your own influence.** A price hint shifts asking prices, ranking shifts contacts, and the next model learns from the shift. Without a clean label, the model converges on itself.

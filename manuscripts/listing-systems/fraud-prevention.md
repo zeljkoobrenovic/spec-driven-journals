@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Scam Inbox** — payment-link phishing and deposit requests close in the conversation, so messaging without link, domain and pattern controls becomes the platform's main fraud channel.
-> * **The Unwatched Model** — a fraud model with stale labels and no shadow testing goes on approving the scam pattern that replaced the one it was trained on.
-> * **The Duplicate Echo** — when stolen photos are treated as harmless duplicates, the deduplication pipeline that should expose a fake listing ends up hiding it.
+> * **Fast Mail for Fraudsters** — payment-link phishing and deposit requests close in the conversation, so messaging without link, domain and pattern controls becomes the platform's main fraud channel.
+> * **Set-and-Forget AI** — a fraud model with stale labels and no shadow testing goes on approving the scam pattern that replaced the one it was trained on.
+> * **Seeing Double** — when stolen photos are treated as harmless duplicates, the deduplication pipeline that should expose a fake listing ends up hiding it.
 
 A listing marketplace is a machine for getting strangers to trust each other enough to meet, call or pay. Fraud exploits exactly that. The fraudster borrows the trust the platform has built, uses it to start a conversation, and then moves the victim somewhere the platform cannot see: a bank transfer, a fake payment page, a messaging app. **Most of the loss happens after the victim has left the platform, but the platform is where the scam was set up.**
 

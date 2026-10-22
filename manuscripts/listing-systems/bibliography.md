@@ -13,7 +13,7 @@
 
 > **[FAILURE PATTERNS THIS SECTION ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Platform Mandate** — company engineering posts are the largest evidence type on this page, and each describes one group's platform at one date; reading the year and the citing context keeps a published design from becoming a mandate for markets it was not built for.
+> * **The Forced Fit** — company engineering posts are the largest evidence type on this page, and each describes one group's platform at one date; reading the year and the citing context keeps a published design from becoming a mandate for markets it was not built for.
 
 This page lists the external sources the chapters cite. The research was conducted in **October 2026**, and most entries were consulted then; where a chapter recorded an access date, a version or a "last updated" date, the entry keeps it. Some company pages blocked automated access during the research, and a few facts are known only through **secondary summaries** (a trade-press article or a third-party digest of an engineering post); the entries say so where the citing chapter did. Ownership and brand names follow the sources as of 2026: Schibsted is now Vend, eBay Kleinanzeigen is now Kleinanzeigen, and the former eBay Classifieds Group is part of Adevinta.
 

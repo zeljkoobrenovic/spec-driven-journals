@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Ghost Inventory** — a listing marked sold in its owning service stays in a downstream copy that never processed the transition.
-> * **Index-as-Database** — when nobody owns the aggregate, the search index becomes the only place where a listing's current state can be read.
-> * **Entitlement Spaghetti** — paid flags stored as listing fields drift from what the seller bought and from the listing's actual state.
+> * **Search as System of Record** — when nobody owns the aggregate, the search index becomes the only place where a listing's current state can be read.
+> * **Billing by Guesswork** — paid flags stored as listing fields drift from what the seller bought and from the listing's actual state.
 
 Every listing marketplace has a table called something like `ads`, `items` or `listings`, and most have had it since the first release. It starts with a title, a price, a category and a status column. Fifteen years later it has two hundred columns, a status field with twenty values, three flags that mean "promoted" in different ways and a `deleted` column that nobody trusts. **The listing is the oldest and most copied object in the platform, and usually the least designed.**
 

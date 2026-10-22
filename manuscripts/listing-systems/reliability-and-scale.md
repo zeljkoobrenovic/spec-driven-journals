@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — when the search index cannot be rebuilt cheaply and safely from upstream data, every reindex is a risky event that someone schedules for a quiet hour that turns out not to be quiet.
+> * **Search as System of Record** — when the search index cannot be rebuilt cheaply and safely from upstream data, every reindex is a risky event that someone schedules for a quiet hour that turns out not to be quiet.
 > * **Vanity Liquidity** — uptime percentages per service look healthy while the evening journeys that produce contacts degrade; objectives must be set on the journeys that create matches.
-> * **The Acquisition Archipelago** — four stacks with four search clusters, four observability bills and four on-call rotations pay for peak capacity and reliability engineering four times.
+> * **Deal-Shaped Architecture** — four stacks with four search clusters, four observability bills and four on-call rotations pay for peak capacity and reliability engineering four times.
 
 The earlier chapters of [Part VII — PLATFORM: The Distributed System Underneath](#part-7) built the shared platform beneath Veldmark's brands; this one asks whether that platform holds at the hour when liquidity is made. **Reliability engineering in a marketplace is mostly the discipline of knowing the traffic shape and designing for it**, rather than reacting to it. The shape is familiar: quiet nights, a lunchtime bump and a long evening peak when people browse from the sofa. On top come the spikes the business creates itself — a television campaign, a push notification to millions of alert subscribers, a bulk feed from a large dealer group — and the traffic nobody invited, from scrapers and bots.
 
@@ -127,7 +127,7 @@ The same control points apply to every journey, not only to search, the one most
 The brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time. Five standard rules keep them apart.
 
 1. **Batch work never shares capacity with peak interactive work by default.** Reindexing, backfills, sitemap rebuilds and model scoring run on separate capacity, or are throttled and scheduled outside peak windows by a calendar the platform enforces. Vinted's indexing team switched its connectors to "idle indexing" after catch-up to reduce cluster pressure ([Vinted Engineering, 2021](https://vinted.engineering/2021/02/08/elasticsearch-index-management/)).
-2. **A reindex is a deployment.** Building a new index beside the old one and switching an alias, as [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) describes, lets the new index warm before it takes traffic. An in-place full reindex that evicts caches is the Index-as-Database failure in operational form: the index cannot be rebuilt cheaply from upstream data, so it is rebuilt in place.
+2. **A reindex is a deployment.** Building a new index beside the old one and switching an alias, as [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) describes, lets the new index warm before it takes traffic. An in-place full reindex that evicts caches is the Search as System of Record failure in operational form: the index cannot be rebuilt cheaply from upstream data, so it is rebuilt in place.
 3. **Optional calls are separate calls.** Vinted split facet requests from item search in 2023, accepting about 20% more cluster CPU to make item search about 71 ms faster, and cached facet responses at about a 50% hit ratio ([Vinted Engineering, 2023](https://vinted.engineering/2023/03/21/faceted-search-using-elasticsearch/)). Separate calls can be degraded separately.
 4. **Bulk writers are rate-limited separately from consumers.** A dealer group's 40,000-listing price update should queue behind interactive edits, not beside them (see [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion)).
 5. **Tenants are isolated where blast radius matters.** On a shared platform, one brand's surge should not slow another's search. Separate clusters, or separate node pools with quotas, per brand or per country are the usual answer.
@@ -205,7 +205,7 @@ The marketplace-specific part of the ladder is its order: **bots first, optional
 
 **Figure 6:** *Degradation is planned ballast: under load the search journey gives up bots first, optional features second and freshness third, so that search itself is the last thing to go.*
 
-Each journey has its own ladder. For messaging, degraded mode delays attachments and read receipts but not the delivery of text, and never skips safety scanning: a messaging system that turns off scam detection under load turns a reliability incident into a fraud incident, as The Scam Inbox pattern warns. For alerts, degraded mode delays digests and keeps instant alerts. For insertion, degraded mode accepts and queues submissions, tells the seller that publication is delayed, and keeps moderation in the path.
+Each journey has its own ladder. For messaging, degraded mode delays attachments and read receipts but not the delivery of text, and never skips safety scanning: a messaging system that turns off scam detection under load turns a reliability incident into a fraud incident, as the Fast Mail for Fraudsters pattern warns. For alerts, degraded mode delays digests and keeps instant alerts. For insertion, degraded mode accepts and queues submissions, tells the seller that publication is delayed, and keeps moderation in the path.
 
 {id: reliability-and-scale--multiple-regions-how-far-to-go}
 ## Multiple Regions: How Far to Go
@@ -300,10 +300,10 @@ The best-documented FinOps work in classifieds is Adevinta's, and it points to p
 
 **The platform team holds the largest cost levers**, because its defaults apply to everyone.
 
-{id: reliability-and-scale--cost-and-the-acquisition-archipelago}
-### Cost and the Acquisition Archipelago
+{id: reliability-and-scale--cost-and-deal-shaped-architecture}
+### Cost and Deal-Shaped Architecture
 
-Veldmark's three search engines, three clouds and four observability stacks are the cost face of The Acquisition Archipelago. Each brand pays for its own peak headroom, its own on-call rotation and its own telemetry. The September 2027 decision to move Tradeyard and Hearthly to a shared search platform on Amazon OpenSearch Service, with Motorvane staying on Elasticsearch until a 2029 review, is justified in the decision record partly by reliability — one team that does peak rehearsals and degradation ladders well instead of three that do them partly — and partly by cost. The record also carries the counter-argument: a shared cluster concentrates blast radius, so tenancy isolation per brand and country is a requirement of the decision, not an option.
+Veldmark's three search engines, three clouds and four observability stacks are the cost face of Deal-Shaped Architecture. Each brand pays for its own peak headroom, its own on-call rotation and its own telemetry. The September 2027 decision to move Tradeyard and Hearthly to a shared search platform on Amazon OpenSearch Service, with Motorvane staying on Elasticsearch until a 2029 review, is justified in the decision record partly by reliability — one team that does peak rehearsals and degradation ladders well instead of three that do them partly — and partly by cost. The record also carries the counter-argument: a shared cluster concentrates blast radius, so tenancy isolation per brand and country is a requirement of the decision, not an option.
 
 {id: reliability-and-scale--veldmark-worked-example-the-brown-out-redesigned}
 ## Veldmark Worked Example: The Brown-Out, Redesigned

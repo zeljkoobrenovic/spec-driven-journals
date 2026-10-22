@@ -17,7 +17,7 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — Search documents that hold data found nowhere else, or that can only be rebuilt by a week-long batch job, turn every mapping change into a risky migration.
+> * **Search as System of Record** — Search documents that hold data found nowhere else, or that can only be rebuilt by a week-long batch job, turn every mapping change into a risky migration.
 > * **Ghost Inventory** — Removal is the update teams measure least, so sold and fraudulent listings linger in results, facets and counts.
 > * **The Attribute Junkyard** — Thousands of loosely defined attribute keys mapped straight into the index explode the mapping and make facets disagree with filters.
 
@@ -251,7 +251,7 @@ Five practices separate a boring reindex from an incident.
 4. **Keep the old index for rollback** for a defined window, then delete it, because old indices cost as much as new ones.
 5. **Automate it.** Vinted reported in 2021 that, after a year of practice, its alias-based index management became "predictable, automated, and boring" ([Vinted Engineering, 2021](https://vinted.engineering/2021/02/08/elasticsearch-index-management/)). Boring is the target.
 
-The ability to reindex from the stream is also the test for **Index-as-Database**. Veldmark's rule, adopted with the 2027 decision, is a quarterly **rebuild drill**: each market's index is rebuilt from the event stream and read models into a fresh index, compared with the live one, and the differences explained. A field that differs and cannot be explained is a field that only exists in the index.
+The ability to reindex from the stream is also the test for **Search as System of Record**. Veldmark's rule, adopted with the 2027 decision, is a quarterly **rebuild drill**: each market's index is rebuilt from the event stream and read models into a fresh index, compared with the live one, and the differences explained. A field that differs and cannot be explained is a field that only exists in the index.
 
 {id: search-architecture--capacity-planning-for-evening-peaks}
 ## Capacity Planning for Evening Peaks
@@ -386,7 +386,7 @@ At group level, search is a platform decision with a product boundary running th
 
 The decisions I would insist on, in order of importance:
 
-1. **The index is rebuildable, and we prove it quarterly.** This one rule prevents **Index-as-Database** and makes engine changes, mapping changes and disaster recovery the same capability.
+1. **The index is rebuildable, and we prove it quarterly.** This one rule prevents **Search as System of Record** and makes engine changes, mapping changes and disaster recovery the same capability.
 2. **Product applications talk to a contract, never to the engine.** It is the cheapest insurance against a future engine change, and the only way to run two engines during a migration.
 3. **Removal latency is a named service-level objective (SLO)**, measured per market and per removal reason, with a priority lane. Insertion latency matters to sellers; removal latency is what protects buyers.
 4. **The attribute dictionary decides index fields.** No engineer maps a field that the schema does not flag.

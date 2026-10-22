@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Scam Inbox** — when anyone with a fresh e-mail address can message any seller, identity checks never reach the channel where scams close.
-> * **The Acquisition Archipelago** — four acquired identity systems mean four logins, four ban lists and four answers to "who is this trader", so a fraudster removed from one brand simply registers on the next.
+> * **Fast Mail for Fraudsters** — when anyone with a fresh e-mail address can message any seller, identity checks never reach the channel where scams close.
+> * **Deal-Shaped Architecture** — four acquired identity systems mean four logins, four ban lists and four answers to "who is this trader", so a fraudster removed from one brand simply registers on the next.
 > * **Moderation as an Afterthought** — verification added after a fraud wave, as a one-off document upload, produces badges that nobody can explain and evidence nobody can find.
 
 Part V treats trust as a shared platform, and [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) ended on its strongest and most expensive friction: asking users to prove who they are. This chapter decides how much a marketplace should know about its users. Most marketplaces answer that twice, badly. First they ask for almost nothing, because every registration field costs sign-ups. Then, after a fraud wave or a regulator's letter, they ask everyone for an identity document, because the incident made identity feel like the solution. Neither answer holds up. **The right amount of identity depends on what the user is about to do.** Browsing needs none. Publishing a rental in a city full of fake-rental rings needs a great deal.
@@ -209,7 +209,7 @@ For a listing marketplace, the sensitive actions are predictable, and each deser
 | Change of e-mail, phone or password | Locks the owner out | Re-authenticate; notify the old contact point; delay the change of the recovery address |
 | **Change of payout account** | Redirects the victim's sale proceeds | Re-authenticate at L3 or above; hold payouts for a cooling period; notify |
 | Publishing many listings quickly | Uses an aged account's reputation | Velocity limits by level (see [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)) |
-| Sending messages with links or contact details | The Scam Inbox | Message friction by level (see [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)) |
+| Sending messages with links or contact details | Fast Mail for Fraudsters | Message friction by level (see [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)) |
 | Enabling a verified badge in a new brand | Borrowed trust | Require fresh authentication and a matching profile name |
 
 {id: identity-and-verification--recovery-is-the-real-login}
@@ -331,7 +331,7 @@ Femke's own account shows what a badge should say. When Femke sold the bike thro
 | **Identity at registration** (everyone proves themselves) | Lowest; every casual seller pays the cost | High, but uniform | Most | Small, high-value, high-risk markets (rentals in a fraud-heavy city; high-value equipment) |
 | **Identity by action** (step-up at risky moments) | High for the many; friction for the few | High where it matters | Proportional | The default for horizontal and vertical marketplaces |
 | **Identity by incentive** (badges and ranking benefits for verified users) | High | Moderate; fraudsters skip it | Proportional | Complement to step-up; where buyers can choose verified sellers |
-| **No identity beyond e-mail** | Highest | Low; the Scam Inbox | Least | Never at scale for marketplaces with off-platform payment |
+| **No identity beyond e-mail** | Highest | Low; Fast Mail for Fraudsters | Least | Never at scale for marketplaces with off-platform payment |
 
 {id: identity-and-verification--build-buy-or-federate}
 ### Build, buy or federate

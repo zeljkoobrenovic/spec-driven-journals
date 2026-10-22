@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Duplicate Echo** — On a map, three agencies' listings of one flat become three stacked pins, and the clutter is visible at a glance in a way a ranked list hides.
+> * **Seeing Double** — On a map, three agencies' listings of one flat become three stacked pins, and the clutter is visible at a glance in a way a ranked list hides.
 > * **Ghost Inventory** — Cached map tiles and cluster counts keep showing sold and withdrawn listings long after search has removed them.
-> * **The Platform Mandate** — A shared search platform tuned for list-shaped horizontal classifieds, imposed on a map-first property portal, pushes the portal's teams to build a shadow geo stack.
+> * **The Forced Fit** — A shared search platform tuned for list-shaped horizontal classifieds, imposed on a map-first property portal, pushes the portal's teams to build a shadow geo stack.
 
 Part IV argues that most discovery queries are filters in disguise, and that the platform should compile a buyer's words, places and saved searches into its own structure. This chapter does that for place. Search usually treats location as one filter among many, a radius around a postcode applied before price and category; for many listing marketplaces that is backwards. A family looking for a flat starts with *where*: near a school, within half an hour of work, on this side of the river. A car buyer starts with *how far I am willing to drive to see it*. A buyer of a used sofa starts with *how far I can carry it*. **Place is often the first filter and the main one**, and in real estate it is also the main way people browse.
 
@@ -300,7 +300,7 @@ The mistakes I would look for first in a design review of map search:
 1. **Raw client geometry.** Clients send unbounded polygons or arbitrary bounding boxes straight to the engine. Symptoms: p99 driven by a few users' shapes; cache hit rates near zero; incident reports that start with "after the app release".
 2. **The viewport becomes a filter by accident.** The last map viewport leaks into the list view or into a saved search, and users get alerts for an area they only zoomed into. The fix is an explicit "search this area" state.
 3. **Aggregations over exact points.** Cluster centroids, heatmaps or vector-tile hits computed from the private point field. This is a privacy incident waiting to be discovered by a journalist or a stalker; the fix is that the map path cannot read the exact field.
-4. **Stacked pins (The Duplicate Echo).** One property, three listings, three pins. Agencies and buyers both notice, and it undermines trust in every count on the map.
+4. **Stacked pins (Seeing Double).** One property, three listings, three pins. Agencies and buyers both notice, and it undermines trust in every count on the map.
 5. **Stale tiles (Ghost Inventory).** Long-lived tile caches without event-based invalidation keep sold listings on the map, and the pin opens a dead page.
 6. **Isochrones without stated assumptions.** A transit commute computed for Sunday at noon, shown to a buyer who commutes on weekdays at 08:30. The departure time and mode must be visible and stored with saved searches.
 7. **Per-request routing at peak.** A routing contract priced per call, used uncached in the search path, turns a TV campaign into an invoice. The symptom is a monthly bill nobody forecast.
@@ -314,7 +314,7 @@ At group level, map search is a test of the principle Veldmark adopted with Comm
 
 The decisions I would put in front of the architecture advice forum:
 
-1. **Own the geo query compiler as part of the search platform.** Tomasz's team owns it; brands configure it (vertex caps, snapping tolerances, precision rules per category). This is the seam that keeps the shared platform from becoming **The Platform Mandate**: Hearthly gets the map-specific behavior it needs as configuration of a shared component, not as a fork.
+1. **Own the geo query compiler as part of the search platform.** Tomasz's team owns it; brands configure it (vertex caps, snapping tolerances, precision rules per category). This is the seam that keeps the shared platform from becoming **The Forced Fit**: Hearthly gets the map-specific behavior it needs as configuration of a shared component, not as a fork.
 2. **Write the precision rule as a platform invariant.** Which field may be matched, which may be returned, per brand and seller type, enforced in the compiler and the index mapping. Lucía Ortega, the group's Data Protection Officer, signs it off; changes go through a decision record.
 3. **Treat the canonical property as the map unit for real estate.** This makes entity resolution ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) a dependency of map search. Its accuracy becomes visible to every user, so its quality metrics belong on the search platform's dashboard, not only the data team's.
 4. **Buy or build routing on a volume forecast, not a feature list.** The commercial model, limits and display terms are decided by Ingrid with Mateus Carvalho (CTO) and finance, with a forecast of peak isochrone and matrix volumes. Re-forecast whenever a brand plans a commute-led campaign.

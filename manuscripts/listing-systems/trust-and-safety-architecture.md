@@ -19,7 +19,7 @@
 >
 > * **Moderation as an Afterthought** — a queue bolted onto the insertion flow cannot re-score edits, route reports or produce the evidence the DSA requires, and it grows faster than the team that empties it.
 > * **Ghost Inventory** — a takedown that reaches the listing database but not the alert digest, the recommendation cache or the SEO page leaves fraudulent listings visible after they were "removed".
-> * **The Unwatched Model** — moderation classifiers that auto-decide 94% of listings, with no prevalence sampling or overturn monitoring, look accurate while a new scam pattern goes past them.
+> * **Set-and-Forget AI** — moderation classifiers that auto-decide 94% of listings, with no prevalence sampling or overturn monitoring, look accurate while a new scam pattern goes past them.
 
 Most marketplaces build trust and safety (T&S, the policies, systems and people that keep users safe and the inventory honest) in the order problems appear. A keyword filter arrives after the first wave of spam, a review queue after the first press story, a report button after the first regulator letter. Each piece is attached to whatever system was nearest. Ten years later the group has **four moderation stacks that cannot share a signal**, and nobody can answer a simple question: *what did we remove last month, why, and did it actually disappear?*
 

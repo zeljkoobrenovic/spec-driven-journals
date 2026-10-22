@@ -17,7 +17,7 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Scam Inbox** — a messaging service built for delivery speed alone, with safety checks running after delivery or only on reports, becomes the place where payment-link phishing and deposit scams succeed.
+> * **Fast Mail for Fraudsters** — a messaging service built for delivery speed alone, with safety checks running after delivery or only on reports, becomes the place where payment-link phishing and deposit scams succeed.
 > * **Vanity Liquidity** — counting messages and form submissions instead of qualified, deduplicated leads that reach a professional's workflow sells exposure that professionals cannot convert, and renewals fail.
 > * **Ghost Inventory** — contact buttons, saved conversations and lead forms that stay live after a listing is sold keep producing contacts that nobody can satisfy, and charge professionals for them.
 

@@ -19,7 +19,7 @@
 >
 > * **The Attribute Junkyard** — Query tagging can only map words to attributes that exist once, with one meaning; free-form attributes leave queries nothing to compile to.
 > * **The Category Straitjacket** — A query categorizer hard-wired to one version of the category tree turns every taxonomy change into a relevance regression.
-> * **The Unwatched Model** — Query classifiers, spelling models and LLM query compilers decide what buyers see, yet often run without evaluation sets, monitoring or an owner.
+> * **Set-and-Forget AI** — Query classifiers, spelling models and LLM query compilers decide what buyers see, yet often run without evaluation sets, monitoring or an owner.
 
 A listing query is short, often misspelled, written in whatever language and dialect the buyer speaks, and usually **a request for a filter in disguise**. "ebike gazelle" means category e-bikes, brand Gazelle. "golf 8 automatik" means make Volkswagen, model Golf, generation 8, automatic gearbox. "T3 balcon Lyon 7" means three main rooms, a balcony, Lyon's 7th arrondissement. None of these buyers is asking for text relevance. They are asking the marketplace to recognize its own vocabulary in their words.
 

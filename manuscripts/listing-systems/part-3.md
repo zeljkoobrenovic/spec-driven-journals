@@ -18,7 +18,7 @@
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Feed Roulette** — Gives every channel a contract, validation, error feedback and reconciliation.
-> * **The Duplicate Echo** — Separates abuse from legitimate multi-listing and clusters the second for presentation.
+> * **Seeing Double** — Separates abuse from legitimate multi-listing and clusters the second for presentation.
 > * **Ghost Inventory** — Makes removal reach every copy, with evidence per consumer.
 
 [Part II — LISTING: Modeling the Thing Being Sold](#part-2) modeled the listing: a small aggregate referencing governed categories, attributes, media, places and accounts. This part puts that model under load. **Supply arrives through many doors, at different rhythms, from systems the marketplace does not control**, and each door tends to grow its own idea of what a listing is.

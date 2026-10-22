@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — OLX was assembled from dozens of acquired and rebranded local sites, and its engineering record shows the identity and service-estate clean-up that cross-brand work still needed in 2024–2025.
-> * **Paid-Rank Drift** — OLX is the clearest public case of paid visibility handled as an explicit ranking objective, and of a retrieval change that quietly penalized paid listings until the ranker was retrained.
-> * **The Country Fork** — The documented move to one front-end repository for three brands and one learning-to-rank repository with per-brand configuration is the remedy for per-country copies.
+> * **Deal-Shaped Architecture** — OLX was assembled from dozens of acquired and rebranded local sites, and its engineering record shows the identity and service-estate clean-up that cross-brand work still needed in 2024–2025.
+> * **Multiplier Creep** — OLX is the clearest public case of paid visibility handled as an explicit ranking objective, and of a retrieval change that quietly penalized paid listings until the ranker was retrained.
+> * **The Copy-Paste Country** — The documented move to one front-end repository for three brands and one learning-to-rank repository with per-brand configuration is the remedy for per-country copies.
 
 OLX Group has made almost every portfolio move a classifieds group can make. It rolled up local sites across four continents and rebranded many of them to one name. It merged regional businesses into joint ventures in which it kept a minority stake. It built an inventory-owning car business that briefly doubled its revenue, then sold or closed it. It left Russia after the 2022 invasion of Ukraine. And by 2026 it was a **compact European business of seven markets**, reported by its parent Prosus with margins near 50%.
 
@@ -203,7 +203,7 @@ OLX's search evolved through five stages on one engine, Apache Solr, and is the 
 
 *Learning to rank (LTR) trains a model to order results from labeled outcomes; NDCG (normalized discounted cumulative gain) is the standard offline ranking metric. Both are defined in [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking).*
 
-**The success label is a contact, not a sale**, because a classifieds platform rarely observes the sale, and the check that unique contacted sellers *rose* guards against a ranker that concentrates demand on a few sellers ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). And **paid visibility is an explicit, separate objective** rather than a multiplier hidden in a scoring formula. That is the opposite of Paid-Rank Drift: whoever changes the ranker has to see the paid objective.
+**The success label is a contact, not a sale**, because a classifieds platform rarely observes the sale, and the check that unique contacted sellers *rose* guards against a ranker that concentrates demand on a few sellers ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). And **paid visibility is an explicit, separate objective** rather than a multiplier hidden in a scoring formula. That is the opposite of Multiplier Creep: whoever changes the ranker has to see the paid objective.
 
 {id: case-olx--hybrid-search-proved-in-the-fallback-then-in-the-main-flow}
 ### Hybrid search: proved in the fallback, then in the main flow

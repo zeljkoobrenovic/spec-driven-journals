@@ -18,7 +18,7 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Vanity Liquidity** — Without a governed definition of a contact, brands report message counts, page views and listings, and the group steers on the numbers that are easiest to grow.
-> * **The Acquisition Archipelago** — Three warehouses with three event vocabularies, inherited from three acquisitions, make every cross-brand question a reconciliation project.
+> * **Deal-Shaped Architecture** — Three warehouses with three event vocabularies, inherited from three acquisitions, make every cross-brand question a reconciliation project.
 
 Most marketplace data platforms are built backwards. A warehouse arrives first, because finance needs revenue reporting. Tracking arrives next, because product managers want funnels, and it is usually a vendor snippet that records whatever the front-end team names an event that sprint. Machine learning arrives third and discovers that impressions were never logged with their positions. Professional-seller statistics arrive last, computed in yet another place, and dealers notice that the leads in their dashboard do not match the leads in their inbox. **By then the platform holds a great deal of data and very few facts.**
 

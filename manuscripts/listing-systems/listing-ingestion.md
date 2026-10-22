@@ -19,7 +19,7 @@
 >
 > * **Feed Roulette** — Partner feeds accepted without contracts, validation or feedback make every nightly import a surprise for the dealer and for the platform.
 > * **Ghost Inventory** — Removals that arrive late, or never, through feeds keep sold cars and let flats searchable and contactable long after they are gone.
-> * **The Duplicate Echo** — One seller's stock arriving through two channels, or one property through three software vendors, multiplies listings unless ingestion recognizes the same partner record.
+> * **Seeing Double** — One seller's stock arriving through two channels, or one property through three software vendors, multiplies listings unless ingestion recognizes the same partner record.
 
 A marketplace's supply arrives through more doors than its product team usually counts. A private seller photographs a city bike in the app. A dealer's management system pushes 200 cars every evening. An agency's CRM sends a flat to fifteen portals at once. A developer uploads a spreadsheet of new-build units. A partner API creates listings for a fleet of rental vans. Each door was built at a different time, by a different team, for a different customer, and **each tends to grow its own idea of what a listing is**.
 

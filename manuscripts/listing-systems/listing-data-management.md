@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — the search index holds fields and corrections that exist nowhere else, so it can be neither rebuilt nor trusted as a read model.
+> * **Search as System of Record** — the search index holds fields and corrections that exist nowhere else, so it can be neither rebuilt nor trusted as a read model.
 > * **Ghost Inventory** — read models without staleness budgets and caches without removal paths keep serving sold and removed listings.
-> * **The Acquisition Archipelago** — acquired brands bring their own databases, warehouses and retention rules, so the group cannot say where a listing or a person's data lives.
+> * **Deal-Shaped Architecture** — acquired brands bring their own databases, warehouses and retention rules, so the group cannot say where a listing or a person's data lives.
 
 The previous chapter, [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), made it easy for any system to keep its own copy of a listing. That was the point: search, alerts, trust and safety, SEO, analytics and partners each need listing data in a different shape, and a published event stream lets them build it without calling the listing service at the Sunday-evening peak. **The price of that independence is copies**, and copies raise three questions that events alone do not answer: which copy is right, how wrong may the others be, and how does a deletion reach all of them?
 
@@ -136,7 +136,7 @@ Each consistency promise has a standard implementation.
 {id: listing-data-management--the-index-is-a-read-model}
 ### The index is a read model
 
-The search index is the copy most likely to stop being a read model. Teams add fields to the index that are computed nowhere else (a quality score, a manual boost, a moderator's correction), run one-off update scripts against it, and eventually discover that they cannot rebuild it without losing those changes. That is **Index-as-Database**. The test: could you delete the index today and rebuild it from the SoR and the event stream, with no loss? If not, find the fields that live only in the index and give each a system of record. Vinted's 2024 migration from Elasticsearch to Vespa illustrates the payoff of the opposite discipline: a "search contract" in a Go gateway let the engine be replaced without changing product applications ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns the index design; this chapter owns the rule that it is rebuildable.
+The search index is the copy most likely to stop being a read model. Teams add fields to the index that are computed nowhere else (a quality score, a manual boost, a moderator's correction), run one-off update scripts against it, and eventually discover that they cannot rebuild it without losing those changes. That is **Search as System of Record**. The test: could you delete the index today and rebuild it from the SoR and the event stream, with no loss? If not, find the fields that live only in the index and give each a system of record. Vinted's 2024 migration from Elasticsearch to Vespa illustrates the payoff of the opposite discipline: a "search contract" in a Go gateway let the engine be replaced without changing product applications ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns the index design; this chapter owns the rule that it is rebuildable.
 
 {id: listing-data-management--in-practice-what-marketplaces-have-documented}
 ## In Practice: What Marketplaces Have Documented
@@ -316,7 +316,7 @@ In real estate, removing names does not anonymize price history. Hearthly keeps 
 ## Failure Modes
 
 - **The unregistered copy.** A team exports listings to a spreadsheet, a partner, a test environment or a notebook "just once". It holds personal data, it is never cleaned and it is found during an erasure request or a breach. Registration as a precondition for access is the control.
-- **Index-as-Database.** Fields or corrections that live only in the search index. The index cannot be rebuilt, so migrations stall and corrections are lost on the next reindex.
+- **Search as System of Record.** Fields or corrections that live only in the search index. The index cannot be rebuilt, so migrations stall and corrections are lost on the next reindex.
 - **Read-your-writes broken.** A seller edits a price, sees the old one on the next page, edits again, and creates two price-drop alerts for watchers. Sellers' own reads must come from the SoR or carry a version token.
 - **Replica flapping.** Load-balanced reads across replicas with different lag show a buyer prices going back and forth. Version-aware caches or session affinity prevent it.
 - **Caches without removal paths.** Pages and images cached with long expiry and no purge by listing ID: the sold bike keeps loading for days. Every cache of listing data needs a surrogate key.

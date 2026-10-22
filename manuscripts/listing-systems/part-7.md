@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Index-as-Database** — Makes the search index one registered read model that can be rebuilt from the event stream.
-> * **The Country Fork** — Replaces copied codebases with a tenancy model, configuration over code and owned extension points.
-> * **The Unwatched Model** — Gives every production model an owner, a decision tier, a prediction log and monitoring.
+> * **Search as System of Record** — Makes the search index one registered read model that can be rebuilt from the event stream.
+> * **The Copy-Paste Country** — Replaces copied codebases with a tenancy model, configuration over code and owned extension points.
+> * **Set-and-Forget AI** — Gives every production model an owner, a decision tier, a prediction log and monitoring.
 
 Parts II to VI designed what a marketplace does: model listings, take supply in, match it to demand, keep it safe and make money from it. Part VII turns to **the distributed system that all of those capabilities stand on**. Most groups never designed this layer; it grew from polling jobs, nightly dumps and copied country codebases.
 

@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — without a shared capability vocabulary, nobody can even list which capabilities the group pays for several times, let alone decide which to consolidate.
-> * **The Platform Mandate** — a heat map that scores only duplication pushes differentiating capabilities onto a central platform that does not fit them, and local teams route around it.
+> * **Deal-Shaped Architecture** — without a shared capability vocabulary, nobody can even list which capabilities the group pays for several times, let alone decide which to consolidate.
+> * **The Forced Fit** — a heat map that scores only duplication pushes differentiating capabilities onto a central platform that does not fit them, and local teams route around it.
 > * **Vanity Liquidity** — capabilities measured by their own activity (listings ingested, searches served) instead of by the value-stream outcomes they serve (contacts, sales) get optimized for the wrong thing.
 
 [From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution) showed how marketplace groups came to run several brands on stacks from different waves. Before such a group can decide what to share, it needs the third piece of business knowledge this part supplies: a description of **what the marketplace does that would still be true after the next reorganization and the next replatforming**. That description is a capability map. Badly made maps deserve their reputation as enterprise-architecture paperwork. A well-made one is the most useful single page a Chief Architect owns, because it is the only artifact on which a GM, a CFO, a platform lead and an acquirer's integration team can point to the same box and mean the same thing.
@@ -306,7 +306,7 @@ At Veldmark this explains two of the heat-map outcomes. Valuo and Motorvane's ma
 
 **The org chart in disguise.** A map with a box per department changes at every reorganization, and every owner defends their box. Veldmark's map has no team names in it. Ownership is a separate table that maps capabilities to owners, and it is expected to change.
 
-**Duplication as the only score.** A heat map colored only by number of implementations recommends merging everything that is duplicated, including the differentiating capabilities. That is how The Platform Mandate begins. Score differentiation separately, by the people who own the commercial outcome.
+**Duplication as the only score.** A heat map colored only by number of implementations recommends merging everything that is duplicated, including the differentiating capabilities. That is how The Forced Fit begins. Score differentiation separately, by the people who own the commercial outcome.
 
 **Mapping everything to level 4.** A 600-box map takes six months, is out of date on delivery, and nobody reads it. Map level 3 only where a decision is pending.
 
@@ -327,7 +327,7 @@ At group scale the capability map is less a model than a governance instrument. 
 2. **Separate the scorers and publish the evidence.** Product scores differentiation, engineering scores maturity, architecture counts duplication, finance attributes cost and revenue. A disputed score is a useful conversation. A score nobody can trace is a political one.
 3. **Make "share the machinery, keep the content" the default hypothesis** for any duplicated capability, and require evidence to move away from it in either direction: towards full consolidation or towards full local ownership.
 4. **Tie the map to money.** Every level-2 capability should eventually carry its run cost and, where it can be attributed, its revenue. Veldmark's €38 million run-cost target became credible only when it could be allocated to capabilities: identity, trust and safety, search, catalog and data, plus media later.
-5. **Use the map at every acquisition.** An acquired marketplace is mapped onto the group's capabilities in its first month, before any integration plan. This is the cheapest defence against The Acquisition Archipelago, and it is the starting point of [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation).
+5. **Use the map at every acquisition.** An acquired marketplace is mapped onto the group's capabilities in its first month, before any integration plan. This is the cheapest defence against Deal-Shaped Architecture, and it is the starting point of [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation).
 
 What to watch over time: the number of deliberate duplicates (it should be small and each should have a reason), the share of capabilities with an owner and dated evidence, and whether teams and bounded contexts are actually aligning to the map. If after two years team boundaries still cut across level-2 capabilities, the map is decorating a wall. [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering) covers the team side.
 

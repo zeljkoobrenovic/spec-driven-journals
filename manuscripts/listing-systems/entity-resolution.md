@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Duplicate Echo** — reposts, multi-feed copies and multi-agency listings crowd result pages and alerts, and nobody owns the decision of what to show once.
-> * **The Unwatched Model** — a pairwise matcher merges and hides listings without labeled evaluation, drift monitoring or an owner who can explain a wrong merge to an agency.
+> * **Seeing Double** — reposts, multi-feed copies and multi-agency listings crowd result pages and alerts, and nobody owns the decision of what to show once.
+> * **Set-and-Forget AI** — a pairwise matcher merges and hides listings without labeled evaluation, drift monitoring or an owner who can explain a wrong merge to an agency.
 > * **Ghost Inventory** — a cluster keeps a property "on the market" after its last live listing has gone, because the cluster's state was never tied to the lifecycle of its members.
 
 Part III follows supply from the seller to the result page. [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) left every listing with a canonical address, a decoded VIN where one exists, and image hashes, so listings can now be compared, and the comparison shows that many of them describe the same thing. This chapter's online checks run inside [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline), and search, alerts and valuation read the cluster identifiers it creates.
@@ -169,7 +169,7 @@ The usual implementation stores the cluster ID on each listing's search document
 
 When a cluster collapses to one card, one listing's photos, price and agency appear first. This is the most politically sensitive decision in the chapter. The options are the most complete listing, the earliest published, the lowest price, the highest quality score, rotation among agencies, or the listing that pays for visibility. Each one rewards a different behavior. "Lowest price" rewards the agency with the lowest fee. "Earliest" rewards the agency that publishes first. "Quality score" rewards good photos and complete attributes, which is what buyers want. "Paid" silently turns deduplication into an auction.
 
-My rule is that **the representative rule is a published ranking parameter**, decided by product and legal together, and never changed by an engineer tuning a model. If paid placement affects it, the card says so. The EU Platform-to-Business Regulation and the DSA both require the main ranking parameters to be described to business users and consumers ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)). A representative rule is one of them. **Paid-Rank Drift often starts in a cluster rule that nobody thinks of as ranking.**
+My rule is that **the representative rule is a published ranking parameter**, decided by product and legal together, and never changed by an engineer tuning a model. If paid placement affects it, the card says so. The EU Platform-to-Business Regulation and the DSA both require the main ranking parameters to be described to business users and consumers ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)). A representative rule is one of them. **Multiplier Creep often starts in a cluster rule that nobody thinks of as ranking.**
 
 {id: entity-resolution--a-documented-example-idealista-s-duplicate-control}
 ### A documented example: Idealista's duplicate control
@@ -235,7 +235,7 @@ The same detectors run on Tradeyard, Veldmark's general classifieds brand, for a
 | Entity ownership | Shared group registry | Several brands in one vertical and country | Coordination and legal review across brands |
 | | Per-brand registry | Brands in different verticals | Duplicated machinery |
 
-The trade-off that decides most of the others is **where the cluster ID is stored**. If it exists only as a field on search documents, the index becomes the only place that knows which listings belong together, and nobody can rebuild it from anything else. That is **Index-as-Database** in miniature. The registry is the system of record for clusters; search, alerts and analytics hold copies.
+The trade-off that decides most of the others is **where the cluster ID is stored**. If it exists only as a field on search documents, the index becomes the only place that knows which listings belong together, and nobody can rebuild it from anything else. That is **Search as System of Record** in miniature. The registry is the system of record for clusters; search, alerts and analytics hold copies.
 
 {id: entity-resolution--vertical-differences}
 ## Vertical Differences
@@ -275,7 +275,7 @@ At group scale, entity resolution raises five decisions.
 
 **1. Share the machinery, not necessarily the entities.** Blocking, scoring, clustering, the registry pattern, review tooling and evaluation are the same problem in every brand, and Common Ground should build them once. Entities are vertical: Hearthly's canonical property, Motorvane's vehicle and Tradeyard's abuse clusters have different identifiers, policies and owners. The platform provides the engine; each vertical domain owns its entity model and its policies.
 
-**2. Name the owner of each entity.** The canonical property belongs to Hearthly's listing data domain, because valuation, search and pro reporting depend on it. Abuse clusters belong to the trust-and-safety platform under Aisha Rahman, because their actions are enforcement with appeals. Cross-feed merges belong to ingestion. Each owner sets thresholds, answers disputes and signs off on model changes. **A matcher without an owner is The Unwatched Model, even if it is very accurate.**
+**2. Name the owner of each entity.** The canonical property belongs to Hearthly's listing data domain, because valuation, search and pro reporting depend on it. Abuse clusters belong to the trust-and-safety platform under Aisha Rahman, because their actions are enforcement with appeals. Cross-feed merges belong to ingestion. Each owner sets thresholds, answers disputes and signs off on model changes. **A matcher without an owner is Set-and-Forget AI, even if it is very accurate.**
 
 **3. Decide the legal boundary of linking.** Linking listings across brands, such as a Tradeyard Portugal flat and a Hearthly listing, or using Keybridge data at Hearthly, is a data-protection and competition question before it is a technical one. Lucía Ortega, the Group Data Protection Officer, decides with the brand owners which sources may be linked, and the decision is written into the matcher's input contract.
 

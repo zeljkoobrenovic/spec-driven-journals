@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — Acquired marketplaces that keep their whole stacks indefinitely leave the group paying for each capability several times; the consolidation sequence is the way out.
-> * **The Platform Mandate** — Forcing an acquired marketplace onto the acquirer's product platform on the deal's timetable is how local teams learn to route around the group.
+> * **Deal-Shaped Architecture** — Acquired marketplaces that keep their whole stacks indefinitely leave the group paying for each capability several times; the consolidation sequence is the way out.
+> * **The Forced Fit** — Forcing an acquired marketplace onto the acquirer's product platform on the deal's timetable is how local teams learn to route around the group.
 > * **Ghost Inventory** — Brand and platform migrations that break redirects, alerts and partner removals leave sold and moved listings live in search engines, inboxes and feeds.
 
 A marketplace acquisition is usually justified in two sentences: the target is a market leader, and owning it alongside the group's other marketplaces will save money and grow revenue. The first sentence is about liquidity, which the acquirer must not damage. The second is about platforms, which the acquirer must change. **Consolidation is the work of changing the platform without damaging the liquidity**, and its difficulty is that the two compete for the same months, teams and risk budget.
@@ -57,7 +57,7 @@ An acquirer has five integration options for an acquired marketplace, plus the o
 | **Merge brands** | One consumer brand replaces another | Inventory and accounts, migrated | Very low | Naspers rebranded acquired local sites as OLX in several countries in 2014 (widely reported, [Wikipedia](https://en.wikipedia.org/wiki/OLX)) |
 | **Divest** | The business leaves the group | — | — | The UK competition authority required the sale of Gumtree UK and Shpock as a condition of Adevinta's eCG acquisition, with transitional services offered for both ([CMA, 2021](https://assets.publishing.service.gov.uk/media/606de28fe90e076f520fecdb/Adevinta-eBay_-_Decision_that_UILs_offer_may_be_acceptable.pdf)) |
 
-Options are chosen per business and may be combined over time: a marketplace can be held separate for a year, federated, and then moved onto shared services capability by capability. What should not happen is a choice by default. **An acquisition without a recorded integration option becomes the Acquisition Archipelago by inertia.**
+Options are chosen per business and may be combined over time: a marketplace can be held separate for a year, federated, and then moved onto shared services capability by capability. What should not happen is a choice by default. **An acquisition without a recorded integration option becomes Deal-Shaped Architecture by inertia.**
 
 **Commercial integration can run years ahead of technical integration**, and sometimes should. Two documented cases show how long "hold separate" can last at the brand level while the companies are combined. Immowelt and Immonet were combined under one holding company in 2015, with two sites in Nuremberg and Hamburg ([Immowelt, 2015](https://www.immowelt.de/ueberuns/presse/pressemitteilungenkontakt/immowelt-group/immowelt-und-immonet-schliessen-sich-zusammen/)); in 2024 Immowelt GmbH was renamed AVIV Germany and still ran both immowelt and immonet.de ([Online Marketplaces, 2024](https://www.onlinemarketplaces.com/articles/immowelts-german-parent-company-rebranded-to-aviv-germany)). In France, AVIV launched **Ultimmo** in 2022, a single professional offer across SeLoger, Logic-Immo and Meilleurs Agents ([MySweetImmo, 2022](https://www.mysweetimmo.com/2022/11/03/pros-de-limmo-aviv-group-lance-ultimmo-une-offre-pour-capter-vendeurs-et-acheteurs/)).
 

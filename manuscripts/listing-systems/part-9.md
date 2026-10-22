@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — Four of the six cases are portfolios assembled by acquisition, and the record shows what each kept, shared and paid for.
-> * **The Platform Mandate** — Adevinta's planned product-platform convergence and AVIV's 2021 integration goal both gave way to local autonomy with selected group functions.
-> * **The Unwatched Model** — Zillow Offers and automotive price ratings show models making consequential decisions about money and exposure.
+> * **Deal-Shaped Architecture** — Four of the six cases are portfolios assembled by acquisition, and the record shows what each kept, shared and paid for.
+> * **The Forced Fit** — Adevinta's planned product-platform convergence and AVIV's 2021 integration goal both gave way to local autonomy with selected group functions.
+> * **Set-and-Forget AI** — Zillow Offers and automotive price ratings show models making consequential decisions about money and exposure.
 
 [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution) closed the argument of this book. Part IX asks **whether it survives contact with what real groups did**. The cases are not company profiles. Each asks what was shared, at which layer, and what it cost when the strategy changed.
 

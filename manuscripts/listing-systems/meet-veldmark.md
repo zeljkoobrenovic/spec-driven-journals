@@ -17,8 +17,8 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — Hearthly, its Spanish predecessor Casavista and Keybridge each arrived with a complete stack, and in 2027 the group still runs four identity systems, four trust-and-safety stacks and three data warehouses.
-> * **The Country Fork** — Tradeyard's Belgian and Portuguese sites run on their own copies of Yardstick, and all four countries keep separate category trees and rule sets, so a fraud rule written on a Sunday night reaches Belgium on Wednesday and Poland and Portugal never.
+> * **Deal-Shaped Architecture** — Hearthly, its Spanish predecessor Casavista and Keybridge each arrived with a complete stack, and in 2027 the group still runs four identity systems, four trust-and-safety stacks and three data warehouses.
+> * **The Copy-Paste Country** — Tradeyard's Belgian and Portuguese sites run on their own copies of Yardstick, and all four countries keep separate category trees and rule sets, so a fraud rule written on a Sunday night reaches Belgium on Wednesday and Poland and Portugal never.
 > * **Ghost Inventory** — the Rotterdam city bike, sold on Monday evening, still appears in 214 alert e-mails on Tuesday morning, and it is the book's spine example for a reason.
 
 This book tests its argument against **one fictional group, detailed enough to be realistic and consistent enough to be followed across fifty chapters.** The usual alternatives fail in opposite ways: a toy marketplace, one listing table and a search box, is too simple to show why the hard decisions are hard, and a real company's internals cannot be verified and its choices do not transfer. This page is the group's reference. The failure patterns of [Unlisted: Fifteen Ways Listing Systems Go Wrong](#where-listing-systems-go-wrong) appear here as Veldmark's 2027 problems, and every chapter from Part I on opens with a scene whose people, systems and numbers come from this page.
@@ -167,14 +167,14 @@ The recurring customers, private seller **Femke** (she/her) in Rotterdam, dealer
 
 When Ingrid arrives, the marketplaces work and the group is profitable, but its effort and duplication grow faster than the business. Eight problems define her starting position; most are instances of patterns from [Unlisted: Fifteen Ways Listing Systems Go Wrong](#where-listing-systems-go-wrong).
 
-1. **Four of everything.** Four identity systems, four trust-and-safety stacks, three search engines, three clouds, four product catalogs, three data warehouses. *(The Acquisition Archipelago.)*
+1. **Four of everything.** Four identity systems, four trust-and-safety stacks, three search engines, three clouds, four product catalogs, three data warehouses. *(Deal-Shaped Architecture.)*
 2. **Six minutes to searchable.** On Tradeyard, a new listing takes **6 minutes** at the 95th percentile (p95) from submission to searchable, because moderation and indexing work in batches. The target is **90 seconds** p95 by the end of 2028.
 3. **Six weeks for a category.** Tradeyard's four country trees cannot share features, and a new category takes about **6 weeks**. The target is **2 days**. *(The Category Straitjacket, The Attribute Junkyard.)*
-4. **Duplicates at Hearthly.** With **1.7 listings per property** in France, buyers see the same flat repeatedly and agencies argue about whose copy ranks first. *(The Duplicate Echo.)*
-5. **Payment-link phishing on Tradeyard.** Scammers posing as buyers send fake Safe Deal payment pages through messaging in the Netherlands and Belgium. *(The Scam Inbox.)*
+4. **Duplicates at Hearthly.** With **1.7 listings per property** in France, buyers see the same flat repeatedly and agencies argue about whose copy ranks first. *(Seeing Double.)*
+5. **Payment-link phishing on Tradeyard.** Scammers posing as buyers send fake Safe Deal payment pages through messaging in the Netherlands and Belgium. *(Fast Mail for Fraudsters.)*
 6. **Yardstick blocks Tradeyard.** Every Common Ground capability Tradeyard needs must first be extracted from it.
 7. **Keybridge neutrality.** Agencies fear that Veldmark uses their Keybridge data to favor Hearthly. If they believe it, they leave, and the group loses a business and its standing with agencies at once.
-8. **Overlap in Poland.** Tradeyard Poland's cars section competes with Motorvane Poland for the same dealers: about 2,900 Polish dealers hold accounts on both, and about 40% pay both. *(The Acquisition Archipelago, inside the group.)*
+8. **Overlap in Poland.** Tradeyard Poland's cars section competes with Motorvane Poland for the same dealers: about 2,900 Polish dealers hold accounts on both, and about 40% pay both. *(Deal-Shaped Architecture, inside the group.)*
 
 ![Four separate islands, labeled Tradeyard, Motorvane, Hearthly and Keybridge, each with its own identity, trust, search and data towers and its own cloud, joined only by one thin shared bridge.](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/four-of-everything.jpeg)
 

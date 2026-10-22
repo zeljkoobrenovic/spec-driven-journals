@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **The Attribute Junkyard** — Without canonical normalization, the same fact arrives as "Benzin", "Super", "petrol" and "1", and no filter, facet or feed can agree on what a listing is.
-> * **The Unwatched Model** — Extraction and classification models write values into millions of listings with no evaluation gate, no monitoring and no owner, and their errors become the catalog.
-> * **Index-as-Database** — Enrichment results written only into the search index cannot be rebuilt, audited or corrected, so the index quietly becomes the only place those facts exist.
+> * **Set-and-Forget AI** — Extraction and classification models write values into millions of listings with no evaluation gate, no monitoring and no owner, and their errors become the catalog.
+> * **Search as System of Record** — Enrichment results written only into the search index cannot be rebuilt, audited or corrected, so the index quietly becomes the only place those facts exist.
 
 A listing accepted at the boundary of [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) is not yet a usable listing. This chapter is the next link in Part III's supply chain: the step that records where every value came from. A dealer management system (DMS) writes "48.000 km" with a German thousands separator, a Portuguese private seller types "bicicleta de cidade 28''" into the title and nothing into the attributes, a French agency's software sends an address without coordinates, and a feed describes a car by its vehicle identification number (VIN) and little else. **Search, ranking, alerts, trust rules and analytics all need the same fact in the same form**, and none of them should have to parse a seller's text to get it.
 
@@ -164,7 +164,7 @@ Marketplaces have published more about model-based enrichment since 2023 than ab
 {id: normalization-and-enrichment--the-rules-that-make-it-replayable}
 ### The rules that make it replayable
 
-**1. Enrichers write back to the system of record.** Every enrichment result enters the listing through a command, `ApplyEnrichment`, carrying the values, provenance and the listing version it was computed from. The listing service accepts it only if that version is still current, or if the attribute's inputs have not changed since. The search index receives enriched values through listing events like any other value. An enrichment written only into the index is the start of **Index-as-Database**: when the index is rebuilt, the value is gone, and nobody can audit or correct it.
+**1. Enrichers write back to the system of record.** Every enrichment result enters the listing through a command, `ApplyEnrichment`, carrying the values, provenance and the listing version it was computed from. The listing service accepts it only if that version is still current, or if the attribute's inputs have not changed since. The search index receives enriched values through listing events like any other value. An enrichment written only into the index is the start of **Search as System of Record**: when the index is rebuilt, the value is gone, and nobody can audit or correct it.
 
 **2. Each enrichment step is a pure function with an idempotency key.** The key is `(listing ID, input fingerprint, enricher ID, enricher version, reference-data version)`. The input fingerprint covers only the fields the enricher reads, so a description edit re-runs text extraction but not VIN decoding. Running the same step twice produces the same output and no new version.
 
@@ -325,11 +325,11 @@ The last row, seller presence, decides whether suggestions can work. In general 
 
 **Re-running enrichment over seller corrections.** A new decoder release or model version that writes every value it computes overwrites the corrections sellers and moderators made. Precedence rules and provenance per value prevent it; a backfill job that bypasses the listing service does not.
 
-**Enrichment only in the index.** Category predictions, extracted attributes or quality scores written directly into search documents vanish at the next reindex, cannot be shown to sellers, and cannot be audited. This is Index-as-Database arriving through the side door.
+**Enrichment only in the index.** Category predictions, extracted attributes or quality scores written directly into search documents vanish at the next reindex, cannot be shown to sellers, and cannot be audited. This is Search as System of Record arriving through the side door.
 
 **Silent misparses.** A thousands separator read as a decimal point turns 48,000 km into 48 km, and, without a plausibility rule, the car ranks as nearly new. Every numeric normalizer needs a plausibility check from the dictionary.
 
-**Models without gates.** An extraction model released without a labeled sample, a precision threshold and churn monitoring writes its error rate into millions of listings. That is The Unwatched Model, and the remedy is the release process in Figure 3 plus a named owner.
+**Models without gates.** An extraction model released without a labeled sample, a precision threshold and churn monitoring writes its error rate into millions of listings. That is Set-and-Forget AI, and the remedy is the release process in Figure 3 plus a named owner.
 
 **Unknown values forced into known ones.** Alias tables that map unrecognized feed values to the nearest known enumeration, rather than to an unknown state with a mapping queue, convert a mapping gap into wrong data.
 

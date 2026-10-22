@@ -15,7 +15,7 @@
 >
 > * **Ghost Inventory** — the lifecycle table, the SLA card and the event specification each force a named removal objective per consumer, so ended listings stop surviving in copies nobody registered.
 > * **Feed Roulette** — the feed contract turns an import into an agreement on identity, semantics, field ownership, errors and reconciliation, with a mass-change guard that holds a truncated file instead of applying it.
-> * **Entitlement Spaghetti** — the entitlement matrix puts every product's effects, enforcement points, failure behavior and billing basis on one page, so what was sold can be compared with what was delivered.
+> * **Billing by Guesswork** — the entitlement matrix puts every product's effects, enforcement points, failure behavior and billing basis on one page, so what was sold can be compared with what was delivered.
 
 These are **working templates for a group of listing marketplaces**: the records that Parts I to VIII ask a Chief Architect to keep, from the capability map of [Map What the Marketplace Does Before What Runs It](#business-capabilities) to the decision record of [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering), each tested against Veldmark, the fictional marketplace group the book follows. They are not a certification scheme or a vendor method. Each is the smallest form I have found that makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording to your marketplaces; keep the fields that carry ownership, removal behavior and dates.** Those are the fields that get dropped first, and the ones whose absence the next incident finds.
 
@@ -160,7 +160,7 @@ Share-layer row: *vehicle identity, specification and price rating*, **layer 3**
 
 - Profiling features instead of forces. "Has a dealer portal" says nothing; "88% of dealer listings by nightly snapshot" decides the removal SLA.
 - Classifying a whole capability into one layer. "Search" is the engine at layer 1, mappings and ranking policies at layer 2, a price-rating signal at layer 3 and the result page at layer 4.
-- Omitting the stage gate. Without it, a vertical moves onto a shared engine when the program plan says so, which is how the Platform Mandate starts.
+- Omitting the stage gate. Without it, a vertical moves onto a shared engine when the program plan says so, which is how the Forced Fit starts.
 
 Learn more: [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements)
 
@@ -385,7 +385,7 @@ Learn more: [From Submitted to Searchable: The Publication Pipeline](#publicatio
 {id: toolkit--tool-7}
 ## Tool 7: Search Index Design Card
 
-**Purpose.** The index design card records how one market's search index is built and operated: where each field comes from, which attributes become typed fields, how the index is partitioned, how fast writes and removals become visible, what the read path may spend, how the index is rebuilt, and who owns it. Its central rule is that **no field exists in the index without a source outside it**, which is the test against Index-as-Database.
+**Purpose.** The index design card records how one market's search index is built and operated: where each field comes from, which attributes become typed fields, how the index is partitioned, how fast writes and removals become visible, what the read path may spend, how the index is rebuilt, and who owns it. Its central rule is that **no field exists in the index without a source outside it**, which is the test against Search as System of Record.
 
 **Use it when** you design a new market index, change mappings or analyzers, migrate an index to another engine or cluster, or plan capacity for a peak.
 

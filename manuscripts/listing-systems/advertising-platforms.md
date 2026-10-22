@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **Paid-Rank Drift** — sponsored listings and native units added to result pages by an advertising team, outside the ranking guardrails, push relevant organic listings below the fold one placement at a time.
+> * **Multiplier Creep** — sponsored listings and native units added to result pages by an advertising team, outside the ranking guardrails, push relevant organic listings below the fold one placement at a time.
 > * **Vanity Liquidity** — advertising revenue grows with page views and ad load, so an ads target can reward more pages per session even when buyers need more pages because they are not finding what they want.
-> * **Entitlement Spaghetti** — a seller who buys a "Top listing" from the brand and a sponsored campaign from the ad unit holds two claims on the same positions, sold, priced and billed by different systems, and nobody can say which one was delivered.
+> * **Billing by Guesswork** — a seller who buys a "Top listing" from the brand and a sponsored campaign from the ad unit holds two claims on the same positions, sold, priced and billed by different systems, and nobody can say which one was delivered.
 
 Part VI has followed a contact to revenue: [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) turned contacts into leads, [How Listing Marketplaces Make Money](#monetization-models) chose what to charge for, and [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) proved that what was sold was delivered. Advertising is the part's last revenue line, and the only one paid for attention rather than for matches. The audience has commercial intent: people about to buy a car, rent a flat or furnish a home. Car makers, banks, insurers, energy suppliers and furniture retailers pay to reach it without selling anything on the marketplace. Selling that access is the oldest secondary business in classifieds. **A marketplace earns its core revenue when buyers find the right listing quickly; it earns advertising revenue when they look at more pages.** The architecture has to hold those two in balance, and most of the hard decisions in this chapter are about where the balance is enforced.
 
@@ -258,7 +258,7 @@ In real estate, a property search reveals a household's budget, location prefere
 {id: advertising-platforms--failure-modes}
 ## Failure Modes
 
-- **The ad unit's own ranking.** Sponsored units inserted after ranking by a separate service, outside relevance floors and slot caps. Paid-Rank Drift by a second door.
+- **The ad unit's own ranking.** Sponsored units inserted after ranking by a separate service, outside relevance floors and slot caps. Multiplier Creep by a second door.
 - **Revenue-only ad experiments.** Timeout, slot and ad-load changes evaluated on revenue per page view. Contacts fall slowly and nobody connects the two.
 - **Consent that stops at the browser.** The TC string reaches Prebid.js but not Prebid Server, the audience pipeline or the apps' backends. Personalized ads reach users who declined.
 - **Audiences without owners.** Segments built by campaign managers from raw event tables, with no purpose review, no minimum size and no record of where they were activated.

@@ -17,7 +17,7 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Duplicate Echo** — Re-pulled feed images, reposted listings and multi-agency listings fill storage and search with copies that only hashing can recognize.
+> * **Seeing Double** — Re-pulled feed images, reposted listings and multi-agency listings fill storage and search with copies that only hashing can recognize.
 > * **Moderation as an Afterthought** — Image matches that only create queue items while the listing goes live let stolen photos, contact details and prohibited content reach buyers first.
 > * **Ghost Inventory** — Photos of removed or sold listings stay reachable on the CDN and in caches long after the listing is gone, which is also a privacy problem.
 

@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Acquisition Archipelago** — The eBay Classifieds acquisition brought a second federation of comparable size, and the public record shows both the consolidation work it took and where it stopped.
-> * **The Platform Mandate** — Adevinta's platform team grew adoption without a mandate, while the 2023 product-platform convergence moved toward the kind of central imposition that the 2025 reorganization undid.
-> * **The Country Fork** — The Schibsted-era model of local sites on a shared starting code base is the historical root of the duplication that every later phase tried to remove.
+> * **Deal-Shaped Architecture** — The eBay Classifieds acquisition brought a second federation of comparable size, and the public record shows both the consolidation work it took and where it stopped.
+> * **The Forced Fit** — Adevinta's platform team grew adoption without a mandate, while the 2023 product-platform convergence moved toward the kind of central imposition that the 2025 reorganization undid.
+> * **The Copy-Paste Country** — The Schibsted-era model of local sites on a shared starting code base is the historical root of the duplication that every later phase tried to remove.
 
 Adevinta changed its platform strategy several times in seven years, in public. It was demerged from Schibsted in 2019 as a federation of locally built classifieds sites, bought eBay Classifieds Group in 2021, and announced in 2023 that two of its largest generalist platforms would become one. From mid-2024, under new private-equity owners, it reversed course: central functions were ramped down, capabilities and intellectual property moved to the marketplaces, and businesses were sold. **The case is valuable not because Adevinta was right or wrong, but because it ran the whole centralization pendulum and wrote much of it down.**
 
@@ -68,7 +68,7 @@ Dates are those of the cited releases and reports. Ownership and portfolio facts
 
 The public record documents the Schibsted-era portfolio but not how it was built. The portfolio was national generalist sites such as leboncoin (launched 2006), Subito, InfoJobs and Segundamano, plus verticals, many of which later formed Adevinta. The mechanism is widely repeated but not verified from a primary source: Schibsted is said to have launched or bought a generalist site in each country and run it on a shared code base derived from Blocket, its Swedish site. A 2012 Nieman Lab article is commonly cited for "28 countries on the Blocket platform"; the research for this book could not retrieve it, so it stays industry lore here.
 
-**My reading** is that a shared starting code base, copied and then evolved locally, is the classic origin of the Country Fork: every site begins identical and diverges with every local change, until improvements must be built once per country. The later phases read as attempts to recover the economics that copying gave away, without giving up the local autonomy that made the sites win their markets.
+**My reading** is that a shared starting code base, copied and then evolved locally, is the classic origin of the Copy-Paste Country: every site begins identical and diverges with every local change, until improvements must be built once per country. The later phases read as attempts to recover the economics that copying gave away, without giving up the local autonomy that made the sites win their markets.
 
 **The group's most durable shared abstraction was a local invention, promoted to group level.** **FIAAS** ("FINN Infrastructure as a Service") was built at FINN.no, Schibsted's Norwegian marketplace. FINN's 2017 KubeCon talk describes about 350 microservices and 1,200 deployments per week, with FIAAS replacing roughly 147 lines of Kubernetes configuration with a short application file. FIAAS was open-sourced in 2019 and became the deployment abstraction of Adevinta's platform; a 2023 Adevinta post still calls it the "Golden Path". FINN.no itself stayed with Schibsted and never joined Adevinta.
 
@@ -97,7 +97,7 @@ The "Common Platform", described in Galo Navarro's 2019 talk (written up in Janu
 
 Its design choices were less ordinary, starting with voluntary adoption ("You prefer to do the plumbing yourself? It's your call, we respect that."). Onboarding took about ten minutes through a web form that set up delivery pipelines, a namespace, metrics and logging. For large migrations, such as the Spanish marketplaces' roughly 200 microservices, the platform team embedded one or two engineers with the local team. A controller called "Eurek8s" bridged the services' existing service discovery into Kubernetes so they could move without code changes (described in 2020).
 
-**The platform grew from about 1,500 to more than 4,000 developers, through the eCG integration, and the public record shows no mandate.** By June 2023 it was called **SCHIP**, a multi-tenant Kubernetes distribution, and served "more than 4,000 developers" and about 5,000 applications. It is the clearest documented counter-example to the Platform Mandate in the book's research: a central platform that won its tenants by being cheaper to use than the alternative.
+**The platform grew from about 1,500 to more than 4,000 developers, through the eCG integration, and the public record shows no mandate.** By June 2023 it was called **SCHIP**, a multi-tenant Kubernetes distribution, and served "more than 4,000 developers" and about 5,000 applications. It is the clearest documented counter-example to the Forced Fit in the book's research: a central platform that won its tenants by being cheaper to use than the alternative.
 
 {id: case-adevinta--phase-3-absorbing-ebay-classifieds-20212023}
 ## Phase 3: Absorbing eBay Classifieds (2021–2023)
@@ -289,7 +289,7 @@ The case exposes five risks a Chief Architect can name in advance.
 2. **Convergence announced without a visible exit criterion.** The 2023 plan had a rationale and a progress statement but no public milestone after May 2024. A product-platform convergence that is not finished when strategy changes leaves two platforms, both partly rebuilt.
 3. **Fleet coupling through incidental behavior.** The upgrade and Argo CD incidents show that a shared platform's blast radius crosses marketplace boundaries. Adevinta's published mitigations (serialized rebuilds, platform service-level objectives, validating upstream responses before deleting) apply anywhere.
 4. **Trust and fraud as decentralization casualties.** The 2024 risk register names "trust and fraud" among the areas decentralization may affect. Moderation and fraud signals improve with data pooled across markets; splitting them can weaken detection exactly when organizations are changing (see [Trust and Safety as a Platform](#trust-and-safety-architecture)).
-5. **Tool sprawl after acquisitions.** Ten A/B tools across 22 marketplaces is a measurable symptom of the Acquisition Archipelago; the build-buy-bridge decision that fixed it is reusable.
+5. **Tool sprawl after acquisitions.** Ten A/B tools across 22 marketplaces is a measurable symptom of Deal-Shaped Architecture; the build-buy-bridge decision that fixed it is reusable.
 
 {id: case-adevinta--where-the-public-evidence-stops}
 ## Where the Public Evidence Stops
@@ -316,7 +316,7 @@ Adevinta's record gives me five decision rules.
 
 **Decide what to share by layer, not by enthusiasm.** The 2019 test — large investment, uniform technology — sorted Adevinta's shared layers correctly for five years. I would write it into a group's architecture principles and require every proposal for a new shared capability to answer both halves.
 
-**Grow platforms by adoption, and harvest local inventions.** The documented successes — the voluntary Common Platform, FIAAS from FINN, Fisher from Marktplaats, an ML tooling catalog that accepts promoted components — share one shape: the center made the good local thing easy to use everywhere. To avoid the Platform Mandate, measure a platform by how many tenants choose it, and fund migration engineers rather than issue deadlines.
+**Grow platforms by adoption, and harvest local inventions.** The documented successes — the voluntary Common Platform, FIAAS from FINN, Fisher from Marktplaats, an ML tooling catalog that accepts promoted components — share one shape: the center made the good local thing easy to use everywhere. To avoid the Forced Fit, measure a platform by how many tenants choose it, and fund migration engineers rather than issue deadlines.
 
 **Treat product-platform convergence as its own investment case.** It needs a scope (which capabilities, which markets), stage gates with exit criteria, and a plan that survives a change of owner or strategy. If those cannot be written down, the group should share capabilities behind the products instead. [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) develops the consolidation sequence; Adevinta's record is the strongest public argument for putting core product convergence last.
 

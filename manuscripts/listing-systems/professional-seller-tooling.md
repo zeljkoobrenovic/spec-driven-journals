@@ -19,7 +19,7 @@
 >
 > * **Vanity Liquidity** — pro dashboards that report views and impressions instead of contacts, leads and sales sell exposure the professional cannot convert, and renewals fail.
 > * **Feed Roulette** — professional feeds without visible validation and error reports leave dealers and agents to discover missing stock from their customers.
-> * **Entitlement Spaghetti** — pro features gated by package checks scattered across the tooling make it impossible to say what a professional bought and what they received.
+> * **Billing by Guesswork** — pro features gated by package checks scattered across the tooling make it impossible to say what a professional bought and what they received.
 
 A private seller visits a marketplace a few times a year. A dealer or an estate agent lives in it. Their sales staff open the lead inbox before their e-mail, their managers read the weekly statistics before the board meeting, and their integration partner pushes inventory every few minutes. For these customers the marketplace is not a website. It is **one of the systems their business runs on**, next to their dealer management system (DMS) or agency CRM, and they judge it the way they judge their other systems: by whether its numbers reconcile.
 

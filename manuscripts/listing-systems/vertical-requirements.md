@@ -18,7 +18,7 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **The Category Straitjacket** — treating real estate, cars and jobs as subtrees of a horizontal category tree forces every vertical requirement through one generic model that changes slowly.
-> * **The Platform Mandate** — a group platform designed around one vertical's physics is imposed on the others, and their teams route around it.
+> * **The Forced Fit** — a group platform designed around one vertical's physics is imposed on the others, and their teams route around it.
 > * **The Attribute Junkyard** — a shared attribute store without vertical dictionaries accumulates thousands of keys whose meaning differs per vertical, so filters and feeds disagree.
 
 Part I has so far treated the verticals alike. [Map What the Marketplace Does Before What Runs It](#business-capabilities) shows that a classifieds capability map generalizes across verticals through renaming and re-weighting, not through new top-level structure, and [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) draws one context map for all four Veldmark brands. This chapter asks where that sameness stops. The question matters because a group's synergy case assumes one listing platform can carry a used sofa, a family car, a three-room apartment and a warehouse job, with a different category tree for each. Many groups have tried, and the public record shows how often they had to undo it.
@@ -265,7 +265,7 @@ The workshop drafts its profiles from recent listings. Over the spring, Ingrid's
 | Lifetime | About 22.5 hours to sale | 15 days to sale; feed delete 26 hours later | Weeks to months |
 | Regulatory field | Trader status (private) | Trader status and the B2C conformity guarantee; no CO2 label, because Pkw-EnVKV exempts used cars | DPE energy class D |
 | Money of the sale | Through Safe Deal "pay at pickup"; buyer fee €11.95 | At the dealer | At a notary |
-| Characteristic failure | Phishing link at 20:11; alert digest after sale | Late feed delete (Ghost Inventory) | Duplicates across agencies (Duplicate Echo) |
+| Characteristic failure | Phishing link at 20:11; alert digest after sale | Late feed delete (Ghost Inventory) | Duplicates across agencies (Seeing Double) |
 
 **Table 4:** *The same twelve questions, three different answers. The bike's physics are speed and safety, the car's are identity and feeds, the apartment's are entity resolution and disclosure.*
 
@@ -318,7 +318,7 @@ The workshop ends with a first shared-versus-specific table for the Common Groun
 
 **Table 6:** *Veldmark's first shared-versus-specific classification. Two vertical capabilities get group owners; four engines get vertical content owners. Keybridge stays outside the table: under the March 2027 neutrality decision it is a separate SaaS business, not a Hearthly capability.*
 
-Felix accepts the table on one condition: the shared ingestion engine must meet Motorvane's dealer-feed requirements before Motorvane moves onto it, measured by the same feed success rate and delete latency Motorvane reports today. Ingrid makes that condition a stage gate. It is the defense against the Platform Mandate: **a vertical moves onto a shared engine when the engine meets the vertical's profile, not when the program plan says so.**
+Felix accepts the table on one condition: the shared ingestion engine must meet Motorvane's dealer-feed requirements before Motorvane moves onto it, measured by the same feed success rate and delete latency Motorvane reports today. Ingrid makes that condition a stage gate. It is the defense against the Forced Fit: **a vertical moves onto a shared engine when the engine meets the vertical's profile, not when the program plan says so.**
 
 {id: vertical-requirements--trade-offs-how-much-to-share}
 ## Trade-offs: How Much to Share
@@ -329,7 +329,7 @@ Groups choose among four broad options for supporting several verticals. The sha
 | --- | --- | --- | --- | --- |
 | **A. One horizontal platform with vertical categories** | Real estate, cars and jobs are subtrees of one category tree on one listing model | Lowest cost; one codebase; fast for small sections | No place for external identity, external systems of record or vertical regulation; the Category Straitjacket | Small vertical sections inside a horizontal brand, where the vertical is not a competitive business |
 | **B. Shared core with vertical extension points** | Layers 1 and 2 shared; vertical content and layer-3 capabilities owned by verticals | Shares machinery without forcing physics; vertical teams own what differentiates them | Extension-point governance; engine teams must serve several masters; slower first delivery | Groups with several material verticals and a stable ownership horizon |
-| **C. Separate vertical stacks** | Each vertical brand runs its own platform end to end | Full fit to physics; independent pace; easy to sell a business | Pays for every capability several times; inconsistent trust and identity; the Acquisition Archipelago | Verticals with very different physics and no shared customers, or businesses likely to be sold |
+| **C. Separate vertical stacks** | Each vertical brand runs its own platform end to end | Full fit to physics; independent pace; easy to sell a business | Pays for every capability several times; inconsistent trust and identity; Deal-Shaped Architecture | Verticals with very different physics and no shared customers, or businesses likely to be sold |
 | **D. A vertical platform reused by horizontal sections** | The strongest vertical brand's stack serves the same vertical inside horizontal brands | Best vertical capability everywhere; one vertical owner | Couples the horizontal brand to another brand's roadmap; commercial conflicts between brands | Where a horizontal brand's section and a vertical brand compete for the same professionals and data |
 
 **Table 7:** *Four strategies. Most groups end up with B for the platform and D for one or two vertical capabilities; pure A and pure C are each right only under narrow conditions.*
@@ -386,7 +386,7 @@ At group scale, the vertical question is a standing governance question, not a o
 
 **What to watch.**
 
-- **Fit metrics per vertical on shared engines.** Feed success rate and delete latency for Motorvane on the ingestion engine; duplicate rate for Hearthly; publication time for Tradeyard. A shared engine that is cheaper but worse on a vertical's critical metric is a Platform Mandate in progress.
+- **Fit metrics per vertical on shared engines.** Feed success rate and delete latency for Motorvane on the ingestion engine; duplicate rate for Hearthly; publication time for Tradeyard. A shared engine that is cheaper but worse on a vertical's critical metric is a Forced Fit in progress.
 - **Exception counts.** The number of vertical-specific branches in shared engine code, and the number of requests for new extension points. Rising numbers mean the boundary is wrong.
 - **Profile drift.** Any change in a vertical's business model, such as a transactional pivot, a move to pay-per-lead or an acquisition, triggers a profile review before the next architecture decision.
 - **Separability.** For every shared capability, whether a brand could be carved out with its data and content in months rather than years. Ownership horizons in this industry are shorter than platform lifetimes.

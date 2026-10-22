@@ -19,7 +19,7 @@
 >
 > * **The Category Straitjacket** — Tradeyard's new categories took six weeks because category IDs were embedded in code, search schemas and SEO tables.
 > * **The Attribute Junkyard** — without category-scoped schemas, attributes accumulate as free-form keys that filters, facets and feeds interpret differently.
-> * **The Country Fork** — four Tradeyard country trees that cannot share models, filters or features are a fork in reference data.
+> * **The Copy-Paste Country** — four Tradeyard country trees that cannot share models, filters or features are a fork in reference data.
 
 Ask a product manager what a category is and you will hear "where the listing goes". Ask the systems and you get a different answer. The category decides which fields the insertion form shows, which are required, what an insertion fee costs, which moderation rules and models apply, which facets search offers, which ranking model scores the results, which ads can be targeted and which landing pages exist. **The category is the most widely shared key in a listing platform, and the one most often treated as content.**
 
@@ -113,7 +113,7 @@ Multi-country marketplaces choose between country trees, one global tree, or a c
 
 | Model | How it works | Strengths | Weaknesses |
 | --- | --- | --- | --- |
-| **Country trees** | Each country owns an independent tree | Full local fit; no coordination | Nothing shared: models, filters, ad segments and analytics must be mapped per country; the Country Fork in reference data |
+| **Country trees** | Each country owns an independent tree | Full local fit; no coordination | Nothing shared: models, filters, ad segments and analytics must be mapped per country; the Copy-Paste Country in reference data |
 | **One global tree, translated** | Same nodes everywhere; labels translated | Maximum sharing | Forces local markets into one structure; local categories (a Portuguese tile category, a Polish agricultural one) have no home |
 | **Canonical tree with country views** | One canonical set of nodes with stable IDs; each country enables a subset, with its own labels, slugs and navigation | Shared semantics where they exist, local fit where they do not | Needs governance: who may add a canonical node, and when a country-only node is allowed |
 

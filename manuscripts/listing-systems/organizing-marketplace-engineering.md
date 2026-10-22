@@ -17,9 +17,9 @@
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
-> * **The Platform Mandate** — a central platform imposed by deadline, without a team that treats marketplaces as customers, is the failure that organization design is most often asked to prevent and most often causes.
-> * **The Country Fork** — when each country or brand has its own full-stack teams for the same journey, every improvement is built, staffed and maintained once per team, and the code forks to follow the org chart.
-> * **The Acquisition Archipelago** — acquired marketplaces arrive with their own engineering organizations, and unless ownership of shared capabilities is assigned deliberately, the group keeps four of everything because four teams each own one.
+> * **The Forced Fit** — a central platform imposed by deadline, without a team that treats marketplaces as customers, is the failure that organization design is most often asked to prevent and most often causes.
+> * **The Copy-Paste Country** — when each country or brand has its own full-stack teams for the same journey, every improvement is built, staffed and maintained once per team, and the code forks to follow the org chart.
+> * **Deal-Shaped Architecture** — acquired marketplaces arrive with their own engineering organizations, and unless ownership of shared capabilities is assigned deliberately, the group keeps four of everything because four teams each own one.
 
 Marketplace groups are usually assembled, not designed. A founding marketplace grows its own engineering organization; acquisitions bring theirs; a group function appears to run finance, security and perhaps an advertising stack. Each organization works. Together they produce the familiar picture of four identity systems and four trust-and-safety stacks, because **each capability exists as many times as there are teams that believe they own it.**
 
@@ -90,7 +90,7 @@ Every marketplace organization design must choose the axis that cuts its stream-
 
 | Axis | Teams look like | Strength | Weakness |
 | --- | --- | --- | --- |
-| **Country** | "Tradeyard Poland" with full-stack teams | Close to the local market, language and law | Every journey is built once per country; the Country Fork in organizational form |
+| **Country** | "Tradeyard Poland" with full-stack teams | Close to the local market, language and law | Every journey is built once per country; the Copy-Paste Country in organizational form |
 | **Journey** | "Tradeyard Discovery" serving all four countries | One implementation per journey; local needs carried by market product leads and configuration | Needs strong configuration and localization; local managers feel distant |
 | **Capability layer** | "Tradeyard Search Backend", "Tradeyard Android" | Deep technical skill | Every product change needs several teams; nobody owns an outcome |
 
@@ -261,7 +261,7 @@ In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring thre
 | Option | Description | For | Against |
 | --- | --- | --- | --- |
 | **A. Federated guilds** | Platforms built by brand teams "on behalf of the group", coordinated by cross-brand guilds | No reorganization; brand budgets keep control | Nobody owns a platform; the strongest brand's version wins by default; the 2027 overlaps exist because this is the current model |
-| **B. Central platform organization, product-run** | Group platform teams under the Head of Platform Engineering, each with a product owner and tenant-facing contract; brands keep journeys | One owner per shared capability; fleet-level economics | Brands lose engineers and some control; risk of the Platform Mandate if platforms are slow |
+| **B. Central platform organization, product-run** | Group platform teams under the Head of Platform Engineering, each with a product owner and tenant-facing contract; brands keep journeys | One owner per shared capability; fleet-level economics | Brands lose engineers and some control; risk of the Forced Fit if platforms are slow |
 | **C. Central product and technology** | One group organization owning all products and platforms, with brand "market teams" for local needs | Maximum reuse | Breaks "share platforms, not products"; the 2023-style convergence bet; expensive to reverse if a brand is sold |
 
 The forum's advice is option B, with conditions. Mateus Carvalho decides it on **Tuesday 22 June 2027**, effective **1 September 2027**, in the decision record "Common Ground organization v1". It has five parts:
@@ -340,7 +340,7 @@ The rule engine did not change. **The ownership did**: there is now one team tha
 | Decision | Option | When it is right | When it is wrong |
 | --- | --- | --- | --- |
 | Stream-aligned axis | By journey within a brand | One product in several countries; strong configuration | Countries with genuinely different products, or a brand with one country |
-| Stream-aligned axis | By country | Distinct local products, regulation or ownership; a brand that may be sold separately per country | One product in several countries: it rebuilds the Country Fork |
+| Stream-aligned axis | By country | Distinct local products, regulation or ownership; a brand that may be sold separately per country | One product in several countries: it rebuilds the Copy-Paste Country |
 | Shared capability ownership | Central platform team | Uniform technology, pooled volume, group-wide policy need | Capability is really a product feature; only one brand uses it |
 | Shared capability ownership | "Lead brand" builds for the group | Early discovery, one dominant tenant | Long term: the lead brand's roadmap always wins |
 | Specialists | Central complicated-subsystem team | Rare skills (ranking ML, AVMs, fraud models), shared tooling | The model is inseparable from one brand's product decisions; embed instead |
@@ -366,12 +366,12 @@ Two consequences for organization design. In real estate and automotive, the **s
 ## Failure Modes
 
 - **The platform without a product owner.** A team builds what the loudest brand asks for, has no roadmap that tenants can read, and measures itself by tickets closed. Tenants start building around it within a year. The fix is a product owner, a team API page and a tenant review each quarter.
-- **The mandate before the platform.** A deadline for all brands to move onto a platform that is not yet cheaper, faster or safer than what they have. The brands comply on paper and keep their copies running. This is the Platform Mandate; it often follows a board-level synergy target.
+- **The mandate before the platform.** A deadline for all brands to move onto a platform that is not yet cheaper, faster or safer than what they have. The brands comply on paper and keep their copies running. This is the Forced Fit; it often follows a board-level synergy target.
 - **Reorganizing on a date.** Hundreds of engineers move to new teams on the first of the month, before contexts are mapped and before the systems they will own are separable. For months the new teams own code they cannot deploy independently. Move people when their work moves.
 - **Country teams for language.** A brand creates a full-stack team per country because the countries speak different languages. Within two years the four teams have four insertion flows.
 - **The review board.** A central board approves designs. Its queue becomes the critical path for every cross-brand change, and teams learn to describe changes as local. Decisions get slower and less visible at the same time.
 - **Governance without records.** Decisions are made in meetings and remembered by the people who attended. When those people leave, the same questions return, and inherited constraints become folklore.
-- **Specialists with no runtime.** A ranking or valuation team that hands models to another team to deploy cannot own model quality in production, and nobody else can either. This is how The Unwatched Model begins (see [Models in Production: ML Platforms and Use Cases](#ml-platform)).
+- **Specialists with no runtime.** A ranking or valuation team that hands models to another team to deploy cannot own model quality in production, and nobody else can either. This is how Set-and-Forget AI begins (see [Models in Production: ML Platforms and Use Cases](#ml-platform)).
 - **Enabling teams that never end.** A migration team becomes a permanent second owner of the systems it migrated. Give each enabling team an end condition at creation.
 - **The forgotten acquired organization.** An acquired marketplace keeps its engineering organization intact "until integration", which never comes. Its people are never asked to own a group capability, and its best inventions never become one.
 

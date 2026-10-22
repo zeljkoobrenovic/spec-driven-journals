@@ -18,8 +18,8 @@
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
 >
 > * **Vanity Liquidity** — revenue plans built on listing counts and page views, instead of contacts and sales, sell professionals exposure they cannot convert. Renewal then fails.
-> * **Paid-Rank Drift** — every visibility product is a claim on ranking. Selling more of them, with no guardrail, quietly lowers the relevance the products depend on.
-> * **Entitlement Spaghetti** — a new revenue model added as conditions in existing services leaves nobody able to say what a seller bought and what they received.
+> * **Multiplier Creep** — every visibility product is a claim on ranking. Selling more of them, with no guardrail, quietly lowers the relevance the products depend on.
+> * **Billing by Guesswork** — a new revenue model added as conditions in existing services leaves nobody able to say what a seller bought and what they received.
 
 A listing marketplace connects buyers and sellers and then usually steps aside. The sale happens on a doorstep, at a dealership or at a notary's office. A buyer who meets the seller can complete the deal without the platform. **Classifieds therefore rarely charge for the transaction. They charge for access to attention**: the right to list, a better position, a monthly package of slots, a delivered lead, a placed advertisement. Over the last decade, many have also started charging for the transaction itself.
 
@@ -227,7 +227,7 @@ Three boundaries in Figure 2 matter more than the boxes.
 
 **Delivery systems emit evidence.** The search stack must report which paid listings appeared in which positions. The lead system must report which leads were billable and which were filtered. The insertion flow must report which listings consumed which slots. Without this evidence, nobody can answer the question every professional will eventually ask: *what did I get for my money?* [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) turns this into the "sold versus delivered" audit.
 
-**Ranking is a consumer of monetization, not its owner.** Paid products change ranking inputs: a boost weight, a pinned position, a fresher timestamp. The rules for how much a paid input may move the result order belong to the ranking team's guardrails, set jointly with monetization, not to whichever team sold the product last. Without that rule, Paid-Rank Drift follows.
+**Ranking is a consumer of monetization, not its owner.** Paid products change ranking inputs: a boost weight, a pinned position, a fresher timestamp. The rules for how much a paid input may move the result order belong to the ranking team's guardrails, set jointly with monetization, not to whichever team sold the product last. Without that rule, Multiplier Creep follows.
 
 {id: monetization-models--in-practice-pricing-power-and-its-limits}
 ## In Practice: Pricing Power and Its Limits
@@ -358,7 +358,7 @@ Decision: **piloted in one region (Lyon metropolitan area) for 2028, alongside t
 | Advertising | Medium; cyclical | Medium (page speed, attention) | High, but usually a shared group stack | High: consent, DSA advertising transparency | Large audiences with commercial intent, mainly horizontals |
 | Consumer subscription | High | Medium (fairness, two-tier demand) | Medium | Medium | Supply is scarce and buyers pay for advantage |
 
-**Model complexity compounds when models share a page**, a judgement the table cannot show. A single Motorvane search result page already combines dealer package prominence, depth products, a sponsored listing and display ads. Each of these was sold by a different team, and each makes a claim on the same few positions. A group that adds models without a shared rule for how paid claims compete for positions ends up with Paid-Rank Drift, even when each model is sound on its own.
+**Model complexity compounds when models share a page**, a judgement the table cannot show. A single Motorvane search result page already combines dealer package prominence, depth products, a sponsored listing and display ads. Each of these was sold by a different team, and each makes a claim on the same few positions. A group that adds models without a shared rule for how paid claims compete for positions ends up with Multiplier Creep, even when each model is sound on its own.
 
 {id: monetization-models--vertical-differences}
 ## Vertical Differences
@@ -370,7 +370,7 @@ Decision: **piloted in one region (Lyon metropolitan area) for 2028, alongside t
 | Typical unit KPI | Revenue per listing or per paying user; take rate where transactional | ARPA (Rightmove) or yield per listing (REA, Hemnet) | ARPR (Autotrader), QARSD (CarGurus) | Revenue per posting or per employer | Take rate |
 | Lead value | Low per contact | Very high (a seller lead can be worth a commission) | High (a sold car funds the dealer's margin) | Medium to high per qualified applicant | Not applicable: the transaction is the unit |
 | Distinctive system need | Bump scheduler, slot rotation, high-volume small payments | Valuation-driven seller leads, mandate tracking, agent rebilling | Feed-driven slot enforcement, stock-level pricing, finance partner APIs | Application tracking, posting duration, multi-posting | Checkout, logistics, buyer protection, provisioning |
-| Distinctive risk | Paid-Rank Drift; scam listings that buy visibility | Agency concentration; seller-pays volume leakage | Dealer-group bargaining power; stock trimming | Pay-per-application gaming | Margin dilution; buyer-protection losses |
+| Distinctive risk | Multiplier Creep; scam listings that buy visibility | Agency concentration; seller-pays volume leakage | Dealer-group bargaining power; stock trimming | Pay-per-application gaming | Margin dilution; buyer-protection losses |
 
 For groups, the table has one practical consequence: **the monetization model is the least shareable part of a marketplace**, even when the systems underneath can be shared. AVIV's experience in property points the same way: generic infrastructure can be shared, while ingestion, disclosures, monetization and pro tools are local ([One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) discusses the evidence). Veldmark's principle, "share platforms, not products", applies to money with special force. Share the catalog model, the entitlement service, the paid-label pipeline and the metering. Leave the packages, prices and the choice of model to each brand.
 
@@ -379,9 +379,9 @@ For groups, the table has one practical consequence: **the monetization model is
 
 **Selling exposure that cannot convert (Vanity Liquidity).** A package priced on "views" or "impressions" sells a quantity that has no reliable link to the professional's outcomes. When renewal comes, the professional brings their own numbers: contacts and sales, from their own CRM. A portal that reports only views loses that negotiation. Report contacts and leads, define them in the governed metrics layer, and make sure billing and the ROI dashboard use the same definitions.
 
-**Paid positions without a cap (Paid-Rank Drift).** Each paid product is reasonable alone. Together they fill the first page. Without a per-page budget for paid positions, enforced by ranking and reported to monetization, drift is gradual and invisible in revenue until contact rates fall.
+**Paid positions without a cap (Multiplier Creep).** Each paid product is reasonable alone. Together they fill the first page. Without a per-page budget for paid positions, enforced by ranking and reported to monetization, drift is gradual and invisible in revenue until contact rates fall.
 
-**Revenue models added as code (Entitlement Spaghetti).** The fastest way to launch a new product is a condition in the insertion service, another in the search query and a third in the rendering template. After five years and four brands, nobody can say what a seller is entitled to or prove that it was delivered. [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) owns the remedy.
+**Revenue models added as code (Billing by Guesswork).** The fastest way to launch a new product is a condition in the insertion service, another in the search query and a third in the rendering template. After five years and four brands, nobody can say what a seller is entitled to or prove that it was delivered. [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) owns the remedy.
 
 **ROI dashboards that mislead, and price events shipped as code.** Both are covered above: a naive package comparison makes sales teams discount the products that work best, and a price event that needs a deployment makes the commercial calendar hostage to the release train.
 
