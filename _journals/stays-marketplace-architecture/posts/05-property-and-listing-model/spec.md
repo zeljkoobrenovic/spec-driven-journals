@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Hotels and Homes: Modeling What Is Being Sold
@@ -73,3 +73,7 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed to under 8,500 words; separated the place registry from Waypoint (Waypoint writes geo enrichment to registry records) and linked the registry to capability map v1/v2; aligned the boutique-hotel pilot with the December 2027 routing decision; American spelling and quote fixes. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,500 → 6,436 prose words; lead now places the chapter as the start of Part II's supply master data; outline unchanged; two announcing sentences cut; first sentences and wording tightened. Spec unchanged otherwise. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,436 → 6,141 prose words (6,500 at HEAD, −5.5% cumulative); Failure Modes compressed to one-line pointers except the quantity-two villa; In Practice no longer re-quotes the Vrbo and Booking.com documentation; Chief Architect's view, interface decisions and lead trimmed of repetition; outline unchanged. *(AI-mediated session)*
+
+- **2026-10-22** — Property counts now give both Booking Holdings figures with their dates and sources: 10-K 4.4M at 31 Dec 2025, corporate site 4.7M read Oct 2026 (author decision). *(AI-mediated session)*

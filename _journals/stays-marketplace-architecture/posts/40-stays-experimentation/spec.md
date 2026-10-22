@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Testing Everything: Experimentation Platforms for Stays
@@ -23,9 +23,9 @@ Chief architects, data and experimentation platform leads, data scientists, and 
 ## Success criteria
 
 - [ ] Reader can define randomization unit, trigger and counterfactual exposure, OEC, guardrail, delayed-outcome metric (outcome, maturation rule, maturity share), surrogate, marketplace interference (three channels) and global treatment effect.
-- [ ] Reader can draw the platform's components (Figure 2) and state the stays-specific requirement of each, including exposure-log retention and unit types.
+- [ ] Reader can draw the platform's components (Figure 3) and state the stays-specific requirement of each, including exposure-log retention and unit types.
 - [ ] Reader can explain the two-stage readout, surrogate validation (the surrogate ledger) and the role of short and long-term holdouts.
-- [ ] Reader can cite dated interference evidence (Holtz et al. 2020: 32.60%; Johari et al. 2021: market balance) and choose a design with Figure 3 and the design trade-off table, including why switchbacks fit stays poorly.
+- [ ] Reader can cite dated interference evidence (Holtz et al. 2020: 32.60%; Johari et al. 2021: market balance) and choose a design with Figure 4 and the design trade-off table, including why switchbacks fit stays poorly.
 - [ ] Reader can describe documented practice at Booking.com (2017, 2026), Airbnb (2014–2026) and Agoda (2023) with dates, and does not attribute undocumented internals.
 - [ ] Reader can explain the limits on price, ranking, partner and interface experiments (Omnibus personalized-price disclosure, DSA Art. 25, CPC commitments) as review classes.
 - [ ] The Corvane case shows Roomstead's badge as a delayed-outcome problem and Nookaway's as an interference problem, with tables, and ends in the dated Experimentation Standard v1.
@@ -82,3 +82,4 @@ Chief architects, data and experimentation platform leads, data scientists, and 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Added capability map v2 outcome (experimentation and ML shared engines); flagged the 2017 Booking.com paper's age; timetoread corrected. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,307 → 6,808 prose words; lead reframed around the book (every ranking, pricing and promotion change ships behind an experiment); Failure Modes compressed to one-line pointers; Chief Architect's review-class paragraph merged into Who controls quality; In Practice recap deleted; spec figure numbers corrected to the post (components Figure 3, unit choice Figure 4). *(AI-mediated session)*

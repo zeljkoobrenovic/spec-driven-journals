@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: AI Across the Stay: Agents, Assistants and Automation
@@ -19,7 +19,7 @@ Chief architects, heads of distribution, ML and AI platform leads, product leade
 
 - [ ] Reader can define assistant, agent, tool and agentic booking, and sort AI uses by who they act for and what they can change.
 - [ ] Reader can cite the dated public record (2023–2026) and state its three readings: model in front of the stack, ungrounded answers as the documented failure, the front door moving to assistants.
-- [ ] Reader can draw the AI layer (Figure 1) and explain what agent-facing tools must return: place candidates with an ambiguity flag, binding quotes with a platform-written summary, evaluated (not generated) policies.
+- [ ] Reader can draw the AI layer (Figure 2) and explain what agent-facing tools must return: place candidates with an ambiguity flag, binding quotes with a platform-written summary, evaluated (not generated) policies.
 - [ ] Reader can apply the five side-effect classes and the rule that an AI may never do what a first-line human in the same role could not.
 - [ ] Reader can compare handoff and mandate authority, and explain why autonomous agent booking is unsafe for hosted stays for now.
 - [ ] The Corvane case runs from the Porto booking (14 September 2027, €304; pilot sweep 1,610 bookings, 9 wrong-place, €2,870) to the 19 October 2027 forum decisions and Frontdoor v2 with a before/after table.
@@ -69,3 +69,4 @@ External: Booking.com AgentHub and onboarding-agent posts (2026); Booking Holdin
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Format cleanup; figures checked against the ledger and the Airbnb Q2 2026 letter. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,647 → 5,361 prose words; opening now ties the chapter to Part IX and the previous hand-off; Failure Modes compressed to one-line pointers; repeated restatements in the lead, Corvane decisions 2, 4 and 5, Hotels and Homes and the Chief Architect's view cut; spec success criterion fixed to cite Figure 2 for the AI layer. *(AI-mediated session)*

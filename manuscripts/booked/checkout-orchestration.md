@@ -23,7 +23,7 @@
 
 Everything before checkout is reversible: a search can be repeated, a ranking recomputed, and nobody has promised anything. Checkout is where the marketplace makes promises to three parties at once: to the guest that the night is theirs at the stated price and terms, to the property or host that a guest is coming, and to the payment network that an amount is owed. **Checkout is the first step whose mistakes cannot be undone by recomputing**, because each of those promises lands in a system the marketplace does not control.
 
-Retail checkout is a poor model. A stays marketplace usually sells a copy of someone else's inventory, often collects money for someone else, and confirms a service delivered weeks later by a hotel on its property management system (PMS) or by a host on a phone, with money moving through payment service providers (PSPs) that have their own timeouts. The booking path crosses at least three systems with independent failure modes, so it cannot be one transaction. It is a **saga**: a sequence of local steps, each committed on its own, with defined ways to undo them.
+A stays marketplace usually sells a copy of someone else's inventory, often collects money for someone else, and confirms a service delivered weeks later by a hotel on its property management system (PMS) or by a host on a phone, with money moving through payment service providers (PSPs) that have their own timeouts. The booking path crosses at least three systems with independent failure modes, so it cannot be one transaction. It is a **saga**: a sequence of local steps, each committed on its own, with defined ways to undo them.
 
 This chapter opens Part V ([Part V — BOOKING: Making and Keeping the Reservation](#part-5)) and turns the quote handed over by [The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection) into a confirmed reservation. It owns the **booking saga**, the **idempotency key** for stays, **instant book** and **request to book**. It uses, without re-teaching, the commit point and holds of [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity), the price check of [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), the payment arrangement of [Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models) and the payment plan of [Paying for a Future Night: Payment Orchestration for Stays](#stay-payments). Delivery to the property and everything after confirmation belong to [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle).
 
@@ -46,7 +46,7 @@ On Thursday **14 January 2027**, at the start of the January booking peak, the c
 
 The result was **212** duplicate reservations, **198** of them with duplicate charges: Pay with Roomstead bookings on which the guest was charged twice and Corvane Payments issued two virtual cards to the hotel. The other 14 were pay-at-property bookings: no money had moved, but Keystone delivered two reservations to each hotel, each consuming a room until it was canceled. On non-refundable rates, whose virtual cards are active from booking, a few hotels charged both cards before the cleanup reached them.
 
-Leila Haddad, Head of Payments and Finance Engineering, made the first point in the review: **the server had done exactly what it was told.** Every request carried a valid, unseen key, so Turnstile treated it as new. The key protected against a repeat of the same HTTP request, which the app never sent, not against a second purchase of the same intention.
+Leila Haddad, Head of Payments and Finance Engineering, made the first point in the review: **the server had done exactly what it was told.** Every request carried a valid, unseen key. The key protected against a repeat of the same HTTP request, which the app never sent, not against a second purchase of the same intention.
 
 Mariana Costa, who had joined as Group Chief Architect that month, made the second. When the first request timed out, neither the app nor Turnstile knew whether a booking existed. The design had two outcomes, success and failure, and the world had three. **The question for the architecture forum was not "how do we fix the app's retry" but "what is one booking, who names it, and what does every system do when it cannot tell whether it happened?"**
 
@@ -56,8 +56,6 @@ Mariana Costa, who had joined as Group Chief Architect that month, made the seco
 
 {id: checkout-orchestration--concepts-from-quote-to-reservation}
 ## Concepts: From Quote to Reservation
-
-Seven terms carry the chapter.
 
 - A **quote** is a priced offer with an identity, an itemized breakdown, the versions of the data it was computed from and a validity window ([The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection) defines it). Checkout starts from a quote ID, not from a price passed by the client.
 - **Re-validation** (or **price check**) re-computes the selected quote from the system of record and returns one of three designed outcomes: unchanged within tolerance, changed (shown to the guest with the old price and a reason), or unavailable ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) owns the mechanics). At Corvane a successful check makes the quote **binding for 15 minutes**.
@@ -87,7 +85,7 @@ Request to book turns a minutes-long saga into a day-long one, so the hold, the 
 {id: checkout-orchestration--architecture-the-booking-saga}
 ## Architecture: The Booking Saga
 
-The booking path has eight components, each with a different owner, failure mode and answer to "what happens if I am called twice".
+The booking path has eight components, each with its own owner, failure mode and answer to "what happens if I am called twice".
 
 ![A checkout attempt hub with a key tag calling price composition, risk and screening, the allocation ledger, the payment orchestrator and the reservation store, which sends events through an outbox to supplier delivery and notifications.](stays-marketplace-architecture/posts/21-checkout-orchestration/assets/images/21-checkout-orchestration/21-booking-saga-components.jpeg)
 
@@ -107,7 +105,7 @@ The booking path has eight components, each with a different owner, failure mode
 Two interface choices matter more than the boxes.
 
 1. **Participants recognize repeats, so the coordinator need not be perfect.** The coordinator will crash, time out and re-run steps; every participant must treat a second call with the same key as a request for the first call's result. Airbnb's 2026 description of Skipper, its embedded durable workflow engine, states the contract plainly: "Actions may execute more than once in edge cases", and failures run compensations in reverse order ([Airbnb Engineering, 2026](https://airbnb.tech/infrastructure/skipper-building-airbnbs-embedded-workflow-engine/)).
-2. **The reservation is created before the money moves, in a pending state.** The saga creates a pending reservation keyed by the attempt and confirms it at the pivot. It is invisible to the property, but it gives a payment whose outcome is unknown somewhere to be recorded.
+2. **The reservation is created before the money moves, in a pending state.** The pending reservation, keyed by the attempt and confirmed at the pivot, is invisible to the property, but it gives a payment whose outcome is unknown somewhere to be recorded.
 
 {id: checkout-orchestration--the-saga-step-by-step}
 ### The saga, step by step
@@ -126,7 +124,7 @@ The reference saga below is my recommendation for an instant-book stay paid at b
 | 8 | Capture or schedule the charge per the payment plan | Refund (a business action, not a saga compensation) | Obligation key | Retried until success |
 | 9 | Deliver to the supplier, notify guest and host | — | Reservation ID + version | Asynchronous, at least once, from the outbox |
 
-Ordering steps 6 and 7 is the hard part. Commit first, and an authorization failure leaves a confirmed reservation to cancel, a visible event on a hotel's PMS. Authorize first, and a commit that fails because someone took the last room costs only a void. **Authorize, then commit, then capture** keeps the steps before the pivot cheap to undo.
+The hard part is ordering steps 6 and 7. Commit first, and an authorization failure leaves a confirmed reservation to cancel, a visible event on a hotel's PMS. Authorize first, and a commit that fails because someone took the last room costs only a void. **Authorize, then commit, then capture** keeps the steps before the pivot cheap to undo.
 
 ![Swimlanes for guest, checkout attempt, allocation ledger, payment and reservation store, with the attempt ID returned before Book and a pivot line at the commit separating steps that can be undone from steps that are retried.](stays-marketplace-architecture/posts/21-checkout-orchestration/assets/images/21-checkout-orchestration/21-booking-saga-sequence.jpeg)
 
@@ -134,8 +132,6 @@ Ordering steps 6 and 7 is the hard part. Commit first, and an authorization fail
 
 {id: checkout-orchestration--where-the-pivot-sits}
 ### Where the pivot sits
-
-The same saga takes different shapes across payment models and booking modes. The pivot moves, and so does what "undo" costs.
 
 | Flow | Steps before the pivot | Pivot | Cost of being wrong after the pivot |
 | --- | --- | --- | --- |
@@ -162,21 +158,19 @@ The rule I use: **keep the guest's synchronous wait to the steps the platform co
 {id: checkout-orchestration--idempotency-end-to-end}
 ## Idempotency End to End
 
-The 212 duplicates were a failure to name the guest's intention and carry that name through the system.
-
 {id: checkout-orchestration--who-mints-the-key}
 ### Who mints the key
 
 Stripe's API gives the reference semantics for one API: it saves the first response for a key, returns it to retries "including `500` errors", "compares incoming parameters to those of the original request and errors if they're not the same", and may prune keys "after they're at least 24 hours old" ([Stripe API reference, Idempotent requests](https://docs.stripe.com/api/idempotent_requests), n.d., fetched October 2026). Brandur Leach's 2017 Stripe post adds the client side: retry with the same key, with exponential backoff and jitter ([Stripe, 2017](https://stripe.com/blog/idempotency)). The IETF's draft `Idempotency-Key` header specifies the same behavior: a completed duplicate gets the previous result, a concurrent duplicate gets a conflict error, and a reused key with a different payload gets HTTP 422 ([draft-ietf-httpapi-idempotency-key-header-07](https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/), October 2025; an Internet-Draft, not yet an RFC).
 
-All three assume the client sends the same key for the same intention. That assumption broke at Roomstead because **the client minted the key at the wrong layer**: per HTTP request, not per purchase. A client-minted key is safe only if it is generated once per intention and survives restarts and every retry layer; in mobile apps the retry logic lives in shared HTTP code whose authors do not know which calls are purchases.
+All three assume the client sends the same key for the same intention. At Roomstead **the client minted the key at the wrong layer**: per HTTP request, not per purchase. A client-minted key is safe only if it is generated once per intention and survives restarts and every retry layer; in mobile apps the retry logic lives in shared HTTP code whose authors do not know which calls are purchases.
 
-My recommendation is to **let the server mint the key for purchases**. The client starts checkout with a quote ID, the server returns an attempt ID, and "Book" carries that ID. Any retry, after any restart, carries the same ID because the client has no other identifier to send; a double tap returns the same attempt. The attempt also stores the binding quote, the terms snapshot and the hold, so a "Book" request with a different price or terms is refused, the IETF draft's 422 case.
+My recommendation is to **let the server mint the key for purchases**. The client starts checkout with a quote ID, the server returns an attempt ID, and "Book" carries that ID. Every retry and double tap carries the same ID, because the client has no other identifier to send. The attempt also stores the binding quote, the terms snapshot and the hold, so a "Book" request with a different price or terms is refused, the IETF draft's 422 case.
 
 {id: checkout-orchestration--carrying-the-key-to-every-hop}
 ### Carrying the key to every hop
 
-One key at the front door is not enough: the coordinator's retries, a crashed worker and a redelivered message all cross the next hop, so each participant needs a key derived from the attempt.
+The coordinator's retries, a crashed worker and a redelivered message all cross the next hop, so each participant needs a key derived from the attempt.
 
 | Hop | Key | Documented example | What it prevents |
 | --- | --- | --- | --- |
@@ -187,7 +181,7 @@ One key at the front door is not enough: the coordinator's retries, a crashed wo
 | Affiliate → marketplace supply API | Partner reference | Expedia Rapid `affiliate_reference_id` | An affiliate's retry booking twice |
 | Marketplace → property management system | Reservation ID + version | OpenTravel reservation messages, Booking.com acknowledgement queue | A redelivered or reordered message creating or overwriting a reservation |
 
-Expedia's affiliate contract shows the cross-company version: partners must "always use a unique `affiliate_reference_id` for each booking request", and a duplicate returns "An itinerary already exists with this affiliate reference id" ([Expedia Group Rapid, Common error responses](https://developers.expediagroup.com/rapid/resources/error-responses-car), n.d., fetched October 2026). Airbnb's payments team published the internal version in April 2019: Orpheus, "a generic idempotency framework to achieve eventual consistency and correctness across our payments micro-service architecture" ([Chew and Khisti, Airbnb Engineering, 2019](https://medium.com/airbnb-engineering/avoiding-double-payments-in-a-distributed-payments-system-2981f6b070bb)). A 2024 secondary summary describes three phases per request (record the request against its key, make the remote call, record the response including failures), all on the primary database because replica lag could produce duplicate payments ([Biweekly Engineering, 2024](https://biweekly-engineering.beehiiv.com/p/handling-double-payments-airbnb-biweekly-engineering-episode-32)). The post is seven years old and may describe a replaced system; the discipline is what lasts.
+Expedia's affiliate contract shows the cross-company version: partners must "always use a unique `affiliate_reference_id` for each booking request", and a duplicate returns "An itinerary already exists with this affiliate reference id" ([Expedia Group Rapid, Common error responses](https://developers.expediagroup.com/rapid/resources/error-responses-car), n.d., fetched October 2026). Airbnb's payments team published the internal version in April 2019: Orpheus, "a generic idempotency framework to achieve eventual consistency and correctness across our payments micro-service architecture" ([Chew and Khisti, Airbnb Engineering, 2019](https://medium.com/airbnb-engineering/avoiding-double-payments-in-a-distributed-payments-system-2981f6b070bb)). A 2024 secondary summary describes three phases per request (record the request against its key, make the remote call, record the response including failures), all on the primary database because replica lag could produce duplicate payments ([Biweekly Engineering, 2024](https://biweekly-engineering.beehiiv.com/p/handling-double-payments-airbnb-biweekly-engineering-episode-32)). The post is seven years old and may describe a replaced system.
 
 {id: checkout-orchestration--a-second-line-the-natural-key-guard}
 ### A second line: the natural-key guard
@@ -197,7 +191,7 @@ A server-minted key does not stop a guest who opens checkout in two tabs, or an 
 {id: checkout-orchestration--timeouts-and-unknown-outcomes}
 ## Timeouts and Unknown Outcomes
 
-Every remote call in the saga can succeed, fail, or leave the caller not knowing. The third case is what a timeout means, and a payment provider produces it in quantity on a bad evening.
+Every remote call in the saga can succeed, fail, or time out and leave the caller not knowing. A slow payment provider produces the third case in quantity.
 
 ![Checkout attempt states from Started through Held and Authorizing to Authorized and Confirmed, with an Unknown state after a timeout whose only exits are lookups to Authorized or Declined, and Declined leading to Abandoned.](stays-marketplace-architecture/posts/21-checkout-orchestration/assets/images/21-checkout-orchestration/21-checkout-attempt-states.jpeg)
 
@@ -205,7 +199,7 @@ Every remote call in the saga can succeed, fail, or leave the caller not knowing
 
 Four rules govern the unknown state.
 
-1. **Never compensate an unknown.** Voiding or refunding an authorization whose outcome is unknown either does nothing or undoes a payment the guest believes is a booking.
+1. **Never compensate an unknown.** Voiding or refunding an authorization whose outcome is unknown either does nothing or undoes a payment the guest believes is a booking: the guest receives a confirmation and a refund for the same booking, or "booking failed" followed by a charge.
 2. **Never retry an unknown with a new key.** That is the Roomstead incident in one sentence.
 3. **Resolve by lookup, with a deadline.** The coordinator asks the participant for the result of the attempt's key, on a backoff schedule, until a deadline. Expedia's 30 minutes is a documented deadline for supplier bookings; for card authorizations I would use five minutes, then a reconciliation queue that reads the provider's report.
 4. **Tell the guest the truth.** An Unknown attempt shows "We are confirming your booking" and a status page, never a "Try again" button, which invites the duplicate.
@@ -215,17 +209,15 @@ Timeouts need a budget set from the outside in: the client waits longer than the
 {id: checkout-orchestration--checkout-eligibility-policy-disclosure-and-guest-details}
 ## Checkout Eligibility, Policy Disclosure and Guest Details
 
-Before payment, checkout establishes that this guest may book this offer and freezes the terms.
-
 {id: checkout-orchestration--eligibility}
 ### Eligibility
 
-Eligibility checks are cheap individually and expensive when scattered. I would collect them behind one eligibility call: **offer validity** (the quote is binding for these dates and this party); **stay rules** (minimum and maximum stay, closed-to-arrival, lead time, occupancy), evaluated by the same stay evaluator that priced the quote ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)); **audience** (member, closed-user-group and point-of-sale rates, [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)); the **payment arrangement** the offer allows for this guest and market ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)); **regulatory gates** such as a listing's registration status ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation)) and sanctions; and **guest requirements** that hosts set on instant-book listings, plus minimum age. Each check returns a reason code; a refusal the property page could have predicted is a defect of the page.
+Eligibility checks are cheap one by one and expensive when scattered. I would collect them behind one eligibility call: **offer validity** (the quote is binding for these dates and this party); **stay rules** (minimum and maximum stay, closed-to-arrival, lead time, occupancy), evaluated by the same stay evaluator that priced the quote ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)); **audience** (member, closed-user-group and point-of-sale rates, [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)); the **payment arrangement** the offer allows for this guest and market ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)); **regulatory gates** such as a listing's registration status ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation)) and sanctions; and **guest requirements** that hosts set on instant-book listings, plus minimum age. Each check returns a reason code; a refusal the property page could have predicted is a defect of the page.
 
 {id: checkout-orchestration--policy-disclosure-and-the-terms-snapshot}
 ### Policy disclosure and the terms snapshot
 
-The guest agrees to a specific set of terms: the cancellation policy, the payment schedule, house rules, the price breakdown and what is payable at the property. Those terms must be **frozen by version at checkout and attached to the reservation**, because everything later, from a free cancellation to a chargeback, is judged against what the guest saw.
+The guest agrees to the cancellation policy, the payment schedule, house rules, the price breakdown and what is payable at the property. Those terms must be **frozen by version at checkout and attached to the reservation**, because everything later, from a free cancellation to a chargeback, is judged against what the guest saw.
 
 | Term | Frozen as | Owner | Read later by |
 | --- | --- | --- | --- |
@@ -235,14 +227,14 @@ The guest agrees to a specific set of terms: the cancellation policy, the paymen
 | House rules and property policies | Content version | Property and listing content ([Describing a Stay: Content, Media and Property Mapping](#content-and-media)) | Support, trust and safety, claims |
 | Display policy | Display-policy version for the market | Regulatory affairs | Regulators, dispute evidence |
 
-The design rule is that checkout **renders** these terms from their owners and **stores references**, never copies of text maintained in checkout templates. A checkout that keeps its own copy of "free cancellation until 48 hours before arrival" is the start of Policy Spaghetti.
+Checkout **renders** these terms from their owners and **stores references**, never copies of text maintained in checkout templates. A checkout that keeps its own copy of "free cancellation until 48 hours before arrival" is the start of Policy Spaghetti.
 
 Consumer law sets the boundary for what checkout may still change. The European Commission's 2021 guidance on the Unfair Commercial Practices Directive says that a trader who "raises the price for a product during the booking process ... without giving the consumer reasonable time to complete the transaction" could be acting contrary to professional diligence ([European Commission, 2021](http://publications.europa.eu/resource/celex/52021XC1229(05))). The binding quote window is the architecture's answer: once re-validation succeeds, the price does not move for 15 minutes.
 
 {id: checkout-orchestration--guest-details-and-identity}
 ### Guest details and identity
 
-Guest details look like form fields and behave like data with legal consequences. The ages of children decide tourist tax in some cities: Nookaway has asked for children's ages at checkout since 2025 because Lisbon exempts children (under 13, an age limit [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays) flags for verification against the municipal rule), which is why the Novak family's tax was €56 and not €112. The lead guest's name must match the name the hotel will look for at the desk. Whether the platform collects identity details that some countries require providers to record on arrival is a decision that [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access) and [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) own.
+Guest details look like form fields and behave like data with legal consequences. The ages of children decide tourist tax in some cities: Nookaway has asked for children's ages at checkout since 2025 because Lisbon's municipal regulation exempts guests under 13 ([The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)), which is why the Novak family's tax was €56 and not €112. The lead guest's name must match the name the hotel will look for at the desk. Whether the platform collects identity details that some countries require providers to record on arrival is a decision that [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access) and [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) own.
 
 Hosted-stays platforms often put identity verification on the booking path: Airbnb states that "every host, new co-host, and booking guest must be identity verified" ([Airbnb Help Center, article 1237](https://www.airbnb.com/help/article/1237), n.d., fetched October 2026). Verification after confirmation converts better but blocks a host's calendar for a guest who may never verify, so it needs the same timer discipline as a request to book.
 
@@ -251,7 +243,7 @@ Checkout is also where a marketplace can cross a legal line without noticing. Un
 {id: checkout-orchestration--where-the-fraud-and-risk-checks-go}
 ## Where the Fraud and Risk Checks Go
 
-Risk checks are often misplaced, because each team puts its check where its data is available. The placement decides both the latency the guest pays and the loss the marketplace absorbs.
+Each team tends to put its risk check where its data is available. The placement decides both the latency the guest pays and the loss the marketplace absorbs.
 
 | Placement | What it checks | Latency budget | Typical actions | Fits |
 | --- | --- | --- | --- | --- |
@@ -260,16 +252,16 @@ Risk checks are often misplaced, because each team puts its check where its data
 | **Before confirmation** | Reservation screening: guest history, trip pattern, listing type | Under 300 ms | Allow, redirect to other inventory, require host approval, deny | Hosted stays |
 | **After confirmation** | Slower models, manual review, link analysis | Minutes to hours | Hold payout, cancel with refund, ask for documents | Both; cost is a canceled confirmed booking |
 
-The "before confirmation" row has a documented example. Airbnb's 2022 anti-party announcement for the US and Canada described a system that flags "potentially high-risk reservations" from signals such as review history, account age, trip length and distance from the listing, and "is designed to prevent a reservation attempt from going through"; blocked guests may still book a private room or a hotel room ([Airbnb Newsroom, 2022](https://news.airbnb.com/airbnb-introduces-new-anti-party-technology-in-us-and-canada)). The action set includes **redirect**, which keeps the guest in the marketplace and costs nothing to undo only if the risk decision runs before the hold and the authorization. Airbnb has not published the model or its place in its booking architecture; the placement here is my inference.
+Airbnb's 2022 anti-party announcement for the US and Canada described a system that flags "potentially high-risk reservations" from signals such as review history, account age, trip length and distance from the listing, and "is designed to prevent a reservation attempt from going through"; blocked guests may still book a private room or a hotel room ([Airbnb Newsroom, 2022](https://news.airbnb.com/airbnb-introduces-new-anti-party-technology-in-us-and-canada)). The action set includes **redirect**, which keeps the guest in the marketplace and costs nothing to undo only if the risk decision runs before the hold and the authorization. Airbnb has not published the model or its place in its booking architecture; the placement here is my inference.
 
 Payment risk interacts with Strong Customer Authentication (SCA), the EU's two-factor rule for electronic payments under the second Payment Services Directive (PSD2). Its technical standards, applied since 14 September 2019, let a provider skip SCA for low-risk remote card payments only below reference fraud rates of 0.13% up to €100, 0.06% up to €250 and 0.01% up to €500 ([Commission Delegated Regulation (EU) 2018/389, Art. 18 and Annex](http://publications.europa.eu/resource/celex/32018R0389), 2018). Stays baskets are mostly above €250, so checkout must model the challenge as a guest-time step with its own hold extension. [Paying for a Future Night: Payment Orchestration for Stays](#stay-payments) covers SCA in depth; [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) owns the models.
 
-The architecture rule I would hold to is that **risk returns a decision with a reason, and the coordinator acts on it**. Risk services that call the reservation store to cancel bookings, or checkout code that interprets raw scores, spread one decision over two owners and make every false positive untraceable.
+The rule I would hold to: **risk returns a decision with a reason, and the coordinator acts on it**. Risk services that call the reservation store to cancel bookings, or checkout code that interprets raw scores, spread one decision over two owners and make every false positive untraceable.
 
 {id: checkout-orchestration--performance-and-conversion}
 ## Performance and Conversion
 
-**Keep the synchronous path to the steps that decide the guest's answer**, and move supplier delivery, notifications, non-urgent virtual-card issuing, loyalty accrual and analytics behind the outbox. Corvane's target for the "Book" call is under four seconds of server time at the 95th percentile, excluding any 3-D Secure challenge; authorization takes about three of them. The checkout dashboard measures integrity as well as conversion: completion per started attempt, re-validations returning changed or unavailable (the checkout share of Phantom Availability), attempts entering Unknown and their time to resolve, **duplicate reservations per 100,000 confirmed attempts** (from the natural-key guard in reporting mode), and confirmed bookings canceled by risk. A checkout that converts well and duplicates under load is not a good checkout.
+Supplier delivery, notifications, non-urgent virtual-card issuing, loyalty accrual and analytics run behind the outbox, outside the guest's wait. Corvane's target for the "Book" call is under four seconds of server time at the 95th percentile, excluding any 3-D Secure challenge; authorization takes about three of them. The checkout dashboard measures integrity as well as conversion: completion per started attempt, re-validations returning changed or unavailable (the checkout share of Phantom Availability), attempts entering Unknown and their time to resolve, **duplicate reservations per 100,000 confirmed attempts** (from the natural-key guard in reporting mode), and confirmed bookings canceled by risk.
 
 {id: checkout-orchestration--in-practice-the-public-record-and-corvane-s-redesign}
 ## In Practice: The Public Record and Corvane's Redesign
@@ -277,24 +269,20 @@ The architecture rule I would hold to is that **risk returns a decision with a r
 {id: checkout-orchestration--what-the-public-record-shows}
 ### What the public record shows
 
-No stays company has published its booking saga, reservation state machine or internal locking. What is public is the external contract and, for Airbnb, a decade of payments engineering:
-
-- **Expedia Group's affiliate API exposes the saga's seams:** a price check, a hold that rolls back on its own, an idempotent partner reference, errors that are not final for 90 seconds and a 30-minute retrieval window.
-- **Booking.com's Request to Book treats the hold as a design variable**, moving it into the supplier's system under RtB 2.0.
-- **Airbnb's payments record shows the discipline under the saga:** Orpheus for idempotency (2019); orchestration rebuilt as "a directed acyclic graph (DAG) of retryable idempotent steps", reaching "five 9s (99.999%) of consistency for payments" ([Airbnb Engineering, 2022](https://medium.com/airbnb-engineering/rebuilding-payment-orchestration-at-airbnb-341d194a781b)); and Skipper's durable workflows (2026).
+No stays company has published its booking saga, reservation state machine or internal locking. What is public is the external contract, such as Expedia's Rapid holds and partner references and Booking.com's Request to Book, and, for Airbnb, a decade of payments engineering: Orpheus (2019); orchestration rebuilt in 2022 as "a directed acyclic graph (DAG) of retryable idempotent steps", reaching "five 9s (99.999%) of consistency for payments" ([Airbnb Engineering, 2022](https://medium.com/airbnb-engineering/rebuilding-payment-orchestration-at-airbnb-341d194a781b)); and Skipper (2026).
 
 > **INFERENCE, NOT DOCUMENTED:** These sources show that large stays platforms treat booking as a multi-step process with explicit holds, idempotent references and unknown outcomes. They do not show where each company places its pivot, how its coordinator stores state, or how it resolves unknown supplier outcomes internally. The saga in this chapter is a reference architecture consistent with the public contracts, not a description of any company's system.
 
 {id: checkout-orchestration--corvane-s-redesign-the-checkout-attempt-contract}
 ### Corvane's redesign: the checkout attempt contract
 
-In **February 2027** Mariana's architecture forum adopted a **checkout attempt contract** for both brands, which became part of the One Stay offer and reservation contract when the board approved the program in April. The server mints the attempt ID from the quote ID, and "Book" takes only that ID. The attempt ID is the unique key of the pending reservation in Keystone and Burrow and of the hold and commit in the allocation ledger, and the root of every payment obligation key Corvane Payments sends to its acquirers. Turnstile returns the attempt as Unknown after 30 seconds; the app, its generic retry interceptor disabled for purchase calls, waits 35 seconds and then polls the attempt's status for up to five minutes. Unresolved authorizations go to a reconciliation queue after five minutes. A natural-key guard runs first in reporting mode, then as a confirmation prompt.
+In **February 2027** Mariana's architecture forum adopted a **checkout attempt contract** for both brands, which became part of the One Stay offer and reservation contract when the board approved the program in April. "Book" takes only the server-minted attempt ID, which is the unique key of the pending reservation in Keystone and Burrow and of the hold and commit in the allocation ledger, and the root of every payment obligation key Corvane Payments sends to its acquirers. Turnstile returns the attempt as Unknown after 30 seconds; the app, its generic retry interceptor disabled for purchase calls, waits 35 seconds and then polls the attempt's status for up to five minutes. Unresolved authorizations go to a reconciliation queue after five minutes. A natural-key guard runs first in reporting mode, then as a confirmation prompt.
 
 Roomstead's app shipped the change in March 2027 and the web checkout in April. Nookaway adopted the contract in Burrow as part of Payment Plans v1 between April and September 2027 ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), because its checkout had the same client-minted keys and had not yet been tested by a provider slowdown.
 
-**The incident replayed.** Under the new contract the app would have waited 35 seconds instead of 20, so most of the 40-second authorizations would have returned in time; the rest would have entered Unknown and shown a confirming state. A retry that slipped through would have carried the same attempt ID and received the original result, or a conflict while the original was running. No second reservation, charge or virtual card. The guard in reporting mode would have shown the residue: guests who started a second checkout from a second device.
+**The incident replayed.** Under the new contract the app would have waited 35 seconds instead of 20, so most of the 40-second authorizations would have returned in time; the rest would have entered Unknown and shown a confirming state. A retry that slipped through would have carried the same attempt ID and received the original result, or a conflict while the original was running: no second reservation, charge or virtual card. The guard in reporting mode would have shown the residue: guests who started a second checkout from a second device.
 
-**The Novaks' booking through the new contract.** The Novak family's Nookaway booking is the cleanest worked example of a facilitated, instant-book stay paid at booking. On **14 February 2027** they booked an Alfama apartment for **2–9 August**: 7 nights × **€145** = €1,015, **€70** cleaning, a 12% guest service fee of **€130.20** and Lisbon tourist tax of **€56**, total **€1,271.20**. Replayed through the target design, with illustrative timings:
+**The Novaks' booking through the new contract.** The Novak family's Nookaway booking is a facilitated, instant-book stay paid at booking. On **14 February 2027** they booked an Alfama apartment for **2–9 August**: 7 nights × **€145** = €1,015, **€70** cleaning, a 12% guest service fee of **€130.20** and Lisbon tourist tax of **€56**, total **€1,271.20**. Replayed through the target design, with illustrative timings:
 
 | Step | What happens | Recorded |
 | --- | --- | --- |
@@ -320,7 +308,7 @@ The guest's synchronous wait, excluding the time Jana spent in her bank's app, w
 | **Booking mode** | Instant book | Request to book | Hotels; homes with an API-connected or single-channel calendar | iCal-only multichannel homes on peak dates; hosts who need to vet guests |
 | **Workflow runtime** | Durable workflow engine | Hand-written state machine in the reservation service's database | Several sagas, long waits (request to book, Pay Later), many teams | One saga, short waits, a team that already owns the reservation store |
 
-The row argued most often is choreography. Event-driven booking flows look decoupled, but a booking with a guest waiting needs someone who knows the whole state, can say "this attempt is Unknown", and can decide a compensation. **Choreography after the pivot, orchestration before it**, is the split I recommend; [Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays) covers the events.
+I recommend **orchestration before the pivot and choreography after it**: a booking with a guest waiting needs one owner that knows the whole state, can say "this attempt is Unknown", and can decide a compensation. [Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays) covers the events.
 
 {id: checkout-orchestration--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
@@ -343,10 +331,6 @@ The row argued most often is choreography. Event-driven booking flows look decou
 {id: checkout-orchestration--failure-modes}
 ## Failure Modes
 
-**Keys minted per request.** *Symptom:* duplicate reservations and charges whenever latency rises; support sees "charged twice" in clusters. *Cause:* idempotency keys generated in HTTP plumbing rather than per purchase. *Defense:* server-minted checkout attempts; purchase calls excluded from generic retry code.
-
-**Compensating the unknown.** *Symptom:* guests receive a confirmation and a refund for the same booking, or a "booking failed" message followed by a charge. *Cause:* timeouts treated as failures and followed by voids or cancellations. *Defense:* an Unknown state with lookup by key and a deadline; reconciliation against provider reports.
-
 **Holds as the guarantee.** *Symptom:* double bookings when holds expire during a slow payment. *Cause:* checkout trusts a hold instead of committing against the allocation ledger. *Defense:* expiry evaluated at commit; commit refused cleanly; authorization voided. Martin Kleppmann's 2016 argument that a lease is not a correctness guarantee without a fencing check in storage applies directly ([Kleppmann, 2016](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)); [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) works it through.
 
 **Request to book without timers.** *Symptom:* calendars blocked by expired requests and authorizations held for days. *Defense:* every timed state has a timer, an owner and an expiry action.
@@ -354,11 +338,11 @@ The row argued most often is choreography. Event-driven booking flows look decou
 {id: checkout-orchestration--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Checkout is small in code and large in consequence; its few decisions each need a named owner.
+Checkout is small in code and large in consequence; each of its few decisions needs a named owner.
 
-**Decide what one booking is, at group level.** The checkout attempt, its key and its relation to the quote and the reservation belong in the One Stay contract, not in each team's code; changes go through Mariana's forum, because a change in one brand's key semantics breaks reconciliation in Corvane Payments for both.
+**Decide what one booking is, at group level.** Changes to the checkout attempt and its key go through Mariana's forum, because a change in one brand's key semantics breaks reconciliation in Corvane Payments for both.
 
-**Decide the pivot per flow and write it down.** A one-page table per brand, reviewed whenever a payment model or supply type is added, prevents the most expensive class of incident: bookings confirmed without money or charged without a booking. Roomstead's growth toward 40% merchant bookings by the end of 2028 moves more bookings to flows where the pivot follows a payment; 198 of the 212 duplicates had money attached.
+**Decide the pivot per flow and write it down.** A one-page table per brand, reviewed whenever a payment model or supply type is added, prevents bookings confirmed without money or charged without a booking. Roomstead's growth toward 40% merchant bookings by the end of 2028 moves more bookings to flows where the pivot follows a payment.
 
 **Own the unknown.** At Corvane, Leila Haddad's team owns the queue of unresolved payment attempts and Roomstead supply owns bedbank unknowns. A queue without an owner becomes a reconciliation gap like the €1.8 million mismatch between virtual cards and reservations ([Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation)).
 
@@ -381,7 +365,7 @@ Checkout is small in code and large in consequence; its few decisions each need 
 {id: checkout-orchestration--from-booking-to-reservation}
 ## From Booking to Reservation
 
-A confirmed booking begins the reservation's life. It must reach the property or host, change as plans change, survive cancellations and no-shows, and trigger reviews and payouts at the right moments. Checkout hands over one reservation with one key and one frozen set of terms; [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) takes it from there.
+A confirmed booking must still reach the property or host, change as plans change, survive cancellations and no-shows, and trigger reviews and payouts at the right moments. Checkout hands over one reservation with one key and one frozen set of terms; [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) takes it from there.
 
 {id: checkout-orchestration--sources-and-evidence}
 ## Sources and Evidence

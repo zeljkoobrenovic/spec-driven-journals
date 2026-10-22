@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Paying the Supply Side: Payouts, Commissions and Settlement
@@ -79,3 +79,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: consistency check of fees, payout timing and Prinsenkade/Carmen figures (all match the ledger); American spelling (aging, license, fulfill, program). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,306 → 6,807 prose words; lead now states the chapter's place in Part VI and what it hands to refunds-and-reconciliation and taxes-on-stays; lead paragraph restating the WHY ARCHITECTS callout merged into one sentence; four Failure Modes bullets that restated earlier sections collapsed into one sentence; metrics bullet removed from the Chief Architect's view; no headings renamed. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Peaks, Regions and Languages: Global Scale and Reliability
@@ -70,3 +70,4 @@ Chief and principal architects, platform-engineering and SRE leads, and engineer
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Roomstead search and availability cost aligned with stays-marketplace-economics (€44M, about 46%, €0.0007 per shopping request). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,344 → 5,836 prose words (8%); opening now places the chapter after the correctness chapters and names what depends on it ([[demand-channels]], [[evolving-the-platform]]); Failure Modes compressed to one-line pointers; Chief Architect's view no longer repeats the sharing judgement; no headings renamed, no figures removed. *(AI-mediated session)*

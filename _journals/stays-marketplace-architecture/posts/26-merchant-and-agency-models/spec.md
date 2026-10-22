@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Who Takes the Money? Merchant, Agency and Facilitator Models
@@ -20,7 +20,7 @@ Chief architects, payments and finance-engineering leads, and OTA or hosted-stay
 - [ ] Defines agency, merchant, facilitated payments, merchant of record and supplier of the stay, and separates payment model from payment timing.
 - [ ] Gives a liability matrix (who charges, holds, settles, carries chargebacks, FX, refunds, licence, revenue trigger) for all three models.
 - [ ] Explains the PSD2 commercial-agent exclusion, net revenue presentation at check-in, and the Alpenchalets VAT consequence, each with an official or dated source.
-- [ ] Presents a payment-arrangement record with fields, owners and the resolve/freeze/version rules, with at least two mermaid diagrams.
+- [ ] Presents a payment-arrangement record with fields, owners and the resolve/freeze/version rules, with at least two diagrams (illustrated).
 - [ ] Works one Corvane booking (Hotel Miradouro) through agency and merchant, plus the canonical Novak facilitated booking, with ledger-consistent numbers.
 - [ ] Includes dated public examples (Booking Holdings, Expedia, Airbnb, Trip.com, Booking.com mixed model, Stripe and Adyen) with inferences labeled.
 - [ ] Contains a trade-off table, the "Hotels and Homes" comparison table with a judgement on what to share, failure modes, the Chief Architect's view and 6–10 questions.
@@ -73,3 +73,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: clarified the Nookaway float basis (stays value before guest fees); American spelling (license, program, installments). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,493 → 7,046 prose words; no headings renamed; 8 announce/recap paragraphs or sentences cut; two overlapping failure modes merged; Chief Architect view no longer re-argues ownership and VAT; corrected "seven rows" (the comparison table has six) by removing the recap. *(AI-mediated session)*

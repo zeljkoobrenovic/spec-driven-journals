@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting
@@ -24,7 +24,7 @@ Chief architects, payments and finance-engineering leads, and engineering direct
 - [ ] Reader can derive DAC7 consideration for agency and facilitated bookings and explain why agency OTAs lack the payout-withholding lever.
 - [ ] The Corvane worked example ledger balances to the Novak total (€1,271.20) and matches the scenario ledger.
 - [ ] Every company claim carries a dated source; unverified items (Lisbon child-exemption age, US case names, illustrative Portuguese VAT rates) are flagged.
-- [ ] Chapter contains a trade-off table, the Hotels and Homes section with table, three mermaid diagrams, the Chief Architect's view and questions to ask.
+- [ ] Chapter contains a trade-off table, the Hotels and Homes section with table, three diagrams (illustrated), the Chief Architect's view and questions to ask.
 
 ## Non-goals
 
@@ -77,3 +77,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Lisbon tourist tax dated "as of October 2026" and the under-13 child exemption hedged as unverified (official lisboa.pt unreachable); American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,573 → 6,190 prose words; lead now names the hand-off to [[refunds-and-reconciliation]]; two failure modes that repeated the architecture rules and the scene deleted (one merged into "tax as a constant"); Questions to ask cut from 10 to 8; Chief Architect's "Long term" paragraph deleted as a restatement; sentence-level tightening. No headings renamed; spec unchanged otherwise. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*

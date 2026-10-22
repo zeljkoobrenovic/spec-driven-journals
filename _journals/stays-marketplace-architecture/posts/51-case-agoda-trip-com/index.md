@@ -78,7 +78,7 @@ On 17 August 2026 Agoda announced the **Agoda Partner Portal**, "formerly known 
 
 The best single source in this case is Agoda's August 2026 post on its **Price Cache** ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-agoda-scaled-its-price-cache-with-dragonflydb-0828e478e84f)). The cache "stores terabytes of volatile rate data fetched from our global network of suppliers". Search reads from it: "A cache hit provides an immediate response. A cache miss triggers an on-demand workflow that fetches the latest rates and integrates them back into the system." The Price API reads by "hotel, occupancy, check-in date, and check-out date", so the key is an **itinerary**, not a night, and each entry holds price data per supplier.
 
-The load shape is the most useful number in the public record of OTAs:
+The load shape is the most useful number in the public record of OTAs.
 
 | Measure (before migration unless stated) | Value |
 | --- | --- |
@@ -102,7 +102,7 @@ The migration was staged with care:
 ![Push suppliers feed a distributor, then (dotted, author's reading) a price writer into a two-cluster price cache; search reads through the price API, and misses trigger an on-demand fetch from rationed pull suppliers that writes back.](assets/images/51-case-agoda-trip-com/51-agoda-price-path.jpeg)
 **Figure 1:** *Agoda's price path, assembled from posts published in 2020, 2024 and 2026. Each box is documented; the dotted edge from the 2024 distributor to the 2026 writer is the author's reading, because no post connects them. What the figure shows is the load shape: writes arrive from suppliers whether or not anyone searches, and reads hit a copy keyed by itinerary.*
 
-Three things here matter beyond Agoda. First, **writes dominate reads**, because supplier updates do not wait for demand; an OTA that designs its price store as a read cache with occasional invalidation has the problem the wrong way round. Second, **the hit ratio is a business metric and a health signal at once**: a cold cluster means customers see no price, so warming and failover belong to the product, and the same number that measures cache efficiency decides when to stop reading from a cluster. Third, **short stays dominate**, which justifies tiering by length of stay, and creates a predictable failure when demand moves outside the tier. [[availability-engine]] builds its staleness budget and hot-tier design on the same observations.
+Three things here matter beyond Agoda. First, **writes dominate reads**, because supplier updates do not wait for demand; an OTA that designs its price store as a read cache with occasional invalidation has the problem the wrong way round. Second, **the hit ratio is a business metric and a health signal at once**: a cold cluster means customers see no price, so warming and failover belong to the product. Third, **short stays dominate**, which justifies tiering by length of stay, and creates a predictable failure when demand moves outside the tier. [[availability-engine]] builds its staleness budget and hot-tier design on the same observations.
 
 ![Two cache tanks fed by price-tag pipes: tank A is warm and serves a traveler, tank B is cold and filling, its outlet closed while it warms.](assets/images/51-case-agoda-trip-com/51-cold-cache-stays-dark.jpeg)
 **Figure 2:** *A restarted cluster takes writes at once but stays unreadable until it is warm, about three hours in Agoda's example, because an empty cache would show customers no prices.*
@@ -120,7 +120,7 @@ My reading: this is a **saga whose compensation cost is priced before it runs**;
 
 Agoda's **booking deduplication**, described in July 2024, addresses the opposite problem: two bookings where the customer wanted one. "Delays in the booking creation process led customers to rebook when they did not receive a confirmation email", and Agoda then paid the cancellation costs. The service detects an identical earlier booking and asks the customer, "Is this a duplicate booking?" The legacy version worked only within one data center, so it failed when traffic was moved during incidents. The redesign writes every new booking as a **candidate** to both a local database and a **central** database that holds all data centers' candidates, queries both in parallel, and merges the results with rules for every failure combination: trust the side that returned more, and when statuses disagree prefer Inactive over Active over Awaiting. Static fields are hashed into one column so that one table serves every product, and a unique-key constraint catches duplicate API requests within about a second ([Agoda Engineering, 2024](https://medium.com/agoda-engineering/booking-deduplication-how-agoda-manages-duplicate-bookings-across-multiple-data-centers-08ddbe9e22f1), read via an archived copy).
 
-This is the most direct public description of **Built for Sunny Days** I know of in travel: a safeguard that worked in normal operation and failed precisely when an incident moved traffic, which is when duplicate bookings are most likely.
+This is the most direct public description of **Built for Sunny Days** I know of in travel: a safeguard that failed precisely when an incident moved traffic, which is when duplicate bookings are most likely.
 
 ### After the booking: from a line-by-line port to a modular monolith
 
@@ -157,7 +157,7 @@ For **white-label partners**, Agoda serves several brands from one design system
 
 ## Trip.com: What a Filing and Three Repositories Can Tell You
 
-Trip.com Group is larger than Agoda by any public measure, and much less visible. This section uses only first-party sources: the fiscal 2025 Form 20-F, filed on 28 April 2026 ([Trip.com Group, 2026](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm)), a July 2023 product announcement and three open-source repositories. Everything below is true at those dates.
+Trip.com Group is larger than Agoda by any public measure, and much less visible. This section uses only first-party sources: the fiscal 2025 Form 20-F, filed on 28 April 2026 ([Trip.com Group, 2026](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm)), a July 2023 product announcement and three open-source repositories.
 
 ### What the 20-F documents about hotels
 
@@ -197,15 +197,13 @@ My reading: these repositories show a company that took **multi-site writes** se
 | **Modular monolith with enforced boundaries** | Agoda BAPI after a line-by-line port (2019–2026) | A live service with many contributors that cannot pause for a rewrite | When rules live in documents rather than in the build |
 | **Guaranteed allotment** | Trip.com: instant confirmation before notifying the hotel (2026) | High-demand hotels where instant confirmation wins bookings | When allotment and the hotel's own inventory drift and the OTA sells rooms the hotel has also sold |
 
-What the Agoda record adds to the usual caching discussion is that **every staleness decision is also a booking decision**, and Agoda measured each step (parity, booking metrics, hit ratios) in booking terms.
-
 ## Failure Modes the Record Exposes
 
-1. **A cold cache treated as a healthy one.** A restarted cluster accepts writes before it can serve reads; reading from it too early shows customers no prices. Agoda's three-hour warm-up and its rule of reads-disabled-until-warm are the documented defense ([[global-scale-and-reliability]]).
-2. **A tier sized for the usual, not the next campaign.** The one-to-four-night hot tier filled within months. Tiering by length of stay is right only while the demand mix holds ([[availability-engine]]).
-3. **Safeguards that fail exactly when traffic moves.** Local-only deduplication worked until an incident shifted traffic between data centers, which is when duplicate bookings are most likely ([[checkout-orchestration]]).
-4. **Coupling that survives a migration.** BAPI moved post-booking into its own service and then grew the same coupling inside it ([[modernizing-a-live-marketplace]]).
-5. **Global configuration with no rollout.** One unreviewed Consul key reached four production data centers at once ([[global-scale-and-reliability]]).
+1. **A cold cache treated as a healthy one.** Reading a restarted cluster before it is warm shows customers no prices; see The price cache ([[global-scale-and-reliability]]).
+2. **A tier sized for the usual, not the next campaign.** Tiering by length of stay is right only while the demand mix holds; see The price cache ([[availability-engine]]).
+3. **Safeguards that fail exactly when traffic moves.** See Booking, on local-only deduplication ([[checkout-orchestration]]).
+4. **Coupling that survives a migration.** See After the booking, on BAPI ([[modernizing-a-live-marketplace]]).
+5. **Global configuration with no rollout.** One unreviewed Consul key reached four production data centers at once; see Platform ([[global-scale-and-reliability]]).
 
 ## Where the Public Evidence Stops
 
@@ -225,9 +223,9 @@ Two facts are volatile as of October 2026: the Agoda Partner Portal name, which 
 
 What I take from these two companies is a set of decision rules, each conditioned on the evidence.
 
-**Treat the price copy as a product with an owner and a budget.** Agoda's record shows that an aggregating OTA spends most of its pricing capacity on writes, rations supplier queries and makes cache warming a customer-facing concern. I would give the price copy a named owner, a staleness budget per supply mode, a hit-ratio objective, and an explicit query budget per pull supplier that a model or a policy spends on likely conversions. Without those, Phantom Availability is a capacity accident waiting for a campaign.
+**Treat the price copy as a product with an owner and a budget.** I would give the price copy a named owner, a staleness budget per supply mode, a hit-ratio objective, and an explicit query budget per pull supplier that a model or a policy spends on likely conversions. Without those, Phantom Availability is a capacity accident waiting for a campaign.
 
-**Measure infrastructure changes in booking terms.** Agoda's cache cutover passed parity at above 99.9% and was then judged on booking metrics before it took all traffic. I would require the same of every change on the price or booking path: technical parity, then a commercial read, then the cutover.
+**Measure infrastructure changes in booking terms.** Every staleness decision is also a booking decision. As with Agoda's cache cutover, I would require of every change on the price or booking path technical parity, then a commercial read, then the cutover.
 
 **Put the cost of undoing into the booking plan.** MPBE's risk ordering is cheap to adopt for any commitment that crosses a supplier boundary, including a single hotel booked through a bedbank with a payment step: commit first what can be undone for free.
 
@@ -306,7 +304,7 @@ This is the last case in Part X. The reference pages follow, beginning with [[do
 
 ### Standards, regulation and documentation
 
-- [OTA_HotelAvailNotifRQ](https://developer.agoda.com/supply/reference/ota_hotelavailnotifrq) — Agoda Supply API, n.d. Restrictions and inclusive date ranges in Agoda's OpenTravel implementation.
+- [OTA_HotelAvailNotifRQ](https://developer.agoda.com/supply/reference/ota_hotelavailnotifrq) — Agoda Supply API, n.d. (read 22 October 2026). Restrictions and inclusive date ranges in Agoda's OpenTravel implementation.
 - [How to navigate within your Agoda YCS partner extranet](https://nightsbridge-6.screenstepslive.com/a/1973011-how-to-navigate-within-your-agoda-ycs-partner-extranet) — NightsBridge, n.d. Separate onboarding paths for Agoda Homes and YCS (secondary).
 
 ### Research and practitioner sources

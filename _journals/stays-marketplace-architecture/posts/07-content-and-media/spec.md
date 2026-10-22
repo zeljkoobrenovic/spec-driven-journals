@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Describing a Stay: Content, Media and Property Mapping
@@ -77,3 +77,5 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: aligned the five shared content services with capability map v2 (media pipeline and translation already shared in v1; hash index in media pipeline; policy text from Clause; Concord engine shared from 2028), corrected the Booking.com Home-provider sunset to `OTA_HotelInvNotif` only, verified RMA and Photo API claims, flagged older Airbnb evidence, expanded OTA and STR. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the render-policy figure without the till and payment card. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,556 → 7,484 prose words; opening now places the chapter in Part II (supply as master data with many writers, after property-and-listing-model and partner-onboarding); "Content scoring at Roomstead and Nookaway" promoted from an In Practice subsection to its own section; generic openers and repeated sentences cut. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 7,556 → 6,755 prose words cumulative since HEAD (7,484 → 6,755 this pass); lead no longer restates the callouts or the ownership of neighbouring chapters; Failure Modes compressed to one-line pointers (their facts moved into Source adapters, Translation and The mapping pipeline); Chief Architect's view no longer re-argues the Hotels and Homes judgement and its regulation paragraph moved into the regulation paragraph of the body; repeated definitions and recaps cut. No headings renamed, no figures touched. *(AI-mediated session)*

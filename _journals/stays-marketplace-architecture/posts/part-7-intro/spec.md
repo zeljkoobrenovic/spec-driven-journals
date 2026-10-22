@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part VII — TRUST: Making Strangers Safe to Stay With
@@ -20,7 +20,7 @@ Chief architects, trust-and-safety and fraud engineering leads, identity archite
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS THIS PART ADDRESSES callout using exact pattern names, linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument: trust is a platform of records, not a collection of tools.
 - [ ] A short paragraph names where hotels and homes differ (supply-side account takeover vs two strangers in one home; who carries identity, insurance and short-term-rental law) and notes that the OTA inherits the homes problem.
-- [ ] One mermaid diagram with a Figure caption: brand detectors, Corvane ID, Ordinance and Vouch feeding Warden's decisions, enforcement out, receipts back, reasons to statements and reports.
+- [ ] Two figures with captions: trust tools rebuilt as one platform of records; and brand detectors, Corvane ID, Ordinance and Vouch feeding Warden's decisions, enforcement out, receipts back, reasons to statements and reports.
 - [ ] Corvane (labeled fictional) uses only figures from chapters 31–36: €48,540 Turia loss, €31,640 avoided in the replay, 16-day cross-brand gap, €212,000 reimbursed to 310 guests, 9.4 million stored images, 3,610 ring reviews, 6,900 Spanish removals reclassified in under an hour vs nine analysts over seven weeks; platform dates Ordinance (17 March 2027), Vouch (18 May 2027), Corvane ID (June 2027), Warden (17 August 2027).
 - [ ] `## Chapters in this part` has one paragraph per chapter in config order, each with what it decides, its Corvane case and when to read it.
 - [ ] Names [[part-8]] and hands off to [[stays-trust-and-safety]].
@@ -53,3 +53,4 @@ Internal: [[stays-trust-and-safety]], [[travel-fraud]], [[identity-accounts-and-
 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 859 → 861 prose words; no sections or paragraphs deleted (part intro, no repetition beyond the house-shape callouts); three lead sentences tightened; spec figure criterion updated from one mermaid diagram to the two illustrations the post now carries. *(AI-mediated session)*

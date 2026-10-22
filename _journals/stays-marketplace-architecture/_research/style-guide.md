@@ -85,7 +85,7 @@ Body (a guide, not a rigid template — name sections by content, not generic la
 10. A closing paragraph that hands off to the next chapter in reading order with a `[[link]]`.
 11. `## Sources and Evidence` — grouped: *Company engineering and investor sources*, *Standards, regulation and documentation*, *Research and practitioner sources*; each entry: linked title, publisher/author, **publication year (or "n.d.")**, one clause on what it supports. End with: "Corvane is fictional; architectural recommendations and labeled inferences are the author's judgement."
 
-Length: **5,000–7,500 words** for chapters in Parts I–IX (may go to 8,500 if the depth is earned); part intros 500–800; case studies 5,000–7,000. Depth beats breadth: one well-worked example beats five mentions.
+Length: **5,000–7,500 words** for chapters in Parts I–IX (may go to 8,500 if the depth is earned); part intros 600–1,000; case studies 5,000–7,000. Depth beats breadth: one well-worked example beats five mentions.
 
 ## Diagrams
 

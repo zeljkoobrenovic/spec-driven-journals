@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part VI — MONEY: Who Pays Whom, When and How Much
@@ -19,9 +19,9 @@ Chief architects, payments and finance engineering leads, CFO-side technology ow
 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three) and a FAILURE PATTERNS callout using exact names linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument (money as recorded decisions on one ledger) and names where hotels and homes differ in collection, settlement, risk and tax.
-- [ ] One mermaid diagram with a Figure caption.
+- [ ] Two illustrations with Figure captions: money as decisions recorded before it moves, and money at Corvane (arrangement, payments, Fathom, Levy, reconciliation).
 - [ ] A "Chapters in this part" list with one paragraph per chapter in config order, each linking the chapter and saying what it decides.
-- [ ] Corvane facts match the ledger and chapters: 40% merchant target and the 35% gate, Pay Later's about €228 million uncollected, Carmen's €244.40 payout and €130 fee, the Novaks' €56 tourist tax, the €1.8 million virtual-card gap.
+- [ ] Corvane facts match the ledger and chapters: 40% merchant target and the 35% gate, Pay Later's about €228 million uncollected, Carmen's €244.40 payout, the Novaks' €56 tourist tax, the €1.8 million virtual-card gap.
 - [ ] Every acronym expanded on first use (OTA, VAT, SCA, ViDA); ends with a hand-off to [[merchant-and-agency-models]]; 500–900 words of body.
 
 ## Non-goals
@@ -50,3 +50,4 @@ None.
 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 833 → 836 words (part intro, kept about flat); one 37-word sentence split, two small wording fixes; spec criteria updated to the two illustrations that replaced the mermaid diagram, and Carmen's €130 fee dropped from the facts list because the intro does not need it. *(AI-mediated session)*

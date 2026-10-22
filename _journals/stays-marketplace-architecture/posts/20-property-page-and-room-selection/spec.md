@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: The Moment of Decision: Property Pages, Room Selection and Total Price
@@ -77,3 +77,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed 9,501 to 8,474 words; hand-off now to part-5; Miradouro catalog aligned to 168 products; Lisbon child exemption hedged as unverified; Levy named; removed uncited sources. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,527 → 6,211 prose words; no headings renamed; merged the duplicate "silent fallback" failure mode into the Performance section; deleted the "rate dump" failure mode (restated the offer pipeline) and announcing sentences; trimmed Chief Architect's view items that restated the display-policy and Hotels and Homes sections; opening now names Part V as the next step. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*

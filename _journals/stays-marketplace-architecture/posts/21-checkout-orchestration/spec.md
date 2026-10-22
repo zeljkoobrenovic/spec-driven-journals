@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Turning an Offer Into a Booking: Checkout Orchestration
@@ -81,3 +81,5 @@ Chief and enterprise architects of travel groups, checkout and booking leads, pa
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,679 to 8,492 words (repeated redesign list, performance and source detail condensed); pending-reservation compensation aligned with reservation-lifecycle's declined-or-expired state; PSD2 expanded; Lisbon under-13 exemption hedged; Package Travel amendment date verified. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,200 → 5,853 prose words; no headings renamed; repeated public-record bullets folded into one paragraph; two failure modes that restated the incident and the unknown rules removed (one symptom moved into the unknown rules); restated intros and recaps cut. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*

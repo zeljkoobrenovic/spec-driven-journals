@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: From Sign-Up to First Booking: Partner and Host Onboarding
@@ -76,3 +76,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed to 8,499 words, added the "From Onboarding to Content" hand-off heading, tied the supply-party recommendation to capability maps v1/v2, dated the Spanish removals, expanded acronyms, American spelling, verified Booking.com statuses, Airbnb payout terms and the Spanish Supreme Court ruling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,833 → 6,841 prose words; opening now ties the chapter to Part II's supply path; long Booking.com status paragraph split; vague sentences tightened; no sections cut, headings unchanged. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,833 → 6,503 prose words (HEAD → now, both passes); repetition cut between callouts and lead, Failure modes compressed to pointers to the sections that handle them, Chief Architect's view and Hotels and Homes tightened; funnel heading now "Five onboarding funnels" to match the table (bulk migration is the rarer fifth). *(AI-mediated session)*

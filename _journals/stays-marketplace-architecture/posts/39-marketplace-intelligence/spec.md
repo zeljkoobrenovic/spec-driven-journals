@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Knowing the Marketplace: Data Platform, Metrics and Partner Insight
@@ -20,7 +20,7 @@ Chief and principal architects, heads of data and analytics platforms, finance a
 - [x] Defines and owns governed metric, data product and partner insight; defines behavioral and business events, event taxonomy, metric layer, attribution and CDP.
 - [x] Presents the booking metric family with time bases, anchored in the published definitions of Airbnb and Booking Holdings (FY2025 10-Ks), and shows that Corvane's ledger GBV is stay-based.
 - [x] Corvane worked example "two definitions of booking" with ledger-consistent numbers (51.0M mixed vs 51.9M created vs 36.0M stayed; 34% of room nights vs 13% of reservations; Miradouro 268/231/191).
-- [x] Reference architecture with a component table and at least two mermaid diagrams; consent treated as data with ePrivacy, GDPR and DMA citations.
+- [x] Reference architecture with a component table and at least two diagrams (illustrated); consent treated as data with ePrivacy, GDPR and DMA citations.
 - [x] Partner insight: shared definitions with ranking and programs, benchmark privacy and competition rules, ranking-log explanations, DMA Art. 6(10); hosts as natural persons.
 - [x] STR activity data (Regulation (EU) 2024/1028) designed as a reconciled data product.
 - [x] Trade-off table, "Hotels and Homes" section with judgement, failure modes, Chief Architect's view, questions, hand-off to [[stays-experimentation]].
@@ -70,3 +70,4 @@ Chief and principal architects, heads of data and analytics platforms, finance a
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Gauge/Flipside sentence aligned with Experimentation Standard v1 (Sept 2027); timetoread corrected. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,809 → 6,414 prose words; opening now places the chapter in Part VIII; Failure Modes compressed to pointer bullets; Chief Architect's "Decide" list folded into one paragraph; one design-review question and Booking.com's migration reasons cut; no headings renamed. *(AI-mediated session)*

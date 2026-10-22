@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part V — BOOKING: Making and Keeping the Reservation
@@ -19,7 +19,7 @@ Chief architects, booking, reservations and customer-service platform leads, and
 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three) and a FAILURE PATTERNS callout using exact names linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument (the reservation as a cross-boundary contract) and names where hotels and homes differ in this part.
-- [ ] One mermaid diagram (a state diagram of the reservation's journey) with a Figure caption.
+- [ ] A figure of the reservation's journey (from the keyed checkout attempt to a stay outcome or cancellation) with a Figure caption.
 - [ ] A "Chapters in this part" list with one paragraph per chapter in config order, each linking the chapter and saying what it decides.
 - [ ] Corvane facts match the ledger and chapters: 212 duplicates (198 charged) on 14 January 2027, Miradouro's nineteen rejected reservations in July 2027, the 5–7 June 2027 strike, the "[hidden]" door code in August 2027, King's Day and Harbor.
 - [ ] Ends with a hand-off to [[checkout-orchestration]]; 500–900 words of body.
@@ -51,3 +51,4 @@ None.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: fictional-Corvane note added; links, figure and hand-off verified. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 843 → 830 prose words; cut the lead sentence that restated the chapter list and Figure 2, added a one-line hand-forward to Part VI; spec criterion updated from a mermaid diagram to the illustrated journey figure that replaced it. *(AI-mediated session)*

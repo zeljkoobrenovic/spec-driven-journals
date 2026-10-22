@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Expedia Group and Vrbo: Consolidating Brands Onto One Platform
@@ -72,3 +72,4 @@ Chief and group architects, CTOs and engineering directors of travel groups that
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: One Stay map v2 totals corrected to 23/6/20 over 49; Vrbo calendar wording corrected to "should be called on page load"; American spelling; timetoread 31. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,390 → 5,274 prose words; Failure Modes compressed to one-line pointers to the sections that argue them; four restating sentences cut; headings unchanged. *(AI-mediated session)*

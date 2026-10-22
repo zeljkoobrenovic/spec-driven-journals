@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Mapping the Business: Capability Maps for Two Marketplaces
@@ -71,3 +71,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,869 to 8,495 words; the 16/6/26 map presented as capability map v1 (March 2027) with a pointer to v2 (49 = 23/6/20, December 2027) in converging-two-marketplaces; experimentation cell linked to the September 2027 standard; Expedia migration dates corrected (Hotels.com 2022, Vrbo 2023). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,167 → 5,187 prose words; opening now names the economics chapter it builds on and the bounded-contexts and convergence chapters that use it; 2 headings renamed (Concepts, Scoring Capabilities); 4 needless sentences cut; 4 paragraph openings made to state their point. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 5,167 → 4,844 prose words (HEAD → now, −6.3%); Concepts term table folded into one sentence; three rows of the differences table (availability truth, money, protection) merged into the "same name misleads" table; Failure Modes compressed to one-line bullets that point to their sections; repeated points cut from the lead, the five argued cells, the Scoring section and the Chief Architect's view; 4 needless paragraphs deleted. *(AI-mediated session)*

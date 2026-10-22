@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: One Platform or Two? Converging Hotels and Homes
@@ -24,7 +24,7 @@ Group chief architects, CTOs and engineering leaders of travel groups that own b
 - [x] Gives a placement rule (four tests, diagram), a shareable/not-shareable table, and a cross-type routing rule with a sequence diagram.
 - [x] Works the Corvane One Stay register with every 2027 forum decision from earlier chapters placed in a map cell, the grade changes, and the four conflicts resolved; budget allocation of the €145 million; sequence 2027–2030.
 - [x] Trade-off tables for platform options and sequencing; a "Hotels and Homes" section on supply that crosses over; failure modes; Chief Architect's view with entry and exit criteria for the shared core.
-- [x] Four mermaid diagrams with captions; nine questions to ask; under 8,500 words.
+- [x] Four diagrams (illustrated) with captions; nine questions to ask; under 8,500 words.
 
 ## Non-goals
 
@@ -76,3 +76,6 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: 14 Dec 2027 review set with the board (as in ch. 47); Watchpost (not in ledger) replaced by booking risk score models on Warden; Gauge and Plumbline named in the register. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the "names, not scope" figure with set-aside cards labeled Content services and Waypoint. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,221 → 5,149 prose words; deleted the public-record summary table (restated the three paragraphs above it); the four placement tests now stated in the text; lead says where the chapter sits in Part IX; repetitive failure modes compressed to pointers; "Decide what the board's words mean" merged into "Own the register". *(AI-mediated session)*
+
+- **2026-10-22** — Recaptioned Figure 2 to follow the decision tree's order, including the policy-as-data split (author decision). *(AI-mediated session)*

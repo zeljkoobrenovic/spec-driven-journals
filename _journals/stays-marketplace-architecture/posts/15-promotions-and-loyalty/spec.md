@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Deals, Members and Programs: Promotions and Loyalty
@@ -75,3 +75,5 @@ Chief architects, principal engineers, pricing, payments and growth engineering 
 - **2026-10-21** — Editorial review pass: lightly trimmed (8,695 → 8,563 words), renamed Visibility Plus to Front Row to match stays-ranking, corrected "architecture advice forum", fixed the Black Friday cache claim, removed an unused source and an unsourced commission-base claim, verified the AGCM PS13115 date. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the loyalty-credit lifecycle diagram with a star icon in place of the "$" coin. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,065 → 7,021 prose words; opening now ties the chapter to Part III's composition path and to Part IV and settlement; deleted the "Loyalty design choices" subsection (repeated the Genius vs One Key contrast), an unsourced "Preferred partners collect up to 20% more bookings" quote and an unsupported "partners buy these programs because they work"; no spec criteria changed. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass (needless test): 7,065 → 6,544 prose words cumulative from HEAD (7,021 → 6,544 this pass); Failure Modes compressed to one-line pointers (UCPD and 2019/2020 commitments kept); Chief Architect's view no longer re-argues one composition service, audience budget or the CNMC/AGCM point; removed repeats of the agency-settlement mechanics, the Genius/One Key ledger contrast, the Nookaway coupon point and the illustrative "joined partners got 20% more bookings"; Trade-offs heading renamed to "Stacking and Funding" after the loyalty subsection's earlier deletion; no spec criteria changed. *(AI-mediated session)*

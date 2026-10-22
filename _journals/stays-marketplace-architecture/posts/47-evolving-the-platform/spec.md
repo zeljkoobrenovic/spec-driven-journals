@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Built for the Next Disruption: Evolving a Stays Platform Over a Decade
@@ -24,7 +24,7 @@ Group chief architects, CTOs and principal engineers of travel groups who answer
 - [ ] Gives five fitness functions with ledger-consistent baselines (91% accuracy; 1.8 and ~5 per 10,000; 0.65% payout returns; €3.20 and €5.17 per stayed reservation), thresholds, owners and breach decisions, plus structural fitness functions and a portability drill.
 - [ ] Maps all sixteen failure patterns to residues and signals.
 - [ ] Uses dated public evidence for platform shifts, the 2020 demand collapse and regulation, with the interpretation labeled.
-- [ ] Includes three mermaid diagrams, a trade-off table, a Hotels and Homes table with a sharing judgement, failure modes, the Chief Architect's view, questions, and a hand-off to [[part-10]] and [[case-booking-com]].
+- [ ] Includes three diagrams (illustrated), a trade-off table, a Hotels and Homes table with a sharing judgement, failure modes, the Chief Architect's view, questions, and a hand-off to [[part-10]] and [[case-booking-com]].
 
 ## Non-goals
 
@@ -69,3 +69,4 @@ Group chief architects, CTOs and principal engineers of travel groups who answer
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: AI-agent stressor status aligned with Frontdoor v2 (live 15 Nov 2027); Fathom bootstrap described as a 2027 shadow run from a snapshot. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,305 → 5,056 prose words; lead merged to two paragraphs; restating sentences cut across Concepts, Architecture, workshop and Trade-offs; Failure Modes compressed to pointers where the body handles the failure; Chief Architect's view tightened; questions 5 and 6 merged (nine → eight). No heading changes. *(AI-mediated session)*

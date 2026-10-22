@@ -23,9 +23,7 @@
 
 Every stays marketplace now runs AI in at least four places: a support assistant, some form of natural-language search or trip planning, generated content for properties and homes, and models inside trust and fraud. A fifth is arriving from outside: **general-purpose AI assistants that search, compare and book on a traveler's behalf**, through interfaces the marketplace exposes or tolerates. The fifth changes who the customer of the platform's APIs is.
 
-The public record is clear about the direction and thin on architecture. What it does show is consistent: **every documented launch keeps the language model in front of the existing search, pricing and booking stack**, not inside it, and the companies that have written about failure name the same cause: answers that were not grounded in live inventory and reservation data. This chapter takes that observation and turns it into an architecture.
-
-This chapter owns two terms: **agentic booking** and **AI governance (stays)**. It sits in [Part IX — LEADERSHIP: The Chief Architect's Agenda](#part-9), after [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](#modernizing-a-live-marketplace). It builds on the ML platform and model governance of [Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform), the support assistant of [When Something Goes Wrong: Customer Service and Recovery](#customer-service), the offer kernel of [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), the cancellation engine of [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations), the delegation model of [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access) and the demand channels of [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels). It does not re-teach them.
+This is the [Part IX — LEADERSHIP: The Chief Architect's Agenda](#part-9) question after [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](#modernizing-a-live-marketplace): the same discipline, contracts first and evaluation before trust, applied to systems that search, book and answer on someone's behalf. **Every documented launch keeps the language model in front of the existing search, pricing and booking stack**, not inside it. The chapter therefore leans on contracts the book has already built: the offer kernel of [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), the cancellation engine of [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations), the delegation model of [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access), the support assistant of [When Something Goes Wrong: Customer Service and Recovery](#customer-service), the model governance of [Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform) and the channels of [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels). It owns two terms, **agentic booking** and **AI governance (stays)**, and [Built for the Next Disruption: Evolving a Stays Platform Over a Decade](#evolving-the-platform) treats AI agents as one of the stressors the platform must absorb over the next decade.
 
 {id: ai-in-travel-stays--setting-the-scene-at-corvane-the-agent-that-booked-the-wrong-porto}
 ## Setting the Scene at Corvane: The Agent That Booked the Wrong Porto
@@ -47,7 +45,7 @@ A sweep of the pilot's numbers followed. From 1 July to 30 September Frontdoor s
 {id: ai-in-travel-stays--what-ai-does-in-a-stays-marketplace}
 ## What AI Does in a Stays Marketplace
 
-"AI" in a stays marketplace covers very different systems. The useful distinction is not the model but **who the AI acts for and what it can change**. Four definitions keep the rest of the chapter precise:
+The useful way to sort AI in a stays marketplace is not by model but by **who the AI acts for and what it can change**. Four definitions come first:
 
 | Term | Definition here |
 | --- | --- |
@@ -56,7 +54,7 @@ A sweep of the pilot's numbers followed. From 1 July to 30 September Frontdoor s
 | **Tool** | A deterministic service an agent may call. Booking.com's 2026 definition: tools "do not learn or adapt; they provide reliable, structured operations" |
 | **Agentic booking** | A reservation created, changed or canceled by software acting for a traveler, where the software, not the traveler, made at least one of the choices (place, property, rate, dates) |
 
-With those terms, the portfolio sorts by consequence:
+The portfolio, sorted by consequence:
 
 | Use | Acts for | Reads | Can change | Consequence class |
 | --- | --- | --- | --- | --- |
@@ -68,12 +66,12 @@ With those terms, the portfolio sorts by consequence:
 | Third-party agents that book | Guest, through another company's AI | Search and offers | Reservations and payments | Money; a contract |
 | Internal copilots (engineering, analytics, operations) | Employees | Code, logs, warehouse | Through employees | Internal |
 
-The first five are AI the marketplace builds and runs. Trust models belong to [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety) and [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud), the support assistant to [When Something Goes Wrong: Customer Service and Recovery](#customer-service) and generated content to [Describing a Stay: Content, Media and Property Mapping](#content-and-media). The last two rows are new. **The third-party agent is a new kind of client and a new kind of actor, and the platform has to treat it as both.**
+The first five rows are AI the marketplace builds and runs; trust models belong to [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety) and [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud), the support assistant to [When Something Goes Wrong: Customer Service and Recovery](#customer-service) and generated content to [Describing a Stay: Content, Media and Property Mapping](#content-and-media). The last two rows are new. **The third-party agent is both a new kind of client and a new kind of actor.**
 
 {id: ai-in-travel-stays--what-the-companies-have-documented}
 ## What the Companies Have Documented
 
-The record from 2023 to 2026 shows a fast shift from planners that suggest to agents that act:
+From 2023 to 2026 the record moves from planners that suggest to agents that act:
 
 | Date | Company | What was launched or described | Source |
 | --- | --- | --- | --- |
@@ -93,14 +91,14 @@ Three readings of this record matter for architecture.
 
 **The model sits in front of the stack.** Booking.com's 2023 planner showed "Booking.com pricing" from its own systems; Trip.com's assistant opens app pages with filters applied; Smart Filter turns words into the platform's own filters. When Booking.com moved its trip planner's property Q&A from a deterministic flow to an agent in 2026, the agent's steps were property resolution, retrieval over property content, structured property data from internal services and a geospatial tool, and it reported answer relevance up 53% and factual accuracy up 3.3%. The gain came from better tool use, not from a model that knew more about hotels.
 
-**Ungrounded answers are the documented failure.** A 2026 secondary report says Expedia discontinued Romie, the assistant it launched in alpha in May 2024, and quotes its product chief on the difficulty of keeping traveler trust when answers were not grounded in accurate, real-time inventory and reservation data ([Let's Data Science, 2026](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a)). Treat that report as low confidence. The lesson matches everything else in the record.
+**Ungrounded answers are the documented failure.** A 2026 secondary report says Expedia discontinued Romie, the assistant it launched in alpha in May 2024, and quotes its product chief on the difficulty of keeping traveler trust when answers were not grounded in accurate, real-time inventory and reservation data ([Let's Data Science, 2026](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a)). Treat that report as low confidence, though its lesson matches the rest of the record.
 
-**The front door may move.** Booking Holdings' 10-K for 2025 warns that AI features of third-party platforms may "satisfy user intent without directing users to our services", and that "AI agents may further evolve into full-service booking platforms, increasing competitive pressure and disintermediating" online travel companies ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). The 2025 launch of apps inside ChatGPT, with two of the largest OTAs present from day one, shows that marketplaces have chosen to be inside the assistants rather than wait outside. [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics) discusses what that does to marketing spend. This chapter covers what it does to the platform.
+**The front door may move.** Booking Holdings' 10-K for 2025 warns that AI features of third-party platforms may "satisfy user intent without directing users to our services", and that "AI agents may further evolve into full-service booking platforms, increasing competitive pressure and disintermediating" online travel companies ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). The 2025 launch of apps inside ChatGPT, with two of the largest OTAs present from day one, shows that marketplaces have chosen to be inside the assistants rather than wait outside. [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics) covers what that does to marketing spend.
 
 {id: ai-in-travel-stays--architecture-an-ai-layer-over-the-marketplace-s-contracts}
 ## Architecture: An AI Layer Over the Marketplace's Contracts
 
-The architecture follows one rule: **business facts and business decisions stay in the services that already own them.** The AI layer adds three things: a way to call those services as tools, a way to know who is acting, and a way to watch and pay for what the models do.
+**Business facts and decisions stay in the services that already own them.** The AI layer adds three things: a way to call those services as tools, a way to know who is acting, and a way to watch and pay for what the models do.
 
 ![Own assistants pass through the AI platform and third-party agents through the agent gateway; both reach a tool registry, governed by the AI register, which is the only path to the domain contracts.](stays-marketplace-architecture/posts/46-ai-in-travel-stays/assets/images/46-ai-in-travel-stays/46-ai-layer-over-contracts.jpeg)
 
@@ -117,7 +115,7 @@ The architecture follows one rule: **business facts and business decisions stay 
 {id: ai-in-travel-stays--tools-carry-the-rules}
 ### Tools carry the rules
 
-The design choice that matters most is **what a tool returns**. A search tool that returns "14 hotels in Porto" hides the decision that went wrong in September. A tool designed for agents returns the decision as data:
+The design choice that matters most is **what a tool returns**. A search tool that returns "14 hotels in Porto" hides the decision that went wrong in September; a tool designed for agents returns the decision as data:
 
 - **Place resolution returns candidates, not one answer.** Each candidate has a canonical place ID, country, region and a share of bookings for that name. When the top candidates are close, the response is marked ambiguous and the agent must ask the human. A location bias from the agent's memory is recorded as an input, not silently applied.
 - **Offers return binding quotes.** The price an agent sees comes from the same offer kernel as checkout ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)), with a quote ID, a validity window (Roomstead holds quotes for 15 minutes), itemized fees and taxes, and the cancellation terms rendered by the policy engine. An agent that tells a traveler a price without a quote ID is quoting its own memory.
@@ -141,31 +139,31 @@ Every tool is registered with one of five classes, and the class, not the model,
 | **Money or contract** | Create a booking, refund outside policy, change a price in a host's calendar | Explicit authority (final click or mandate), binding quote, audit trail, limits per actor |
 | **Decision about a person** | Block a reservation, remove a listing, restrict an account | Human review or contest path, statement of reasons, registered tier 3 model ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)) |
 
-The classes are deliberately the same for humans and machines. Corvane's support assistant already acts "within an actor limit" through the recovery-decision service of [When Something Goes Wrong: Customer Service and Recovery](#customer-service); a third-party agent gets the same treatment with a lower limit. **An AI can never do what a first-line human with the same role could not.**
+The classes are the same for humans and machines. Corvane's support assistant already acts "within an actor limit" through the recovery-decision service of [When Something Goes Wrong: Customer Service and Recovery](#customer-service); a third-party agent gets the same treatment with a lower limit. **An AI can never do what a first-line human with the same role could not.**
 
 {id: ai-in-travel-stays--agentic-booking-when-software-books-for-the-guest}
 ## Agentic Booking: When Software Books for the Guest
 
-Agentic booking is the hardest case because it combines a contract, money and a choice the traveler did not make directly. Three questions define it: **who is acting, under what authority, and with what record.**
+Agentic booking combines a contract, money and a choice the traveler did not make directly. Three questions define it: **who is acting, under what authority, and with what record.**
 
 {id: ai-in-travel-stays--who-is-acting}
 ### Who is acting
 
-Each agent call carries two identities: the agent platform (a client credential, as for an affiliate) and the traveler (a delegated token). The OAuth token-exchange standard's `act` claim expresses exactly this "acting for" relation ([RFC 8693](https://www.rfc-editor.org/rfc/rfc8693), 2020), and [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access) uses it for property-management systems acting for hotels. The reservation stores the **actor chain**: traveler, agent platform, agent session and authority ID. Without it, support, fraud and finance see an ordinary booking and cannot tell why it went wrong.
+Each agent call carries two identities: the agent platform (a client credential, as for an affiliate) and the traveler (a delegated token). The OAuth token-exchange standard's `act` claim expresses this "acting for" relation ([RFC 8693](https://www.rfc-editor.org/rfc/rfc8693), 2020), and [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access) uses it for property-management systems acting for hotels. The reservation stores the **actor chain**: traveler, agent platform, agent session and authority ID. Without it, support, fraud and finance see an ordinary booking and cannot tell why it went wrong.
 
 Agent traffic has its own economics. At Roomstead's run cost of about **€0.0007 per shopping request**, the pilot's 2,860 requests cost about €2 per booking against about €40 of revenue per stayed reservation ([Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics)): affordable if it converts, not if an agent polls every property in a city to keep its own price cache. **Quotas per agent platform and a look-to-book budget in the pilot agreement are part of the product**, as they are for metasearch ([Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability)).
 
 {id: ai-in-travel-stays--under-what-authority}
 ### Under what authority
 
-There are two workable models of booking authority, and the September incident used neither:
+There are two workable models of booking authority:
 
 | Authority | How it works | Fits | Breaks when |
 | --- | --- | --- | --- |
 | **Human final click (handoff)** | The agent searches and gets a quote; the traveler confirms on a marketplace-hosted confirmation step, in the app, a web view or an embedded checkout | Every booking type; any rate; new travelers | The agent's product promise is "done for you" and the handoff loses the traveler |
 | **Mandate** | The traveler signs, in advance, specific constraints: place ID, dates, party, maximum total, refundability, property class; the gateway verifies each booking against them | Repeat, well-specified bookings: business travel, a known hotel, a rebooking after disruption | Constraints are vague ("Porto, under €200"), or the agent fills gaps with assumptions |
 
-Expedia Group's 2026 operating model states the first as a principle: agents "can inform, compare, recommend, and help a traveler decide", and "the traveler should retain the final click for decisions such as completing a booking" ([Expedia Group Tech, 2026](https://medium.com/expedia-group-tech/building-the-operating-model-for-agentic-ai-at-expedia-group-f7555fcce506)). The second follows the shape of Google's Agent Payments Protocol, whose signed Intent Mandate "specifies the rules of engagement—price limits, timing, and other conditions" and whose Cart Mandate records "the exact items and price" the user approved ([Google Cloud, 2025](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)). What Frontdoor's pilot had was a third, unworkable model: **a broad scope with a price cap**, which delegated every other choice to the model.
+Expedia Group's 2026 operating model states the first as a principle: agents "can inform, compare, recommend, and help a traveler decide", and "the traveler should retain the final click for decisions such as completing a booking" ([Expedia Group Tech, 2026](https://medium.com/expedia-group-tech/building-the-operating-model-for-agentic-ai-at-expedia-group-f7555fcce506)). The second follows the shape of Google's Agent Payments Protocol, whose signed Intent Mandate "specifies the rules of engagement—price limits, timing, and other conditions" and whose Cart Mandate records "the exact items and price" the user approved ([Google Cloud, 2025](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)). Frontdoor's pilot used neither: it had **a broad scope with a price cap**, which delegated every other choice to the model.
 
 ![Swimlanes for traveler, AI agent, gateway and reservations: an ambiguous Porto search goes back to the traveler, who chooses Portugal; a binding quote and summary are shown, the traveler confirms, and the gateway books.](stays-marketplace-architecture/posts/46-ai-in-travel-stays/assets/images/46-ai-in-travel-stays/46-agentic-booking-porto.jpeg)
 
@@ -176,19 +174,19 @@ Payment authority sits under booking authority. A mandate that allows a booking 
 {id: ai-in-travel-stays--with-what-record}
 ### With what record
 
-Of the three records that must agree (the traveler's instruction, the agent's choice, the reservation), the marketplace holds only the last two. My rule is that **the reservation stores everything the marketplace showed the agent and everything the agent sent**: the resolution candidates and the chosen ID, the quote and its summary, the authority (confirmation event or mandate) and the actor chain. Pilot agreements should require agent platforms to keep the instruction and make it available in disputes. With that record, the Porto case is answerable in minutes.
+Of the three records that must agree (the traveler's instruction, the agent's choice, the reservation), the marketplace holds only the last two. My rule is that **the reservation stores everything the marketplace showed the agent and everything the agent sent**: the resolution candidates and the chosen ID, the quote and its summary, the authority (confirmation event or mandate) and the actor chain. Pilot agreements should require agent platforms to keep the instruction and make it available in disputes. With that record, the Porto case takes minutes to answer.
 
 {id: ai-in-travel-stays--hosted-stays-harder-than-it-looks}
 ### Hosted stays: harder than it looks
 
-A night in a home is a harder thing for an agent to book than a hotel room. Request-to-book listings need a message to the host. House rules (no parties, quiet hours, pets) are accepted by the guest, and an agent cannot accept them on a person's behalf in any meaningful way. Reservation screening ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)) uses signals about the guest's account and behavior that an agent session distorts: a new device, booking for someone else, many searches in one session, the same profile that [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) treats as risky.
+A night in a home is harder for an agent to book than a hotel room. Request-to-book listings need a message to the host. The guest accepts house rules (no parties, quiet hours, pets), and an agent cannot meaningfully accept them for a person. Reservation screening ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)) uses signals about the guest's account and behavior that an agent session distorts: a new device, booking for someone else, many searches in one session, the same profile that [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) treats as risky.
 
 {id: ai-in-travel-stays--ai-for-hosts-and-partners}
 ## AI for Hosts and Partners
 
 On the supply side, AI writes, replies and prices. The documented examples are partner tools: Booking Holdings' 10-K lists partner-facing "Smart Messenger" and "Auto-Reply" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)), Airbnb's 2026 evaluation post lists "smart communication features for guests and hosts" ([Airbnb, 2026](https://medium.com/airbnb-engineering/eval-driven-development-lessons-from-evaluating-genai-at-scale-e817e5ae5788)), and Booking.com's onboarding agent targets self-managed partners without an account manager, mostly homes and small properties.
 
-The architectural rules are short because the domain chapters already own the objects:
+The domain chapters already own the objects, so three rules suffice:
 
 - **A generated listing or reply is a draft the host owns.** It records provenance and is approved before publishing, and every claim in it must exist in the structured listing data ([Describing a Stay: Content, Media and Property Mapping](#content-and-media)). An extracted amenity ("crib available") becomes a filter that guests rely on, so it needs the same evidence as a typed one.
 - **A delegated writer acts under a grant.** An assistant that changes prices or replies to guests for a host is a delegate with scopes, like a co-host or a property-management system ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)). It inherits the rate limits, precedence and provenance of the connectivity layer ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)) and the guardrails of automatic pricing ([Setting the Price of a Night: Revenue Management and Smart Pricing](#dynamic-pricing)).
@@ -197,7 +195,7 @@ The architectural rules are short because the domain chapters already own the ob
 {id: ai-in-travel-stays--ai-in-trust-both-sides-of-the-contest}
 ## AI in Trust: Both Sides of the Contest
 
-Trust and safety is where AI helps defenders most and attackers too. Airbnb's 2025 10-K says "AI capabilities now assist in risk assessment and rapid fraud and scam detection" ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Language models are good at reading messages, listing text and reviews for intent: a payment request disguised as a "verification step", a listing copied from another city, a cluster of reviews written in one voice. Attackers use the same tools: AI-written phishing is fluent in every language, which is why [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) argues for defenses based on structure (new payment destinations, links in post-booking messages, bursts of activity) rather than bad grammar. Fake reviews generated at scale are banned outright in the United States by the Federal Trade Commission's 2024 rule on consumer reviews ([Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation)).
+In trust and safety, AI helps defenders and attackers alike. Airbnb's 2025 10-K says "AI capabilities now assist in risk assessment and rapid fraud and scam detection" ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Language models read messages, listings and reviews for intent: a payment request disguised as a "verification step", a listing copied from another city, a cluster of reviews in one voice. Attackers use the same tools: AI-written phishing is fluent in every language, which is why [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) argues for defenses based on structure (new payment destinations, links in post-booking messages, bursts of activity) rather than bad grammar. Fake reviews generated at scale are banned outright in the United States by the Federal Trade Commission's 2024 rule on consumer reviews ([Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation)).
 
 The architecture adds one rule to [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety): **a language model can classify, summarize and propose, but an enforcement decision goes through the decision service** with a policy reference, a statement of reasons and a contest path, like any tier 3 model.
 
@@ -207,14 +205,14 @@ The architecture adds one rule to [Trust as a Platform: Trust and Safety for Sta
 {id: ai-in-travel-stays--evaluate-against-the-systems-of-record}
 ### Evaluate against the systems of record
 
-Evaluation of generative features is now documented practice. Airbnb samples "5% of live de-identified traffic daily, run[s] programmatic checks + virtual judges, and surface[s] flagged outputs for human review" ([Airbnb, 2026](https://medium.com/airbnb-engineering/eval-driven-development-lessons-from-evaluating-genai-at-scale-e817e5ae5788)). Booking.com's AgentHub scores factual accuracy, context and answer relevance, instruction following and user frustration with model judges. Expedia Group calls evaluations "the new PRD" (product requirements document), the place where expected behavior and unacceptable failures are written down before building.
+Evaluation is documented practice: in 2026 Airbnb reported that it samples "5% of live de-identified traffic daily, run[s] programmatic checks + virtual judges, and surface[s] flagged outputs for human review" ([Airbnb, 2026](https://medium.com/airbnb-engineering/eval-driven-development-lessons-from-evaluating-genai-at-scale-e817e5ae5788)). Booking.com's AgentHub scores factual accuracy, context and answer relevance, instruction following and user frustration with model judges. Expedia Group calls evaluations "the new PRD" (product requirements document), the place where expected behavior and unacceptable failures are written down before building.
 
-Stays add a cheaper and stronger check: **many claims an assistant makes can be verified deterministically.** A price can be compared with the quote it should have come from; a cancellation statement with the policy engine's answer for that reservation; a place with the resolved place ID; an amenity with the listing data. I would build a **claim checker** that extracts prices, dates, places and policy statements from sampled conversations and compares them with the systems of record, and keep model judges for tone and helpfulness. A golden set of hard cases belongs in every release gate: ambiguous place names, stays across a daylight-saving change, children's ages and tourist taxes, non-refundable rates, mixed currencies.
+Stays add a cheaper, stronger check: **many claims an assistant makes can be verified deterministically.** A price can be compared with the quote it should have come from; a cancellation statement with the policy engine's answer for that reservation; a place with the resolved place ID; an amenity with the listing data. I would build a **claim checker** that extracts prices, dates, places and policy statements from sampled conversations and compares them with the systems of record, and keep model judges for tone and helpfulness. A golden set of hard cases belongs in every release gate: ambiguous place names, stays across a daylight-saving change, children's ages and tourist taxes, non-refundable rates, mixed currencies.
 
 {id: ai-in-travel-stays--cost}
 ### Cost
 
-Generative AI changes unit costs in both directions. Corvane's illustrative figures for the fourth quarter of 2027:
+Generative AI makes some units cheaper and others dearer. Corvane's illustrative figures for the fourth quarter of 2027:
 
 | Unit | Cost (illustrative) | Compared with |
 | --- | --- | --- |
@@ -223,12 +221,12 @@ Generative AI changes unit costs in both directions. Corvane's illustrative figu
 | Agent shopping request through Frontdoor | about **€0.0007** (platform cost only) | Same as any shopping request; the agent platform pays for its own model |
 | Generated listing draft | about **€0.02** | One-off per listing version |
 
-Support assistants pay for themselves only if they resolve, which is why [When Something Goes Wrong: Customer Service and Recovery](#customer-service) measures verified resolution, not containment. Conversational search costs about 16 times an ordinary search request per session, so it is worth running where intent is vague and value is high, not as the default search box. The AI platform's gateway should meter cost per use case and per model, and route simple tasks to cheaper models. Expedia Group's 2026 principles put it as "optimize for return on cost" and "justify complexity against strong baselines" ([Expedia Group Tech, 2026](https://medium.com/expedia-group-tech/how-expedia-group-builds-ai-that-lasts-at-scale-434677770fe9)).
+Support assistants pay for themselves only if they resolve, which is why [When Something Goes Wrong: Customer Service and Recovery](#customer-service) measures verified resolution, not containment. Conversational search costs about 16 times an ordinary search request per session, so it is worth running where intent is vague and value is high, not as the default search box. Expedia Group's 2026 principles put it as "optimize for return on cost" and "justify complexity against strong baselines" ([Expedia Group Tech, 2026](https://medium.com/expedia-group-tech/how-expedia-group-builds-ai-that-lasts-at-scale-434677770fe9)).
 
 {id: ai-in-travel-stays--liability-and-regulation}
 ### Liability and regulation
 
-The legal position is simpler than the technology. **A company is responsible for what its assistant tells customers.** In *Moffatt v. Air Canada* (2024 BCCRT 149, decided 14 February 2024), British Columbia's Civil Resolution Tribunal rejected the airline's argument that its chatbot was "a separate legal entity that is responsible for its own actions" and found the airline liable for the chatbot's wrong statement about a bereavement-fare refund ([Civil Resolution Tribunal, 2024](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)). The award was about C$812; the principle covers every refund, cancellation and fee statement a stays assistant makes.
+**A company is responsible for what its assistant tells customers.** In *Moffatt v. Air Canada* (2024 BCCRT 149, decided 14 February 2024), British Columbia's Civil Resolution Tribunal rejected the airline's argument that its chatbot was "a separate legal entity that is responsible for its own actions" and found the airline liable for the chatbot's wrong statement about a bereavement-fare refund ([Civil Resolution Tribunal, 2024](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)). The award was about C$812; the principle covers every refund, cancellation and fee statement a stays assistant makes.
 
 In the EU, four sets of rules apply:
 
@@ -239,7 +237,7 @@ In the EU, four sets of rules apply:
 | **Consumer law** | Price and policy statements by an assistant are commercial practices of the marketplace; total-price rules apply to what it quotes ([The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection)) |
 | **Digital Services Act** ([Regulation (EU) 2022/2065](http://publications.europa.eu/resource/celex/32022R2065)) | Recommender transparency and statements of reasons for content decisions apply whether a person, a rule or a model made them ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation)) |
 
-For agentic booking, the open question is the contract. The traveler is the party to the booking, and the agent platform is acting for them; but when the agent chose a wrong place under a vague grant, the commercial answer is set by the pilot agreement, not by settled law. I would write the allocation into the agreement: the marketplace answers for its tools' outputs (a wrong price in a quote, a place resolver that hid ambiguity), the agent platform answers for choices outside the authority it was given, and the reservation record decides which happened.
+For agentic booking, the open question is the contract. The traveler is the party to the booking and the agent platform acts for them, but when the agent chooses a wrong place under a vague grant, the pilot agreement, not settled law, sets the answer. I would write the allocation into the agreement: the marketplace answers for its tools' outputs (a wrong price in a quote, a place resolver that hid ambiguity), the agent platform answers for choices outside the authority it was given, and the reservation record decides which happened.
 
 {id: ai-in-travel-stays--in-practice-at-corvane-frontdoor-v2-and-one-register}
 ## In Practice at Corvane: Frontdoor v2 and One Register
@@ -248,13 +246,13 @@ On **19 October 2027** the architecture forum took the Porto review, the pilot s
 
 **1. One AI use-case register, in Kiln.** Every AI use, built or bought, internal or external, gets a register entry with an owner, a consequence class, approved tools and an evaluation plan, extending the model registry of [Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform) rather than creating a second one. Frontdoor was registered as a money-or-contract use with Roomstead's head of distribution as owner. The first inventory found **23** generative AI uses across the group, **8** of them without a named owner; one, a vendor's reply-suggestion feature switched on in Roomstead's support desk software, sent conversation text to a model provider outside the group's data agreements and was switched off the same week.
 
-**2. A group AI gateway.** Kenji's team adds a model gateway to Kiln: routing across model providers, cost metering per use case, guardrails for prompt injection and personal data, and traces of every prompt, tool call and response, retained for 90 days and linked to case and reservation IDs.
+**2. A group AI gateway.** Kenji's team adds the AI platform of Figure 2 to Kiln as a model gateway that routes across model providers and meters cost per use case; traces are retained for 90 days and linked to case and reservation IDs.
 
 **3. A tool registry with side-effect classes.** Tools are owned by the domain teams: place resolution by Jonas Weber's search team (backed by Waypoint from 2028), offers by the offer kernel's owners, cancellation answers by the Clause policy engine, recovery by Harbor, enforcement by Warden. No AI use may call a domain service except through a registered tool.
 
-**4. Frontdoor v2, live 15 November 2027**, rebuilt over **Gangway**, the group partner distribution API the forum had approved a week earlier ([Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels)), so agents share its quotas and offer contract. Place resolution returns ranked candidates and an ambiguity flag; the agent must ask when the flag is set. Quotes are binding for 15 minutes and carry a canonical summary that agents must show verbatim. **Handoff is the default**; mandate bookings are allowed only for refundable rates, with the place ID, dates, party and maximum total signed by the traveler. The reservation stores the actor chain and everything Frontdoor returned. Each agent platform has a quota and a look-to-book budget of 3,000 shopping requests per booking, reviewed quarterly.
+**4. Frontdoor v2, live 15 November 2027**, rebuilt over **Gangway**, the group partner distribution API the forum had approved a week earlier ([Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels)), so agents share its quotas and offer contract. Its tools return what "Tools carry the rules" describes: ranked place candidates with an ambiguity flag the agent must act on, and quotes binding for 15 minutes with a canonical summary shown verbatim. **Handoff is the default**; mandate bookings are allowed only for refundable rates, with the place ID, dates, party and maximum total signed by the traveler. The reservation stores the actor chain and everything Frontdoor returned. Each agent platform has a quota and a look-to-book budget of 3,000 shopping requests per booking, reviewed quarterly.
 
-**5. Nookaway: search and handoff only.** Rafael Mendes, VP Engineering at Nookaway, argued that agents cannot accept house rules or send a meaningful request to a host, and that reservation screening was not designed for agent sessions. The forum agreed: through 2028, agents may search Nookaway and get quotes, and every booking is completed by the guest on a Nookaway page.
+**5. Nookaway: search and handoff only.** On the argument of Rafael Mendes, VP Engineering at Nookaway (see "Hosted stays: harder than it looks"), agents may search Nookaway and get quotes through 2028, and the guest completes every booking on a Nookaway page.
 
 **6. Claim checking before scale.** Every assistant that states prices, policies or places runs a daily claim check on a 5% sample against the systems of record; a use case cannot widen its scope while its claim-error rate is above 0.5%.
 
@@ -292,8 +290,6 @@ For a group like Corvane I would take option A on the second, fourth and sixth r
 {id: ai-in-travel-stays--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
 
-AI does not change the basic difference between the two marketplaces: it makes it more visible.
-
 | Aspect | Accommodation marketplace (OTA-style) | Hosted-stays marketplace |
 | --- | --- | --- |
 | Content for AI to ground on | Standardized room types and amenities, large review corpora | Unique, host-written listings; attributes must be extracted from text and photos first |
@@ -302,33 +298,28 @@ AI does not change the basic difference between the two marketplaces: it makes i
 | Support assistant's hard part | Actions that need a supplier: changes, cancellations, waivers through connectivity | Judgement between two private parties: failed check-in, accuracy, damage |
 | What can be shared | AI gateway, register, tool registry, claim checker, agent identity | Same |
 
-**My judgement: share the whole AI layer and none of the booking authority rules.** The gateway, register, tool registry, traces, claim checker and agent identity are the same machinery for both brands. What an agent may do differs, because a hotel room under a binding quote is a well-defined contract and a night in someone's home is not yet one that software can accept for a person.
+**My judgement: share the whole AI layer and none of the booking authority rules.** What an agent may do differs, because a hotel room under a binding quote is a well-defined contract and a night in someone's home is not yet one that software can accept for a person.
 
 {id: ai-in-travel-stays--failure-modes}
 ## Failure Modes
 
-**The pilot without an owner.** An agent channel launched as a distribution experiment, with no register entry, no evaluation and no incident path, until a guest arrives in the wrong town. Every AI use needs an owner on day one.
-
-**Broad scopes with a cap.** "Book on my behalf, up to €1,000" delegates place, rate and refundability to the model. Authority must name the decisions it covers.
-
-**The model as source of truth.** An assistant that states prices, fees or cancellation terms from its context, a summary or a cached feed adds another price and another policy to the platform, and the marketplace owns both.
-
-**Silent disambiguation.** Place names, dates near midnight, party size and children's ages are all resolved somewhere. When a tool resolves them silently, nobody can show the traveler what was chosen.
-
-**Unbounded agent traffic.** Agents that poll to keep their own price caches turn a channel into a load problem; agreements without quotas repeat the early years of metasearch.
-
-**Shadow AI in vendor tools.** A feature switched on inside bought software sends conversation text to a model provider outside the group's agreements. The register must cover what is bought.
+- **The pilot without an owner** — an agent channel launched as an experiment, with no register entry, evaluation or incident path; see decision 1 of Frontdoor v2.
+- **Broad scopes with a cap** — "Book on my behalf, up to €1,000" delegates place, rate and refundability to the model; see "Under what authority".
+- **The model as source of truth** — prices or cancellation terms stated from context or a cached feed; see "Tools carry the rules".
+- **Silent disambiguation** — place names, dates near midnight, party size and children's ages resolved without telling the traveler; see "Tools carry the rules".
+- **Unbounded agent traffic** — agents polling to keep their own price caches; agreements without quotas repeat the early years of metasearch; see "Who is acting".
+- **Shadow AI in vendor tools** — a feature in bought software sends conversation text outside the group's agreements; the register must cover what is bought.
 
 {id: ai-in-travel-stays--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-**What to decide.** Five decisions are mine to frame, with the owners named. First, **the AI use-case register and the consequence classes**, with legal, privacy and the ML platform: one register for built and bought AI. Second, **the tool contracts**: which domain services are exposed to AI, with what responses and side-effect classes, owned by the domain teams. Third, **booking authority for agents**: handoff by default, mandates by exception, decided with the brand leaders and payments. Fourth, **the agent channel's commercial terms**: quotas, look-to-book budgets, the record each side keeps and the liability split, with distribution and legal. Fifth, **the AI platform's scope**: what is shared, which models are approved for which data, and cost allocation, with the ML platform lead.
+**What to decide.** Five decisions, each framed with its partners: **the AI use-case register and consequence classes** (legal, privacy, ML platform); **the tool contracts** (domain teams); **booking authority for agents** (brand leaders, payments); **the agent channel's commercial terms**: quotas, look-to-book budgets, the record each side keeps and the liability split (distribution, legal); and **the AI platform's scope**: what is shared, which models are approved for which data, and cost allocation (ML platform lead).
 
 **Who decides.** The architecture forum approves classes, tool contracts and authority rules; the register's owner (at Corvane, Kenji Arai) runs it; regulatory affairs (Noor van Dijk) is a mandatory reviewer for any use that talks to guests or decides about people; the brand leaders decide where AI meets their customers.
 
 **What to watch.** The claim-error rate per assistant; the share of agent bookings completed by handoff and the drop-off at handoff; wrong-place, wrong-date and wrong-rate contacts from agent bookings; agent shopping requests per booking; cost per resolved conversation; and the number of AI uses without an owner, which should be zero.
 
-**The long view.** A large share of travel intent will arrive through assistants the marketplace does not control. The marketplaces that do well will be those whose contracts software can use directly: a place resolver that admits ambiguity, a binding quote, a precise policy engine, a reservation record that says who acted. That is the investment this book argues for in every part. **AI does not reduce the need for clean marketplace contracts; it removes the humans who used to hide their gaps.**
+**The long view.** A large share of travel intent will arrive through assistants the marketplace does not control. The marketplaces that do well will be those whose contracts software can use directly, which is the investment this book argues for in every part. **AI does not reduce the need for clean marketplace contracts; it removes the humans who used to hide their gaps.**
 
 {id: ai-in-travel-stays--questions-to-ask}
 ## Questions to Ask

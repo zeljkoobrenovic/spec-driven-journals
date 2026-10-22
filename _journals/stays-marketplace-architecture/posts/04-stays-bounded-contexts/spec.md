@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Drawing the Lines: Bounded Contexts for Stays
@@ -26,7 +26,7 @@ Chief and enterprise architects of travel groups, principal engineers and engine
 - [ ] Draws a context map with named relationships, including anti-corruption layers toward partner systems, iCal and monoliths, and a table of shared kernels to avoid.
 - [ ] Gives dated public evidence (Airbnb 2018, 2022, 2026; Agoda 2025, 2026; Expedia 2024; Booking.com 2026 and connectivity docs) with inferences labeled.
 - [ ] Works the Corvane example (the April 2027 tracing exercise, Context Map v1, the decisions that followed) with ledger-consistent numbers.
-- [ ] Includes a trade-off table, a hotel-versus-home comparison table, failure modes, the Chief Architect's view and 6–10 questions; at least two mermaid diagrams.
+- [ ] Includes a trade-off table, a hotel-versus-home comparison table, failure modes, the Chief Architect's view and 6–10 questions; at least two diagrams (illustrated).
 
 ## Non-goals
 
@@ -75,3 +75,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 10,432 to 8,500 words; Context Map v1 checked against capability map v2 (Clause supersedes per-engine policy evaluators; Vouch; Waypoint and place registry as two contexts); subdomain rule 3 example corrected to offer composition; unsourced Booking.com/Expedia monolith claim removed. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,443 → 5,436 prose words; opening now states the chapter closes Part I and names the chapters that build on the map; two skim-path paragraphs now open with their claim; one needless sentence cut; unclosed quotation in Question 1 fixed. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 5,443 → 5,162 prose words (HEAD → now, both passes); Failure Modes compressed to one-line bullets pointing to the sections that handle each, keeping the May 2027 metasearch figures and the €3.4 million debit balances; Chief Architect's view, the lead, the "what a night means" close and the closing hand-off stripped of restatements; duplicate "no public context map" intro and the repeated "platforms are not contexts" line removed. *(AI-mediated session)*

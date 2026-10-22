@@ -23,7 +23,7 @@ This guide names the **sixteen failure patterns** I see most often in stays plat
 
 Each pattern gets a characteristic quote (a composite attributed to a role, not a person), its warning signs, the mechanism, what it costs (with a dated public example where one exists), an illustration from **Corvane, the fictional travel group this book follows** (see [Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), the marketplace type it hits hardest and the chapters that address it. Roomstead (Corvane's OTA) and Nookaway (its hosted-stays marketplace) are not disguised accounts of any real company.
 
-None of these patterns implies incompetence. **Most are the residue of reasonable decisions** taken under deadline by teams accountable for one step of the guest's journey. That is why they need a name and an owner.
+None of these patterns implies incompetence: **most are the residue of reasonable decisions** taken under deadline by teams accountable for one step of the guest's journey, which is why each needs a name and an owner.
 
 ![Three people each adding one reasonable block (one more rate plan, ranking boost, refund macro) to a leaning stack resting on a night, while an architect standing back sees the whole lean.](stays-marketplace-architecture/posts/where-stay-platforms-go-wrong/assets/images/where-stay-platforms-go-wrong/00-locally-rational-pile.jpeg)
 
@@ -55,13 +55,11 @@ The patterns fall into four loose families. The **supply and inventory** family 
 
 These numbers are not targets in themselves: price-changed errors can fall because the price check was loosened, and conflict counts because hosts gave up on multichannel selling. **Read each indicator with the mechanism in mind.**
 
-Supply patterns strike where data enters, discovery patterns where copies of it are served, booking and money patterns after the guest presses "Reserve", and three patterns sit underneath every stage.
+Supply patterns strike where data enters, discovery patterns where copies of it are served, and booking and money patterns after the guest presses "Reserve"; three patterns sit underneath every stage.
 
 ![Six stations from supply to money and law, each with a crack where failure patterns strike, above a band labeled under every stage with dashed arrows into inventory, checkout and money and law.](stays-marketplace-architecture/posts/where-stay-platforms-go-wrong/assets/images/where-stay-platforms-go-wrong/00-where-patterns-strike.jpeg)
 
 **Figure 2:** *Where each pattern strikes along the promise of a night. Three patterns are not stages but conditions: a supply model that fits one marketplace, capacity sized for normal days, and models nobody watches make every stage worse.*
-
-Costs are described for **guests**, **partners and hosts**, **regulators** and **money** (spent, refunded or written off).
 
 {id: where-stay-platforms-go-wrong--phantom-availability}
 ### Phantom Availability
@@ -104,7 +102,7 @@ Costs are described for **guests**, **partners and hosts**, **regulators** and *
 
 **Warning signs.** Nobody can say which of a hotel's rate plans are real products and which are fences, experiments or leftovers. Room tables on the property page run to dozens of rows. Each new campaign, member tier or mobile discount becomes another plan. Mapping errors cluster on plans created in the last month.
 
-**Why it happens.** A rate plan is the cheapest way to launch a commercial idea: it needs no new code, only a row. **Derived rates**, priced as an offset from a parent, look free, but each multiplies the products that must be stored, cached, mapped across channels and shown. Booking.com's connectivity API, for example, lets a child plan follow its parent's price, restrictions, policies and open or closed status as separate switches ([Booking.com Developers, n.d.](https://developers.booking.com/connectivity/docs/room-type-and-rate-plan-management/managing-rate-plans)); every switch is a combination to test. No public measurement of sprawl's cost exists, but its symptoms appear in every other supply pattern.
+**Why it happens.** A rate plan is the cheapest way to launch a commercial idea: it needs no new code, only a row. **Derived rates**, priced as an offset from a parent, look free, but each multiplies the products that must be stored, cached, mapped across channels and shown. Booking.com's connectivity API, for example, lets a child plan follow its parent's price, restrictions, policies and open or closed status as separate switches ([Booking.com Developers, n.d.](https://developers.booking.com/connectivity/docs/room-type-and-rate-plan-management/managing-rate-plans)); every switch is a combination to test. No public measurement of sprawl's cost exists.
 
 **What it costs.** **Guests** face a rooms table they cannot read. **Money** goes into cache capacity, mapping and support for products nobody buys, and into errors when discounts stack.
 
@@ -214,7 +212,7 @@ Costs are described for **guests**, **partners and hosts**, **regulators** and *
 
 **At Corvane (fictional).** Until October 2027 Roomstead's paid visibility program works as score multipliers of ×1.15, ×1.30 and ×1.45, on top of a 2019 commission tie-break and a 2023 value objective. When Ranking Policy v1 replaces them with a bounded lift of at most three positions, the program's share of top-ten positions falls from **34%** to **22%** and honored stays per search rise **1.1%**.
 
-**Hits hardest: both.** OTAs sell visibility for commission; hosted-stays platforms face the same transparency rules for host programs, quality badges and any paid placement. Hotels feel the pressure more because they have alternatives to compare against; regulators apply the same transparency rules to both.
+**Hits hardest: both.** OTAs sell visibility for commission; hosted-stays platforms face the same transparency rules for host programs, quality badges and any paid placement. Hotels feel the pressure more because they have alternatives to compare against.
 
 **Where this book helps:** [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking) separates policy from model and bounds paid effects; [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) keeps programs out of the rate model; [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics) measures what programs cost; [Testing Everything: Experimentation Platforms for Stays](#stays-experimentation) stops gross-booking wins; [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence) shows partners what a program changed.
 
@@ -340,7 +338,7 @@ Costs are described for **guests**, **partners and hosts**, **regulators** and *
 {id: where-stay-platforms-go-wrong--how-the-patterns-reinforce-each-other}
 ## How the Patterns Reinforce Each Other
 
-The patterns rarely appear alone, and they feed each other in recognizable chains. **Fixing a downstream symptom while the upstream pattern continues produces the same symptom again**, usually within a year.
+The patterns rarely appear alone; they feed each other in chains. **Fixing a downstream symptom while the upstream pattern continues produces the same symptom again**, usually within a year.
 
 ![Upstream patterns Hotel-Shaped Home, Connectivity Roulette and Policy Spaghetti feeding Rate Plan Sprawl and the symptoms Phantom Availability, Price Drift and Ledgerless Money.](stays-marketplace-architecture/posts/where-stay-platforms-go-wrong/assets/images/where-stay-platforms-go-wrong/00-pattern-chains.jpeg)
 
@@ -359,7 +357,7 @@ Four chains appear most often.
 {id: where-stay-platforms-go-wrong--using-the-patterns}
 ## Using the Patterns
 
-The names are meant for rooms where decisions are made. In a design review, ask which pattern a proposal risks and what would stop it. In a steering committee, ask which pattern a falling metric is a symptom of. In a group portfolio review, ask which patterns each brand shows and which root they share.
+Use the names where decisions are made. In a design review, ask which pattern a proposal risks and what would stop it. In a steering committee, ask which pattern a falling metric is a symptom of. In a group portfolio review, ask which patterns each brand shows and which root they share.
 
 Three habits keep the names useful rather than accusatory: **name the mechanism, not the person**; **pair every pattern with a number** from the summary table; and **look for the upstream pattern** before funding a downstream fix, because the cheapest remedy is usually a contract, an owner or a policy record, not a new system.
 
@@ -434,7 +432,7 @@ The matrix maps each chapter to the patterns it names in its opening callout (**
 | [50 Expedia Group and Vrbo](#case-expedia-vrbo) | ● | | | | | | ● | ● | | | | | | | | |
 | [51 Agoda and Trip.com](#case-agoda-trip-com) | ● | | | | ● | | | | | | | | | | ● | |
 
-Read down a column to find every chapter that helps with one pattern; read across a row to see what a chapter defends against. Three columns are dense: **The Hotel-Shaped Home** (23 chapters), **Phantom Availability** and **Price Drift** (15 each), followed by Policy Spaghetti, Built for Sunny Days and The Unwatched Model (12 each). That density is itself a finding: these patterns cut across the whole journey and need an owner at group level. At the other end, The Double-Booked Night, Rate Plan Sprawl and The Tax Patchwork are named by two or three chapters each: they have a clear home, and the chapters that own them should be read first.
+Read down a column to find every chapter that helps with one pattern; read across a row to see what a chapter defends against. Three columns are dense: **The Hotel-Shaped Home** (23 chapters), **Phantom Availability** and **Price Drift** (15 each), followed by Policy Spaghetti, Built for Sunny Days and The Unwatched Model (12 each). These patterns cut across the whole journey and need an owner at group level. At the other end, The Double-Booked Night, Rate Plan Sprawl and The Tax Patchwork are named by two or three chapters each: they have a clear home, and the chapters that own them should be read first.
 
 The rest of the book works through the remedies. Before that, meet the group whose two marketplaces show every one of these patterns in 2027, and the program that sets out to fix them: [Meet Corvane: Two Marketplaces, One Group](#meet-corvane).
 

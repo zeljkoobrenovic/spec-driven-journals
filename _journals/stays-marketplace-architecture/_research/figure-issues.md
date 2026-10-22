@@ -27,3 +27,4 @@
 - 22 service-neighbors: **KEPT** — two-row consumer layout is a layout choice, not an error.
 - 14 dynamic-pricing staircase: **KEPT** — one unlabeled step does not contradict the caption; not regenerated in this pass.
 - 06 / 08 / 10 minor extra words: **KEPT** — no contradiction with captions.
+- 43-converging-two-marketplaces Figure 2: caption orders the placement tests differently from the tree in the image (tree asks policy-as-data second) — recaption or regenerate.

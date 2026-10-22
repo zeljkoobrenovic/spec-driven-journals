@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: One Home, Many Calendars: iCal, APIs and Multichannel Hosts
@@ -80,3 +80,5 @@ Chief architects, principal engineers and engineering leads of hosted-stays mark
 - **2026-10-21** — Editorial review pass: acronyms expanded on first use (OTA, PMS, CRS, ARI), American spelling, hedged two unverified/old claims, added a hand-off section to extranets-and-host-tools, timetoread 35 min. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: aligned the Seville replay alt text with the image (alert to Carmen only). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,604 → 6,587 prose words; opening now ties the chapter to Part II's "copy of someone else's truth" rule; two paragraphs merged; filler and announcing sentences cut; no headings changed, no facts removed. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,604 → 6,166 prose words since HEAD (−6.6%); Failure Modes compressed to one-line pointers to the sections that handle each failure (unique facts kept); Seville re-tellings in the claims and replay sections, the double-booking/overbooking contrast, the Feria-week guarantee point and the request-to-book protection repeated across three sections cut back; Chief Architect's view tightened; no headings, figures or facts removed. *(AI-mediated session)*

@@ -23,9 +23,9 @@
 
 [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map) described what the two marketplaces do. It did not say how many models of a booking there should be, which team owns the truth about a night, or how a hotel reservation and a home reservation can share a payments platform without sharing a supply model. Those are decomposition questions, and **domain-driven design's bounded context** is the most useful tool for them: a boundary inside which one model and one vocabulary hold, owned by one team.
 
-Stays platforms need it more than most, for two reasons that apply to both the accommodation marketplace, or online travel agency (OTA), and the hosted-stays marketplace. First, the same night is described by a hotel's property-management system (PMS), a channel manager, an inventory store, a quote, a reservation, a virtual card, a ledger entry and a tax report, each correct for its purpose and impossible to hold in one data structure. Second, **a group that runs both types** must decide which boundaries the two can share, or end with two of everything or one supply model that fits neither.
+Stays platforms need it more than most. In both the accommodation marketplace, or online travel agency (OTA), and the hosted-stays marketplace, the same night is described by a hotel's property-management system (PMS), a channel manager, an inventory store, a quote, a reservation, a virtual card, a ledger entry and a tax report, each correct for its purpose and impossible to hold in one data structure. And **a group that runs both types** must decide which boundaries the two can share.
 
-This chapter owns the terms **offer**, **context map** and, briefly, the **reservation aggregate** ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) designs it in depth). The worked example is Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), drawing the One Stay context map across Roomstead, its hotel marketplace, and Nookaway, its homes marketplace.
+This chapter closes Part I ([Part I — MARKETPLACE: The Business of a Night's Stay](#part-1)): every later part designs one or more contexts on the map drawn here, and [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces) and [Who Owns What: Organizing Engineering for Stays](#organizing-stays-engineering) turn it into the group's sharing decisions and its teams. It owns the terms **offer**, **context map** and, briefly, the **reservation aggregate** ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) designs it in depth). The worked example is Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), drawing the One Stay context map across Roomstead, its hotel marketplace, and Nookaway, its homes marketplace.
 
 {id: stays-bounded-contexts--setting-the-scene-at-corvane-one-night-nine-owners}
 ## Setting the Scene at Corvane: One Night, Nine Owners
@@ -46,11 +46,11 @@ On **28–29 April 2027** Mariana Costa, the Group Chief Architect, ran a two-da
 | Does the property or host know? | Switchyard's delivery log and the PMS acknowledgement | Carmen's app reads Burrow directly; the competing platform knew nothing |
 | Which physical unit was sold? | Nowhere | The listing is the unit, but its Spanish registration number was free text until Carmen re-verified on 3 February |
 
-The Roomstead trace touched **nine** systems with their own version of at least one answer; the Nookaway trace touched six. **Price, policy and payment model were each decided in several places**, none wrong for its own consumer and none the owner; **money lived inside the reservation** (Carmen's statement needed a support agent to explain, [Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement)); and **partner dialects reached deep into the core**, from OpenTravel status codes in Keystone columns to iCal events treated as reservations in Burrow.
+The Roomstead trace touched **nine** systems with their own version of at least one answer; the Nookaway trace touched six. **Price, policy and payment model were each decided in several places**; **money lived inside the reservation** (Carmen's statement needed a support agent to explain, [Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement)); and **partner dialects reached deep into the core**, from OpenTravel status codes in Keystone columns to iCal events treated as reservations in Burrow.
 
 ![One night token in the center tied by strings to nine different systems, each holding up its own version of the answer, while an architect traces one string.](stays-marketplace-architecture/posts/04-stays-bounded-contexts/assets/images/04-stays-bounded-contexts/04-one-night-nine-owners.jpeg)
 
-**Figure 1:** *The Roomstead trace found nine systems each holding its own version of at least one answer about one night: price, policy and payment model were each decided in several places, and none was the owner.*
+**Figure 1:** *One night, nine owners: the Roomstead trace found nine systems each holding its own version of at least one answer, and none was the owner.*
 
 The question for the architecture forum on 5 May was therefore not "how many services?" but **"where are the lines across which a night changes meaning, who owns each side, and which of those lines can a hotel marketplace and a homes marketplace share?"**
 
@@ -97,7 +97,7 @@ Fowler's example is a utility in which "meter" meant different things to differe
 | Tax | A taxable night per person, in a jurisdiction, under a rule version | Tax determination ID |
 | Trust | A risk window, such as a Saturday night in a four-bedroom villa | Reservation and party |
 
-This is the chapter's first argument. **Every row is a different model of the same night**, with its own identity, rate of change and correctness rule; force two into one schema and one is wrong for its consumer, as the April audit showed.
+Force two rows into one schema and one is wrong for its consumer, as the April audit showed.
 
 ![One night entering a prism and splitting into six beams that land on inventory, offer, reservation, ledger, tax and trust, each a different model of the same night.](stays-marketplace-architecture/posts/04-stays-bounded-contexts/assets/images/04-stays-bounded-contexts/04-one-night-many-meanings.jpeg)
 
@@ -132,7 +132,7 @@ Three rules follow.
 {id: stays-bounded-contexts--candidate-contexts-for-a-stays-platform}
 ## Candidate Contexts for a Stays Platform
 
-The contexts I would start from for a group that runs both types are below. It is a starting map, not a template: a small marketplace may run several as modules of one service. What matters is one owner and one model per row.
+These are the contexts I would start from for a group that runs both types. A small marketplace may run several as modules of one service; what matters is one owner and one model per row.
 
 | Context | Owns (the truth it decides) | Must not | Deep chapter |
 | --- | --- | --- | --- |
@@ -160,8 +160,6 @@ The contexts I would start from for a group that runs both types are below. It i
 | **Customer service** | Cases, contact history and recovery decisions | Edit reservations or balances directly | [When Something Goes Wrong: Customer Service and Recovery](#customer-service) |
 | **Partner and host workspace** | Extranet and host-app workflows, exception queues, operations tasks | Hold its own copy of any truth | [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) |
 
-Three choices deserve a defense.
-
 **Offer is a context, not a step in search or checkout.** Price, conditions, tax, promotions and the payment arrangement meet in the offer; if search and checkout each compose it, the result is Price Drift. Search should *request* offers, often from a cache the offer context owns, and checkout should *re-validate* an offer by its ID ([The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection)).
 
 **Change and cancellation policy is separate from both the reservation and payments.** It answers "what happens if this guest cancels now?" for a reservation version and a moment; the reservation stores the policy version it agreed to, and payments executes the refund. The cure for Policy Spaghetti is one evaluator that every surface calls.
@@ -170,8 +168,6 @@ Three choices deserve a defense.
 
 {id: stays-bounded-contexts--the-two-aggregates-that-carry-the-promise-offer-and-reservation}
 ## The Two Aggregates That Carry the Promise: Offer and Reservation
-
-Two less obvious aggregates decide whether the map holds.
 
 {id: stays-bounded-contexts--the-offer}
 ### The offer
@@ -217,12 +213,12 @@ It should **not** contain the inventory decrement, the payment capture, the payo
 | "Do you have my booking?" | Reservation, with delivery state from connectivity | Lost at the Front Desk: the property never acknowledged it |
 | "What am I owed?" | Settlement ledger, from reservation and payment events | Ledgerless Money: balances recomputed from mutable rows |
 
-This is the chapter's second argument. **Nearly every cross-context bug in a stays platform is one context recomputing what the offer or the reservation should have fixed.** The cure is not more synchronization; it is to compute once, freeze, version, and make everyone else read. If the audit chain from reservation to ledger needs a lookup of "the listing's policy today", the reservation has not frozen enough.
+**Nearly every cross-context bug in a stays platform is one context recomputing what the offer or the reservation should have fixed.** If the audit chain from reservation to ledger needs a lookup of "the listing's policy today", the reservation has not frozen enough.
 
 {id: stays-bounded-contexts--architecture-the-stays-context-map}
 ## Architecture: The Stays Context Map
 
-A context map is only useful if it shows **relationships**, not just boxes. The shape I recommend for a group with both types puts partner systems behind anti-corruption layers, the offer and reservation contracts in the middle as published language, and money, trust and identity as open host services.
+A context map shows **relationships**, not just boxes. Figure 4 is the shape I recommend for a group with both types.
 
 ![Partner dialects stop at a connectivity wall; inside, per-marketplace inventory feeds the offer and the reservation, which sends delivery back through connectivity and works with a band of open host services.](stays-marketplace-architecture/posts/04-stays-bounded-contexts/assets/images/04-stays-bounded-contexts/04-stays-context-map.jpeg)
 
@@ -273,17 +269,15 @@ The rule underneath the table: **share a language, not a database.** When two co
 {id: stays-bounded-contexts--in-practice-what-the-public-record-shows}
 ## In Practice: What the Public Record Shows
 
-No stays company has published its context map. Several have published enough to show where they drew boundaries.
-
 **Airbnb: the most-shared entity first, money apart from the reservation.** In a 2018 QCon talk, Jessica Tai described Airbnb's migration from Monorail, its Ruby on Rails monolith: the first extraction was the homes data model, "accessed by almost every feature", and a middle tier held shared write validation, with **reservation validation** as the named example ([Tai, InfoQ, 2018](https://www.infoq.com/presentations/airbnb-soa-migration/)). The talk is eight years old and describes a system that has since changed; the order is the lesson. A 2022 post on rebuilding payment orchestration built the data model "around the concept of a bill" and modeled an alteration such as "adding another night to a stay" "as a new version in a sequence of plans for that product" ([Ross et al., Airbnb Engineering, 2022](https://medium.com/airbnb-engineering/rebuilding-payment-orchestration-at-airbnb-341d194a781b)), and a 2026 post describes payments as "a capability-oriented services system structured by domains" ([Haile et al., Airbnb Tech, 2026](https://airbnb.tech/payments/pay-as-a-local/)). Both support this chapter's boundary: the money side keys on its own versioned aggregate rather than reading reservation rows. A 2026 data-warehouse post adds the sharing rule (models "either completely separate by product type or completely monolithic", with customer support kept as one model) for the offline warehouse only ([Airbnb Tech, 2026](https://airbnb.tech/uncategorized/scaling-beyond-one-how-airbnb-evolved-its-data-architecture-for-a-multi-product-world/); see [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map)).
 
-**Agoda: booking creation and post-booking as different contexts.** In a 2026 post, Agoda described splitting its core monolith in 2019 into booking creation and post-booking (cancellations, amendments, refunds, communications). Post-booking grew until merge requests "more than quadrupled between 2022 and 2025", and Agoda introduced a modular monolith with domain components such as `rebook`, `cancellation` and `payment`, enforced by architecture tests in continuous integration ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-we-cut-the-coupling-tax-in-a-post-booking-api-2156a3175538)). A split along the booking timeline is not enough if one side becomes its own ball of mud, and boundaries enforced in the build are a legitimate step before services. A 2025 Agoda post describes booking as a graph of single-purpose steps run by an orchestrator ([Agoda Engineering, 2025](https://medium.com/agoda-engineering/how-agodas-multi-product-booking-engine-powers-seamless-travel-bookings-61fc6e746821)): checkout orchestrates other contexts' aggregates and owns none of them.
+**Agoda: booking creation and post-booking as different contexts.** In a 2026 post, Agoda described splitting its core monolith in 2019 into booking creation and post-booking (cancellations, amendments, refunds, communications). Post-booking grew until merge requests "more than quadrupled between 2022 and 2025", and Agoda introduced a modular monolith with domain components such as `rebook`, `cancellation` and `payment`, enforced by architecture tests in continuous integration ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-we-cut-the-coupling-tax-in-a-post-booking-api-2156a3175538)). A split along the booking timeline is not enough if one side becomes its own ball of mud. Boundaries enforced in the build are a legitimate step before services. A 2025 Agoda post describes booking as a graph of single-purpose steps run by an orchestrator ([Agoda Engineering, 2025](https://medium.com/agoda-engineering/how-agodas-multi-product-booking-engine-powers-seamless-travel-bookings-61fc6e746821)): checkout orchestrates other contexts' aggregates and owns none of them.
 
 **Expedia Group and Booking.com: where supply models meet.** Expedia unified its technology teams in 2020 and created "one unified front-end stack in 2023" ([Expedia Group 10-K for 2023](https://www.sec.gov/Archives/edgar/data/1324424/000132442424000007/expe-20231231.htm), February 2024), yet its distribution API still exposes Vrbo homes through a different supply model from hotels: single-unit, one rate plan, rental agreements and damage deposits ([Expedia Group Rapid, n.d.](https://developers.expediagroup.com/rapid/lodging/vacation-rentals/vrbo-integration-guide)). Booking.com's connectivity documentation, by contrast, models a home as a room type whose quantity is the number of identical units ([Booking.com, n.d.](https://developers.booking.com/connectivity/docs/room-type-and-rate-plan-management/managing-room-types.md)), one supply model at least at the partner interface ([Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model)). On its demand side, a 2026 post says "each major page has its own Node rendering service, owned by the team responsible for that page" ([Booking.com Engineering, 2026](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002)): Conway's law applied deliberately.
 
 > **INFERENCE, NOT DOCUMENTED:** The two Expedia sources are consistent with a shared platform whose published contract carries both a hotel offer and a single-unit home offer, with differing supply rules behind it: the "shared contract, separate engines" pattern. They do not describe Expedia's internal contexts, and how either company stores homes internally is not public.
 
-No company has described its reservation aggregate, its offer contract or how it divides cancellation policy between services. The design in this chapter is my recommendation, not a reconstruction of anyone's systems.
+No stays company has published its context map, its reservation aggregate, its offer contract or how it divides cancellation policy between services. The design in this chapter is my recommendation, not a reconstruction of anyone's systems.
 
 {id: stays-bounded-contexts--corvane-worked-example-the-one-stay-context-map}
 ## Corvane Worked Example: The One Stay Context Map
@@ -316,7 +310,7 @@ The architecture forum adopted **Context Map v1** on **5 May 2027**. It started 
 | Promotions and loyalty | Roomstead only | Roomstead | Roomstead-only ([Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)) |
 | Partner and host workspace | Per marketplace, shared spine | Aisha Rahman; Rafael Mendes | Separate products on a shared spine ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)) |
 
-Two systems sit deliberately **off** the core. Corvane Connect, which also distributes to Roomstead's and Nookaway's competitors, is **separate ways** for data and an ordinary partner for integration: it uses Switchyard's public API like the other 139 certified partners, gets no privileged access to Tally, and its customers' data is excluded from group pricing features. Experimentation and the ML platform are platforms, not contexts.
+Corvane Connect, which also distributes to Roomstead's and Nookaway's competitors, sits deliberately **off** the core: **separate ways** for data and an ordinary partner for integration. It uses Switchyard's public API like the other 139 certified partners, gets no privileged access to Tally, and its customers' data is excluded from group pricing features.
 
 ![Roomstead and Nookaway engines, both fed identities by the place registry, emit into one shared contracts band consumed by money, trust and operations; Corvane Connect sits outside and reaches Roomstead only through a partner API.](stays-marketplace-architecture/posts/04-stays-bounded-contexts/assets/images/04-stays-bounded-contexts/04-context-map-v1-layers.jpeg)
 
@@ -325,7 +319,7 @@ Two systems sit deliberately **off** the core. Corvane Connect, which also distr
 {id: stays-bounded-contexts--what-the-map-changed-in-the-following-months}
 ### What the map changed in the following months
 
-Later decisions could each be framed as **one boundary on the map made concrete**. Two March decisions already fitted it: Calendar Sync v2, which made iCal imports claims, and one price composition per engine behind the shared offer contract.
+Each later decision made **one boundary on the map concrete**. Two March decisions already fitted it: Calendar Sync v2, which made iCal imports claims, and one price composition per engine behind the shared offer contract.
 
 | Date (2027) | Decision | Boundary it drew |
 | --- | --- | --- |
@@ -340,7 +334,7 @@ Later decisions could each be framed as **one boundary on the map made concrete*
 
 The December 2027 annual review checked Context Map v1 against **capability map v2** (49 capabilities: 23 shared engines, 6 shared contracts, 20 brand-specific), recorded in [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces). Two changes reached this map. Change and cancellation policy is now one shared engine, Clause, not a contract with an evaluator per engine. Reviews, which v1 did not list as a context, became a shared engine, Vouch, inside the trust platform. The place registry and Waypoint (destinations) stay two contexts, with Waypoint writing enrichment to registry records and never the reverse. Experimentation and ML became shared engines on the capability map but remain platforms, not contexts, here.
 
-The April audit is the clearest before-and-after. Under v1, commission invoicing reads the **payment arrangement version effective at the stay date**, which the reservation carries as a frozen value and publishes with its events ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)). The same modification that produced a €129,000 credit-note run in 2026 now produces an `ArrangementChanged v1 → v2` event that the ledger, card issuing and invoicing each act on. The fix was a boundary, not a better query.
+Under v1, commission invoicing reads the **payment arrangement version effective at the stay date**, which the reservation carries as a frozen value and publishes with its events ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)). The same modification that produced a €129,000 credit-note run in 2026 now produces an `ArrangementChanged v1 → v2` event that the ledger, card issuing and invoicing each act on. The fix was a boundary, not a better query.
 
 On the hosted-stays side, the Bauers' cancellation becomes a new reservation version with a host-cancellation reason; the policy engine decides the guest's remedy and Carmen's €130 fee under the frozen policy version; the fee posts to her account in Fathom; and the guarantee rebooking is a new linked reservation. Her statement then shows the deduction as a referenced ledger entry, not an amount a support agent reconstructs from Burrow's tables.
 
@@ -349,7 +343,7 @@ On the hosted-stays side, the Bauers' cancellation becomes a new reservation ver
 
 Teams then assigned services to contexts. Of Roomstead's **180** services on AWS and Nookaway's **60** Go services, **196** mapped to exactly one context and **44** straddled two or more, 17 of them in the booking path, most often checkout services that composed offers and also wrote reservation fields. Keystone held parts of **nine** contexts and Burrow parts of **seven**. The counts became the decomposition backlog: contracts first, because straddling services cannot be split until there is a contract to split toward.
 
-The offer and reservation contracts got an owner neither marketplace would have chosen: a **contracts stewardship group** of four engineers in the Group Chief Architect's office, owning the offer, reservation and payment-arrangement schemas, their compatibility tests and versioning, and no engine. Leila Haddad's team keeps the arrangement *resolver*; the stewardship group keeps its *schema*. The team that runs an engine should not be the only voice on the contract every other team depends on.
+The offer and reservation contracts got an owner neither marketplace would have chosen: a **contracts stewardship group** of four engineers in the Group Chief Architect's office, owning the offer, reservation and payment-arrangement schemas, their compatibility tests and versioning, and no engine. Leila Haddad's team keeps the arrangement *resolver*; the stewardship group keeps its *schema*.
 
 {id: stays-bounded-contexts--trade-offs-how-to-decompose-two-marketplaces}
 ## Trade-offs: How to Decompose Two Marketplaces
@@ -365,7 +359,7 @@ Within the recommended option, teams argue most about who owns the payment arran
 {id: stays-bounded-contexts--where-the-two-maps-differ}
 ## Where the Two Maps Differ
 
-The two maps have nearly the same boxes but differ in **which boxes are heavy, which direction the truth flows, and which sub-machines the reservation needs**.
+The two maps have nearly the same boxes but differ in **which boxes are heavy, where the truth comes from, and which sub-machines the reservation needs**.
 
 | Dimension | Accommodation marketplace | Hosted-stays marketplace |
 | --- | --- | --- |
@@ -380,26 +374,20 @@ Convergence makes the table less tidy: about **61,000** Roomstead properties are
 {id: stays-bounded-contexts--failure-modes}
 ## Failure Modes
 
-**The god reservation table.** One table holds the reservation, its price, policy, payment type, commission status and delivery state, and dozens of jobs read it directly, so every meaning that drifts produces a silent error elsewhere, like Keystone's commission run. Count the readers of the reservation store outside the reservation context; the target is zero.
-
-**A shared kernel that grows.** It starts as shared identifiers and becomes a shared supply schema "so the brands stay consistent". Within two years neither marketplace can add a field without the other's review: The Hotel-Shaped Home, arrived at through good intentions.
-
-**Policy in every context.** Checkout, support macros, payments and the partner channel each hold a policy; in a mass-disruption weekend they answer the same guest four ways. Policy Spaghetti is a boundary failure, and Corvane's answer, Clause, is one engine ([When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)).
-
-**Price composed in several contexts.** Search, the property page, checkout and the metasearch feed each add fees, taxes and currency, and disagree. Corvane's audit of a metasearch downgrade in May 2027 attributed 1.4 points of mismatch to fee and tax composition and 0.6 to member-price leakage, both symptoms of composition outside the offer context ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)).
-
-**Partner semantics past the boundary.** OpenTravel status codes in reservation columns, channel-manager rate-plan codes as product keys, iCal events stored as reservations: Connectivity Roulette is often a layer that translated syntax but let meaning through.
-
-**Boundaries by brand or by monolith module.** "Roomstead booking" encodes the org chart; contexts named after Keystone's packages encode a 2004 design.
-
-**Money inside the reservation.** Balances derived nightly from mutable rows cannot say why a balance changed. Nookaway's €3.4 million of host debit balances at the end of 2026 was an accounting outcome of that design ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement)). Ledgerless Money is what a reservation that also plays ledger produces.
+- **The god reservation table.** One table holds the reservation, its price, policy, payment type, commission status and delivery state, and dozens of jobs read it directly; every meaning that drifts becomes a silent error elsewhere, like Keystone's commission run. See The reservation.
+- **A shared kernel that grows.** Shared identifiers become a shared supply schema "so the brands stay consistent", and within two years neither marketplace can add a field without the other's review: The Hotel-Shaped Home. See Shared kernels to avoid.
+- **Policy in every context.** In a mass-disruption weekend, checkout, support macros, payments and the partner channel answer the same guest four ways. Corvane's answer is one engine, Clause ([When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)).
+- **Price composed in several contexts.** Corvane's audit of a metasearch downgrade in May 2027 attributed 1.4 points of mismatch to fee and tax composition and 0.6 to member-price leakage, both composition outside the offer context ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)).
+- **Partner semantics past the boundary.** OpenTravel status codes in reservation columns, rate-plan codes as product keys, iCal events stored as reservations: a layer that translated syntax but let meaning through. See Anti-corruption layers toward partners.
+- **Boundaries by brand or by monolith module.** "Roomstead booking" encodes the org chart; contexts named after Keystone's packages encode a 2004 design.
+- **Money inside the reservation.** Nookaway's €3.4 million of host debit balances at the end of 2026 was an accounting outcome of balances derived nightly from mutable rows ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement)).
 
 {id: stays-bounded-contexts--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-**Decide the map before the services.** A decomposition that starts by naming microservices reproduces the monolith's boundaries in smaller boxes. Trace two or three real reservations, list every place each question is answered, and draw contexts where answers should have one owner. Corvane's two-day trace cost less than one of the incidents it explained.
+**Decide the map before the services.** A decomposition that starts by naming microservices reproduces the monolith's boundaries in smaller boxes. Start with a trace of two or three real reservations, as Corvane did; its two-day trace cost less than one of the incidents it explained.
 
-**Classify subdomains per marketplace, in writing.** It decides where the best engineers work and what the group shares, and keeps the larger brand's priorities from silently becoming the group's.
+**Classify subdomains per marketplace, in writing**, so the larger brand's priorities do not silently become the group's.
 
 **Treat shared contracts as products with owners.** Give the offer and reservation contracts a steward with no engine to protect, a versioning policy (additive changes freely, breaking changes with a migration window), consumer-driven compatibility tests, and a forum decision for anything that changes meaning.
 
@@ -407,12 +395,12 @@ Convergence makes the table less tidy: about **61,000** Roomstead properties are
 
 **Make boundary violations measurable.** I track per quarter: direct reads of another context's store (target zero); the share of changes that needed more than one team; contract failures caught in CI versus production; and how often surfaces disagree about a price or a policy answer. The last are the guest-visible cost of bad boundaries ([Built for the Next Disruption: Evolving a Stays Platform Over a Decade](#evolving-the-platform)).
 
-**Expect the map to move, and version it.** Within seven months Clause and Vouch had changed Context Map v1; a deemed-supplier value-added tax (VAT) rule will move tax decisions into the center of the offer ([The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)). Review the map when a new product or regulation arrives.
+**Expect the map to move, and version it.** Within seven months Clause and Vouch had changed Context Map v1, and a deemed-supplier value-added tax (VAT) rule will move tax decisions into the center of the offer ([The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)).
 
 {id: stays-bounded-contexts--questions-to-ask}
 ## Questions to Ask
 
-1. For one real reservation, how many systems hold their own answer to "what did it cost?", "can it be canceled for free?" and "who collects the money?
+1. For one real reservation, how many systems hold their own answer to "what did it cost?", "can it be canceled for free?" and "who collects the money?"
 2. Which subdomains are core for each marketplace, and where do they differ?
 3. Who owns the offer? Do search, the property page, checkout and our metasearch feeds render one composed quote, or compose their own?
 4. What does our reservation freeze at booking: offer lines, policy version, payment arrangement, tax determination? What does it look up "as of now" instead?
@@ -424,7 +412,7 @@ Convergence makes the table less tidy: about **61,000** Roomstead properties are
 {id: stays-bounded-contexts--from-boundaries-to-supply}
 ## From Boundaries to Supply
 
-The map now has its lines: a place registry and supply catalogs at the source, inventory and pricing engines per marketplace, the offer and reservation as the contracts that carry the guest's promise, and shared services for money, trust and identity. The next part fills in the supply side, starting with the thing a guest actually books. [Part II — SUPPLY: Properties, Homes and the Partners Behind Them](#part-2) introduces it, and [Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model) shows how a hotel marketplace and a homes marketplace can share the identity of a unit without sharing a supply model.
+The next part fills in the supply side of this map, starting with the thing a guest actually books. [Part II — SUPPLY: Properties, Homes and the Partners Behind Them](#part-2) introduces it, and [Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model) shows how a hotel marketplace and a homes marketplace can share the identity of a unit without sharing a supply model.
 
 {id: stays-bounded-contexts--sources-and-evidence}
 ## Sources and Evidence

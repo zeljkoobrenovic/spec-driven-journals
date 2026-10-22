@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: When Something Goes Wrong: Customer Service and Recovery
@@ -23,7 +23,7 @@ Chief architects, principal engineers and customer-service, operations and payme
 - [x] Covers documented 2024–2026 AI customer-service deployments with dated sources (Airbnb Q2/Q3 2025 and Q2 2026 letters, Airbnb voice support 2025, Airbnb evaluation 2026, Expedia 2026 via secondary report, Booking.com AgentHub 2026) and labels the Romie report as low confidence; states design rules as reference design, not company internals; cites AI Act Article 50.
 - [x] Handles disruption surges with the ATC strike weekend (6,200 requests in 48 hours) and turns it into requirements (disruption mode, declared events, structured waivers, surge capacity).
 - [x] Trade-off table, "Hotels and Homes" table with a sharing judgement, failure modes, Chief Architect's view, 10 questions, sources.
-- [x] Three mermaid diagrams with captions; under 8,500 words.
+- [x] Three diagrams (illustrated) with captions; under 8,500 words.
 
 ## Non-goals
 
@@ -80,3 +80,6 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: ATC strike deadline rendering aligned with changes-and-cancellations (confirmation e-mail, Irish time); €400-cap wording clarified; timetoread corrected. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the King's Day replay so "entitlement" ends inside the Recovery lane. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,801 → 5,558 prose words; no headings renamed; Failure Modes cut from eight to three entries plus one line naming the five covered earlier; duplicate Expedia and Airbnb voice figures removed from the AI table; opening now names what depends on the chapter. *(AI-mediated session)*
+
+- **2026-10-22** — Softened the unsourced claim that support is one of the largest costs after marketing (author decision). *(AI-mediated session)*

@@ -21,7 +21,7 @@
 > * **Connectivity Roulette** — Turns partner integrations into contracts with semantic validation, ordering, reconciliation and health scores.
 > * **The Double-Booked Night** — Measures the conflict window and models a calendar as claims with provenance.
 
-Part I argued that an accommodation marketplace sells a perishable promise that someone else fulfils. Part II starts with **that someone else**. Before a night can be searched, priced or booked, the marketplace must know what is sold, who sells it, what it looks like and whether it is still free.
+Part I argued that an accommodation marketplace sells a perishable promise that someone else fulfils. Part II starts with **that someone else**. Before a night can be priced (Part III), found (Part IV) or booked, the marketplace must know what is sold, who sells it, what it looks like and whether it is still free.
 
 The argument of this part is that **supply is master data with many writers**. The marketplace owns the model and the rules. Hotels, channel managers, bedbanks, hosts, co-hosts and property-management software own most of the values. Each chapter answers the same two questions for its slice: who may write this fact, and how will we know when the copy has drifted from the source?
 
@@ -38,13 +38,13 @@ Hotels and homes differ in this part more than anywhere else in the book. A hote
 {id: part-2--chapters-in-this-part}
 ## Chapters in this part
 
-[Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model) decides **what is being sold**. It separates the physical layer (property, unit, spaces, beds) from the commercial one (room type, rate plan, listing), and gives every sellable unit a stable identifier in a group place registry, which Waypoint, the place graph of [Where Exactly? Destinations, Geo and Map Search](#destinations-and-maps), enriches with locations and jurisdictions. Costa Keys' 38 Málaga apartments, 20 products on Roomstead and 38 listings on Nookaway, show why.
+[Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model) decides **what is being sold**. It separates the physical layer (property, unit, spaces, beds) from the commercial one (room type, rate plan, listing), and gives every sellable unit a stable identifier in a group place registry. Waypoint, the place graph of [Where Exactly? Destinations, Geo and Map Search](#destinations-and-maps), enriches that registry with locations and jurisdictions. Costa Keys' 38 Málaga apartments, sold as 20 products on Roomstead and 38 listings on Nookaway, show why.
 
 [From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding) decides **who may sell and when a property becomes bookable**. A supply-party model separates the legal party, the property, the contract and the payout account. A readiness service evaluates named, versioned checks. Hotel Torre de Ferro and Carmen Ruiz's re-verification are the worked pair.
 
 [Describing a Stay: Content, Media and Property Mapping](#content-and-media) decides **how descriptions are governed**: a field-level catalog with provenance and precedence, policies rendered from structured data, and a shared media and translation pipeline. Its centerpiece is Concord, the mapping engine that found how many of Brightwell Beds' 41,000 "new" properties Roomstead already sold.
 
-[Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers) decides **how Roomstead keeps its copy of hotel rates and availability faithful**. Switchyard validates against each partner's own sibling rates, applies updates in order, reconciles, tracks every reservation to acknowledgement and scores partners. The €12 rate at Hotel Miradouro is the case, and Corvane Connect's neutrality rule its governance.
+[Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers) decides **how Roomstead keeps its copy of hotel rates and availability faithful**. Switchyard validates against each partner's own sibling rates, applies updates in order, reconciles, tracks every reservation to acknowledgement and scores partners. The €12 rate at Hotel Miradouro is the case. A neutrality rule holds Corvane's own channel manager, Corvane Connect, to the same APIs as every other partner.
 
 [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync) decides **how a home sold on several platforms avoids being sold twice**. It defines the conflict window, explains why the marketplace controls only half of it, and models the calendar as claims with provenance and a declared calendar authority per listing. The Seville double booking is the case.
 

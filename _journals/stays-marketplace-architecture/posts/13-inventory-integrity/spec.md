@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency
@@ -23,7 +23,7 @@ Chief architects, principal engineers and inventory, booking and connectivity le
 - [x] Covers cross-channel windows with documented intervals (Booking.com polling and fallback, Airbnb iCal import) and four window controls, including the auto-replenishment trade-off from Booking.com's documentation.
 - [x] Works both canonical Corvane cases with ledger numbers: King's Day (47 minutes, 9 rooms, 4 Roomstead guests, €2,150, €1,600 recovered) and Seville (€1,360, €1,780, €420, €130).
 - [x] Gives an oversell metric set, a concurrency trade-off table, a window-policy table, a liability matrix and the "Hotels and Homes" comparison with a judgement on what to share.
-- [x] Three mermaid diagrams with captions; 6–10 questions to ask; dated sources.
+- [x] Three diagrams (illustrated) with captions; 6–10 questions to ask; dated sources.
 
 ## Non-goals
 
@@ -79,3 +79,5 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: trimmed from 9,923 to under 8,500 words (merged the window-policy table into prose, cut repeated vendor evidence and restated controls), removed code-block wrappers around mermaid fences, dropped an unverifiable IDeaS integration-guide citation and an Agoda "reportedly" claim, dated Airbnb fee facts "as of 2026", timetoread 35 min. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the three-kinds-of-overbooking figure without the "$" coin. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,887 → 5,850 prose words; lead now states the chapter as Part III's write path after the data model and read path; "In Practice" heading renamed to name the two cases; vague openers and one restating sentence cut, two long sentences split. Spec unchanged. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 5,887 → 5,557 prose words cumulative (HEAD → now); cut repetition of the three-problem framing, the Seville and King's Day timelines retold in later sections, the commit-point argument re-argued in the Chief Architect's view, and recap sentences; Failure Modes bullets and four figure captions compressed; the overwrite race no longer claimed "just as common" as Booking.com's timeline race. Spec unchanged. *(AI-mediated session)*

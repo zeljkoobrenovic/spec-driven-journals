@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Between Booking and Check-Out: Trips, Messaging and Notifications
@@ -23,7 +23,7 @@ Chief and principal architects, guest-experience and messaging platform leads, t
 - [x] Grounds messaging in documented public evidence (Booking.com Messaging API windows, structured requests, single-channel-of-reply, redaction; Airbnb message volume, translation, messaging features, Superhost response rate) and labels the conversation model as inference.
 - [x] Gives a stage-by-stage messaging policy table and safety controls tied to the documented 2023–2024 partner-account phishing chain.
 - [x] Describes the notification pipeline (intent, policy, channel plan, adapters, delivery tracking), event classes with separate lanes, mailbox-provider and WhatsApp channel constraints with dated sources.
-- [x] Includes a trade-off table, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view, design-review questions and four mermaid diagrams.
+- [x] Includes a trade-off table, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view, design-review questions and four diagrams (illustrated).
 - [x] Corvane numbers agree with the ledger; new canonical facts are appended to the ledger.
 
 ## Non-goals
@@ -70,3 +70,4 @@ Chief and principal architects, guest-experience and messaging platform leads, t
 - **2026-10-21** — Editorial review pass: trimmed from 9,046 to 8,482 words; payout sentence corrected to stay events; PMS acronym placement, American spelling and buzzword fixed. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the check-in replay so "seen 18:40" runs from Courier to the arrival package. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,541 → 6,159 prose words; headings unchanged; 4 paragraphs deleted as needless (one folded into the replay table); restatements of the opening scene, secret-handling and SLO metrics removed; design-review questions merged from 10 to 8. *(AI-mediated session)*

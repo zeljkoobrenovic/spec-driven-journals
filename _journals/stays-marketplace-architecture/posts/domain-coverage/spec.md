@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Domain Coverage: From Productscape Models to Chapters
@@ -63,3 +63,6 @@ Article only.
 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: stressor rows aligned with chapter content (`insv` to stays-capability-map and evolving-the-platform; combined stressor and destination operating state to evolving-the-platform), payment state feed added to event-driven-stays, timetoread corrected. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: prose 2,140 → 2,063 words; all tables unchanged; opening, overlap-matrix interpretation and gap-section lead-ins tightened; no headings renamed. *(AI-mediated session)*
+
+- **2026-10-22** — "five teams" → "several teams" (author decision). *(AI-mediated session)*

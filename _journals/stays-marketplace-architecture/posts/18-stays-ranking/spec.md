@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Ordering the Results: Ranking for Guests, Partners and the Marketplace
@@ -81,3 +81,4 @@ Chief architects, search and ranking leads, data science leads and commercial pr
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed 9,225 to 8,500 words; renamed Visibility Plus to Front Row (name clash with LISTED); added tier commission and participant counts from the ledger; removed uncited sources. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,474 → 6,216 prose words (−4%); no headings renamed; Failure Modes bullets that duplicated the dashboard metrics folded into one sentence; "What to leave to the brands" merged into the Hotels and Homes judgement; repeated P2B and Expedia label quotations removed; lead now names Pay-to-Rank Creep and the chapters that build on ranking. *(AI-mediated session)*

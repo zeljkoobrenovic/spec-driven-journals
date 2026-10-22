@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Who Owns What: Organizing Engineering for Stays
@@ -70,3 +70,4 @@ CTOs, chief and enterprise architects, VPs of engineering and platform leads in 
 - **2026-10-21** — Editorial review pass: Watchpost replaced by booking risk score models; SLO expanded on first use. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: rewrote the team-topology caption to the five boxes the diagram shows. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,000 → 5,529 prose words; no headings renamed; opening now names what the chapter builds on and what uses it; Failure Modes and Chief Architect's view compressed where they repeated the body; spec unchanged otherwise. *(AI-mediated session)*

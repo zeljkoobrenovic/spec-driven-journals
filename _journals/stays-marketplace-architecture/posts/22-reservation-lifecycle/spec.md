@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: The Life of a Reservation: State Machines, Delivery and Operations
@@ -18,12 +18,12 @@ Chief architects, principal engineers, booking, connectivity and partner-operati
 ## Success criteria
 
 - [x] Defines reservation, reservation version, booking snapshot, reservation delivery, acknowledgement, confirmation numbers, no-show, stayed, completion and reservation exception, and explains why a single status field fails.
-- [x] Gives a commercial state machine (Figure 1) with modification as a version, cancellation with cause, reversible no-show, and an explicit completed state, labeled as reference model, plus a table of clocks with owners and expiry actions.
-- [x] Gives the delivery state machine (Figure 3) with three acknowledgement levels and argues acceptance with a PMS number as the only closing state, citing Booking.com and Expedia partner documentation with dates.
+- [x] Gives a commercial state machine (Figure 2) with modification as a version, cancellation with cause, reversible no-show, and an explicit completed state, labeled as reference model, plus a table of clocks with owners and expiry actions.
+- [x] Gives the delivery state machine (Figure 4) with three acknowledgement levels and argues acceptance with a PMS number as the only closing state, citing Booking.com and Expedia partner documentation with dates.
 - [x] Covers pre-arrival verification (read-back, arrivals manifest, human confirmation), supplier-originated transitions (Booking.com no-show and invalid-card windows), the reservation event catalog, exception rules, and the stay triggers evidenced by the Airbnb, Booking Holdings and Expedia 10-Ks.
 - [x] Covers auditability and retention with DAC7 record retention, the EU STR Regulation's activity data and GDPR storage limitation.
 - [x] Works the Hotel Miradouro missing-reservations case with consistent fictional numbers (19 Roomstead reservations, 33 failed messages, €390 walk, 1,040 of 260,000 disagreements) and replays it under the redesign; works the Novak lifecycle with ledger numbers.
-- [x] Includes a trade-off table, the "Hotels and Homes" section with a judgement on what to share, failure modes, the Chief Architect's view and 10 questions to ask; three mermaid diagrams with captions.
+- [x] Includes a trade-off table, the "Hotels and Homes" section with a judgement on what to share, failure modes, the Chief Architect's view and 8 questions to ask; five captioned figures.
 
 ## Non-goals
 
@@ -79,3 +79,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 10,191 to 8,499 words; event table aligned with event-driven-stays (one reservation.versioned event with change types, separate delivery events); DAC7 and GDPR expanded; duplicate evidence table folded into prose. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,584 → 5,292 prose words; opening now names what depends on the chapter; repeated recaps, two failure-mode rows and a Chief Architect item that restated the single-writer rule cut; success criteria corrected to the current figure numbers, 8 questions and five figures. *(AI-mediated session)*

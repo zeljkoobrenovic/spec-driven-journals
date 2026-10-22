@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces
@@ -23,8 +23,8 @@ Chief architects, principal engineers and engineering directors of OTAs and host
 - [x] Gives a Corvane unit-economics table for Roomstead and Nookaway consistent with the ledger, and uses it to answer a concrete question (the CFO's "cheaper search stack" proposal).
 - [x] Uses dated public evidence from the Booking Holdings, Expedia Group and Airbnb fiscal-2025 filings, Airbnb's Q2 2026 letter, Booking.com's ranking disclosure, Agoda's program page and Expedia's rate-limit documentation, with derived ratios labeled as the author's arithmetic.
 - [x] Turns each economic quantity into a requirement in an economics-to-requirements table with owners (linked chapters).
-- [x] Includes a worked price-accuracy estimate with explicit assumptions, three mermaid diagrams, a trade-off table and a consolidated hotels-versus-homes table with a judgement on what to share.
-- [x] Contains failure modes, the Chief Architect's view, 10 questions to ask and a hand-off to [[stays-capability-map]].
+- [x] Includes a worked price-accuracy estimate with explicit assumptions, five figures, a trade-off table and a consolidated hotels-versus-homes table with a judgement on what to share.
+- [x] Contains failure modes, the Chief Architect's view, 8 questions to ask and a hand-off to [[stays-capability-map]].
 
 ## Non-goals
 
@@ -68,3 +68,7 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 10,150 to 8,499 words; 1,400 figure worded as shopping requests with Pricegrid reads for per-second figures (editor ledger line); removed an in-world claim that Nookaway fees changed in 2026; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,552 → 6,538 prose words; opening now places the chapter as Part I's second step and names the chapters that design to its budgets; 3 announcing sentences cut; two topic sentences rewritten to state their point. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass (needless test): 6,552 → 6,223 prose words cumulative since HEAD (5.0%); Failure Modes compressed to one-line bullets pointing to the sections that handle each; Chief Architect's view merged from six to four paragraphs (definitions point moved into the hotels-and-homes judgement); the CFO answer no longer re-quotes the opening scene; the supply-section closing summary and three repeated sentences deleted. Spec criteria corrected to match the post: five figures (not three mermaid diagrams), 8 questions (not 10). *(AI-mediated session)*
+
+- **2026-10-22** — Dropped the unsupported 90th-percentile mention from the booking-window paragraph (author decision). *(AI-mediated session)*

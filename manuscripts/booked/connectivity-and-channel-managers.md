@@ -21,11 +21,9 @@
 > * **Phantom Availability** — a lost stop-sell or an out-of-order inventory update leaves the marketplace selling rooms the hotel no longer has, and nothing notices until a guest is walked.
 > * **Lost at the Front Desk** — a reservation that was "sent" but never acknowledged by the hotel's PMS looks the same as a delivered one, unless delivery state is tracked per reservation version.
 
-A hotel's rooms, rates and restrictions do not live at the OTA. They live in the hotel's **property management system (PMS)**, a chain's **central reservation system (CRS)** or a **channel manager**, and a revenue manager or a pricing algorithm changes them many times a day. The OTA holds a copy. Every search result, property page and checkout reads that copy, so **the copy's accuracy is the OTA's accuracy**. The connectivity layer is what keeps it accurate.
+A hotel's rooms, rates and restrictions live in the hotel's **property management system (PMS)**, a chain's **central reservation system (CRS)** or a **channel manager**, and a revenue manager or a pricing algorithm changes them many times a day. An accommodation marketplace (OTA-style, after "online travel agency") holds a copy that every search result, property page and checkout reads, so **the copy's accuracy is the OTA's accuracy**. It has thus outsourced its most important write path to thousands of properties and the hundred or so software vendors they use, whose bugs it cannot fix and whose logs it cannot see.
 
-This is unusual for a marketplace. An accommodation marketplace (OTA-style, after "online travel agency") has outsourced the most important write path in its system to thousands of properties and the hundred or so software vendors they use. It cannot fix their bugs or see their logs. It can define the contract precisely, check everything that arrives against it, detect drift, prove delivery in the other direction, and make reliability something partners compete on.
-
-Part II follows supply from the property model ([Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model)) through onboarding ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding)) and content ([Describing a Stay: Content, Media and Property Mapping](#content-and-media)) to the machinery that keeps it current. This chapter owns the **ARI message**, the **channel manager**, the **PMS** (as an integration counterparty), the **connectivity partner** and the **full sync**. The data model belongs to [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model), the cache that search reads to [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), and two channels selling the last room to [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity).
+Part II follows supply from the property model ([Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model)) through onboarding ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding)) and content ([Describing a Stay: Content, Media and Property Mapping](#content-and-media)). Content says what a guest can book; this chapter is where the **rates and availability** that say whether it can be booked tonight enter Roomstead, and where reservations leave for the hotel. Later chapters build on the copy it keeps: the data model in [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model), the cache that search reads in [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), and two channels selling the last room in [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity).
 
 {id: connectivity-and-channel-managers--setting-the-scene-at-corvane-thirty-eight-minutes-at-12}
 ## Setting the Scene at Corvane: Thirty-Eight Minutes at €12
@@ -55,8 +53,6 @@ Roomstead honored all 41 reservations. Corvane Connect compensated the hotel for
 {id: connectivity-and-channel-managers--the-hotel-stack-who-holds-the-truth}
 ## The Hotel Stack: Who Holds the Truth
 
-Each system on the other side of the wire asserts a different part of the truth and fails differently.
-
 | System | What it owns | Who runs it | Examples (public) |
 | --- | --- | --- | --- |
 | **Property management system (PMS)** | The hotel's operational record: physical rooms, in-house guests, reservations, folios, housekeeping. For an independent hotel, usually the system of record for inventory. | Each property | Oracle OPERA Cloud, Mews, apaleo, Cloudbeds |
@@ -66,12 +62,12 @@ Each system on the other side of the wire asserts a different part of the truth 
 | **Booking engine** | The hotel's own direct-booking checkout on its website | Each property, often bundled with the CRS or channel manager | Many |
 | **Global distribution system (GDS) and switch** | Distribution to travel agents through Amadeus, Sabre and Travelport; the "switch" translates between hotel CRSs and the GDSs | Chains and their CRS vendors | Pegasus began in 1989 as a hotel-industry switch |
 
-A few definitions this chapter owns:
+The terms this chapter owns:
 
 - An **ARI message** is a single update to availability, rates or inventory (ARI) for one property, sent from a supply system to a channel. It addresses products by code, covers a date range, and sets values such as rooms to sell, a price per occupancy, or a restriction such as minimum length of stay (MinLOS) or closed to arrival (CTA). The data model behind these terms is defined in [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model).
 - A **channel manager** is software that keeps one property's ARI consistent across many sales channels and brings their reservations back to the PMS. Its core asset is the **mapping table** from the hotel's own room and rate codes to each channel's identifiers.
 - A **connectivity partner** is any third party certified to write ARI and content to a marketplace on a property's behalf, or to receive its reservations: a channel manager, a PMS with a direct connection, or a CRS. The property authorizes the partner; the marketplace certifies it.
-- A **full sync** is a complete re-send of a property's ARI over a date horizon, as opposed to the **delta** updates that carry only changes. Full syncs repair drift, but they rewrite every value downstream, so they need to be designed, not just allowed.
+- A **full sync** is a complete re-send of a property's ARI over a date horizon, as opposed to the **delta** updates that carry only changes. Full syncs repair drift, but they rewrite every value downstream.
 
 ![Behind a wall, an RMS feeds a PMS, which feeds a CRS and a channel manager; only the channel manager connects through the wall to the OTA gateway with ARI pushes and reservations.](stays-marketplace-architecture/posts/08-connectivity-and-channel-managers/assets/images/08-connectivity-and-channel-managers/08-hotel-stack-behind-partner.jpeg)
 
@@ -79,9 +75,9 @@ A few definitions this chapter owns:
 
 Two facts about this stack drive most of the architecture.
 
-**First, the source of truth is outside the marketplace.** Expedia states it plainly in its supply documentation (copyright 2025, read in an archived copy from December 2025): guests "book against the most recent information received from you ... and stored locally in Expedia Group's systems", reservations sent to the hotel "have already been confirmed with the traveler", and the partner "cannot reject these reservation notifications", because "inventory issues are not an acceptable reason to reject a booking" ([Expedia Group, Booking Notification API](https://developers.expediagroup.com/supply/lodging/docs/booking_apis/booking_notification/getting_started/introduction), 2025). The OTA pushes the consequences of a stale copy onto the supplier by contract, which only works if the copy is fresh.
+**First, the source of truth is outside the marketplace.** Expedia states it plainly in its supply documentation (copyright 2025, read in an archived copy from December 2025): guests "book against the most recent information received from you ... and stored locally in Expedia Group's systems", reservations sent to the hotel "have already been confirmed with the traveler", and the partner "cannot reject these reservation notifications", because "inventory issues are not an acceptable reason to reject a booking" ([Expedia Group, Booking Notification API](https://developers.expediagroup.com/supply/lodging/docs/booking_apis/booking_notification/getting_started/introduction), 2025). The contract pushes the consequences of a stale copy onto the supplier, which works only if the copy is fresh.
 
-**Second, push wins because of look-to-book.** Asking the hotel's system for a price on every search would load it in proportion to shopping. A 2016 industry analysis reported distributor look-to-book ratios of about 20,000:1, mostly because several wholesalers sent the same request to the same supply source and because of automated price scraping ([Boffey, Hospitality Net](https://www.hospitalitynet.org/opinion/4074433.html), 2016; GDS-era figures, not a current measurement). A push channel loads the supplier in proportion to change, which is bounded by how often the hotel reprices. That is why OTAs with large direct hotel supply standardize on ARI push into a local store, and why [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) can cache at all.
+**Second, push wins because of look-to-book.** Asking the hotel's system for a price on every search would load it in proportion to shopping. A 2016 industry analysis reported distributor look-to-book ratios of about 20,000:1, mostly because several wholesalers sent the same request to the same supply source and because of automated price scraping ([Boffey, Hospitality Net](https://www.hospitalitynet.org/opinion/4074433.html), 2016; GDS-era figures, not a current measurement). A push channel loads the supplier in proportion to how often the hotel reprices. That is why OTAs with large direct hotel supply standardize on ARI push into a local store, and why [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) can cache at all.
 
 ![Left, many searches hammering a hotel server directly; right, searches answered from a local ARI store that receives only occasional changes from the hotel.](stays-marketplace-architecture/posts/08-connectivity-and-channel-managers/assets/images/08-connectivity-and-channel-managers/08-push-beats-pull.jpeg)
 
@@ -93,7 +89,7 @@ Two facts about this stack drive most of the architecture.
 {id: connectivity-and-channel-managers--the-opentravel-message-set}
 ### The OpenTravel message set
 
-The **OpenTravel Alliance** (OTA, a name that collides with "online travel agency"; this chapter says "OpenTravel" for the standard) publishes the XML message set that most hotel connectivity is built on. The messages an architect meets most often are:
+The **OpenTravel Alliance** (OTA, a name that collides with "online travel agency"; this chapter says "OpenTravel" for the standard) publishes the XML message set that most hotel connectivity is built on. The common messages are:
 
 | Message | Typical direction | Carries |
 | --- | --- | --- |
@@ -103,7 +99,7 @@ The **OpenTravel Alliance** (OTA, a name that collides with "online travel agenc
 | `OTA_HotelResNotifRQ` / `RS` | Channel → supplier, or pulled by the supplier | New, modified and canceled reservations; the response acknowledges |
 | `OTA_HotelDescriptiveContentNotifRQ`, `OTA_HotelInvNotifRQ` | Supplier → channel | Property content and room-type definitions |
 
-The directions are common practice, not a rule of the standard. The lesson is that **"OpenTravel-compliant" means "uses OpenTravel element names", not "interoperable without mapping"**. Implementers pin different schema versions and add their own extensions:
+**"OpenTravel-compliant" means "uses OpenTravel element names", not "interoperable without mapping".** The directions in the table are common practice, not a rule of the standard, and implementers pin different schema versions and add their own extensions:
 
 - Booking.com's connectivity APIs "use OTA version 2003B", supplemented by its own B.XML because "OTA cannot support all the functionality we want to offer", and by JSON APIs for newer functions ([Booking.com Connectivity APIs](https://developers.booking.com/connectivity/docs), n.d., live October 2026).
 - AlpineBits, a regional profile used by Alpine and German-speaking hotels, is based on OpenTravel 2015A and certifies implementations against a new release every two years ([AlpineBits Alliance](https://www.alpinebits.org/hotel-data/), n.d., current release 2024-10).
@@ -119,12 +115,12 @@ The directions are common practice, not a rule of the standard. The lesson is th
 | Booking.com | OpenTravel 2003B, B.XML, JSON, CSV for length-of-stay pricing | Delta updates only ("Send only changes, not full refreshes"); one hotel and one month per request; ARI from one day in the past to five years ahead, at least 12 months loaded; prices below €5 or above €50,000 rejected; per-minute rate limits by endpoint; four pricing models (standard, derived, occupancy-based, length-of-stay), each requiring certification (n.d., live October 2026) |
 | Expedia Group | XML Availability and Rates (AR) API; GraphQL for newer property, reservation and compliance functions | Updates by Expedia IDs only; inventory per room type, not per rate plan; up to two years ahead; rates as sell (gross) or net; AR "cannot be implemented alone" and must be paired with a reservation API (2025, archived copy). The supply hub states: "At this time we're not accepting direct connections from individual properties" (n.d., live October 2026) |
 
-Two details matter. Both channels take updates in their own IDs, so **the mapping lives at the partner**, and a mapping error like Miradouro's is invisible to the channel's schema validation by construction. And Expedia's refusal of direct property connections is a **partner-architecture decision**: it deals with certified software vendors, not each hotel's IT.
+Both channels take updates in their own IDs, so **the mapping lives at the partner**, and a mapping error like Miradouro's is invisible to the channel's schema validation by construction. Expedia's refusal of direct property connections is a **partner-architecture decision**: it deals with certified software vendors, not each hotel's IT.
 
 {id: connectivity-and-channel-managers--four-delivery-models}
 ### Four delivery models
 
-Google's documentation describes four ways for prices to reach a channel, and between them they cover the industry ([Google Hotel Ads, pricing delivery modes](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode), 2025). Google also states that "each `<OTA_HotelAvailNotifRQ>` message is treated as a delta update" ([Google Hotel Prices](https://developers.google.com/hotels/hotel-prices/xml-reference/ari-avail), last updated 2025-04-14).
+Google's documentation describes four ways for prices to reach a channel ([Google Hotel Ads, pricing delivery modes](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode), 2025). Google also states that "each `<OTA_HotelAvailNotifRQ>` message is treated as a delta update" ([Google Hotel Prices](https://developers.google.com/hotels/hotel-prices/xml-reference/ari-avail), last updated 2025-04-14).
 
 | Model | Who opens the connection | Freshness | Load on the supplier | Where it fits |
 | --- | --- | --- | --- | --- |
@@ -133,7 +129,9 @@ Google's documentation describes four ways for prices to reach a channel, and be
 | **Changed-pricing pull** | Channel → supplier for a subset | Better than full pull | Smaller | Large catalogs with a "what changed" feed |
 | **Live query** | Channel → supplier per shopper request | Real time | Proportional to shopping | Bedbanks, GDSs and metasearch auctions; always behind a cache |
 
-Reservations travel the other way, also by push or pull (see the delivery section below). PMS vendors offer the same spectrum: Oracle added a GraphQL-subscription streaming API to its OPERA integration platform in November 2021 and keeps unconsumed streamed events for seven days and polled events for 48 hours ([Oracle OHIP FAQ](https://docs.oracle.com/en/industries/hospitality/integration-platform/ohipu/c_faqs.htm), n.d.); Mews calls polling "not very efficient" and warns that webhooks can lag "up to several minutes" ([Mews](https://docs.mews.com/connector-api/events/communicate), n.d.).
+Reservations travel the other way, also by push or pull (see "Reservation delivery and acknowledgement" below). PMS vendors offer the same spectrum: Oracle added a GraphQL-subscription streaming API to its OPERA integration platform in November 2021 and keeps unconsumed streamed events for seven days and polled events for 48 hours ([Oracle OHIP FAQ](https://docs.oracle.com/en/industries/hospitality/integration-platform/ohipu/c_faqs.htm), n.d.); Mews calls polling "not very efficient" and warns that webhooks can lag "up to several minutes" ([Mews](https://docs.mews.com/connector-api/events/communicate), n.d.).
+
+Bedbanks (wholesalers that contract hotel rooms and resell them to distributors) and GDS hotel content are queried, not pushed. Hotelbeds' booking flow adds a `CheckRate` call that "re-evaluates the pricing and availability" of a rate marked `RECHECK` before booking ([Hotelbeds](https://developer.hotelbeds.com/documentation/hotels/booking-api/workflow/), n.d.), and Agoda described in 2020 how each non-direct supplier caps its queries per second, so a system it called PriceAggregator decides "when, how and what to send to the suppliers" ([Agoda, arXiv](https://arxiv.org/abs/2008.02087), 2020; the current state is not public). For pull supply the gateway spends a **query budget** per supplier, and "price changed at booking" becomes an **expected outcome** with a designed guest flow; [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) owns the cache side. The same hotel often arrives both by push from its channel manager and by pull from two bedbanks, which is how The Same Hotel Twice starts; mapping and deduplication belong to [Describing a Stay: Content, Media and Property Mapping](#content-and-media) and [One Property, Three Listings: Duplicates and Entity Resolution](https://zeljkoobrenovic.github.io/spec-driven-journals/listing-systems-architecture/entity-resolution.html).
 
 {id: connectivity-and-channel-managers--architecture-the-connectivity-gateway}
 ## Architecture: The Connectivity Gateway
@@ -154,7 +152,7 @@ The connectivity gateway terminates every partner connection, turns partner dial
 | **Reconciliation** | Detect drift between the store and the partner's view; drive targeted resends and full syncs | Digests, read-back APIs, drift metrics | Overwrite state on suspicion; repair goes through the same validated path |
 | **Reservation delivery** | Deliver each reservation version to the partner, track acknowledgement, escalate to fallback channels | Delivery outbox and delivery state per reservation version | Own the reservation itself; that is [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) |
 
-Behind all seven sits a **partner registry**: which partner is authorized for which property and functions (ARI, content, reservations), its certifications and its health score; the record of who is responsible for a property's data.
+Behind all seven sits a **partner registry**, the record of who is responsible for a property's data: which partner is authorized for which property and functions (ARI, content, reservations), its certifications and its health score.
 
 {id: connectivity-and-channel-managers--normalize-first-then-validate-against-the-property}
 ### Normalize first, then validate against the property
@@ -183,9 +181,9 @@ Validation then runs in layers that catch different errors:
 | **Property and market envelope** | Values outside the property's own 12-month range or average daily rate (ADR) band, or far from the comp-set median for similar hotels on those dates ([Setting the Price of a Night: Revenue Management and Smart Pricing](#dynamic-pricing)) | Thin markets; genuine flash sales | Hold |
 | **Burst and volume** | A partner suddenly sending far more changes for one property than usual; mass closures | Single wrong values | Throttle and alert |
 
-In March 2027 Switchyard ran the first three rows. The €12 message passed the first two, and the third had nothing to compare on a new product, so the only guards that could have seen it did not exist.
+In March 2027 Switchyard ran only the first three rows. The €12 message passed the first two, and the third had no previous value for the new product.
 
-The second design choice is **what "hold" means**. Rejecting a suspicious price makes the partner's software retry or give up, and most channel managers surface rejections poorly. Accepting it with a warning sells at the wrong price. A hold has two options:
+The second design choice is **what "hold" means**. Rejecting a suspicious price makes the partner's software retry or give up, and most channel managers surface rejections poorly. Accepting it with a warning sells at the wrong price. A hold takes one of two forms:
 
 - For a product **with** a previous price for the date, keep selling at the **last good value** and hold the new one. The risk is a price minutes stale.
 - For a product **without** one, keep the product **closed** for the affected dates. The risk is lost sales on a product nobody has sold yet.
@@ -195,25 +193,25 @@ Either way the hold must reach the hotel quickly, through a coded API warning an
 {id: connectivity-and-channel-managers--ordering-and-idempotency}
 ### Ordering and idempotency
 
-ARI messages overlap. "€120 for 1–31 May" followed by "€150 for 14–16 May" is correct only in that order; reversed, the event price is lost. Three rules make ordering tractable:
+ARI messages overlap, so order matters. "€120 for 1–31 May" followed by "€150 for 14–16 May" is correct only in that order; reversed, the event price is lost. Three rules:
 
 1. **Order per property, not globally.** All updates for one property go through one ordered lane, for example one Kafka partition keyed by property ID with a single writer. Booking.com's one-hotel-per-request rule makes this natural, and throughput scales with the number of properties.
 2. **Use the partner's sequence, not its clock.** Timestamps reflect whichever node built the message. If the partner supplies a monotonic sequence number per connection, the gateway can detect gaps and late arrivals. If it does not, arrival order within the property's lane is the order, and certification should test that the partner never sends concurrently for one property.
 3. **Deduplicate by message ID.** Partners retry after timeouts. The gateway records partner message IDs per property for a window long enough to cover retries (hours, not seconds) and acknowledges duplicates without applying them twice.
 
-Ordering problems also arrive from outages. On **26 April 2027**, Hotel Prinsenkade's channel manager queued updates for **47 minutes** during an outage, and the hotel ended King's Day oversold by 9 rooms across channels ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) tells that story). Queued updates are stale when flushed: a "4 rooms left" built before a sale elsewhere is wrong on arrival. A gateway cannot fix stale truth, but it can notice that a partner has gone silent for a property during a busy period, and mark that property's availability as **low-confidence** for the availability engine and for checkout's price-and-availability recheck ([Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration)).
+Outages add a second ordering problem: queued updates are stale when flushed. On **26 April 2027**, Hotel Prinsenkade's channel manager queued updates for **47 minutes** during an outage, and the hotel ended King's Day oversold by 9 rooms across channels ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) tells that story). A "4 rooms left" built before a sale elsewhere is wrong on arrival. A gateway cannot fix stale truth, but it can notice that a partner has gone silent for a property during a busy period, and mark that property's availability as **low-confidence** for the availability engine and for checkout's price-and-availability recheck ([Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration)).
 
 {id: connectivity-and-channel-managers--accepted-is-not-applied}
 ### Accepted is not applied
 
-Most channel APIs return success synchronously. Booking.com's ARI responses can carry `Success` together with warnings, for example warning 367 when "Rooms to Sell were set below the Minimum Contracted rooms" for some dates (n.d., live October 2026). Whether success means "parsed", "durably queued" or "visible to guests" is a contract question public documentation rarely answers; at high volume it is usually "durably queued".
+Most channel APIs return success synchronously, and success rarely says what happened. Booking.com's ARI responses can carry `Success` together with warnings, for example warning 367 when "Rooms to Sell were set below the Minimum Contracted rooms" for some dates (n.d., live October 2026). Whether success means "parsed", "durably queued" or "visible to guests" is a contract question public documentation rarely answers; at high volume it is usually "durably queued".
 
 The gateway should make the three states explicit: **accepted** (durably recorded and will be applied in order), **applied** (in the ARI store), and **visible** (the availability cache has refreshed). The partner gets "accepted" synchronously and can query the others. Accepted-to-visible is the gateway's most important latency, because it bounds how long a corrected price stays wrong. At Roomstead the gateway was not the bottleneck: Switchyard applied most updates within seconds, while Pricegrid's refresh from change events was the main cause of the **91%** metasearch price accuracy against a **97%** target ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) owns that problem).
 
 {id: connectivity-and-channel-managers--reconciliation-and-full-sync}
 ### Reconciliation and full sync
 
-A delta stream drifts. Messages are lost in outages, a remapping stops updates for an old product, a deploy drops a message type for an hour, or a hotel edits values in the extranet that the channel manager does not know about. A mature gateway offers three ways to compare the copy with the source.
+A delta stream drifts. Messages are lost in outages, a remapping stops updates for an old product, a deploy drops a message type for an hour, or a hotel edits values in the extranet that the channel manager does not know about. A gateway can compare the copy with the source in three ways.
 
 | Mechanism | How it works | Cost | When to use |
 | --- | --- | --- | --- |
@@ -221,7 +219,9 @@ A delta stream drifts. Messages are lost in outages, a remapping stops updates f
 | **Digest comparison** | The gateway publishes a hash per property, product and month of the values it holds; the partner compares hashes with its own and resends only mismatched months | Cheap; needs the same canonical form on both sides | Daily drift detection at scale |
 | **Full sync** | The partner re-sends the whole horizon for a property | Rewrites every value for the property | After mapping changes, onboarding, a long outage, or a digest mismatch the partner cannot localize |
 
-The trap in full sync is downstream. Written straight through, every product-date becomes a "change" event for the availability cache, search indexing and partner analytics, though nearly all values are identical. At Hotel Miradouro a 365-day full sync touches about **61,000 product-days** (168 active products × 365 dates), and Pricegrid would recompute all of them. **The gateway should diff a full sync against the stored state and emit only real changes**, while recording that the sync happened so drift metrics can count what it corrected. Booking.com's instruction to "send only changes, not full refreshes" protects the channel from exactly this load. A full sync also has a semantic risk: it asserts the partner's whole view, including values the hotel has since changed elsewhere. In September 2027 Corvane Connect's nightly 02:00 full sync reopened a room type Miradouro's staff had closed in Roomstead's extranet; [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) describes the override rules that followed.
+**The gateway should diff a full sync against the stored state and emit only real changes.** Written straight through, every product-date becomes a "change" event for the availability cache, search indexing and partner analytics, though nearly all values are identical. At Hotel Miradouro a 365-day full sync touches about **61,000 product-days** (168 active products × 365 dates), and Pricegrid would recompute all of them. The gateway still records that the sync happened, so drift metrics can count what it corrected. Booking.com's instruction to "send only changes, not full refreshes" protects the channel from exactly this load.
+
+A full sync also asserts the partner's whole view, including values the hotel has since changed elsewhere. In September 2027 Corvane Connect's nightly 02:00 full sync reopened a room type Miradouro's staff had closed in Roomstead's extranet; [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) describes the override rules that followed.
 
 Drift is the best single measure of partner quality: digests mismatching on 3% of property-months mean Phantom Availability, whatever the uptime figure says.
 
@@ -234,7 +234,7 @@ The outbound half makes "the hotel has this reservation" a fact the marketplace 
 
 **Figure 5:** *Reservation delivery as a tracked state, not a fire-and-forget call. Each reservation version is pushed in order, acknowledged with the PMS confirmation number, and escalated to a human channel when acknowledgement is late.*
 
-Five rules follow from the public designs and from how delivery fails:
+Five rules:
 
 1. **Write the reservation and its delivery intent in one transaction** (an outbox), so a crash between "booked" and "sent" cannot lose the delivery. [Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays) covers the outbox pattern.
 2. **Deliver per reservation in version order.** A modification must not overtake its creation, and a cancellation must not arrive before the modification it cancels. Expedia's documented rule, waiting for the previous notification for the same booking to succeed before sending the next, is the minimum.
@@ -242,27 +242,20 @@ Five rules follow from the public designs and from how delivery fails:
 4. **Escalate on a clock, and make the fallback sticky.** Booking.com has providers poll a per-provider queue "once per twenty seconds", returns reservations repeatedly "until they are acknowledged", and emails a reservation to the property if it is not acknowledged within 30 minutes, a window that can be extended to 24 hours at the cost of larger queues and more overbookings ([Booking.com, Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview) and [Retrieving new reservations](https://developers.booking.com/connectivity/docs/reservations-api/retrieving-new-reservations-ota), n.d., live October 2026). Expedia's Booking Notification API pushes, retries, then falls back to email and keeps all later changes to that booking on email; as of the December 2025 copy it was closed to new adoption. Sticky fallback avoids split-brain: version 1 on paper, version 2 by XML into a PMS that has never seen the booking.
 5. **Make duplicates harmless.** At-least-once delivery plus a human fallback can deliver a reservation twice; the partner must deduplicate on the marketplace's reservation ID, and certification should test it.
 
-Delivery state per reservation version (**booked → sent → acknowledged → confirmed with PMS number**, plus **fallback**) is the data that prevents Lost at the Front Desk. A dashboard of unacknowledged reservations by age, partner and arrival date should page someone when an arrival within 24 hours is still unacknowledged.
+Delivery state per reservation version (**booked → sent → acknowledged → confirmed with PMS number**, plus **fallback**) prevents Lost at the Front Desk: a dashboard of unacknowledged reservations by age, partner and arrival date should page someone when an arrival within 24 hours is still unacknowledged.
 
 {id: connectivity-and-channel-managers--rate-limits-and-capacity}
 ### Rate limits and capacity
 
-The shape of a channel's limits says what it considers hot. Booking.com documents an overall limit of 10,000 calls per minute, with structural endpoints such as `OTA_HotelInvNotif` and `OTA_HotelProductNotif` limited to 75 calls per minute each, and reserves the right to change limits "at any time, without prior notice" (n.d., live October 2026). Structure is treated as slow-changing configuration; ARI is the hot stream.
+A channel's limits show which traffic it treats as hot. Booking.com documents an overall limit of 10,000 calls per minute, with structural endpoints such as `OTA_HotelInvNotif` and `OTA_HotelProductNotif` limited to 75 calls per minute each, and reserves the right to change limits "at any time, without prior notice" (n.d., live October 2026). Structure is treated as slow-changing configuration; ARI is the hot stream.
 
 ARI volume is bursty because pricing is automated. Agoda reported in 2024 that "a single supplier can provide 1.5M price updates and offer details in just one minute", and that uneven message costs and heterogeneous hardware broke naive Kafka partitioning in its supply pipeline ([Agoda Engineering](https://medium.com/agoda-engineering/how-we-solve-load-balancing-challenges-in-apache-kafka-8cd88fdad02b), 2024). Roomstead's 38,000 messages per second at peak are about five times its average of roughly 7,500, driven by early-morning RMS batch runs in each time zone, not by guests.
 
-Three design rules keep capacity fair:
+Three rules keep capacity fair:
 
 - **Quota by work, not by call.** One product for one date and 400 products for a month are not the same load; Switchyard measures quota in product-date cells per minute.
 - **Isolate partners.** Per-partner queues in front of the per-property lanes, so one partner's RMS storm delays only its own properties.
 - **Prefer backpressure to silent queueing.** An HTTP 429 with a retry hint tells the partner its updates are late; a hidden internal queue lets the marketplace sell on stale data while reporting success.
-
-{id: connectivity-and-channel-managers--supply-in-from-bedbanks-and-gdss}
-## Supply In From Bedbanks and GDSs
-
-OTAs also buy inventory from **bedbanks** (wholesalers that contract hotel rooms and resell them to distributors) and from GDS hotel content, and those suppliers are queried, not pushed. Hotelbeds' booking flow is availability, then a `CheckRate` call that "re-evaluates the pricing and availability" of a rate marked `RECHECK`, then booking ([Hotelbeds](https://developer.hotelbeds.com/documentation/hotels/booking-api/workflow/), n.d.). Agoda described in 2020 how each non-direct supplier "only allows Agoda to fetch for the hotel price with a limited amount of Queries Per Second", which "is never enough to cover all user searches", and how a system it called PriceAggregator decides "when, how and what to send to the suppliers" ([Agoda, arXiv](https://arxiv.org/abs/2008.02087), 2020; the current state is not public).
-
-Pull supply changes the design in three ways: the gateway spends a **query budget** per supplier on the searches most likely to convert; the cache carries a **time-to-live per value** instead of event-driven refresh; and "price changed at booking" becomes an **expected outcome** with a designed guest flow. The same hotel often arrives both by push from its channel manager and by pull from two bedbanks, which is how The Same Hotel Twice starts; mapping and deduplication belong to [Describing a Stay: Content, Media and Property Mapping](#content-and-media), building on the entity-resolution techniques in [One Property, Three Listings: Duplicates and Entity Resolution](https://zeljkoobrenovic.github.io/spec-driven-journals/listing-systems-architecture/entity-resolution.html).
 
 {id: connectivity-and-channel-managers--certification-and-partner-health-connectivity-as-a-product}
 ## Certification and Partner Health: Connectivity as a Product
@@ -272,11 +265,10 @@ A marketplace cannot own its partners' uptime, mapping quality or release discip
 | Program | What is publicly documented |
 | --- | --- |
 | Booking.com Connectivity Partner | Partners "must meet specific onboarding requirements" and keep up with API changes; going live requires certification by test requests for business-critical APIs or a self-assessment for basic ones; Booking.com advises offering a new API "to a small beta group for the first few weeks" (n.d., live October 2026). Partner press releases report tiers (Standard, Advanced, Premier) scored on business value, implementation, connection quality and engagement; official weights are not public |
-| Expedia Group | Connections only from PMS, channel-manager and CRS vendors, not from individual properties (n.d., live October 2026) |
 | Oracle OHIP | Production access requires a Marketplace listing, Oracle Partner Network membership and customer approval of an integration user; usage is paid per event or call (n.d.) |
 | Vrbo (hosted stays) | "Elite or Preferred" designations; providers "rated on several technical and performance criteria", including connection reliability (n.d.) |
 
-Certification proves a partner can implement the profile on test properties, not how it behaves in production a year later. That needs a **partner health score**, computed from data the gateway already has.
+Certification proves a partner can implement the profile on test properties, not how it behaves in production a year later. A **partner health score**, computed from data the gateway already has, measures that.
 
 | Signal | Definition | What it predicts |
 | --- | --- | --- |
@@ -290,7 +282,7 @@ Certification proves a partner can implement the profile on test properties, not
 
 The score needs consequences. Three levers work: **visibility** (hotels see their partner's score in the extranet), **access** (new message types, pricing models and API versions open first to partners in good standing), and **remediation** (a partner below threshold enters a time-boxed plan; persistent failure ends certification for new properties). Ranking hotels lower for a poor channel manager punishes the wrong party and, for a dominant platform, invites regulatory questions ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation)).
 
-Treating connectivity as a product also means **deprecation as a discipline**. Booking.com has announced that several OpenTravel content endpoints will be sunset for Home providers on **31 December 2026**, two years after deprecating `OTA_HotelDescriptiveInfo` for them in December 2024 (n.d., live October 2026). Partners need that kind of horizon, because every change waits for their release train and each hotel's migration.
+Treating connectivity as a product also means **deprecation as a discipline**. Booking.com has announced that several OpenTravel content endpoints will be sunset for Home providers on **31 December 2026**, two years after deprecating `OTA_HotelDescriptiveInfo` for them in December 2024 (n.d., live October 2026). Partners need that horizon, because every change waits for their release train and each hotel's migration.
 
 {id: connectivity-and-channel-managers--in-practice-corvane-redesigns-switchyard-after-miradouro}
 ## In Practice: Corvane Redesigns Switchyard After Miradouro
@@ -300,7 +292,7 @@ The architecture forum took the Miradouro case in April 2027, with Aisha Rahman 
 {id: connectivity-and-channel-managers--switchyard-guards-that-know-the-property}
 ### Switchyard: guards that know the property
 
-Switchyard's team replayed 30 days of price messages through the guards. First, a sibling band of **±60%** around the median of the property's independently priced products on the same room type and date would have held the **first** €12 message at 07:14:03 (€12 against a median of €141), so none of the 41 reservations would have been made. Second, the same band would have held about 1 in 9,000 price messages: tens of thousands a day at Switchyard's volume, far too many for a human queue.
+Switchyard's team replayed 30 days of price messages through the guards. A sibling band of **±60%** around the median of the property's independently priced products on the same room type and date would have held the **first** €12 message at 07:14:03 (€12 against a median of €141), so none of the 41 reservations would have been made. But the same band would also have held about 1 in 9,000 price messages: tens of thousands a day at Switchyard's volume, far too many for a human queue.
 
 The design that went live in June 2027 therefore splits holds by product state and automates release:
 
@@ -308,27 +300,26 @@ The design that went live in June 2027 therefore splits holds by product state a
 
 **Figure 6:** *Switchyard's hold states after March 2027. A suspicious price never sells at full speed: an existing product keeps its last good price, a new product stays closed, and the hold is released by confirmation rather than by a human queue.*
 
-Three details made it workable:
+Two details made it workable:
 
 - **Confirmation by resend.** A partner that resends the same value with a confirmation flag releases the hold, so a deliberate flash-sale discount goes through in one round trip.
 - **Hotel confirmation in Partner Hub.** Holds appear in the extranet with the sibling comparison ("€12 against €104–€189 for the same dates"), and the hotel can confirm or correct.
-- **New-product first-price check.** For the first seven days after a product is mapped, any price is compared with the property envelope as well as the siblings, because most mapping errors show up in the first message.
 
 {id: connectivity-and-channel-managers--corvane-connect-mappings-as-code}
 ### Corvane Connect: mappings as code
 
-Corvane Connect made three changes. New mappings send the PMS's current values through a **dry-run channel profile** and show the revenue manager the result before activation, which would have shown Duarte "€12.00" next to his €120.00. Mappings are versioned, so a bad one is found by version in minutes, not reconstructed from logs. And Corvane Connect now runs **digest comparison** with every channel that offers a read-back API, not only with Roomstead.
+Corvane Connect made three changes to its side of the wire. New mappings send the PMS's current values through a **dry-run channel profile** and show the revenue manager the result before activation, which would have shown Duarte "€12.00" next to his €120.00. Mappings are versioned, so a bad one is found by version in minutes, not reconstructed from logs. And Corvane Connect now runs **digest comparison** with every channel that offers a read-back API, not only with Roomstead.
 
 {id: connectivity-and-channel-managers--the-neutrality-rule}
 ### The neutrality rule
 
-The third question, Corvane owning both a channel and a channel manager, was settled as a governance rule, not a technical change. From May 2027:
+Mariana's third question was settled by a governance rule, not a technical change. From May 2027:
 
 - Corvane Connect connects to Switchyard through the **same public APIs, quotas, guards and certification** as the other 139 partners. It gets no private endpoints and no early access to Roomstead API versions beyond the partner-preview program open to all partners in good standing.
 - Corvane Connect's data about rates it distributes to other channels is **not available to Roomstead**, and Roomstead's partner health scores for Corvane Connect are published to hotels in the same format as everyone else's.
 - Disputes about either rule go to the group architecture board, not to either business unit.
 
-The rule costs Corvane some synergy. It is also what keeps the other 60-plus channels willing to accept a channel manager owned by a competitor, and keeps Roomstead's partner scores credible.
+The rule gives up some synergy, but it keeps the other 60-plus channels willing to accept a channel manager owned by a competitor, and keeps Roomstead's partner scores credible.
 
 {id: connectivity-and-channel-managers--trade-offs}
 ## Trade-offs
@@ -345,8 +336,6 @@ The rule costs Corvane some synergy. It is also what keeps the other 60-plus cha
 
 {id: connectivity-and-channel-managers--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
-
-The two marketplace types differ most here, because their source of truth sits in different places.
 
 | Dimension | Accommodation marketplace (Roomstead) | Hosted-stays marketplace (Nookaway) |
 | --- | --- | --- |
@@ -367,31 +356,25 @@ My judgement for Corvane matches the One Stay program's decision not to share co
 {id: connectivity-and-channel-managers--failure-modes}
 ## Failure Modes
 
-- **Schema-valid, semantically wrong.** The gateway checks structure and absolute bounds only, so mapping, decimal and currency errors sell at full speed, and history checks are blind on a new product's first message.
-- **Increments and parallel writes.** A retried "minus one room", or one property's messages processed in parallel, drifts inventory until a full sync, if anyone runs one.
-- **Full sync storms.** A partner re-onboarding 3,000 properties pushes five years of ARI overnight; written through, it keeps the availability cache rebuilding for hours on stale prices.
-- **Success that means nothing.** The API returns success on receipt, the update fails later, and the partner's software shows "synced".
-- **Delivered to the channel manager, rejected by the PMS.** The PMS refused the reservation on a closed room type and nobody told the marketplace; the guest arrives to "we have no booking for you".
-- **Silent fallback.** Reservations fall back to a mailbox nobody reads on Sundays, and later modifications arrive by XML for a booking the PMS has never seen.
-- **One partner starves everyone.** A partner's RMS storm fills a shared queue, and every other partner's properties wait behind it.
-- **Credentials as a fraud path.** Partner API credentials and extranet accounts can change prices and read guest data; their security belongs to [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud).
+- **Schema-valid, semantically wrong** — a new product's first wrong price sells at full speed; see the guard table under "Normalize first, then validate against the property".
+- **Increments and parallel writes** — a retried "minus one room" drifts inventory; see "Ordering and idempotency".
+- **Full sync storms** — a partner re-onboarding 3,000 properties pushes five years of ARI overnight and, written through, keeps the availability cache rebuilding for hours; see "Reconciliation and full sync".
+- **Delivered to the channel manager, rejected by the PMS** — the PMS refused the reservation on a closed room type and the guest arrives to "we have no booking for you"; see rule 3 of "Reservation delivery and acknowledgement".
+- **Silent fallback** — reservations fall back to a mailbox nobody reads on Sundays; see rule 4.
+- **Credentials as a fraud path** — partner API credentials and extranet accounts can change prices and read guest data; their security belongs to [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud).
 
 {id: connectivity-and-channel-managers--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Connectivity looks like an integration problem and is in fact a governance problem: the marketplace's most important write path runs through software it does not control. The group-level decisions are few and long-lived.
+Connectivity is a governance problem more than an integration one, because the marketplace's most important write path runs through software it does not control. Five group-level decisions follow:
 
-**Decide what "accepted" means, and publish it.** Put the difference between accepted, applied and visible, with targets for each, in the partner contract, and measure accepted-to-visible end to end: it is how long a corrected error stays on sale.
+- **Publish what "accepted" means**, with targets for accepted, applied and visible in the partner contract.
+- **Own the semantic guards centrally.** Thresholds have revenue consequences (false holds lose sales; missing holds sell at €12), so the supply and connectivity owner versions and reviews them, and reports hold rate and caught-error rate side by side.
+- **Make partner health a governed metric**: one definition of the signals, shown to hotels, with consequences.
+- **Keep a deprecation calendar.** Every format and API version the gateway accepts has an owner and a sunset date; an OpenTravel version may live for decades only as a deliberate choice.
+- **Hold your own channel manager to the public contract**, as Corvane's neutrality rule does, or the scores and the contract lose their authority.
 
-**Own the semantic guards centrally.** Guard thresholds have revenue consequences (false holds lose sales; missing holds sell at €12). They belong to the supply and connectivity owner, versioned and reviewed, with hold rate and caught-error rate reported side by side.
-
-**Make partner health a governed metric.** Define the signals once, compute them from gateway data, show them to hotels, and attach consequences.
-
-**Keep a deprecation calendar.** Every format and API version the gateway accepts has an owner and a sunset date. OpenTravel versions living for decades is fine if each is a deliberate choice.
-
-**Separate the channel from the channel manager if you own both.** Few groups own both, but the principle is general: the partner contract must be the same for the marketplace's own subsidiaries as for their competitors, or the scores and the contract lose their authority.
-
-What I watch every week: ARI accepted-to-visible latency at the 99th percentile; holds and rejections by partner; digest drift by partner; unacknowledged reservations by age and arrival date; fallback rate; and incidents attributed to connectivity per 10,000 reservations.
+What I watch every week: ARI accepted-to-visible latency at the 99th percentile, and the health signals by partner, above all unacknowledged reservations by age and arrival date and incidents attributed to connectivity per 10,000 reservations.
 
 {id: connectivity-and-channel-managers--questions-to-ask}
 ## Questions to Ask

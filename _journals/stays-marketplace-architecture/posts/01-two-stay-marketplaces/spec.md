@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew
@@ -77,3 +77,5 @@ Chief architects, principal engineers and engineering leaders of OTAs, hosted-st
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,203 to 8,498 words (history waves, layer list, duplicated failure mode and questions); American spelling; history and Expedia front-end dates checked against filings. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,229 → 7,219 prose words; opening now names the next chapter; property-count paragraph leads with its point; one Chief Architect decision renamed to match its content; repeated 36% figure and a redundant fictional-Corvane sentence cut; spec unchanged. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 7,229 → 6,891 prose words cumulative from HEAD (−4.7%); Failure Modes compressed to one-line bullets that point to their sections; repeated Rafael/435,000 paragraph, section-closing recaps, figure lead-in and transitions cut; Chief Architect decision 3 now points to the layering instead of repeating it; spec unchanged. *(AI-mediated session)*

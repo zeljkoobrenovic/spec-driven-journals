@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Searching Dates, Not Documents: Search Architecture for Stays
@@ -50,7 +50,6 @@ Chief architects, search and platform leads, and principal engineers of OTAs and
 
 - No primary source describes how Booking.com, Expedia, Agoda or Trip.com join availability into destination search; the reference design stays labeled as such until one appears.
 - Whether Corvane consolidates search engines (Elasticsearch 8 vs OpenSearch) in 2028 is left to [[converging-two-marketplaces]] and [[organizing-stays-engineering]].
-- The ledger's Roomstead "1,400 availability lookups per gross reservation" does not reconcile with 21,000 lookups/s and 45 million reservations; this chapter uses only the per-second figures.
 
 ## Decision log
 
@@ -78,3 +77,4 @@ Chief architects, search and platform leads, and principal engineers of OTAs and
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed 9,006 to 8,492 words; Waypoint approval aligned to June 2027; Nookaway rectangle aligned to the ledger (stretched to Cascais, takes in Almada, Seixal and Barreiro); 1,400 shopping-request wording added; old evidence flagged. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,605 → 6,249 prose words; opening now places the chapter as Part IV's first stage, built on Part III's offers; repeated lead framing, two failure modes restated from the body and several recap sentences cut; open question on the 1,400 figure removed (answered by the ledger's editor line: 1,400 shopping requests, about ten Pricegrid reads each). *(AI-mediated session)*

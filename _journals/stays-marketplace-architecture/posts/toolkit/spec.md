@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Field Kit: Templates for the Stays Architect
@@ -20,8 +20,8 @@ Group and enterprise architects of travel groups, principal engineers, and the l
 - [x] Opens with IN THIS SECTION, YOU WILL; three KEY POINTS; three failure patterns with exact names; `<br>`; a lead on how to use the templates; a table of contents (Tool | Use it when | Chapter).
 - [x] Contains the fourteen templates in the PLAN contract, each as a `## Tool N` section with purpose, "use it when", a copyable table or fill-in block, a Corvane example, common mistakes and a Learn more `[[link]]` to the owning chapter.
 - [x] Ten or more templates carry a hotel-versus-home column or table; the ADR states that its form is the same for both and requires a hotels-and-homes section.
-- [x] Corvane examples use ledger and chapter figures exactly: 16/6/26 and 22/6/21 map totals; Miradouro's 37 plans / 168 products → 17 / 74 and €137.60; Carmen's 730 rows and €1,360 Feria stay; Switchyard's ±60% sibling band, 07:14:03 hold against €141, 4-hour expiry, 10-minute delivery escalation; Pricegrid's 3.2 billion hot cells, 532 cells, 45 s lag, 91.4% → 95.8%; the checkout attempt contract (30 s / 35 s / 5 min / 30 min) and the 212 duplicates; Stayline's clocks and Miradouro's July 2027 failures; `NKW-MODERATE v3` and the €340 / €220 strike example; the Novak funds flow (€1,271.20, €1,041.60, €141.13, €32.47, €56, 171 days); Lisbon tourist tax via Levy; the Turia replay (16:24 receipts, €31,640 of €48,540, 1,140 → 310); `es-and-vut-v3` and the 3,180 / 2,480 / 1,240 replay; December 2027 journey SLOs and Black Friday D2; the boutique-hotel pilot and Clause grade change; Clause as the ADR example.
-- [x] One mermaid diagram shows how the records reference each other, and one draws the funds-flow example; cross-links use only valid permalinks.
+- [x] Corvane examples use ledger and chapter figures exactly: 16/6/26 and 23/6/20 map totals; Miradouro's 37 plans / 168 products → 17 / 74 and €137.60; Carmen's 730 rows and €1,360 Feria stay; Switchyard's ±60% sibling band, 07:14:03 hold against €141, 4-hour expiry, 10-minute delivery escalation; Pricegrid's 3.2 billion hot cells, 532 cells, 45 s lag, 91.4% → 95.8%; the checkout attempt contract (30 s / 35 s / 5 min / 30 min) and the 212 duplicates; Stayline's clocks and Miradouro's July 2027 failures; `NKW-MODERATE v3` and the €340 / €220 strike example; the Novak funds flow (€1,271.20, €1,041.60, €141.13, €32.47, €56, 171 days); Lisbon tourist tax via Levy; the Turia replay (16:24 receipts, €31,640 of €48,540, 1,140 → 310); `es-and-vut-v3` and the 3,180 / 2,480 / 1,240 replay; December 2027 journey SLOs and Black Friday D2; the boutique-hotel pilot and Clause grade change; Clause as the ADR example.
+- [x] One diagram (illustrated) shows how the records reference each other, and one draws the funds-flow example; cross-links use only valid permalinks.
 - [x] Short Sources and Evidence section with dated sources and the closing fictional-Corvane sentence; article under about 9,000 words, tables dominating.
 
 ## Non-goals
@@ -70,3 +70,8 @@ Group and enterprise architects of travel groups, principal engineers, and the l
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Lisbon under-13 child exemption marked as a Corvane assumption and the €4 rate hedged as of 2026; removed an unsupported 7-day first-price check from the Switchyard example; American spelling (program, canceled). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 4,885 → 4,630 prose words; lead conventions list folded into two paragraphs (the identifier and hotel-and-home conventions repeated the KEY POINTS); Tool 1 and Tool 2 purposes no longer repeat their template fields; duplicate map-totals paragraph in Tool 13 and duplicate leg-field line in Tool 8 removed; "Using the Toolkit Over Time" cut to the review calendar (incident list repeated KEY POINTS). Spec: map v2 totals corrected to 23/6/20 per the scenario ledger. *(AI-mediated session)*
+- **2026-10-22** — Fixed a cross-reference: the sharing rule is Figure 5 of stays-capability-map. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*
+
+- **2026-10-22** — Removed the first-price check from Tool 3's guards (author decision, matches chapter 08). *(AI-mediated session)*

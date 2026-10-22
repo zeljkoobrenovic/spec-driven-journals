@@ -37,7 +37,7 @@ Expedia Group is the clearest public case of one company running both kinds of s
 
 Part X cases follow stricter evidence rules than the chapters in Parts I–IX (see [[part-10]]). A **documented fact** carries its source and publication date in the sentence. **The author's interpretation** is marked "my reading" or sits in the Chief Architect's view. A **reference-architecture inference** appears in a callout labeled `INFERENCE, NOT DOCUMENTED`.
 
-**The evidence comes in three kinds, and each has a blind spot.** Annual reports (10-K filings) and earnings releases are dated and precise about what was migrated, but describe outcomes, not systems. Partner documentation (the Rapid distribution API and the lodging supply APIs) is the most detailed technical evidence, but mostly undated, and describes interfaces, not internals. The engineering blog covers ranking, machine learning and data, but almost never the consolidation. Where an interface implies something about internals, the chapter labels the implication.
+**The evidence comes in three kinds, and each has a blind spot.** Annual reports (10-K filings) and earnings releases are dated and precise about what was migrated, but describe outcomes, not systems. Partner documentation (the Rapid distribution API and the lodging supply APIs) is the most detailed technical evidence, but mostly undated, and describes interfaces, not internals. The engineering blog covers ranking, machine learning and data, but almost never the consolidation.
 
 Corvane, the fictional travel group this book follows (see [[meet-corvane]]), appears only in the final comparison. Its hosted-stays brand Nookaway is not a disguised Vrbo, and its OTA Roomstead is not a disguised Expedia or Hotels.com.
 
@@ -65,7 +65,7 @@ Dates are those of the cited filings, releases and pages. Brand and program fact
 
 ## Two Brands, Two Businesses
 
-The consolidation joined brands that do not earn money the same way. The filings describe the difference plainly.
+The consolidation joined brands that do not earn money the same way.
 
 | | Hotels (Brand Expedia, Hotels.com, B2B) | Vrbo |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ Hotels.com was the easy first tenant: it sells the same product as Brand Expedia
 
 ## Phase 3: Vrbo Onto the Same Front End (Late 2022–2023)
 
-The FY2023 report announces the result: "we migrated both the Hotels.com and Vrbo front-end stacks onto the Brand Expedia stack and created one unified front-end stack in 2023, which increases our test-and-learn capacity and feature release velocity" ([10-K FY2023](https://www.sec.gov/Archives/edgar/data/1324424/000132442424000007/expe-20231231.htm), February 2024). The stated benefits are experimentation capacity and release speed: one stack runs more experiments and ships features to three brands at once.
+The FY2023 report announces the result: "we migrated both the Hotels.com and Vrbo front-end stacks onto the Brand Expedia stack and created one unified front-end stack in 2023, which increases our test-and-learn capacity and feature release velocity" ([10-K FY2023](https://www.sec.gov/Archives/edgar/data/1324424/000132442424000007/expe-20231231.htm), February 2024).
 
 In July 2023 Expedia launched One Key in the US, a loyalty program spanning Brand Expedia, Hotels.com and Vrbo with one currency, OneKeyCash; the launch release said it was the first time "a major online vacation rental platform will have a loyalty program" ([Expedia Group via Hospitality Net](https://www.hospitalitynet.org/news/4117344.html), 2023). One Key reached the UK in 2024 and more Brand Expedia markets in 2025, "with the majority of Expedia Rewards members now migrated" (10-K FY2025).
 
@@ -169,8 +169,6 @@ Four rows carry most of the architectural information.
 
 **The cancellation row shows eventual consistency in the contract.** A partner that cancels a fresh Vrbo booking may be told to wait while "the back end" settles, with a retry schedule measured in hours. Hotel cancellations carry no such caveat.
 
-Figure 2 places the documented layers on one picture.
-
 ![Travelers reach one front end with One Key loyalty and shared services above two distinct offers, hotel rooms and single homes; hotel and some home bookings use a shared checkout, other homes a legacy checkout.](assets/images/50-case-expedia-vrbo/50-shared-front-distinct-offers.jpeg)
 **Figure 2:** *What the public record documents: one front end, one loyalty program and shared services above two distinct offer shapes, with some Vrbo bookings still routed to a legacy checkout in 2026. The arrows show documented relationships, not internal service calls.*
 
@@ -211,7 +209,7 @@ The table pulls the phases into one view. "Converged" means documented as shared
 
 ## A Reference Architecture for "Shared Front, Distinct Supply"
 
-The public record describes the layers but not how they connect. The inference below fills that gap only to reason about coupling.
+The public record describes the layers but not how they connect; the inference below fills that gap only to reason about coupling.
 
 > **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture — not a description of Expedia Group's systems — has one front-end platform per surface (web, apps, partner API) that renders from a common offer contract able to carry both a room-and-rate offer and a single-unit stay offer with a payment plan, a deposit and a rental agreement. Behind the contract sit two supply engines: a hotel engine holding room-type inventory, rate plans and restrictions pushed by channel managers, sold from a stored copy; and a homes engine holding one calendar per unit with arrival and departure validity, quoted per stay and checked live. Shared engines (identity, loyalty ledger, payments, fraud, servicing) serve both. A booking router chooses a checkout by what the offer needs, which is the role Rapid's `merchant_of_record` flag plays externally. The coupling risk sits in the front end and the contract: every hosted-stays concept the contract cannot express becomes either a workaround in the shared front end or a reason to keep a legacy path.
 
@@ -230,11 +228,11 @@ The public record describes the layers but not how they connect. The inference b
 
 ## Failure Modes the Record Exposes
 
-1. **The incumbent's stack as the group's stack.** Brand Expedia's front end suited the hotel brand that followed it; my reading is that it left Vrbo the most hotel assumptions to absorb. Generalize a shared front end for the most different tenant before that tenant moves.
-2. **Migrating the seasonal brand into its season.** The slowdown peaked in the first quarter of 2024, when Vrbo's bookings are seasonally strongest (10-K FY2024), so it showed in the full-year numbers. Migration calendars should follow each brand's booking curve.
-3. **Success metrics set at group level.** "Test-and-learn capacity and feature release velocity" do not measure whether Vrbo guests still book. Brand-level booking guardrails are the missing measure.
-4. **Contract gaps that become legacy paths.** Payment schedules and damage deposits are the documented attributes that keep some Vrbo bookings on the legacy checkout. Any concept the shared contract cannot express turns into a second system.
-5. **Freshness rules copied across supply types.** Hotel availability is sold from a stored copy and refreshed by push; Vrbo's calendar must not be cached. A shared search or partner layer that applies one caching policy to both will sell nights that no longer exist ([[availability-engine]]).
+1. **The incumbent's stack as the group's stack.** Brand Expedia's front end suited Hotels.com and, in my reading, left Vrbo the most hotel assumptions to absorb (Phase 4; the Chief Architect's View).
+2. **Migrating the seasonal brand into its season.** The slowdown peaked in the first quarter of 2024, Vrbo's seasonally strongest (Phase 4).
+3. **Success metrics set at group level.** "Test-and-learn capacity and feature release velocity" do not measure whether Vrbo guests still book (Phase 3).
+4. **Contract gaps that become legacy paths.** Payment schedules and damage deposits keep some Vrbo bookings on the legacy checkout (the `merchant_of_record` row).
+5. **Freshness rules copied across supply types.** A shared layer that caches Vrbo's calendar like hotel availability sells nights that no longer exist (the calendar row; [[availability-engine]]).
 
 ## Where the Public Evidence Stops
 

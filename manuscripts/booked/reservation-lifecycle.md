@@ -21,16 +21,16 @@
 > * **Connectivity Roulette** — modifications and cancellations that fail on a partner's side leave two versions of the same reservation alive, and nothing compares them until the arrival date.
 > * **The Hotel-Shaped Home** — one reservation state machine forced on both marketplaces either gives a single-calendar home a supplier-delivery process it does not need, or gives a hotel a host-approval step it never uses.
 
-For the guest, a hotel booking is finished when the confirmation e-mail arrives. For the marketplace it has barely started. Before check-out the reservation is copied into a channel manager and a property management system, modified by the guest or the property, charged on a schedule, messaged about, and finally stayed, canceled or missed, over weeks or, for summer bookings, months. **A reservation is a long-lived, multi-party object whose state is replicated across systems the marketplace does not own**, and most of what goes wrong with it comes from that replication, not from the booking transaction.
+For the guest, a hotel booking is finished when the confirmation e-mail arrives; for the marketplace it has barely started. Before check-out the reservation is copied into a channel manager and a property management system, modified by the guest or the property, charged on a schedule, messaged about, and finally stayed, canceled or missed, over weeks or, for summer bookings, months. **A reservation is a long-lived, multi-party object whose state is replicated across systems the marketplace does not own**, and most of what goes wrong with it comes from that replication, not from the booking transaction.
 
-This chapter takes over when the saga of [Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration) confirms the reservation. It owns the **reservation state machine**, **reservation delivery** (what it means for the property or host to have the booking) and the **no-show**, and covers the reservation's events, exception queues, arrival, check-out, the completion triggers that release money and reviews, and the audit trail. Changes and cancellation policy belong to [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations); the guest's itinerary and messaging to [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging); the transport of messages through the connectivity gateway to [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers); and the oversold night to [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity).
+This chapter takes over when the saga of [Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration) confirms the reservation. It owns the **reservation state machine**, **reservation delivery** (what it means for the property or host to have the booking) and the **no-show**, and covers the reservation's events, exception queues, arrival, check-out, completion and the audit trail. The rest of the book builds on what it defines: [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations) turns its transitions into policy, and payouts, commission invoices, reviews and regulatory reports all wait for its stay facts ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement), [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation)). The guest's itinerary and messaging belong to [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging), message transport to [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers), and the oversold night to [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity).
 
 A Roomstead reservation and a Nookaway reservation are both promises of specific nights at a specific price; they differ in **who else holds a copy, who can change it, and who can tell the marketplace that the stay happened**, and those differences decide most of the architecture.
 
 {id: reservation-lifecycle--setting-the-scene-at-corvane-nineteen-reservations-hotel-miradouro-never-had}
 ## Setting the Scene at Corvane: Nineteen Reservations Hotel Miradouro Never Had
 
-Corvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), runs Roomstead, an OTA-style (online travel agency) accommodation marketplace, and Nookaway, a hosted-stays marketplace. **Hotel Miradouro**, an independent 84-room four-star hotel in Lisbon, sells on Roomstead through a cloud property management system (PMS) and Corvane Connect, the group's own channel manager. Its revenue manager, Duarte Silva, appears in [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers) for the €12 rate in March and in [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) for a closure overwritten in September. This chapter is about July 2027; every figure is illustrative.
+Corvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), runs Roomstead, an OTA-style (online travel agency) accommodation marketplace, and Nookaway, a hosted-stays marketplace. **Hotel Miradouro**, an independent 84-room four-star hotel in Lisbon, sells on Roomstead through a cloud property management system (PMS) and Corvane Connect, the group's own channel manager. Its revenue manager is Duarte Silva ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)). This chapter is about July 2027; every figure is illustrative.
 
 On the night of **Monday 5 July 2027**, at 23:30 Western European Summer Time, Miradouro's PMS vendor shipped a release that tightened validation of incoming reservations: a reservation whose rate plan code was not in the hotel's active rate table was now rejected instead of imported with a warning. Miradouro still sold four legacy rate plans on Roomstead, part of the 37 it kept through 2027 ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)), whose codes the PMS had marked inactive months earlier. From that night, every reservation, modification or cancellation that referenced one of those codes bounced.
 
@@ -46,7 +46,7 @@ When Corvane Connect's support team traced the rejection the next morning, the l
 | Modifications of earlier reservations | 3 | 0 | The PMS kept the old dates or room type |
 | Cancellations of earlier reservations | 4 | 0 | 11 room nights held for guests who had canceled, withheld from every channel |
 
-Three of the 19 Roomstead guests had already arrived; 16 were still to come, the furthest in October. The four failed cancellations had the opposite effect: rooms held for guests who were not coming, withheld from every channel.
+Three of the 19 Roomstead guests had already arrived; 16 were still to come, the furthest in October.
 
 Mariana Costa, Group Chief Architect, asked a question Roomstead could not answer: **how many other properties are in this state right now?** Keystone recorded only what Switchyard had sent. Aisha Rahman, VP Supply and Connectivity, ran a one-off comparison through Corvane Connect, the only partner whose records Corvane could read directly. Of about **260,000** Roomstead reservations arriving at Corvane Connect hotels in the next 30 days, **1,040** (0.4%) disagreed with the PMS: **610** missing, **260** at a different version (dates, room type or guests), **170** canceled on Roomstead but still active in the PMS. Nobody knew the rate for the other 139 certified connectivity partners.
 
@@ -54,8 +54,6 @@ The question for the architecture forum of One Stay, the group program that deci
 
 {id: reservation-lifecycle--what-a-reservation-is}
 ## What a Reservation Is
-
-The words first, because contracts and metrics depend on them.
 
 | Term | Definition used in this book |
 | --- | --- |
@@ -82,7 +80,7 @@ A reservation carries at least four independent kinds of state, each with its ow
 | **Stay state** | What happened at the property? | Property or host reports; time passes | Upcoming, arrival due, in stay, no-show, stayed |
 | **Money state** | What was charged, held, paid out or invoiced? | Payments and settlement ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments), [Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement)) | Per payment plan: authorized, charged, refunded; payable, paid out; commission invoiced |
 
-Mixing them in one field produces three defects. `MODIFIED` is a fact about history, not a state, and hides whether the modification was delivered. A canceled reservation that the PMS still holds is `CANCELLED` in the marketplace and active at the hotel, and no field can say so. And money logic starts reading reservation status, which is how a reservation switched from pay-at-property to "Pay now" was commission-invoiced in the April 2027 audit of [Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models).
+Mixing them in one field produces three defects. `MODIFIED` is a fact about history, not a state, and hides whether the modification was delivered. A canceled reservation that the PMS still holds is `CANCELLED` in the marketplace and active at the hotel, and no field can say so. And money logic starts reading reservation columns: Keystone's invoicing job read the original `PAYMENT_TYPE`, which is how reservations switched from pay-at-property to "Pay now" were commission-invoiced in the April 2027 audit of [Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models).
 
 **The rule I use: one owner per dimension, one event stream for all of them, and no consumer that infers one dimension from another.** Payments may react to "stayed"; it may not decide it.
 
@@ -112,7 +110,7 @@ Relocation, when an oversold guest is walked to another property, is **not** a s
 {id: reservation-lifecycle--the-clocks}
 ### The clocks
 
-The lifecycle has more clocks than most teams write down. Corvane's set, after the redesign described below:
+Corvane's clocks, after the redesign described below:
 
 | Clock | Starts | Duration (Corvane 2027) | On expiry | Owner |
 | --- | --- | --- | --- | --- |
@@ -125,12 +123,10 @@ The lifecycle has more clocks than most teams write down. Corvane's set, after t
 | Host payout release | Scheduled check-in | 48 hours (Nookaway) | Payout released unless a check-in issue is open | Settlement |
 | Completion | Scheduled check-out | 14 days (Nookaway); end of the no-show window plus invoicing (Roomstead) | Reservation completed | Reservation service |
 
-The durations matter less than the principle: each is a **named, configurable timer with an owner and an expiry action**. In Keystone most of these clocks did not exist, because there was no state for an unaccepted delivery.
+Each is a **named, configurable timer with an owner and an expiry action**. In Keystone most of them did not exist, because there was no state for an unaccepted delivery.
 
 {id: reservation-lifecycle--architecture-the-reservation-service-and-its-neighbors}
 ## Architecture: The Reservation Service and Its Neighbors
-
-The architecture question is which service owns which part of the reservation, and how the others learn about changes.
 
 ![Checkout and the property or host feed the reservation service, which publishes one event stream consumed by delivery, exceptions, payments, the trip and reporting, with the delivery tracker reporting acceptance back.](stays-marketplace-architecture/posts/22-reservation-lifecycle/assets/images/22-reservation-lifecycle/22-reservation-service-neighbors.jpeg)
 
@@ -166,7 +162,7 @@ Two design rules make this work. First, **versions are append-only**: a modifica
 {id: reservation-lifecycle--reservation-delivery-a-state-per-recipient-and-version}
 ### Reservation delivery: a state per recipient and version
 
-Delivery is where Miradouro failed, and the failure was semantic, not technical. Switchyard's transport worked. What failed was the meaning of "acknowledged".
+Miradouro's failure was semantic, not technical: Switchyard's transport worked, but "acknowledged" meant the wrong thing.
 
 ![Delivery states from Queued to Sent to Received by intermediary, then either Accepted by PMS with a confirmation number or Rejected by PMS with a reason, with a fallback to the extranet after 10 minutes and confirmation by staff.](stays-marketplace-architecture/posts/22-reservation-lifecycle/assets/images/22-reservation-lifecycle/22-delivery-states.jpeg)
 
@@ -175,7 +171,7 @@ Delivery is where Miradouro failed, and the failure was semantic, not technical.
 The rules that follow:
 
 - **Three levels of acknowledgement, recorded separately.** *Sent* (the gateway transmitted), *received* (an intermediary has it), *accepted* (the property's system of record has it and returned its confirmation number). Only *accepted* or a human confirmation closes delivery. Booking.com's queue draws a similar line: it "waits until you acknowledge receiving the reservations successfully" ([Booking.com, Acknowledging new reservations](https://developers.booking.com/connectivity/docs/reservations-api/acknowledging-new-reservations-ota), n.d., live October 2026), but whether that acknowledgement comes before or after the PMS accepts is invisible to the channel.
-- **Rejections are first-class.** "Unknown rate code" at Miradouro was a clear message that stopped one hop short of anyone who could act on it; a PMS rejection must travel back through the intermediary with its reason.
+- **Rejections are first-class.** A PMS rejection must travel back through the intermediary with its reason; Miradouro's "unknown rate code" stopped one hop short of anyone who could act on it.
 - **Delivery is per version.** Version 1 accepted and version 2 rejected means the hotel holds the old dates, as with Miradouro's three failed modifications. "Current version accepted" is the condition that matters.
 - **The fallback is a work item, then sticky.** Booking.com e-mails a reservation to the property if it is not acknowledged within 30 minutes, extendable to 24 hours ([Booking.com, Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview), n.d., live October 2026). The fallback that closes the gap is an extranet work item someone must confirm, and later versions follow it to the same channel ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)).
 - **The guest-facing confirmation does not wait for delivery.** The marketplace confirms on its own commitment and takes on the duty to deliver; the delivery tracker discharges that duty.
@@ -195,12 +191,12 @@ A pre-arrival reconciliation compares, per property and arrival date, the market
 | **Arrivals manifest** | The marketplace sends an arrivals list with its IDs and versions; the partner answers per line "held, at this version, PMS number X" | Any partner that can process a list | One message per property per check |
 | **Human confirmation** | Partner Hub shows the front office the arrivals list for the next 48 hours with a "confirm all" action and per-line problems | Extranet-managed and small properties | Staff attention; works only if it is a short task |
 
-Read-back is the strongest and the rarest; I found no public channel that documents a reservation read-back as a partner obligation. The arrivals manifest is my recommendation for the general case, because it reuses the delivery channel and asks a question the partner can answer from its own database; it is an inference about good practice, not a documented standard. Printing the PMS confirmation number on the guest's confirmation once delivery is accepted also removes the "not found" that is really "searched by the wrong number".
+Read-back is the strongest and the rarest; I found no public channel that documents it as a partner obligation. The arrivals manifest is my recommendation for the general case, because it reuses the delivery channel and asks a question the partner can answer from its own database; it is my inference about good practice, not a documented standard. Printing the PMS confirmation number on the guest's confirmation once delivery is accepted also removes the "not found" that is really "searched by the wrong number".
 
 {id: reservation-lifecycle--supplier-originated-transitions}
 ### Supplier-originated transitions
 
-Not every change starts with the guest. Hotels report no-shows, invalid cards and departures; hotels and hosts change dates on request; channel managers send cancellations the guest made by phone. These **inbound** transitions need the same discipline as outbound delivery: idempotent on the marketplace's reservation ID plus the partner's message ID, applied in order, rejected when they refer to a stale version.
+Hotels report no-shows, invalid cards and departures; hotels and hosts change dates on request; channel managers send cancellations the guest made by phone. These **inbound** transitions need the same discipline as outbound delivery: idempotent on the marketplace's reservation ID plus the partner's message ID, applied in order, rejected when they refer to a stale version.
 
 Booking.com's Reporting API shows the shape. A property can mark a no-show "from 00:00 (midnight, in property's local time) on the planned check-in date" until 48 hours after the planned check-out date, with a `waived_fees` flag; if the fee is waived, Booking.com charges no commission. Invalid credit cards can be reported until midnight on the arrival day ([Booking.com, B.XML Reporting API](https://developers.booking.com/connectivity/docs/reporting-api/b_xml-reporting/), n.d., live October 2026). Expedia's Retrieve API "will reflect the latest check in/out dates in case of a change made by the property" ([Expedia Group, About the Manage Booking API](https://developers.expediagroup.com/rapid/lodging/manage-booking/about-mg-booking-api), n.d., live October 2026).
 
@@ -213,7 +209,7 @@ Three consequences for the design:
 {id: reservation-lifecycle--reservation-events-as-the-backbone}
 ### Reservation events as the backbone
 
-Every consumer in Figure 3 learns about reservations from events; that is the only way the trip timeline, the payout scheduler, the review invitation, the exception queue, the tax engine and the warehouse can agree without polling the reservation database. At Corvane the reservation publishes one event type, `reservation.versioned`, carrying the full contract at each version and a change type; delivery responses travel as separate delivery events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays) owns the contract and the mechanics: outbox or change data capture, per-reservation ordering, idempotent consumers, versioned schemas).
+Every consumer in Figure 3 learns about reservations from events, not by polling the reservation database. At Corvane the reservation publishes one event type, `reservation.versioned`, carrying the full contract at each version and a change type; delivery responses travel as separate delivery events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays) owns the contract and its mechanics: outbox or change data capture, ordering, idempotent consumers).
 
 | Change or event | Published when | Main consumers |
 | --- | --- | --- |
@@ -227,15 +223,12 @@ Every consumer in Figure 3 learns about reservations from events; that is the on
 
 Clock-driven moments such as arrival day are computed from the reservation's dates in the property's time zone. Airbnb described in 2018 a change-data-capture service, SpinalTap, chosen over dual writes because reading the log "supports strong consistency and ordering guarantees on commit time" ([Airbnb Engineering, Capturing Data Evolution in a Service-Oriented Architecture](https://medium.com/airbnb-engineering/capturing-data-evolution-in-a-service-oriented-architecture-72f7c643ee6f), 2018; the current state is not public).
 
-Two choices specific to reservations matter more than the transport:
-
-- **Events carry the version, not just the ID.** A consumer that receives "reservation 123 changed" and reads the current state may skip a version; one that receives "version 3 of reservation 123" can apply versions in order and detect gaps.
-- **Events carry the stay facts with their source.** "Stayed, inferred at window close" and "stayed, reported by the property" are different facts for commission disputes and for the European Union's short-term-rental activity data.
+One rule specific to reservations matters more than the transport: **events carry the version, not just the ID.** A consumer that receives "reservation 123 changed" and reads the current state may skip a version; one that receives "version 3 of reservation 123" can apply versions in order and detect gaps. Stay events also carry their source, for the reason given under the aggregate.
 
 {id: reservation-lifecycle--exceptions-and-the-reservation-inbox}
 ### Exceptions and the reservation inbox
 
-Exceptions are the reservations that need a person. [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) designs the work queue; this chapter supplies the rules that create items, each a state combination defined above:
+[Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) designs the work queue for reservations that need a person; this chapter supplies the rules that create its items, each a state combination defined above:
 
 | Rule | Condition | Deadline | Escalates to |
 | --- | --- | --- | --- |
@@ -246,16 +239,14 @@ Exceptions are the reservations that need a person. [Running the Supply Side: Ex
 | No-show to report | Arrival day passed, no check-in or no-show fact, property reports no-shows | End of the reporting window | None; the default applies |
 | Host decision due | Request to book or modification awaiting the host | The request window | Request expires automatically |
 
-Customer service reads the same queue ([When Something Goes Wrong: Customer Service and Recovery](#customer-service)). Had it existed on 16 July, the partner support agent would have seen "rejected by PMS: unknown rate code" instead of "delivered".
+Customer service reads the same queue ([When Something Goes Wrong: Customer Service and Recovery](#customer-service)): on 16 July, the partner support agent would have seen "rejected by PMS: unknown rate code" instead of "delivered".
 
 {id: reservation-lifecycle--arrival-no-show-check-out-and-completion}
 ### Arrival, no-show, check-out and completion
 
-The second half of the lifecycle releases money and reputation, which is why its triggers need explicit definitions.
-
 **Arrival** starts check-in instructions and access codes for homes ([Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging)), virtual-card activation on a flexible-rate Pay with Roomstead booking ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), and the window in which a guest can report a failed check-in, which at Nookaway stops the host payout and opens a guest-guarantee case ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)).
 
-**No-show** is a supplier fact at hotels, common enough that hotels overbook to offset it ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)), and a rare, low-information event at homes, where a prepaid guest who never arrives costs the host nothing and the platform often never learns of it.
+**No-show** is a supplier fact at hotels, common enough that hotels overbook to offset it ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)). At homes it is rare: a prepaid guest who never arrives costs the host nothing, and the platform often never learns of it.
 
 **Stayed** is the trigger for most money. Airbnb remits to the host "generally ... on the business day after the scheduled check-in" ([Airbnb Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), 2026); Booking Holdings recognizes revenue "when the traveler checks in" ([Booking Holdings Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), 2026); Expedia records agency revenue "when the stayed night occurs" ([Expedia Group Form 10-K for 2025](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm), 2026). The stay, not the booking, moves the money, so the state machine must produce the stay facts the ledger needs, when finance expects them.
 
@@ -278,9 +269,9 @@ The audit trail comes from the version list. Support agents change a reservation
 {id: reservation-lifecycle--what-the-public-record-shows}
 ### What the public record shows
 
-No company has published its internal reservation state machine or delivery tracker. The public record (partner API contracts, help-center rules and filings) is consistent: delivery is at least once with acknowledgement and a human fallback (Booking.com polls "once per twenty seconds", redelivers until acknowledged and e-mails after 30 minutes; [retrieving new reservations](https://developers.booking.com/connectivity/docs/reservations-api/retrieving-new-reservations-ota), n.d.); push delivery expects the PMS confirmation number in the response (Expedia's Booking Notification API, seen only as search excerpts of login-gated partner pages); suppliers originate transitions within windows; and money follows the stay.
+Beyond the contracts cited above, the public record shows delivery as at least once with a human fallback. Booking.com polls "once per twenty seconds" and redelivers until acknowledged ([retrieving new reservations](https://developers.booking.com/connectivity/docs/reservations-api/retrieving-new-reservations-ota), n.d.); Expedia's push delivery expects the PMS confirmation number in the response (Booking Notification API, seen only as search excerpts of login-gated partner pages).
 
-> **INFERENCE, NOT DOCUMENTED:** From the public contracts one can infer that these marketplaces track delivery per reservation, since a 30-minute fallback or a required confirmation number only makes sense if something records whether it arrived. How they store reservation versions, what states they use internally, and whether they reconcile arrivals with partners are not public. The reference model in this chapter is built from the external contracts and engineering principles, not from any company's description of its systems.
+> **INFERENCE, NOT DOCUMENTED:** From the public contracts one can infer that these marketplaces track delivery per reservation, since a 30-minute fallback or a required confirmation number only makes sense if something records whether it arrived. How they store reservation versions, what states they use internally, and whether they reconcile arrivals with partners are not public.
 
 The industry's PMS side confirms why delivery cannot end at the channel manager. SiteMinder's PMS interface documentation (seen as search excerpts) says an undelivered message should be "retained in the partner PMS application's retry cycle and resent once the error is resolved", and that resend "may need to be done manually upon expiry of retry cycle". Manual resend at the end of a retry cycle is precisely the step that failed at Miradouro: the cycle expired into a dashboard list no one read.
 
@@ -295,7 +286,7 @@ The architecture forum took the Miradouro case in August 2027, framed around the
 
 **3. Pre-arrival verification for every Roomstead arrival.** At 7 days and 48 hours before arrival, Stayline sends an arrivals manifest through Switchyard to partners that support it, and Partner Hub shows the 48-hour list to extranet-managed properties as a task. Mismatches become exceptions with the escalation clock of [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools). The target is **99.5%** of arrivals verified at 24 hours before arrival by the end of 2028.
 
-**4. Stay facts with sources.** The no-show reporting window for Roomstead properties runs from midnight on the arrival day to **72 hours** after scheduled check-out; at its end, Stayline marks the reservation "stayed, inferred" unless a no-show was reported. Commission invoicing reads that fact, not Keystone's status. Nookaway completes a reservation **14 days** after check-out, when the review and claim windows close, unless a dispute is open.
+**4. Stay facts with sources.** The no-show reporting window for Roomstead properties runs from midnight on the arrival day to **72 hours** after scheduled check-out; at its end, Stayline marks the reservation "stayed, inferred" unless a no-show was reported. Commission invoicing reads that fact, not Keystone's status. Nookaway completes a reservation **14 days** after check-out unless a dispute is open.
 
 {id: reservation-lifecycle--replaying-miradouro-under-the-redesign}
 ### Replaying Miradouro under the redesign
@@ -312,7 +303,7 @@ The forum's replay, with the July timeline and the new rules:
 | 16 July 18:40 | Family walked to Belém; €390 | Not walked |
 | Weekly | No check | 7-day and 48-hour manifests would have caught the four cancellations still held in the PMS within days, returning 11 room nights to sale |
 
-The redesign does not remove the cause: PMS releases will keep tightening validation, and legacy rate plans remain until the 2028 pruning migration ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)). It changes **the distance between the failure and the first person who can fix it**: from eleven days and a guest at the desk to about an hour and a revenue manager at a screen. The case rested less on the €390 than on Mariana's question, which nobody could answer: how many other properties are in this state right now?
+The redesign does not remove the cause: legacy rate plans remain until the 2028 pruning migration ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)). It changes **the distance between the failure and the first person who can fix it**: from eleven days and a guest at the desk to about an hour and a revenue manager at a screen.
 
 ![A rejected reservation travelling a long road to a puzzled family at a front desk in July 2027, compared with a short road to a revenue manager at a screen under the redesign.](stays-marketplace-architecture/posts/22-reservation-lifecycle/assets/images/22-reservation-lifecycle/22-distance-to-the-fixer.jpeg)
 
@@ -333,7 +324,7 @@ The hosted-stays lifecycle is simpler at the delivery end and more inferential a
 | 9 Aug | Stay completed | Inferred at scheduled check-out | Review invitations to both sides; turnover task for the cleaner |
 | 23 Aug | Reservation completed | Clock: 14 days after check-out, no dispute | Reservation closed; retention timers start; nights and four guests from Czechia counted in activity data |
 
-Every stay fact here is inferred from time and the absence of a complaint, which is acceptable for hosted stays provided the record says "inferred". The **Dubrovnik damage claim** shows the alternative: when Ivan Horvat claimed after the party at his villa on 14 August 2027, Burrow's nightly job had already closed the reservation, so the €3,800 claim, the €3,450 reimbursement and the €900 recovered from the guest attached to a reservation that, in the data, ended without incident. Under Stayline the claim sets the disputed flag and holds completion.
+Every stay fact here is inferred from time and the absence of a complaint, which is acceptable for hosted stays if the record says "inferred". The **Dubrovnik damage claim** shows what happens otherwise: when Ivan Horvat claimed after the party at his villa on 14 August 2027, Burrow's nightly job had already closed the reservation, so the €3,800 claim, the €3,450 reimbursement and the €900 recovered from the guest attached to a reservation that, in the data, ended without incident. Under Stayline the claim sets the disputed flag and holds completion.
 
 {id: reservation-lifecycle--trade-offs}
 ## Trade-offs
@@ -375,11 +366,8 @@ The row argued most is event sourcing. A reservation is a natural event log, but
 | **Receipt treated as delivery** (Lost at the Front Desk) | "Delivered" in the marketplace; unknown at the desk | Acceptance with a PMS number as the only closing state; rejections forwarded with reasons |
 | **Version split** | The hotel holds version 1 after the guest changed dates | Delivery state per version; manifests compare versions, not just IDs |
 | **Cancellation not applied** | Rooms held for guests who are not coming; availability understated on every channel | Exception rule for cancellations not accepted; pre-arrival comparison |
-| **Fallback as e-mail** | The reservation reached a shared inbox | Fallback as a work item with an owner and a deadline |
-| **Status as a dumping ground** | `MODIFIED`, `PENDING_PAYMENT`, `NOSHOW_DISPUTED` in one column; payouts and invoices read it differently | Separate state dimensions; payments reacts only to stay events with source and time |
 | **Silent stay inference** | A nightly job marks everything "stayed"; disputes and claims attach to closed reservations | Inferred facts recorded as inferred; a disputed flag that holds completion |
 | **Retries that create duplicates** | A partner receives the same reservation twice and creates two PMS bookings | Deduplication on the marketplace ID, tested in certification |
-| **Support edits outside the model** | Agents change dates in a back-office tool; no version, no delivery | All changes through the reservation service's commands |
 
 {id: reservation-lifecycle--the-chief-architect-s-view}
 ## The Chief Architect's View
@@ -392,11 +380,9 @@ At group scale the reservation is the object that crosses every boundary in the 
 
 **3. Measure the gap between the marketplace and the property**, per partner, property and brand: versions accepted within 10 minutes, arrivals verified 24 hours before arrival, and "not found at check-in" cases per 10,000 arrivals, published in partner health scores.
 
-**4. Keep a single writer per dimension.** Reservation service for commercial and stay state, delivery tracker for delivery state, payments for money state; support tools go through the owning service's commands. Keystone's `PAYMENT_TYPE` and `SENT_FLAG` columns broke this rule.
+**4. Plan the migration around events, not tables.** Building Stayline as a consumer of contract events gives the cross-brand view years before the engines move. Until a brand moves, Stayline is labeled a projection, and disagreements with the engine are Stayline defects.
 
-**5. Plan the migration around events, not tables.** Building Stayline as a consumer of contract events gives the cross-brand view years before the engines move. Until a brand moves, Stayline is labeled a projection, and disagreements with the engine are Stayline defects.
-
-**6. Govern retention as a design input.** Noor van Dijk's team owns the retention schedule; engineering owns the ability to apply it per field group.
+**5. Govern retention as a design input.** Noor van Dijk's team owns the retention schedule; engineering owns the ability to apply it per field group.
 
 What to watch: the share of stay facts that are inferred rather than reported, which says how much of your money runs on assumptions; the number of states and reasons, which grows quietly unless someone owns the contract; and partners whose acceptance rate cannot be measured.
 

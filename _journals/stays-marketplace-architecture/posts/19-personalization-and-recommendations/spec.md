@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Remembering the Traveler: Personalization, Recommendations and Saved Intent
@@ -76,3 +76,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: light trim 8,927 to 8,885 words; fee-revenue estimate now uses the realized 14.4% take rate. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,204 → 6,761 prose words; opening now places the chapter in Part IV between ranking and the property page; Failure Modes trimmed to the three failures not covered earlier; Chief Architect's view condensed; no headings renamed. *(AI-mediated session)*

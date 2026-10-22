@@ -17,14 +17,11 @@
 > * **The Hotel-Shaped Home** — the hotel-versus-home columns and the convergence card force each capability and each supply segment to declare which engine serves it, instead of inheriting the larger brand's model.
 > * **Price Drift** — the ARI model card, availability cache card and funds-flow template make one evaluator, one offer kernel and one arrangement record the only sources of a price, a fee and a payout.
 
-These are **working templates for a group that runs both kinds of stays marketplace**: the records that Parts I to IX ask a Chief Architect to keep, from the capability map of [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map) to the decision record of [Who Owns What: Organizing Engineering for Stays](#organizing-stays-engineering), each tested against Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)). They are not a certification scheme or a vendor method. Each is the smallest form I have found that makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording; keep the fields that carry ownership, versions, clocks and money.** Those fields get dropped first, and the next incident finds their absence.
+These are **working templates for a group that runs both kinds of stays marketplace**: the records that Parts I to IX ask a Chief Architect to keep, from the capability map of [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map) to the decision record of [Who Owns What: Organizing Engineering for Stays](#organizing-stays-engineering), each tested against Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)). Each is the smallest form I have found that makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording; keep the fields that carry ownership, versions, clocks and money.** Those fields get dropped first, and the next incident finds their absence.
 
-Four conventions run through all fourteen.
+The hotel column describes Roomstead, Corvane's accommodation marketplace, which sells room types under rate plans; the home column describes Nookaway, its hosted-stays marketplace, which sells one-unit calendars. Where a template is the same for both, it says so. Each Corvane example agrees with the chapter that teaches it, which works the full case; all Corvane names, figures and dates are fictional and illustrative.
 
-- **They are maintained data, not documents.** Cancellation templates live in Clause, the group cancellation policy engine; tax rules in Levy, the group tax engine; STR rules in Ordinance, the market policy registry; trust policies in Warden, the trust platform; decision records in one register indexed by the architecture forum. A template copied into a slide deck stops being true within a quarter.
-- **They reference each other by identifier.** A saga card cites the quote ID; a reservation state table cites the policy, arrangement and tax determination versions it freezes; a decision record cites the capability rows it changes.
-- **They have a hotel column and a home column where the two differ.** Roomstead, Corvane's accommodation marketplace, sells room types under rate plans; Nookaway, its hosted-stays marketplace, sells one-unit calendars. Where a template is the same for both, it says so.
-- **Each Corvane example agrees with the chapter that teaches it.** All Corvane names, figures and dates are fictional and illustrative; the linked chapter works the full case.
+The templates are **maintained data, not documents**. Cancellation templates live in Clause, the group cancellation policy engine; tax rules in Levy, the group tax engine; STR rules in Ordinance, the market policy registry; trust policies in Warden, the trust platform; decision records in one register indexed by the architecture forum. A template copied into a slide deck stops being true within a quarter.
 
 {id: toolkit--find-the-template-for-the-question-on-your-desk}
 ## Find the Template for the Question on Your Desk
@@ -60,7 +57,7 @@ Most changes in a stays group pass through several tools, and the reservation is
 {id: toolkit--tool-1}
 ## Tool 1: Two-Marketplace Capability Map
 
-**Purpose.** A capability map describes what each marketplace must be able to do, independent of systems, teams or brands. The two-marketplace version puts both brands in adjacent columns and scores each level-2 capability on **differentiation** (core, supporting or generic, per brand), **divergence** (same, rhymes or different between hotels and homes) and **duplication** (how many implementations, at what cost), with maturity recorded but kept out of the sharing rule. The decision per row is one of three grades: **shared engine**, **shared contract with separate engines**, or **brand-specific**.
+**Purpose.** A capability map describes what each marketplace must be able to do, independent of systems, teams or brands. The two-marketplace version puts both brands in adjacent columns, scores each level-2 capability on **differentiation**, **divergence** and **duplication**, and grades it **shared engine**, **shared contract with separate engines**, or **brand-specific**.
 
 **Use it when** you prepare a sharing or convergence decision (Tool 13), a program budget, or an acquisition case, and whenever a capability has no named owner. Review it once a year and after every acquisition or new supply type.
 
@@ -75,7 +72,7 @@ Most changes in a stays group pass through several tools, and the reservation is
 | **Divergence** | Same / rhymes / different | "Rhymes" means same shape, different contents (an offer, a reservation) |
 | **Duplication** | Copies, run cost, inconsistency evidence | Ranks attention; not part of the decision rule |
 | **Maturity** | 1–5 per implementation, with dated evidence | A reason to invest, not to share |
-| **Decision** | Shared engine / shared contract / brand-specific / brand-specific until a dated review | Follows the rule in [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map), Figure 3 |
+| **Decision** | Shared engine / shared contract / brand-specific / brand-specific until a dated review | Follows the rule in [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map), Figure 5 |
 | **Owner and linked record** | Named person; the decision record that set the grade | Duplication is a problem only when nobody chose it |
 
 **Corvane example** (One Stay capability map v1, presented to the architecture forum on 23 March 2027; owners Aisha Rahman and Rafael Mendes, built by Mariana Costa):
@@ -89,7 +86,7 @@ Most changes in a stays group pass through several tools, and the reservation is
 | Decision | **Shared contract**: one definition of an offer and its total, separate engines behind it |
 | What followed | The shared offer kernel used by Pricegrid, the feed exporter and checkout (piloted in Spain and Portugal from June 2027) and one price-composition service per engine with a group display policy service |
 
-The map's totals were **16 shared engines, 6 shared contracts and 26 brand-specific capabilities** over 48 rows; the December 2027 review recorded **23, 6 and 20** over 49 ([One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)).
+The map's totals were **16 shared engines, 6 shared contracts and 26 brand-specific capabilities** over 48 rows; the December 2027 review recorded **23, 6 and 20** over 49, every move toward sharing ([One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)).
 
 **Common mistakes.**
 
@@ -102,7 +99,7 @@ Learn more: [Mapping the Business: Capability Maps for Two Marketplaces](#stays-
 {id: toolkit--tool-2}
 ## Tool 2: ARI Model Card
 
-**Purpose.** The ARI model card records how one marketplace models **availability, rates and inventory** (ARI): what is sold, which values are facts and which are rules, what restrictions mean, which conditions travel with a price, and which single evaluator turns them into a bookable stay with a price. It separates **definitions** (products), **facts** (counts, independent prices, restrictions per night, each with source and version), **rules** (derivations, discounts, fees, order of operations) and **evaluation**.
+**Purpose.** The ARI model card records how one marketplace models **availability, rates and inventory** (ARI). It separates **definitions** (products), **facts** (counts, independent prices, restrictions per night, each with source and version), **rules** (derivations, discounts, fees, order of operations) and the single **evaluator** that turns them into a bookable stay with a price.
 
 **Use it when** a rate plan, listing setting, restriction or fee type is proposed; a channel manager starts sending derived prices; or search, the property page and checkout disagree on a price.
 
@@ -136,7 +133,7 @@ Learn more: [Mapping the Business: Capability Maps for Two Marketplaces](#stays-
 | Sizing | Tally holds about 5.8 million active products across Roomstead | Almanac holds about 840 million listing-nights |
 | Provenance | ARI change stream retained 13 months | Same |
 
-The Bauers' Feria booking, 20–25 April 2027, priced at 5 × €260 + €60 = **€1,360** before guest fees, came from six of Carmen's fields. Miradouro's €12 rate came from a newly mapped plan whose price Roomstead could not relate to any sibling, because Corvane Connect sent derived prices as plain numbers.
+The Bauers' Feria booking, 20–25 April 2027, priced at 5 × €260 + €60 = **€1,360** before guest fees, came from six of Carmen's fields. Miradouro's €12 rate (41 reservations) came from a newly mapped plan whose price Roomstead could not relate to any sibling, because Corvane Connect sent derived prices as plain numbers.
 
 **Common mistakes.**
 
@@ -166,7 +163,7 @@ ordering: one lane per <property | listing>; partner sequence numbers: <yes/no>
 deduplication: by partner message id, window <hours>
 validation_guards: schema and profile | absolute bounds | same-product history |
                    sibling band <±%> | derivation consistency | property and market
-                   envelope | burst and volume | first-price check for new products <days>
+                   envelope | burst and volume
 hold_semantics: existing product keeps last good value; new product stays closed;
                 released by <resend with confirmation | hotel confirmation>; expires <h>
 states_exposed: accepted | applied | visible
@@ -185,7 +182,7 @@ change_management: deprecation notice <months>; preview program <rules>
 | --- | --- | --- |
 | Unit of update | Product × date: rooms to sell, price per occupancy, restrictions | Listing × night: free or taken, nightly price, minimum nights |
 | Ordering lane | Per property | Per listing |
-| Guards that matter | Sibling band, envelope, first-price check | Calendar claims with provenance; conflict detection on import |
+| Guards that matter | Sibling band, envelope | Calendar claims with provenance; conflict detection on import |
 | Delivery | Push or pull to the PMS with acceptance and fallback | None for app-managed hosts; webhooks or API for managers |
 
 **Corvane example** (Switchyard, Roomstead's connectivity gateway, after the €12 rate; architecture forum April 2027, live June 2027; Corvane Connect as one of 140 certified partners):
@@ -403,11 +400,11 @@ Learn more: [When Plans Change: Modifications, Cancellations and Policies](#chan
 {id: toolkit--tool-8}
 ## Tool 8: Funds-Flow Diagram Template
 
-**Purpose.** A funds-flow diagram shows, for one booking under one payment model, every movement of money: who pays whom, how much, when, by which rail, which ledger account records it, and who carries the risk if it goes wrong. It is drawn from the **payment arrangement record**, the versioned output of a payment-model resolver that every money system reads, and it is the one picture that lets finance, payments, support and a regulator agree on what happened.
+**Purpose.** A funds-flow diagram shows, for one booking under one payment model, every movement of money: who pays whom, how much, when, by which rail, which ledger account records it, and who carries the risk if it goes wrong. It is drawn from the **payment arrangement record**, the versioned output of a payment-model resolver that every money system reads, so finance, payments, support and a regulator see the same flow.
 
 **Use it when** a payment model, settlement rail, currency or market is added; a modification can switch models; or finance cannot say who owes whom on a booking.
 
-**The template.** First the arrangement, then one row per leg; draw one diagram per model, with amounts on the arrows.
+**The template.** First the arrangement; then one row per leg (from and to, amount basis, when, rail, ledger entry, risk holder); then one diagram per model, with amounts on the arrows.
 
 | Arrangement field | Hotel, agency | Hotel, merchant | Home, facilitated |
 | --- | --- | --- | --- |
@@ -419,8 +416,6 @@ Learn more: [When Plans Change: Modifications, Cancellations and Policies](#chan
 | `commission_direction` | `INVOICE` (receivable) | `DEDUCT` | `DEDUCT` |
 | `liabilities` | Chargebacks with the property | Chargebacks, card fraud, FX with the platform | Same, and after payout recovery from the host |
 | `revenue_trigger`, `version` | Stay | Check-in or non-cancellable | Check-in |
-
-Then one row per leg: from and to, amount basis, when, rail, ledger entry and risk holder.
 
 **Corvane example** (the Novak family's facilitated booking, arrangement frozen on 14 February 2027; Fathom, the group ledger):
 
@@ -478,8 +473,8 @@ Learn more: [Who Takes the Money? Merchant, Agency and Facilitator Models](#merc
 
 | Field | Lisbon tourist tax |
 | --- | --- |
-| Shape and rate | €4 per guest per night, as of 2026, per the platform help-center source [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays) cites (no official municipal source was verified) |
-| Caps and exemptions | Maximum 7 nights. Children under 13 exempt: **a Corvane assumption in its rule content, not a verified Lisbon rule**; confirm the age limit against the municipal regulation before relying on it |
+| Shape and rate | €4 per guest per night since 1 September 2024, set by the municipal fee regulation (Aviso n.º 18684/2024/2; see [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)) |
+| Caps and exemptions | Maximum 7 nights per guest and per stay. Guests under 13 exempt, including on the day they turn 13; also exempt: medical stays plus one companion, and students starting higher education (up to 60 days) |
 | Date basis | Stay night |
 | Checkout data | Children's ages (asked at Nookaway checkout since 2025) |
 | Liability, Nookaway | Guest owes; Nookaway collects and remits under the Lisbon agreement; host statement shows "collected and remitted by Nookaway on your behalf" |
@@ -686,13 +681,11 @@ REVIEW        date or trigger                        RECORD    <Tool 14 id>
 | Rejected alternative | Eight identical rooms as eight Almanac listings, competing in search, plus a second integration for each channel manager | One evaluator per engine (Context Map v1, May 2027), superseded |
 | Budget | Inside the €145 million One Stay program; contracts, Stayline and Keystone retirement carry **€34 million** | Same workstream |
 
-The register moved from **16 / 6 / 26** in March to **23 shared engines, 6 shared contracts and 20 brand-specific** over 49 capabilities in December, every move toward sharing and every new shared engine inside one of the board's seven areas or under a shared contract.
-
 **Common mistakes.**
 
 - Converging by brand. A homes brand that flattens hotels into one-unit calendars, or an OTA that forces homes into rate plans, has chosen The Hotel-Shaped Home.
 - Treating a shared engine as a shared database. Warden runs on AWS and Nookaway calls it from Google Cloud within 120 ms.
-- Untracked growth. Twenty component names after seven board lines is scope creep unless each sits in a map cell with an owner.
+- Untracked growth. Twenty component names after seven board lines is scope creep unless each sits in a map cell with an owner; at the December 2027 review every new shared engine sat inside one of the board's seven areas or under a shared contract.
 
 Learn more: [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)
 
@@ -754,11 +747,7 @@ Learn more: [Who Owns What: Organizing Engineering for Stays](#organizing-stays-
 {id: toolkit--using-the-toolkit-over-time}
 ## Using the Toolkit Over Time
 
-The templates stay true only when they are revisited, and three habits make that happen.
-
-- **Review on a calendar.** The capability map and convergence register yearly and after every acquisition; connectivity contracts at each certification cycle; cache and journey SLO cards before the campaign calendar's peaks; cancellation, tax and STR cards whenever a law, list or city rule changes; decision records on their review dates.
-- **Let incidents add fields.** Corvane's sibling band came from 41 reservations at €12, acceptance-based delivery from a family walked to Belém, the booking cutoff from a strike weekend, enforcement receipts from a fraudulent Valencia manager, reason codes from 6,900 removed listings, and "no duplicates" in the book SLO from 212 duplicate reservations. When a post-incident review finds a gap, the fix usually includes a field in one of these templates.
-- **Keep the set small.** Every field should change a decision or preserve evidence. When a field is filled by habit and read by nobody, remove it; when a review keeps asking a question no field answers, add it.
+The templates stay true only when they are revisited on a calendar: the capability map and convergence register yearly and after every acquisition; connectivity contracts at each certification cycle; cache and journey SLO cards before the campaign calendar's peaks; cancellation, tax and STR cards whenever a law, list or city rule changes; decision records on their review dates. When a field is filled by habit and read by nobody, remove it.
 
 [Built for the Next Disruption: Evolving a Stays Platform Over a Decade](#evolving-the-platform) explains how fitness functions for accuracy, delivery and cost keep these records honest over years; [Glossary: The Language of Stays Marketplaces](#glossary) defines the terms the templates use, and [Bibliography: Sources and Evidence](#bibliography) lists the sources behind them.
 

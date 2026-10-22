@@ -17,9 +17,9 @@
 
 At 23:40 on a Friday in August, a family of four stands at the reception desk of a full hotel in a southern European city, holding a confirmation e-mail. The night manager is polite and firm: **there is no booking under that name**. The family booked through a marketplace seven weeks earlier and paid in advance.
 
-The next morning, every team can show that its system worked. Search served the room at the price the hotel's channel manager had pushed. Checkout created one reservation and one charge. The connectivity gateway received a technical acknowledgement. The payment provider settled. Support closed the case in 41 minutes with a refund and a voucher. Nobody owns the question the family is asking, because the question is not about any one of those systems: **who promised us this room, and why did the promise not reach the people who had to keep it?**
+The next morning, every team shows that its system worked. Search served the room at the price the hotel's channel manager had pushed. Checkout created one reservation and one charge. The connectivity gateway received a technical acknowledgement. The payment provider settled. Support closed the case in 41 minutes with a refund and a voucher. Nobody owns the question the family is asking, because the question is not about any one of those systems: **who promised us this room, and why did the promise not reach the people who had to keep it?**
 
-A Chief Architect follows one night from the search result to the front desk, and the reasons appear quickly. "Acknowledged" meant that an intermediary received the message, not that the hotel's property-management system (PMS) accepted it. A rate-plan code had been remapped the week before, and the PMS rejected the reservation silently. Nothing compared the marketplace's list of arrivals with the hotel's before the guests travelled. The marketplace paid the refund, though the contract made the hotel liable, because the support tool could not see the contract. **The family's question is an architecture question.** Its answer runs through a delivery state that was never modeled, a mapping that had no owner, a check that was never designed and a refund that never reached the ledger as a claim.
+A Chief Architect who follows that night from the search result to the front desk finds the reasons quickly. "Acknowledged" meant that an intermediary received the message, not that the hotel's property-management system (PMS) accepted it. A rate-plan code had been remapped the week before, and the PMS rejected the reservation silently. Nothing compared the marketplace's list of arrivals with the hotel's before the guests travelled. The marketplace paid the refund, though the contract made the hotel liable, because the support tool could not see the contract. **The family's question is an architecture question.** Its answer runs through a delivery state that was never modeled, a mapping that had no owner, a check that was never designed and a refund that never reached the ledger as a claim.
 
 This book is about answering that kind of question, and about designing stays marketplaces where it is asked less often.
 
@@ -47,7 +47,7 @@ It is **perishable**. A night unsold by the evening it begins is lost forever, a
 
 It is **fulfilled by someone else**. A hotel's staff, a host's cleaner or a manager's key box keeps the promise, and most of the truth about it (rooms left, whether the home is free, today's price) lives in systems and phones the marketplace does not control.
 
-It is **delayed**. A guest books in February for August; in between, the policy may be invoked, the money may sit in an account for months, a city may change its rules and a strike may close the airport. Revenue arrives on stayed nights, while costs arrive on every search.
+It is **delayed**. A guest books in February for August; in between, the guest may cancel, the money may sit in an account for months, a city may change its rules and a strike may close the airport. Revenue arrives on stayed nights, while costs arrive on every search.
 
 The book's central claim follows: **the architecture of a stays marketplace should be judged by how reliably the promise holds from the search result to the morning of check-out.** Five conditions make it hold:
 
@@ -61,9 +61,9 @@ The book's central claim follows: **the architecture of a stays marketplace shou
 
 **Figure 1:** *The promise of a night holds only if all five conditions hold, from the search result to the morning of check-out.*
 
-Every architectural choice is then judged by the condition it protects. A cache's staleness budget is set by what a wrong price costs in lost metasearch traffic; a booking acknowledgement is the difference between a reservation and a family at a reception desk at midnight.
+Each architectural choice is judged by the condition it protects. A cache's staleness budget is set by what a wrong price costs in lost metasearch traffic; a booking acknowledgement is the difference between a reservation and a family at a reception desk at midnight.
 
-The chapters work on one condition at a time. The last chapter of Part IX, [Built for the Next Disruption: Evolving a Stays Platform Over a Decade](#evolving-the-platform), draws it together into a few **stays fitness functions** (price accuracy, double-booking rate, reservation delivery rate, time to payout and cost per booking) that a group can measure every quarter.
+The chapters work on one condition at a time. The last chapter of Part IX, [Built for the Next Disruption: Evolving a Stays Platform Over a Decade](#evolving-the-platform), draws the five together into a few **stays fitness functions** (price accuracy, double-booking rate, reservation delivery rate, time to payout and cost per booking) that a group can measure every quarter.
 
 {id: introduction--two-marketplaces-compared-not-merged}
 ## Two Marketplaces, Compared, Not Merged
@@ -84,7 +84,7 @@ The book's working rule, argued in [Mapping the Business: Capability Maps for Tw
 | **Shared contract, separate engines** | One interface and vocabulary, two implementations, because the meanings rhyme but the data shapes differ | The offer and price quote, the reservation record and payment arrangement, search queries and filters, stay rules, property and unit identity |
 | **Brand-specific** | Each marketplace keeps its own, because the supply or the risk differs in kind | Room-type inventory and one-unit calendars, connectivity, ranking models, release and payout policies |
 
-Every chapter in Parts II to VIII has a section titled **"Hotels and Homes: Where the Two Marketplaces Differ"**: a table setting the two side by side (supply, data model, integration, failure modes, regulation, what can be shared) and a judgement on what to share. Where the two are genuinely the same, it says so rather than inventing differences.
+Every chapter in Parts II to VIII has a section titled **"Hotels and Homes: Where the Two Marketplaces Differ"**: a table setting the two side by side (supply, data model, integration, failure modes, regulation, what can be shared) and a judgement on what to share. Where the two are the same, it says so.
 
 {id: introduction--how-the-book-is-organized}
 ## How the Book Is Organized
@@ -110,9 +110,9 @@ The book opens with three preface pages, follows the promise through eight parts
 
 **Figure 2:** *Parts II to VI follow one night from supply to settlement, each keeping one condition of the promise; Part VII guards it, Part VIII carries it, Part IX decides what a group shares and how it changes, and Part X tests the patterns against the public record.*
 
-Part I is the one part not to skip: later chapters justify their targets by pointing back to it. Part IX draws the parts into a convergence decision, an operating model and a modernization path; Part X tests them against Booking.com, Airbnb, Expedia Group and Vrbo, and Agoda and Trip.com.
+Part I is the one part not to skip: later chapters justify their targets by pointing back to it.
 
-Each part opens with a short introduction. Each chapter follows the same shape: opening callouts with three key points and the failure patterns it addresses; a Corvane scene that poses the question; concepts, architecture, documented practice and a worked example; trade-offs, the hotels-and-homes comparison and failure modes; the Chief Architect's view; questions for a design review; and Sources and Evidence.
+Each part opens with a short introduction, and each chapter follows the same shape: opening callouts with three key points and the failure patterns it addresses; a Corvane scene that poses the question; concepts, architecture, documented practice and a worked example; trade-offs, the hotels-and-homes comparison and failure modes; the Chief Architect's view; questions for a design review; and Sources and Evidence.
 
 {id: introduction--start-with-the-decision-in-front-of-you}
 ## Start With the Decision in Front of You
@@ -145,7 +145,7 @@ Two rows start somewhere unexpected, on purpose. The duplicate-hotel row starts 
 {id: introduction--how-to-read-the-evidence}
 ## How to Read the Evidence
 
-**Company-aware but company-neutral.** The book draws on the public record of Booking.com, Airbnb, Expedia Group (including Vrbo and Hotels.com), Agoda, Trip.com, channel managers and connectivity providers, and on standards (OpenTravel, HTNG, iCalendar) and regulation, because generic advice does not survive contact with real precedents.
+**Company-aware but company-neutral.** The book draws on the public record of Booking.com, Airbnb, Expedia Group (including Vrbo and Hotels.com), Agoda, Trip.com, channel managers and connectivity providers, and on standards (OpenTravel, HTNG, iCalendar) and regulation, because advice untested against real precedents is generic.
 
 **Five kinds of statement.** Architecture writing becomes unreliable when facts, habits, guesses, opinions and examples blur into one voice. Every chapter keeps them apart:
 
@@ -181,7 +181,7 @@ The book uses three kinds of material, and no other.
 
 **Corvane Group is fictional.** It is a privately held travel group headquartered in Lisbon, with €1.692 billion of revenue in 2026. **Roomstead**, founded in Dublin in 2001, is an accommodation marketplace with 640,000 bookable properties, 70% of its room nights on the agency model and a merchant product growing beside it. **Nookaway**, founded in Lisbon in 2012 and acquired in 2021, is a hosted-stays marketplace with 1.15 million listings that holds the guest's money until after check-in. Around them sit **Corvane Connect**, a channel manager, and **Corvane Payments**, a licensed payments institution; beneath them the group runs two of almost everything, on three clouds. In April 2027 its board approves **One Stay**, a €145 million program (2027–2030) to share identity, payments and the ledger, trust, messaging, support, tax and data, and one offer and reservation contract, while each brand keeps its own supply engine. [Meet Corvane: Two Marketplaces, One Group](#meet-corvane) introduces its systems, people and recurring worked examples, from the €12 rate on sale for 38 minutes at Hotel Miradouro to the Seville double booking. Corvane is a composite of patterns, not a disguise for any company. When Mariana Costa, its Group Chief Architect, makes a decision, ask what the equivalent would be in your marketplace.
 
-The **[Field Kit: Templates for the Stays Architect](#toolkit)** collects fourteen templates, from the two-marketplace capability map to the booking saga card and the architecture decision record, each with a hotel and a home column where the two differ. Start with the one that changes this week's decision. The [Glossary: The Language of Stays Marketplaces](#glossary) defines the book's terms, grouped by part, and names the chapter that owns each one.
+The **[Field Kit: Templates for the Stays Architect](#toolkit)** collects fourteen templates, from the two-marketplace capability map to the booking saga card and the architecture decision record, each with a hotel and a home column where the two differ. The [Glossary: The Language of Stays Marketplaces](#glossary) defines the book's terms, grouped by part, and names the chapter that owns each one.
 
 {id: introduction--what-the-book-does-not-cover}
 ## What the Book Does Not Cover
@@ -195,19 +195,19 @@ The book is about stays. Three neighboring subjects are covered only where they 
 {id: introduction--the-failure-patterns}
 ## The Failure Patterns
 
-Stays platforms rarely fail through one bad decision. They break the promise of a night through recurring patterns that each looked reasonable when it was chosen: one more rate plan, one more ranking boost, one more refund macro. The next page, [Overbooked: Sixteen Ways Stay Platforms Go Wrong](#where-stay-platforms-go-wrong), names sixteen of them, from **Phantom Availability**, **The Double-Booked Night** and **Connectivity Roulette** through **Price Drift**, **Lost at the Front Desk** and **Policy Spaghetti** to **Ledgerless Money**, **City-by-City Firefighting**, **Built for Sunny Days** and **The Unwatched Model**. Each comes with its warning signs, mechanism, cost, the marketplace type it hits hardest and the chapters that address it. The family at the reception desk met **Lost at the Front Desk**. Every chapter opens by naming the patterns it works on.
+Stays platforms rarely break the promise of a night through one bad decision. They break it through recurring patterns that each looked reasonable when chosen: one more rate plan, one more ranking boost, one more refund macro. The next page, [Overbooked: Sixteen Ways Stay Platforms Go Wrong](#where-stay-platforms-go-wrong), names sixteen of them, from **Phantom Availability**, **The Double-Booked Night** and **Connectivity Roulette** through **Price Drift**, **Lost at the Front Desk** and **Policy Spaghetti** to **Ledgerless Money**, **City-by-City Firefighting**, **Built for Sunny Days** and **The Unwatched Model**. Each comes with its warning signs, mechanism, cost, the marketplace type it hits hardest and the chapters that address it. The family at the reception desk met **Lost at the Front Desk**. Every chapter opens by naming the patterns it works on.
 
 {id: introduction--a-living-journal}
 ## A Living Journal
 
-This book is a living journal, and a work in progress, that I revise as I learn more through [my work](https://obren.io). Every chapter has a "View spec" link in its byline that opens the specification it was written against: its intent, audience, success criteria, what it leaves to other chapters and its open questions. Read the book as current thinking with its limits stated, not as a finished text.
+This book is a living journal, a work in progress that I revise as I learn more through [my work](https://obren.io). Every chapter has a "View spec" link in its byline that opens the specification it was written against: its intent, audience, success criteria, what it leaves to other chapters and its open questions. Read the book as current thinking with its limits stated, not as a finished text.
 
 I developed the book through AI-mediated authoring: I set the concept, the structure, the chapter contracts and the arguments; AI tools supported research against public sources, drafting from those contracts, consistency checks across chapters and editing; I reviewed and decided. The specs and the scripts used to build this site are in the [book's GitHub repository](https://github.com/zeljkoobrenovic/spec-driven-journals). The content, its judgements and its errors are my responsibility.
 
 {id: introduction--where-to-go-next}
 ## Where to Go Next
 
-If you read in order, turn next to [Overbooked: Sixteen Ways Stay Platforms Go Wrong](#where-stay-platforms-go-wrong). Then read [Meet Corvane: Two Marketplaces, One Group](#meet-corvane), so that every chapter's opening scene lands in a group you know, and begin Part I with [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](#two-stay-marketplaces). Either way, keep the family at the reception desk in mind: who promised them the room, and why did the promise not reach the people who had to keep it? Every chapter is part of the answer, and part of the design of a marketplace whose promises hold.
+If you read in order, turn next to [Overbooked: Sixteen Ways Stay Platforms Go Wrong](#where-stay-platforms-go-wrong). Then read [Meet Corvane: Two Marketplaces, One Group](#meet-corvane), so that every chapter's opening scene lands in a group you know, and begin Part I with [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](#two-stay-marketplaces). If you start from the routing table instead, keep the family at the reception desk in mind: who promised them the room, and why did the promise not reach the people who had to keep it? Every chapter answers part of that question.
 
 {id: introduction--sources-and-evidence}
 ## Sources and Evidence

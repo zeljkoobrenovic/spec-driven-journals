@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Setting the Price of a Night: Revenue Management and Smart Pricing
@@ -76,3 +76,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,044 to under 8,500 words (condensed Airbnb/vendor evidence, the €12 recap and failure-mode repeats), fixed Hotel Miradouro pricing to match the ledger (RMS via PMS, not a spreadsheet), aligned model tiering with Kiln, verified Gibson v. Cendyn and the Agoda Partner Portal release. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,834 → 6,780 prose words; folded the third lead paragraph into the second; turned question and teaser openers (demand signals, second complaint, total price) into claims; trimmed restatements. No headings changed; spec unchanged. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,780 → 6,492 prose words (6,834 → 6,492 since HEAD, −5%; the converted Failure Modes table now counts as prose); Failure Modes table turned into one-line bullets pointing to the sections that handle each failure; Chief Architect's view compressed to the decisions not already argued in the body; marketplace-interest mechanism moved into In Practice Step 1 and the trade-offs bullet shortened; repeated Airbnb emergency quote dropped from the ethics section. No headings changed; spec unchanged. *(AI-mediated session)*

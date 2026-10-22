@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part IX — LEADERSHIP: The Chief Architect's Agenda
@@ -20,7 +20,7 @@ Group chief architects, CTOs, VPs of engineering and architecture-forum members 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS THIS PART ADDRESSES callout using exact pattern names, linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument: the Chief Architect's main product is a small set of governed records (register, ownership catalog, migration plan, AI register, fitness functions), not one-off decisions.
 - [ ] A short paragraph names where hotels and homes still differ (room-type inventory vs one calendar per home, PMS copies vs host apps, 18- vs 41-day median booking windows) and acknowledges convergence.
-- [ ] One mermaid diagram with a Figure caption: board question → convergence register → org design, Keystone Exit Plan and AI register → fitness functions in Gauge → back to the register.
+- [ ] One governance-loop figure with a Figure caption: board question → convergence register → org design, Keystone Exit Plan and AI register → fitness functions → back to the register (plus one slogans-to-records figure).
 - [ ] Corvane (labeled fictional) uses only figures from chapters 43–47: €145 million; 16/6/26 → 23/6/20; about 1,750 engineers in 190 teams; 5.6 million future reservations and 31,400 differences; 23 AI uses, 8 without an owner; nine stressors; five fitness functions.
 - [ ] Naming is consistent with the chapters: the group metric layer is Gauge; Plumbline (the reconciliation service) is not named here.
 - [ ] `## Chapters in this part` has one paragraph per chapter in config order, with what it decides, its Corvane case and when to read it.
@@ -53,3 +53,4 @@ Internal: [[converging-two-marketplaces]], [[organizing-stays-engineering]], [[m
 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 914 → 881 prose words; lead paragraphs merged (the part-scope sentence restated IN THIS PART); Figure 1 caption no longer repeats the lead; spec criterion updated from mermaid diagram to the two figures the visual pass added. *(AI-mediated session)*

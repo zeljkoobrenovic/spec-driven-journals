@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part X — PRACTICE: How Others Built It
@@ -20,7 +20,7 @@ Chief architects, principal engineers and engineering leaders of accommodation a
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and FAILURE PATTERNS THIS PART ADDRESSES with exact pattern names, linked to where-stay-platforms-go-wrong.html.
 - [ ] "How to read the cases" defines documented fact (with date), the author's interpretation and reference-architecture inference, names the Where the Public Evidence Stops tables, and states that Corvane is fictional, appears only in each final comparison and is not a disguised real company.
 - [ ] A comparison table of the four cases: marketplace type, payment model, documented architecture themes, evidence strength.
-- [ ] One mermaid diagram with a Figure caption.
+- [ ] Two illustrations with numbered Figure captions: the lit and dark public record, and the cases testing the book's claims before Corvane enters.
 - [ ] Every company fact is taken from chapters 48–51, with its year; no new external claims.
 - [ ] `## Chapters in this part` has one paragraph per case in config order, with what it shows and when to read it.
 - [ ] Links back to [[evolving-the-platform]], forward to the Reference pages, and hands off to [[case-booking-com]]; 600–1,000 words of body.
@@ -53,3 +53,4 @@ Internal: [[case-booking-com]], [[case-airbnb]], [[case-expedia-vrbo]], [[case-a
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: guidance-cut wording aligned with the Q1 2024 release ("citing", not "because"); figures checked against chapters 48–51. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 689 → 669 prose words; outline unchanged; one recap sentence cut from the hand-off, one vague phrase made plain; success criterion on the diagram updated to the two illustrations the post now has. *(AI-mediated session)*

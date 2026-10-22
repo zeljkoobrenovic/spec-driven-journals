@@ -19,7 +19,7 @@
 
 > **[FAILURE PATTERNS THIS PART ADDRESSES](#where-stay-platforms-go-wrong):**
 >
-> * **The Hotel-Shaped Home** — each chapter shows why forcing one type's supply model onto the other fails.
+> * **The Hotel-Shaped Home** — three of the four chapters show why forcing one type's supply model onto the other fails.
 > * **Price Drift** — no capability or context owns fees, taxes and the offer until this part gives them one.
 > * **Phantom Availability** — look-to-book forces caching; this part sets the staleness budget from what a wrong price costs.
 
@@ -44,10 +44,10 @@ Part I builds the argument in four steps, each turning a business fact into an a
 
 **[Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics)** answers what a stays marketplace sells and how its economics become requirements. It builds the unit economics of one stayed reservation per brand from take rate, look-to-book, booking window and local liquidity. Read it when nobody can say where a latency or freshness target came from.
 
-**[Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map)** answers which capabilities each marketplace needs and which a group should build once. It matches two generic reference models by meaning, adds seven that neither contains, such as a tax engine and content mapping, and grades every capability as shared engine, shared contract or brand-specific. Read it when you must find what the group pays for twice.
+**[Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map)** answers which capabilities each marketplace needs and which a group should build once. It matches two generic reference models by meaning, adds seven capabilities that neither contains, such as a tax engine and content mapping, and grades every capability as shared engine, shared contract or brand-specific. Read it when you must find what the group pays for twice.
 
 **[Drawing the Lines: Bounded Contexts for Stays](#stays-bounded-contexts)** answers where the service and team boundaries go. It draws a boundary wherever the meaning of a night changes, makes the offer and the reservation the two aggregates that carry the promise, and puts anti-corruption layers toward channel managers, PMSs, iCal feeds and old monoliths. Read it when every booking-table change needs a cross-team meeting.
 
-Throughout the part, Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), tests these ideas. Group Chief Architect Mariana Costa answers the CEO's February 2027 question about why the group runs two platforms, and shows the CFO why Nookaway's compute-at-query-time search would cost Roomstead about €195 million a year at its 1,400 shopping requests per reservation. Her capability map v1 (48 capabilities, March 2027) shapes the €145 million One Stay program the board approves in April, and the architecture forum adopts a map of 23 bounded contexts on 5 May 2027; both are revised in December 2027 ([One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)). [Part II — SUPPLY: Properties, Homes and the Partners Behind Them](#part-2) then models properties, homes and the partners behind them inside those boundaries.
+Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), tests each step. Group Chief Architect Mariana Costa answers the CEO's February 2027 question about why the group runs two platforms. She shows the CFO why Nookaway's compute-at-query-time search would cost Roomstead about €195 million a year at its 1,400 shopping requests per reservation. Her capability map v1 (48 capabilities, March 2027) shapes the €145 million One Stay program the board approves in April. The architecture forum adopts a map of 23 bounded contexts on 5 May 2027; both maps are revised in December 2027 ([One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)). [Part II — SUPPLY: Properties, Homes and the Partners Behind Them](#part-2) then models properties, homes and the partners behind them inside those boundaries.
 
 Begin with [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](#two-stay-marketplaces).

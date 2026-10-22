@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Meet Corvane: Two Marketplaces, One Group
@@ -19,7 +19,7 @@ Every reader on a first pass through the Preface, and readers who jump into one 
 
 - [ ] Corvane is labeled fictional in the KEY POINTS, the lead and the Sources section; the page says explicitly that Roomstead and Nookaway are not disguised Booking.com, Expedia, Airbnb, Vrbo or any other real company.
 - [ ] Brand table, revenue split (€1.200B + €0.430B + €0.062B = €1.692B), fees (12% + 4%, host-only 17%, payout 48 h after check-in) and volumes match the ledger, including `[editor]` lines (shopping requests vs Pricegrid reads).
-- [ ] A mermaid context diagram shows the 2027 baseline, with a table by area and business.
+- [ ] A context-diagram illustration shows the 2027 baseline, with a table by area and business.
 - [ ] Cast table covers all thirteen staff with role, pronouns and what they own; the five recurring partners and guests are introduced.
 - [ ] The six 2027 problems are listed, tied to named failure patterns and to the chapters that work them.
 - [ ] One Stay: approval date, budget, three scope tiers, the rejected "load Nookaway into Tally" proposal, governance, and a diagram.
@@ -71,3 +71,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: checked every figure, date and platform against the ledger; fixed chapter count, Part IX link, "two places" count and map v1/v2 labels; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 1 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 3,895 → 3,845 prose words; reference page kept whole (no sections or figures cut); opening callout tightened, two lines that repeated figure captions shortened, vendor-use disclaimer moved to the Sources note. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Airbnb: From Monolith to Platform for Hosted Stays
@@ -83,3 +83,4 @@ Chief architects, principal engineers and engineering leaders of hosted-stays an
 - **2026-10-21** — Editorial review pass: boutique-hotel comparison row now reflects Corvane's cross-type routing rule; PSP expanded; Q2 2026 letter and Reserve Now, Pay Later facts re-verified. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: regenerated the migration safety net with the change-data-capture branch to derived stores; alt text updated. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,262 → 5,184 prose words; repetition cut from the lead, the trust reading, the Chief Architect's view and the Corvane bill lesson; no headings changed, no facts removed. *(AI-mediated session)*

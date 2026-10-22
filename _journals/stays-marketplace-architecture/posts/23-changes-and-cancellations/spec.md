@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: When Plans Change: Modifications, Cancellations and Policies
@@ -78,3 +78,4 @@ Chief and enterprise architects of travel groups, booking and post-booking platf
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,902 to 8,488 words; ATC strike figures checked against the ledger and customer-service; duplicate no-show and SiteMinder material moved to reservation-lifecycle links; unused sources removed; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,241 → 5,911 prose words; lead merged with the architects' callout, repeated scene recaps and the self-service definition removed, two failure modes already covered in the body cut, figure captions shortened; no headings renamed; spec unchanged otherwise. *(AI-mediated session)*

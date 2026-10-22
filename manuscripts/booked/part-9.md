@@ -21,13 +21,11 @@
 > * **Lost at the Front Desk** — Gives reservation delivery a journey owner, and moves millions of future reservations between systems without losing their partner identifiers or delivery state.
 > * **The Unwatched Model** — Puts every model and every AI assistant or agent channel in one register with an owner, a consequence class and an evaluation against the systems of record.
 
-Parts II to VIII designed a stays marketplace domain by domain. Part IX steps up to **the decisions only the group can take**: what is built once, who builds it, how the platform gets there while it keeps selling, and how it stays coherent after the people who designed it have moved on.
-
-The argument of this part is that **the Chief Architect's main product is a small set of governed records**. A board's seven lines, an org chart, a migration date and an AI policy are each easy to approve and hard to keep true. Each chapter turns one of them into a record with owners, review dates and numbers.
+Parts II to VIII designed a stays marketplace domain by domain; Part IX takes **the decisions only the group can take** above them. Its argument is that **the Chief Architect's main product is a small set of governed records**. A board's seven lines, an org chart, a migration date and an AI policy are each easy to approve and hard to keep true; each chapter turns one of them into a record with owners, review dates and numbers.
 
 ![Slogans floating away as speech bubbles on the left; on the right the same ideas filed as binders with owners and review dates on a shelf of governed records.](stays-marketplace-architecture/posts/part-9-intro/assets/images/part-9-intro/p9-slogans-to-records.jpeg)
 
-**Figure 1:** *A board slogan is easy to approve and hard to keep true; each chapter of this part turns one into a record with owners, review dates and numbers.*
+**Figure 1:** *A board slogan is easy to approve and hard to keep true; a governed record has owners, review dates and numbers.*
 
 Hotels and homes do not converge as neatly as a board paper suggests. Booking.com sells millions of homes and Airbnb sells boutique hotels. But the hard parts stay different: room-type inventory fed by hotel software against one calendar per home, a hotel's PMS (property-management system) holding a copy of every booking against a host's phone, a median booking window of 18 days at Roomstead against 41 at Nookaway. The guest-facing commitment converges; the supply machinery, the supply-side teams and the migration risks do not.
 

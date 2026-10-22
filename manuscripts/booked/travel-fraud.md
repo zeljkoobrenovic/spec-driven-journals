@@ -20,11 +20,11 @@
 > * **Trust After the Incident** — Roomstead's partner-account security, payment fraud, messaging filters and customer service each held a fragment of the November 2027 attack, and the controls that connected them were built only after 310 guests had paid.
 > * **The Unwatched Model** — A booking risk model whose labels arrive months late, from chargebacks and reimbursements, drifts silently unless someone owns its evaluation, thresholds and false declines.
 
-A stays booking is an unusually good target for fraud. It is expensive, often paid by card weeks before it is consumed, and fulfilled by a third party the platform does not control. The guest expects messages from the property about payment and arrival, so a message asking for money looks normal. And the money moves along several paths (guest to platform, platform to hotel by virtual card, platform to host by payout, guest to hotel at the desk), each of which can be redirected.
+A stays booking is an unusually good target for fraud. It is expensive, often paid by card weeks before it is consumed, and fulfilled by a third party the platform does not control. The guest expects messages from the property about payment, so a message asking for money looks normal. The money moves along several paths (guest to platform, platform to hotel by virtual card, platform to host by payout, guest to hotel at the desk), each of which can be redirected.
 
 Fraud in travel therefore runs on **both sides of the marketplace**. On the guest side it looks like retail card fraud: stolen cards, taken-over accounts, abused refunds and promotions. On the supply side it looks like nothing retail has: hijacked hotel extranets, fake homes and hosts whose payout accounts are quietly changed. **The two sides meet in the messaging channel**, where an attacker with a partner's password can talk to that partner's real guests.
 
-This chapter is the second in Part VII ([Part VII — TRUST: Making Strangers Safe to Stay With](#part-7)). [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety) defines the trust platform, the trust decision and enforcement across the group; this chapter is its fraud and abuse half. It owns two concepts: **extranet takeover** (the compromise of a partner or host account and what the attacker does with it) and the **booking risk score**. It does not re-teach generic risk-scoring architecture, which LISTED covers in [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](https://zeljkoobrenovic.github.io/spec-driven-journals/listing-systems-architecture/fraud-prevention.html), nor payments mechanics ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), identity verification and the partner role model ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)), or damage, parties and reservation screening ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)).
+Part VII ([Part VII — TRUST: Making Strangers Safe to Stay With](#part-7)) argues that trust is one platform of records, with detectors kept per marketplace. [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety) built that platform; this chapter supplies its fraud detectors and decision points, and [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access), next, supplies the sign-in and session controls they rely on. It owns two concepts: **extranet takeover** (the compromise of a partner or host account and what the attacker does with it) and the **booking risk score**. It does not re-teach generic risk scoring (LISTED's [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](https://zeljkoobrenovic.github.io/spec-driven-journals/listing-systems-architecture/fraud-prevention.html)), payments mechanics ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), the partner role model or identity verification, or damage, parties and reservation screening ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)).
 
 {id: travel-fraud--setting-the-scene-at-corvane-the-payment-verification-messages-of-november-2027}
 ## Setting the Scene at Corvane: The "Payment Verification" Messages of November 2027
@@ -44,7 +44,7 @@ It began with email. From 1 November, front-desk staff at independent hotels acr
 
 By the time the incident closed, attackers had used compromised accounts at **230** Roomstead partner properties to message **4,100** guests. **310** guests paid the fraudsters, by card on a fake page or by bank transfer. Roomstead reimbursed all of them, **€212,000** in total, about **€684** each, although no Corvane system had been breached, because the messages had come through Roomstead's own channel under the hotel's real name.
 
-Three details from the post-incident review shaped everything that followed.
+The post-incident review found three things.
 
 - **The lure fitted the business model.** About **86%** of the messaged guests held agency bookings: they had not paid Roomstead and expected the hotel to take payment, so "the hotel needs to verify your card" sounded plausible. The fake pages were prefilled with each guest's real dates, room and price, read from Partner Hub.
 - **A second factor would not have been enough.** **148** of the 230 properties had no second factor on Partner Hub at all. The other 82 used text-message codes, and the attackers did not need them: they replayed session cookies the infostealer had copied, so no login, and no code, ever happened.
@@ -59,13 +59,12 @@ Sofia Marín, Director of Trust and Safety, put the question to the group archit
 {id: travel-fraud--concepts-who-loses-and-when}
 ## Concepts: Who Loses, and When
 
-{id: travel-fraud--fraud-abuse-and-scams}
-### Fraud, abuse and scams
+{id: travel-fraud--fraud-abuse-and-chargebacks}
+### Fraud, abuse and chargebacks
 
-- **Third-party fraud** uses someone else's identity or money: a stolen card, a taken-over account. **First-party fraud** is committed by the account holder: a guest who stays and then disputes the charge, or claims a refund for a problem that did not happen. Third-party fraud shows in mismatches, first-party fraud in history.
-- **Account takeover** (ATO) is the use of a genuine account by someone who is not its owner. For guests it opens stored cards, loyalty balances and personal data. For partners and hosts it opens guests' reservations, the messaging channel and payout settings.
-- **Abuse** uses legitimate features against their intent without stealing: multi-account promotion redemption, refund and guarantee abuse, review trading.
-- A **chargeback** is a card payment reversed by the cardholder's issuer after a dispute; the merchant of record bears it ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments) covers the mechanics). Fraud chargebacks are the main *label*, the confirmed outcome a model learns from, for guest-side payment fraud, and they arrive weeks or months after the booking.
+- **Account takeover** (ATO) is the use of a genuine account by someone who is not its owner. For guests it opens stored cards, loyalty balances and personal data; for partners and hosts, guests' reservations, the messaging channel and payout settings.
+- **Abuse** uses legitimate features against their intent without stealing: multi-account promotion redemption, refund and guarantee abuse, review trading. **First-party fraud** is its card form: a guest who stays and then disputes the charge.
+- Fraud **chargebacks**, borne by the merchant of record ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), are the main *label*, the confirmed outcome a model learns from, for guest-side payment fraud. They arrive weeks or months after the booking.
 
 {id: travel-fraud--the-typology-by-who-loses-first}
 ### The typology, by who loses first
@@ -88,7 +87,7 @@ Two patterns stand out. First, **the business model moves the loss**. Under the 
 {id: travel-fraud--points-of-no-return}
 ### Points of no return
 
-A stays booking passes through several moments after which a loss can no longer be avoided cheaply. I call them **points of no return**, and they are the most useful idea in stays fraud architecture.
+A **point of no return** is a moment after which a loss can no longer be avoided cheaply. A stays booking passes several, and which ones depends on the business model.
 
 | Moment | What becomes irreversible | Roomstead agency | Roomstead merchant | Nookaway |
 | --- | --- | --- | --- | --- |
@@ -102,7 +101,7 @@ Here stays fraud differs from retail, where the merchant must decide before the 
 
 So the design rule is: **decide at the point of no return, not at the point of sale.** Checkout should block only what is clearly fraudulent and step up what is uncertain; everything else is accepted and kept under review until the next irreversible moment.
 
-The last row is the exception. A delivered message has no review window, so messaging is the one surface where the decision must be synchronous.
+Message delivery is the exception: it has no review window, so messaging is the one surface where the decision must be synchronous.
 
 ![A road from booking to card activation, check-in, payout release and the chargeback window closing, with a review gap after booking and a dashed shortcut from booking to check-in where there is no window.](stays-marketplace-architecture/posts/32-travel-fraud/assets/images/32-travel-fraud/32-points-of-no-return.jpeg)
 
@@ -111,9 +110,7 @@ The last row is the exception. A delivered message has no review window, so mess
 {id: travel-fraud--architecture-one-risk-spine-many-decision-points}
 ## Architecture: One Risk Spine, Many Decision Points
 
-The architecture below is the author's reference design. It draws on the documented attack chains and the public engineering record cited in "In Practice", not on any company's described internals.
-
-A fraud architecture for a stays group has two halves. The **risk spine** is shared: it collects signals, links entities, computes features, scores, and stores outcomes. The **decision points** are many: login, checkout, message send, bank-detail change, virtual card activation, payout release, refund approval, promotion redemption. Each decision point calls the spine with its own context and latency budget, receives a score and reasons, and applies its own policy.
+The architecture below is the author's reference design, not any company's described internals. It has two halves. The **risk spine** is shared: it collects signals, links entities, computes features, scores, and stores outcomes. The **decision points** are many: login, checkout, message send, bank-detail change, virtual card activation, payout release, refund approval, promotion redemption. Each decision point calls the spine with its own context and latency budget, receives a score and reasons, and applies its own policy.
 
 ![Signals feed a feature store and an entity graph, which feed a risk service; it scores decision points, which send actions to adapters and cases to review; both report to an outcome store that returns labels to the risk service.](stays-marketplace-architecture/posts/32-travel-fraud/assets/images/32-travel-fraud/32-risk-spine.jpeg)
 
@@ -172,7 +169,7 @@ The score must be **calibrated**, a probability rather than a rank, because the 
 {id: travel-fraud--graduated-friction}
 ### Graduated friction
 
-Between allow and block sits **step-up friction**: an extra check that costs a genuine guest a little and a fraudster a lot. The stays menu is specific.
+Between allow and block sits **step-up friction**: an extra check that costs a genuine guest a little and a fraudster a lot.
 
 | Friction | Cost to a genuine guest | Effect on fraud | Use when |
 | --- | --- | --- | --- |
@@ -212,9 +209,7 @@ The rollout is the hard part. Front desks share computers and rotate staff; holi
 {id: travel-fraud--layer-2-session-risk-after-sign-in}
 ### Layer 2: session risk after sign-in
 
-Infostealers copy session cookies, so a strong factor at sign-in does not help if the session itself is stolen. The Corvane review's most uncomfortable number was that **82** of the 230 compromised properties had a second factor and lost anyway.
-
-Session protection has three parts.
+Infostealers copy session cookies, so a strong factor at sign-in does not help once the session is stolen: **82** of the 230 compromised Roomstead properties had a second factor and lost anyway. Session protection has three parts.
 
 1. **Bind sessions to devices.** A session token that is valid only with a key held on the device, or at least tied to a device fingerprint, cannot simply be replayed from another machine. Where binding is not available, short sessions and re-authentication for sensitive reads limit the window.
 2. **Score the session continuously.** A partner **session risk** is recomputed on each meaningful action: a new device for a long-stable account, an unfamiliar network, reading all upcoming reservations in minutes, first use of messaging in months, messages with links to many guests. Each signal is weak; together they are decisive.
@@ -230,7 +225,7 @@ Machine credentials belong in the same model. A channel manager's API credential
 {id: travel-fraud--layer-4-the-messaging-guard}
 ### Layer 4: the messaging guard
 
-The last layer protects the guest when every partner-side control has failed. The platform owns the channel, so it can enforce rules no email provider can.
+The last layer protects the guest when every partner-side control has failed. Because the platform owns the channel, it can enforce rules no email provider can.
 
 - **Payment requests are structured, never free text.** If the only legitimate way for a property or host to ask a guest for money is a platform **payment request** object (amount, reason, link to the platform's own payment page), then any free-text request for payment, and any link to a page outside the platform's domains, is anomalous by definition. This one product decision turns a classification problem into a rule.
 - **Links are inspected on send and on click.** Extract every URL, resolve redirects, check domain age and reputation, and compare against brand lookalikes. Newly registered domains in a partner message are held, not delivered.
@@ -247,9 +242,9 @@ The message thread and its delivery belong to [Between Booking and Check-Out: Tr
 {id: travel-fraud--fake-homes-hijacked-hosts-and-off-platform-payment}
 ## Fake Homes, Hijacked Hosts and Off-Platform Payment
 
-On the hosted-stays side the supply-side fraud looks different, because the supplier is often an individual and the money flows through the platform.
+On the hosted-stays side the supplier is often an individual and the money flows through the platform, so supply-side fraud aims at listings and payouts.
 
-**Fake listings.** A home that does not exist, or is not the lister's, collects payments until a guest discovers the truth at the door. Corvane's own case, the fictional Turia Homes ring of July 2027 with fake apartments on both brands, belongs to [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety). When the platform collects, the money stays inside it until payout, so the defense combines verification at listing time ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding): address checks, photo reuse, registration numbers) and **payout timing** for new supply. Airbnb's help center states that a fraud review can delay funds "up to 45 days after guest check-in" ([Airbnb Help Center, article 425](https://www.airbnb.com/help/article/425), n.d., fetched October 2026). Nookaway pays 48 hours after scheduled check-in; for new listings, a later first release is its cheapest fraud control.
+**Fake listings.** Corvane's own case, the fictional Turia Homes ring of July 2027 with fake apartments on both brands, belongs to [Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety). When the platform collects, the money stays inside it until payout, so the defense combines verification at listing time ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding): address checks, photo reuse, registration numbers) and **payout timing** for new supply. Airbnb's help center states that a fraud review can delay funds "up to 45 days after guest check-in" ([Airbnb Help Center, article 425](https://www.airbnb.com/help/article/425), n.d., fetched October 2026). Nookaway pays 48 hours after scheduled check-in; for new listings, a later first release is its cheapest fraud control.
 
 **Hijacked hosts.** A taken-over host account is worth most at its payout settings: change the bank account, wait for the next payout, leave. The controls are those of Layer 3 plus a graph check, because a new bank account already linked to other hosts, or to accounts closed for fraud, is a strong signal.
 
@@ -260,8 +255,6 @@ Fraud aimed at the host, such as a stolen-card booking for a party, belongs to r
 {id: travel-fraud--abuse-from-inside-the-rules-refunds-promotions-and-loyalty}
 ## Abuse From Inside the Rules: Refunds, Promotions and Loyalty
 
-Some of the most expensive losses involve no stolen identity at all.
-
 **Refund and guarantee abuse.** Nookaway Cover's guest guarantee (rebook or refund if check-in fails or the home is materially not as described) invites claims. Most are genuine, and a guarantee that treats claimants as suspects destroys its own value. The useful signals are relational: the same guest, device or instrument across many claims; claims filed after the stay with no message during it. The decision is not "fraud or not" but **how much evidence to ask for**, which keeps friction proportional. Refund mechanics belong to [Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation) and [When Something Goes Wrong: Customer Service and Recovery](#customer-service).
 
 **Promotion abuse.** Platform-funded coupons and referral credit attract multi-account farming. After Roomstead's **Autumn Cities** coupon (27 September–10 October 2027: a 15% app coupon capped at €50, **31,600** redemptions, cost **€1.30 million**; see [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)), a graph review found about **1,060** redemptions from **350** accounts linked by device and payment instrument, almost all created during the campaign. The Circle 2–3 eligibility rule kept the leak small. The architectural point: **promotion eligibility should call the risk spine** at redemption, with limits per device and per instrument, not only per account.
@@ -271,7 +264,7 @@ Some of the most expensive losses involve no stolen identity at all.
 {id: travel-fraud--feedback-loops-labels-that-arrive-months-late}
 ## Feedback Loops: Labels That Arrive Months Late
 
-A fraud model is only as good as its labels, and stays labels are slow, biased and scattered.
+Stays fraud labels are slow, biased and scattered.
 
 | Label source | Typical delay after the decision | Bias |
 | --- | --- | --- |
@@ -286,16 +279,14 @@ Three practices follow.
 
 - **Join every label to the decision that preceded it.** The outcome store keeps the request, score, model version and action, so "what did we decide, knowing what, and what happened?" has one answer.
 - **Keep a holdout of allowed bookings.** Blocked bookings never produce a chargeback, so a model trained only on allowed bookings learns a world shaped by its own past decisions. A small random sample of borderline bookings, allowed and watched, gives unbiased labels at a measurable cost.
-- **Watch the false declines.** Nobody reports the genuine guests turned away. Measure the **insult rate** (genuine guests declined or blocked, estimated from appeals, retries and the holdout) beside the fraud loss rate, and give both the same owner. Without that, a retrained model is The Unwatched Model in its purest form.
-
-Model monitoring and feature reuse belong to the ML platform ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)); a fraud model also needs an owner who can name its labels, their delay and their bias.
+- **Watch the false declines.** Nobody reports the genuine guests turned away. Measure the **insult rate** (genuine guests declined or blocked, estimated from appeals, retries and the holdout) beside the fraud loss rate, and give both the same owner, one who can name the model's labels, their delay and their bias. Without that, a retrained model is The Unwatched Model in its purest form. Model monitoring itself belongs to the ML platform ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)).
 
 {id: travel-fraud--collaboration-fraud-is-not-a-single-platform-problem}
 ## Collaboration: Fraud Is Not a Single-Platform Problem
 
 The same actors attack every marketplace, and the same hotel sells on several. Three forms of collaboration pay off, besides sharing confirmed outcomes with the acquirer.
 
-- **With partners.** Tell a property when its account shows takeover signals, with a specific instruction (revoke sessions, scan the front-desk computer, enable passkeys). For agency bookings, a risk flag on the delivered reservation would let the hotel ask for a guarantee before arrival; that is my recommendation, not documented practice, and needs care with what the platform says about a guest. Expedia Group announced a partner-facing **Fraud Prevention as a Service** at its EXPLORE event in May 2024, a public signal that OTAs see fraud capability as something to offer partners ([Expedia Group, 2024](https://ir.expediagroup.com/news-and-events/news/news-details/2024/Put-Your-Trip-on-Autopilot-Expedia-Group-Introduces-New-Innovations-at-EXPLORE-to-Take-the-Stress-out-of-Travel-and-Enhance-Partner-Experience/default.aspx)); its contents are not documented in the sources used here.
+- **With partners.** Tell a property when its account shows takeover signals, with a specific instruction (revoke sessions, scan the front-desk computer, enable passkeys). For agency bookings, a risk flag on the delivered reservation would let the hotel ask for a guarantee before arrival; that is my recommendation, not documented practice, and needs care with what the platform says about a guest. Expedia Group announced a partner-facing **Fraud Prevention as a Service** at its EXPLORE event in May 2024 ([Expedia Group, 2024](https://ir.expediagroup.com/news-and-events/news/news-details/2024/Put-Your-Trip-on-Autopilot-Expedia-Group-Introduces-New-Innovations-at-EXPLORE-to-Take-the-Stress-out-of-Travel-and-Enhance-Partner-Experience/default.aspx)); its contents are not documented in the sources used here.
 - **Against lookalike domains.** Takedowns and monitoring of new registrations shorten each wave. The 37 domains used against Roomstead guests were all registered within ten days of use; a feed of new lookalike registrations would have flagged them before the first message.
 - **With law enforcement.** Organized groups are prosecuted only when platforms preserve evidence. Case records that keep message content, session details and payment destinations under legal hold are a design requirement.
 
@@ -366,28 +357,24 @@ In late **January 2028** a smaller wave compromised **26** Partner Hub accounts 
 | **Messaging risk** | Phishing from genuine hotel accounts; hotels legitimately ask about deposits and arrival | Off-platform payment requests; contact-detail exchange before booking |
 | **What can be shared** | Signals, entity graph, feature store, risk service, case management, outcome store, messaging guard | The same, plus reservation screening on the same spine |
 
-The two marketplaces face the same attackers and use the same evidence; they differ mainly in **who carries the loss and when the money becomes irreversible**. That difference belongs in policy, not in architecture.
-
-My judgement: **share the spine, the graph and the messaging guard; keep decision policies per marketplace.** One group-wide graph is worth more than two good ones, because the same devices, cards and proxy ranges appear on both brands, and a Roomstead partner may be a Nookaway host. The messaging attack is the same in both inboxes. Thresholds, friction menus and liability rules should stay per marketplace, because a hotel agency booking and a homes payout carry different losses at different moments. Corvane's 2028 pilot of boutique hotels on Nookaway will test that line: those bookings will need Roomstead's partner-account controls and Nookaway's payout policy at once.
+My judgement: **share the spine, the graph and the messaging guard; keep decision policies per marketplace.** The two marketplaces face the same attackers: the same devices, cards and proxy ranges appear on both brands, and a Roomstead partner may be a Nookaway host, so one group-wide graph is worth more than two good ones. They differ mainly in **who carries the loss and when the money becomes irreversible**, and that difference belongs in policy (thresholds, friction menus, liability rules), not in architecture. Corvane's 2028 pilot of boutique hotels on Nookaway will test that line: those bookings will need Roomstead's partner-account controls and Nookaway's payout policy at once.
 
 {id: travel-fraud--failure-modes}
 ## Failure Modes
 
-- **Fraud tools without a fraud architecture.** Payment fraud, partner security, messaging and customer service each have a tool and a team, and no shared graph or outcome store. The attack lives in the gaps between them, as Roomstead learned.
-- **MFA as the finish line.** A second factor at sign-in does not stop an attacker who replays a stolen session. Session binding, session risk and action step-up are the controls that remain.
-- **Free-text payment requests.** If properties and hosts may ask guests for money in a message, the platform cannot distinguish a genuine deposit request from phishing without guessing. Make payment requests structured.
-- **Everything decided at checkout.** Hard declines at the point of sale for doubts that could have been reviewed for weeks lose good guests and catch less fraud than deferred review would.
-- **Labels from allowed bookings only.** A model that never sees the outcomes of the bookings it blocked grows more confident and less correct each retraining. Without a holdout and an owner, it becomes The Unwatched Model.
+- **Fraud tools without a fraud architecture.** Each team has a tool but there is no shared graph or outcome store, so the attack lives in the gaps, as Roomstead learned.
+- **MFA as the finish line.** A second factor does not stop a replayed session (Layer 2).
+- **Free-text payment requests.** The platform cannot tell a genuine deposit request from phishing (Layer 4).
+- **Everything decided at checkout.** Hard declines for doubts that deferred review could settle lose good guests and catch less fraud.
+- **Labels from allowed bookings only.** Without a holdout, each retraining makes the model more confident and less correct.
 - **Customer-service blindness.** Contacts about suspicious messages tagged as "payment questions" never reach trust and safety. Contact reasons need a fraud category that pages someone.
 
 {id: travel-fraud--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The decisions that matter at group scale:
-
-- **Make the risk spine a group platform.** Signals, entity graph, feature store, risk service, case management and outcome store are shared; each marketplace owns its decision policy. The Group Chief Architect owns the boundary; the Director of Trust and Safety owns fraud operations and policy governance; the data and ML platform owns the models' infrastructure; the payments head owns payment-side actions.
+- **Make the risk spine a group platform, with policies per marketplace.** The Group Chief Architect owns the boundary; the Director of Trust and Safety owns fraud operations and policy governance; the data and ML platform owns the models' infrastructure; the payments head owns payment-side actions.
 - **Map the points of no return per product.** For each booking type (agency, merchant flexible, merchant non-refundable, hosted stays, Pay Later), document when money and nights become irreversible. Every change to virtual card activation, payout timing or rate rules is then a fraud-exposure change, reviewed as such.
-- **Treat partner accounts as part of the perimeter.** Partner sign-in, sessions and integration credentials need the same engineering standard as Corvane's own staff access. Set a date for phishing-resistant sign-in and fund the role model that makes it possible.
+- **Hold partner accounts to staff standards.** Partner sign-in, sessions and integration credentials need the same engineering standard as Corvane's own staff access. Set a date for phishing-resistant sign-in and fund the role model that makes it possible.
 - **Fix the messaging contract.** Structured payment requests and the messaging guard are product rules with legal and partner consequences; agree them with supply leadership and regulatory affairs, then make them non-negotiable.
 - **Measure both errors.** Fraud loss rate (basis points of gross booking value), insult rate, deferred reviews completed before the point of no return, partner strong-sign-in coverage, time to contain a takeover, phishing messages delivered. Review them monthly beside conversion.
 - **Keep humans on consequential decisions.** Declines, account locks and payout holds affect people's money and trips. Data-protection law limits purely automated decisions with significant effects (GDPR Article 22); every automated action needs a reason code, an appeal path and an analyst who can reverse it ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) covers the legal map).

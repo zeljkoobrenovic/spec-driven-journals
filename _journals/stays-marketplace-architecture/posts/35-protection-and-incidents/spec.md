@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Damage, Parties and Emergencies: Protection and Incident Response
@@ -77,3 +77,4 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: American spelling (fulfill), timetoread 33→36; Dubrovnik claim, Cover structure and 21 Sept 2027 forum decisions checked against the ledger. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: trimmed the components caption to the protection ledger the diagram shows. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,108 → 6,832 prose words; opening now ties the chapter to Part VII and names its neighbours; screening costs merged from the trade-offs table into the action table; repeated sentences, the subrogation definition and a duplicated Hotels and Homes row cut; headings unchanged. *(AI-mediated session)*

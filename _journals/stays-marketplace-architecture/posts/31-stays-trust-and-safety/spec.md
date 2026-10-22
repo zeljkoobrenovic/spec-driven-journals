@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Trust as a Platform: Trust and Safety for Stays
@@ -75,3 +75,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: American spelling (neighborhood, behavior, honor), timetoread 34→36; Turia figures, Warden dates and external claims (identity graph scale, July 4 redirects, DSA recipients) checked. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,241 → 5,981 prose words; opening now ties the chapter to Part VI and the rest of Part VII; component count corrected to eight; two Failure modes that restated earlier sections merged or cut; Chief Architect's "What to watch" no longer repeats the metrics table. *(AI-mediated session)*

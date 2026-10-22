@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Is It Still Available? Availability Search, Caching and Price Accuracy
@@ -73,3 +73,6 @@ Chief and principal architects, search and pricing leads, and engineering direct
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: lightly trimmed (8,939 → 8,683 words), aligned search volumes with the ledger (1,400 shopping requests, ~10 Pricegrid reads each), corrected the metasearch traffic share, replaced the "41,000 mapped bedbank properties" claim with the Brightwell Beds reference, removed an unsourced SmartTTL claim and flagged old evidence. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,082 → 6,947 prose words; opening now places the chapter as the read side of Part III; "Warming for peaks and event dates" moved from Measuring into Architecture; Booking.com latency subsection deleted (told in several other chapters) and its inference callout moved into the In Practice lead; sentence-level tightening. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass (needless test): 6,947 → 6,476 prose words (7,082 → 6,476 since HEAD, −9%); Failure Modes compressed to one-line bullets pointing to the sections that handle each failure; Chief Architect's view, look-to-book, cell-key, trade-offs and Hotels and Homes paragraphs trimmed where they restated earlier sections; Expedia "ladder" paragraph and the affiliate/scraper aside deleted; questions 8 and 9 merged; figure captions shortened. No headings renamed; spec criteria unchanged. *(AI-mediated session)*
+- **2026-10-22** — Corrected the price-mismatch claim to match the chapter's audit (staleness 5.7 points, arithmetic 2.8): arithmetic is a large share, not most. *(AI-mediated session)*

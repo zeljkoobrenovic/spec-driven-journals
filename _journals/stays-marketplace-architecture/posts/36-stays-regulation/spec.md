@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law
@@ -26,7 +26,7 @@ Chief architects, platform and trust leads, and engineering directors of OTAs an
 - [ ] Reader can explain the four enforcement points and their fail behavior.
 - [ ] The Corvane worked example matches the ledger (6,900 listings; 2,900 honored; 8,300 canceled; purge February–April 2026 before the May 2026 ruling) and shows the replay that reason codes make possible.
 - [ ] Spain's Supreme Court annulment is described from official sources (CGPJ note; BOE consolidated text), with regional numbers still applying; company claims carry dated sources and inferences are labeled.
-- [ ] Chapter contains a trade-off table, the Hotels and Homes section and table, three mermaid diagrams, the Chief Architect's view and questions to ask.
+- [ ] Chapter contains a trade-off table, the Hotels and Homes section and table, three architecture figures, the Chief Architect's view and questions to ask.
 
 ## Non-goals
 
@@ -66,7 +66,7 @@ Article only for now.
 
 Internal: [[partner-onboarding]], [[property-and-listing-model]], [[destinations-and-maps]], [[calendar-sync]], [[property-page-and-room-selection]], [[stays-ranking]], [[stays-trust-and-safety]], [[taxes-on-stays]], [[changes-and-cancellations]], [[event-driven-stays]].
 
-External: Regulation (EU) 2024/1028 (CELEX 32024R1028); Real Decreto 1312/2024 (BOE-A-2024-26931, consolidated text); CGPJ note on judgment 620/2026; Real Decreto 933/2021; DSA (32022R2065); DMA (32022R1925); P2B (32019R1150); Omnibus Directive (32019L2161); GDPR (32016R0679); PSD2 (32015L2366); EAA (32019L0882); AI Act (32024R1689) and the Commission's AI Omnibus note (2026); Airbnb and Booking Holdings 10-Ks for 2025; Airbnb City Portal (2021) and Amsterdam help page; Booking.com DSA page and connectivity docs; Expedia lodging supply hub; NYC Local Law 18; Service-Public.fr; Catalan News, TechCrunch, Hosteltur and Houst as secondary sources.
+External: Regulation (EU) 2024/1028 (CELEX 32024R1028); Real Decreto 1312/2024 (BOE-A-2024-26931, consolidated text); CGPJ note on judgment 620/2026; Real Decreto 933/2021; DSA (32022R2065); DMA (32022R1925); P2B (32019R1150); Omnibus Directive (32019L2161); GDPR (32016R0679); PSD2 (32015L2366); EAA (32019L0882); AI Act (32024R1689) and the Commission's AI Omnibus note (2026); Airbnb and Booking Holdings 10-Ks for 2025; Airbnb City Portal (2021) and Amsterdam help page; Booking.com DSA page and connectivity docs; Expedia lodging supply hub; NYC Local Law 18; Service-Public.fr; Catalan News and Houst as secondary sources. (CJEU C-264/23, the CNMC fine on Booking.com, the EU coordinated actions and the FTC fees rule are cited by [[stays-ranking]] and [[property-page-and-room-selection]].)
 
 ## Changelog
 
@@ -74,3 +74,4 @@ External: Regulation (EU) 2024/1028 (CELEX 32024R1028); Real Decreto 1312/2024 (
 - **2026-10-21** — Editorial review pass: American spelling (license, program), timetoread 37→34; purge timing and Supreme Court judgments verified against the BOE consolidated text; AI Omnibus dates verified; unverified Article 3(12) pin-cite replaced by a reference to the activity-data definition. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: dropped the authoring workspace from the compliance-chain caption to match the diagram. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,806 → 6,269 prose words; removed material owned by neighbors (CJEU parity ruling and CNMC fine → [[stays-ranking]]; coordinated actions and FTC fees rule → [[property-page-and-room-selection]]) with their sources; cut two failure-mode bullets that repeated earlier sections; opening now ties the chapter to Part VII and hands to [[event-driven-stays]]; success criterion now says figures, not mermaid. *(AI-mediated session)*

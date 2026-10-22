@@ -21,11 +21,11 @@
 > * **Connectivity Roulette** — when the extranet and the channel manager both write availability without an ownership rule, every partner edit is a gamble on which writer arrives last.
 > * **The Hotel-Shaped Home** — forcing a hotel-staff permission model onto a home run by an owner, a co-host and a cleaner, or a one-person host app onto a 140-room hotel, breaks both.
 
-Every marketplace has two products. The guest product gets the design reviews and experiments; the **supply product**, the hotel extranet and the host app, gets what is left, yet it is where suppliers set prices, close calendars, answer guests, see what they are owed and decide whether the marketplace is worth their time.
+Part II has so far modeled supply ([Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model)), onboarded it ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding)) and connected it to hotel systems and other platforms ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers), [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)). This last chapter of the part covers the **supply product**, the hotel extranet and the host app, where suppliers then set prices, close calendars, answer guests, see what they are owed and decide whether the marketplace is worth their time. The guest product gets the design reviews and experiments; the supply product gets what is left.
 
-The two marketplace types meet their suppliers in different places. An **accommodation marketplace** (OTA-style; OTA = online travel agency) mostly receives availability, rates and inventory (**ARI**) from a hotel's systems through channel managers ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)), so its **extranet**, the partner-facing web application for managing a property on the marketplace, is a configuration console, a reservation workbench and a fallback. A **hosted-stays marketplace** mostly receives supply from people with phones, so its **host app** is the operating system of their business, until the host grows into a professional manager who wants an API instead.
+The two marketplace types meet their suppliers in different places. An **accommodation marketplace** (OTA-style; OTA = online travel agency) mostly receives availability, rates and inventory (**ARI**) from a hotel's systems through channel managers ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)), so its **extranet** is a configuration console, a reservation workbench and a fallback. A **hosted-stays marketplace** mostly receives supply from people with phones, so its **host app** is the operating system of their business, until the host grows into a professional manager who wants an API instead.
 
-This chapter owns four terms: **extranet**, **co-host**, **turnover task** and **partner analytics**. It builds on the property and listing model ([Hotels and Homes: Modeling What Is Being Sold](#property-and-listing-model)), onboarding ([From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding)) and calendar sync ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)). It does not re-teach the reservation state machine ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle)), messaging internals ([Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging)), authentication and the identity platform ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)), extranet account takeover ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)) or the commercial design of partner programs ([Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)). It shows where each surfaces in the supply-side workspace.
+This chapter owns four terms: **extranet**, **co-host**, **turnover task** and **partner analytics**. Later chapters build on its rules: the ARI model of Part III stores the overrides defined here ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)), customer service reads the same exception queue ([When Something Goes Wrong: Customer Service and Recovery](#customer-service)), and partner analytics reads the metrics of [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence). The reservation state machine, messaging, identity, account takeover and partner-program design belong to their own chapters ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle), [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging), [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access), [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud), [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)).
 
 {id: extranets-and-host-tools--setting-the-scene-at-corvane-shared-passwords-and-closures-that-did-not-stick}
 ## Setting the Scene at Corvane: Shared Passwords and Closures That Did Not Stick
@@ -42,7 +42,7 @@ In September 2027, five months into the One Stay program, two unrelated reports 
 
 **The second came from Roomstead.** On 14 September, the front-office manager at **Hotel Miradouro**, the independent 84-room four-star hotel in Lisbon whose rates Duarte Silva manages through a cloud PMS and Corvane Connect, used the Partner Hub app to close "Twin" for 15–17 September after a water leak put four rooms out of order. At 02:00 the next morning, Corvane Connect's scheduled full synchronization pushed the PMS's view of availability, which still showed the four rooms as sellable, and reopened the room type on Roomstead. Two reservations arrived for rooms that did not exist that week. The hotel upgraded both guests at its own cost and opened a partner support case titled "Your system ignores my closures". Aisha Rahman's supply team then measured it: in August 2027, connected hotels made about **1.9 million** availability and closure edits in Partner Hub, and **23%** of them were overwritten by a connectivity push within 24 hours. Partner support had tagged **6,700** contacts that month as "change did not stick".
 
-Mariana put both reports on one slide. In each case the tool's model of who may do what, and who owns which number, was simpler than the supplier's reality: Nookaway assumed one person runs a home, and Partner Hub assumed it was the only writer. One Stay had already decided to share identity, messaging, notifications, data and customer service across the brands, and to keep supply models and connectivity separate. The question for the architecture forum was narrower: **should Corvane build one partner workspace for hotels and homes, and if not, what must the two supply products share so that neither repeats these mistakes?**
+Both reports had one cause: Nookaway assumed one person runs a home, and Partner Hub assumed it was the only writer. One Stay had already decided to share identity, messaging, notifications, data and customer service across the brands, and to keep supply models and connectivity separate. The question for the architecture forum was narrower: **should Corvane build one partner workspace for hotels and homes, and if not, what must the two supply products share so that neither repeats these mistakes?**
 
 {id: extranets-and-host-tools--what-the-supply-side-works-in}
 ## What the Supply Side Works In
@@ -64,7 +64,7 @@ Who uses which surface depends more on the supplier's size than on the marketpla
 | **Professional property manager** | Vacation-rental PMS or channel manager through the marketplace's partner API | Messages, reservation issues, quality alerts, owner statements, staff and cleaner access |
 | **Individual host** | The host app | Everything: calendar, price, messages, check-in instructions, reviews, payouts |
 
-The table hides the fact that drives the architecture: **the same entity has several writers.** Availability for Hotel Miradouro can be written by the PMS through Corvane Connect, by Duarte in the Partner Hub web extranet, and by the front-office manager in the Partner Hub app. A Nookaway listing's calendar can be written by the host, a co-host, an iCal import ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)) and a PMS through the partner API.
+The table hides the fact that drives the architecture: **the same entity has several writers.** Miradouro's availability can be written by the PMS through Corvane Connect, by Duarte in the web extranet and by the front-office manager in the app. A Nookaway listing's calendar can be written by the host, a co-host, an iCal import ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)) and a PMS through the partner API.
 
 {id: extranets-and-host-tools--architecture-one-partner-back-end-many-clients}
 ## Architecture: One Partner Back-End, Many Clients
@@ -75,14 +75,16 @@ The extranet should not own data. It should be a client of the domain services t
 
 **Figure 2:** *The partner workspace as clients of one partner back-end. Every client, human or machine, passes through the same authorization and the same field-ownership rules; the extranet is one client among several, not the owner of supply data.*
 
-Booking.com's public documentation shows how far this goes. Its Connectivity APIs cover not only rates, availability and reservations but also Contacts, Licences, Promotions, Messaging, Guest Review, Opportunities, Reporting, Property scores and Market Insights ([Booking.com Connectivity APIs](https://developers.booking.com/connectivity/docs), live documentation as of October 2026), so most extranet functions are also reachable by software. It also shows that the clients need rules between them: for guest self-service requests, date changes and "cancel for less" "require response via the Extranet", and "Sending a message through the API will deactivate the property's ability to respond via the extranet" ([Booking.com Messaging API](https://developers.booking.com/connectivity/docs/messaging-api/understanding-the-messaging-api), live documentation as of October 2026). That is a **single-channel-of-reply rule**: two staff members must not answer the same request through different clients.
+Booking.com's Connectivity APIs reach most extranet functions. They cover not only rates, availability and reservations but also Contacts, Licences, Promotions, Messaging, Guest Review, Opportunities, Reporting, Property scores and Market Insights ([Booking.com Connectivity APIs](https://developers.booking.com/connectivity/docs), live documentation as of October 2026).
+
+The clients also need rules between them. For guest self-service requests, date changes and "cancel for less" "require response via the Extranet", and "Sending a message through the API will deactivate the property's ability to respond via the extranet" ([Booking.com Messaging API](https://developers.booking.com/connectivity/docs/messaging-api/understanding-the-messaging-api), live documentation as of October 2026). That is a **single-channel-of-reply rule**: two staff members must not answer the same request through different clients.
 
 > **INFERENCE, NOT DOCUMENTED:** Booking.com's documentation shows the contract, not the implementation. Whether its extranet, Pulse and the Connectivity APIs share one back-end is not public. The architecture in Figure 2 is a reference design, not a description of Booking.com's systems.
 
 {id: extranets-and-host-tools--field-ownership-the-rule-the-miradouro-closure-was-missing}
 ### Field ownership: the rule the Miradouro closure was missing
 
-In the Miradouro case two writers, the Partner Hub app and the channel manager's full sync, each believed they owned availability. The fix is neither "last writer wins" nor "the extranet always wins" but a declared **system of record** per field group and per property, with the user interface and the APIs both obeying it.
+The fix is neither "last writer wins" nor "the extranet always wins" but a declared **system of record** per field group and per property, obeyed by the user interface and the APIs alike.
 
 ![Before, an app and a full sync both reach for the same availability key; after, a field-ownership table gives the key to one system of record.](stays-marketplace-architecture/posts/10-extranets-and-host-tools/assets/images/10-extranets-and-host-tools/10-two-writers-one-field.jpeg)
 
@@ -101,8 +103,8 @@ In the Miradouro case two writers, the Partner Hub app and the channel manager's
 
 Two rules make the table work.
 
-1. **Show ownership where the edit happens.** If Partner Hub knows that Miradouro's availability is owned by Corvane Connect, the app should not offer a plain "close" button. It should say "Your channel manager controls availability. Close on Roomstead only until 17 September?" and add "Your PMS still sells these rooms on other channels: fix the room status in the PMS too." That one sentence would have turned a silent overwrite into a decision.
-2. **Make marketplace-side overrides restrictive and time-bound.** An override layer in the ARI store that can only close or reduce, expires, is logged with user and reason, and is reported to the connectivity partner protects the guest without pretending the marketplace is the source of truth. An override that can open inventory makes the extranet a competing writer and creates overbooking. The ARI model that stores overrides belongs to [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model).
+1. **Show ownership where the edit happens.** If Partner Hub knows that Miradouro's availability is owned by Corvane Connect, the app should not offer a plain "close" button. It should say "Your channel manager controls availability. Close on Roomstead only until 17 September?" and add "Your PMS still sells these rooms on other channels: fix the room status in the PMS too."
+2. **Make marketplace-side overrides restrictive and time-bound.** An override that can only close or reduce, expires, is logged with user and reason, and is reported to the connectivity partner protects the guest without pretending the marketplace is the source of truth. An override that can open inventory makes the extranet a competing writer and creates overbooking. The ARI model that stores overrides belongs to [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model).
 
 Airbnb documents the same principle at the door. For PMS-managed locks, "Airbnb sends reservation details to the connected PMS", the PMS creates the code and Airbnb relays it, so Airbnb cannot see battery or offline status ([Airbnb Help, article 4163](https://www.airbnb.com/help/article/4163), live page as of October 2026). The professional's system owns the lock; the marketplace is a relay, and its app should not show a status it cannot know.
 
@@ -124,7 +126,7 @@ A partner forgives a day-old dashboard that says so, but not a revoked employee 
 {id: extranets-and-host-tools--reservation-operations-and-exception-queues}
 ## Reservation Operations and Exception Queues
 
-Most reservations need nothing from the partner: the booking is delivered to the PMS, acknowledged, and the guest arrives. The workspace earns its keep on the rest. A **reservation exception queue** turns those cases into work items, each with a type, an owner role, a deadline and an escalation path.
+Most reservations need nothing from the partner. For the rest, a **reservation exception queue** turns those cases into work items, each with a type, an owner role, a deadline and an escalation path.
 
 | Exception | Detected by | Owner role | Deadline | Escalation if missed |
 | --- | --- | --- | --- | --- |
@@ -136,9 +138,7 @@ Most reservations need nothing from the partner: the booking is delivered to the
 | No-show to confirm | Reservation service after the arrival date | Front office | Policy-defined window | Commission or payout default applies |
 | Guarantee or protection claim to evidence | Protection | Host or co-host | Claim window | Claim closes |
 
-The first row has a documented example. Booking.com's reservation API is pull-based: a connectivity provider retrieves new, modified and canceled reservations and, in the OpenTravel flow, acknowledges them. If a reservation is not acknowledged or retrieved within **30 minutes**, it is e-mailed to the property, which must then handle it through the extranet. The window can be extended to 24 hours, "but that can increase queue size and overbookings" ([Booking.com, Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview), live documentation as of October 2026). The extranet is therefore part of the delivery guarantee: it is where the human fallback lands. If that fallback is an e-mail and a list, the reservation has reached the property technically and may still be **Lost at the Front Desk**.
-
-The lifecycle of an exception is short and should be explicit.
+Booking.com documents the first row. Its reservation API is pull-based: a connectivity provider retrieves new, modified and canceled reservations and, in the OpenTravel flow, acknowledges them. If a reservation is not acknowledged or retrieved within **30 minutes**, it is e-mailed to the property, which must then handle it through the extranet. The window can be extended to 24 hours, "but that can increase queue size and overbookings" ([Booking.com, Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview), live documentation as of October 2026). The extranet is where the human fallback lands; if that fallback is an e-mail and a list, the reservation may still be **Lost at the Front Desk**.
 
 ![An exception moves from Open to Claimed and Resolved, or to Escalated when there is no owner or the deadline passes, and the marketplace resolves escalated items.](stays-marketplace-architecture/posts/10-extranets-and-host-tools/assets/images/10-extranets-and-host-tools/10-exception-work-item.jpeg)
 
@@ -155,9 +155,7 @@ In Corvane's 2027 review, Partner Hub showed exceptions only as icons in one boo
 {id: extranets-and-host-tools--delegation-teams-co-hosts-and-roles}
 ## Delegation: Teams, Co-Hosts and Roles
 
-Every supplier with more than one person needs delegation. The two marketplace types arrived at it from opposite ends.
-
-OTA extranets have long had multi-user accounts with roles, because hotels have staff. Their hard parts are **hierarchy** (a chain, a management company and an owner company above one property) and **third parties** (the connectivity partner, a revenue consultant, a content agency).
+The two marketplace types arrived at delegation from opposite ends. OTA extranets have long had multi-user accounts with roles, because hotels have staff. Their hard parts are **hierarchy** (a chain, a management company and an owner company above one property) and **third parties** (the connectivity partner, a revenue consultant, a content agency).
 
 Hosted-stays marketplaces started from one person and one home and retrofitted delegation; Airbnb's help pages show a mature retrofit. The listing owner can add co-hosts, and a full-access co-host can add others with limited access only ([Airbnb Help, article 1243](https://www.airbnb.com/help/article/1243), live page as of October 2026). The permissions page names three levels ([Airbnb Help, article 1534](https://www.airbnb.com/help/article/1534), live page fetched 21 October 2026):
 
@@ -178,7 +176,7 @@ Three lessons are architecture, not product detail. **Money rights are separate 
 {id: extranets-and-host-tools--a-delegation-model-that-serves-hotels-and-homes}
 ### A delegation model that serves hotels and homes
 
-A role on a user account is not enough. Delegation is a **relationship** between a party and a supply object. The generic hosted-stays reference model behind this book reaches the same conclusion when it stress-tests a rule requiring remote owners to appoint a licensed local operator: it separates owner, listing controller, licensed operator, co-host, service provider, permit holder, payout beneficiary, fee recipient and tax party as separate roles, and names the failure this prevents: "Informal password sharing and payout workarounds become both unsafe and illegal" (Productscape hosted-stays model, stressor `coho`; a generic model, not a description of any company).
+A role on a user account is not enough. Delegation is a **relationship** between a party and a supply object. The generic hosted-stays reference model behind this book reaches the same conclusion when it stress-tests a rule requiring remote owners to appoint a licensed local operator: it models owner, listing controller, licensed operator, co-host, service provider, permit holder, payout beneficiary, fee recipient and tax party as separate roles, and names the failure this prevents: "Informal password sharing and payout workarounds become both unsafe and illegal" (Productscape hosted-stays model, stressor `coho`; a generic model, not a description of any company).
 
 ![A grant card links an owner to a delegate and a target, carrying a role and validity; money roles hang on the target; authorization reads the grant.](stays-marketplace-architecture/posts/10-extranets-and-host-tools/assets/images/10-extranets-and-host-tools/10-delegation-as-data.jpeg)
 
@@ -189,7 +187,7 @@ The model has five parts.
 1. **Parties, not just users.** A party is a person or an organization: Carmen Ruiz, a cleaning company, a hotel management company, a PMS vendor. People act for organizations through their own grants. That is how "Alfama Keys staff" or "Miradouro front office" can hold a role.
 2. **Targets at three levels.** A single property or listing, a portfolio (a manager's set of listings or a chain's set of hotels) and, for the OTA, the legal entity that signed the contract. A grant on a portfolio applies to listings added later, which is what professional managers need and what auditors worry about.
 3. **Roles as bundles of scopes, with ceilings.** Scopes are fine-grained (`calendar:write`, `rates:write`, `messages:reply`, `reservations:act`, `finance:read`, `payout:configure`, `team:manage`, `tasks:read`). Roles are named bundles that suppliers understand. A grantor can only grant scopes they hold, and some scopes, such as `payout:configure`, are never delegable.
-4. **Money roles separate from operating roles.** Who receives which share of the payout, and who is the tax party for it, are attributes of the listing and the reservation, set by the owner and verified ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement), [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)). An operating role never implies a money role.
+4. **Money roles separate from operating roles.** Who receives which share of the payout, and who is the tax party for it, are attributes of the listing and the reservation, set by the owner and verified ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement), [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)).
 5. **Validity and audit.** Every grant has a start, an optional end and a revocation record; every action records which grant it was performed under. "Who reopened these dates?" must have an answer that names a person and a grant.
 
 Authentication, step-up and the policy engine that evaluates grants belong to [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access); the workspace makes delegation usable with an invite flow that suggests the minimum role, a team page and owner alerts when a grant changes.
@@ -201,14 +199,14 @@ Machine delegates get the same treatment. Miradouro's PMS vendor is a party with
 
 The delegation model is also a security control. In the documented extranet attacks of 2023–2025, criminals stole hotel staff credentials with infostealer malware or phishing, logged into the property's account and messaged guests from inside the platform asking for "payment verification". A 2023 Secureworks investigation found the victim hotel had not enabled multi-factor authentication (MFA) on its Booking.com access ([Sophos/Secureworks](https://www.sophos.com/en-us/blog/vidar-infostealer-steals-booking-com-credentials-in-fraud-scam), 2023); in 2024 Booking.com told KrebsOnSecurity the attacks "stem from partners' machines being compromised with malware" ([KrebsOnSecurity](https://krebsonsecurity.com/2024/11/booking-com-phishers-may-leave-you-with-reservations/), 2024). Corvane's own version came in **November 2027**: attackers phished staff credentials at **230** Roomstead partner properties and messaged **4,100** guests; **310** paid, and Roomstead reimbursed **€212,000** ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) owns the incident). The workspace lessons:
 
-- **Least privilege by default.** Most staff need reservations and messages; few need finance; almost nobody needs payout configuration. If everyone is an administrator, one stolen password gives away the property.
+- **Least privilege by default.** Most staff need reservations and messages; few need finance; almost nobody needs payout configuration.
 - **Step-up on sensitive actions, not only at login.** Bank-detail and payout changes, bulk messages, bulk exports of upcoming reservations and new administrators each need fresh strong authentication and an owner notification. Session cookies stolen by malware bypass login MFA; step-up on the action does not.
-- **Make sharing unnecessary before making it impossible.** Nookaway's September rollout failed because it demanded individual accountability from suppliers who had no way to delegate.
+- **Make sharing unnecessary before making it impossible.** Nookaway's September rollout failed because suppliers had no way to delegate.
 
 {id: extranets-and-host-tools--turnover-check-in-and-operations-coordination}
 ## Turnover, Check-In and Operations Coordination
 
-On a hotel stay, the marketplace leaves the stage once the reservation is delivered; housekeeping and keys run in the hotel's PMS. On a home stay there is no front desk, so the marketplace often stays involved until the guest is inside. This is the biggest functional difference between the extranet and the host app.
+On a hotel stay, the marketplace leaves the stage once the reservation is delivered; housekeeping and keys run in the hotel's PMS. On a home stay there is no front desk, so the marketplace often stays involved until the guest is inside.
 
 A turnover task is derived from two adjacent reservations. Its inputs are reservation events, the listing's turnover rules (cleaning duration, preparation time) and the people with an operations role; its outputs are a notification to the cleaner, a readiness state, and, if the window is too short, a block or warning back to the calendar.
 
@@ -220,16 +218,16 @@ Airbnb's smart-lock integration, opened to all US and Canadian hosts on 21 Augus
 
 The design rules:
 
-- **Treat access codes and turnover tasks as derived resources with their own state**, driven by reservation events and reconciled nightly against reservations and device state. Finding "code valid for a canceled reservation" or "no task before tomorrow's check-in" at 02:00 is cheap insurance.
+- **Treat access codes and turnover tasks as derived resources with their own state**, driven by reservation events and reconciled nightly against reservations and device state, to catch "code valid for a canceled reservation" or "no task before tomorrow's check-in".
 - **Order matters.** Alterations carry a version; consumers reject older ones, or a cancellation followed by a rebooking can leave the wrong code active.
 - **Keep a fallback.** Airbnb's PMS lock page tells hosts to provide backup entry instructions. Every digital key path needs a non-digital fallback in the arrival guide ([Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging) owns how check-in details reach the guest).
 
-**How much should the marketplace build?** I found no primary source describing a marketplace-run cleaning-scheduling system at Airbnb, Booking.com or Expedia; professional managers run turnover in their PMS or specialist tools that subscribe to reservation events. My rule: the marketplace must **emit reliable, ordered reservation events and accept blocks and readiness back**, and should build only a **minimal** task capability for individual hosts with a home or two and a cleaner: a cleaner role that sees only the turnover schedule, a task per turnover with a window, a "ready" confirmation, and a calendar warning when a booking leaves less time than the preparation rule. It should not compete with the operations software that professionals already use.
+**How much should the marketplace build?** I found no primary source describing a marketplace-run cleaning-scheduling system at Airbnb, Booking.com or Expedia; professional managers run turnover in their PMS or specialist tools that subscribe to reservation events. My rule: the marketplace must **emit reliable, ordered reservation events and accept blocks and readiness back**, and should build only a **minimal** task capability for individual hosts with a home or two and a cleaner: a cleaner role that sees only the turnover schedule, a task per turnover with a window, a "ready" confirmation, and a calendar warning when a booking leaves less time than the preparation rule.
 
 {id: extranets-and-host-tools--partner-analytics-and-programs-as-features}
 ## Partner Analytics and Programs as Features
 
-Partners want three answers from analytics: *how am I doing*, *compared with whom*, and *what should I change*. Public extranet documentation shows how OTAs answer them.
+Partners want three answers from analytics: *how am I doing*, *compared with whom*, and *what should I change*. Public documentation shows how OTAs answer them.
 
 | Signal | Booking.com | Expedia Group | Agoda |
 | --- | --- | --- | --- |
@@ -237,7 +235,7 @@ Partners want three answers from analytics: *how am I doing*, *compared with who
 | Comp-set benchmark | Not verified | Revenue view with a competitive price grid, reported by secondary sources since 2019 | Partner Portal comp-set benchmark flags periods needing attention ([Agoda, 2026](https://kyodonewsprwire.jp/release/202608174214)) |
 | Guest experience | Reply to reviews in the extranet and Pulse | Review-sentiment insights announced in May 2024 ([Expedia Group, 2024](https://ir.expediagroup.com/news-and-events/news/news-details/2024/Put-Your-Trip-on-Autopilot-Expedia-Group-Introduces-New-Innovations-at-EXPLORE-to-Take-the-Stress-out-of-Travel-and-Enhance-Partner-Experience/default.aspx)) | AI review summaries (2026) |
 
-Two details show why this is more than reporting. Expedia's partner blog states, from its 2024 data, that properties in the **top 20 sort positions** on Expedia and Hotels.com receive **80% of clicks** ([Expedia Group, 2025](https://partner.expediagroup.com/en-us/resources/blog/travelads-and-accelerator-hotel-visibility-boosters)), so partners will ask where they stand and how to move. And Agoda's Partner Portal, announced on 17 August 2026 as the successor of the Yield Control System (YCS), adds "Agoda Intelligence" suggestions up to 90 days ahead that partners must verify ([Agoda, 2026](https://kyodonewsprwire.jp/release/202608174214)). The extranet has become a delivery channel for the marketplace's models. At Corvane, Partner Hub's Rate Insights (launched 2025) shows comp sets and rate recommendations; hotels accepted only **9%** of them in 2026, which says as much about trust in the numbers as about the model ([Setting the Price of a Night: Revenue Management and Smart Pricing](#dynamic-pricing)).
+Two details show why this is more than reporting. Expedia's partner blog states, from its 2024 data, that properties in the **top 20 sort positions** on Expedia and Hotels.com receive **80% of clicks** ([Expedia Group, 2025](https://partner.expediagroup.com/en-us/resources/blog/travelads-and-accelerator-hotel-visibility-boosters)), so partners will ask how to move up. Agoda's Partner Portal, announced on 17 August 2026 as the successor of the Yield Control System (YCS), adds "Agoda Intelligence" suggestions up to 90 days ahead that partners must verify ([Agoda, 2026](https://kyodonewsprwire.jp/release/202608174214)). The extranet has become a delivery channel for the marketplace's models. At Corvane, Partner Hub's Rate Insights (launched 2025) shows comp sets and rate recommendations; hotels accepted only **9%** of them in 2026, which says as much about trust in the numbers as about the model ([Setting the Price of a Night: Revenue Management and Smart Pricing](#dynamic-pricing)).
 
 On hosted stays the levers are price, quality and policy rather than paid visibility. Airbnb's October 2024 release added price tips "based on similar local listings" and an earnings dashboard with custom reports ([Airbnb, 2024](https://news.airbnb.com/en-uk/airbnb-2024-winter-release-introducing-co-host-network-the-best-local-hosts-to-manage-your-airbnb)). Superhost is assessed every three months over the trailing year on stays, a 90% response rate, cancellations under 1% and a rating of at least 4.8 ([Airbnb Help, article 829](https://www.airbnb.com/help/article/829), live page as of October 2026): a batch credential whose progress the host app must show before the quarter closes.
 
@@ -247,7 +245,7 @@ On hosted stays the levers are price, quality and policy rather than paid visibi
 1. **One metric definition, two audiences.** "Conversion", "cancellation rate" and "response rate" must mean the same in the dashboard, ranking features, program eligibility and internal reporting ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)). If the program says 7.4 and the dashboard says 7.6, the partner will call support, rightly.
 2. **Explain the ranking without exposing it.** "Why am I on page three?" should be answered from the features the ranking used, summarized into levers the partner controls (price, availability, content, reviews, policy, programs), with any paid term's effect stated separately. [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking) owns the ranking log that makes this possible.
 3. **Benchmarks are aggregates with privacy rules.** A comp set of five hotels in a small town can reveal one competitor's occupancy. Serve precomputed aggregates with minimum group sizes.
-4. **Programs are features with eligibility computed by the platform.** Preferred-style programs, loyalty discounts and visibility boosters are opt-in features whose eligibility depends on performance, quality and sometimes commission. The Italian competition authority opened an investigation into Booking.com's Preferred Partner and Preferred Plus programs on **22 April 2026**, concerned that selection "appears to be driven largely by criteria that favour accommodation providers paying higher commissions" ([AGCM, PS13115](https://en.agcm.it/en/media/press-releases/2024/4/PS13115), 2026); it is an investigation, not a finding. The architectural consequence: eligibility and the ranking effect of a program must be computed by an auditable component, logged and explainable to the partner and to a regulator. For Roomstead's Front Row program ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)) that means one component decides who is enrolled and logs the boost per impression. That keeps **Pay-to-Rank Creep** visible; [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) designs the programs.
+4. **Programs are features with eligibility computed by the platform.** Preferred-style programs, loyalty discounts and visibility boosters are opt-in, with eligibility based on performance, quality and sometimes commission. The Italian competition authority opened an investigation into Booking.com's Preferred Partner and Preferred Plus programs on **22 April 2026**, concerned that selection "appears to be driven largely by criteria that favour accommodation providers paying higher commissions" ([AGCM, PS13115](https://en.agcm.it/en/media/press-releases/2024/4/PS13115), 2026); it is an investigation, not a finding. Eligibility and a program's ranking effect must therefore be computed by one auditable component, logged and explainable to the partner and to a regulator; for Roomstead's Front Row program ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)) that component decides who is enrolled and logs the boost per impression. That keeps **Pay-to-Rank Creep** visible; [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) designs the programs.
 
 {id: extranets-and-host-tools--apis-mobile-and-supply-side-notifications}
 ## APIs, Mobile and Supply-Side Notifications
@@ -256,7 +254,7 @@ Professional suppliers want the functions, not the screens. Connectivity APIs ([
 
 Mobile-first is the default for hosts and for hotel staff away from a desk. The app is for urgent, small jobs (reply, accept or decline, close a date, confirm readiness, act on an exception); rate-plan setup, contracts and bulk content stay on the web. A useful test: can a host run a whole stay, from request to payout, from the phone?
 
-Notifications are the workspace's biggest source of noise. The supplier chooses channels per event class; the platform decides which events may never be silenced.
+Notifications are the workspace's biggest source of noise: the supplier chooses channels per event class; the platform decides which events may never be silenced.
 
 | Event class | Examples | Default channels | Can the supplier mute it? |
 | --- | --- | --- | --- |
@@ -273,7 +271,7 @@ AI assistants are the newest client. In October 2026 Booking.com described a par
 {id: extranets-and-host-tools--in-practice-corvane-s-two-workspaces-on-one-spine}
 ## In Practice: Corvane's Two Workspaces on One Spine
 
-The forum's decision, in October 2027, was **two products on a shared spine**. Partner Hub and the Nookaway host app stay separate products with separate teams, because a revenue manager at an 84-room hotel and Carmen Ruiz with one apartment in Triana do different jobs. They share five platform components under One Stay: Corvane ID for authentication and step-up; a **delegation service** with the party, grant and scope model above, built on the shared supply-party records recommended in [From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding); the exception queue engine; Courier, the group notification platform; and the partner analytics read model built on Gauge, the group metric layer. Supply models, ARI stores (Tally and Almanac) and connectivity stay separate, as One Stay had already decided.
+The forum's decision, in October 2027, was **two products on a shared spine**. Partner Hub and the Nookaway host app stay separate products with separate teams, because a revenue manager at an 84-room hotel and Carmen Ruiz with one apartment in Triana do different jobs. They share five platform components under One Stay: Corvane ID for authentication and step-up; a **delegation service** with the party, grant and scope model above, built on the shared supply-party records recommended in [From Sign-Up to First Booking: Partner and Host Onboarding](#partner-onboarding); the exception queue engine; Courier; and the partner analytics read model built on Gauge, the group metric layer. Supply models, ARI stores (Tally and Almanac) and connectivity stay separate.
 
 {id: extranets-and-host-tools--worked-example-1-alfama-keys-moves-off-a-shared-login}
 ### Worked example 1: Alfama Keys moves off a shared login
@@ -292,14 +290,14 @@ Alfama Keys is a fictional Lisbon property manager with **38** Nookaway listings
 
 Money roles are set by each owner. For a four-night stay at €150 a night with a €60 cleaning fee, the booking subtotal is **€660**. Alfama Keys has chosen Nookaway's host-only fee of **17%**, so the guest pays no service fee and the host-side fee is **€112.20**, leaving a payout of **€547.80**, released 48 hours after scheduled check-in. The owner's split rule sends the €60 cleaning fee and a 20% management fee on the remainder, (€547.80 − €60) × 20% = **€97.56**, to Alfama Keys, and **€390.24** to the owner. Each share has its own payout beneficiary and tax party, so the tax reporting for each owner and for Alfama Keys comes from the same allocation ([The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](#taxes-on-stays)).
 
-No staff member knows an owner's password. A departing guest-relations employee loses access when Alfama Keys revokes one grant, without 14 owners changing passwords. A cleaner sees the turnover schedule of assigned listings and nothing about guests' payment or identity. And when step-up verification protects payout changes, the person asked to verify is the owner who holds that scope.
+No staff member knows an owner's password. A departing guest-relations employee loses access when Alfama Keys revokes one grant, without 14 owners changing passwords, and step-up on payout changes reaches the owner who holds that scope.
 
 {id: extranets-and-host-tools--worked-example-2-miradouro-s-closure-under-the-ownership-rule}
 ### Worked example 2: Miradouro's closure under the ownership rule
 
-With field ownership in place, the 14 September scenario plays out differently. Partner Hub knows from Switchyard's connection record that Miradouro's ARI for Roomstead is owned by Corvane Connect. The front-office manager's "close Twin, 15–17 September" becomes a **Roomstead-only restrictive override** with an expiry of 18 September, logged with her user, grant and reason ("rooms out of order"). Roomstead sends a notification to Corvane Connect, and the app tells her that the hotel's PMS still sells the rooms elsewhere. When the 02:00 full sync arrives, the ARI store applies the PMS's numbers underneath the override, and Roomstead stays closed for those nights.
+Under the ownership rule, Partner Hub knows from Switchyard's connection record that Miradouro's ARI for Roomstead is owned by Corvane Connect. The front-office manager's "close Twin, 15–17 September" becomes a **Roomstead-only restrictive override** with an expiry of 18 September, logged with her user, grant and reason ("rooms out of order"). Roomstead notifies Corvane Connect. When the 02:00 full sync arrives, the ARI store applies the PMS's numbers underneath the override, and Roomstead stays closed for those nights.
 
-Aisha's team set a target for the end of 2028: fewer than **2%** of Partner Hub availability edits on connected properties overwritten within 24 hours, against **23%** in August 2027, the same measure that exposed the problem.
+Aisha's team set a target for the end of 2028: fewer than **2%** of Partner Hub availability edits on connected properties overwritten within 24 hours, against **23%** in August 2027.
 
 {id: extranets-and-host-tools--trade-offs}
 ## Trade-offs
@@ -336,34 +334,28 @@ Aisha's team set a target for the end of 2028: fewer than **2%** of Partner Hub 
 | **Main security threat** | Staff credential theft and takeover of the extranet, then guest phishing | Account takeover of hosts, payout redirection, shared logins |
 | **Regulatory touchpoints** | Ranking and program transparency, parity rules, invoicing | Registration numbers per listing, host tax reporting, operator and permit holder roles |
 
-**What to share.** The spine should be shared: identity and step-up, the delegation model (parties, grants, scopes, money roles), the exception queue engine, notification routing and the partner analytics read model on one metric layer. These are the same problem on both sides, and they are where security and regulatory change land. **What not to share**: the products themselves, the supply editing screens (rate plans versus a nightly calendar) and the operations features. Convergence is real: about 3.9 million of Booking.com's 4.4 million listed properties at the end of 2025 were homes and apartments ([Booking Holdings Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), 2026), and Airbnb reported adding "thousands of boutique and independent hotels" ([Airbnb Q2 2026 shareholder letter](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf), 2026). But professional managers on both marketplaces need the same delegation and API, not the same screens; a group that builds one workspace for both will build it for the larger supplier type and lose the other.
+**What to share.** Share the spine Corvane chose (identity and step-up, delegation, the exception queue engine, notification routing, partner analytics on one metric layer): these are the same problem on both sides, and they are where security and regulatory change land. Do not share the products, the supply editing screens (rate plans versus a nightly calendar) or the operations features. Convergence is real: about 3.9 million of Booking.com's 4.4 million listed properties at the end of 2025 were homes and apartments ([Booking Holdings Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), 2026), and Airbnb reported adding "thousands of boutique and independent hotels" ([Airbnb Q2 2026 shareholder letter](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf), 2026). But professional managers on both marketplaces need the same delegation and API, not the same screens; a group that builds one workspace for both will build it for the larger supplier type and lose the other.
 
 {id: extranets-and-host-tools--failure-modes}
 ## Failure Modes
 
-| Failure | Symptom | Fix |
+| Failure | Symptom | Handled in |
 | --- | --- | --- |
-| **The extranet as a second source of truth** | A support category called "change did not stick" | Field ownership per property; restrictive, expiring overrides |
-| **The fallback that is only an e-mail** | "We have no booking for you" at properties with a healthy connection on paper (**Lost at the Front Desk**) | Exception work items with owners, deadlines and escalation |
-| **Everyone is an administrator** | One takeover exposes payout details and enables bulk messaging | Least-privilege defaults; step-up on money and bulk actions |
-| **Delegation by password** | MFA rollouts break operations; many devices per account | Model the team first, then enforce individual authentication |
+| **The extranet as a second source of truth** | A support category called "change did not stick" | Field ownership |
+| **The fallback that is only an e-mail** | "We have no booking for you" at properties with a healthy connection on paper (**Lost at the Front Desk**) | Reservation Operations and Exception Queues |
+| **Everyone is an administrator** | One takeover exposes payout details and enables bulk messaging | Step-up on money and the threat model |
+| **Delegation by password** | MFA rollouts break operations; many devices per account | A delegation model that serves hotels and homes |
 | **Revocation that lags** | A dismissed employee or replaced PMS vendor keeps writing | Short token lifetimes for sensitive scopes; revocation events clients honor |
-| **Dashboards that contradict ranking** | Partners quote numbers support cannot reconcile with program decisions | One metric layer and one feature source |
-| **Turnover tasks that miss alterations** | Cleaners arrive during a stay; guests locked out after a date change | Versioned events, derived resources, nightly reconciliation |
-| **Notification fatigue** | Suppliers mute the app and miss the one urgent alert | Event classes, mute rules, human escalation |
+| **Dashboards that contradict ranking** | Partners quote numbers support cannot reconcile with program decisions | The architectural obligations |
+| **Turnover tasks that miss alterations** | Cleaners arrive during a stay; guests locked out after a date change | Turnover, Check-In and Operations Coordination |
+| **Notification fatigue** | Suppliers mute the app and miss the one urgent alert | APIs, Mobile and Supply-Side Notifications |
 
 {id: extranets-and-host-tools--the-chief-architect-s-view}
 ## The Chief Architect's View
 
 The workspace looks like a front end, so it is easy to under-govern. I govern it as a **product with platform obligations**.
 
-**Decide**, at group level:
-
-- that every supply-side function is an API with an owning domain, and that the extranet and host app are clients; no module stores supply data of its own;
-- the field-ownership table per marketplace, and the rule that overrides from human tools are restrictive and expiring;
-- one delegation model, with party, target, role, scope, validity and separate money roles, and the list of scopes that are never delegable;
-- the exception catalog: which exception types exist, who owns each, the deadlines and the escalation to marketplace support;
-- one metric layer for partner analytics, ranking features and program eligibility.
+**Decide**, at group level, the five rules of this chapter: supply functions as APIs with owning domains; the field-ownership table per marketplace; one delegation model and its list of never-delegable scopes; the exception catalog with owners, deadlines and escalation; and one metric layer for analytics, ranking and programs.
 
 **Who decides.** Product leads for Partner Hub and the host app own the user experience and the roadmap. The group architecture forum owns the shared spine and the field-ownership rules, because they bind connectivity, inventory and trust teams. Trust and security own the step-up policy. Regulatory affairs signs off program eligibility and ranking explanations shown to partners.
 
@@ -376,21 +368,20 @@ The workspace looks like a front end, so it is easy to under-govern. I govern it
 - partner support contacts per thousand active suppliers, by reason;
 - the gap between dashboard metrics and the values used by ranking and programs, which should be zero.
 
-**Long term.** Suppliers are moving toward professional software and AI assistants acting for them. A delegation model that treats a PMS vendor, a co-host and an assistant as parties with scoped grants absorbs that shift; one built on special cases will be rebuilt.
+**Long term.** Suppliers are moving toward professional software and AI assistants acting for them; a delegation model that treats a PMS vendor, a co-host and an assistant as parties with scoped grants absorbs that shift; one built on special cases will be rebuilt.
 
 {id: extranets-and-host-tools--questions-to-ask}
 ## Questions to Ask
 
-1. For each field a partner or host can edit, which system is the source of truth for a connected property, and what does the extranet do when a different writer has already set it?
-2. Can a partner tell from the screen that a change will be overwritten by their channel manager or PMS?
-3. When a reservation fails delivery, who at the property owns it, by when, and what happens if nobody acts?
-4. Can a supplier give a cleaner, a co-host, a finance clerk and a software vendor exactly the rights they need, and revoke any one of them without affecting the others?
-5. Which actions require step-up authentication, and does that include bulk messaging and bulk exports, not only payout changes?
-6. Are payout beneficiaries and tax parties modeled separately from operating roles?
-7. Do partner dashboards, ranking features and program eligibility read the same metric definitions? Who reconciles them?
-8. How do reservation alterations reach turnover tasks and access codes, and what reconciles them if an event is lost?
-9. Which supply-side notifications cannot be muted, and what escalates when nobody acknowledges them?
-10. If an AI assistant replies to a guest or changes a rate for a supplier, under whose grant does it act, and where is that recorded?
+1. For each field a partner or host can edit, which system is the source of truth for a connected property, and can the partner tell from the screen that a change will be overwritten by their channel manager or PMS?
+2. When a reservation fails delivery, who at the property owns it, by when, and what happens if nobody acts?
+3. Can a supplier give a cleaner, a co-host, a finance clerk and a software vendor exactly the rights they need, and revoke any one of them without affecting the others?
+4. Which actions require step-up authentication, and does that include bulk messaging and bulk exports, not only payout changes?
+5. Are payout beneficiaries and tax parties modeled separately from operating roles?
+6. Do partner dashboards, ranking features and program eligibility read the same metric definitions? Who reconciles them?
+7. How do reservation alterations reach turnover tasks and access codes, and what reconciles them if an event is lost?
+8. Which supply-side notifications cannot be muted, and what escalates when nobody acknowledges them?
+9. If an AI assistant replies to a guest or changes a rate for a supplier, under whose grant does it act, and where is that recorded?
 
 The workspace is where partners and hosts set the numbers that the rest of the marketplace sells. Part III turns to those numbers: how availability, rates and restrictions are modeled so that they stay correct and searchable, beginning with [Part III — INVENTORY: Availability, Rates and Price](#part-3) and the ARI data model in [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model).
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Streams of Nights: Event-Driven Architecture for Stays
@@ -80,3 +80,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: American spelling fix; added the closing Corvane-is-fictional line to Sources. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,938 → 6,619 prose words; no headings renamed; Failure Modes and Chief Architect's view trimmed of repeats (poisoned partition kept, personal-data-in-archive bullet, 'keep the firehose local' and 'plan the long memory' paragraphs cut); duplicate closing line in Sources removed. *(AI-mediated session)*

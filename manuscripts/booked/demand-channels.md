@@ -21,11 +21,11 @@
 > * **Price Drift** — when the feed exporter, the landing page and the partner API each compose taxes, fees, currency and member prices their own way, the guest who clicked an ad sees a different number on arrival.
 > * **Built for Sunny Days** — partner and metasearch traffic grows with guest demand, so a channel layer without quotas, retry budgets and traffic classes fails on exactly the days the marketplace needs it most.
 
-A guest rarely arrives at a stays marketplace by typing its address. They arrive from a search engine's ad or its hotel results, from a metasearch site that compared five sellers of the same hotel, from an airline's "book a hotel" page, from a travel agent's tool, from a link in a newsletter, or from the app on their phone. Each of these is a **demand channel**: a path by which guest demand reaches the marketplace's supply. Some of them the marketplace owns, and some it rents at a price set in someone else's auction.
+A guest rarely arrives at a stays marketplace by typing its address. They arrive from a search engine's ad or its hotel results, from a metasearch site that compared five sellers of the same hotel, from an airline's "book a hotel" page, from a travel agent's tool, or from the app on their phone. Each of these is a **demand channel**: a path by which guest demand reaches the marketplace's supply. Some of them the marketplace owns, and some it rents at a price set in someone else's auction.
 
-Channel budgets sit with marketing, but their **architecture is not a marketing matter**. A metasearch engine sends price queries and enforces accuracy policies. A white-label site calls the shopping API thousands of times per booking. A search engine indexes destination pages. A corporate travel tool books a room and pays by virtual card. Each is an integration with the offer and reservation systems, and each fails differently.
+Part VIII has built the platform beneath both marketplaces; this last chapter covers its **external clients**. Channel budgets sit with marketing, but each channel is an integration with the offer and reservation systems: a metasearch engine sends price queries and enforces accuracy policies, a white-label site calls the shopping API thousands of times per booking, and a corporate travel tool books a room and pays by virtual card.
 
-This chapter owns three terms: **metasearch integration**, the **B2B distribution API** (business-to-business) and **landing assembly**. It builds on [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), which owns price accuracy and the offer kernel, on [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture), whose pipeline every channel must call, and on [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics), which owns look-to-book. Bot defense and traffic classes belong to [Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability), and attribution models to [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence); this chapter uses both.
+This chapter owns three terms: **metasearch integration**, the **B2B distribution API** (business-to-business) and **landing assembly**. It builds on [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), which owns price accuracy and the offer kernel, on [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture), whose pipeline every channel must call, and on [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics), which owns look-to-book. Bot defense and traffic classes belong to [Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability), and attribution models to [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence); this chapter uses both. Its rule for the two marketplaces, share the channel machinery but not the channel strategy, is the first case of the argument [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces) makes for the whole platform.
 
 {id: demand-channels--setting-the-scene-at-corvane-how-much-of-roomstead-belongs-to-one-company}
 ## Setting the Scene at Corvane: How Much of Roomstead Belongs to One Company?
@@ -45,13 +45,13 @@ On **Monday 6 September 2027**, preparing the 2028 budget, Marco Bellini (Group 
 
 The shopping-request column reconciles with the 1,400 shopping requests per gross reservation that Roomstead serves across all channels: about 300 per reservation come from its own web and apps, about 650 from metasearch queries and about 450 from affiliate API calls. Metasearch traffic therefore costs Roomstead about **€20.5 million** a year in search infrastructure, partner API traffic about **€14.2 million**, and its own sites about **€9.5 million**, at the €0.0007 per request that [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics) derives.
 
-Two numbers stood out. First, **one search engine** supplied the last external click on about **41%** of Roomstead's gross reservations: nearly all organic search, all paid search and a large share of metasearch clicks through its hotel results. Second, a stayed reservation from metasearch carried about **€26** of media cost and **€4** of search cost against Roomstead's average **€40** of revenue per stayed reservation, which left about €10 of contribution against Roomstead's average of €25.
+First, **one search engine** supplied the last external click on about **41%** of Roomstead's gross reservations: nearly all organic search, all paid search and a large share of metasearch clicks through its hotel results. Second, a stayed reservation from metasearch carried about **€26** of media cost and **€4** of search cost against Roomstead's average **€40** of revenue per stayed reservation, which left about €10 of contribution against Roomstead's average of €25.
 
 ![A coin stack of €40 shrinks by €26 of media and €4 of search to €10, beside a dashed outline of a €25 average stack.](stays-marketplace-architecture/posts/42-demand-channels/assets/images/42-demand-channels/42-metasearch-contribution.jpeg)
 
 **Figure 1:** *A stayed reservation from metasearch carried about €26 of media cost and €4 of search cost against €40 of revenue, leaving about €10 of contribution against Roomstead's average of €25.*
 
-The investigation also found that Roomstead's channel layer had grown one channel at a time:
+Roomstead's channel layer had grown one channel at a time:
 
 - The **metasearch feed exporter** (2014, inside Keystone, Roomstead's Java monolith) produced hotel lists and price feeds; landing URLs were built by a separate marketing service; click tracking lived in a third-party tag. Nobody could join a click to the price it had advertised.
 - The **affiliate XML API** (2013, also in Keystone) served about **2,300** affiliates, of which **46** API partners (white-label sites of three airlines, two banks and several travel-agency tools) made **78%** of API bookings. Every partner had the same fixed quota of 50 requests a second, whatever it sold. One price-comparison partner made one booking per **48,000** requests.
@@ -76,7 +76,7 @@ A **demand channel** is a route by which a guest's intent reaches the marketplac
 | **Metasearch** | A comparison site that shows several sellers of the same property | Per click, or a commission per booking or stay, depending on the engine and program | Google's hotel results, trivago, KAYAK |
 | **Partner distribution** | A reseller that shows the marketplace's supply under its own brand or inside its own tool | Commission share or a margin the reseller adds | Affiliates, white-label sites, travel agents, corporate travel tools |
 
-The families overlap: trivago is a metasearch business majority-owned by Expedia Group, which reports it as a separate segment earning advertising revenue from referrals ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)); KAYAK is one of Booking Holdings' primary consumer brands ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). An OTA may buy clicks from a metasearch site its competitor owns.
+The families overlap, so an OTA may buy clicks from a metasearch site its competitor owns: trivago is a metasearch business majority-owned by Expedia Group, which reports it as a separate segment earning advertising revenue from referrals ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)); KAYAK is one of Booking Holdings' primary consumer brands ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)).
 
 {id: demand-channels--metasearch-integration}
 ### Metasearch integration
@@ -110,7 +110,7 @@ The forms differ in what the partner controls:
 {id: demand-channels--landing-assembly}
 ### Landing assembly
 
-**Landing assembly** is the composition of an entry page (a destination page, a metasearch landing, a campaign page) from a default or supplied stay query, the search pipeline's results, editorial and structured content, and merchandising slots, rendered so that crawlers, humans and accuracy checkers read the same prices. [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture) establishes that landing pages must call the same pipeline as guest search. This chapter owns the rest: which pages exist, how they render, which slots they carry and how they are measured.
+**Landing assembly** is the composition of an entry page (a destination page, a metasearch landing, a campaign page) from a default or supplied stay query, the search pipeline's results, editorial and structured content, and merchandising slots, rendered so that crawlers, humans and accuracy checkers read the same prices. Landing pages call the same pipeline as guest search ([Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture)); this chapter owns the rest: which pages exist, how they render, which slots they carry and how they are measured.
 
 {id: demand-channels--architecture-one-offer-many-doors}
 ## Architecture: One Offer, Many Doors
@@ -121,7 +121,7 @@ The architecture I recommend has three layers. At the bottom are the **shared co
 
 **Figure 2:** *Every door calls the same offer. Web and app backends, the metasearch integration and the partner API are adapters over one stay query and offer API. Each writes to a channel ledger that joins clicks, quotes and bookings, so channels can be compared on what they earned.*
 
-The three adapters have different responsibilities and, above all, different prohibitions:
+What separates the adapters is what each must not do:
 
 | Adapter | Responsibility | Owns | Must not |
 | --- | --- | --- | --- |
@@ -133,11 +133,9 @@ The three adapters have different responsibilities and, above all, different pro
 {id: demand-channels--web-and-apps-backends-for-frontends-and-server-rendering}
 ### Web and apps: backends for frontends and server rendering
 
-A **backend for frontend** is a thin service per client surface (web, iOS, Android) that composes domain APIs into the shape one screen needs, so that search never learns about app versions and the offer service never learns about page layouts.
-
 Three documented cases show the range of designs. Booking.com, in a September 2026 post, says each major page (home, search results, property page) has its own Node.js rendering service owned by the team for that page, that sections such as the rooms table are owned by different teams and can be deployed independently through Webpack Module Federation, and that pages are server-rendered because they "have to work when client-side JavaScript is not available, and they have to be crawl-able". The same post describes leaving Perl rendering "one fragment at a time", each swap behind an experiment ([Booking.com Engineering, 2026](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002)). Airbnb described in 2021 a server-driven UI system, the Ghost Platform, that sends screen structure from the server to web, iOS and Android to address the problem that "each time we need to add new features to our listing page, we need to release a new version of our mobile apps" ([Airbnb Engineering, 2021](https://medium.com/airbnb-engineering/a-deep-dive-into-airbnbs-server-driven-ui-system-842244c5f5); five years old, and the current state is not public). Agoda, in May 2026, described serving white-label partners from one design system with design tokens and per-partner themes: "New partner = new theme, not new code" ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-agoda-powers-multiple-travel-brands-with-one-design-system-a48de5f906af)).
 
-Apps carry many of the bookings and the longest tail of versions. Trip.com reported that "over 90% of our total transaction orders were executed through our mobile channels" in 2025 ([Trip.com Group 20-F, 2026](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm)); Booking Holdings reported its mobile-app share of room nights as a mid-fifties percentage ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). The consequence is that **app releases cannot be recalled**: a rule in the client (a retry policy, a price label) stays wrong while old versions remain installed. Corvane learned this from a retry shipped in a January 2027 app release, which created 212 duplicate bookings ([Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration)). The rules I use:
+Apps carry many of the bookings and the longest tail of versions: Trip.com reported that "over 90% of our total transaction orders were executed through our mobile channels" in 2025 ([Trip.com Group 20-F, 2026](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm)); Booking Holdings reported its mobile-app share of room nights as a mid-fifties percentage ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Because **app releases cannot be recalled**, a rule in the client (a retry policy, a price label) stays wrong while old versions remain installed. Corvane learned this from a retry shipped in a January 2027 app release, which created 212 duplicate bookings ([Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration)). The rules I use:
 
 1. **Prices, policies and eligibility are rendered from server data, never computed in the client.** The client may format a number; it may not add a fee.
 2. **Every client call that changes state carries a server-minted idempotency key**, and client retry behavior is part of the API contract, with a server-side minimum supported version.
@@ -156,7 +154,7 @@ Search-engine optimization (SEO) for stays is about destination and theme pages:
 {id: demand-channels--merchandising-slots}
 ### Merchandising slots
 
-Landing pages and the home screen carry **merchandising slots**: a "deals this weekend" strip, a member-price banner, a campaign tile, a sponsored property. A slot is a placement that the BFF fills from a decision service. Two rules keep slots from becoming a second, unaudited ranking. First, a slot's content comes from the same offer and eligibility services as search, so a "deal" shown on a landing page is a real, bookable price for the shown guest ([Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) owns eligibility). Second, any slot that a partner pays for is labeled and logged as paid visibility, under the same disclosure rules as ranking ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)).
+**Merchandising slots** (a "deals this weekend" strip, a member-price banner, a sponsored property) are placements on landing pages and the home screen that the BFF fills from a decision service. Two rules keep them from becoming a second, unaudited ranking. First, a slot's content comes from the same offer and eligibility services as search, so a "deal" shown on a landing page is a real, bookable price for the shown guest ([Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) owns eligibility). Second, any slot that a partner pays for is labeled and logged as paid visibility, under the same disclosure rules as ranking ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)).
 
 {id: demand-channels--metasearch-in-practice}
 ## Metasearch in Practice
@@ -164,9 +162,9 @@ Landing pages and the home screen carry **merchandising slots**: a "deals this w
 {id: demand-channels--the-click-as-a-contract}
 ### The click as a contract
 
-A metasearch click is a promise made on the marketplace's behalf by someone else: "this hotel, these dates, this party, this total, from this seller". The landing page either honors it or does not. The documentation gives the integrator an unusual gift: Google substitutes the advertised stay and price into the landing URL. Its documented variables include the check-in and check-out dates, `PARTNER-HOTEL-ID`, `PARTNER-ROOM-ID` and `RATE-PLAN-ID`, the occupancy, `USER-COUNTRY`, `USER-DEVICE`, `USER-CURRENCY`, and `PRICE-DISPLAYED-TOTAL`, `PRICE-DISPLAYED-TAX` and `PRICE-DISPLAYED-FEES`, "the total room cost shown to the user" ([Google, Landing page URLs, 2026](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-urls)).
+A metasearch click is a promise made on the marketplace's behalf by someone else: "this hotel, these dates, this party, this total, from this seller". Google substitutes the advertised stay and price into the landing URL. Its documented variables include the check-in and check-out dates, `PARTNER-HOTEL-ID`, `PARTNER-ROOM-ID` and `RATE-PLAN-ID`, the occupancy, `USER-COUNTRY`, `USER-DEVICE`, `USER-CURRENCY`, and `PRICE-DISPLAYED-TOTAL`, `PRICE-DISPLAYED-TAX` and `PRICE-DISPLAYED-FEES`, "the total room cost shown to the user" ([Google, Landing page URLs, 2026](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-urls)).
 
-That makes a design possible that the marketplace should not skip: **check every paid click on arrival**. The landing resolver reads the advertised total, re-quotes the stay through the offer API, compares the two, logs the result in the click record, and only then renders the page. The marketplace then measures accuracy on every paid click it receives, rather than waiting for the engine's sample. [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)'s sampler remains the measure of the cache; the click-time check is the measure of what guests actually saw.
+So the marketplace can **check every paid click on arrival**: the landing resolver reads the advertised total, re-quotes the stay through the offer API, logs both in the click record, and only then renders the page. Accuracy is then measured on every paid click, not on the engine's sample. [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)'s sampler remains the measure of the cache; the click-time check is the measure of what guests actually saw.
 
 ![Swimlanes for metasearch, integration, offer API, landing page and channel ledger: the integration answers a live query from the offer API, and when the guest clicks it re-quotes the offer, records both totals in the ledger and tells the landing page whether the price matches.](stays-marketplace-architecture/posts/42-demand-channels/assets/images/42-demand-channels/42-click-checked-on-arrival.jpeg)
 
@@ -175,7 +173,7 @@ That makes a design possible that the marketplace should not skip: **check every
 {id: demand-channels--what-the-landing-page-should-do-when-the-price-has-moved}
 ### What the landing page should do when the price has moved
 
-The engine's policy and consumer law limit the options. The page must not hide the change, and it must not show the old price as available. My rules for the landing resolver:
+The engine's policy and consumer law allow neither hiding the change nor showing the old price as available. My rules for the landing resolver:
 
 | Outcome of the click-time re-quote | Landing behavior | Recorded as |
 | --- | --- | --- |
@@ -197,14 +195,14 @@ The cause column matters more than the count. [Is It Still Available? Availabili
 | **Pull and Changed Pricing** | The marketplace | Bounded by the pull schedule and hint frequency | Moderate, scheduled | Marketplaces with a fast offer cache and complex price composition |
 | **Live queries** | The marketplace | Current, within the deadline | Proportional to engine traffic, peaky | Long-tail itineraries; supply with volatile prices |
 
-For an OTA with derived rates, member prices and city taxes, ARI push hands the composition problem to the engine, whose arithmetic will disagree with the marketplace's in exactly the cases guests notice. Pull and live queries keep the arithmetic in one place, at the price of load. My default is **pull for the popular head of itineraries, live queries for the tail, and push only where the marketplace's own composition is trivially reproducible**. In every mode, the feed is generated from the offer API, never from a separate export of the ARI store.
+For an OTA with derived rates, member prices and city taxes, ARI push hands the composition problem to the engine, whose arithmetic will disagree with the marketplace's in exactly the cases guests notice. My default is **pull for the popular head of itineraries, live queries for the tail, and push only where the marketplace's own composition is trivially reproducible**. In every mode, the feed is generated from the offer API, never from a separate export of the ARI store.
 
 {id: demand-channels--who-metasearch-is-good-for}
 ### Who metasearch is good for
 
-The economics are uncomfortable. Metasearch lets every seller of the same hotel compete on displayed price, and the hotel itself increasingly competes there too. Under the EU Digital Markets Act (DMA), Booking was designated a gatekeeper for Booking.com on 13 May 2024, and Article 5(3) of the DMA bars gatekeepers from preventing business users from offering different prices or conditions through other intermediaries or their own direct channels ([European Commission, DMA gatekeepers, n.d.](https://digital-markets-act.ec.europa.eu/gatekeepers_en); [Regulation (EU) 2022/1925](https://eur-lex.europa.eu/eli/reg/2022/1925/oj), 2022); courts in several EU countries had already restricted such clauses ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) covers the details). An OTA's metasearch position therefore rests on accuracy, landing conversion, payment and member options and supply breadth, not on a guaranteed lowest price.
+Metasearch lets every seller of the same hotel, and increasingly the hotel itself, compete on displayed price. Under the EU Digital Markets Act (DMA), Booking was designated a gatekeeper for Booking.com on 13 May 2024, and Article 5(3) of the DMA bars gatekeepers from preventing business users from offering different prices or conditions through other intermediaries or their own direct channels ([European Commission, DMA gatekeepers, n.d.](https://digital-markets-act.ec.europa.eu/gatekeepers_en); [Regulation (EU) 2022/1925](https://eur-lex.europa.eu/eli/reg/2022/1925/oj), 2022); courts in several EU countries had already restricted such clauses ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) covers the details). An OTA's metasearch position therefore rests on accuracy, landing conversion, payment and member options and supply breadth, not on a guaranteed lowest price.
 
-Booking Holdings' 2025 annual report states the alternative strategy plainly. It reports that consumers "coming directly to our platforms" booked a mid-fifties percentage of its room nights in 2025, up year on year, which "benefited our marketing efficiency" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Airbnb's report credits its brand with allowing "lower reliance on paid marketing channels" ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Metasearch is a channel to be accurate and efficient in, and one whose share a marketplace should reduce over time by turning first bookings into returning guests.
+Booking Holdings' 2025 annual report states the alternative strategy plainly. It reports that consumers "coming directly to our platforms" booked a mid-fifties percentage of its room nights in 2025, up year on year, which "benefited our marketing efficiency" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Airbnb's report credits its brand with allowing "lower reliance on paid marketing channels" ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Metasearch is a channel to be accurate and efficient in, and one whose share a marketplace should reduce by turning first bookings into returning guests.
 
 {id: demand-channels--partner-distribution-in-practice}
 ## Partner Distribution in Practice
@@ -212,7 +210,7 @@ Booking Holdings' 2025 annual report states the alternative strategy plainly. It
 {id: demand-channels--the-flow-and-its-freshness-contract}
 ### The flow and its freshness contract
 
-A partner distribution API exposes the same steps as the marketplace's own checkout, separated by explicit freshness contracts. I would design it on Rapid's documented pattern, which is the clearest public one:
+A partner distribution API exposes the steps of the marketplace's own checkout, separated by explicit freshness contracts. I would design it on Rapid's documented pattern:
 
 ![A flow from content files to shop, price check, book and manage, with a quotas gauge governing shopping and notifications attached to management.](stays-marketplace-architecture/posts/42-demand-channels/assets/images/42-demand-channels/42-partner-distribution-flow.jpeg)
 
@@ -227,9 +225,9 @@ A partner distribution API exposes the same steps as the marketplace's own check
 {id: demand-channels--quotas-by-traffic-against-revenue}
 ### Quotas by traffic against revenue
 
-Partner traffic has the highest look-to-book ratios on the platform, because partners aggregate many sellers and refresh their own caches broadly. Agoda described in 2023 how broad searches from affiliate traffic drove evictions in its Price Delivery System, which serves prices for its "web, mobile, and affiliate APIs" ([Agoda Engineering, 2023](https://medium.com/agoda-engineering/improving-performance-using-distributed-cache-with-couchbase-aa7ebf3a12c9)). Expedia's Rapid documentation states the governing rule: rate limits are calculated "monthly, taking into account a partner's traffic vs. revenue", typically over a three-month window, with "a very generous allowance for the first 3 months" for new partners ([Rapid rate limiting, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting)).
+Partner traffic has the highest look-to-book ratios on the platform, because partners refresh their own caches broadly. Agoda described in 2023 how broad searches from affiliate traffic drove evictions in its Price Delivery System, which serves prices for its "web, mobile, and affiliate APIs" ([Agoda Engineering, 2023](https://medium.com/agoda-engineering/improving-performance-using-distributed-cache-with-couchbase-aa7ebf3a12c9)). Expedia's Rapid documentation states the governing rule: rate limits are calculated "monthly, taking into account a partner's traffic vs. revenue", typically over a three-month window, with "a very generous allowance for the first 3 months" for new partners ([Rapid rate limiting, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting)).
 
-That is a look-to-book contract, and I would make it explicit in four parts:
+I would make this look-to-book contract explicit in four parts:
 
 1. **A shopping budget per partner**, recalculated monthly from stayed bookings over a trailing window, with a floor for new partners and a seasonal adjustment.
 2. **A retry budget**: every rejection returns HTTP 429 with a Retry-After header, and the partner contract caps retries. [Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability) describes what happened when Corvane forgot the header on Black Friday 2027: one affiliate's client retried immediately and tripled its request rate.
@@ -239,7 +237,7 @@ That is a look-to-book contract, and I would make it explicit in four parts:
 {id: demand-channels--travel-agents-and-corporate-travel}
 ### Travel agents and corporate travel
 
-Agency and corporate demand adds requirements that a consumer API lacks:
+Agency and corporate demand adds four requirements:
 
 - **Payment flows**: the corporation's central card or a VCC, an invoice with the right VAT details, or payment at the property with the company's card on file. Booking.com's Demand API documents the corporate VCC and MOTO flows ([Booking.com Developers, n.d.](https://developers.booking.com/demand/docs/payments/overview)); [Paying for a Future Night: Payment Orchestration for Stays](#stay-payments) owns the card mechanics.
 - **Negotiated and qualified rates**: corporate rate plans visible only to an authenticated company, which are audience-restricted offers and must go through the same eligibility checks as member prices. Rapid exposes business rates through a `travel_purpose=business` attribute ([Rapid Shopping, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/about-shopping-api)).
@@ -247,11 +245,6 @@ Agency and corporate demand adds requirements that a consumer API lacks:
 - **Policy**: corporate booking tools enforce travel policy (price caps per city, approved properties). The marketplace provides the data; the tool enforces the policy.
 
 I would not build a separate stack for corporate demand: it is a set of rate audiences, payment flows and data fields on the same partner API.
-
-{id: demand-channels--ai-assistants-as-the-next-partner}
-### AI assistants as the next partner
-
-Booking Holdings' 10-K warns that AI features of third-party platforms may "satisfy user intent without directing users to our services". To the architecture, an assistant shopping for a guest is a partner API client with many broad queries and few bookings, so the partner API's quotas and price-check contract are its natural foundation. [AI Across the Stay: Agents, Assistants and Automation](#ai-in-travel-stays) takes up the strategy.
 
 {id: demand-channels--a-worked-example-one-click-on-hotel-miradouro}
 ## A Worked Example: One Click on Hotel Miradouro
@@ -264,7 +257,7 @@ On **Tuesday 5 October 2027**, a guest in Madrid compared hotels in Lisbon for *
 2. **The click.** The guest clicks Roomstead's offer. The landing URL carries the stay, `PARTNER-HOTEL-ID`, the rate plan ID, `USER-COUNTRY=ES`, `USER-CURRENCY=EUR` and `PRICE-DISPLAYED-TOTAL=280`.
 3. **The re-quote.** Lantern resolves the point of sale (Spain, Spanish, euro, mobile) and re-quotes the same offer through the offer API. Kernel version and composition are identical; the total is €264 plus €16. Lantern writes the click record: advertised €280, current €280, match, kernel version, Pricegrid cell age 41 seconds.
 4. **The landing page.** The BFF renders Miradouro's property page with the advertised room and rate first, the total of €280 shown with the €16 city tax labeled as payable at the hotel, and the hotel's other rooms below. The guest books, as the real guest did.
-5. **The outcome.** The reservation carries the click record's ID. When the stay completes, the channel ledger marks the click "stayed"; if it had been canceled, the ledger would carry the cancellation against metasearch.
+5. **The outcome.** The reservation carries the click record's ID, so the channel ledger later marks the click "stayed" or carries the cancellation against metasearch.
 
 In the real October click, the old design failed. The 2014 feed exporter composed the city tax into the advertised total for some points of sale and not others, while the landing page showed the room total alone: the guest saw €264 under a €280 ad, and the engine's checker would have scored it as a mismatch. Neither number was wrong; their composition differed. That is the **1.4 points** of fee and tax mismatch in [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)'s audit. Of the 1.2 million Spanish and Portuguese clicks replayed, the prototype matched **96.9%** on arrival, against **95.7%** measured on the same clicks in the old path; nearly all the remaining mismatches were stale prices and availability, which belong to Pricegrid's freshness work rather than to the channel.
 
@@ -273,9 +266,9 @@ In the real October click, the old design failed. The 2014 feed exporter compose
 
 The forum of **12 October 2027** approved four decisions.
 
-**1. Lantern, Roomstead's metasearch integration.** One service owns the hotel list feeds, price delivery (pull for the popular head, live queries for the tail), point-of-sale and landing resolution, click-time re-quoting and the click-and-quote record. It replaces the 2014 feed exporter and the marketing landing-URL service by the end of Q2 2028. It calls the offer API and the offer kernel for every price; it has no pricing code of its own. Owner: Roomstead distribution engineering in Dublin. Its accuracy dashboard reports two numbers side by side: Corvane's click-time match rate on all paid clicks, and each engine's reported score.
+**1. Lantern, Roomstead's metasearch integration.** One service, with no pricing code of its own, owns hotel list feeds, price delivery (pull for the popular head, live queries for the tail), landing resolution, click-time re-quoting and the click-and-quote record. It replaces the 2014 feed exporter and the marketing landing-URL service by the end of Q2 2028. Owner: Roomstead distribution engineering in Dublin. Its accuracy dashboard shows Corvane's click-time match rate on all paid clicks beside each engine's reported score.
 
-**2. Gangway, the group partner distribution API.** Content files, shop, price check, book and manage, on the One Stay offer and reservation contracts, with partner keys, quotas recalculated monthly from stayed revenue against shopping traffic, mandatory Retry-After, a retry budget in every contract, and a cost line per partner. It replaces the 2013 affiliate XML API by the end of 2028. The 46 API partners migrate first; the 2,300 link affiliates keep tracking links. Corporate and agency rates arrive as audience-restricted offers in 2029.
+**2. Gangway, the group partner distribution API.** The partner flow above on the One Stay offer and reservation contracts, with the four-part look-to-book contract (quotas recalculated monthly from stayed revenue, mandatory Retry-After, retry budgets, a cost line per partner). It replaces the 2013 affiliate XML API by the end of 2028. The 46 API partners migrate first; the 2,300 link affiliates keep tracking links. Corporate and agency rates arrive as audience-restricted offers in 2029.
 
 **3. Landing pages from Waypoint.** The page set is derived from Waypoint, the group destination graph ([Where Exactly? Destinations, Geo and Map Search](#destinations-and-maps)); a page exists only where the place has at least **ten** bookable properties (or, for Nookaway, ten listings) for the default stay, otherwise it redirects to its parent. Pages are server-rendered from the search pipeline and carry validity-stamped prices. The client-rendered search page gets a server-rendered first view in 2028, which retires the prerendering service. On the 2027 page list, the rule removes or redirects about **1.5 million** of the 2.6 million indexable URLs.
 
@@ -300,7 +293,7 @@ Nookaway's listings would **not** be distributed through Gangway before 2029, an
 | Partner quotas | Fixed per partner | Recalculated from traffic against revenue | Small program, few partners | Large program; partners with very different conversion |
 | Landing page set | Generated for every place and filter | Derived from the destination graph and gated on bookable supply | Never, in my view | Always |
 
-The row with the largest consequences is the second. Spreading metasearch logic across search and pricing services saves a service but scatters engine-specific rules (point-of-sale mapping, live-query deadlines, landing URL variables, EEA changes) across teams that do not own the commercial relationship. A dedicated integration service has one owner, who answers both to the engine and to the CFO.
+The second row has the largest consequences: spreading metasearch logic across search and pricing services scatters engine-specific rules (point-of-sale mapping, live-query deadlines, landing URL variables, EEA changes) across teams that do not own the commercial relationship.
 
 {id: demand-channels--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
@@ -319,41 +312,35 @@ The row with the largest consequences is the second. Spreading metasearch logic 
 
 Rapid's documentation is the clearest public evidence of how different hosted stays are when distributed. Vrbo inventory in Rapid is "single-unit only" with "a single rate plan"; same-day bookings and windows under 72 hours are excluded "because hosts need time to process bookings and prepare the property"; a rental agreement "must be displayed on any check-out page"; and the availability calendar returns per-day availability and stay rules, with "Caching is not supported at this time" ([Rapid Vrbo integration guide](https://developers.expediagroup.com/rapid/lodging/vacation-rentals/vrbo-integration-guide) and [availability calendar](https://developers.expediagroup.com/docs/products/rapid/lodging/vacation-rentals/vrbo-availability-calendar), n.d.; the vacation-rentals page says the product is available only to a limited number of partners). **A hotel-shaped shopping API cannot sell homes**, and a hosted-stays marketplace that distributes its homes adds one more channel to the calendar-sync problem that [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync) describes.
 
-My judgement for a group running both: **share the channel machinery, not the channel strategy.** The edge, the BFF framework, landing assembly, the channel ledger and the partner API framework are one platform. The OTA should invest in metasearch accuracy and partner distribution because its guests compare sellers. The hosted-stays marketplace should invest in direct, app and organic channels, and distribute outward only for hosts who opt in, through a calendar-first product with no caching and a lead time. Corvane chose exactly that, and Nookaway's homes stayed out of Gangway until at least 2029.
+My judgement for a group running both: **share the channel machinery, not the channel strategy.** The machinery in the table's last row is one platform. The OTA should invest in metasearch accuracy and partner distribution because its guests compare sellers. The hosted-stays marketplace should invest in direct, app and organic channels, and distribute outward only for hosts who opt in, through a calendar-first product with no caching and a lead time.
 
 {id: demand-channels--failure-modes}
 ## Failure Modes
 
-**The feed with its own arithmetic.** The metasearch exporter, the landing page and the partner API each compose taxes, fees, currency and member prices. Each copy is right in its own tests and wrong against the others. The symptom is mismatch causes that name a tax, a fee or an audience rather than availability. The fix is that channel adapters call the offer kernel and nothing else.
-
-**Landing on the wrong thing.** The click advertised a specific room and rate; the landing page shows the property's cheapest room, a different currency, or a search results page. The guest cannot find what they clicked and leaves. Engines score this as a mismatch, and the marketplace paid for the click.
-
-**Partners without budgets.** Fixed quotas, or none, give a price-comparison partner the same shopping capacity as an airline's white-label site that books a hundred times more. On peak days, the broadest crawler evicts the cache guests need. Without Retry-After and retry budgets, quota rejections multiply the load they were meant to shed.
-
-**The partner booking path.** Partner reservations go through an older path than the main checkout, without idempotency keys, price check or the same cancellation policy. Duplicate bookings and Policy Spaghetti follow.
-
-**A million thin pages.** Pages generated for every place and filter dilute crawl budget, show near-empty results and carry "from" prices cached for days.
-
-**Measuring clicks, not stays.** Channels are compared on bookings made, so the channel that brings refundable bookings that later cancel looks best. The marketplace pays for the booking and earns on the stay; the channel ledger must carry the stay outcome.
-
-**Dependence nobody owns.** The share of business that one external company controls grows quietly, spread across marketing, search and distribution, until an engine changes its rules.
+- **The feed with its own arithmetic** — feed, landing page and partner API each compose taxes, fees, currency and member prices; mismatch causes then name a tax, a fee or an audience rather than availability. See What the landing page should do when the price has moved.
+- **Landing on the wrong thing** — the click advertised a room and rate, but the page shows the cheapest room, another currency or a results page; the guest leaves and the engine scores a mismatch. See the same section.
+- **Partners without budgets** — fixed quotas, or none, give a price-comparison partner the same capacity as an airline's white-label site that books a hundred times more, so the broadest crawler evicts the cache guests need, and rejections without Retry-After multiply the load. See Quotas by traffic against revenue.
+- **The partner booking path** — partner reservations skip the idempotency keys, price check or cancellation policy of the main checkout, so duplicate bookings and Policy Spaghetti follow. See The flow and its freshness contract.
+- **A million thin pages** — pages for every place and filter dilute crawl budget, show near-empty results and carry "from" prices cached for days. See Landing pages and SEO.
+- **Measuring clicks, not stays** — channels compared on bookings made favor refundable bookings that later cancel; the channel ledger must carry the stay outcome.
+- **Dependence nobody owns** — the share controlled by one external company grows, spread across marketing, search and distribution, until an engine changes its rules. See Corvane's decision 4.
 
 {id: demand-channels--the-chief-architect-s-view}
 ## The Chief Architect's View
 
 **What to decide.**
 
-1. **The channel-adapter rule.** Every channel calls the stay query, the offer API and the reservation contract; no adapter computes prices or creates reservations by another path. This is the rule that prevents Price Drift across channels, and the architecture board should own it.
-2. **One owner per external integration.** Metasearch integration, partner distribution and landing assembly each have an owning team that answers for the engine's or partner's contract and for the channel's cost. At Corvane, Lantern belongs to Roomstead distribution engineering and Gangway to a group team, because Gangway's framework is shared across brands.
-3. **The look-to-book contract.** Quotas per partner and per engine, recalculated from stayed revenue, with retry budgets and traffic classes. Distribution sets the commercial terms; the platform sets the capacity envelope; neither may change the other's numbers alone.
-4. **The channel ledger as a governed data product.** Clicks, quotes, sessions and bookings with their stay outcomes, owned jointly with the data platform, so that attribution, accuracy and channel profitability read the same records ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)).
-5. **The dependence metric.** Report the share of business controlled by the largest external company, and decide which owned-channel investments reduce it.
+1. **The channel-adapter rule**: no adapter computes prices or creates reservations by another path. The architecture board owns it, because it is what prevents Price Drift across channels.
+2. **One owner per external integration**, answering for the engine's or partner's contract and the channel's cost. At Corvane, Lantern belongs to Roomstead distribution engineering and Gangway to a group team, because Gangway's framework is shared across brands.
+3. **The look-to-book contract.** Distribution sets the commercial terms; the platform sets the capacity envelope; neither may change the other's numbers alone.
+4. **The channel ledger as a governed data product**, owned jointly with the data platform, so that attribution, accuracy and channel profitability read the same records ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)).
+5. **The dependence metric**, and which owned-channel investments should reduce it.
 
 **Who decides.** The CFO and the brand's commercial lead decide spend per channel; the Chief Architect decides how channels connect and what they may not do; the data platform decides how the facts are recorded. Disputes go to the architecture forum, with the channel ledger as evidence.
 
 **What to watch.** Click-time match rate by engine and cause; live-query latency against each engine's deadline; shopping requests and search cost per stayed booking by partner; stayed, cancellation-adjusted contribution per channel; and the dependence share.
 
-**Long-term considerations.** Engines change their surfaces (the EEA live-query change removed an integration mode by a rule nobody at the marketplace wrote); AI assistants may shop through partner APIs at scale; and hotels' direct-booking pressure, strengthened by the end of parity clauses, will keep compressing metasearch margins. The durable answer to all three is the same: **accurate, cheap offers behind every door, and more guests who come back without being bought again.**
+**Long-term considerations.** Engines change their surfaces (the EEA live-query change removed an integration mode by a rule nobody at the marketplace wrote); AI assistants may shop through partner APIs at scale, as broad-query, low-booking partner clients (Booking Holdings' 10-K warns that third-party AI features may "satisfy user intent without directing users to our services"; [AI Across the Stay: Agents, Assistants and Automation](#ai-in-travel-stays) takes up the strategy); and hotels' direct-booking pressure, strengthened by the end of parity clauses, will keep compressing metasearch margins. The answer to all three is the same: **accurate, cheap offers behind every door, and more guests who come back without being bought again.**
 
 {id: demand-channels--questions-to-ask}
 ## Questions to Ask
@@ -369,7 +356,7 @@ My judgement for a group running both: **share the channel machinery, not the ch
 9. What share of our gross bookings comes from the last click of one external company, and what are we doing about it?
 10. For the hosted-stays side: if we distributed our homes to other sellers, how would their calendars stay as fresh as our own?
 
-Every channel in this chapter depends on one decision being made well: what the marketplace can share between its two businesses and what it must keep apart. The demand side argued for shared machinery and separate strategies. [Part IX — LEADERSHIP: The Chief Architect's Agenda](#part-9) opens the Chief Architect's agenda, and its first chapter, [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces), makes that argument for the whole platform.
+This chapter shared the channel machinery between the two marketplaces and kept their channel strategies apart. [Part IX — LEADERSHIP: The Chief Architect's Agenda](#part-9) opens the Chief Architect's agenda, and its first chapter, [One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces), asks what to share and what to keep apart for the whole platform.
 
 {id: demand-channels--sources-and-evidence}
 ## Sources and Evidence

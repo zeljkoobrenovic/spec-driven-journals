@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards
@@ -80,3 +80,7 @@ Article only for now.
 - **2026-10-21** — Editorial review pass: trimmed from 9,210 to 8,461 words (repetition, scene-setting, failure modes, Chief Architect's view, one question merged), aligned forum name and King's Day date with the ledger, expanded OTA/GDS, verified Booking.com reservation-delivery and price-bound claims. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: aligned the hold-states alt text with the single Held state the image shows. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,148 → 6,027 prose words; the "Supply In From Bedbanks and GDSs" section folded into one paragraph under "Four delivery models" (pull-cache detail left to [[availability-engine]]); lead now says where the chapter sits in Part II; two failure modes that repeated body sections removed. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,148 → 5,828 prose words cumulative since HEAD (−5%); merged the two lead paragraphs and dropped the owned-terms sentence the definitions list repeats; Failure Modes compressed to one-line pointers to the sections that handle each; Chief Architect's view compressed to five bullets (deprecation and neutrality now point to their sections); removed the Expedia certification row that repeated the proprietary-API table. *(AI-mediated session)*
+
+- **2026-10-22** — Removed the 7-day new-product first-price check (author decision); "Three details" → "Two details". *(AI-mediated session)*

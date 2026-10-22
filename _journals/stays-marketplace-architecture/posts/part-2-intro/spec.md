@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part II — SUPPLY: Properties, Homes and the Partners Behind Them
@@ -19,7 +19,7 @@ Chief architects, supply and connectivity leads, and engineering directors respo
 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three) and a FAILURE PATTERNS callout using exact names linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument (supply is master data with many writers) and names concretely where hotels and homes differ: pool vs one unit, pushed PMS truth vs an iCal mesh, business contract vs a person with a registration number.
-- [ ] One mermaid diagram with a Figure caption.
+- [ ] One diagram (illustrated) with a Figure caption.
 - [ ] A "Chapters in this part" list with one paragraph per chapter in config order, each linking the chapter and saying what it decides, drawn from the chapters' KEY POINTS, leads and Chief Architect's views.
 - [ ] Corvane facts match the ledger and the chapters (€12 rate, Seville double booking, Costa Keys' 38 apartments, Brightwell's 41,000 properties, 187,000 shared-login listings).
 - [ ] Ends with a hand-off to [[property-and-listing-model]]; 500–900 words of body.
@@ -51,3 +51,4 @@ None.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: tightened key points and lead, corrected Brightwell "hotels" to properties, noted that Waypoint enriches the place registry (map v2). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 832 → 850 words; lead now names Parts III and IV as what depends on supply; split the place-registry sentence; spelled out the Corvane Connect neutrality rule. No headings, sections or facts changed. *(AI-mediated session)*

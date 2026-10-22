@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Running the Supply Side: Extranets, Host Tools and Operations
@@ -23,7 +23,7 @@ Chief and principal architects, supply and partner-platform engineering leads, a
 - [x] Treats reservation exceptions as work items with owners, deadlines and escalation, using Booking.com's documented 30-minute fallback.
 - [x] Explains turnover tasks and access codes as derived resources driven by versioned reservation events, and states a build-versus-ecosystem judgement.
 - [x] Shows the architectural obligations of partner analytics and programs (shared metrics, explainable ranking, privacy of benchmarks, auditable eligibility; AGCM 2026).
-- [x] Includes trade-off tables, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and design-review questions; four mermaid diagrams.
+- [x] Includes trade-off tables, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and design-review questions; six figures (four architecture diagrams, two conceptual illustrations).
 - [x] Every company claim is dated and sourced; inferences are labeled.
 
 ## Non-goals
@@ -71,3 +71,5 @@ Chief and principal architects, supply and partner-platform engineering leads, a
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: renamed the Miradouro closure room type to "Twin" (ledger room types), named Courier and Gauge, American spelling, light trim to 8,494 words, timetoread 37. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,647 → 6,639 prose words; opening now places the chapter as the close of Part II and names what later chapters build on; two paragraphs split or merged, restating sentences cut; success criterion updated from "four mermaid diagrams" to the six figures. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,647 → 6,308 prose words cumulative from HEAD (−5.1%); cut repetition across sections (lead re-definition of extranet, closure restated in worked example 2, What-to-share restating the spine, Chief Architect's Decide list compressed to one sentence, Failure Modes fix column turned into pointers to the handling sections); Questions to ask merged from 10 to 9. *(AI-mediated session)*

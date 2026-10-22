@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part I — MARKETPLACE: The Business of a Night's Stay
@@ -19,7 +19,7 @@ Chief and enterprise architects, principal engineers and engineering or product 
 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS THIS PART ADDRESSES callout with exact pattern names, linked to where-stay-platforms-go-wrong.html.
 - [ ] A short lead frames the two marketplace types by source of truth (supply integration vs one-unit integrity and trust) and acknowledges convergence.
-- [ ] One mermaid diagram with a Figure caption that states the part's conclusion.
+- [ ] One diagram (illustrated) with a Figure caption that states the part's conclusion.
 - [ ] `## Chapters in this part` has one paragraph per chapter, in config order, each with the question it answers and when to read it, consistent with the written chapters' callouts and Chief Architect's views.
 - [ ] Corvane (labeled fictional) uses only facts from the chapters and ledger: 8 February 2027 CEO question, €195 million at 1,400:1, 48-capability map on 23 March 2027, €145 million One Stay program approved April 2027, 23 bounded contexts adopted 5 May 2027.
 - [ ] Hands off to [[two-stay-marketplaces]] and names [[part-2]].
@@ -52,3 +52,4 @@ Internal: [[two-stay-marketplaces]], [[stays-marketplace-economics]], [[stays-ca
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: "shopping requests" wording for the 1,400 figure; capability map and context map flagged as v1 with a pointer to the December 2027 revisions; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagrams to illustrations and added 1 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 857 → 858 words; Hotel-Shaped Home callout corrected to "three of the four chapters" (economics chapter does not name it); two long Corvane sentences split; no sections changed. *(AI-mediated session)*

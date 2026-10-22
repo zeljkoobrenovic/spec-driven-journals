@@ -25,7 +25,7 @@ After checkout ([Turning an Offer Into a Booking: Checkout Orchestration](#check
 
 The architectural problem is that **the marketplace owns the guest's experience of the trip but almost none of its facts.** The reservation belongs to the reservation service, the money to payments, the door code to the host's property management system (PMS) or lock platform, the address to the place registry, the delivery of an e-mail to a vendor. Assembled badly, these facts give the guest a confident status that is not true; carried badly, they reach nobody.
 
-This chapter owns three terms: **trip timeline**, **guest–host messaging** (including guest–property messaging on the OTA side) and **notification routing**. It builds on the reservation state machine and delivery ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle)), the supply-side workspace and access codes ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)) and the address rules for homes ([Where Exactly? Destinations, Geo and Map Search](#destinations-and-maps)). It does not re-teach changes and cancellations ([When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)), support case management ([When Something Goes Wrong: Customer Service and Recovery](#customer-service)), fraud through hijacked partner accounts ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)) or review moderation ([Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation)); it shows where each one meets the trip.
+This chapter owns three terms: **trip timeline**, **guest–host messaging** (including guest–property messaging on the OTA side) and **notification routing**. It builds on the reservation state machine and delivery ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle)), the supply-side workspace and access codes ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)) and the address rules for homes ([Where Exactly? Destinations, Geo and Map Search](#destinations-and-maps)). [When Something Goes Wrong: Customer Service and Recovery](#customer-service), which closes Part V, builds on its conversation store and notifications; changes and cancellations ([When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)), fraud through hijacked partner accounts ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)) and review moderation ([Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation)) appear only where they meet the trip.
 
 {id: trip-and-messaging--setting-the-scene-at-corvane-the-door-code-that-said-hidden}
 ## Setting the Scene at Corvane: The Door Code That Said "[hidden]"
@@ -38,7 +38,7 @@ In July 2027 Nookaway's trust team saw a rise in off-platform payment scams that
 
 > *Welcome to Casa Sol, Albufeira! Your door code is [hidden]. If you need us after 20:00, call [hidden].*
 
-What followed is the subject of this chapter (the figures are illustrative, like everything about Corvane):
+What followed (the figures are illustrative, like everything about Corvane):
 
 | Time (Western European Summer Time) | What happened | What the systems said |
 | --- | --- | --- |
@@ -67,8 +67,6 @@ Mariana Costa, Group Chief Architect, put Rafael's list next to a Roomstead prob
 {id: trip-and-messaging--concepts-trip-conversation-notification}
 ## Concepts: Trip, Conversation, Notification
 
-Precise words help here, because each product team uses "message" and "notification" for different things.
-
 - **Trip.** The guest-facing view of one or more reservations for one journey, from confirmation to the end of the review window. It owns no booking, payment or supply fact.
 - **Trip timeline.** The ordered past and upcoming events of a trip, each with who acts and by when: a **read model** built from other services' events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays)).
 - **Trip status explanation.** The sentence at the top of the trip that says where the guest stands, derived from facts with a source and a time.
@@ -90,7 +88,7 @@ Trip pages have converged on one shape. Airbnb's 2021 Trips tab redesign showed 
 
 **Figure 2:** *The trip owns no facts. It is built from events of five services, and the status line the guest reads is derived from those facts, each with a source and a time, not from the reservation's state alone.*
 
-The builder consumes ordered events, keyed by reservation, and keeps one document per trip: the reservations in it, the timeline entries, the current status explanation and the next action. The read model is rebuildable from the event streams, which matters more than it seems: when the explanation rules change, every trip must be recomputed, and when a producer had a bug, the trip must be repaired by replay rather than by hand.
+The builder consumes ordered events, keyed by reservation, and keeps one document per trip: the reservations in it, the timeline entries, the current status explanation and the next action. The read model must be rebuildable from the event streams: when the explanation rules change, every trip is recomputed, and when a producer had a bug, the trip is repaired by replay rather than by hand.
 
 {id: trip-and-messaging--what-the-timeline-shows}
 ### What the timeline shows
@@ -106,7 +104,7 @@ The builder consumes ordered events, keyed by reservation, and keeps one documen
 | Check-out | Reservation service | Time and instructions | Guest |
 | Review invitation | Review service ([Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation)) | Window and deadline | Guest |
 
-Three rules keep this honest.
+Three rules keep the timeline honest.
 
 1. **Derive status from facts with provenance.** Every status sentence cites the event it came from. "Your host shared check-in details at 18:02" is generated from an arrival-package event, not from a hope. If the fact is missing, say so: "Your host hasn't shared check-in details yet."
 2. **Show the next action and its owner.** A trip page that lists events is a log; one that says "Your host usually shares the door code by 18:00 the day before. If you don't have it by 20:00, tap here" is a plan. The owner of the next step is often not the guest.
@@ -120,7 +118,7 @@ The same read model serves the guest app, the web, the support agent's screen an
 {id: trip-and-messaging--check-in-information-as-a-deliverable}
 ## Check-In Information as a Deliverable
 
-On Saturday 7 August, the reservation was right, the host had acted and the platform had "delivered" a message. The guest still could not get in. The fix is to stop treating the most important information of the trip as one more message in a thread and to model it as an **arrival package** with an owner, a deadline and a readiness state.
+On 7 August the reservation was right and the host had acted, yet the guest could not get in. The fix is to model check-in information not as one more message in a thread but as an **arrival package** with an owner, a deadline and a readiness state.
 
 {id: trip-and-messaging--what-goes-into-the-package}
 ### What goes into the package
@@ -134,38 +132,34 @@ On Saturday 7 August, the reservation was right, the host had acted and the plat
 | Who produces it | Content team and property, once | Host, co-host, PMS or lock platform, per reservation |
 | Failure on the day | Guest waits at the front desk; staff solve it | Guest stands outside a locked door; the marketplace's support solves it |
 
-The asymmetry is the point. For a hotel, check-in, keys and housekeeping are the hotel's own operations, run in its PMS and key-card system, and the OTA is mostly out of the loop after delivering the reservation. For a home the marketplace participates in arrival: it carries the instructions and often the code, and it pays when check-in fails, through a guarantee such as Nookaway's. Airbnb's guest protection is documented to cover "inability to check-in" ([Airbnb Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), 2026), which makes a failed arrival a marketplace cost, not only a host's problem.
+For a hotel, check-in, keys and housekeeping are the hotel's own operations, run in its PMS and key-card system, and the OTA is mostly out of the loop after delivering the reservation. For a home the marketplace participates in arrival: it carries the instructions and often the code, and it pays when check-in fails, through a guarantee such as Nookaway's. Airbnb's guest protection is documented to cover "inability to check-in" ([Airbnb Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), 2026), which makes a failed arrival a marketplace cost, not only a host's problem.
 
 {id: trip-and-messaging--digital-keys}
 ### Digital keys
 
 Digital keys move part of the package into software. In August 2024 Airbnb made smart-lock integrations available to all US and Canada hosts with compatible Schlage, August and Yale locks: a unique code per reservation, "only active for the duration of a stay", updated when check-in or check-out times change, with host alerts when a lock goes offline ([Airbnb Newsroom](https://news.airbnb.com/smart-lock-integrations-available-to-all-us-and-canada-hosts), 2024). For PMS-managed locks, the PMS generates the codes, Airbnb relays them, and hosts must provide backup entry instructions ([Airbnb Help, article 4163](https://www.airbnb.com/help/article/4163), live page as of October 2026).
 
-Two consequences follow for the architecture. First, the credential's lifecycle is driven by reservation events, and a missed alteration locks a guest out ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) works through that case). Second, even the best-integrated lock needs a non-digital fallback, and the fallback is part of the package the platform must deliver.
+The credential's lifecycle is therefore driven by reservation events, and a missed alteration locks a guest out ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) works through that case). The backup entry instructions are part of the package the platform must deliver.
 
 {id: trip-and-messaging--readiness-as-a-state-machine}
 ### Readiness as a state machine
 
-At Corvane the forum's design made each reservation's arrival package an object with its own state, owned by an arrival package service and checked against deadlines measured back from the check-in time.
+Corvane's design makes each reservation's arrival package an object with its own state, owned by an arrival package service and checked against deadlines measured back from the check-in time.
 
 ![Arrival package states from Not started through Draft, Ready and Delivered to Seen, with deadline arrows to At risk at T minus 18h and T minus 6h, a return from At risk to Ready, and a reservation change sending Seen back to Draft.](stays-marketplace-architecture/posts/24-trip-and-messaging/assets/images/24-trip-and-messaging/24-arrival-package-states.jpeg)
 
 **Figure 3:** *The arrival package has its own state machine. Deadlines measured back from check-in move it to "at risk", which notifies the host and then a person, and any change to the reservation sends it back to draft so the code and window are regenerated.*
 
-The rules that make it work:
-
 - **Assemble from sources, do not copy text.** The package references the arrival guide version, the access credential and the reservation version; a code a PMS sends as free text is extracted into the package so readiness can be checked.
 - **Measure readiness, not sending.** Ready means every element is present and valid for the current dates; delivered means a channel confirmed it; seen means the guest opened it.
 - **Deadlines by arrival type.** A self-check-in home needs the package seen hours before arrival; a hotel with a 24-hour desk needs only the address and window.
 - **Escalate along a ladder.** At-risk notifies the host as an "act now" event ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) defines the supply-side event classes), then the guest through a second channel, then a support queue with the reservation, the package and the thread already attached ([When Something Goes Wrong: Customer Service and Recovery](#customer-service)).
-- **Secrets are secrets.** Codes are stored encrypted, shown only to the guest and the host's delegates with an operations role, removed from the guest's view after check-out, and never placed in e-mail subject lines or push previews on a locked screen.
-
-Replayed against 7 August, this design catches the problem twice. The 64 Maré Alta packages would have stayed in "draft" because the extracted code was "[hidden]", not a code, and gone at risk at 21:00 on Friday, eighteen hours before a 15:00 check-in, with Maré Alta notified while its staff were still on shift. And the redaction itself could not have happened, for reasons in the next section.
+- **Secrets are secrets.** Codes are stored encrypted, shown only to the guest and the host's delegates with an operations role, and never placed in e-mail subject lines or push previews on a locked screen.
 
 {id: trip-and-messaging--guesthost-messaging-a-governed-three-party-channel}
 ## Guest–Host Messaging: A Governed Three-Party Channel
 
-Messaging looks like a chat feature. In a stays marketplace it is a **three-party conversation store** with several kinds of client, time windows, safety controls, translation and legal retention, and it is both a product and a trust-and-safety surface.
+In a stays marketplace messaging is not a chat feature but a **three-party conversation store** with several kinds of client, time windows, safety controls, translation and legal retention: both a product and a trust-and-safety surface.
 
 {id: trip-and-messaging--what-the-public-record-shows}
 ### What the public record shows
@@ -194,26 +188,26 @@ On hosted stays, Airbnb reported **over 1.3 billion** messages in the twelve mon
 | **Views** | Per reader: translated text, redacted or annotated rendering, unread count |
 | **Events** | Message posted, request opened and resolved, read, redacted, reported, for the trip timeline, response-time metrics and trust |
 
-Several clients write to the same thread, which brings back the ownership problem from the extranet chapter. A structured request answered in the extranet must not also be answered by the PMS. Booking.com's single-channel-of-reply rule is one answer; a lock on the request (first client to respond owns it, visible to the others) is another.
+Several clients write to the same thread, so a structured request answered in the extranet must not also be answered by the PMS. Booking.com's single-channel-of-reply rule is one answer; a lock on the request (first client to respond owns it, visible to the others) is another.
 
-**Payments never travel as free text.** If the only legitimate way to ask a guest for money is a platform payment request, a system object rendered with the platform's own controls, then any free-text request to pay is anomalous by definition and can be blocked or flagged. That rule matters most on the OTA side, as the next paragraphs show.
+**Payments never travel as free text.** If the only legitimate way to ask a guest for money is a platform payment request, a system object rendered with the platform's own controls, then any free-text request to pay is anomalous by definition and can be blocked or flagged. The rule matters most on the OTA side.
 
 {id: trip-and-messaging--safety-the-channel-is-an-attack-surface}
 ### Safety: the channel is an attack surface
 
 The best-documented fraud pattern in accommodation runs through the messaging channel. In 2023 Secureworks described an infostealer that took a hotel's Booking.com credentials, with which attackers could "see all upcoming bookings and directly message customers" and ask them to confirm payment details at malicious links ([Sophos/Secureworks](https://www.sophos.com/en-us/blog/vidar-infostealer-steals-booking-com-credentials-in-fraud-scam), 2023). In November 2024 KrebsOnSecurity documented such a message inside the Booking.com app minutes after a booking; Booking.com said "there has been no compromise of Booking.com's internal systems" and that the attacks "stem from partners' machines being compromised with malware" ([KrebsOnSecurity](https://krebsonsecurity.com/2024/11/booking-com-phishers-may-leave-you-with-reservations/), 2024). Corvane's version, the **November 2027 extranet phishing wave**, reached 4,100 Roomstead guests through Keystone's messaging; 310 paid, and Roomstead reimbursed **€212,000** ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud) owns the incident and the account-security response).
 
-When the attacker writes from a genuine partner account, the guest sees a genuine thread. Controls therefore sit on the content and context of messages:
+Because the attacker writes from a genuine partner account, controls sit on the content and context of messages:
 
 - **Link handling.** Extract URLs, check reputation and domain age, and warn or block links to payment pages that are not the platform's.
 - **Language and pattern detection.** "Verify your card", "pay again", "your booking will be cancelled unless" from a property, especially to many guests within minutes.
 - **Context.** A partner session that is new, from a new device, reading many upcoming reservations and messaging many of them is the pattern; rate-limit and hold such messages for review.
-- **Redaction with notice.** When a message is hidden, both sides and the sender's software must be told, as Booking.com's `is_redacted` attribute does. Silent redaction turns a safety control into a delivery failure, which is exactly what happened in Albufeira.
+- **Redaction with notice.** When a message is hidden, both sides and the sender's software must be told, as Booking.com's `is_redacted` attribute does. Silent redaction turns a safety control into a delivery failure, as in Albufeira.
 
 {id: trip-and-messaging--policy-by-stage}
 ### Policy by stage
 
-The Albufeira incident had a simple cause: a rule that was right for one stage of the trip ran at another. The fix is to make the stage an explicit input to every messaging policy, read from the reservation service, and to write the policies as one table rather than as code scattered across clients.
+Make the stage an explicit input to every messaging policy, read from the reservation service, and write the policies as one table rather than as code scattered across clients.
 
 | Stage | Contact details | Links and attachments | Payment requests | Who may start a thread |
 | --- | --- | --- | --- | --- |
@@ -223,12 +217,12 @@ The Albufeira incident had a simple cause: a rule that was right for one stage o
 | **After check-out** | Allowed, masked relay | Scanned | Only for documented damage, through the claims flow ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)) | Both, within a window |
 | **Closed** | Read-only for the parties; retained for disputes and legal holds | n/a | n/a | Nobody; support can reopen |
 
-Two design choices underpin the table. Policies are **versioned configuration evaluated by one policy service**, called by every client path, including the partner API; that would have prevented the empty-stage bug, because the service, not the client, would have looked up the stage. And every policy outcome is an event with the rule version, so a spike of redactions on post-booking threads is a metric that alerts within minutes, not a pattern a support lead notices after four hours.
+Policies are **versioned configuration evaluated by one policy service**, called by every client path, including the partner API, so the service, not the client, looks up the stage. Every policy outcome is an event with the rule version, so a spike of redactions on post-booking threads alerts within minutes instead of being noticed by a support lead after four hours.
 
 {id: trip-and-messaging--translation}
 ### Translation
 
-Airbnb's Translation Engine, announced in November 2021 for listing descriptions in "over 60 languages", was extended to messages in summer 2022 so that "Messages are automatically translated in the user's preferred language" ([Airbnb via Hospitality Net](https://www.hospitalitynet.org/news/4112343.html), 2022; the system has likely changed since). In a market where a Czech family writes to a Portuguese host, translation is not a feature but a condition of the conversation.
+Airbnb's Translation Engine, announced in November 2021 for listing descriptions in "over 60 languages", was extended to messages in summer 2022 so that "Messages are automatically translated in the user's preferred language" ([Airbnb via Hospitality Net](https://www.hospitalitynet.org/news/4112343.html), 2022; the system has likely changed since). When a Czech family writes to a Portuguese host, there is no conversation without translation.
 
 The pattern I recommend stores the **original text as the record**, translates asynchronously on posting, caches by target language, and always lets either party and support see the original, because disputes are decided on what was written. Two traps are specific to stays: **translation must not touch secrets** (a door code "4417 #" must survive translation byte for byte, so arrival-package content is rendered from structured fields rather than translated) and **translation must not hide abuse** (safety scanning runs on the original and on the translation).
 
@@ -237,17 +231,17 @@ The pattern I recommend stores the **original text as the record**, translates a
 
 Attachments carry check-in videos, damage photos, identity documents hosts should not ask for, and malware: scan on upload, store apart from message text, strip photo location metadata, and refuse document types that have no place in a stay conversation.
 
-Retention is a legal question with an architectural answer. Under the General Data Protection Regulation (GDPR), personal data is kept identifiable "for no longer than is necessary" ([Regulation (EU) 2016/679, Article 5(1)(c) and (e)](http://publications.europa.eu/resource/celex/32016R0679), 2016), yet messages are evidence for chargebacks months later ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), damage claims and trust cases. A defensible design keeps the thread for a fixed period after the trip closes, extends it only under a recorded legal hold, deletes attachments earlier than text, and removes door codes from view at check-out and from storage soon after.
+Retention is a legal question with an architectural answer. Under the General Data Protection Regulation (GDPR), personal data is kept identifiable "for no longer than is necessary" ([Regulation (EU) 2016/679, Article 5(1)(c) and (e)](http://publications.europa.eu/resource/celex/32016R0679), 2016), yet messages are evidence for chargebacks months later ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)), damage claims and trust cases. A defensible design keeps the thread for a fixed period after the trip closes, extends it only under a recorded legal hold, deletes attachments earlier than text, and deletes door codes soon after check-out.
 
 {id: trip-and-messaging--notification-routing}
 ## Notification Routing
 
-The Saturday incident was about messages; Roomstead's June problem was about notifications. During the **ATC strike weekend (5–7 June 2027)**, about 17,000 Roomstead reservations were affected. Keystone's disruption e-mail ("Your trip may be affected: here are your options") went out through the same e-mail vendor account and sending queue as the "Summer weekends" campaign scheduled for Saturday morning, and the median disruption e-mail reached the guest **3 hours and 10 minutes** after the job started. Roomstead received 6,200 cancellation requests in 48 hours; a share of them would have been self-service changes if the e-mail had arrived first. Nobody had decided that a disruption notice outranks a newsletter, because no single system sent both and knew the difference.
+Roomstead's June problem was about notifications. During the **ATC strike weekend (5–7 June 2027)**, about 17,000 Roomstead reservations were affected. Keystone's disruption e-mail ("Your trip may be affected: here are your options") went out through the same e-mail vendor account and sending queue as the "Summer weekends" campaign scheduled for Saturday morning, and the median disruption e-mail reached the guest **3 hours and 10 minutes** after the job started. Roomstead received 6,200 cancellation requests in 48 hours; a share of them would have been self-service changes if the e-mail had arrived first. Nobody had decided that a disruption notice outranks a newsletter, because no single system sent both and knew the difference.
 
 {id: trip-and-messaging--the-pipeline}
 ### The pipeline
 
-A notification platform has five stages, and most failures live between them.
+A notification platform has five stages.
 
 ![Domain event to intent, policy, channel plan and adapters, then a delivery tracker that loops back to the channel plan when a message is not seen, escalates to a human and feeds the trip timeline.](stays-marketplace-architecture/posts/24-trip-and-messaging/assets/images/24-trip-and-messaging/24-notification-loop.jpeg)
 
@@ -262,7 +256,7 @@ A notification platform has five stages, and most failures live between them.
 {id: trip-and-messaging--classes-not-campaigns}
 ### Classes, not campaigns
 
-The supply-side chapter defined event classes for hosts and partners ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)). Guests need the same structure, and the class decides priority, channels and whether the guest may mute it.
+Guests need event classes like those defined for hosts and partners ([Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools)): the class decides priority, channels and whether the guest may mute it.
 
 | Class | Guest examples | Default plan | Mutable | Separate lane |
 | --- | --- | --- | --- | --- |
@@ -274,7 +268,7 @@ The supply-side chapter defined event classes for hosts and partners ([Running t
 | **Engagement** | Price alerts, wishlist changes, review reminders | Push or e-mail within caps | Yes | No |
 | **Marketing** | Campaigns, newsletters | E-mail, push, by consent only | Yes | Separate sending identity |
 
-Separate lanes mean separate queues and quotas inside the platform and, for e-mail, separate sending domains or IP pools, so a bulk campaign can never delay an arrival-critical message and a campaign's spam complaints do not damage the reputation that transactional mail depends on. Mailbox providers enforce this from outside: since **1 February 2024**, Google requires senders of more than 5,000 messages a day to Gmail accounts to authenticate mail with SPF and DKIM (Sender Policy Framework and DomainKeys Identified Mail), publish a DMARC (Domain-based Message Authentication, Reporting and Conformance) policy, keep spam complaints below **0.30%** in its Postmaster Tools and offer one-click unsubscribe on marketing and subscribed messages ([Google Workspace Admin Help, Email sender guidelines](https://support.google.com/a/answer/81126), live page as of October 2026). A marketplace that mixes marketing and check-in mail on one domain lets its marketing team spend the check-in mail's deliverability.
+Separate lanes mean separate queues and quotas inside the platform and, for e-mail, separate sending domains or IP pools, so a bulk campaign can never delay an arrival-critical message and a campaign's spam complaints do not damage the reputation that transactional mail depends on. Mailbox providers enforce this from outside: since **1 February 2024**, Google requires senders of more than 5,000 messages a day to Gmail accounts to authenticate mail with SPF and DKIM (Sender Policy Framework and DomainKeys Identified Mail), publish a DMARC (Domain-based Message Authentication, Reporting and Conformance) policy, keep spam complaints below **0.30%** in its Postmaster Tools and offer one-click unsubscribe on marketing and subscribed messages ([Google Workspace Admin Help, Email sender guidelines](https://support.google.com/a/answer/81126), live page as of October 2026).
 
 ![A three-lane highway where single envelopes in the arrival-critical and disruption lanes move freely to a guest's phone while the marketing lane is jammed with envelopes.](stays-marketplace-architecture/posts/24-trip-and-messaging/assets/images/24-trip-and-messaging/24-separate-lanes.jpeg)
 
@@ -283,7 +277,7 @@ Separate lanes mean separate queues and quotas inside the platform and, for e-ma
 {id: trip-and-messaging--messaging-apps-are-not-sms-with-a-logo}
 ### Messaging apps are not SMS with a logo
 
-Guests increasingly expect trip messages in WhatsApp, and on the supply side Agoda's August 2026 Partner Portal announcement included KakaoTalk booking notifications for South Korean motels and plans for WhatsApp and WeChat ([Agoda via Kyodo News PR Wire](https://kyodonewsprwire.jp/release/202608174214), 2026). Messaging-app channels come with their own rules. On the WhatsApp Business Platform, when a user writes to a business a 24-hour "customer service window" opens; "Businesses can only send non-template messages to users when this window is open", and outside it they can reach users only with pre-registered template messages in the marketing, utility or authentication categories ([Meta for Developers, WhatsApp pricing](https://developers.facebook.com/docs/whatsapp/pricing), live page reflecting pricing effective 1 October 2026). So arrival-critical templates must be approved in every language before they are needed, and the channel plan must know whether a window is open; the adapter, not the producing service, owns those rules.
+Guests increasingly expect trip messages in WhatsApp; on the supply side Agoda's August 2026 Partner Portal announcement included KakaoTalk booking notifications for South Korean motels and plans for WhatsApp and WeChat ([Agoda via Kyodo News PR Wire](https://kyodonewsprwire.jp/release/202608174214), 2026). Messaging-app channels come with their own rules. On the WhatsApp Business Platform, when a user writes to a business a 24-hour "customer service window" opens; "Businesses can only send non-template messages to users when this window is open", and outside it they can reach users only with pre-registered template messages in the marketing, utility or authentication categories ([Meta for Developers, WhatsApp pricing](https://developers.facebook.com/docs/whatsapp/pricing), live page reflecting pricing effective 1 October 2026). So arrival-critical templates must be approved in every language before they are needed, and the channel plan must know whether a window is open; the adapter, not the producing service, owns those rules.
 
 {id: trip-and-messaging--locale-time-zone-and-quiet-hours}
 ### Locale, time zone and quiet hours
@@ -293,39 +287,37 @@ Three cheap-to-prevent bugs recur. **Time zones**: "check-in from 15:00" is the 
 {id: trip-and-messaging--in-practice-at-corvane-replaying-7-august}
 ## In Practice at Corvane: Replaying 7 August
 
-The architecture forum met on **2 September 2027**. Its decisions, in summary:
+The architecture forum met on **2 September 2027** and decided:
 
 - **Courier**, a group notification platform (intents, policy, channel plans, adapters, delivery tracker), owned by the group platform engineering team in Kraków. Nookaway moves first (Q1 2028); Roomstead's Keystone notifications follow by the end of 2028, transactional and disruption classes first.
 - **Threadline**, a group conversation service (threads, participants, messages, structured requests, policy service, translation, attachments), owned by Nookaway engineering in Lisbon under Rafael Mendes, with Sofia Marín's trust team as mandatory reviewer of every policy change. Policy packs are per brand; the stage table is shared.
 - **Arrival package service and trip timeline**, owned by Nookaway and built on the events of **Stayline**, the One Stay reservation service agreed in August ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle)), so that Roomstead can adopt them; Roomstead keeps its trip page but reads the same timeline events from 2028. For hotels, the arrival package complements Stayline's arrivals manifests, which confirm 7 days and 48 hours before arrival that the property holds the booking.
 - **One rule for every client.** The partner API, Burrow's app and web paths and Keystone's extranet all call Threadline's policy service, which reads the stage from Stayline.
 
-The **November 2027 phishing wave** hit Roomstead before any of this reached Keystone, and pulled Roomstead's guest–property messaging onto Threadline's safety scanning ahead of plan: the honest way a shared platform often gets its second tenant.
-
-The sequence below replays Maré Alta's check-in message for one Saturday arrival on the new design.
+The **November 2027 phishing wave** hit Roomstead before any of this reached Keystone, and pulled Roomstead's guest–property messaging onto Threadline's safety scanning ahead of plan: the honest way a shared platform often gets its second tenant. Figure 6 replays Maré Alta's check-in message for one Saturday arrival on the new design.
 
 ![Swimlanes for the PMS, Threadline, the arrival package, Courier and the guest: the check-in message passes a stage check, the code is extracted and validated, and Courier sends an arrival-critical push and e-mail that is seen at 18:40.](stays-marketplace-architecture/posts/24-trip-and-messaging/assets/images/24-trip-and-messaging/24-replay-check-in-message.jpeg)
 
 **Figure 6:** *The same message on the new design. The policy service reads the trip's stage from the reservation, the arrival package extracts and validates the code, and Courier tracks the arrival-critical intent to "seen", so the trip page can say so.*
 
-The counterfactual checks show where each piece earns its place:
+Each failure of 7 August has a design element that catches it:
 
 | Failure on 7 August | What catches it on the new design | When |
 | --- | --- | --- |
 | 64 Maré Alta codes redacted (2,960 check-in messages group-wide) | Stage read from the reservation service: arrival-window threads are never redacted, only flagged | At send, Fri 18:00 |
-| A code missing or invalid for whatever reason | Arrival package stays in draft; "at risk" at T−18h notifies Maré Alta as an act-now event | Fri 21:00 for Saturday arrivals |
+| A code missing or invalid for whatever reason | Arrival package stays in draft (the extracted code reads "[hidden]"); "at risk" at T−18h notifies Maré Alta as an act-now event while its staff are still on shift | Fri 21:00, 18 hours before a 15:00 check-in |
 | Package delivered but not seen | Courier falls back to SMS at T−6h, then routes to a support queue with the package attached | Sat 09:00 onward |
 | Trip page says "you're all set" | Status derived from package state: "Your host hasn't shared check-in details yet" | Continuously |
 | Redaction spike invisible | Policy outcomes are events; redactions on post-booking threads above baseline page the on-call | Within 15 minutes of Thu 16:30 |
 
-The forum also set four service-level objectives (SLOs) that Courier and the arrival package service report weekly per brand: **arrival packages seen by the guest before T−6h** (target 98% for self-check-in homes), **arrival-critical intents delivered within 2 minutes** (99.5%), **disruption intents sent to all affected reservations within 15 minutes of the declaration** (from [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)), and **the share of guest check-in support contacts per 1,000 arrivals**, which on 7 August had been about four times normal. The last metric is the one the business reads; the first three are the ones engineers can act on.
+The forum also set four service-level objectives (SLOs) that Courier and the arrival package service report weekly per brand: **arrival packages seen by the guest before T−6h** (target 98% for self-check-in homes), **arrival-critical intents delivered within 2 minutes** (99.5%), **disruption intents sent to all affected reservations within 15 minutes of the declaration** (from [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)), and **the share of guest check-in support contacts per 1,000 arrivals**, which on 7 August had been about four times normal. The business reads the last metric; engineers act on the first three.
 
-The cost is modest. SMS, the expensive channel, is used only as a fallback for arrival-critical and disruption classes; in Corvane's illustrative sizing it reaches about 6% of self-check-in arrivals. The €9,840 of rehousing on one Saturday buys a great many text messages.
+The cost is modest: SMS, the expensive channel, is only a fallback for arrival-critical and disruption classes, and in Corvane's illustrative sizing reaches about 6% of self-check-in arrivals. The €9,840 of rehousing on one Saturday buys a great many text messages.
 
 {id: trip-and-messaging--the-end-of-the-trip-completion-and-the-review-invitation}
 ## The End of the Trip: Completion and the Review Invitation
 
-Check-out is a reservation event ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) owns completion), and the trip reacts in three ways.
+Check-out is a reservation event ([The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle) owns completion), and the trip reacts in three ways:
 
 - **Hide secrets.** Door codes and Wi-Fi passwords disappear from the guest's view; the arrival package is archived.
 - **Open the review window.** The review service decides eligibility from the completed booking (stayed, not canceled, no-show or disputed); the timeline shows the invitation and deadline, and Courier sends it as an engagement-class intent. Collection, publication and moderation belong to [Trustworthy Reviews: Collection, Integrity and Quality Operations](#reviews-and-reputation).
@@ -343,12 +335,12 @@ The same stay events drive money: Nookaway pays the host 48 hours after schedule
 | **Door codes** | Structured access credential in the arrival package | Free-text code in a message | Codes generated by integrations, self-check-in common, readiness must be checked | Mostly hosts meeting guests in person; codes rare |
 | **Messaging-app channels** | Templates per class through the official business platform | No messaging apps; push, e-mail and SMS only | Markets where guests expect WhatsApp or similar, international guests without roaming data | Markets where push and e-mail are reliable, or where template approval cannot keep up with product changes |
 
-Corvane chose Option A on every row except messaging apps: it started with WhatsApp templates for arrival-critical and disruption classes only, in the four markets where guests asked for them most. It also translates on post and caches per language, and redacts contact details before booking with notice to both sides.
+Corvane chose Option A on every row except messaging apps: it started with WhatsApp templates for arrival-critical and disruption classes only, in the four markets where guests asked for them most.
 
 {id: trip-and-messaging--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
 
-The trip, messaging and notification platform is the most shareable of all the post-booking systems. The rules that sit on top of it differ sharply.
+The trip, messaging and notification platform is the most shareable of the post-booking systems; the rules on top of it differ sharply.
 
 | Dimension | Accommodation marketplace (Roomstead) | Hosted-stays marketplace (Nookaway) |
 | --- | --- | --- |
@@ -361,9 +353,9 @@ The trip, messaging and notification platform is the most shareable of all the p
 | **Integration** | Messaging API for PMS and channel managers is a must-have connectivity surface | Partner API for professional managers; most individual hosts use the app |
 | **Regulation and evidence** | Guest data passed to the hotel under the agency model; messages as evidence for payment disputes | Guest contact usually masked by a relay; messages as evidence for damage claims and trust cases |
 
-**My judgement: share the channel, not the conversation rules.** Threadline, Courier, the stage model, translation, safety scanning, retention and the trip timeline builder are one problem in two marketplaces and should be built once, under One Stay. A guest who books a hotel on Roomstead in May and a home on Nookaway in August should get the same trip timeline, the same notification preferences and the same protection against phishing links. What stays per brand is the policy pack (pre-booking contact rules, structured request types, response-time targets) and the arrival package template: a front desk and a key box are different things. The hosted-stays pack would redact hotels' operational messages; the hotel model would drop the pre-booking conversation that sells request-to-book homes, a small case of **The Hotel-Shaped Home**.
+**My judgement: share the channel, not the conversation rules.** Threadline, Courier, the stage model, translation, safety scanning, retention and the trip timeline builder are one problem in two marketplaces and should be built once, under One Stay, so a guest who books a hotel on Roomstead in May and a home on Nookaway in August gets the same trip timeline, notification preferences and phishing protection. What stays per brand is the policy pack (pre-booking contact rules, structured request types, response-time targets) and the arrival package template: a front desk and a key box are different things. The hosted-stays pack would redact hotels' operational messages; the hotel model would drop the pre-booking conversation that sells request-to-book homes, a small case of **The Hotel-Shaped Home**.
 
-Convergence makes the shared layer more valuable, not less. Roomstead's apartments from professional managers need self-check-in packages, and Nookaway's 2028 boutique-hotel pilot will need a hotel-style package and structured requests. With policy packs keyed to the unit type rather than the brand, both cases are configuration.
+Convergence makes the shared layer more valuable: Roomstead's apartments from professional managers need self-check-in packages, and Nookaway's 2028 boutique-hotel pilot will need a hotel-style package and structured requests. With policy packs keyed to the unit type rather than the brand, both cases are configuration.
 
 {id: trip-and-messaging--failure-modes}
 ## Failure Modes
@@ -381,34 +373,31 @@ Convergence makes the shared layer more valuable, not less. Roomstead's apartmen
 {id: trip-and-messaging--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-**What to decide.** Four decisions shape everything else. First, that trip, conversation and notification are **platform services with owners**, not features inside each brand's monolith. Second, the **stage model**: one definition of inquiry, confirmed, arrival window, after check-out and closed, read from the reservation service by every policy. Third, the **class model** for notifications, with arrival-critical and disruption classes that cannot be muted, delayed by marketing or silently fail. Fourth, that **arrival information is a deliverable** with readiness, deadlines and escalation, for every reservation where the guest will not meet a person at a desk.
+**What to decide.** Four decisions shape the rest: that trip, conversation and notification are **platform services with owners**, not features inside each brand's monolith; one **stage model** that every policy reads from the reservation service; one **class model** for notifications, whose arrival-critical and disruption classes cannot be muted or delayed by marketing; and that **arrival information is a deliverable** for every reservation where the guest will not meet a person at a desk.
 
 **Who decides.** Policy packs need joint ownership: the trust team (Sofia Marín) owns safety rules, regulatory and privacy (Noor van Dijk) own retention, consent and the masked relay, and the brand product teams own structured request types and arrival templates. The forum's rule at Corvane is that any change to a messaging policy goes through Threadline's policy service with a shadow run against a week of real traffic, segmented by stage, before it enforces. The August rule would have shown 11,800 redactions on post-booking threads in its shadow run.
 
-**What to watch.** A short list, reviewed weekly per brand:
+**What to watch.** Besides the four SLOs, review weekly per brand:
 
-- check-in support contacts per 1,000 arrivals, the business metric for this whole chapter;
-- arrival packages seen before T−6h, and the share that went at risk;
+- the share of arrival packages that went at risk;
 - redactions and blocks per stage, with alerts on change;
-- arrival-critical and disruption delivery latency, and fallback rate by channel;
+- fallback rate by channel;
 - host and property response times, which also feed credentials and partner analytics;
 - notification complaints, unsubscribe and spam rates per class.
 
-**Long term.** AI assistants are becoming participants on both sides; each must act as a delegate under a grant, with its messages labeled. As trust incidents increasingly start in messages, what holds is stage-aware, versioned policy with shadow runs, the original text kept as evidence, and scanning results recorded as decisions the trust platform ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)) can audit.
+**Long term.** AI assistants are becoming participants on both sides; each must act as a delegate under a grant, with its messages labeled. As more trust incidents start in messages, keep the original text as evidence and record scanning results as decisions the trust platform ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)) can audit.
 
 {id: trip-and-messaging--questions-to-ask}
 ## Questions to Ask
 
 1. Where does the trip page's status sentence come from? Can you name the event behind each line, and what the page says when that event is missing?
-2. Which messages in a trip are deliverables with deadlines, and what checks that each one was seen in time?
+2. Which messages in a trip are deliverables with deadlines? When one is delivered but not seen, after how long, through which channel, and when does a person get involved?
 3. How is the trip stage determined for each messaging policy, and can any client path (API, extranet, PMS, assistant) bypass the policy service?
 4. When a message is redacted or blocked, who is told, and what alert fires if redactions on post-booking threads rise?
 5. Are door codes and other secrets structured, versioned and regenerated on reservation alterations, or are they free text in a message?
-6. Which notification classes can a guest or host mute, and which can a marketing campaign delay?
-7. Do transactional, arrival-critical and marketing e-mail share a sending domain, an IP pool or a queue?
-8. What happens when an arrival-critical notification is delivered but not seen? After how long, through which channel, and when does a person get involved?
-9. How long are messages, attachments and codes retained, and who can place a legal hold?
-10. If an AI assistant writes a message on behalf of a host or answers a guest's question about their trip, which facts does it read and how is its output labeled?
+6. Which notification classes can a guest or host mute, and which can a marketing campaign delay? Do transactional, arrival-critical and marketing e-mail share a sending domain, an IP pool or a queue?
+7. How long are messages, attachments and codes retained, and who can place a legal hold?
+8. If an AI assistant writes a message on behalf of a host or answers a guest's question about their trip, which facts does it read and how is its output labeled?
 
 Even with the best trip platform, some trips go wrong: a host cancels the night before, a family is walked from an oversold hotel, a strike strands thousands. The conversation and the trip timeline are then the evidence, and a support agent becomes the fourth party. [When Something Goes Wrong: Customer Service and Recovery](#customer-service) takes up how a marketplace handles cases that involve three parties and a deadline.
 

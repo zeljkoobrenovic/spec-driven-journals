@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Closing the Books: Refunds, Chargebacks and Reconciliation
@@ -22,7 +22,7 @@ Chief architects, payments and finance-engineering leads, and finance-operations
 - [ ] Explains chargeback timing for future services, ledger treatment, allowances and liability by payment model, with dated sources (Stripe docs, Booking Holdings, Expedia and Airbnb 10-Ks).
 - [ ] Presents a reconciliation architecture (ingestion, matcher, exception queues, adjustment workflow, close) and a table of reconciliations with their three legs and typical breaks; covers safeguarding with official EU sources.
 - [ ] Works the canonical €1.8M virtual-card gap: breakdown, root cause (no business leg), recovery, fixes and results.
-- [ ] Includes at least three mermaid diagrams, a trade-off table, the "Hotels and Homes" table with a judgement, failure modes, the Chief Architect's view and 6–10 questions.
+- [ ] Includes at least three diagrams (illustrated), a trade-off table, the "Hotels and Homes" table with a judgement, failure modes, the Chief Architect's view and 6–10 questions.
 - [ ] Labels the reference architecture as inference where it touches real companies; Airbnb engineering evidence is dated and flagged as old.
 
 ## Non-goals
@@ -73,3 +73,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,434 to 8,491 words (repeated definitions, quotations and failure modes condensed); FX gap period corrected to three years; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,185 → 5,877 prose words (−5%); no headings renamed; Failure Modes cut from six bullets to three (restated mitigations folded into one line); announce/recap sentences and a repeated "refund is two events" paragraph removed; two figure captions shortened. *(AI-mediated session)*

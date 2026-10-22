@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Who Is Booking, Who Is Hosting: Identity, Accounts and Access
@@ -23,7 +23,7 @@ Chief and principal architects, identity and platform engineering leads, trust a
 - [x] Grounds authentication and verification in dated public sources (Airbnb 2023 and 2026, NIST 2025, W3C WebAuthn, eIDAS 2024/1183, Secureworks 2023, Krebs 2024) and labels the Expedia identity inference.
 - [x] Works two Corvane examples consistent with the ledger: the Novak family linking accounts (tourist-tax figure €56) and Hotel Miradouro's role migration, plus the 2027 baseline and the June 2027 Corvane ID decision.
 - [x] Covers privacy and minimization (outcomes over documents, guest registration as a property duty, DAC7 retention against erasure) and the traveler profile and wallet boundaries.
-- [x] Includes trade-off tables, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and design-review questions; two mermaid diagrams.
+- [x] Includes trade-off tables, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and design-review questions; two diagrams (illustrated).
 
 ## Non-goals
 
@@ -68,3 +68,5 @@ Chief and principal architects, identity and platform engineering leads, trust a
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: timetoread 33→36; Airbnb annual-report reference dated as fiscal 2025; Corvane ID baseline, rollout and Miradouro migration checked against the ledger. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,296 → 6,003 prose words; opening now places the chapter in Part VII (after stays-trust-and-safety and travel-fraud, feeding protection-and-incidents); three architecture boundaries merged into one paragraph; summary paragraph under the identity-level policy table deleted; authentication/authorization definition dropped from Concepts; Chief Architect's "Decide" list and two review questions merged. *(AI-mediated session)*
+- **2026-10-22** — Verified Lisbon tourist tax / Portuguese VAT against official sources. *(AI-mediated session)*

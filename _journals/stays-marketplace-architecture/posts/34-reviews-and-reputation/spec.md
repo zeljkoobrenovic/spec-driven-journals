@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Trustworthy Reviews: Collection, Integrity and Quality Operations
@@ -78,3 +78,4 @@ Chief architects, trust and safety engineering leads, product owners for reviews
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: timetoread 33→37; ring, Hearth, Vouch and Roomstead audit figures checked; Airbnb 550,000 removed listings verified in the Q3 2025 shareholder letter. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,766 → 6,272 prose words; no headings renamed; opening now places the chapter in Part VII and names its consumers; three failure modes already shown by the Corvane case, and one shown by the law section, collapsed into one sentence; Chief Architect's view item on the log merged away (it repeated the review-record section). *(AI-mediated session)*

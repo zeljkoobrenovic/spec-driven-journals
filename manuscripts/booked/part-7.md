@@ -23,19 +23,19 @@
 
 Part VI followed the money. Part VII turns to **what makes strangers willing to send it**: confidence that the home exists, the message is genuine, the review is real and someone will help when the night goes wrong.
 
-The argument of this part is that **trust is a platform of records, not a collection of tools**. Most marketplaces accumulate trust and safety one incident at a time. These chapters build one decision record, one enforcement path, one identity layer, one review log and one rule registry, with detectors and thresholds kept per marketplace.
+This part argues that **trust is a platform of records, not a collection of tools**. Most marketplaces add trust and safety one incident at a time. These chapters build one decision record, one enforcement path, one identity layer, one review log and one rule registry, with detectors and thresholds kept per marketplace.
 
 ![Before and after: a messy drawer of separate trust tools each with its own red flag, versus one ledger-like platform with detector modules plugged in around it.](stays-marketplace-architecture/posts/part-7-intro/assets/images/part-7-intro/part-7-tools-to-platform.jpeg)
 
 **Figure 1:** *Trust accumulated one incident at a time becomes a drawer of separate tools, each with its own blocked flag; Part VII rebuilds it as one platform of records that every detector plugs into.*
 
-Hotels and homes differ sharply here. A hotel guest trusts a licensed, staffed, insured business, so an accommodation marketplace leaves identity checks, insurance and most short-term-rental law to the hotel. Its weak point is the supply side: hotel staff accounts, stolen and used to message real guests. A hosted-stays marketplace puts **two strangers in one home**. It verifies both, screens bookings for parties, funds a guarantee, runs two-way reviews and checks registration rules on almost every listing. An OTA (online travel agency) inherits these problems with its apartments.
+Hotels and homes need different things from this layer. A hotel guest trusts a licensed, staffed, insured business, so an accommodation marketplace leaves identity checks, insurance and most short-term-rental law to the hotel. Its weak point is the supply side: hotel staff accounts, stolen and used to message real guests. A hosted-stays marketplace puts **two strangers in one home**. It verifies both, screens bookings for parties, funds a guarantee, runs two-way reviews and checks registration rules on almost every listing. An OTA (online travel agency) inherits these problems with its apartments.
 
 ![Brand detectors, Corvane ID, Ordinance and Vouch feed the Warden decision hub, which sends enforcement to consumer systems, receives receipts back, and sends reasons to statements and regulator reports.](stays-marketplace-architecture/posts/part-7-intro/assets/images/part-7-intro/part-7-trust-platform-of-records.jpeg)
 
 **Figure 2:** *Each brand keeps its detectors; identity, reviews and market rules feed one decision record. Enforcement goes to every system that must obey, receipts come back, and each decision keeps the reason and policy version that explain it.*
 
-Corvane builds this layer through 2027, incident by incident: The 2026 Spanish registration purge leads to **Ordinance** (March). A review-trading ring leads to **Vouch** (May). Three logins and 9.4 million stored passport images lead to **Corvane ID** (June). A fake Valencia property manager leads to **Warden** (August). A Dubrovnik party and a phishing wave test it while it is being built.
+Corvane builds this layer through 2027, one incident at a time: the 2026 Spanish registration purge leads to **Ordinance** (March). A review-trading ring leads to **Vouch** (May). Three logins and 9.4 million stored passport images lead to **Corvane ID** (June). A fake Valencia property manager leads to **Warden** (August). A Dubrovnik party and a phishing wave test it while it is being built.
 
 {id: part-7--chapters-in-this-part}
 ## Chapters in this part

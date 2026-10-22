@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Where Exactly? Destinations, Geo and Map Search
@@ -75,3 +75,5 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed 9,330 to 8,497 words; worked-example retrieval count aligned with stays-search-architecture (2,600); target design marked as planned for late 2028. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,637 → 6,220 prose words; deleted the recap-only Failure Modes section; opening now names what the chapter builds on and feeds; repeated sentences cut in Architecture, Approximate Location, Chief Architect's view and the hand-off. *(AI-mediated session)*
+- **2026-10-22** — Restored Failure Modes as one-line bullets (house shape). *(AI-mediated session)*

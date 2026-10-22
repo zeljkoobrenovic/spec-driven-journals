@@ -68,8 +68,6 @@ Dates are those of the cited publications and decisions. Litigation, product nam
 
 The FY2025 Form 10-K, filed in February 2026, gives the frame. Booking Holdings reported **1,235 million room nights in 2025**, up 8% from 1,144 million, and total revenues of **$26,917 million**. Gross bookings were about **$186.1 billion**: $130.0 billion merchant and $56.1 billion agency ([Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), 2026). Room nights include Agoda and other brands; agency revenue is "almost entirely" Booking.com accommodation commissions.
 
-Two facts in the same filing reshape the usual picture of an OTA.
-
 **By property count, Booking.com is mostly a homes platform.** At 31 December 2025 it listed about **4.4 million properties**: about **500,000 "hotels, motels and resorts"** and about **3.9 million "homes, apartments and other unique places to stay"**. By room nights the balance runs the other way: alternative accommodations were about **36%** of Booking.com room nights in 2025, up from about 35% in 2024. The corporate "About" page (read October 2026) adds "33M+ reported listings". My reading: the gap between properties and listings is the gap between the contracted *property* and the bookable *unit*, which is why OTA and hosted-stays listing counts cannot be compared without a definition ([[property-and-listing-model]]).
 
 **The money model has flipped from agency to merchant in three years.**
@@ -136,8 +134,6 @@ Reservation delivery is the part of the contract that decides whether the guest 
 ![Swimlanes for guest, booking platform, provider and property: the guest books, the provider polls and receives the reservation until it acknowledges, writes it into the PMS, and after 30 minutes the platform falls back to email.](assets/images/48-case-booking-com/48-reservation-pull-delivery.jpeg)
 **Figure 2:** *Booking.com's documented reservation delivery: at-least-once pull with acknowledgement, and a human fallback after 30 minutes. The time between the sale and the PMS closing inventory on other channels is the overbooking window.*
 
-The documented details matter:
-
 - **At-least-once delivery.** A "message dispatcher" queues reservations per provider. `GET OTA_HotelResNotif` "will repetitively return bookings until they are acknowledged", so providers must de-duplicate.
 - **A time-bounded fallback.** If a reservation is not acknowledged (OpenTravel flow) or retrieved (B.XML flow) within **30 minutes**, it is emailed to the property. Connectivity Support can extend the window to 24 hours, "but that can increase queue size and overbookings".
 
@@ -176,8 +172,6 @@ My reading: experimentation at Booking.com is less a tool than a **change-contro
 | Generative AI | — | AI Trip Planner beta (2023); Smart Filter (2024); AgentHub agent platform (2026) |
 
 *Sources: CNCF (2020); arXiv (2018); Colyer (2019); Highload++ (2017); SREcon EMEA slides (2024); Booking.com Development blog (2026); AWS case study and Database Blog (2026); booking.ai (2026).*
-
-Three points stand out.
 
 **First, migrations were incremental and measured.** Perl pages became Node fragments behind experiments. The data lake moved in prioritized waves within a year and deliberately left most raw data behind ([Booking.com Development, 2026](https://medium.com/booking-com-development/how-we-migrated-europes-largest-data-lake-on-time-and-without-turning-the-lights-off-61ee8a07db76)). The database team called cloud adoption "a journey, not a switch" (2026). [[modernizing-a-live-marketplace]] argues for the same discipline.
 
@@ -266,11 +260,11 @@ My reading: Booking.com is the strongest public evidence *against* a strict read
 
 ## Failure Modes the Record Exposes
 
-1. **Overbooking lives between two systems.** The documented causes (outages, auto-replenishment, late closures, unmapped rates) all sit at the seam between marketplace and PMS. A 30-minute email fallback protects the guest's reservation but not the other channels' inventory.
-2. **Static guard rails do not catch plausible errors.** A floor of €5 and a ceiling of €50,000 stop absurd prices. A rate entered at a tenth of its value usually falls inside both. Relative checks against the property's own prices are a separate layer, not described publicly.
-3. **Unvalidated restriction conflicts.** Overlapping restrictions can make a room unbookable with no error, so every channel manager must validate separately.
-4. **Ranking features that become legal findings.** The CNMC named total bookings as a default factor and profitability-based eligibility: rules optimized for revenue that could not be defended to a regulator.
-5. **Experiment quality that nobody measured.** After a decade of experimentation culture, 80% of experiments had no power calculation (2026).
+1. **Overbooking lives between two systems.** Every documented cause sits at the marketplace–PMS seam; the 30-minute email fallback protects the guest's reservation, not the other channels' inventory. See Reservations.
+2. **Static guard rails do not catch plausible errors.** A rate entered at a tenth of its value usually falls inside the €5 floor and €50,000 ceiling; relative checks against the property's own prices are not described publicly.
+3. **Unvalidated restriction conflicts.** Every channel manager must validate overlapping restrictions itself. See ARI as a delta stream.
+4. **Ranking features that become legal findings.** The CNMC named total bookings as a default factor and profitability-based eligibility. See Ranking, Commission and the Regulator.
+5. **Experiment quality that nobody measured.** 80% of experiments had no power calculation (2026). See Experimentation as an Operating System.
 
 ## Where the Public Evidence Stops
 
@@ -290,19 +284,17 @@ No public source found for this book answers these questions.
 
 Booking.com's record gives me five decision rules.
 
-**Treat the partner contract as the long-lived asset.** The connectivity API has outlived a platform era. I would version, publish and certify it independently, and give it an adapter, not a breaking change, when the internal model moves.
+**Treat the partner contract as the long-lived asset.** I would version, publish and certify it independently, and give it an adapter, not a breaking change, when the internal model moves.
 
-**Make reversibility the default way of changing the platform.** Booking.com's most transferable practice is not the number of experiments but that page migrations and model launches go through the same measured, reversible mechanism. A platform that cannot A/B test an infrastructure change will rewrite in big steps. I would also measure experiment quality, because Booking.com's own data shows culture alone does not keep it up.
+**Make reversibility the default way of changing the platform.** Booking.com's most transferable practice is not the number of experiments but that page migrations and model launches go through the same measured, reversible mechanism. A platform that cannot A/B test an infrastructure change will rewrite in big steps. I would also measure experiment quality; culture alone does not keep it up.
 
 **Build the money model for both directions before the shift.** An OTA moving from agency to merchant needs payables and receivables for the same partner, a versioned payment arrangement on every booking, and a ledger that can answer who is owed what ([[stay-payments]]). A platform that bolts merchant flows onto an agency-era reservation model pays for it in reconciliation.
 
 **Govern ranking as policy, with an audit trail.** I would keep every commercial influence (commission, program, paid boost) as a separate, bounded, logged term outside the relevance model, and keep any feature that compares a property's price with other channels out of ranking in DMA markets. The test: for any impression, can the platform show which part of the rank was paid?
 
-**Decide where homes need their own seams, and design them on purpose.** Booking.com shows that one supply model can carry homes at scale, and also that request flows, payouts, content and onboarding grew home-specific paths. A group running both marketplaces should design those seams in advance rather than discover them one API at a time.
+**Decide where homes need their own seams, and design them on purpose.** A group running both marketplaces should design the request-flow, payout, content and onboarding seams in advance rather than discover them one API at a time, as Booking.com's record suggests it did.
 
 ## Comparing the Case to the Book's Patterns and to Corvane
-
-Booking.com's record supports most of the book's patterns and qualifies one.
 
 | Book pattern or claim | Booking.com's record | Verdict |
 | --- | --- | --- |
@@ -314,7 +306,7 @@ Booking.com's record supports most of the book's patterns and qualifies one.
 | Modernize by strangling, measured step by step ([[modernizing-a-live-marketplace]]) | Perl fragments replaced behind experiments; data lake in waves | Strongly supported |
 | The Hotel-Shaped Home: one supply model forced onto both ([[converging-two-marketplaces]]) | 3.9 million homes on a room-type model, with home-specific seams | Qualified: workable at scale for unit-like homes, at the cost of grafted seams |
 
-Corvane's choices sit close to Booking.com's documented practice in places and diverge deliberately in others. All Corvane facts below are fictional.
+Corvane's choices follow Booking.com's documented practice in places and diverge deliberately in others. All Corvane facts below are fictional.
 
 | Corvane choice (2027) | Booking.com parallel | What the case suggests |
 | --- | --- | --- |

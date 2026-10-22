@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Models in Production: ML Platforms and Use Cases for Stays
@@ -73,3 +73,4 @@ Chief architects, heads of data and ML platform, ML engineering leads and produc
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Added capability map v2 outcome for ML; flagged the 2018 Airbnb pricing paper's age; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,356 → 6,030 prose words; opening ties the chapter to Part VIII's "share the machinery, not the meaning"; Failure Modes compressed to one-line pointers; Chief Architect's view no longer restates the Kiln decisions; repeated transitions and recaps cut. Spec unchanged. *(AI-mediated session)*

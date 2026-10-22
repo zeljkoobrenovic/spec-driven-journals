@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Rooms, Rates and Restrictions: The ARI Data Model
@@ -24,7 +24,7 @@ Chief and principal architects, supply and connectivity leads, pricing and searc
 - [x] Compares storage models (per-date rows, ranges, LOS matrix, rules over base series) with Corvane sizing.
 - [x] Corvane worked example: Hotel Miradouro's 37 rate plans pruned to 17 by a stated rule; Carmen's calendar fields; numbers agree with the ledger.
 - [x] Includes a trade-off table, the "Hotels and Homes" section with table and a share/do-not-share judgement, failure modes, Chief Architect's view, 8–10 questions, and dated sources.
-- [x] At least two mermaid diagrams with captions.
+- [x] At least two diagrams (generated figures) with numbered captions.
 
 ## Non-goals
 
@@ -75,3 +75,5 @@ Chief and principal architects, supply and connectivity leads, pricing and searc
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: trimmed from 9,306 to 8,493 words (repetition in In Practice, failure modes, worked example), fixed the materialization/ARI-volume claim, removed an unsourced Airbnb documentation claim and an unverified Booking.com room-type cap, timetoread 35 min. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 2 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,845 → 6,720 prose words; no headings renamed; one recap paragraph cut; topic sentences moved to the front in eight paragraphs; In Practice trimmed of repeats; success criterion on diagrams updated from mermaid to generated figures. *(AI-mediated session)*
+- **2026-10-22** — Second sharpening pass: 6,718 → 6,290 prose words (6,845 at HEAD, −8.1% cumulative); no headings renamed; Failure Modes compressed to one-line pointers; Chief Architect's view list tightened; repeated lead claim, scene closer and In Practice Booking.com paragraph cut (its roomrate fact moved to the vocabulary). *(AI-mediated session)*

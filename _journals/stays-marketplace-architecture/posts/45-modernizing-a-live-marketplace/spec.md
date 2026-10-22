@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Changing the Engine in Flight: Modernizing a Live Stays Marketplace
@@ -22,7 +22,7 @@ Chief and enterprise architects, principal engineers and engineering directors a
 - [x] Covers three kinds of parallel run (availability, price, reservation state) with a worked price shadow run and money comparison.
 - [x] Cites dated public migrations: Airbnb Monorail to SOA (2018–2019), Booking.com Perl fragments and data lake (2026), Expedia front-end consolidation and Vrbo's slower recovery (2023–2024), Agoda price cache and post-booking (2026), with a labeled inference where evidence stops.
 - [x] Works Corvane's Keystone Exit Plan consistently with the ledger and earlier chapters (Stayline stages, Clause, offer kernel, Courier, commission invoicing on Fathom, Corvane ID, end-2029 target), with the 13 December 2027 open-book comparison and the Portugal cohort numbers.
-- [x] Includes a trade-off table, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and 10 questions; three mermaid diagrams with captions.
+- [x] Includes a trade-off table, the "Hotels and Homes" comparison with a sharing judgement, failure modes, the Chief Architect's view and 10 questions; three diagrams (illustrated) with captions.
 - [x] Stays under 8,500 words before Sources and Evidence (about 7,200).
 
 ## Non-goals
@@ -74,3 +74,4 @@ Article only for now.
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Checkout attempt contract timing aligned with its March–April 2027 rollout. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,664 → 5,226 prose words; opening ties the chapter to Part IX; Failure Modes compressed to pointers; Chief Architect's view and hand-off stripped of restatements; duplicate Airbnb evidence removed from the terms list; no headings renamed, no figures removed. *(AI-mediated session)*

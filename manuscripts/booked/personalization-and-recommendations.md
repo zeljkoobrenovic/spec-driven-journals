@@ -25,7 +25,7 @@ A guest planning a summer holiday rarely books in one sitting. They search on a 
 
 That memory is harder to build than in retail or media. People book stays rarely, so even loyal customers have a thin history. The same person travels as a parent in August and as a consultant in November, and the August history is noise for the November trip. Booking.com researchers named this the **continuous cold start** problem in 2015: frequent visitors look new because they visit infrequently, their interests shift and they switch personas ([Bernardi et al., 2015](https://arxiv.org/abs/1508.01177)). And the product being remembered is perishable: the apartment a guest saved on Tuesday may be booked by someone else on Wednesday.
 
-This chapter owns four terms: **trip intent**, **wishlist**, **price alert** and **listing embedding**. It sits between [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking), which orders results for a query, and [The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection), which owns how the total price is displayed, and shows where notification routing ([Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging)), accounts ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)) and the feature platform ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)) enter personalization.
+Part IV follows a guest from intent to a bookable stay. [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture) and [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking) answer one query; this chapter covers what the marketplace remembers **between** queries, and the rule that keeps that memory honest about price. It owns four terms: **trip intent**, **wishlist**, **price alert** and **listing embedding**. Its quote rule leads into [The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection), which owns how the total is displayed; notification routing ([Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging)), accounts ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)) and the feature platform ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)) are the dependencies it names.
 
 {id: personalization-and-recommendations--setting-the-scene-at-corvane-the-novaks-abandon-a-search-twice}
 ## Setting the Scene at Corvane: The Novaks Abandon a Search, Twice
@@ -44,7 +44,7 @@ The reconstruction took Jonas's team four days and three data warehouses. The lo
 | Sun **14 Feb**, 20:30 | Jana, Nookaway app | Booked the Alfama apartment: 7 nights × €145 = €1,015, cleaning €70, guest service fee **€130.20**, Lisbon tourist tax **€56**; total **€1,271.20** | A reservation, attributed by last click to "push notification" |
 | Mon 15 Feb | Jana, Nookaway support | "The alert said €145; the total was 25% more" | A case tagged "pricing question" |
 
-The booking was a success, and Jonas's report treated it as an indictment. Corvane had known what the Novaks wanted, in four systems, and none of them knew it as a trip:
+Jonas's report treated the successful booking as an indictment. Corvane had known what the Novaks wanted, in four systems, and none of them knew it as a trip:
 
 - **Nookaway's wishlist** knew which homes Jana liked, but not her dates or party, so it could not say that one was gone or what the others would cost for her week.
 - **Nookaway's alert job** knew about the price drop, but quoted it as a nightly rate. The **€1,271.20** total was **25%** above the €1,015 the alert implied, and every component of the difference (cleaning fee, service fee, tourist tax) was known when the alert was sent. That is **Price Drift** created by the alert, not by checkout; [The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection) covers how the total should be displayed.
@@ -55,7 +55,7 @@ The booking was a success, and Jonas's report treated it as an indictment. Corva
 
 **Figure 1:** *Corvane knew what the Novaks wanted in four systems, a wishlist, an alert job, an anonymous session and a reservation, and none of them knew it as one trip.*
 
-Rafael Mendes, Nookaway's VP Engineering, made the fair defense: Nookaway's wishlists and alerts drove a large share of returning bookers, and the nightly job was cheap. Noor van Dijk, Head of Regulatory Affairs and Privacy, made the hard constraint explicit: Tomáš had refused marketing cookies on Roomstead, and Jana's Nookaway consent did not cover Roomstead using her data. Joining the two sessions into "the Novak family" would need a lawful basis neither brand had.
+Rafael Mendes, Nookaway's VP Engineering, defended the nightly job as cheap. Noor van Dijk, Head of Regulatory Affairs and Privacy, set the hard constraint: Tomáš had refused marketing cookies on Roomstead, and Jana's Nookaway consent did not cover Roomstead using her data. Joining the two sessions into "the Novak family" would need a lawful basis neither brand had.
 
 Mariana framed the question for the architecture forum: **"Who owns what a guest is trying to book, how do we keep what we tell them about it true, and how will we know whether remembering it is worth anything?"**
 
@@ -65,11 +65,9 @@ Mariana framed the question for the architecture forum: **"Who owns what a guest
 {id: personalization-and-recommendations--why-stays-personalization-is-different}
 ### Why stays personalization is different
 
-Personalization in retail and media assumes frequent interactions and stable tastes. Stays have neither: purchases are rare, the history describes past trips by other personas, the current session carries almost all the useful context (destination, dates, party, budget), the inventory is perishable, the price is computed per stay, and the signal that matters is an **uncancelled booking** weeks after the first search.
+Beyond rare purchases and switching personas, stays differ from retail and media in three ways: the current session carries almost all the useful context (destination, dates, party, budget), the price is computed per stay, and the signal that matters is an **uncancelled booking** weeks after the first search.
 
-Airbnb's 2026 description of its guest-journey model makes the same contrast: unlike social platforms that optimize for engagement, Airbnb "optimizes for booking conversion", bookings are rare and deliberate, and listing views make up most logged events ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)). Booking.com's 2019 account of its first 150 production models makes a similar point about high stakes, sparse input and constrained supply, and groups many models around *traveler context* (is this a family, a couple, a business trip?) rather than long-term taste ([Bernardi et al., 2019, as summarized by Colyer](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)).
-
-The architectural conclusion is that a stays marketplace should invest first in **understanding the current trip** and only second in remembering the person.
+Airbnb's 2026 description of its guest-journey model makes the same contrast: unlike social platforms that optimize for engagement, Airbnb "optimizes for booking conversion", bookings are rare and deliberate, and listing views make up most logged events ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)). Booking.com's 2019 account of its first 150 production models groups many of them around *traveler context* (is this a family, a couple, a business trip?) rather than long-term taste ([Bernardi et al., 2019, as summarized by Colyer](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). So a stays marketplace should invest first in **understanding the current trip** and only second in remembering the person.
 
 {id: personalization-and-recommendations--trip-intent}
 ### Trip intent
@@ -82,7 +80,7 @@ Three properties make trip intent a better unit than a user profile:
 2. **It is persona-neutral.** The same account can hold a family intent for August and a business intent for November. Each drives its own recommendations and alerts.
 3. **It carries the context that prices a stay.** Dates and party are the inputs to every price the marketplace can quote. A recommendation without them can show only "from" prices, which are the root of most price-drift complaints.
 
-A guest can have several open intents. The Novaks had one, expressed in two brands by two people, which is the normal case for families and groups, not an edge case.
+A guest can have several open intents, and one intent can span people: the Novaks had one, expressed in two brands by two people, which is normal for families and groups.
 
 ![An overstuffed profile sack mixing beach, business and family items, beside two separate bounded trip-intent folders for a family trip in August and a business trip in November.](stays-marketplace-architecture/posts/19-personalization-and-recommendations/assets/images/19-personalization-and-recommendations/19-profile-versus-trip-intents.jpeg)
 
@@ -91,7 +89,7 @@ A guest can have several open intents. The Novaks had one, expressed in two bran
 {id: personalization-and-recommendations--saved-intent-artifacts}
 ### Saved-intent artifacts
 
-Guests also save intent explicitly. Four artifacts are common across stays marketplaces; they differ in what they store and what they promise.
+Guests also save intent explicitly, in four common artifacts that differ in what they store and what they promise.
 
 | Artifact | What the guest saves | What the marketplace promises | Typical trigger for contact |
 | --- | --- | --- | --- |
@@ -100,21 +98,21 @@ Guests also save intent explicitly. Four artifacts are common across stays marke
 | **Saved search** | A query: destination, dates, filters | "We will tell you about new or changed results" | New matching supply, price changes across the result set |
 | **Price alert** | A watch on a price: one property, a saved search, or a destination and dates | "We will tell you when the price moves" | A price crossing a threshold or changing by a minimum amount |
 
-A **wishlist** in this book is a guest-owned, named list of specific properties or homes, optionally bound to dates and a party, which the guest can share with co-travelers. A **price alert** is a standing request to notify the guest when the bookable price for a defined stay changes in a way they care about. Both are commitments that the marketplace re-evaluates against live supply; neither is a bookmark.
+A **wishlist** in this book is a guest-owned, named list of specific properties or homes, optionally bound to dates and a party, which the guest can share with co-travelers. A **price alert** is a standing request to notify the guest when the bookable price for a defined stay changes in a way they care about.
 
 {id: personalization-and-recommendations--listing-embeddings-and-guest-embeddings}
 ### Listing embeddings and guest embeddings
 
 A **listing embedding** is a learned vector that places each property or home in a space where listings that guests treat as substitutes sit close together. It is learned from behavior, typically by treating the sequence of listings a guest views in one search session like the sequence of words in a sentence, in the style of word2vec ([Mikolov et al., 2013](https://arxiv.org/abs/1301.3781)), and from content (text, photos, attributes). A **guest embedding** does the same for a guest's history.
 
-Airbnb's 2018 KDD paper is the reference for the first approach in stays: listing and user embeddings for real-time personalization in search ranking and similar-listing recommendations, designed for a marketplace where guests rarely book the same listing twice. The paper reported that search ranking and similar-listing recommendations together drove **99%** of Airbnb's conversions ([Grbovic and Cheng, 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)). As described in 2018, the system has since been extended several times; the current state is described later in this chapter. Expedia described a similar idea for hotels in 2024: a word2vec-inspired property embedding among the features of its lodging ranker ([Expedia Group, 2024](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b)).
+Airbnb's 2018 KDD paper is the reference for the first approach in stays: listing and user embeddings for real-time personalization in search ranking and similar-listing recommendations, designed for a marketplace where guests rarely book the same listing twice. The paper reported that search ranking and similar-listing recommendations together drove **99%** of Airbnb's conversions ([Grbovic and Cheng, 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)); the 2026 successors are described below. Expedia described a similar idea for hotels in 2024: a word2vec-inspired property embedding among the features of its lodging ranker ([Expedia Group, 2024](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b)).
 
-Embeddings matter for architecture because they are **shared infrastructure**. The same listing vectors serve similar-listing rails, retrieval ([Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture)), ranking features ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)), e-mail selection and duplicate detection. Whoever owns their training, versioning and refresh owns a dependency for half the discovery stack.
+Embeddings are **shared infrastructure**: the same listing vectors serve similar-listing rails, retrieval ([Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture)), ranking features ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking)), e-mail selection and duplicate detection. Whoever owns their training, versioning and refresh owns a dependency for half the discovery stack.
 
 {id: personalization-and-recommendations--recommendation-surfaces}
 ### Recommendation surfaces
 
-A **recommendation surface** is any place where the marketplace proposes stays or destinations without a complete query. Each has a different amount of context and a different failure cost.
+A **recommendation surface** is any place where the marketplace proposes stays or destinations without a complete query. Surfaces differ in context and failure cost.
 
 | Surface | Context available | Main job | Main risk |
 | --- | --- | --- | --- |
@@ -130,7 +128,7 @@ Airbnb has described the zero-result case as a recommendation problem: a 2025 pa
 {id: personalization-and-recommendations--architecture-capture-remember-recommend-re-price}
 ## Architecture: Capture, Remember, Recommend, Re-price
 
-Personalization in a stays marketplace is five capabilities with different owners and different latency budgets. The mistake I see most often is to build them as one "personalization service" that owns everything from the click stream to the push notification, and then cannot answer for any of it.
+Personalization in a stays marketplace is five capabilities with different owners and latency budgets. The common mistake is one "personalization service" that owns everything from the click stream to the push notification and cannot answer for any of it.
 
 ![Guest sessions feed intent capture and a trip intent store; embeddings and recommendations propose candidates and an alert evaluator watches saved stays; both pass through live price and availability before surfaces show bookable totals, and alerts go to notifications.](stays-marketplace-architecture/posts/19-personalization-and-recommendations/assets/images/19-personalization-and-recommendations/19-five-personalization-capabilities.jpeg)
 
@@ -148,12 +146,12 @@ Two boundaries do most of the work.
 
 **The intent store holds intent, not prices.** A wishlist row says "Jana saved listing 4471 for 2–9 August, 4 guests". It does not say "€145". Any price shown next to it is fetched at render time from the same price and availability path search uses ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)). The Nookaway wishlist that still showed the sold home "from €150" was storing what should have been computed.
 
-**Recommendations are enriched with live price and availability before anyone sees them.** Booking.com described this boundary in a 2025 post on its recommendation platform. The platform lets teams combine several model providers for recommendations "integrated into every step of the customer journey". A separate enrichment system attaches non-recommendation data on request, including a "Minimum Accurate Pricing" enrichment fetched from a personalized ranker city search system and the number of times a property has been wishlisted. The enrichment step is decoupled from prediction, which the authors say reduces the prediction system's load ([Booking.com Engineering, 2025](https://medium.com/booking-com-development/unlocking-the-power-of-customization-how-our-enrichment-system-transforms-recommendation-data-e71832fc4ef4)). The design choice to copy is the separation: models propose, a different path prices, and the price comes from the system that search uses.
+**Recommendations are enriched with live price and availability before anyone sees them.** Booking.com described this boundary in a 2025 post on its recommendation platform, which lets teams combine several model providers for recommendations "integrated into every step of the customer journey". A separate enrichment system attaches non-recommendation data on request, including a "Minimum Accurate Pricing" enrichment fetched from a personalized ranker city search system and the number of times a property has been wishlisted; decoupling enrichment from prediction, the authors say, reduces the prediction system's load ([Booking.com Engineering, 2025](https://medium.com/booking-com-development/unlocking-the-power-of-customization-how-our-enrichment-system-transforms-recommendation-data-e71832fc4ef4)). Copy the separation: models propose, and the price comes from the system that search uses.
 
 {id: personalization-and-recommendations--the-lifecycle-of-a-trip-intent}
 ### The lifecycle of a trip intent
 
-An intent is an aggregate with states, not a row of preferences. Treating it that way gives every downstream consumer a clear rule for when to stop.
+An intent is an aggregate with states, not a row of preferences, so every downstream consumer has a clear rule for when to stop.
 
 ![Trip intent states: Inferred becomes Active on a save or alert or Expired; Active and Dormant move back and forth; Dormant can expire; Active ends as Booked or Dismissed.](stays-marketplace-architecture/posts/19-personalization-and-recommendations/assets/images/19-personalization-and-recommendations/19-trip-intent-lifecycle.jpeg)
 
@@ -161,7 +159,7 @@ An intent is an aggregate with states, not a row of preferences. Treating it tha
 
 The thresholds in the diagram are illustrative; the state names are the contract. Three consequences follow:
 
-- **Booked closes the intent.** A guest who has booked Lisbon should stop getting Lisbon alerts within minutes. That requires the intent store to consume reservation events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays)), not a nightly job. Alerts for a trip already booked are the most common complaint about stays notifications, and the cheapest to prevent.
+- **Booked closes the intent.** A guest who has booked Lisbon should stop getting Lisbon alerts within minutes. That requires the intent store to consume reservation events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays)), not a nightly job. Alerts for a trip already booked are the most common complaint about stays notifications, the cheapest to prevent, and they invite cancel-and-rebook behavior that costs the marketplace twice.
 - **Expiry is a privacy control as well as a product one.** An intent for August 2027 has no purpose after August 2027. Deleting it then is data minimization that costs nothing.
 - **A booked intent can open a new one.** The Novaks' confirmed reservation is the context for cross-sell (a car, a day trip) and, a year later, for "Lisbon again?". These are different intents with their own consent and lifecycle.
 
@@ -170,25 +168,23 @@ The thresholds in the diagram are illustrative; the state names are the contract
 
 Personalization runs on three clocks, and the architecture should state which component runs on which: **batch** (daily model training, listing vectors, long-term guest embeddings), **streaming** (session features, intent opening and closing, alert triggers, within seconds) and **request time** (combining stored embeddings with the live query and fetching live prices, within milliseconds).
 
-The Airbnb sequence is worth reading as an architecture case, not a modeling one. The 2026 model encodes a **long-term** sequence of up to 80 events over seven years (bookings, reviews, cancellations) and a **short-term** sequence of up to 200 listing views from the past 21 days. Running it at query time was too expensive, so the first design split inference into a daily batch encoder and a request-time ranker; the short-term sequence and a set-wise ranker added +0.55% uncancelled bookers and a further +0.28% uncancelled bookings online ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)). The batch design left embeddings "up to nearly two days" stale. The follow-up added an event-driven trigger and in-pipeline model inference to Chronon, so the same encoder runs on each new event, often "within 10 to 30 seconds"; offline normalized discounted cumulative gain (NDCG), a ranking-quality metric, rose 1.67% and an online test showed about a third of a percent more uncancelled bookings ([Hou et al., 2026](https://medium.com/airbnb-engineering/the-guest-journey-updated-in-real-time-extending-airbnbs-sequence-recommender-with-chronon-8f1582578553)).
+Airbnb's sequence model is an architecture case, not a modeling one. The 2026 model encodes a **long-term** sequence of up to 80 events over seven years (bookings, reviews, cancellations) and a **short-term** sequence of up to 200 listing views from the past 21 days. Running it at query time was too expensive, so the first design split inference into a daily batch encoder and a request-time ranker; the short-term sequence and a set-wise ranker added +0.55% uncancelled bookers and a further +0.28% uncancelled bookings online ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)). The batch design left embeddings "up to nearly two days" stale. The follow-up added an event-driven trigger and in-pipeline model inference to Chronon, so the same encoder runs on each new event, often "within 10 to 30 seconds"; offline normalized discounted cumulative gain (NDCG), a ranking-quality metric, rose 1.67% and an online test showed about a third of a percent more uncancelled bookings ([Hou et al., 2026](https://medium.com/airbnb-engineering/the-guest-journey-updated-in-real-time-extending-airbnbs-sequence-recommender-with-chronon-8f1582578553)).
 
 Two lessons transfer. **Keep heavy models off the request path** by precomputing embeddings. And **freshness is itself a ranking feature**: the same model, fed newer data, booked more stays. Streaming triggers and in-pipeline inference are therefore a feature-platform decision ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)), not a recommendation-team one.
 
 {id: personalization-and-recommendations--cold-start-on-both-sides}
 ## Cold Start on Both Sides
 
-Cold start in a stays marketplace has two faces: guests the marketplace does not know, and listings nobody has booked yet.
-
 {id: personalization-and-recommendations--guests-without-history}
 ### Guests without history
 
-Most visitors to a stays marketplace are unknown at the moment that matters: logged out, on a new device, arriving from a paid search ad or a metasearch click, or known but last seen two years ago as a different persona. A personalization design that needs a user identifier serves none of them.
+Most visitors are unknown at the moment that matters: logged out, on a new device, arriving from a paid search ad or a metasearch click, or last seen two years ago as a different persona. A personalization design that needs a user identifier serves none of them.
 
 Airbnb described a deliberate answer in September 2026. Its **proximity features** group users by coarse location derived from the IP address into buckets of about 1,000 users, using an adaptive clustering that subdivides dense city areas and widens tiles in rural ones. Features are computed daily per bucket: recent search destinations, room types and median prices; long-term booking patterns; bucket metadata. Any model that conditions on a user identifier can condition on the proximity key instead. The post states that clustering excludes users who have not provided consent, that the pipeline is integrated with consent management and deletion controls, and that the lookup is a "soft dependency": if it times out, the model proceeds without it. On the home page, the autosuggest that used to fall back to a static global list ("Paris, Barcelona, London, Rome") now shows location-aware destinations, with gains concentrated among never-booked and dormant users ([Jiang et al., 2026](https://medium.com/airbnb-engineering/personalization-without-user-identity-8e7891a1d486)).
 
-The pattern generalizes beyond Airbnb's implementation: **personalize cold-start traffic on group signals that need no identity**, such as origin market, device, entry channel, season and the current query. Tomáš's anonymous Roomstead session from Prague carried enough of these to replace "Trending: Paris" with "Families from Czechia book Lisbon, the Algarve and Mallorca in August", without knowing who he was.
+The pattern generalizes: **personalize cold-start traffic on group signals that need no identity**, such as origin market, device, entry channel, season and the current query. Tomáš's anonymous Roomstead session from Prague carried enough of these to replace "Trending: Paris" with "Families from Czechia book Lisbon, the Algarve and Mallorca in August", without knowing who he was.
 
-The other half of guest cold start is **the session itself**. A logged-out guest who has searched once has already expressed a trip intent. Storing that intent against a first-party device identifier, with the consent the market requires, and offering to keep it ("Save this trip to your account") converts an anonymous session into a recoverable one. This is the cheapest personalization a marketplace can build, and the one most often missing.
+The other half of guest cold start is **the session itself**: a logged-out guest who has searched once has already expressed a trip intent. Storing it against a first-party device identifier, with the consent the market requires, and offering "Save this trip to your account" makes an anonymous session recoverable. It is the cheapest personalization a marketplace can build, and the one most often missing.
 
 {id: personalization-and-recommendations--listings-without-history}
 ### Listings without history
@@ -199,7 +195,7 @@ A new hotel or home has no views, saves or bookings, so behavioral embeddings an
 - **Neighbor initialization.** Start a new listing's behavioral vector from the vectors of similar existing listings nearby (same type, capacity and price band), then let real behavior replace it.
 - **Exposure policy.** Reserve some impressions for new supply so it can collect evidence. That is a ranking-policy decision owned by [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking); recommendations should follow the same policy rather than invent their own.
 
-The two marketplaces start from different places. A new hotel on Roomstead arrives with a star rating, a chain or brand, a mapped location and often reviews from other channels, so content features carry it far. A new home on Nookaway arrives with a host's photos and description and nothing else, so cold start is both deeper and more consequential: an individual host whose first listing gets no bookings in its first weeks often does not stay.
+Listing cold start is deeper on Nookaway than on Roomstead (see the table in the Hotels and Homes section), and more consequential: an individual host whose first listing gets no bookings in its first weeks often does not stay.
 
 {id: personalization-and-recommendations--saved-intent-wishlists-saved-searches-and-price-alerts}
 ## Saved Intent: Wishlists, Saved Searches and Price Alerts
@@ -209,7 +205,7 @@ Saved intent is where personalization makes explicit promises, so it is where it
 {id: personalization-and-recommendations--wishlists}
 ### Wishlists
 
-A wishlist looks like the simplest feature in the product: a list of listing IDs per user. Four design decisions make it useful or harmful.
+A wishlist looks like a list of listing IDs per user. Four design decisions make it useful or harmful.
 
 1. **Bind the list to a stay.** A wishlist without dates and party can show only "from" prices and cannot say whether a saved home is still available. Ask for dates when the guest saves, inherit them from the current search, and let the guest change them for the whole list.
 2. **Render live, never cached.** Every time the list is shown, re-check availability and fetch the total price for the bound stay. Mark unavailable items as unavailable and offer substitutes from the similar-stays recommender, filtered to the same dates.
@@ -221,14 +217,14 @@ A wishlist looks like the simplest feature in the product: a list of listing IDs
 
 A saved search stores a query; a price alert watches a price. In practice they are one mechanism: a **watch** with a target (one property and stay, or a query), a condition (any change, a drop of at least X, a price below Y), a frequency cap and an expiry. The alert evaluator re-prices watches and decides whether a change deserves a message.
 
-The architecture question is how the evaluator learns that a price changed. There are two designs.
+The architecture question is how the evaluator learns that a price changed.
 
 | Design | How it works | Strengths | Weaknesses |
 | --- | --- | --- | --- |
 | **Poll** | A scheduled job re-prices every active watch through the price and availability path | Simple; uses the same path as search; easy to reason about | Cost grows with watches × frequency; changes are found late (the Novaks' alert came about ten hours after the host's price change) |
 | **Event-triggered** | Price and availability change events (ARI updates, calendar and price edits) are matched against an index of watches; only matching watches are re-priced | Fast; cost follows changes, not watches | Needs an index of watches by property and date; ARI change rates on OTAs are very high; must still re-price through the live path before sending |
 
-The sequence below shows the event-triggered design as I would build it, with the live re-pricing step that both designs need.
+Figure 5 shows the event-triggered design as I would build it, with the live re-pricing step that both designs need.
 
 ![A swimlane of an event-triggered alert: the host lowers the August price, the calendar emits a change event, the evaluator finds the watch for 2 to 9 August and 4 guests, gets a fresh total of 1,271.20 euros, applies threshold and cap, and sends an alert with the total.](stays-marketplace-architecture/posts/19-personalization-and-recommendations/assets/images/19-personalization-and-recommendations/19-event-triggered-price-alert.jpeg)
 
@@ -236,22 +232,20 @@ The sequence below shows the event-triggered design as I would build it, with th
 
 In the Novak case, the total before the host's change would have been 7 × €165 = €1,155, plus €70 cleaning, a 12% guest service fee of €147.00 and €56 tourist tax: **€1,428.00**. After the change it was **€1,271.20**. An alert that said "Your Lisbon stay, 2–9 August, 4 guests: now €1,271.20 total, €156.80 less than when you saved it" would have been true, specific and impossible to misread. The alert that said "€145 a night" was true and still produced a complaint.
 
-Seven rules for any alert evaluator follow from this.
+Seven rules for any alert evaluator follow.
 
-- **Re-price through the live path, as a total.** The alert's number must be the number the guest will see on the property page for that stay, including mandatory fees and taxes, in the guest's currency ([The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection)).
-- **Check availability for every night.** A price drop on a stay that is no longer fully available is not an alert; it is Phantom Availability delivered to a phone.
-- **Close watches on booking.** Consume reservation events and close the intent; never send a price alert for a trip the guest has already booked, on either brand they have consented to link.
+- **Re-price through the live path, as a total.** The alert's number is the number the guest will see on the property page for that stay, including mandatory fees and taxes, in the guest's currency ([The Moment of Decision: Property Pages, Room Selection and Total Price](#property-page-and-room-selection)).
+- **Check availability for every night.** A price drop on a stay that is no longer fully available is Phantom Availability delivered to a phone.
+- **Close watches on booking.** Never send a price alert for a trip the guest has already booked, on either brand they have consented to link.
 - **Deduplicate and cap.** Several price events for the same stay in an hour are one alert, and one guest gets at most a few alerts per trip per week.
-- **Respect the notification platform.** Channel choice, quiet hours, language and consent belong to [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging), which owns notification routing. The evaluator decides *whether* to alert, not *how*.
-- **Log the decision.** Record the watch, the quote, the threshold and the model or rule version for each alert sent and each alert suppressed. Without suppressed alerts in the log, nobody can measure whether alerts help.
+- **Respect the notification platform.** Channel choice, quiet hours, language and consent belong to [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging). The evaluator decides *whether* to alert, not *how*.
+- **Log the decision.** Record the watch, the quote, the threshold and the model or rule version for each alert sent and each alert suppressed; without suppressed alerts in the log, nobody can measure whether alerts help.
 - **Expire watches.** A watch for a past date, or untouched for months, is closed automatically.
 
 {id: personalization-and-recommendations--sizing-the-alert-load}
 ### Sizing the alert load
 
-Alert evaluation is a load on the price and availability path, and on an OTA that path is the most expensive one in the system. Roomstead's numbers make the point.
-
-In 2027 Roomstead had, illustratively, **7.4 million** active saved searches with price alerts, most of them on Roomstead Circle member accounts. Its 2019-era job re-priced each one four times a day with one Pricegrid read per watch: 7.4 million × 4 = 29.6 million reads a day, about **340 a second** on average, under 2% of Roomstead's average **21,000** Pricegrid reads a second. That sounds negligible until one notices that the job ran in four bursts of about 30 minutes, at roughly **4,100 reads a second** each, and that one of those bursts started at 18:00 CET, in the European evening peak. On Black Friday 2027 (26 November), when lookups peaked at 96,000 a second and Pricegrid's cache hit rate fell from 94% to 71%, the alert job was one of the first workloads Roomstead's degradation mode paused ([Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability)).
+Alert evaluation is a load on the price and availability path, and on an OTA that path is the most expensive one in the system. In 2027 Roomstead had, illustratively, **7.4 million** active saved searches with price alerts, most of them on Roomstead Circle member accounts. Its 2019-era job re-priced each one four times a day with one Pricegrid read per watch: 7.4 million × 4 = 29.6 million reads a day, about **340 a second** on average, under 2% of Roomstead's average **21,000** Pricegrid reads a second. But the job ran in four bursts of about 30 minutes, at roughly **4,100 reads a second** each, and that one of those bursts started at 18:00 CET, in the European evening peak. On Black Friday 2027 (26 November), when lookups peaked at 96,000 a second and Pricegrid's cache hit rate fell from 94% to 71%, the alert job was one of the first workloads Roomstead's degradation mode paused ([Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability)).
 
 Event triggering changes the shape of the load. Roomstead receives about **650 million** availability, rates and inventory (ARI) update messages a day, and most touch no watch. Matching changes against an index of watches keyed by property and date, and re-pricing only matches, cut the illustrative evaluation load by about 80% in Jonas's tests and moved it off the evening peak. Nookaway's calendar and price edits are far fewer, so event triggering there was cheap; its nightly job existed only because nobody had wired the events.
 
@@ -261,20 +255,20 @@ Event triggering changes the shape of the load. Roomstead receives about **650 m
 {id: personalization-and-recommendations--the-documented-record}
 ### The documented record
 
-The public record is uneven: Airbnb has published a long, dated series, Booking.com research and platform material, Expedia ranking posts; Agoda, Trip.com and Vrbo little that could be verified, so nothing here describes their systems. Three observations matter for architects.
+The public record is uneven: Airbnb has published a long, dated series, Booking.com research and platform material, Expedia ranking posts; Agoda, Trip.com and Vrbo little that could be verified, so nothing here describes their systems. Three observations follow.
 
-First, **the same representations serve many surfaces.** Airbnb reported that its guest embeddings also rank promotional e-mails (+5.04% e-mail clicks, per its 2026 post) and that embedding-based retrieval improved e-mail-promotion bookings by 2.3% ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/); [Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). Search, recommendations and customer relationship management (CRM) are consumers of one set of representations, which argues for owning the representations centrally and the surfaces separately.
+First, **the same representations serve many surfaces.** Airbnb reported that its guest embeddings also rank promotional e-mails (+5.04% e-mail clicks, per its 2026 post) and that embedding-based retrieval improved e-mail-promotion bookings by 2.3% ([Zha et al., 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/); [Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). Search, recommendations and customer relationship management (CRM) consume one set of representations.
 
-Second, **the gains are small per change and large in aggregate.** At Nookaway's 2026 gross booking value of about €2.98 billion, a 0.3% lift in uncancelled bookings is worth roughly €9 million of booking value a year, or about €1.3 million of fee revenue at its realized take rate of about 14.4% ([Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics)). That pays for a team; it does not pay for a platform built on unmeasured claims.
+Second, **the gains are small per change and large in aggregate.** At Nookaway's 2026 gross booking value of about €2.98 billion, a 0.3% lift in uncancelled bookings is worth roughly €9 million of booking value a year, or about €1.3 million of fee revenue at its realized take rate of about 14.4% ([Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](#stays-marketplace-economics)). That pays for a team, not for a platform built on unmeasured claims.
 
-Third, **Booking.com discloses personalization as a ranking factor with an opt-out.** Its "How we work" page lists the user's past searches and interactions among factors that can influence ranking, unless the user has opted out of personalization ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)). Airbnb's Help Center says past interactions and bookings shape results and that a guest with a home reservation may see nearby experiences and services for those dates ([Airbnb Help Center, n.d.](https://www.airbnb.com/help/article/39)). Personalization in stays is now a disclosed, switchable parameter, not a hidden optimization.
+Third, **Booking.com discloses personalization as a ranking factor with an opt-out.** Its "How we work" page lists the user's past searches and interactions among factors that can influence ranking, unless the user has opted out of personalization ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)). Airbnb's Help Center says past interactions and bookings shape results and that a guest with a home reservation may see nearby experiences and services for those dates ([Airbnb Help Center, n.d.](https://www.airbnb.com/help/article/39)). Personalization in stays is now a disclosed, switchable parameter.
 
 {id: personalization-and-recommendations--corvane-worked-example-one-intent-two-brands}
 ### Corvane worked example: one intent, two brands
 
-Jonas's proposal to the architecture forum in May 2027 was a **Trip Intent Service** inside the One Stay program, under Corvane ID ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)), with brand-specific recommendation models on top. The forum argued about three things: what to share, what to re-price, and what to measure.
+Jonas's proposal to the architecture forum in May 2027 was a **Trip Intent Service** inside the One Stay program, under Corvane ID ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)), with brand-specific recommendation models on top. The forum argued about what to share, what to re-price, and what to measure.
 
-**What to share.** The intent store, the alert evaluator and the notification platform are shared; recommendation models are not. One Stay had already decided that ranking models stay per brand, and Jonas extended that to recommenders: Roomstead's similar-hotel model and Nookaway's similar-home model learn from different behavior over different supply. The shared contract is the intent record, which carries an optional `brand_scope`. An intent captured on Nookaway is visible to Roomstead only if the guest has linked the two brands under Corvane ID and agreed to see "your trips across Roomstead and Nookaway"; otherwise it stays in the brand where it was captured. Noor van Dijk insisted on this rule, and it cost little: in illustrative 2027 data, about 9% of Nookaway bookers also had a Roomstead account in the same browser, so the cross-brand case was real but not the bulk of the value.
+**What to share.** The intent store, the alert evaluator and the notification platform are shared; recommendation models are not. One Stay had already kept ranking models per brand, and Jonas extended that to recommenders: Roomstead's similar-hotel model and Nookaway's similar-home model learn from different behavior over different supply. The shared contract is the intent record, which carries an optional `brand_scope`. An intent captured on Nookaway is visible to Roomstead only if the guest has linked the two brands under Corvane ID and agreed to see "your trips across Roomstead and Nookaway"; otherwise it stays in the brand where it was captured. Noor van Dijk insisted on this rule, and it cost little: in illustrative 2027 data, about 9% of Nookaway bookers also had a Roomstead account in the same browser, so the cross-brand case was real but not the bulk of the value.
 
 **What to re-price.** Every wishlist render, alert and recommendation e-mail would quote a total through the brand's own pricing path: Pricegrid for Roomstead, Almanac plus pricing rules for Nookaway. Both expose the same quote contract that checkout uses ([Turning an Offer Into a Booking: Checkout Orchestration](#checkout-orchestration)), so an alert total and a checkout total come from the same code.
 
@@ -285,12 +279,12 @@ Jonas's proposal to the architecture forum in May 2027 was a **Trip Intent Servi
 | Alerts sent | 1,140,000 | 205,200 | 18.0% |
 | Holdout (decided, not sent) | 60,000 | 10,200 | 17.0% |
 
-The last-click report had credited alerts with all 205,200 bookings. The holdout says about **1.0 percentage point**, or roughly **11,400** of them, were incremental, about one in eighteen. That is still a good channel: the incremental bookings cost almost nothing, and the holdout also showed alerts reduced guest cancellations slightly, because guests booked at a price they had been watching. But it changed two decisions. Nookaway stopped sending alerts for price moves under 5% of the total, which the holdout showed produced no incremental bookings and most unsubscribes, and it moved the budget for a "more alerts" project to cold-start work on Roomstead's anonymous traffic.
+The last-click report had credited alerts with all 205,200 bookings. The holdout says about **1.0 percentage point**, or roughly **11,400** of them, were incremental, about one in eighteen. That is still a good channel: the incremental bookings cost almost nothing, and alerts slightly reduced guest cancellations, because guests booked at a price they had been watching. But it changed two decisions. Nookaway stopped sending alerts for price moves under 5% of the total, which the holdout showed produced no incremental bookings and most unsubscribes, and it moved the budget for a "more alerts" project to cold-start work on Roomstead's anonymous traffic.
 
 {id: personalization-and-recommendations--privacy-consent-and-the-non-profiling-path}
 ## Privacy, Consent and the Non-Profiling Path
 
-Personalization runs on personal data, and in the EU it runs inside four sets of rules that each translate into a system requirement. [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) owns the full map; this section covers what personalization must do.
+In the EU, personalization runs inside four sets of rules, each of which becomes a system requirement. [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation) owns the full map.
 
 | Rule | What it requires | System requirement |
 | --- | --- | --- |
@@ -299,24 +293,24 @@ Personalization runs on personal data, and in the EU it runs inside four sets of
 | **Digital Services Act**, [Regulation (EU) 2022/2065](http://publications.europa.eu/resource/celex/32022R2065) | Online platforms using **recommender systems** must explain their main parameters and any options to modify them (Art. 27); very large online platforms must offer at least one option "not based on profiling" for each recommender system (Art. 38). The definition (Art. 3(s)) covers ordering search results | A documented parameter list per surface; a user setting that switches every surface to a non-profiling path |
 | **Omnibus Directive**, [Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161) | Consumers must be told when a price is **personalized** on the basis of automated decision-making (recital 45, amending Directive 2011/83/EU); this does not cover dynamic pricing that responds to demand without personalization; applies from 28 May 2022 | A hard boundary between personalizing *which* stays are shown and personalizing *what price* is charged |
 
-Three design consequences deserve emphasis.
+Three design consequences follow.
 
 **Build the non-profiling path for every surface, whatever your designation.** Booking.com has been a designated very large online platform since 25 April 2023, so Article 38 applies to it directly ([European Commission, list of designated VLOPs](https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses)). A smaller marketplace may not be bound by Article 38 but needs the same path anyway: for guests who refuse consent, for logged-out traffic, as the cold-start fallback and as the control arm of every personalization experiment. Built as a maintained ranking (query relevance, destination popularity, quality), it is one system with four uses; built as an afterthought, it fails all four.
 
 **Separate personalizing the shelf from personalizing the price.** Showing the Novaks family apartments first personalizes ranking. Charging them more for the same apartment because their history suggests they would pay is personalized pricing, with a disclosure duty in the EU and a trust problem everywhere. Disclosed member and closed-user-group rates are a different case, owned by [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty). My rule is that recommendation and personalization services **never write to a price**; they read prices from the pricing path and can only choose which offers to show.
 
-**Treat sensitive inferences as out of scope.** Travel histories can reveal health (clinic visits), religion (pilgrimage destinations), sexual orientation (properties marketed to particular communities) and family situation. GDPR Article 9 sets a high bar for special categories of data. I would exclude such inferences from features and segments explicitly, review new features against that list, and keep the review record. It is cheaper to never build a segment than to explain one.
+**Treat sensitive inferences as out of scope.** Travel histories can reveal health (clinic visits), religion (pilgrimage destinations), sexual orientation (properties marketed to particular communities) and family situation. GDPR Article 9 sets a high bar for special categories of data. I would exclude such inferences from features and segments explicitly, review new features against that list, and keep the review record.
 
 {id: personalization-and-recommendations--measuring-whether-personalization-works}
 ## Measuring Whether Personalization Works
 
-Personalization claims credit by default: rails and alerts sit on the path of guests who were going to book anyway, and last-click attribution gives them the booking. The Nookaway holdout is the general shape of the answer.
+Personalization claims credit by default: rails and alerts sit on the path of guests who were going to book anyway, and last-click attribution gives them the booking. The Nookaway holdout generalizes into five practices.
 
 - **Long-running holdouts per surface.** Keep a small, stable share of guests who see the non-personalized version of a surface (or receive no alerts) for months, not weeks. Booking windows in stays are long; a two-week test misses the bookings that matter. [Testing Everything: Experimentation Platforms for Stays](#stays-experimentation) owns the methods for delayed outcomes and interference.
 - **Measure uncancelled bookings for the trip, not clicks on the surface.** A rail that raises clicks and lowers bookings by distracting the guest is common.
 - **Count cannibalization.** A recommendation that moves a booking from organic search to the rail creates no value; holdouts see the difference, attribution reports cannot.
 - **Measure promise-keeping.** Two operational metrics belong on the personalization dashboard: the share of alerts and recommendation impressions whose quoted total differed from the property-page total for the same stay, and the share pointing to stays that were unavailable when rendered. Both should be near zero by construction.
-- **Watch the supply side.** On Nookaway, personalization that concentrates demand on already-popular homes starves new hosts. Exposure share for listings under 90 days old is a guardrail, not a curiosity.
+- **Watch the supply side.** On Nookaway, personalization that concentrates demand on already-popular homes starves new hosts. Exposure share for listings under 90 days old is a guardrail.
 
 Booking.com's 2019 lesson applies directly: improvements in a model's offline metric often do not translate into business value ([Bernardi et al., 2019, as summarized by Colyer](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). A recommender's offline recall is a reason to run an experiment, not a result.
 
@@ -331,12 +325,12 @@ Booking.com's 2019 lesson applies directly: improvements in a model's offline me
 | **Intent ownership** | Per brand | Shared store under group identity | Brands have separate identities and no linking consent | Shared identity exists, guests opt in to linking, and the same families use both brands |
 | **Models** | Shared recommender across brands | Separate recommenders per brand | Supply is similar and behavior transfers | Supply models differ (room types vs one-unit homes); the default for Corvane |
 
-The trade-off I would argue hardest is the second one. Streaming embeddings pay at Airbnb's scale, but for a marketplace without an intent store, live re-pricing and holdouts they optimize the wrong thing first. The order I use: capture intent, keep promises about price and availability, measure, and only then make representations fresher.
+I would argue hardest about the second row. Streaming embeddings pay at Airbnb's scale, but without an intent store, live re-pricing and holdouts they optimize the wrong thing first. The order I use: capture intent, keep promises about price and availability, measure, and only then make representations fresher.
 
 {id: personalization-and-recommendations--hotels-and-homes-where-the-two-marketplaces-differ}
 ## Hotels and Homes: Where the Two Marketplaces Differ
 
-Personalization looks like a shared capability, and much of it is. The differences are in what the guest saves, what changes underneath it, and what a good substitute is.
+Much of personalization is shared. The differences are in what the guest saves, what changes underneath it, and what a good substitute is.
 
 | Dimension | Accommodation marketplace (OTA-style) | Hosted-stays marketplace |
 | --- | --- | --- |
@@ -351,14 +345,13 @@ Personalization looks like a shared capability, and much of it is. The differenc
 | **Two-sided objective** | Partner programs and commission can leak into recommendations; the ranking-transparency rules of [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking) apply to every rail | Host fairness: new listings and individual hosts need exposure; acceptance and cancellation risk matter |
 | **What can be shared** | Intent store, alert evaluator, notification platform, consent handling, embedding training infrastructure, holdout framework | Same |
 
-My judgement for Corvane: **share the memory, not the taste.** The trip intent store, the alert evaluator, the quote contract, the notification platform and the measurement framework are the same problem in both marketplaces and should be built once. The models that decide what a family will like are trained on different supply and different behavior, and sharing them would mostly mean that Roomstead's hotel signals dominate Nookaway's homes, a small instance of **The Hotel-Shaped Home**. The convergence that does exist (Roomstead sells apartments from professional managers; Nookaway will pilot boutique hotels in 2028) argues for a shared candidate pool *by consent* across brands, not for one model.
+My judgement for Corvane: **share the memory, not the taste.** The trip intent store, the alert evaluator, the quote contract, the notification platform and the measurement framework are the same problem in both marketplaces and should be built once. Sharing the recommendation models would mostly mean that Roomstead's hotel signals dominate Nookaway's homes, a small instance of **The Hotel-Shaped Home**. The convergence that does exist (Roomstead sells apartments from professional managers; Nookaway will pilot boutique hotels in 2028) argues for a shared candidate pool *by consent* across brands, not for one model.
 
 {id: personalization-and-recommendations--failure-modes}
 ## Failure Modes
 
-- **Alerts that quote a nightly rate.** The Novaks' case: true, specific and misleading. The fix is architectural (the evaluator calls the quote contract), not editorial.
-- **Wishlists that store prices.** A cached "from €150" next to a sold home is phantom availability with a heart icon. Store intent; compute price at render.
-- **Alerts after booking.** The evaluator does not consume reservation events, so guests who booked receive "prices dropped for your trip" the next morning. It looks careless and invites cancel-and-rebook behavior that costs the marketplace twice.
+The nightly-rate alert, the wishlist that stores prices and the alert after booking are covered above. Three further failures are less visible.
+
 - **Alert storms from supply bugs.** An OTA rate error (the **€12 rate at Hotel Miradouro** on 9 March 2027, when a decimal-mapping error sent €12.00 instead of €120.00 for 38 minutes) is also a price drop of 90%. An event-triggered evaluator that trusts it sends thousands of alerts for an error the marketplace will honor at its own cost. Alerts need the same price-anomaly checks as checkout ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)), and a drop beyond a plausibility bound should be held, not broadcast.
 - **Consent drift.** A new feature or segment starts using data collected under a narrower purpose: Nookaway search history used for Roomstead e-mail, or a marketing-consent flag read only at sign-up. Consent must be checked at the point of use.
 - **Unowned models.** A similar-stays model trained once in 2024, never retrained, still serving 20% of property-page impressions. **The Unwatched Model** in its quietest form: no one notices because nothing breaks; it just gets worse.
@@ -366,17 +359,17 @@ My judgement for Corvane: **share the memory, not the taste.** The trip intent s
 {id: personalization-and-recommendations--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The decisions that belong at group level are few, and each has a clear owner.
+Seven decisions belong at group level, each with an owner.
 
-1. **Name the system of record for saved intent.** One trip intent store per group (or per brand, if identities are not shared), owned by one team, with a published contract: intent, wishlist, watch, lifecycle states, consent scope, expiry. Every other team reads and writes through it. At Corvane this is the Trip Intent Service in One Stay, owned by Jonas Weber's group search and ranking organization.
-2. **Make "no unpriced promise" a platform rule.** Every surface that shows a stay with a price, including e-mails, push notifications, wishlists and rails, must obtain it from the quote contract for the guest's stay at render or send time. This is a governance rule with an automated check: the promise-keeping metrics above, with alerts on regressions.
-3. **Keep personalization out of prices.** Recommendation and personalization services read prices and never write them. Member and promotional prices belong to promotions and loyalty, with disclosure.
-4. **Own the representations centrally, the surfaces locally.** Listing and guest embeddings, their training pipelines and their versions belong to the ML platform and a central relevance team ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)). Each surface (home page, e-mail, similar stays) belongs to a product team that consumes them and is accountable for its holdout.
-5. **Require a holdout for every surface that claims revenue.** No personalization surface gets budget on attribution alone. The holdout share is small and permanent; its results are reviewed quarterly next to the attribution numbers.
-6. **Maintain the non-profiling path as a product.** It has an owner, a quality bar and an experiment of its own. It serves consent refusals, logged-out guests, cold start and regulators.
-7. **Decide cross-brand use explicitly.** Linking intent across brands is a product feature the guest chooses, not a data-platform join. The privacy lead signs off the scope, and the default is brand-local.
+1. **Name the system of record for saved intent.** One trip intent store per group (or per brand, if identities are not shared), owned by one team, with a published contract: intent, wishlist, watch, lifecycle states, consent scope, expiry. At Corvane this is the Trip Intent Service in One Stay, owned by Jonas Weber's group search and ranking organization.
+2. **Make "no unpriced promise" a platform rule.** Every surface that shows a price, including e-mails, push notifications, wishlists and rails, obtains it from the quote contract at render or send time, checked automatically by the promise-keeping metrics above.
+3. **Keep personalization out of prices.** Personalization services read prices and never write them; member and promotional prices belong to promotions and loyalty.
+4. **Own the representations centrally, the surfaces locally.** Embeddings, their training pipelines and versions belong to the ML platform and a central relevance team ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)); each surface belongs to a product team accountable for its holdout.
+5. **Require a holdout for every surface that claims revenue.** The holdout share is small and permanent; its results are reviewed quarterly next to the attribution numbers.
+6. **Maintain the non-profiling path as a product,** with an owner, a quality bar and an experiment of its own.
+7. **Decide cross-brand use explicitly.** The privacy lead signs off the scope, and the default is brand-local.
 
-What to watch over the long term: generative assistants in front of search ([AI Across the Stay: Agents, Assistants and Automation](#ai-in-travel-stays)) make trip intent the interface. "Two adults, two kids, Lisbon, first week of August, under €1,300 all in" is a trip intent stated directly; a marketplace with a clean intent model and a quote contract that returns totals can answer it, and one with personalization scattered across rails and nightly jobs cannot.
+What to watch: generative assistants in front of search ([AI Across the Stay: Agents, Assistants and Automation](#ai-in-travel-stays)) make trip intent the interface. "Two adults, two kids, Lisbon, first week of August, under €1,300 all in" is a trip intent stated directly; a marketplace with a clean intent model and a quote contract that returns totals can answer it, and one with personalization scattered across rails and nightly jobs cannot.
 
 {id: personalization-and-recommendations--questions-to-ask}
 ## Questions to Ask

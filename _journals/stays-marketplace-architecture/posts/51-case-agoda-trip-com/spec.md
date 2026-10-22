@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Agoda and Trip.com: Asian OTAs at Scale
@@ -68,3 +68,6 @@ Chief and principal architects, supply, pricing and booking leads, and platform 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Booking.com date-range contrast narrowed to B.XML; dead Agoda Supply API link flagged; OTA and TTL expanded; timetoread 31; Trip.com 20-F and Agoda posts re-verified. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,922 → 5,787 prose words; Failure Modes compressed to pointers into the body; trade-offs recap paragraph and repeated restatements in the Chief Architect's view cut; no headings changed. *(AI-mediated session)*
+
+- **2026-10-22** — Agoda Supply API citation verified live; added read date 22 Oct 2026. *(AI-mediated session)*

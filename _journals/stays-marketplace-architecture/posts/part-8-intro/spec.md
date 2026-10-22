@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part VIII — PLATFORM: The Distributed System Underneath
@@ -20,7 +20,7 @@ Chief architects, platform and data engineering leads, ML platform owners and di
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS THIS PART ADDRESSES callout using exact pattern names, linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument: the platform is where a group can share the most and where sharing goes wrong most quietly; share the machinery, keep the semantics.
 - [ ] A short paragraph names where hotels and homes differ (look-to-book and search cost, ARI firehose and cancellations vs one-unit interference, hosts as natural persons, payout seasonality) and notes convergence.
-- [ ] One mermaid diagram with a Figure caption: channels, offer and reservation contracts, event backbone, Gauge, experimentation, Kiln and journey objectives.
+- [ ] One diagram (illustrated) with a Figure caption: channels, offer and reservation contracts, event backbone, Gauge, experimentation, Kiln and journey objectives.
 - [ ] Corvane (labeled fictional) uses only figures from chapters 37–42: €412,000 and 2,870 reservations in the shadow run, 40 minutes in D2 with the hit rate falling from 94% to 71%, 51.0 million bookings, the badge's vanished and shrunken wins, €38,400 absorbed after Tideline, 41% one-engine dependence, 1,400 shopping requests per booking, 435,000 alternative accommodations.
 - [ ] Each chapter paragraph names the real platforms the chapter cites (Agoda, Booking.com, Airbnb, Expedia/Vrbo) without new claims.
 - [ ] `## Chapters in this part` has one paragraph per chapter in config order, with what it decides, its Corvane case and when to read it.
@@ -54,3 +54,4 @@ Internal: [[event-driven-stays]], [[global-scale-and-reliability]], [[marketplac
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: €412,000 cause aligned with chapter 37 (lost, read-back and duplicate events); 1,400 worded as shopping requests per gross reservation; 41% dependence worded as last external click. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 964 → 956 prose words; outline unchanged; argument sentence made a direct bold claim, Roomstead named as the OTA in the Hotels and homes paragraph, global-scale chapter paragraph split for readability; spec unchanged. *(AI-mediated session)*

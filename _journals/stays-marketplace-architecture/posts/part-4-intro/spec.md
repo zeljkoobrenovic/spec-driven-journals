@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Part IV — DISCOVERY: From Intent to Bookable Stay
@@ -19,7 +19,7 @@ Chief architects, search, ranking and ML leads, and engineering directors respon
 
 - [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three) and a FAILURE PATTERNS callout using exact names linked to where-stay-platforms-go-wrong.html.
 - [ ] States the argument (one pipeline with one promise) and names where hotels and homes differ: comparison and exact address vs evidence and a coarse public point; shared contract and quote, templates by offer shape.
-- [ ] One mermaid diagram with a Figure caption.
+- [ ] Two figures with short captions: comparison versus evidence, and the one-pipeline-one-promise flow.
 - [ ] A "Chapters in this part" list with one paragraph per chapter in config order, each linking the chapter and saying what it decides.
 - [ ] Corvane facts match the ledger and chapters: the 13 May 2027 Lisbon query, four "Lisbons", the €2.4 million map bill, Prinsenkade's fall from 6 to 23, Ranking Policy v1 replacing Front Row multipliers, the Novaks' €145 and €1,271.20.
 - [ ] Ends with a hand-off to [[stays-search-architecture]]; 500–900 words of body.
@@ -49,5 +49,6 @@ None.
 ## Changelog
 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
-- **2026-10-21** — Editorial review pass: renamed Front Row to Front Row, fixed a stray comma. *(AI-mediated session)*
+- **2026-10-21** — Editorial review pass: renamed Visibility Plus to Front Row, fixed a stray comma. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 1 mermaid diagram to an illustration and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 834 → 832 prose words; both figure captions cut to one line (they restated the lead paragraphs); two chapter-list sentences tightened. Spec: the stale "one mermaid diagram" criterion now describes the two figures. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Paying for a Future Night: Payment Orchestration for Stays
@@ -80,3 +80,4 @@ Chief and enterprise architects of travel groups, payments and checkout leads, p
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: Hotel Miradouro VCC example aligned to its 15% commission (€382.50, €510 after an added night) instead of a generic 82% net; American spelling. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 4 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,662 → 7,278 prose words; opening merged into one lead paragraph plus a place-in-book paragraph naming inputs (checkout, cancellation) and consumers (payouts, refunds); Payment orchestration definition moved from Concepts into Architecture; Failure Modes cut to the three failures not shown earlier; repeated feed and activation statements removed. *(AI-mediated session)*

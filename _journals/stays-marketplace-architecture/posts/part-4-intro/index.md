@@ -33,21 +33,21 @@ Part III produced offers: priced, restricted, bookable stays held in read models
 
 The argument of this part is that **discovery is one pipeline with one promise**: whatever a surface shows, whether a card, a pin, a rail, an alert or a rooms table, the guest can book at that total. Each chapter adds a stage and the rule that keeps the promise at that stage.
 
-Hotels and homes ask the same question here and need different answers. A hotel competes on **comparison**: dozens of rate plans become a rooms table, its exact address is a selling point. A home competes on **evidence**: the host, verified-stay reviews and the registration status, with a location that is personal data until booking and shown as a coarse public point. The guest's query and the shown total are the same for both, so the contract and the quote are shared and the templates follow offer shape, not brand.
+Hotels and homes ask the same question here and need different answers. A hotel competes on **comparison**: dozens of rate plans become a rooms table, and its exact address is a selling point. A home competes on **evidence**: the host, verified-stay reviews and the registration status, with a location that is personal data until booking and shown as a coarse public point. The guest's query and the shown total are the same for both, so the contract and the quote are shared and the templates follow offer shape, not brand.
 
 ![A hotel with an exact pin and a rooms table, labeled comparison, beside a home in an approximate circle with host, review and registration cards, labeled evidence, both connected to one shared search bar and price tag.](assets/images/part-4-intro/04-comparison-versus-evidence.jpeg)
-**Figure 1:** *Hotels compete on comparison, a rooms table and an exact address; homes compete on evidence, a host, verified-stay reviews and a registration status behind a coarse public point. The guest's query and the shown total are the same for both.*
+**Figure 1:** *Hotels compete on comparison, homes on evidence; the guest's query and the shown total are the same for both.*
 
 ![A pipeline from guest query through destination graph, retrieval, availability join for every night and bounded policy to list, map and rails and the property page, with a trip intent store feeding alerts and one quote giving both surfaces the same total.](assets/images/part-4-intro/04-one-pipeline-one-promise.jpeg)
-**Figure 2:** *Discovery is one pipeline with one promise: places resolved once, availability joined for every night, order set by a bounded policy, and the same quote shown on every surface from the map pin to the property page.*
+**Figure 2:** *One pipeline, one promise: each stage adds a rule, and every surface from the map pin to the property page shows the same quote.*
 
 ## Chapters in this part
 
 [[stays-search-architecture]] decides **how a search computes bookable stays**: a two-layer index with a coarse availability projection, an exact availability join for shown candidates, latency budgets per stage, and flexible-date search on precomputed availability. Jonas Weber's team ran one Lisbon query through Roomstead's Elasticsearch-plus-Pricegrid stack and Nookaway's OpenSearch stack on 13 May 2027 and got two different answers.
 
-[[destinations-and-maps]] decides **where to search**. A destination graph separates a place's legal boundary from a learned search area, the map is treated as its own result surface with dates and prices, and a home's exact address is kept apart from its public point. Four different "Lisbons" in Corvane's systems, and a €2.4 million map bill with no owner, set it off.
+[[destinations-and-maps]] decides **where to search**. A destination graph separates a place's legal boundary from a learned search area, the map is treated as its own result surface with dates and prices, and a home's exact address is kept apart from its public point. Four different "Lisbons" in Corvane's systems, and a €2.4 million map bill with no owner, are the case.
 
-[[stays-ranking]] decides **what comes first and who can explain it**. It trains on honored stays and moves commission and programs into a capped policy layer with a ranking log, reason codes and a ranking council. It ends with a transparency page generated from configuration. Hotel Prinsenkade's fall from position 6 to 23, which nobody could explain, led to Roomstead's Ranking Policy v1 replacing the Front Row multipliers.
+[[stays-ranking]] decides **what comes first and who can explain it**. It trains on honored stays and moves commission and programs into a capped policy layer with a ranking log, reason codes and a ranking council. It ends with a transparency page generated from configuration. Hotel Prinsenkade's unexplained fall from position 6 to 23 led to Roomstead's Ranking Policy v1 replacing the Front Row multipliers.
 
 [[personalization-and-recommendations]] decides **what the marketplace remembers between visits**: trip intent as a first-class record in a Trip Intent Service, alerts and rails re-priced as totals at send time, holdouts for every surface that claims revenue, and a non-profiling path. The Novak family's abandoned Lisbon search is the case.
 

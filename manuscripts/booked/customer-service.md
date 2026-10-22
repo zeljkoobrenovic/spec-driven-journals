@@ -5,7 +5,7 @@
 
 > **IN THIS CHAPTER, YOU WILL:** Design customer service for a stays marketplace as a platform: contact drivers and the taxonomy that names them, a case model that spans guest, property or host and marketplace, service levels tied to arrival time, recovery decisioning for refunds, relocations and compensation, the context agents need, self-service and AI agents grounded in live reservation state, and the surge mode for disruptions.
 
-> **WHY THE BUSINESS CARES:** Support is one of the largest operating costs after marketing, and for many guests it is the only part of the marketplace they ever talk to. The hours after a problem decide whether the guest books again, whether the partner or host stays, and how much the marketplace pays to put things right. Each recovery that nobody records is money the marketplace cannot recover from the party that caused it.
+> **WHY THE BUSINESS CARES:** Support is a large operating cost, and for many guests it is the only part of the marketplace they ever talk to. The hours after a problem decide whether the guest books again, whether the partner or host stays, and how much the marketplace pays to put things right. Each recovery that nobody records is money the marketplace cannot recover from the party that caused it.
 
 > **WHY ARCHITECTS SHOULD CARE:** A support agent's screen is a read model over almost every system in the platform: reservations, payments, messages, inventory, trust and partner contracts. If support runs on a ticketing tool with copied data and free-text outcomes, every recovery becomes an untracked side effect, every policy is re-encoded in agent scripts, and an AI agent added on top only repeats the same errors faster.
 
@@ -25,7 +25,7 @@ An accommodation marketplace sells a promise that someone else fulfills, weeks o
 
 Three things make stays support harder than retail support. **Most cases have three parties**: the guest, the property or host, and the marketplace, and the party who must act is often not the party who called. **The clock is set by the stay**, not by the queue: a missing booking found two weeks before arrival is an e-mail; found at 23:00 on the arrival night it is a relocation at peak prices. And **the remedies cost money and move it between parties**: a relocation, a refund for a non-refundable rate or a goodwill credit is paid by someone and is often owed by someone else.
 
-This chapter closes [Part V — BOOKING: Making and Keeping the Reservation](#part-5). It owns the **case**, the **contact driver** and the **recovery decision**. It builds on the reservation state machine and delivery of [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle), on the cancellation policy engine and declared events of [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations), and on the conversation store and notifications of [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging). It does not re-teach damage claims and safety incidents ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)), oversell prevention and the liability matrix ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)), or refund accounting ([Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation)); it shows how support uses each.
+This chapter closes [Part V — BOOKING: Making and Keeping the Reservation](#part-5), where the booking path ends. It owns the **case**, the **contact driver** and the **recovery decision**. It builds on the reservation state machine and delivery of [The Life of a Reservation: State Machines, Delivery and Operations](#reservation-lifecycle), the cancellation policy engine and declared events of [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations), and the conversation store of [Between Booking and Check-Out: Trips, Messaging and Notifications](#trip-and-messaging). Its records feed ranking and the partner statements of Part VI. Damage claims ([Damage, Parties and Emergencies: Protection and Incident Response](#protection-and-incidents)), the oversell liability matrix ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)) and refund accounting ([Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation)) stay in their own chapters; this one shows how support uses them.
 
 {id: customer-service--setting-the-scene-at-corvane-four-guests-on-king-s-day}
 ## Setting the Scene at Corvane: Four Guests on King's Day
@@ -57,7 +57,7 @@ Elena's question to the One Stay architecture forum, the group program that deci
 {id: customer-service--the-vocabulary-of-support}
 ## The Vocabulary of Support
 
-Support vocabulary comes from contact centers, and contact-center words count the wrong things for a marketplace. The definitions below are the ones this book uses.
+Support vocabulary comes from contact centers, and contact-center words count the wrong things for a marketplace.
 
 | Term | Definition | Why it matters in stays |
 | --- | --- | --- |
@@ -108,14 +108,14 @@ Volumes and costs, 2026:
 | Support cost | €61 million | €24 million |
 | Cost per case | €9.80 | €18.50 |
 
-Three readings mattered to the forum. First, **much of Roomstead's volume was about things the guest could in principle do alone**: cancel a refundable booking, find a confirmation, read a policy. Those are product and self-service defects, not staffing problems. Second, **Nookaway's expensive cases were between two private parties**: hosts not responding, failed check-ins, homes not as described, damage. No self-service flow resolves "the host says the guest broke the table"; it needs evidence and a judgement. Third, **"booking not found" and "no room on arrival" were Roomstead's most expensive drivers per case**, and both were detectable by Roomstead's own systems before the guest called.
+Three readings mattered to the forum. First, **much of Roomstead's volume was about things the guest could do alone**: cancel a refundable booking, find a confirmation, read a policy. Those are product defects, not staffing problems. Second, **Nookaway's expensive cases were between two private parties**: hosts not responding, failed check-ins, homes not as described, damage. No self-service flow resolves "the host says the guest broke the table"; it needs evidence and a judgement. Third, **"booking not found" and "no room on arrival" were Roomstead's most expensive drivers per case**, and both were detectable by Roomstead's own systems before the guest called.
 
 Policy design moves the distribution: in its third-quarter 2025 letter Airbnb said new cancellation-policy options were "reducing customer service cases" in initial tests ([Airbnb Q3 2025 Shareholder Letter](https://s26.q4cdn.com/656283129/files/doc_financials/2025/q3/v2/Airbnb_Q3-2025-Shareholder-Letter.pdf), 2025).
 
 {id: customer-service--the-architecture-of-a-support-platform}
 ## The Architecture of a Support Platform
 
-Most marketplaces start with a ticketing tool and integrate outwards: a reservation lookup here, a refund button there. The tool then knows contacts and agents, and the platform does not know what support decided. The architecture below inverts that: **the marketplace owns the case, the context and the recovery decision; the contact-center tools own channels, queues and the agent desktop.**
+Most marketplaces start with a ticketing tool and integrate outwards: a reservation lookup here, a refund button there. The tool then knows what support decided, and the platform does not. The architecture below inverts that: **the marketplace owns the case, the context and the recovery decision; the contact-center tools own channels, queues and the agent desktop.**
 
 ![Bought channels, an AI assistant and an agent desktop feed a marketplace-owned case service, which also opens proactive cases from events, reads a context model and calls recovery decisioning, which acts through domain APIs and posts to the ledger.](stays-marketplace-architecture/posts/25-customer-service/assets/images/25-customer-service/25-support-platform.jpeg)
 
@@ -131,16 +131,16 @@ Most marketplaces start with a ticketing tool and integrate outwards: a reservat
 | **Relocation service** | Finds comparable stays, books the replacement as a linked reservation, records cause | Search and booking APIs of both brands | Marketplace, shared with [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) |
 | **AI assistant** | Classifies, answers from curated content, acts through tools within limits, hands off with context | Same case, context and decision APIs as agents | Marketplace AI platform with support |
 
-The design choices that matter:
+Three design choices matter:
 
-- **Cases are opened by events, not only by contacts.** An unacknowledged reservation for an arrival within 48 hours, negative headroom after an inventory refresh, a declined scheduled charge, a host cancellation, a calendar conflict found on import: each should open a case with the right driver and clock before the guest notices. [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools) describes the partner-facing exception queue; the case service reads the same events, so a partner's unresolved exception and a guest's case are one record seen from two sides.
-- **The context read model is built from events, not from screen scraping.** The agent should see the reservation's version history, the payment plan and its state, the conversation with the property or host, the delivery and acknowledgement status, and the policy that applied at booking. That is a projection over reservation, payment and messaging events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays)); at Corvane, over Stayline's reservation events, Corvane Payments' payment state feed, Threadline's conversations and the trust decisions of Warden, the group trust platform ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)). Copying data into the vendor's tool creates a second, stale truth that agents then quote to guests.
+- **Cases are opened by events, not only by contacts.** An unacknowledged reservation for an arrival within 48 hours, negative headroom after an inventory refresh, a declined scheduled charge, a host cancellation, a calendar conflict found on import: each should open a case with the right driver and clock before the guest notices. The case service reads the same events as the partner exception queue of [Running the Supply Side: Extranets, Host Tools and Operations](#extranets-and-host-tools), so a partner's exception and a guest's case are one record seen from two sides.
+- **The context read model is built from events, not from screen scraping.** It is a projection over reservation, payment and messaging events ([Streams of Nights: Event-Driven Architecture for Stays](#event-driven-stays)); at Corvane, over Stayline's reservation events, Corvane Payments' payment state feed, Threadline's conversations and the trust decisions of Warden, the group trust platform ([Trust as a Platform: Trust and Safety for Stays](#stays-trust-and-safety)). Copying data into the vendor's tool creates a second, stale truth that agents then quote to guests.
 - **Actions go through the domain APIs, never around them.** A refund is a call to payments with an idempotency key and a reason; a date change is a modification through the reservation service; a relocation is a booking. An agent tool that writes directly into a database, or a "refund" that is a manual bank transfer, is how support creates the reconciliation gaps that finance later chases ([Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation)).
 
 {id: customer-service--the-case-model}
 ### The case model
 
-A case has more structure than a ticket. The fields below are the minimum I would put in the shared contract.
+The fields below are the minimum I would put in the shared case contract.
 
 | Field | Content | Rule |
 | --- | --- | --- |
@@ -162,7 +162,7 @@ The state machine is short. What matters is that "waiting for partner" is a stat
 {id: customer-service--service-levels-set-by-the-stay}
 ### Service levels set by the stay
 
-Contact centers measure answer times. A stays marketplace should set its targets from the arrival clock and let the queue targets follow. The rule I use is a priority matrix from two inputs: how close the stay is and whether the guest can sleep tonight.
+A stays marketplace should set its targets from the arrival clock and let the queue targets follow. The rule I use is a priority matrix from two inputs: how close the stay is and whether the guest can sleep tonight.
 
 | Situation | Example | Target |
 | --- | --- | --- |
@@ -176,9 +176,7 @@ Calendar Sync v2 at Nookaway already used this logic for calendar conflicts: a c
 {id: customer-service--recovery-decisioning}
 ## Recovery Decisioning
 
-When a stay fails, support chooses a remedy. Usually that choice lives in agents' heads, vendor knowledge-base articles and approval e-mails. The **recovery decision** makes it data.
-
-A recovery decision has six parts: the case and reservations it applies to; the **cause code** (what went wrong, from a short list shared with [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) and [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations)); the **entitlement** the guest, partner or host has under the applicable policy and rule version; the **remedy** chosen (refund, partial refund, relocation, credit, goodwill payment, fee waiver, host compensation); the **funder** who pays now; and the **liable party** who ultimately bears the cost and how it is recovered.
+When a stay fails, support chooses a remedy, and that choice usually lives in agents' heads, vendor knowledge-base articles and approval e-mails. The **recovery decision** makes it data, in six parts: the case and reservations; the **cause code**, from a short list shared with [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) and [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations); the **entitlement** under the applicable policy and rule version; the **remedy** (refund, partial refund, relocation, credit, goodwill payment, fee waiver, host compensation); the **funder** who pays now; and the **liable party** who bears the cost, with how it is recovered.
 
 | Cause | Typical remedy | Funder now | Liable party | Recovery path |
 | --- | --- | --- | --- | --- |
@@ -189,11 +187,11 @@ A recovery decision has six parts: the case and reservations it applies to; the 
 | Declared disruptive event | Refund or credit under the event's terms | Per event terms | Per event terms | Batch, per declared event |
 | Payment fraud against the guest through a partner account | Reimbursement | Marketplace | Partner where terms allow; often marketplace | Partner claim; fraud loss accounting |
 
-Three properties make the service useful rather than another approval form.
+Three properties make the service more than an approval form.
 
 **Entitlements are rules, not scripts.** "A walked hotel guest is entitled to a comparable or better room within 5 kilometers or the nearest available, transport, and a refund of any prepaid amount" is a rule with a version, evaluated against the reservation and the cause. The same rule engine serves the AI assistant, the agent and a batch job. When the policy changes, one rule changes, not 40 vendor articles. The cancellation policy engine of [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations) is the source for what the guest is owed under the booking's own terms; recovery decisioning adds what the marketplace grants on top.
 
-**Limits are part of the decision, not of the org chart.** Each remedy has an approval limit by actor: the AI assistant, a first-line agent, a senior agent, a supervisor. A first-line agent at a vendor might approve goodwill up to €50 and relocations up to the entitlement; anything above goes to a queue with a named approver. Limits by actor make outsourced and automated support safe to give real authority.
+**Limits are part of the decision, not of the org chart.** Each remedy has an approval limit by actor: the AI assistant, a first-line agent, a senior agent, a supervisor. A first-line agent at a vendor might approve goodwill up to €50 and relocations up to the entitlement; anything above goes to a named approver. These limits are what make it safe to give outsourced and automated support real authority.
 
 **Every decision posts to the ledger.** A recovery decision emits an event that payments and finance consume: a refund instruction, a credit-account entry, a payable to the relocation hotel, a receivable from the liable partner. Finance can then answer "how much did we spend on relocations caused by connectivity partners in April, and how much did we recover?" from records rather than spreadsheets ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement), and in the finance book [Never Update, Only Append: Designing Custom Ledgers](https://zeljkoobrenovic.github.io/spec-driven-journals/finance-systems-architecture/designing-financial-ledgers.html)).
 
@@ -204,13 +202,11 @@ Three properties make the service useful rather than another approval form.
 {id: customer-service--king-s-day-replayed}
 ### King's Day, replayed
 
-After the review, Corvane rebuilt the four relocations as they would run on the target design. The sequence below starts at the negative-headroom signal that [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) added to Roomstead's inventory refresh.
+After the review, Corvane replayed the four relocations on the target design, starting at the negative-headroom signal that [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity) added to Roomstead's inventory refresh.
 
 ![Swimlanes for inventory, case service, hotel, recovery, guest and ledger: a negative-headroom signal opens a case, the hotel confirms 4 reservations, recovery decisioning books linked replacements, the guests hear the evening before and the ledger records the receivable.](stays-marketplace-architecture/posts/25-customer-service/assets/images/25-customer-service/25-kings-day-replay.jpeg)
 
 **Figure 5:** *King's Day on the target design. The guests hear the evening before, the replacement bookings are linked to the originals, and the recovery claim is posted with the decision instead of three days later by e-mail.*
-
-The replay gave these numbers:
 
 | Measure | 27 April 2027 as it happened | Replay on the target design |
 | --- | --- | --- |
@@ -222,12 +218,12 @@ The replay gave these numbers:
 | Recovered from the hotel | €1,600, by e-mail claim on 3 May | €1,540, posted with the decision (all four under the €400 cap) |
 | Reporting | 4 guest cancellations, 4 unrelated new bookings | 4 relocated reservations with cause code and linked replacements |
 
-The saving is small for four guests, but Roomstead relocated about **5,400** guests for oversold reservations in 2026 ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)), and the forum made the replay the template for all of them. The larger gains were no guest learning the news at a front desk, and the cost reaching the right statement automatically.
+The saving is small for four guests, but Roomstead relocated about **5,400** guests for oversold reservations in 2026 ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity)), and the forum made the replay the template for all of them.
 
 {id: customer-service--context-what-the-agent-must-see}
 ## Context: What the Agent Must See
 
-An agent with the right context resolves in one contact what an agent without it resolves in three. The context read model should answer five questions without the agent opening another system:
+The context read model should answer five questions without the agent opening another system:
 
 1. **What did the guest buy, under which terms?** Reservation versions, the rate plan or listing terms, the cancellation policy and payment arrangement as they were at booking ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)), and the price lines the guest saw.
 2. **Where is the money?** Payment plan, authorizations, captures, refunds, virtual-card status for merchant hotel bookings, and the host's payout status ([Paying for a Future Night: Payment Orchestration for Stays](#stay-payments)).
@@ -235,40 +231,40 @@ An agent with the right context resolves in one contact what an agent without it
 4. **What else is happening?** Partner connectivity health, open exceptions, declared events affecting the destination, recent cases on the same property or listing.
 5. **What should I be careful about?** Trust and fraud flags, verified identity level, prior recovery decisions for the same guest, and the reason a field is hidden.
 
-The last question leads to two constraints. **Least privilege applies to agents too.** An outsourced first-line agent rarely needs a guest's full payment details, a host's identity documents or the full address of a home before check-in. The context model should return fields by role and purpose, and log reads ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)). The November 2027 extranet phishing wave, where attackers used stolen partner credentials to message **4,100** Roomstead guests ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)), is a reminder that every support and partner channel is also an attack surface. **Social engineering targets support.** "I am the host, please change the payout account" or "I am the guest, please move the booking to my new e-mail" are classic takeover routes; sensitive changes need step-up verification that the agent cannot override.
+The last question leads to two constraints. **Least privilege applies to agents too.** An outsourced first-line agent rarely needs a guest's full payment details, a host's identity documents or the full address of a home before check-in, so the context model returns fields by role and purpose and logs reads ([Who Is Booking, Who Is Hosting: Identity, Accounts and Access](#identity-accounts-and-access)). **Social engineering targets support.** The November 2027 extranet phishing wave, where attackers used stolen partner credentials to message **4,100** Roomstead guests ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)), showed that every support and partner channel is an attack surface. "I am the host, please change the payout account" or "I am the guest, please move the booking to my new e-mail" are classic takeover routes, and attackers learn which vendor sites are easiest to persuade; sensitive changes need step-up verification that the agent cannot override.
 
 Messages need a specific rule. When the platform translates guest–host messages automatically, as Airbnb has done for messages since 2022 ([Airbnb, via Hospitality Net, 2022](https://www.hospitalitynet.org/news/4112343.html)), the agent who judges a dispute must be able to see the original text, because the evidence is what was written, not the translation.
 
 {id: customer-service--self-service-and-ai-agents}
 ## Self-Service and AI Agents
 
-Self-service is the oldest deflection tool and still the most effective: a guest who can cancel a refundable booking in the app does not call. The newer tool is an AI agent that understands the guest's question, reads the booking and acts.
+Self-service is still the most effective deflection tool: a guest who can cancel a refundable booking in the app does not call. The newer tool is an AI agent that reads the booking and acts.
 
 {id: customer-service--what-the-companies-have-documented}
 ### What the companies have documented
 
 | Company and date | What was published | Evidence |
 | --- | --- | --- |
-| Airbnb, June 2025 | Voice support: domain-adapted speech recognition cut word error rate "from 33% to approximately 10%"; contact-reason detection under 50 ms; help-article retrieval; escalation with context | [Airbnb Tech, 2025](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/) |
+| Airbnb, June 2025 | Voice support: domain-adapted speech recognition cut word error rate "from 33% to approximately 10%", plus the contact-reason routing described above | [Airbnb Tech, 2025](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/) |
 | Airbnb, Q2–Q3 2025 | AI customer-service agent expanded to all US users, "reducing the percentage of hosts and guests who needed to contact a human agent by 15%"; lets users "take common actions—like canceling or changing reservation dates—directly from the chat" | [Q2 2025 letter](https://www.sec.gov/Archives/edgar/data/1559720/000119312525174438/d17531dex991.htm), [Q3 2025 letter](https://s26.q4cdn.com/656283129/files/doc_financials/2025/q3/v2/Airbnb_Q3-2025-Shareholder-Letter.pdf) |
 | Airbnb, Q2 2026 | Assistant in "more than 50 languages"; "Nearly 45% of issues that begin with our AI assistant are now resolved without a human agent"; customer-support cost per booking down about 16% year on year, "driven in part" by the assistant; an AI voice assistant to follow | [Airbnb Q2 2026 Shareholder Letter](https://www.sec.gov/Archives/edgar/data/1559720/000119312526337928/d70413dex991.htm), August 2026 |
 | Airbnb, 2026 | Evaluation practice for generative AI (GenAI) features including AI customer support: sample 5% of live de-identified traffic daily, run programmatic checks and model-based judges, send flagged outputs to human review | [Airbnb engineering blog, July 2026](https://medium.com/airbnb-engineering/eval-driven-development-lessons-from-evaluating-genai-at-scale-e817e5ae5788) |
-| Expedia Group, 2026 | More than 250 million service interactions a year, over half self-service, more than 30% AI-powered | [Hotel Dive, 2026](https://www.hoteldive.com/news/expedia-ai-enhance-customer-support-acquire-new-customers/819968/), secondary |
+| Expedia Group, 2026 | Over half of service interactions self-service, more than 30% AI-powered (volumes above) | [Hotel Dive, 2026](https://www.hoteldive.com/news/expedia-ai-enhance-customer-support-acquire-new-customers/819968/), secondary |
 | Booking.com, October 2026 | AgentHub, a platform for modular large language model (LLM) agents including a "customer support chatbot"; interactions traced with OpenTelemetry, evaluated with LLM-as-judge, guarded against prompt injection and personal-data leakage | [booking.ai, 2026](https://booking.ai/introducing-agenthub-booking-com-platform-for-modular-travel-ai-agents-68bc521a0f50) |
 
-One reported failure is as instructive. The figures above also measure different things ("resolved without a human agent" against "AI-powered interactions"), and nobody publishes how resolutions are verified. A 2026 secondary report says Expedia discontinued Romie, the AI travel assistant it launched in alpha in May 2024, and quotes its product chief on the difficulty of keeping traveler trust when chatbot answers were not grounded in accurate, real-time inventory and reservation data ([Let's Data Science, 2026](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a)). The source is secondary and I treat it as low confidence, but the lesson matches the architecture: an assistant that cannot read the booking guesses.
+The figures above measure different things ("resolved without a human agent" against "AI-powered interactions"), and nobody publishes how resolutions are verified. One reported failure is as instructive: a 2026 secondary report says Expedia discontinued Romie, the AI travel assistant it launched in alpha in May 2024, and quotes its product chief on the difficulty of keeping traveler trust when chatbot answers were not grounded in accurate, real-time inventory and reservation data ([Let's Data Science, 2026](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a)). The source is secondary and I treat it as low confidence, but the lesson matches the architecture: an assistant that cannot read the booking guesses.
 
 {id: customer-service--design-rules-for-an-ai-support-agent}
 ### Design rules for an AI support agent
 
-The public record describes outcomes, not internals, so the following is a reference design, not a description of any company's system.
+The public record describes outcomes, not internals, so these rules are a reference design, not a description of any company's system.
 
 1. **Ground answers in live state through tools.** The agent reads the case's context model, not a copy, and answers questions about a booking only from it. Policy questions are answered from curated, versioned content.
 2. **Act only through the decision and domain APIs, within an actor limit.** Cancelling a refundable booking or resending a confirmation is a tool call with the AI assistant's own approval limits, the same idempotency and the same audit as a human agent's action. It cannot grant what a first-line agent could not.
 3. **Use pre-approved answers where the law or money is involved.** Refund entitlements, consumer-law rights, safety instructions and anything a regulator may later read should come from templated, reviewed text with variables filled from the reservation, not from free generation.
 4. **Hand off with the case, not a transcript.** Escalation passes the classified driver, the context and what the assistant already tried, so the human does not start again. Safety contacts go to humans at once.
 5. **Disclose and log.** Under the EU Artificial Intelligence Act (Regulation (EU) 2024/1689), providers must ensure that AI systems intended to interact directly with natural persons inform them that they are interacting with an AI system unless that is obvious (Article 50); the regulation applies generally from 2 August 2026 ([Regulation (EU) 2024/1689](http://publications.europa.eu/resource/celex/32024R1689), 2024; check later amendments for the dates in force). What the assistant said is evidence in a later dispute, so keep it with the case.
-6. **Evaluate continuously and measure resolution.** Sample live conversations daily, score them against policy and tone, and track reopen and repeat-contact rates per driver. Containment without resolution moves cost from the contact center to the next contact.
+6. **Evaluate continuously and measure resolution.** Sample live conversations daily, score them against policy and tone, and track reopen and repeat-contact rates per driver. An assistant that ends conversations without solving them improves the deflection chart and raises repeat contacts, chargebacks and negative reviews.
 
 {id: customer-service--corvane-s-assistant-pilot}
 ### Corvane's assistant pilot
@@ -280,7 +276,7 @@ Nookaway got no assistant in 2027. Its expensive drivers were disputes and faile
 {id: customer-service--when-everyone-calls-at-once-disruption-surges}
 ## When Everyone Calls at Once: Disruption Surges
 
-Support capacity is planned for a normal week. Travel's worst weeks are not normal: strikes, storms, volcanic ash, pandemics and platform outages arrive as thousands of contacts about the same thing within hours. Airbnb applied its extenuating circumstances policy to COVID-19 cancellations in March 2020 and committed up to $250 million for affected hosts ([Airbnb Form 10-K FY2020](https://www.sec.gov/Archives/edgar/data/1559720/000155972021000010/airbnb-10k.htm), 2021); Booking Holdings reported that "increased cancellations, especially early in the pandemic, have resulted in increased customer service costs" ([Booking Holdings Form 10-K FY2020](https://www.sec.gov/Archives/edgar/data/1075531/000107553121000019/bkng-20201231.htm), 2021). Both are evidence from 2020; the policies have since changed. Airbnb's current Major Disruptive Events policy "applies only to the defined area and timeframe" ([Airbnb Help Center, article 1320](https://www.airbnb.com/help/article/1320), live page, 2026), which reads like a policy operated as data.
+Support capacity is planned for a normal week, but strikes, storms, volcanic ash, pandemics and platform outages arrive as thousands of contacts about the same thing within hours. Airbnb applied its extenuating circumstances policy to COVID-19 cancellations in March 2020 and committed up to $250 million for affected hosts ([Airbnb Form 10-K FY2020](https://www.sec.gov/Archives/edgar/data/1559720/000155972021000010/airbnb-10k.htm), 2021); Booking Holdings reported that "increased cancellations, especially early in the pandemic, have resulted in increased customer service costs" ([Booking Holdings Form 10-K FY2020](https://www.sec.gov/Archives/edgar/data/1075531/000107553121000019/bkng-20201231.htm), 2021). Both are evidence from 2020; the policies have since changed. Airbnb's current Major Disruptive Events policy "applies only to the defined area and timeframe" ([Airbnb Help Center, article 1320](https://www.airbnb.com/help/article/1320), live page, 2026), which reads like a policy operated as data.
 
 Corvane's test came with the **air-traffic-control strike over France on 5–7 June 2027**. About **17,000** Roomstead and **2,600** Nookaway reservations were affected, and Roomstead received **6,200** cancellation requests in 48 hours. A flight cancellation does not by itself entitle a hotel guest to a refund; for most bookings the question was whether the rate allowed free cancellation and, if not, whether the property would waive the fee. [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations) tells the policy side; support saw this:
 
@@ -302,7 +298,7 @@ The forum drew four requirements from these weekends:
 {id: customer-service--measuring-quality-and-cost}
 ## Measuring Quality and Cost
 
-The metric set has to serve three audiences: the contact center, which manages queues; the product teams, which own the defects behind drivers; and finance, which pays for recovery.
+The metrics serve three audiences: the contact center, which manages queues; the product teams, which own the defects behind drivers; and finance, which pays for recovery.
 
 | Metric | Definition | Use | Trap |
 | --- | --- | --- | --- |
@@ -347,26 +343,18 @@ For a group of Corvane's size I would take the right-hand column on the first th
 {id: customer-service--failure-modes}
 ## Failure Modes
 
+Most failure modes are the opposite of a design choice above: recovery as a side effect, a partner wait without a clock, payout changes on a convincing call, a surge without a switch, containment without resolution. Three more are easy to miss.
+
 **The ticket that forgets the reservation.** Cases keyed by a guest's e-mail cannot be joined to cancellations, relocations or payouts.
 
-**Recovery as a side effect.** Agents book replacement rooms on a company card or issue refunds outside the payments service. The money moves; the record does not. Finance meets it months later as an unreconciled amount ([Closing the Books: Refunds, Chargebacks and Reconciliation](#refunds-and-reconciliation)).
-
-**Waiting for the partner without a clock.** A case marked "waiting for hotel" has no deadline, so it waits until the guest arrives.
-
-**Containment theater.** An AI assistant or IVR that ends conversations without solving them improves the deflection chart and raises repeat contacts, chargebacks and negative reviews. Without a verified-resolution metric nobody notices.
-
 **Ungrounded AI.** An assistant answering from help articles tells a guest they can cancel free when their rate does not allow it; the marketplace then honors the promise or argues with a guest who has a transcript.
-
-**The support channel as an attack path.** Account and payout changes made by an agent on the strength of a convincing story. Attackers learn which vendor sites are easiest to persuade.
-
-**Surge without a switch.** No disruption mode, no declared events, no bulk actions: every strike is handled one call at a time while the queue grows.
 
 **Taxonomy drift.** Each vendor adds its own reason codes. After two years, "booking issue – other" is the largest driver, and ranking signals built on support data mean nothing.
 
 {id: customer-service--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Mariana Costa, Group Chief Architect, took Elena's question to the One Stay forum in June 2027. The forum approved **Harbor**, the group support platform, with five decisions. They generalize.
+Mariana Costa, Group Chief Architect, took Elena's question to the One Stay forum in June 2027. The forum approved **Harbor**, the group support platform, with five decisions that generalize beyond Corvane.
 
 **1. Own the case, the context and the decision; buy the channels.** Harbor is a marketplace service on AWS with the case service, the context read model, recovery decisioning and the relocation service. Roomstead's commercial case tool stays as the agent desktop for its two vendors, embedding Harbor's views; Nookaway's Burrow case tool is replaced by the same desktop by the third quarter of 2028. Owner: Elena Petrova for the product; a support platform engineering team in Lisbon for the code.
 
@@ -374,11 +362,11 @@ Mariana Costa, Group Chief Architect, took Elena's question to the One Stay foru
 
 **3. Every remedy is a recovery decision posted to Fathom.** Fathom, the double-entry ledger of Corvane Payments, receives refunds, relocation payables, credits and recovery receivables from the decision service. Approval limits by actor are set jointly by customer service and finance. Owner: Elena with Leila Haddad's payments and finance engineering team; Marco Bellini, Group CFO, signs the limits. The first mass run came in November 2027, when the reimbursement of **310** guests who paid fraudsters during the extranet phishing wave, **€212,000** in total, went through recovery decisions with cause code "partner account compromise" rather than as individual refunds ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](#travel-fraud)).
 
-**4. Proactive cases from domain events.** Reservation acknowledgement, inventory headroom, payment-plan state, calendar conflicts and host cancellations open cases with an arrival clock. The domains own the events; Harbor owns the rules that turn them into cases. Target: half of Roomstead's oversell cases opened before the guest contacts by the end of 2028.
+**4. Proactive cases from domain events.** The domains own the events; Harbor owns the rules that turn them into cases with an arrival clock. Target: half of Roomstead's oversell cases opened before the guest contacts by the end of 2028.
 
 **5. AI per driver, with a gate.** A driver moves to tool-acting AI only when its decision rules exist, its actions are idempotent, its verified resolution rate in a pilot is within one point of human handling, and regulatory affairs (Noor van Dijk's team) has approved its templated answers. Owner: Elena with Kenji Arai's data and ML platform for evaluation ([Models in Production: ML Platforms and Use Cases for Stays](#stays-ml-platform)).
 
-What to watch: cost per case will rise as routine contacts move to self-service, and someone will propose cutting the in-house dispute team because the average looks expensive. Judge support by contacts per stayed reservation and verified resolution instead. And a vendor paid per contact is paid for the problem, not the resolution.
+What to watch: cost per case will rise as routine contacts move to self-service, and someone will propose cutting the in-house dispute team because the average looks expensive. Judge support by contacts per stayed reservation and verified resolution instead. A vendor paid per contact is paid for the problem, not the resolution.
 
 {id: customer-service--questions-to-ask}
 ## Questions to Ask

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Where Guests Come From: Web, Apps, Metasearch and Partner Distribution
@@ -72,3 +72,4 @@ Chief and principal architects, distribution and marketing-technology leads, web
 - **2026-10-21** — Editorial review pass: Hand-off now goes to part-9 before converging-two-marketplaces; timetoread corrected. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-10-21** — Figure fixes: dropped the checkout contract from the "every door" caption to match the diagram. *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 7,030 → 6,666 prose words; lead now places the chapter as Part VIII's last (the platform's external clients) and points to converging-two-marketplaces; "AI assistants as the next partner" folded into the Chief Architect's long-term considerations; Failure Modes compressed to one-line pointers; decisions and "What to decide" no longer restate earlier sections; BFF definition cut (audience knows BFFs). *(AI-mediated session)*

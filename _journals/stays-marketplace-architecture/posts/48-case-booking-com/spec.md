@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Booking.com: Experimentation, Connectivity and the Agency Model at Scale
@@ -71,3 +71,4 @@ Chief and principal architects, engineering directors and product leaders of OTA
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: expanded CNCF and KDD on first use; spot-checked the AGCM release and the 30-minute reservation fallback (both confirmed). *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 5,823 → 5,735 prose words; Failure Modes compressed to one-line bullets pointing to their sections; transition and repeated sentences cut; no headings renamed; spec unchanged otherwise. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-21
+revised: 2026-10-22
 ---
 
 # Spec: Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel
@@ -78,3 +78,4 @@ Chief and enterprise architects of travel groups, trust-and-safety and payments 
 - **2026-10-21** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-21** — Editorial review pass: timetoread 35→37; phishing-wave, Partner Shield, Autumn Cities and Circle-credit figures checked against the ledger; no text changes needed. *(AI-mediated session)*
 - **2026-10-21** — Visual layer: converted 3 mermaid diagrams to illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-10-22** — Sharpening pass: 6,207 → 5,916 prose words (−4.7%; fact-dense chapter); opening now ties the chapter to Part VII's trust-platform argument and names the identity chapter that follows; third/first-party fraud definitions cut (audience knows them); Hotels and Homes judgement merged into one paragraph; Failure Modes cut to one-liners pointing at the sections that argue them; one subheading renamed (Fraud, abuse and chargebacks). *(AI-mediated session)*

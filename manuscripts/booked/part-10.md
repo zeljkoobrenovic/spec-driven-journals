@@ -5,7 +5,7 @@
 
 > **IN THIS PART, YOU WILL:** Test the book's patterns against four public cases: Booking.com, Airbnb, Expedia Group with Vrbo, and the Asian online travel agencies (OTAs) Agoda and Trip.com, separating what was documented, and when, from interpretation.
 
-> **WHY THE BUSINESS CARES:** These are the competitors and channels every stays business measures itself against, and their filings price their choices: Expedia lowered its 2024 guidance in May 2024, citing Vrbo's slower-than-anticipated recovery after re-platforming.
+> **WHY THE BUSINESS CARES:** These are the competitors and channels every stays business measures itself against, and their filings show what their choices cost: Expedia lowered its 2024 guidance in May 2024, citing Vrbo's slower-than-anticipated recovery after re-platforming.
 
 > **WHY ARCHITECTS SHOULD CARE:** Parts I–IX argue from principles and a fictional group; here the argument meets evidence the author did not design.
 
@@ -67,4 +67,4 @@ Corvane, the fictional travel group this book follows ([Meet Corvane: Two Market
 
 [Agoda and Trip.com: Asian OTAs at Scale](#case-agoda-trip-com) sets **an engineering-rich record beside a filing-only one**. Agoda shows the price cache, booking for partial failure and a port that carried old coupling into new code; Trip.com tests what an architect can conclude from a 20-F. Read it when you sell from a copy, or are tempted to fill a gap in the evidence.
 
-The Reference section then maps coverage ([Domain Coverage: From Productscape Models to Chapters](#domain-coverage)) and offers templates ([Field Kit: Templates for the Stays Architect](#toolkit)). By the end of Part X you should know which patterns the record supports, which it qualifies and where it is silent. Begin with [Booking.com: Experimentation, Connectivity and the Agency Model at Scale](#case-booking-com).
+The Reference section then maps coverage ([Domain Coverage: From Productscape Models to Chapters](#domain-coverage)) and offers templates ([Field Kit: Templates for the Stays Architect](#toolkit)). Begin with [Booking.com: Experimentation, Connectivity and the Agency Model at Scale](#case-booking-com).
