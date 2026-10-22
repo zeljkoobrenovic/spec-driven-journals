@@ -1,0 +1,19 @@
+# Glossary row harvesting brief (BOOKED)
+
+You are harvesting glossary rows for the BOOKED book's glossary page. ROOT = /Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/stays-marketplace-architecture
+You do NOT write the glossary page. You write ONE scratch file of table rows (path given in your task) and return a short report.
+
+## What to do, per chapter assigned to you
+1. Read the chapter's ROOT/posts/<folder>/index.md: the opening callouts, the Concepts / definitions sections in full, and skim the rest. Find (a) every term the PLAN says the chapter OWNS (listed in your task), (b) the other important terms the chapter defines on first use — usually bolded (`**term**`) with a defining clause, or an acronym expansion "Full name (ABC)". Use grep to help: `grep -o '\*\*[^*]*\*\*' file | sort | uniq -c` and `grep -oE '[A-Z][A-Za-z -]+ \(([A-Z][A-Za-z0-9&]{1,7})\)'`.
+2. Write rows for: every owned term (mandatory), plus the key domain terms and acronyms the chapter defines (travel, hospitality, distribution, payments, tax, regulation, search/ML, architecture devices the book uses). Target 8–14 rows per chapter in total. Skip trivial terms, one-off Corvane artifacts, real-company product names (unless the chapter defines a generic concept with it), and anything a senior software architect already knows (API, Kafka, cache).
+3. If a term is defined in more than one of your chapters, put it under the chapter that OWNS it per PLAN, or else the one that defines it most fully. If a term clearly belongs to a chapter outside your part (it is in that part's Owns list), skip it.
+
+## Row format (exact)
+`| **Term** | Definition | [[permalink]] |`
+- Term: sentence case unless a proper noun/regulation; give the expansion and acronym together: `**Average daily rate (ADR)**`, `**Property management system (PMS)**`. Two closely contrasted terms may share one row with a slash: `**Merchant model / agency model**` (only when the contrast is the point). Add a parenthetical qualifier when the book's sense differs from the general one: `**Listing (stays)**`, `**Outbox (stays)**`. Owned terms marked "(stays)" in the PLAN may drop the qualifier if the plain term is unambiguous in this book.
+- Definition: ONE or TWO plain sentences (max ~60 words), consistent with how the chapter defines it — paraphrase the chapter's own definition, don't invent a new one. Expand acronyms inside the definition if used. Where useful, add a short clause on how it differs between the accommodation marketplace (OTA side: properties, partners, room types, rate plans) and hosted stays (homes, hosts, one calendar per unit), e.g. "On hosted-stays marketplaces the equivalent is …". Regulations: give the official name/number and date of application as the chapter states it, "as of 2026" where status may change. American spelling. No marketing words. No pipe characters `|` inside cells.
+- Do NOT state facts about real companies' internals. Avoid Corvane (the fictional group) in definitions; if a Corvane name is the clearest anchor, mention it in at most a short clause ("Corvane's fictional Tally is one").
+- Chapter cell: the owning chapter's permalink as `[[permalink]]`; if a second chapter is genuinely central, `[[a]], [[b]]` (max two). Only use permalinks from this book's list (two-stay-marketplaces … evolving-the-platform, case-*, meet-corvane, where-stay-platforms-go-wrong).
+
+## Output
+Write the rows (no header, no other text) to the scratch file named in your task, grouped by chapter in reading order, one blank line between chapters is fine. Then return a SHORT report (under 200 words): number of rows, confirmation that every owned term has a row (list any you could not find defined, and what you did), and a list of the acronyms you expanded. Do not edit any file in ROOT.

@@ -1,0 +1,30 @@
+[
+ {
+  "id": "27-payment-orchestration",
+  "visual_goal": "Show checkout and the reservation writing plan versions into one orchestrator that executes through vault, scheduler, connectors and card issuing, and reports through a payment state feed.",
+  "prompt": "A left-to-right hub diagram. At the left, two small boxes stacked: 'Checkout' on top and 'Reservation' below; one arrow from each into a large central teal circle labeled 'Orchestrator', the top arrow labeled 'plan v1', the lower arrow labeled 'plan v2'. Directly above the circle, a small safe labeled 'Vault', joined to the circle by a short double-headed connector. Directly below the circle, a calendar clock labeled 'Scheduler', joined by a short double-headed connector. To the upper right of the circle, a plug box labeled 'PSP connectors' with one arrow from the circle into it. To the lower right of the circle, a small glowing digital voucher tile labeled 'Card issuing' with one arrow from the circle into it. From the right edge of the circle, between those two, a separate wide green ribbon labeled 'Payment state feed' runs to the far right and splits into exactly three arrow tips that end at three small stacked boxes labeled 'Ledger', 'Payouts' and 'Reservation'. The ribbon starts at the circle itself, not at the plug box.",
+  "alt": "Checkout and the reservation send plan versions to a central orchestrator, which uses a vault, a scheduler, PSP connectors and card issuing, and reports to ledger, payouts and the reservation through a payment state feed.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "27-deferred-charge-states",
+  "visual_goal": "Show the life of a deferred charge, highlighting AwaitingGuest and Lapsed as the states that need policy decisions.",
+  "prompt": "A state map drawn as rounded stepping stones on a path from left to right: 'Secured', 'Scheduled', 'Attempted', and a green end stone 'Paid'. Arrows between consecutive stones. From 'Attempted' one arrow drops down to a stone 'Retrying', labeled 'soft decline'; from 'Retrying' one arrow curves up into 'Paid'. From 'Retrying' one arrow right to an orange-highlighted stone 'AwaitingGuest' with a small person-with-phone icon; from 'AwaitingGuest' one arrow up into 'Paid' and one arrow down to a grey-orange highlighted stone 'Lapsed' with a small calendar icon. From 'Scheduled' one arrow down to a grey stone 'Canceled'. AwaitingGuest and Lapsed both carry a soft orange glow.",
+  "alt": "Deferred charge states: Secured, Scheduled, Attempted, Paid, with Retrying, AwaitingGuest and Lapsed branches, and Canceled from Scheduled; AwaitingGuest and Lapsed are highlighted.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "27-stored-credential-setup",
+  "visual_goal": "Show that at booking the guest authenticates once and the vault stores token, reference and consent, so a later charge weeks after succeeds without the guest.",
+  "prompt": "A left-to-right illustration in two scenes separated by a vertical divider with a small calendar showing pages flipping, labeled 'weeks later'. Left scene: a generic guest holding a phone with a small shield check mark; one arrow from the phone to a box labeled 'Orchestrator'; one arrow from the orchestrator to a bank building labeled 'Issuer', labeled 'setup'; one arrow back from the issuer to the orchestrator carrying a small key labeled 'reference'; one arrow from the orchestrator down into a safe labeled 'Vault'. Right scene: the guest is absent, an empty chair; the same safe 'Vault' passes the key to 'Orchestrator', with one arrow to the bank 'Issuer' labeled 'charge', and one green check arrow back labeled 'approved'.",
+  "alt": "At booking the guest authenticates and the vault stores a reference key; weeks later, with the guest absent, the orchestrator charges using the reference and the issuer approves.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "27-virtual-card-follows-reservation",
+  "visual_goal": "Show reservation changes reaching the virtual card before the hotel charges it, and settlement matched back to reconciliation with exceptions to operations.",
+  "prompt": "A left-to-right flow. At the left, three small stacked event tags: 'Confirmed', 'Modified', 'Canceled', each with one arrow converging into a single large glowing digital voucher tile with a small calendar marker labeled 'Virtual card'. The three arrows are labeled 'create', 'resize' and 'void'. From the card one arrow right to a small generic hotel front desk with a terminal labeled 'Hotel charges'. One arrow from the hotel to a box labeled 'Settlement'. One arrow from Settlement to a magnifier box labeled 'Reconciliation'. One thin orange arrow down from Reconciliation to a small desk labeled 'Exceptions'.",
+  "alt": "Confirmed, modified and canceled reservation events create, resize or void a virtual card, which the hotel charges; settlement is reconciled and mismatches become exceptions.",
+  "aspect_ratio": "16:9"
+ }
+]

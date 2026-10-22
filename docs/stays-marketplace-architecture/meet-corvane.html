@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meet Corvane: Two Marketplaces, One Group</title>
+    <meta name="description" content="Every chapter in this book tests its argument against the same fictional travel group: Corvane, which runs an OTA-style accommodation marketplace, a hosted-stays marketplace, a channel-manager business and a payments institution on three clouds, with two of almost everything. This page introduces its brands, business models, volumes, systems, people, the problems it starts 2027 with, the One Stay program that sets out to fix them, the group platforms the chapters design and the worked examples they reuse.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Meet Corvane: Two Marketplaces, One Group">
+    <meta property="og:description" content="Every chapter in this book tests its argument against the same fictional travel group: Corvane, which runs an OTA-style accommodation marketplace, a hosted-stays marketplace, a channel-manager business and a payments institution on three clouds, with two of almost everything. This page introduces its brands, business models, volumes, systems, people, the problems it starts 2027 with, the One Stay program that sets out to fix them, the group platforms the chapters design and the worked examples they reuse.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/meet-corvane.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/meet-corvane/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="where-stay-platforms-go-wrong.html" title="Overbooked: Sixteen Ways Stay Platforms Go Wrong">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-1.html" title="Part I — MARKETPLACE: The Business of a Night's Stay">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Preface</p>
+        <h1>Meet Corvane: Two Marketplaces, One Group</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  26 min read · <a class="spec-link" href="meet-corvane.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/meet-corvane/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/meet-corvane/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="where-stay-platforms-go-wrong.html" title="Overbooked: Sixteen Ways Stay Platforms Go Wrong">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-1.html" title="Part I — MARKETPLACE: The Business of a Night's Stay">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Meet Corvane: Two Marketplaces, One Group", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "Every chapter in this book tests its argument against the same fictional travel group: Corvane, which runs an OTA-style accommodation marketplace, a hosted-stays marketplace, a channel-manager business and a payments institution on three clouds, with two of almost everything. This page introduces its brands, business models, volumes, systems, people, the problems it starts 2027 with, the One Stay program that sets out to fix them, the group platforms the chapters design and the worked examples they reuse.", "permalink": "meet-corvane", "timetoread": "26 min read", "icon": "assets/icons/meet-corvane.png", "logo": "assets/images/meet-corvane/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Meet Corvane Group, the fictional travel group this book follows: its two marketplaces and two supporting businesses, its 2026 volumes, its 2027 systems landscape, the people who run it, the problems it starts 2027 with, the One Stay program approved to solve them, the named group platforms the chapters introduce, and the recurring worked examples whose numbers every chapter shares.\n\n> **WHY THE BUSINESS CARES:** Corvane earns €1.692 billion a year from two different ways of selling a night's stay, plus software and payments around them. Its owners want the merchant share, the hosted-stays business and the margin to grow at once, and the group pays for most of its capabilities twice.\n\n> **WHY ARCHITECTS SHOULD CARE:** Corvane's difficulty is not size; it is that the two marketplaces hold the truth about availability, money and trust in different places. Three clouds, two monoliths, two identity systems and two trust stacks must converge without forcing a hotel and a home into one supply model, and that is the Chief Architect's problem in miniature.\n\n> **KEY POINTS:**\n>\n> * **Corvane is a fictional composite, not a disguised company.** It borrows patterns common in European travel groups so the book can show real architectural tensions with consistent numbers. Roomstead is not a disguised Booking.com or Expedia, and Nookaway is not a disguised Airbnb or Vrbo; every name, figure, system and event on this page is invented.\n> * **One group, two marketplace types.** Roomstead copies the truth about rooms and rates from 640,000 properties' systems and earns mostly agency commission; Nookaway holds the truth about 1.15 million homes itself, holds the guest's money until after check-in and earns split fees. The same words, \"available\" and \"booked\", mean different machinery in each.\n> * **One Stay shares contracts and platforms, not supply engines.** The €145 million program (2027–2030) builds one identity, ledger, trust, messaging, support, tax and data layer, and one offer and reservation contract across both brands, while Roomstead keeps its room-type inventory and Nookaway its one-unit calendar; Keystone's reservation module is to be retired by the end of 2029.\n\n> **[FAILURE PATTERNS THIS SECTION ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **The Hotel-Shaped Home** — in early 2027 a Roomstead team proposed loading Nookaway's listings into Tally as one-unit room types, and the group rejected it before One Stay was approved.\n> * **The Double-Booked Night** — 47% of Nookaway's multichannel listings sync by iCal only, and the Seville double booking is what that looks like for one family.\n> * **Phantom Availability** — Roomstead's metasearch price accuracy was 91% in 2026 against a 97% target, mostly because its price cache was stale.\n\n<br>\nThis book tests its argument against **one fictional travel group, detailed enough to be realistic and consistent enough to be followed across fifty-one chapters.** A toy booking site, one hotel table and a search box, is too simple to show why the hard decisions are hard; a real company's internals cannot be verified and its choices do not transfer. This page is the group's reference. The failure patterns of [Overbooked: Sixteen Ways Stay Platforms Go Wrong](where-stay-platforms-go-wrong.html) appear here as Corvane's 2027 problems, and every chapter from Part I on opens with a scene whose people, systems and numbers come from this page.\n\n**Corvane Group is fictional.** It is a composite of *patterns* common in the travel industry: an agency-model hotel site that later added merchant payments, a hosted-stays marketplace bought rather than built, a channel manager acquired from the supply side, a payments institution created to hold guests' money, and private-equity owners who want growth and efficiency together. It is **not a portrait of any real company**. **Roomstead and Nookaway are not disguised versions of Booking.com, Expedia, Agoda, Airbnb, Vrbo or anyone else**: they carry none of those companies' documented systems, program names, fee levels or history, and their fees were set so that they match no real platform. The vendor products Corvane runs are real; its use of them is invented. Real companies appear in this book under their own names, with dated sources, and never as Corvane.\n\n## The Group at a Glance\n\nCorvane is a privately held travel group headquartered in **Lisbon** since 2021, owned by two private-equity funds (together a majority) and Roomstead's founders. Its engineering hubs are in **Dublin** (Roomstead), **Lisbon** (Nookaway and group functions), **Barcelona** (search, data and machine learning, or ML), **Kraków** (payments and platform) and **Utrecht** (Corvane Connect).\n\n| Measure (fiscal 2026 = calendar 2026) | Value |\n| --- | --- |\n| Revenue | **€1.692 billion** |\n| Adjusted EBITDA | about **€410 million** |\n| Employees | about **6,800**, of whom about **2,300** in product and technology, including about **1,750 engineers** |\n| Shared group services | Corvane Payments with its Fathom ledger, and group finance on SAP S/4HANA. Nothing else of substance |\n\nThe last row is the reason One Stay exists: beneath two brands that sell a night's stay to the same European travelers, the group runs two of almost everything.\n\n![Two mirrored buildings labeled Roomstead and Nookaway, each with its own identical identity, trust, search and support machines under three clouds, sharing only a thin Corvane Payments base.](assets/images/meet-corvane/00-two-of-almost-everything.jpeg)\n**Figure 1:** *Beneath two brands that sell a night's stay to the same European travelers, Corvane runs two of almost everything on three clouds; payments is one of the few things already shared.*\n\n## How Corvane Came to Be\n\nCorvane's history is fictional, but its shape follows the industry's, whose documented history is in [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html).\n\n| Year | Event |\n| --- | --- |\n| **2001** | Roomstead is founded in Dublin as a hotel-booking site on the agency model: the guest pays at the property and Roomstead invoices commission. |\n| **2004** | Keystone, Roomstead's core application, is rewritten in Java on Oracle. It still owns reservations, partner contracts and commission invoicing in 2027. |\n| **2012** | Nookaway is founded in Lisbon as a hosted-stays marketplace. |\n| **2020** | Nookaway launches a partner API for property-management systems (PMS) and channel managers. Roomstead launches its paid visibility program, **Front Row**. |\n| **2021** | Corvane Group is formed, acquires Nookaway and moves its headquarters to Lisbon. |\n| **2023** | Corvane Payments B.V. is founded; the Fathom ledger build starts. |\n| **2024** | Corvane Payments is licensed as an electronic money institution (EMI) by De Nederlandsche Bank. Roomstead launches merchant bookings, \"Pay with Roomstead\". Corvane buys the Utrecht channel manager ChannelPier, rebranded Corvane Connect in 2025. |\n| **20 May 2026** | The EU Short-Term Rental Regulation applies. |\n| **January 2027** | Mariana Costa joins as Group Chief Architect. |\n| **April 2027** | The board approves the **One Stay** program. |\n| **End of 2029** | Target date to retire Keystone's reservation module. |\n\nEach phase left a layer: an agency-era reservation model in an Oracle monolith, a merchant product on top of it, an acquired hosted-stays platform on another cloud, and a channel manager that also sells to Corvane's competitors.\n\n## Two Marketplaces, Four Businesses\n\nThe two marketplaces differ in who supplies the stay, where the truth about availability lives and how money moves. [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html) owns the definitions; this book calls Roomstead an **accommodation marketplace** (OTA-style, after the online travel agency) and Nookaway a **hosted-stays marketplace**.\n\n| Brand | What it is | Business model | 2026 revenue |\n| --- | --- | --- | --- |\n| **Roomstead** (founded 2001, Dublin) | Accommodation marketplace: hotels, B&Bs, hostels and guesthouses, plus apartments and holiday homes mostly from professional managers | **Agency** for **70%** of room nights (guest pays at the property; Roomstead invoices commission); **merchant** for **30%** through \"Pay with Roomstead\" (Corvane Payments charges the guest and pays the property, mostly by virtual card), target 40% by end 2028 | **€1.200B**: agency commission €860M, merchant margin €270M, partner programs and advertising €70M |\n| **Nookaway** (founded 2012, Lisbon; acquired 2021) | Hosted-stays marketplace: whole homes, apartments and private rooms run by individual hosts and professional managers | Facilitated payments: the guest pays Nookaway through Corvane Payments at booking or with Pay Later; the host is paid **48 hours after scheduled check-in**. Split fee: guest service fee **12%** of the subtotal (nights plus cleaning) and host fee **4%**; PMS-connected professional managers may choose a **host-only fee of 17%** | **€430M** |\n| **Corvane Connect** (ChannelPier, acquired 2024; rebranded 2025; Utrecht) | Channel manager and connectivity SaaS for **14,500** hotels and **8,200** vacation-rental managers with **96,000** units; distributes to **60+ channels**, including Roomstead's and Nookaway's competitors | SaaS subscriptions | **€62M** |\n| **Corvane Payments** (founded 2023) | Corvane Payments B.V., an EMI licensed by De Nederlandsche Bank in 2024, passported in the European Economic Area (EEA); UK through a partner | Processes all Nookaway payments and Roomstead merchant bookings; issues virtual cards to hotels through a partner bank; holds guest funds until payout; margin reported in the brands' revenue | (internal) |\n\nThe three revenue lines add up to €1.692 billion: Roomstead about 71%, Nookaway 25% and Corvane Connect 4%.\n\nFour features of the portfolio recur through the book.\n\n- **Roomstead is an agency business learning to be a merchant.** In Pay with Roomstead, Corvane Payments acts as the property's **limited payment collection agent**: the property remains the supplier of the stay and issues the guest's VAT invoice, and Corvane Payments is merchant of record for every collected booking in the group ([Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html)).\n- **Nookaway holds the money and the trust.** It holds the guest's payment until after check-in, makes about **6.3 million** payouts a year in 19 currencies, and runs **Nookaway Cover**: host damage protection up to **€500,000**, liability insurance up to **€1 million** through an insurance partner, and a guest guarantee to rebook or refund if check-in fails or the home is materially not as described ([Damage, Parties and Emergencies: Protection and Incident Response](protection-and-incidents.html)).\n- **Corvane Connect must stay neutral.** It sends its hotels' rates to Roomstead's competitors, so since **May 2027** a neutrality rule makes it an ordinary partner of Switchyard, Roomstead's connectivity gateway, with no private endpoints and no Roomstead access to its data on other channels ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html)).\n- **Realized take rates differ from the headline.** Roomstead takes about **13%** of stayed booking value. Nookaway's split is 16% on paper but about **14.4%** realized, after long-stay reductions, fee credits, refunded fees and guest-guarantee costs ([Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](stays-marketplace-economics.html)).\n\nEach brand also has named products the chapters use. Roomstead has **Roomstead Circle** (three tiers; Circle rates funded by partners, Circle credit funded by Roomstead), **Front Row** (paid visibility at +2, +4 or +6 commission points), **Rate Insights** (rate recommendations in the extranet, launched 2025) and **Perks** (its coupon and campaign service). Nookaway has **Smart Rate** (automatic pricing, rule-based from 2022 and ML-based from 2025), **Pay Later** (launched October 2026) and **Hearth**, a quarterly host credential. All are fictional; none is a renamed real program.\n\n## Volumes Every Design Is Sized Against\n\n2026 figures, rounded.\n\n| Metric | Roomstead | Nookaway |\n| --- | --- | --- |\n| Supply | **640,000** bookable properties: 205,000 hotels and similar, 435,000 apartments and homes (about 70% from professional managers); supply 68% in Europe; **41** languages, **52** currencies | **1.15 million** active listings in **31 countries** (Europe and the Mediterranean, plus Brazil and Mexico); **610,000** hosts, 82% with one listing; professional managers (five or more listings) hold 44% of listings |\n| Volume | **109 million** room nights booked, **34%** canceled, **72 million** stayed; about **45 million** reservations made and **30 million** stayed, 2.4 room nights each | **21 million** nights stayed; about **6.9 million** reservations made and **6.0 million** stayed, 3.5 nights each; **13%** of reservations canceled |\n| Price | average daily rate (ADR) **€128**; stayed booking value about **€9.2 billion** | average **€142** a night including cleaning; booking value about **€2.98 billion** |\n| Supply integration | **82%** of hotel room nights arrive through **140 certified connectivity partners**; 18% are managed in the **Partner Hub** extranet; Corvane Connect serves 21% of connected Roomstead hotels | **61%** of listings are also sold elsewhere: 47% of those sync by iCal only, 53% through PMS or channel-manager APIs; iCal imports polled every **3 hours** by default |\n| Traffic | about **650 million** ARI (availability, rates and inventory) messages a day, peak **38,000/s**; about **1,400 shopping requests** per gross reservation, each making about ten price-cache reads: **21,000** reads/s on average, **64,000/s** at the 2026 peak | about **420** search requests per gross reservation, 85% from Nookaway's own web and apps |\n| Booking behavior | median booking window **18 days**; metasearch price accuracy **91%** (target 97%) | median booking window **41 days**; instant book on **68%** of listings, the rest request-to-book with a 24-hour response window and **79%** host acceptance |\n\nTwo cautions. The 1,400 counts **shopping requests**; the per-second figures are price-cache reads, about ten per request ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)). And ratios carry more architecture than totals: Roomstead earns about €40 per stayed reservation after paying about €13 to acquire it, largely through metasearch, so a stale price costs it money every hour; Nookaway earns about €72 and barely uses metasearch ([Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](stays-marketplace-economics.html)).\n\n## The Systems Landscape\n\nThe 2027 baseline estate is the product of that history, with only payments and finance shared.\n\n![Roomstead lane with hotels feeding Switchyard, Tally and Pricegrid; Nookaway lane with hosts feeding the Almanac calendar, which exchanges iCal with other platforms; both lanes sit on Corvane Payments and group finance.](assets/images/meet-corvane/00-corvane-2027-baseline.jpeg)\n**Figure 2:** *Corvane's 2027 baseline: Roomstead copies room-type truth in from hotels' systems through Switchyard into Tally and Pricegrid; Nookaway holds one calendar per home in Almanac and exchanges iCal with other platforms; only Corvane Payments and group finance sit beneath both.*\n\n| Area | Roomstead | Nookaway | Corvane Connect | Corvane Payments |\n| --- | --- | --- | --- | --- |\n| Core application | **Keystone**: Java monolith (since 2004) on Oracle in co-located data centers in Dublin and Frankfurt; about **180 services** on AWS (eu-west-1, eu-central-1, EKS) built since 2018 | **Burrow**: Python/Django monolith (since 2012) on PostgreSQL, Google Cloud europe-west1; about **60 Go services** on GKE | .NET on Microsoft Azure (West Europe), SQL Server | Kotlin services on AWS (eu-central-1) |\n| Inventory and calendar | **Tally**: ARI store on Cassandra (2016), per room type, rate plan and date | **Almanac**: calendar service on PostgreSQL, one row per listing per night | Channel-manager inventory store | — |\n| Availability and price | **Pricegrid**: precomputed price-and-availability cache (Java, Redis plus in-process caches), refreshed from Tally change events | Computed at query time from Almanac and pricing rules | — | — |\n| Search | Elasticsearch 8 (self-managed) for content; Pricegrid joined at query time | OpenSearch on GKE | — | — |\n| Connectivity | **Switchyard**: OpenTravel XML and Roomstead JSON APIs for ARI, content and reservations | iCal import and export; partner API (2020) | 60+ channel APIs | — |\n| Payments and ledger | Agency commission invoicing in Keystone; merchant flows through Corvane Payments | All flows through Corvane Payments | Card on file for SaaS billing | **Fathom**: double-entry ledger (PostgreSQL, 2023–24); **Adyen** as primary acquirer; virtual cards through a partner issuing bank |\n| Trust and safety | Payment-fraud team and rules engine; partner-account security team | Trust platform: reservation screening, listing verification, Cover claims | — | Transaction monitoring for anti-money-laundering (AML) |\n\nIdentity, experimentation (Trialroom and Flipside), warehouses (Snowflake and BigQuery), event buses and customer-service tools are duplicated in the same way. Three facts in this landscape shape most of the book.\n\n- **Keystone still owns Roomstead's commitments.** Reservations, partner contracts, commission invoicing, reviews, the extranet's web module and the checkout module that creates the reservation live in one Java application on Oracle, with a manually failed-over standby last rehearsed in 2025 ([Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html)). Every One Stay contract that touches a Roomstead reservation goes through Keystone until 2029.\n- **Two inventory engines encode two truths.** Tally holds about **5.8 million** active products (room type × rate plan); Almanac about **840 million** listing-nights. Roomstead answers shopping from a precomputed cache and pays in staleness; Nookaway computes at query time and pays in latency ([Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html), [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)).\n- **Three clouds, by acquisition.** A group platform must work across AWS, Google Cloud (Nookaway, one region) and Azure (Corvane Connect), or be reached through a bridge.\n\n## The People\n\nEach person owns something the architecture depends on, and most of the book's tensions are between their legitimate goals. All are fictional.\n\n| Name | Role | What they own and want |\n| --- | --- | --- |\n| **Mariana Costa** (she/her) | Group Chief Architect | The book's point of view. Joined in **January 2027** from a payments company; co-proposed One Stay; chairs the architecture forum; owns the capability map, the context map and the contracts stewardship group. Has influence, not command, over the brands. |\n| **Daniel Okonkwo** (he/him) | Group CEO | Asked in February 2027 why the group runs two marketplaces on two platforms. |\n| **Tobias Lindqvist** (he/him) | Group CTO | Co-proposed One Stay; chairs the group architecture board. |\n| **Marco Bellini** (he/him) | Group CFO | Group finance, indirect-tax rule content, Tier 1 metric approval, recovery approval limits. |\n| **Aisha Rahman** (she/her) | VP Supply and Connectivity, Roomstead | Roomstead's supply and connectivity; signed the Brightwell Beds bedbank deal; co-owner of the capability map. |\n| **Rafael Mendes** (he/him) | VP Engineering, Nookaway | Burrow, Almanac and Threadline; co-owner of the capability map. |\n| **Leila Haddad** (she/her) | Head of Payments and Finance Engineering, Corvane Payments | Fathom, the payment-arrangement resolver, Levy and payments reconciliation. |\n| **Jonas Weber** (he/him) | Head of Search and Ranking (group-wide from 2027) | Both search stacks, ranking, Waypoint, the Trip Intent Service; declares degradation modes. |\n| **Sofia Marín** (she/her) | Director of Trust and Safety | Group-wide from April 2027; Warden and Vouch. |\n| **Kenji Arai** (he/him) | Head of Data and ML Platform | Warehouses, the metric layer, the model platform behind mapping and screening. |\n| **Noor van Dijk** (they/them) | Head of Regulatory Affairs and Privacy | The obligation register and market rules; mandatory reviewer of display and cancellation policy. |\n| **Elena Petrova** (she/her) | VP Customer Service | Contact centers and vendors; product owner of Harbor. |\n| **Priyanka Shah** (she/her) | Head of Product, Corvane Connect | Connect's product, which must live with the neutrality rule. |\n\nThe recurring partners and guests are fictional too:\n\n- **Duarte Silva** (he/him), revenue manager of **Hotel Miradouro** in Lisbon, an independent 84-room four-star hotel on Corvane Connect and a cloud PMS, sold on Roomstead and other OTAs. It sells six room types and, in early 2027, 37 rate plans forming 168 products ([Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html)).\n- **Carmen Ruiz** (she/her), a Nookaway host since 2019 with a two-bedroom apartment in Triana, Seville, also listed on a competing platform by iCal: usually **€110** a night, **€260** during the Feria de Abril, cleaning fee **€60**.\n- **Hotel Prinsenkade**, an independent 140-room hotel in Amsterdam connected to Roomstead through a third-party channel manager.\n- **Ivan Horvat** (he/him), a Nookaway host with a four-bedroom villa near Dubrovnik.\n- **The Novak family** from Prague: Tomáš (he/him) and Jana (she/her) Novak and their children, aged 9 and 12.\n\nChapters add smaller fictional partners: **Hotel Torre de Ferro** in Porto and **Maré Alta Stays** in the Algarve ([From Sign-Up to First Booking: Partner and Host Onboarding](partner-onboarding.html)), **Costa Keys** in Málaga ([Hotels and Homes: Modeling What Is Being Sold](property-and-listing-model.html)), **Alfama Keys** in Lisbon ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)), the bedbank **Brightwell Beds** ([Describing a Stay: Content, Media and Property Mapping](content-and-media.html)) and the fake manager **Turia Homes** ([Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html)).\n\n## The Problems Corvane Starts 2027 With\n\nWhen Mariana arrives, both marketplaces work and the group is profitable, but its duplication grows faster than the business. Six problems define her starting position; each is an instance of a pattern from [Overbooked: Sixteen Ways Stay Platforms Go Wrong](where-stay-platforms-go-wrong.html).\n\n1. **Two of almost everything.** Two identity systems, trust stacks, search engines, experimentation platforms, warehouses and customer-service tools, on three clouds. Posed in [Mapping the Business: Capability Maps for Two Marketplaces](stays-capability-map.html) and [Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html); worked in [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](identity-accounts-and-access.html), [Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html), [When Something Goes Wrong: Customer Service and Recovery](customer-service.html) and [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html).\n2. **Roomstead's prices drift from reality.** Metasearch price accuracy is 91% against 97%, and Pricegrid staleness is the main cause. *(Phantom Availability, Price Drift.)* Worked in [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) and [The Moment of Decision: Property Pages, Room Selection and Total Price](property-page-and-room-selection.html).\n3. **Nookaway sells the same night twice.** About 3,100 calendar-conflict host cancellations in 2026, 78% of them on iCal-only multichannel listings. *(The Double-Booked Night.)* Worked in [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) and [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html).\n4. **Regulation arrives city by city.** The EU Short-Term Rental Regulation has applied since 20 May 2026, Spanish registration rules have already forced listing removals, and the VAT in the Digital Age (ViDA) package makes platforms the deemed VAT supplier of most short-term rentals from dates between 1 July 2028 and 1 January 2030, at each member state's choice. *(City-by-City Firefighting, The Tax Patchwork.)* Worked in [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html) and [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](taxes-on-stays.html).\n5. **Merchant growth on agency rails.** Roomstead's move toward 40% merchant bookings runs through Keystone's agency-era reservation model. *(Ledgerless Money.)* Worked in [Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html), [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) and [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html).\n6. **Keystone owns the commitments.** The Java and Oracle monolith still owns Roomstead's reservations, partner contracts and commission invoicing. Worked in [The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html), [Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html) and [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html).\n\nNone of these is a technology problem alone. The price drift exists because fees, taxes and currency are composed in several places; the double bookings because a home sold on two platforms has no single calendar anyone controls; the merchant problem because a reservation record designed when Roomstead never touched the money now has to say who holds it.\n\n## The One Stay Program\n\nIn **April 2027** Corvane's board approved **One Stay**, on a proposal from Tobias Lindqvist and Mariana Costa: **€145 million** over three years (2027–2030), with a target to retire Keystone's reservation module by **the end of 2029**. Its scope has three tiers.\n\n- **Shared:** Corvane ID (one identity across brands), payments and ledger (already shared, to be extended), one trust platform, one messaging and notifications platform, one data platform and metric layer, one customer-service platform and one tax engine.\n- **Shared contracts, separate engines:** a common **offer** and **reservation** contract across both marketplaces. Roomstead keeps Tally and Pricegrid for room-type inventory; Nookaway keeps Almanac for one-unit calendars. The argument is made in [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html).\n- **Not shared, for now:** supply models, connectivity (Switchyard and Nookaway's partner API) and ranking models.\n\nThe principle behind the tiers came out of a rejected proposal. In early 2027 a Roomstead supply team proposed loading Nookaway's listings into Tally as one-unit room types and retiring Almanac. It was rejected because Roomstead's 435,000 homes are mostly professional supply that behaves like hotels, while Nookaway's are mostly individual hosts whose calendar is the product ([Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html)). **Share what the guest and the money see; keep apart what the supply sees.**\n\n![A three-tier stack: Roomstead and Nookaway on top, one shared contracts band in the middle, and below it separate Tally and Almanac engines beside one block of shared group platforms.](assets/images/meet-corvane/00-one-stay-in-one-picture.jpeg)\n**Figure 3:** *One Stay in one picture: the brands keep their products and their supply engines, both speak one offer, reservation and place contract, and the platforms beneath the contracts are built once for the group.*\n\nContract and boundary changes go to the **architecture forum**, chaired by Mariana weekly since February 2027; funding, disputes and accepted risks go to the monthly **group architecture board**, chaired by Tobias ([Who Owns What: Organizing Engineering for Stays](organizing-stays-engineering.html)). A **contracts stewardship group** in the Group Chief Architect's office owns the offer, reservation and payment-arrangement schemas, but no engine. The capability map behind the board proposal (v1, presented to the forum on 23 March 2027) counted **48** level-2 capabilities: **16** shared engines, **6** shared contracts and **26** brand-specific ([Mapping the Business: Capability Maps for Two Marketplaces](stays-capability-map.html)); the December 2027 annual review adopted v2 with **49**: 23, 6 and 20 ([One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html)). The context map of **5 May 2027** drew **23** bounded contexts: 12 shared, 4 shared contracts and 7 per marketplace ([Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html)). The largest budget lines are contracts, Stayline and Keystone retirement (**€34 million**) and the data, ML and experimentation platforms (**€29 million**).\n\nMost decisions created the named platforms of the next section. Five others recur: the **checkout attempt contract** of February 2027, one server-minted idempotency key at every hop ([Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html)); the **price-composition and display policy** decision of March 2027, after which both brands show the all-in stay total from September ([The Moment of Decision: Property Pages, Room Selection and Total Price](property-page-and-room-selection.html)); the June 2027 **search decision**, one query contract over separate indexes and rankers ([Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html)); **Ranking Policy v1**, live in EEA markets on 12 October 2027 ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html)); and the **Keystone Exit Plan** of 20 December 2027, which moves Roomstead's future reservations to Stayline in market cohorts during 2029 ([Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html)).\n\n## The Group Platforms the Chapters Introduce\n\nOne Stay's shared layer is built chapter by chapter, and each piece has a fictional name.\n\n| Name | What it is | Owner; status | Chapter |\n| --- | --- | --- | --- |\n| **Corvane ID** | One identity core with separate brand accounts; cross-brand linking only by the person | Group identity team, Kraków; approved June 2027, rollout 2028–2029 | [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](identity-accounts-and-access.html) |\n| **Fathom** | Double-entry ledger; settlement ledger of record for both brands from May 2027 | Leila Haddad; Nookaway balances move in by end Q2 2028 | [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) |\n| **Levy** | Group tax engine: rules, tax party registry, jurisdiction resolver | Leila Haddad's team, rule content under Marco Bellini; first release Q4 2027 | [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](taxes-on-stays.html) |\n| **Plumbline** | Reconciliation service beside Fathom: card-level, business-to-ledger and safeguarding | Leila Haddad's team; built May–October 2027 | [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html) |\n| **Gauge** | Group metric layer: metrics as code, 24 Tier 1 metrics reconciled to Fathom | Kenji Arai with Marco Bellini; approved July 2027 | [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html) |\n| **Warden** | Group trust platform: entity graph, policy registry, decisions, enforcement, one case tool | Sofia Marín; approved 17 August 2027, first release Q4 2027 | [Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html) |\n| **Vouch** | Group review service with per-brand policies and one review event log | Sofia Marín; approved 18 May 2027, Nookaway November 2027 | [Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html) |\n| **Stayline** | Reservation service: an event-fed tracker first, then system of record | Approved August 2027; Nookaway 2028, Roomstead 2029 | [The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html) |\n| **Clause** | Cancellation policy engine and disruption registry | Group booking platform team, Lisbon; approved July 2027 | [When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html) |\n| **Courier** | Notification platform: intents, channel plans, delivery tracking | Group platform engineering, Kraków; approved 2 September 2027 | [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html) |\n| **Threadline** | Conversation service with one stage-aware message policy | Nookaway engineering; approved 2 September 2027 | [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html) |\n| **Harbor** | Support platform: cases, recovery decisions posted to Fathom, relocation | Elena Petrova; approved June 2027 | [When Something Goes Wrong: Customer Service and Recovery](customer-service.html) |\n| **Waypoint** | Destination graph and place resolver | Jonas Weber's team; approved June 2027, first release Q1 2028 | [Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html) |\n| **Place registry** | Property and unit IDs, addresses, jurisdictions, registration numbers; no prices or calendars | Approved 12 May 2027 | [Hotels and Homes: Modeling What Is Being Sold](property-and-listing-model.html) |\n| **Ordinance** | Market policy registry and eligibility evaluator | Noor van Dijk's team and a compliance-platform team; approved 17 March 2027 | [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html) |\n| **Trip Intent Service** | Shared intent store and alert evaluator under Corvane ID | Jonas Weber's organization; May 2027 | [Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html) |\n| **Group event backbone** | Contract-only event backbone on Amazon MSK; brand buses keep ARI and calendar streams | Kraków platform team; approved 15 September 2027 | [Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html) |\n| **Kiln** | Group ML platform: model registry as serving gate, feature platform, consequence tiers | Kenji Arai's team, Barcelona; approved 21 July 2027 | [Models in Production: ML Platforms and Use Cases for Stays](stays-ml-platform.html) |\n| **Trialroom** (group) | Roomstead's experimentation platform made the group's, with delayed-outcome metrics | Experimentation Standard v1, 14 September 2027; Flipside retired end Q2 2028 | [Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html) |\n| **Gangway** | Group partner distribution API on the One Stay contracts | Approved 12 October 2027; replaces Roomstead's affiliate XML API by end 2028 | [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](demand-channels.html) |\n\nRoomstead-only services also recur: **Turnstile**, the checkout API in front of Keystone ([Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html)); **Concord**, the property and room mapping service, whose matching engine becomes a group engine from 2028 ([Describing a Stay: Content, Media and Property Mapping](content-and-media.html)); **Lantern**, the metasearch integration ([Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](demand-channels.html)); **Tideline**, a cancellation-probability model ([Models in Production: ML Platforms and Use Cases for Stays](stays-ml-platform.html)); **Partner Shield**, the partner-account security program ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](travel-fraud.html)); the **offer kernel** that composes fees, taxes, currency and audience for Pricegrid, the metasearch feed and checkout ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)); and **Switchyard**, redesigned after the €12 rate ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html)). **Calendar Sync v2** and **Payment Plans v1** are Nookaway and Corvane Payments programs, not platforms ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html), [Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html)).\n\nTwo places where names meet need care.\n\n- **Vouch and Warden.** Vouch was approved in May 2027 as the review service \"in the shared trust platform\"; Warden was approved in August as the group trust platform. The record does not say whether Vouch runs on Warden's components.\n- **Ordinance, the place registry and Waypoint.** The December 2027 review records the registry (properties and units) and Waypoint (places and destinations) as two components, with Waypoint writing enrichment to registry records and never the reverse; in the glossary, \"place\" means a Waypoint place. Ordinance evaluates rules against the jurisdictions both carry. The chapters describe dependencies, not a merger.\n\n## The Recurring Worked Examples\n\nEleven stories recur through the book. Their facts never change, so a reader can follow one booking or one incident across many chapters.\n\n**The €12 rate at Hotel Miradouro.** On Tuesday **9 March 2027**, between 07:14 and 07:52 WET, Duarte Silva's bulk rate update for **14–16 May 2027** passed through Corvane Connect, where a decimal-mapping error in a newly mapped rate plan sent **€12.00** instead of €120.00 for \"Standard Double – Flexible\" to Roomstead and two other channels. **41** Roomstead reservations (**63** room nights) were made in **38** minutes, because the anomaly check compared each rate only with the same plan's previous value, and the plan was new. Roomstead honored all 41; Corvane Connect compensated the hotel 63 × €108 = **€6,804**. Worked in [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html); also in [Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html), [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html), [Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html) and [Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html).\n\n**The Seville double booking.** On **2 February 2027** at 10:12 CET the Bauer family from Munich booked Carmen Ruiz's apartment on Nookaway for **20–25 April 2027**, Feria week: 5 × €260 + €60 = **€1,360** before guest fees. At 10:40 a booking for 21–24 April arrived on the competing platform, which had last imported Nookaway's iCal export at 10:00; Nookaway's own imports ran at 09:00 and 12:00. Carmen canceled the Nookaway booking at 13:05. The guest guarantee rehoused the Bauers for **€1,780**, Nookaway funded the **€420** difference, and Carmen paid a **€130** host cancellation fee from her next payout. Worked in [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) and [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html); the money side is in [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) and [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html).\n\n**King's Day overbooking.** For **27 April 2027**, Hotel Prinsenkade's channel manager queued updates for **47 minutes** during an outage on 26 April, and the hotel ended **9 rooms** oversold across channels. Roomstead customer service relocated **4** walked Roomstead guests to Haarlem and Amstelveen for **€2,150** and recovered **€1,600** from the hotel under partner terms that cap the hotel's liability at €400 per relocated reservation. Worked in [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html) and [When Something Goes Wrong: Customer Service and Recovery](customer-service.html); also in [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html), [When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html) and [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html).\n\n**The Spanish registration purge.** Between **February and April 2026**, under the Spanish national registry then in force and regional registration rules, Nookaway removed **6,900** Spanish listings without a valid registration number; **2,900** future reservations with check-in within 30 days were honored and **8,300** later ones canceled with full refunds. On 21 May 2026 Spain's Supreme Court annulled the national registry; regional numbers still apply. The removal is fictional; the annulment is real and sourced in [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html), which works the example; also in [From Sign-Up to First Booking: Partner and Host Onboarding](partner-onboarding.html) and [Mapping the Business: Capability Maps for Two Marketplaces](stays-capability-map.html).\n\n**The Dubrovnik damage claim.** On **14 August 2027** a party took place at Ivan Horvat's villa despite reservation screening. Ivan claimed **€3,800**; after evidence review Nookaway Cover paid **€3,450** and recovered **€900** from the guest. Worked in [Damage, Parties and Emergencies: Protection and Incident Response](protection-and-incidents.html); also in [Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html), [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html) and [The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html).\n\n**The extranet phishing wave.** In **November 2027** attackers phished staff credentials at **230** Roomstead partner properties and used in-platform messaging to send fake \"payment verification\" messages to **4,100** guests. **310** paid the fraudsters; Roomstead reimbursed them **€212,000** (about €684 each). Worked in [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](travel-fraud.html); also in [Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html), [Who Is Booking, Who Is Hosting: Identity, Accounts and Access](identity-accounts-and-access.html), [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html), [When Something Goes Wrong: Customer Service and Recovery](customer-service.html) and [Damage, Parties and Emergencies: Protection and Incident Response](protection-and-incidents.html).\n\n**The 212 duplicate bookings.** On **14 January 2027** a payment-service-provider latency spike made Roomstead's mobile app retry checkout without reusing its idempotency key; **212** duplicate reservations were created, **198** of them with duplicate charges. Worked in [Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html); also in [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html), [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) and [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html).\n\n**The ATC strike weekend.** On **5–7 June 2027** an air-traffic-control strike over France disrupted travel across Europe. About **17,000** Roomstead and **2,600** Nookaway reservations were affected, and Roomstead received **6,200** cancellation requests in 48 hours. Worked in [When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html), which builds Clause from it; also in [Setting the Price of a Night: Revenue Management and Smart Pricing](dynamic-pricing.html), [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html), [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html), [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html) and [Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html).\n\n**The €1.8 million reconciliation gap.** In **Q1 2027** Corvane Payments found **€1.8 million** unreconciled between virtual-card issuing statements and Roomstead merchant reservations, mostly cards charged by hotels for reservations later canceled or modified. Worked in [Closing the Books: Refunds, Chargebacks and Reconciliation](refunds-and-reconciliation.html); also in [Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html), [Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html), [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) and [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html).\n\n**The Novak family's Lisbon trip.** On **11 February 2027** the Novaks searched for Lisbon, 2–9 August, two adults and two children, and abandoned the search. After a price alert, on **14 February** they booked a Nookaway apartment in Alfama: 7 × **€145** = €1,015 plus **€70** cleaning, a guest service fee of **€130.20** and Lisbon tourist tax of **€56** (€4 per adult per night; children exempt under the age rule Corvane applies, under 13, which [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](taxes-on-stays.html) flags for verification), **€1,271.20** in total, **25%** above what the nightly price suggested. The journey runs through [Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html), [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html), [Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html), [The Moment of Decision: Property Pages, Room Selection and Total Price](property-page-and-room-selection.html), [Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html), [The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](taxes-on-stays.html) and [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html).\n\n**Black Friday 2027.** On **26 November 2027** Roomstead's availability lookups peaked at **96,000** price-cache reads a second, 1.5 times the 2026 peak; Pricegrid's hit rate fell from 94% to 71% and Roomstead ran a planned degradation mode for 40 minutes. Worked in [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html); also in [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html), [Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html), [Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html) and [Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html).\n\nThe **Novaks' trip is the guest-side spine**: one booking crosses search, maps, alerts, price display, checkout, tax, messaging and payout. The **€12 rate is the supply-side spine**: one decimal error crosses connectivity, inventory, pricing, delivery and settlement. Between them they show each marketplace failing in its own way: the hotel's truth copied in wrong, the guest's price composed in too many places.\n\nSmaller stories belong to the chapters that introduce them: the **Spain and Portugal metasearch downgrade** of May 2027 ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)), the **Semana Santa declines** of Pay Later charges ([Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html)), the **review-trading ring** ([Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html)), **Turia Homes** on both brands ([Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html)), **Hotel Miradouro's missing reservations** in July 2027 ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)), the **check-in instructions that never arrived** in August 2027 ([Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html)), **Smart Rate on the strike weekend** ([Setting the Price of a Night: Revenue Management and Smart Pricing](dynamic-pricing.html)), the **Autumn Cities coupon** ([Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html)), the **two definitions of \"booking\"** ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)), the **free-cancellation badge** experiments ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html)) and Nookaway's stretched **\"Lisbon\"** ([Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html)).\n\n## How the Chapters Use Corvane\n\nEach chapter opens with a 2027 scene at Corvane, then answers its question with concepts, dated public evidence from real marketplaces and a Corvane worked example. [Part IX — LEADERSHIP: The Chief Architect's Agenda](part-9.html) follows One Stay as a program, through [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html) to [Built for the Next Disruption: Evolving a Stays Platform Over a Decade](evolving-the-platform.html); the case studies of [Part X — PRACTICE: How Others Built It](part-10.html), starting with [Booking.com: Experimentation, Connectivity and the Agency Model at Scale](case-booking-com.html), leave Corvane and test the book against the public record.\n\nThree conventions hold throughout. **Corvane is always labeled fictional** the first time it appears in a chapter. **Its facts come from one canonical record**, so the 91%, the 3-hour iCal poll and the €1,271.20 mean the same thing everywhere. And a chapter that needs a new detail adds it without contradicting what is established here.\n\nWith the group, its problems and its program introduced, Part I begins where Mariana began in February 2027: with the CEO's question of whether Roomstead and Nookaway are one business or two, and why the answer decides the architecture. Continue with [Part I — MARKETPLACE: The Business of a Night's Stay](part-1.html).\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- None. Corvane Group, its brands (Roomstead, Nookaway, Corvane Connect, ChannelPier, Corvane Payments), their products and programs, its systems, people, partners, guests, figures and events are fictional and invented for teaching; they are not drawn from any single real company.\n\n### Standards, regulation and documentation\n\n- [Regulation (EU) 2024/1028 on data collection and sharing relating to short-term accommodation rental services](http://publications.europa.eu/resource/celex/32024R1028), European Parliament and Council, 2024 — the EU Short-Term Rental Regulation, applicable from 20 May 2026.\n- [Council Directive (EU) 2025/516 (VAT in the Digital Age)](http://publications.europa.eu/resource/celex/32025L0516), Council of the EU, 2025 — the deemed-supplier rule for short-term accommodation, applicable from dates between 1 July 2028 and 1 January 2030.\n- The Spanish Supreme Court's May 2026 annulment of the national short-term-rental registry is sourced in [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html).\n\n### Research and practitioner sources\n\n- The scenario's shape draws on the generic Productscape reference models summarized in [Mapping the Business: Capability Maps for Two Marketplaces](stays-capability-map.html) and on the industry history told, with dated sources, in [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html) and the case studies.\n\nThe vendor products named (AWS, Google Cloud, Microsoft Azure, Oracle, PostgreSQL, Cassandra, Redis, Elasticsearch, OpenSearch, Kafka, Amazon MSK, Google Pub/Sub, Azure Service Bus, Snowflake, BigQuery, Adyen, SAP S/4HANA) are real; their capabilities are described, with sources, in the chapters that use them. Corvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

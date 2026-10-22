@@ -1,0 +1,20 @@
+[
+ {
+  "id": "21-booking-saga-components",
+  "visual_goal": "Show one coordinator, the checkout attempt service, calling each participant, with post-confirmation work leaving through an outbox as events.",
+  "prompt": "A hub-and-spoke diagram. On the far left, a phone and laptop labeled 'Guest app', with one arrow into a large central hub box labeled 'Checkout attempt' that carries a small key tag. From the hub, five arrows fan out to five boxes arranged in an arc to the right: 'Price composition', 'Risk and screening', 'Allocation ledger' (labeled arrow 'hold, then commit'), 'Payment orchestrator' (labeled arrow 'payment plan'), and 'Reservation store' (labeled arrow 'confirm'). Each of the five boxes shows the same small key tag as the hub. From 'Reservation store', a small outbox tray labeled 'outbox' sends two dashed arrows further right to two boxes outside a light dashed boundary: 'Supplier delivery' and 'Notifications'.",
+  "alt": "A checkout attempt hub with a key tag calling price composition, risk and screening, the allocation ledger, the payment orchestrator and the reservation store, which sends events through an outbox to supplier delivery and notifications."
+ },
+ {
+  "id": "21-booking-saga-sequence",
+  "visual_goal": "Show the instant-book saga as swimlanes: the attempt ID is returned before Book, the same key travels to hold, authorize and commit, and the commit is the pivot dividing undoable from retried steps.",
+  "prompt": "A left-to-right swimlane diagram with five horizontal lanes stacked top to bottom, each labeled at its left edge: 'Guest' (top), 'Checkout attempt', 'Allocation ledger', 'Payment', 'Reservation store' (bottom). Time runs left to right. Six short straight vertical arrows, each with a small key tag, in this order from left to right: first, an arrow pointing UP from the 'Checkout attempt' lane into the 'Guest' lane, labeled 'attempt ID'; second, an arrow pointing DOWN from the 'Guest' lane into the 'Checkout attempt' lane, labeled 'Book'; third, an arrow pointing DOWN from 'Checkout attempt' into 'Allocation ledger', labeled 'hold'; fourth, an arrow pointing DOWN from 'Checkout attempt' into 'Payment', labeled 'authorize'; fifth, an arrow pointing DOWN from 'Checkout attempt' into 'Allocation ledger', labeled 'commit'; sixth, an arrow pointing UP from 'Checkout attempt' into 'Guest', labeled 'Confirmed'. A bold vertical orange dashed line crosses all lanes just right of the 'commit' arrow, labeled 'pivot' at the top. The area left of the line has a soft green tint with the word 'undone' at the top; the area right of it has a soft blue tint with the word 'retried' at the top.",
+  "alt": "Swimlanes for guest, checkout attempt, allocation ledger, payment and reservation store, with the attempt ID returned before Book and a pivot line at the commit separating steps that can be undone from steps that are retried."
+ },
+ {
+  "id": "21-checkout-attempt-states",
+  "visual_goal": "Show the checkout attempt state machine with Unknown as a real state whose only exits are lookups with the same key.",
+  "prompt": "A state diagram of rounded state boxes. A top row, left to right: 'Started', 'Held', 'Authorizing', 'Authorized', 'Confirmed', connected by single arrows; the arrow from 'Authorized' to 'Confirmed' is labeled 'pivot'. Below 'Authorizing', a highlighted orange box 'Unknown' with one arrow down into it from 'Authorizing', labeled 'timeout'. From 'Unknown', exactly two arrows leave and each carries its own separate label 'lookup': one up-right into 'Authorized' (label 'lookup' beside it) and one straight right into a grey box 'Declined' (a second label 'lookup' above it), so the word 'lookup' appears twice. One arrow from 'Authorizing' down-right into 'Declined'. One arrow from 'Declined' right into a grey box 'Abandoned'. 'Unknown' shows a small magnifying glass and a key tag.",
+  "alt": "Checkout attempt states from Started through Held and Authorizing to Authorized and Confirmed, with an Unknown state after a timeout whose only exits are lookups to Authorized or Declined, and Declined leading to Abandoned."
+ }
+]

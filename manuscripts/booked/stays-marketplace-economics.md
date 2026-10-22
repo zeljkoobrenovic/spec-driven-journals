@@ -1,0 +1,447 @@
+{id: stays-marketplace-economics}
+# 2. Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces
+
+![Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces — logo](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/logo.jpeg)
+
+> **IN THIS CHAPTER, YOU WILL:** Learn the economic quantities that drive a stays marketplace (local liquidity, perishability, take rate, marketing dependence, look-to-book, cancellations and the booking window), see how they differ between an accommodation marketplace and a hosted-stays marketplace, and turn each one into a concrete architecture requirement.
+
+> **WHY THE BUSINESS CARES:** A stays marketplace pays for most of its demand, earns only on the stays that are not canceled, and serves hundreds or thousands of searches for every booking. A general manager who cannot see contribution per stayed reservation, by channel, cannot tell whether growth is making money or buying it.
+
+> **WHY ARCHITECTS SHOULD CARE:** The cost per search, the acceptable staleness of a cached price, the horizon of the availability store, the duration of an experiment and the shape of the capacity curve are economic numbers before they are technical ones. An architecture copied from the other marketplace type, or sized without them, will be either too expensive or too wrong.
+
+> **KEY POINTS:**
+>
+> * **A stays marketplace sells a local, perishable match, so liquidity is measured per destination, date and party.** Network effects in stays are real but leaky: hotels and many hosts sell on every channel, and guests compare through metasearch. Supply that is bookable for the dates and party size a guest asks for is what wins, and the metrics must be cut by that cell.
+> * **Revenue arrives on stays; costs arrive on searches and bookings.** The take rate is earned at check-in on the stays that survive cancellation. Marketing, cache refreshes and live price checks are spent on every search and every booking. Contribution per stayed reservation, not gross bookings, is the number that tells an architect what a search may cost.
+> * **Look-to-book decides the read architecture, and the two marketplace types sit an order of magnitude apart.** An OTA that feeds metasearch and affiliates serves over a thousand shopping requests per reservation and must answer from precomputed caches with an explicit staleness budget. A hosted-stays marketplace that owns its calendars and its traffic can afford to compute at query time. Copying either design onto the other is an economic mistake before it is a technical one.
+
+> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-stay-platforms-go-wrong):**
+>
+> * **Phantom Availability** — Look-to-book forces caching, and nobody sets the staleness budget from what a wrong price costs in wasted clicks and partner penalties, so the cache is tuned for cost alone.
+> * **Pay-to-Rank Creep** — Commission levels and paid programs are the easiest way to raise the take rate, and they reach the ranking long before anyone measures what they do to conversion and trust.
+> * **Built for Sunny Days** — Capacity is sized for average traffic, while the booking curve, the stay curve and campaign peaks arrive at different times of the year for each marketplace type.
+
+A stays marketplace sells something it does not own and cannot store. The night in Room 214 on 15 May, or in Carmen's apartment in Triana on 22 April, exists once. If nobody books it, it is gone; if two people book it, one of them has a problem. The marketplace earns a share of the price only if the guest arrives, and pays for the guest's attention long before. **Each of these facts has an architectural consequence** that most reviews never write down.
+
+![A bed-shaped block of ice holding a crescent moon melts on a counter as dusk falls, while two travelers reach for the same block.](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/02-night-melts.jpeg)
+
+**Figure 1:** *A night exists once: if nobody books it by the evening it begins it is gone, and if two people book it, one of them has a problem.*
+
+This chapter owns four terms the rest of the book uses: **take rate**, **look-to-book ratio**, **booking window** and **local liquidity**. It compares an accommodation marketplace (an OTA-style marketplace selling rooms in professionally run properties) with a hosted-stays marketplace (selling nights in homes run by hosts), because the two earn and spend money in different places. [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](#two-stay-marketplaces) defined the two types; this chapter explains what they live on.
+
+My method for any architect joining a stays business: **build the unit economics of one stayed reservation, per brand, and ask of every number: what system does this force, and how good must it be?** The answers set budgets for cost per search, cache staleness, metric definitions and capacity that are otherwise argued from taste.
+
+{id: stays-marketplace-economics--setting-the-scene-at-corvane-a-cheaper-search-stack}
+## Setting the Scene at Corvane: A Cheaper Search Stack?
+
+Corvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](#meet-corvane)), runs **Roomstead**, an accommodation marketplace founded in 2001, and **Nookaway**, a hosted-stays marketplace acquired in 2021. In February 2027 Mariana Costa, the new Group Chief Architect, was preparing the architecture case for the One Stay program, due at the board in April. Marco Bellini, the Group CFO, sent her a two-line question.
+
+*"Roomstead's search and availability platform cost us €44 million to run in 2026. Nookaway's cost €9 million. Nookaway computes prices at query time with no giant cache. Why don't we move Roomstead onto Nookaway's design?"*
+
+The figures were right (like everything about Corvane, they are illustrative). Mariana asked Kenji Arai's data team for one page first: **the unit economics of a stayed reservation at each brand in 2026**, with search and marketing costs allocated per reservation.
+
+| 2026, per brand | Roomstead (accommodation marketplace) | Nookaway (hosted stays) |
+| --- | --- | --- |
+| Gross reservations made | about 45 million | about 6.9 million |
+| Canceled | 34% of room nights | 13% of reservations |
+| Stayed reservations | about 30 million | about 6.0 million |
+| Nights per stayed reservation | 2.4 room nights | 3.5 nights |
+| Price per night | average daily rate (ADR) €128 | €142 including cleaning fee |
+| Gross booking value (GBV) per stayed reservation | about €307 | about €497 |
+| Revenue | €1.200 billion | €430 million |
+| **Take rate** (revenue ÷ GBV of stayed nights) | **about 13%** | **about 14.4%** |
+| **Revenue per stayed reservation** | **about €40** | **about €72** |
+| Marketing (brand and performance) | €390 million (32.5% of revenue) | €68 million (16% of revenue) |
+| Marketing per stayed reservation | about €13 | about €11 |
+| Shopping requests per gross reservation (**look-to-book**) | about **1,400** (300 from own web and apps) | about **420** (85% from own web and apps) |
+| Search and availability run cost | €44 million | €9 million |
+| Run cost per shopping request | about €0.0007 | about €0.0031 |
+| Run cost per stayed reservation | about €1.47 | about €1.50 |
+| Contribution after marketing and search, per stayed reservation | about **€25** | about **€59** |
+
+Three things on that page answered Marco's question.
+
+First, **per stayed reservation, the two search platforms cost the same**: about €1.50. Roomstead's platform is bigger because it serves more traffic, not because it is less efficient.
+
+Second, **per shopping request, Nookaway's design is more than four times as expensive**. That is fine for Nookaway, which serves 420 requests per booking, mostly from its own apps. At Roomstead's ratio of 1,400 requests per booking, Nookaway's per-request cost would have meant about 63 billion requests × €0.0031 ≈ **€195 million** a year: half of Roomstead's whole marketing budget, spent on answering searches that do not book.
+
+Third, the two brands **make money on different things**. Roomstead earns €40 a stay and spends €13 of it buying the guest, mostly through paid channels; Nookaway earns €72 a stay on longer whole-home stays and spends less per guest. Roomstead's economics punish every wasted search and every inaccurate price shown on a paid channel. Nookaway's punish every failed stay: a double-booked night, a host cancellation, a damage claim, each of which can wipe out the margin of several stays.
+
+{id: stays-marketplace-economics--what-a-stays-marketplace-sells}
+## What a Stays Marketplace Sells
+
+{id: stays-marketplace-economics--a-match-not-a-product}
+### A match, not a product
+
+A stays marketplace does not sell rooms. It sells **a match between a guest's intent (a place, a set of dates, a party) and a night that someone else will provide**, at a price the guest accepts and with terms both sides will honor. The marketplace earns when that match turns into a stay.
+
+Three properties of that match drive everything else.
+
+- **It is perishable.** An unsold night has no value once it passes. Hotels manage this with revenue management and many channels; hosts with price and calendars on several platforms. Both raise the marketplace's costs: more channels mean more updates and more comparison shopping.
+- **It is local and dated.** "Lisbon, 2–9 August, two adults and two children" is a different market from "Lisbon, Tuesday night, one business traveler".
+- **It is fulfilled by someone else.** Revenue depends on a property or host honoring the booking, and on the guest not canceling.
+
+{id: stays-marketplace-economics--two-sided-network-effects-and-why-they-leak-in-stays}
+### Two-sided network effects, and why they leak in stays
+
+Like every marketplace, a stays marketplace has **cross-side network effects** (the general theory is in the listings book: [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](https://zeljkoobrenovic.github.io/spec-driven-journals/listing-systems-architecture/liquidity-and-network-effects.html)). **In stays they are real but leaky, and they leak differently on each side.**
+
+- **Professional supply multi-homes by design.** A hotel distributes through every OTA it can, its own website, wholesalers and global distribution systems (GDS), with a channel manager pushing the same rates to all of them ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](#connectivity-and-channel-managers)); Corvane's own Corvane Connect serves more than 60 channels, including Roomstead's competitors.
+- **Hosted supply multi-homes too, but less and worse.** At Nookaway, **61%** of active listings are also sold elsewhere; 47% of those keep their calendars in sync by iCal alone, polled every few hours ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)). Multi-homing hosts bring supply, and they bring double-booking risk with it.
+- **Demand multi-homes through metasearch.** Guests compare prices on metasearch and search engines, which weakens an OTA's network effect exactly where it pays for the guest. Expedia Group's fiscal-2025 annual report says it buys "meaningful traffic" from search engines and "travel metasearch websites, such as Kayak, TripAdvisor and trivago" ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)).
+
+What remains defensible is **depth of bookable supply in the cells guests ask for, the accuracy of what is shown, and a direct relationship with the guest** (app, account, loyalty), more than "more listings".
+
+![A loop of guests, stays booked and partners and hosts feeding each other, with marketing feeding guests, multi-homing leaking guests and supply away, and accuracy converting searches into stays.](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/02-local-liquidity-loop.jpeg)
+
+**Figure 2:** *The local liquidity loop in stays. The loop runs per destination and date; marketing feeds it, multi-homing leaks it on both sides, and the accuracy of what is shown decides how much of the paid-for attention turns into stays.*
+
+{id: stays-marketplace-economics--local-liquidity-defined}
+### Local liquidity, defined
+
+**Local liquidity** is the likelihood that a guest searching a given **cell** finds and books a suitable stay, and that supply offered in that cell is booked. The cell has more dimensions in stays than in most marketplaces:
+
+| Dimension | Why it matters | Accommodation marketplace | Hosted stays |
+| --- | --- | --- | --- |
+| Destination | Stays are bought for a place | City, district, point of interest | Same, plus neighborhoods and rural areas where hotels are scarce |
+| Dates | Each night is a different market | Weekday business demand, weekend leisure, events | Seasons, holidays, events; minimum stays shape which dates work |
+| Party | Capacity is physical | Room occupancy; families often need two rooms or a rare family room | Bedrooms and beds; a home sleeps a group in one booking |
+| Price band | Guests filter by budget | Strong segmentation by star rating and rate plan | Wide spread; cleaning fee changes the effective price of short stays |
+| Lead time | Who is still searching | Many bookings within days of arrival | More bookings months ahead for summer and holidays |
+
+The party dimension is the one that most often surprises architects. On **11 February 2027** the Novak family from Prague (two adults, children aged 9 and 12) searched for Lisbon, 2–9 August. That evening, by Corvane's own count, Nookaway had about **2,350** Lisbon homes with two or more bedrooms open for all seven nights. Roomstead had far more hotel rooms, but a family of four in one unit is a thin cell for hotels: Hotel Miradouro, an 84-room four-star in Lisbon, has exactly **2** family rooms. They abandoned the search, received a price alert and booked a Nookaway apartment in Alfama on **14 February**, 169 days before arrival ([Remembering the Traveler: Personalization, Recommendations and Saved Intent](#personalization-and-recommendations) covers the alert).
+
+The **same city is liquid for one brand and thin for the other, depending on the party**, which "listings in Lisbon" hides; the metric layer must cut liquidity by cell ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)).
+
+The metrics I use for local liquidity, by side:
+
+- **Demand side:** search-to-book conversion per cell; the share of searches that return few or no bookable results (a **thin-result rate**); the share of sessions that end on a "sold out" or "price changed" message.
+- **Supply side:** **bookable nights** (open, priced and not blocked by restrictions); **availability coverage** (bookable nights as a share of the nights a property or listing could sell); occupancy in that cell; and, for request-to-book listings, the **host acceptance rate**.
+
+{id: stays-marketplace-economics--perishability-and-seasonality}
+### Perishability and seasonality
+
+Perishability makes time the main axis of every stays system: each night has its own inventory and price, changed repeatedly before it occurs. Seasonality stretches the load into two curves that do not peak together, and the filings document both. Airbnb's fiscal-2025 10-K (February 2026) says nights booked are "highest in the first, second, and third quarters and lowest in the fourth quarter, with the peak travel season occurring in the third quarter", and because revenue is recognized at check-in, revenue peaks in the third quarter ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Expedia Group's fiscal-2025 10-K says revenue lags bookings "by several weeks for our hotel business and can be several months or more for our alternative accommodations business", and that "Vrbo has seen seasonally stronger bookings in the first quarter" ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)). Airbnb's second-quarter 2026 letter shows the money side of the same curve: **$12.2 billion** of funds held for guests on 30 June 2026, against $6.96 billion at the end of 2025 ([Airbnb Q2 2026 letter, 2026](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf)).
+
+My architectural reading of those filings: **there is a booking curve and a stay curve**. The booking curve loads search, availability, checkout and payment authorization. The stay curve loads check-in, messaging, customer service, payouts and claims. For hosted stays the booking curve leads the stay curve by months; for a global OTA the booking curve is flatter. At Corvane, about **34%** of Nookaway's 2026 gross bookings were made in January to March, and **41%** of its nights were stayed in July to September; Roomstead's quarters were much closer to even. A capacity plan, a support rota or a payout batch window built on the annual average is wrong for both.
+
+{id: stays-marketplace-economics--how-a-stays-marketplace-makes-money}
+## How a Stays Marketplace Makes Money
+
+{id: stays-marketplace-economics--take-rate-defined}
+### Take rate, defined
+
+**Take rate** is the marketplace's revenue from stays divided by the gross booking value of those stays, over the same period. It is the industry's most quoted number and easy to quote inconsistently. The definitions I insist on:
+
+- **Numerator:** accommodation revenue (commission, merchant margin, guest and host fees); say whether advertising and paid programs are in.
+- **Denominator:** GBV, including the partner's or host's share; state whether it is **gross** (at booking) or **stayed**, and whether it includes cleaning fees, taxes and the guest fee. Airbnb, for example, excludes taxes and cleaning and pet fees from revenue ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)).
+- **Timing:** the major companies recognize revenue at check-in, not at booking. Booking Holdings' 10-K notes that "because we recognize revenues from bookings when the traveler checks in, our reported revenues are not at risk of being reversed due to cancellations" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Gross bookings and revenue from the same quarter describe two different populations of stays.
+
+The public numbers sit close together. Airbnb's fiscal-2025 revenue of $12.24 billion on GBV of $91.3 billion gives an implied take rate of about **13.4%** (my arithmetic from the 10-K table), and the company itself reported 13.2% for the second quarter of 2026 ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm); [Airbnb Q2 2026 letter, 2026](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf)). Booking Holdings' 2025 revenue of $26.9 billion on gross bookings of $186.1 billion is about **14.5%**, but that mixes flights, cars and advertising and gross bookings with check-in revenue. Corvane's brands, at about 13% and 14.4%, sit in the same band by design.
+
+{id: stays-marketplace-economics--how-the-take-rate-is-assembled}
+### How the take rate is assembled
+
+The same 13–15% is earned through very different mechanisms, and **each mechanism lands in different systems**.
+
+| Mechanism | How it works | Who pays | When the money moves | Systems it demands |
+| --- | --- | --- | --- | --- |
+| **Agency commission** | Property charges the guest; marketplace invoices a percentage of room revenue after the stay | Property | Monthly invoice after departure | Stay confirmation, commission invoicing, collections, dispute handling |
+| **Merchant margin** | Marketplace charges the guest and pays the property a net amount, by bank transfer or virtual card | Effectively the property (netted) | Guest pays at booking or later; property paid after check-in or on a schedule | Payment orchestration, virtual-card issuing, settlement, safeguarding, chargebacks |
+| **Split fee** | Guest pays a service fee on top of the host's price; host pays a smaller fee deducted from payout | Guest and host | Guest at booking (or later); host fee deducted at payout | All-in price display, fee engine, payout deductions |
+| **Host-only fee** | One fee deducted from the host's payout; guest sees one price | Host | Deducted at payout | Price gross-up for connected hosts, payout deductions |
+| **Paid programs and boosts** | Property or host pays a higher commission or fee for visibility, a badge or member exposure | Property or host | With the commission | Ranking policy, eligibility, disclosure, program billing |
+| **Advertising** | Sponsored placement paid per click or per impression | Property or host | Per campaign | Ad server, auction, delivery accounting, labeling |
+
+Two examples from Corvane make the difference concrete. A two-night stay at Hotel Miradouro on its Flexible rate of €120 is €240 of room revenue; Roomstead's commission at Miradouro's **15%** is **€36**, invoiced after departure under the agency model or netted from the virtual card under "Pay with Roomstead". A three-night stay in Carmen Ruiz's apartment in Seville at €110 a night plus a €60 cleaning fee is a **€390** subtotal; Nookaway charges the guest a **12%** service fee (€46.80) and deducts a **4%** host fee (€15.60), earning **€62.40**, or 16% of the subtotal, collected in full before the stay ([Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement) shows Carmen's actual February payout).
+
+The 16% nominal fee does not become a 16% take rate. Nookaway's realized take rate in 2026 was about **14.4%**, because long-stay fee reductions, promotional fee credits, fees refunded on host cancellations and guest-guarantee costs netted against revenue all come out of it. That gap is itself an architecture requirement: **the take rate a dashboard shows must be computed from the ledger, not from the fee table**, or nobody will notice when a new credit or waiver erodes it.
+
+Fee mechanisms change fast, so they must be data, not code. Airbnb's 10-K (February 2026) says that "in October 2025, the Company began transitioning to a single-fee structure, charging only the host a service fee", and its help center sets the single fee at 15.5% for most hosts, against a historical split of 3% for hosts and a guest fee of about 14.1–16.5% ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm); [Airbnb Help Center, article 1857, read 2026](https://www.airbnb.com/help/article/1857)). Old bookings keep the old fee even when the stay happens after the switch, so **two fee models coexist per host for months**. A fee engine that versions fee schedules, freezes the applicable version on each reservation and lets the ledger read it is the minimum.
+
+On the OTA side the revenue mix is moving from agency commission toward merchant margin. Booking Holdings' merchant revenues grew from $10.9 billion in 2023 to $17.8 billion in 2025 while agency revenues fell from $9.4 billion to $8.0 billion ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Roomstead's target of 40% merchant room nights by the end of 2028 is the same move ([Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models)). **The take rate is no longer one number from one system.**
+
+{id: stays-marketplace-economics--the-take-rate-levers-that-reach-ranking}
+### The take-rate levers that reach ranking
+
+The easiest way to raise a take rate is to let partners pay more for visibility. Booking.com's "How we work" page (updated 31 May 2025) says that ranking can be influenced by "how much commission they pay us on bookings" ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)); Agoda's partner documentation (February 2025) describes a Growth Program that gives joining properties a badge, a ranking boost and extra Agoda metasearch spend ([Agoda Partner Hub, 2025](https://www.partnerhub.agoda.com/?p=95313)).
+
+These programs are legitimate and disclosed; the EU's Platform-to-Business Regulation requires marketplaces to describe the main ranking parameters, including where "direct or indirect remuneration" influences ranking ([Regulation (EU) 2019/1150](http://publications.europa.eu/resource/celex/32019R1150), Article 5, applicable since 12 July 2020). The trap is that each program is approved on its own business case and nobody measures the sum: **Pay-to-Rank Creep** is a take-rate strategy that leaked into ranking without an owner. The answer ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking), [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty)) is a separately owned, versioned ranking policy whose effect on conversion and trust is measured.
+
+{id: stays-marketplace-economics--paying-for-demand}
+### Paying for demand
+
+The filings show what the marketplace spends to get the guest, and the two types at very different points.
+
+| Company, fiscal 2025 | Marketing as reported | Relative to revenue | Relative to gross bookings | Source |
+| --- | --- | --- | --- | --- |
+| Booking Holdings | $8.2 billion performance and brand marketing; performance marketing "a substantial majority", mainly search engines ("primarily Google"), affiliates, metasearch and social | about 30% | about 4.4% | 10-K, February 2026 |
+| Expedia Group | $7.35 billion direct selling and marketing (traffic generation, affiliate and B2B partner commissions, brand) | 49.9% | about 6.1% | 10-K, February 2026 |
+| Airbnb | $1.60 billion brand and performance marketing ($2.59 billion total sales and marketing) | about 13% (21% total) | about 1.7% | 10-K, February 2026 |
+
+The ratios are my arithmetic from the filed figures ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm); [Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm); [Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)); the categories differ across companies, so read them as orders of magnitude.
+
+The difference is not only scale. Airbnb's 10-K credits its brand with "lower reliance on paid marketing channels"; Booking Holdings reports that consumers "coming directly to our platforms" booked a mid-fifties percentage of its 2025 room nights. An OTA's distinctive asset is broad hotel supply that guests compare everywhere, so it competes in the paid channels where the comparison happens; a hosted-stays marketplace's supply is harder to find elsewhere, so more guests start with it directly.
+
+Two clauses in the Booking Holdings filing are, in my reading, architecture requirements in disguise:
+
+- Performance-marketing returns depend on "our ability to convert paid traffic to booking customers", which depends on latency, price accuracy and availability accuracy.
+- "Increases in cancellation rates can negatively impact our marketing efficiency as a result of incurring performance marketing expenses at the time a booking is made even though that booking could be canceled in the future." **The marketplace pays for the booking and earns on the stay.** Every canceled reservation carries its acquisition cost with nothing to offset it.
+
+At Corvane, Roomstead's 2026 traffic mix was **38%** of sessions from paid search and metasearch, **29%** direct and app, **21%** organic search and **12%** affiliates and CRM. Its €390 million of marketing was **€330 million** of performance marketing (about €150 million paid search, €140 million metasearch and €40 million affiliates and social) and **€60 million** of brand. Nookaway spent €68 million, most of it on brand and on guest-referral credits, and almost none on metasearch.
+
+{id: stays-marketplace-economics--the-cost-of-looking-look-to-book}
+## The Cost of Looking: Look-to-Book
+
+{id: stays-marketplace-economics--look-to-book-defined}
+### Look-to-book, defined
+
+The **look-to-book ratio** is the number of shopping requests a marketplace serves per reservation made. It is the most important single number for sizing a stays read path, and it is routinely misquoted because nobody states the units. I use these conventions:
+
+- **Numerator:** shopping requests that ask for availability or price for a stay: search result pages, map moves, property-page offer loads, metasearch price queries, affiliate and partner API calls. Say whether a request for 30 properties counts once or 30 times. At Corvane a "shopping request" is one request from a client (a search page, a property page, an API availability call); each one fans out to about ten **Pricegrid reads**, the property-level offer reads that the per-second "availability lookups" figures count.
+- **Denominator:** gross reservations (before cancellations), unless stated otherwise. Look-to-book per *stayed* reservation is higher by the cancellation rate.
+- **Scope:** by channel. The ratio for a marketplace's own apps and the ratio for metasearch and affiliate traffic differ by an order of magnitude, and they are paid for differently.
+
+{id: stays-marketplace-economics--why-it-is-so-high-for-an-ota}
+### Why it is so high for an OTA
+
+The public record on actual ratios is thin and old, but its direction is not disputed. A 2016 opinion piece by Triometric, a channel-analytics vendor, said top hotel distributors had seen about 500 searches per booking five years earlier and that the ratio "is now the order of 20,000:1", attributing most of the growth to automated price scraping rather than to metasearch alone ([Hospitality Net, 2016](https://www.hospitalitynet.org/opinion/4074433.html)). The figure is vendor opinion and ten years old; no OTA publishes its own ratio.
+
+The control mechanisms are better documented than the ratios. Expedia Group's Rapid API, which lets other sellers book Expedia's supply, sets shopping rate limits per partner and recalculates them monthly, "taking into account a partner's traffic vs. revenue" ([Expedia Group Developer Hub, n.d., read 2026](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting)). That is a look-to-book ratio enforced as an API quota. Agoda's August 2026 description of its price cache shows the read path such traffic requires: about 300,000 reads and close to 1.5 million writes a second before a migration, with a 99th-percentile latency requirement under 50 milliseconds ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-agoda-scaled-its-price-cache-with-dragonflydb-0828e478e84f)).
+
+Roomstead serves about **1,400 shopping requests per gross reservation**: about 300 from its own web and apps, the other 1,100 from metasearch price queries and affiliate and partner APIs. At about ten Pricegrid reads per request, that gives an average of **21,000 availability lookups a second** in 2026 and a peak of **64,000** ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine) shows the read model).
+
+Nookaway serves about **420 search requests per gross reservation**, 85% from its own web and apps. The ratio is lower for structural reasons: Nookaway sends almost no prices to metasearch; each listing has one calendar and one nightly price, not dozens of room-and-rate combinations ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)); and its guests book further ahead for longer stays.
+
+{id: stays-marketplace-economics--what-a-search-may-cost}
+### What a search may cost
+
+The rule I use: **the search and availability run cost per gross reservation must stay a small, stable fraction of contribution per reservation, and the cost per request must be designed from that fraction and the look-to-book ratio, not the other way round.**
+
+At Roomstead, a run cost of about €1 per gross reservation spread over 1,400 requests gives a budget of about **€0.0007 per shopping request**, or €0.00007 per Pricegrid read. Only precomputed price grids, event-driven refresh and partner quotas can meet that. At Nookaway, about €1.30 per gross reservation over 420 requests gives about **€0.003 per request**, which leaves room to compute availability and price from the calendar at query time and to spend more per request on ranking.
+
+![Two funnels: Roomstead's wide funnel of 63 billion searches at 1,400 per booking yielding 30 million stays at about €40 each, and Nookaway's narrow funnel of 2.9 billion searches at 420 per booking yielding 6.0 million stays at about €72 each.](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/02-search-to-revenue-funnels.jpeg)
+
+**Figure 3:** *From search to revenue at Corvane's two marketplaces (illustrative 2026 figures). Roomstead answers about twenty times as many searches as Nookaway for six or seven times as many bookings, and earns less on each one, which is why its read path has to be built for cost per request.*
+
+{id: stays-marketplace-economics--latency-is-also-an-economic-number}
+### Latency is also an economic number
+
+Booking.com's 2019 KDD paper on its machine-learning models, as summarized by Adrian Colyer, reported that "an increase of about 30% in latency cost about 0.5% in conversion rates" ([The Morning Paper, 2019](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). The evidence is seven years old and may be superseded, but it frames the trade-off: **latency spent on a better model or a fresher price must earn back the conversion it costs**. At Roomstead's scale, half a point of conversion on own-channel traffic is worth more than the whole search platform's run cost, so the latency budget (owned by [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture)) is a commercial decision, not an engineering preference.
+
+{id: stays-marketplace-economics--price-accuracy-where-look-to-book-meets-marketing}
+## Price Accuracy: Where Look-to-Book Meets Marketing
+
+Look-to-book forces caching, and caching makes answers stale. **How stale is acceptable is an economic question**, answered per channel.
+
+On paid channels a wrong answer is a paid click that lands on a different price or "sold out". Google's Hotel Center policy states the rule: "Prices must be accurate and bookable online", checked by sampling the partner's booking page against the price shown, with taxes and fees required to "represent all mandatory charges" ([Google Hotel Center Help, n.d., read 2026](https://support.google.com/hotelprices/answer/6064419?hl=en)). Partners whose accuracy falls are shown less.
+
+In February 2027, Roomstead's metasearch price accuracy was **91%** against a target of **97%**. Mariana's team priced the gap with an explicit assumption: a click landing on a mismatched price converts at about one third of the normal rate.
+
+| | At 91% accuracy | At 97% accuracy |
+| --- | --- | --- |
+| Metasearch spend (2026) | €140 million | €140 million |
+| Clicks landing on a mismatched price | 9% | 3% |
+| Spend wasted on those clicks (two thirds of their value) | about **€8.4 million** a year | about **€2.8 million** a year |
+| Exposure to partner downgrades | High | Low |
+
+The **€5.6 million** a year difference is not precise, and the larger risk is a metasearch partner hiding Roomstead's offers, which happened three months later in Spain and Portugal ([Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine)). The estimate still turned "97%" into a number with a budget: **a fresher cache was worth paying for up to a few million euros a year**.
+
+On own channels a stale "available" costs a disappointed guest rather than a paid click. On Nookaway, which computes from the calendar at query time, the dominant inaccuracy is not a stale cache but a calendar that is wrong at the source because another platform sold the night ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)). The economics point to different investments: **freshness of the price cache for Roomstead, integrity of the calendar for Nookaway**.
+
+{id: stays-marketplace-economics--cancellations-and-the-booking-window}
+## Cancellations and the Booking Window
+
+{id: stays-marketplace-economics--the-cost-of-a-booking-that-does-not-stay}
+### The cost of a booking that does not stay
+
+Cancellations are an economic feature of stays: free cancellation raises conversion, but every canceled booking has already consumed marketing, search, payment authorization and often weeks of a partner's inventory.
+
+![A timeline where a coin is spent on every search and every booking, including a canceled one, while one green coin of revenue arrives only at the stay.](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/02-costs-every-search-revenue-on-stays.jpeg)
+
+**Figure 4:** *Costs arrive on every search and booking, revenue only on stays that survive cancellation: at Roomstead, marketing is about €8.70 per gross reservation but about €13 per stayed reservation.*
+
+At Roomstead **34%** of 2026 room nights were canceled, typical of a marketplace in which most bookings carry free cancellation and the guest pays at the property. At Nookaway it was **13%** of reservations, lower because more bookings are paid up front, cancellation policies are stricter and whole-home stays are planned further ahead. The difference shows up in the unit economics: Roomstead's marketing cost is about €8.70 per gross reservation but about **€13 per stayed reservation**.
+
+Cancellation also feeds look-to-book: a guest who cancels often rebooks the same trip at a lower price found later. Measuring that loop needs cancellation and new booking to be joinable by guest and trip.
+
+Three requirements follow.
+
+- **Net, not gross, as the default metric.** Ranking features, experiments, partner dashboards and marketing bids should optimize bookings net of cancellation, or they will reward behavior that inflates gross bookings. Booking.com's ranking disclosure names "net bookings (How many bookings are made with that Accommodation minus how many are canceled)" as a ranking input ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)).
+- **Cancellation as a first-class event** with a reason and a party (guest, host, property, marketplace), joinable to the original search and marketing click, so that acquisition cost can be attributed to stays and not only to bookings.
+- **Delayed outcomes in experiments.** A test that measures bookings for two weeks will declare a winner before the cancellations arrive. [Testing Everything: Experimentation Platforms for Stays](#stays-experimentation) owns the methods.
+
+{id: stays-marketplace-economics--booking-window-defined}
+### Booking window, defined
+
+The **booking window** (lead time) is the time from booking to the first night of the stay. Booking Holdings defines it the same way and notes that it links gross bookings (at booking) to revenue (at check-in) ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). I report it as a **distribution**, not an average: the median and the 90th percentile tell an architect far more than the mean.
+
+At Corvane in 2026 the median booking window was **18 days** at Roomstead (mean 39 days) and **41 days** at Nookaway (mean 63 days); the Novaks' 169 days was long but not unusual for an August family holiday.
+
+The booking window is an architecture parameter in at least six places:
+
+| Where it bites | What the booking window decides | Accommodation marketplace | Hosted stays |
+| --- | --- | --- | --- |
+| Availability and rates store | The horizon of nights that must be loaded, priced and cached | Most demand within weeks; a long tail to a year | More demand months ahead; calendars open a year or two |
+| Price cache | Which dates to precompute and refresh most often | Near dates churn most | Far summer and holiday dates matter early in the year |
+| Money | How long guest funds or deferred revenue are held; float and safeguarding | Short for pay-at-property; longer for merchant | Long: collected at booking, paid out after check-in |
+| Experiments and attribution | How long before an outcome (stay, cancellation, review) is known | Weeks | Months |
+| Change and disruption load | How many future stays a strike, regulation or outage touches | Fewer, nearer stays | More stays, further out |
+| Data retention and audit | How long price and availability history must be kept to answer disputes | Over a year of ARI change history | Calendar and price history for the same period |
+
+Corvane's forum later derived **13 months** of retention for Roomstead's availability change stream from this distribution plus a dispute period ([Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model)).
+
+{id: stays-marketplace-economics--supply-economics-bookable-nights-and-acceptance}
+## Supply Economics: Bookable Nights and Acceptance
+
+For an accommodation marketplace, supply is **contracted properties connected through partners**: at Roomstead, **82%** of hotel room nights arrive through 140 certified connectivity partners (channel managers, property-management systems (PMS) and central reservation systems). The supply metrics that matter economically are availability coverage (how many of a property's sellable nights are open on Roomstead compared with its other channels), **rate competitiveness** (whether the price on Roomstead is at least as good as elsewhere, a question bounded by competition law and the EU Digital Markets Act's ban on parity clauses for designated gatekeepers ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](#stays-regulation))), connectivity health and the **partner-caused relocation rate**.
+
+For a hosted-stays marketplace, supply is **individual units with individual operators**: at Nookaway, **82%** of hosts have one listing, and **32%** of listings are request-to-book, with 24 hours for the host to accept. The economic supply metrics are calendar accuracy (nights shown open that are actually available), the **host acceptance rate** (the share of booking requests that hosts accept: **79%** at Nookaway in 2026), the **host cancellation rate** (about **0.8%** of 2026 reservations were canceled by hosts) and new-listing activation. Each request a host declines is a search session that ended without a booking; each host cancellation is a guest-guarantee cost, as the Seville double booking showed when Nookaway funded **€420** to rehouse the Bauer family ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync)).
+
+**Roomstead's supply problem is accuracy at scale over connections it does not control; Nookaway's is reliability of a million individual commitments.** One is solved with connectivity contracts, caches and reconciliation; the other with calendars, verification, trust and protection.
+
+{id: stays-marketplace-economics--from-economics-to-requirements}
+## From Economics to Requirements
+
+The table below is the one Mariana attached to the One Stay proposal: for each economic quantity, the metric that tracks it, the requirement it creates and the chapter that owns the design.
+
+| Economic quantity | Metric that tracks it | Requirement it creates | Roomstead value (2027) | Nookaway value (2027) | Owner |
+| --- | --- | --- | --- | --- | --- |
+| Look-to-book | Shopping requests per gross reservation, by channel | Cost budget per request; quotas for partner traffic | ≤ €0.0007 per request; partner quotas by traffic versus revenue | ≤ €0.003 per request | [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels) |
+| Paid-traffic dependence | Share of bookings by channel; marketing per stayed reservation | Price accuracy on paid channels; landing pages; direct relationship (app, account, CRM) | Metasearch price accuracy ≥ 97% | Calendar accuracy first; no metasearch target | [Is It Still Available? Availability Search, Caching and Price Accuracy](#availability-engine), [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](#demand-channels) |
+| Conversion sensitivity to latency | Conversion by latency band | Latency budget per search stage | p95 budgets per stage | p95 budgets per stage | [Searching Dates, Not Documents: Search Architecture for Stays](#stays-search-architecture) |
+| Cancellations | Net bookings; cancellation rate by reason and party | Cancellation events joinable to search and click; net metrics in ranking and experiments | 34% of room nights | 13% of reservations | [When Plans Change: Modifications, Cancellations and Policies](#changes-and-cancellations), [Testing Everything: Experimentation Platforms for Stays](#stays-experimentation) |
+| Booking window | Lead-time distribution by market | Availability horizon; cache priorities; retention; experiment duration | Median 18 days | Median 41 days | [Rooms, Rates and Restrictions: The ARI Data Model](#rates-and-availability-model), [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence) |
+| Seasonality and peaks | Booking curve and stay curve by week | Capacity plans for both curves; degradation modes | Peak 64,000 lookups a second in 2026 | Q1 booking peak; Q3 stay and payout peak | [Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability) |
+| Local liquidity | Search-to-book and thin-result rate per cell | Metrics cut by destination × dates × party; supply acquisition by gap | Cells by city and date | Cells by city, date and bedrooms | [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence) |
+| Take rate | Revenue ÷ stayed GBV, from the ledger | Versioned fee schedules; revenue computed from ledger postings | About 13% | About 14.4% | [Who Takes the Money? Merchant, Agency and Facilitator Models](#merchant-and-agency-models), [Paying the Supply Side: Payouts, Commissions and Settlement](#payouts-and-settlement) |
+| Paid programs | Program revenue; ranking exposure share | Ranking policy separated from relevance; disclosure | Program share of first-page exposure | Fees and quality, not paid visibility | [Ordering the Results: Ranking for Guests, Partners and the Marketplace](#stays-ranking), [Deals, Members and Programs: Promotions and Loyalty](#promotions-and-loyalty) |
+| Supply reliability | Relocation rate; acceptance and host-cancellation rates | Reservation delivery acknowledgement; calendar integrity | Partner-caused relocations | Acceptance 79%; host cancellations 0.8% | [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](#inventory-integrity), [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](#calendar-sync) |
+
+The figure compresses the table into the chain the forum used to defend each requirement.
+
+![Three rows tracing economic facts (1,400 per booking, paid traffic, revenue on stays) through metrics (cost per request, price accuracy, contribution per stay) to requirements (precomputed read model, staleness budget, cancellation events).](stays-marketplace-architecture/posts/02-stays-marketplace-economics/assets/images/02-stays-marketplace-economics/02-economics-to-requirements.jpeg)
+
+**Figure 5:** *From economics to requirements. Each requirement in the One Stay architecture case is traced from an economic fact through the metric that measures it; a requirement that cannot be traced this way is a preference.*
+
+{id: stays-marketplace-economics--the-answer-to-the-cfo}
+### The answer to the CFO
+
+Mariana's reply to Marco, sent in March 2027, was three sentences: *"Per booking, the two search stacks cost the same. Per search, Nookaway's design costs four times as much, and Roomstead answers more than three times as many searches per booking, mostly for metasearch partners we pay. Moving Roomstead to query-time computation would cost about €195 million a year; the money to save is in metasearch price accuracy, worth a few million a year, and in not running two of everything else."*
+
+The One Stay program, approved in April 2027, followed that logic: shared platforms for identity, money, trust, messaging, data, service and tax, and **shared contracts but separate engines** for availability ([One Platform or Two? Converging Hotels and Homes](#converging-two-marketplaces)).
+
+{id: stays-marketplace-economics--trade-offs}
+## Trade-offs
+
+Each economic lever buys revenue or efficiency with a commitment the architecture has to carry.
+
+| Lever | What it buys | What it costs the architecture | When it is right | When it is not |
+| --- | --- | --- | --- | --- |
+| **Grow paid and metasearch traffic** | Fast demand in new markets; reach for broad hotel supply | Look-to-book rises; price-accuracy regime; partner quotas; bot management | OTA with broad, comparable supply; new markets | When contribution per stayed reservation is already thin after marketing |
+| **Invest in direct (app, account, loyalty, CRM)** | Lower acquisition cost per stay; repeat bookings; first-party data | Identity, consent, personalization, app release engineering, member pricing that must not leak into public feeds | Both types; especially where paid share is high | When it is funded by discounts that cost more than the clicks they replace |
+| **Offer free cancellation widely** | Conversion; earlier bookings | Higher cancellation; cancel-and-rebook searches; net metrics needed everywhere | OTA hotel supply, where properties resell nights easily | Hosted stays with single units and long lead times, where a late cancellation leaves a night unsold |
+| **Move from agency to merchant** | Payment revenue, payment methods, fewer no-shows, control of the guest's money | Licensing or a payment partner, virtual cards, settlement, chargebacks, reconciliation | When the payment platform exists and partner settlement is reliable | On legacy reservation models that cannot carry the payment model per booking |
+| **Paid visibility programs** | Higher take rate from partners who value exposure | Ranking policy governance; disclosure; measured effect on conversion | When bounded by a relevance floor and measured | When approved program by program with no view of the total |
+| **Precompute availability and price** | Low cost per request at high look-to-book | Staleness; refresh pipeline; cache key explosion from rate plans and audiences | High look-to-book; many offers per property | Low look-to-book; one unit, one price |
+| **Compute at query time** | Exact answers from the source; simpler pipeline | Higher cost per request; load on the system of record | Owned calendars, low look-to-book, own traffic | Metasearch and affiliate traffic at OTA scale |
+
+{id: stays-marketplace-economics--hotels-and-homes-side-by-side}
+## Hotels and Homes, Side by Side
+
+One consolidated view of the economic differences; where the two are alike, the table says so.
+
+| Economic quantity | Accommodation marketplace (Roomstead) | Hosted stays (Nookaway) | What can be shared |
+| --- | --- | --- | --- |
+| What is sold | A room type and rate plan at a property, on a date range | A whole home or room, one calendar, on a date range | The offer and reservation contract; not the supply model |
+| Local liquidity | Deep in cities for one or two guests; thin for families and groups | Deep for families, groups and longer stays; thin in hotel-dense centers and for one night | One cell-based liquidity metric layer |
+| Network effects | Leaky: hotels multi-home through channel managers; guests compare on metasearch | Less leaky: unique supply; but 61% of listings multi-home via iCal or APIs | The same measurement, different strategy |
+| Revenue mechanism | Agency commission, merchant margin, paid programs | Guest and host fees, or host-only fee | Fee and commission engines differ; the ledger is shared |
+| Take rate | About 13% | About 14.4% | Same definition, computed from the ledger |
+| Marketing dependence | High: paid search and metasearch are the main channels | Lower: more direct, brand and referral | Identity, CRM and consent; not the channel mix |
+| Look-to-book | About 1,400 shopping requests per reservation, mostly partner traffic | About 420 per reservation, mostly own channels | Not the read architecture |
+| Cancellations and booking window | 34% of room nights canceled; median window 18 days | 13% of reservations canceled; median 41 days | Net-booking and lead-time metrics; not the horizon settings |
+| Seasonality | Flatter booking curve | Q1 booking peak, Q3 stay and payout peak | Capacity planning method |
+| Supply risk that destroys margin | Inaccurate price or availability from connections; walked guests | Double bookings, host cancellations, damage claims | Trust, protection and support platforms |
+| Paid visibility | Commission-based programs and ads | Fees and quality signals more than paid boosts | One ranking-policy governance process |
+
+**Judgement:** the economics argue for **sharing the measurement and the money, not the read path or the supply model**. One governed definition of take rate, net bookings, booking window, look-to-book and local liquidity, one ledger from which revenue is computed and one identity that carries the direct relationship are worth the effort, because both brands need them and they are where duplication costs most. The availability read path should not be shared, because one cost per request cannot be right at both 1,400 and 420 shopping requests per reservation. Convergence makes this harder ([Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](#two-stay-marketplaces)): when Nookaway pilots boutique hotels in 2028, its hotel supply will bring hotel economics with it, and the unit economics should then be cut by **supply type**, not by brand.
+
+{id: stays-marketplace-economics--failure-modes}
+## Failure Modes
+
+**Gross bookings as the north star.** If the dashboard shows gross bookings, free cancellation, discounts and broad metasearch bidding all look good until the stays do not arrive. The fix is making net bookings and contribution per stayed reservation computable from events and the ledger, and using them in ranking, experiments and bids.
+
+**A take rate nobody can reproduce.** Finance, product and the board deck report three take rates, because denominators differ or credits and waivers are missing. The fix is one governed definition computed from ledger postings ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)).
+
+**Look-to-book without units.** "Our look-to-book is 500" can mean shopping requests or Pricegrid-style reads, gross or stayed, own channels or all. Capacity plans built on the wrong one are wrong by an order of magnitude.
+
+**A staleness budget set by the cache team.** If the only number on the price cache is its cost, it will be tuned for cost, and Phantom Availability follows. Set the budget from what a wrong price costs on each channel, and own it jointly with distribution.
+
+**Capacity planned on the average.** The booking curve and the stay curve peak at different times, and campaign peaks arrive on top. At Corvane, Black Friday 2027 drove Roomstead to **96,000** availability lookups (Pricegrid reads) a second, 1.5 times its 2026 peak, and its price cache hit rate fell from 94% to 71% ([Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability)). A plan that knew only the annual average would not have had a degradation mode ready.
+
+**Cost per booking with no owner.** Map, search, cache, live checks and fraud scoring each have a bill that nobody charges to the stays that caused it. Cost per booking ([Peaks, Regions and Languages: Global Scale and Reliability](#global-scale-and-reliability)) needs a target derived from contribution per stay.
+
+{id: stays-marketplace-economics--the-chief-architect-s-view}
+## The Chief Architect's View
+
+**Decide what the unit is, and keep the unit economics current.** I would ask for one page per brand, refreshed quarterly, with the quantities in the opening table, by channel where it matters. Finance and data own it jointly; architecture is its most demanding reader.
+
+**Derive budgets, then designs.** Every major read-path proposal should state the cost per request or per booking it will achieve and the economic number it derives from.
+
+**Own the definitions, not the dashboards.** Take rate, net bookings, look-to-book, booking window and local liquidity should be governed, versioned definitions computed the same way everywhere ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](#marketplace-intelligence)); in a group they are the first and cheapest thing to share.
+
+**Make the commercial levers visible to the architecture forum.** A new paid program, a change in fee structure, a free-cancellation default or a metasearch expansion changes the load, the ranking and the ledger. The rule I use: **any commercial change that alters what a search costs, what a booking earns or what the ranking optimizes comes to the forum with its system impact**, before it is launched.
+
+**Decide who decides.** At Corvane, the CFO owns the unit-economics model; the Group Chief Architect the derived budgets (cost per request, staleness, retention, capacity); the brand GMs channel mix and commercial levers; the Head of Data and ML Platform the metric definitions; distribution and the platform jointly the partner-traffic quotas.
+
+**Watch:** look-to-book by channel, especially from AI assistants that shop on a guest's behalf ([AI Across the Stay: Agents, Assistants and Automation](#ai-in-travel-stays)); contribution per stayed reservation by channel; the gap between nominal fee and realized take rate; the booking-window distribution; metasearch price accuracy against its budget and calendar accuracy for hosted stays; and the share of first-page exposure influenced by paid programs.
+
+{id: stays-marketplace-economics--questions-to-ask}
+## Questions to Ask
+
+1. What is our contribution per **stayed** reservation, by brand and by channel, after marketing and search costs, and who maintains that figure?
+2. What is our look-to-book ratio, with units stated, for own channels, metasearch and partner APIs separately, and how did it move in the last year?
+3. What does one shopping request cost us, and what is the budget, derived from contribution per reservation, that our read path must stay under?
+4. What is the staleness budget for prices shown on paid channels, and what is it based on: an estimate of wasted spend and partner penalties, or the cache's cost?
+5. Is our take rate computed from ledger postings, with one definition of numerator and denominator, and does it reconcile with the fee schedule?
+6. Which metrics in ranking, experiments, partner dashboards and marketing bids use gross bookings, and why not net?
+7. Which settings (availability horizon, cache priorities, retention, experiment duration) were derived from the booking-window distribution?
+8. Is local liquidity cut by party size and bedrooms as well as by destination and dates?
+
+{id: stays-marketplace-economics--from-economics-to-capabilities}
+## From Economics to Capabilities
+
+The economics say what a stays marketplace must be good at: answering searches cheaply and accurately, keeping each night's promise, moving money correctly and knowing its own numbers. The next chapter, [Mapping the Business: Capability Maps for Two Marketplaces](#stays-capability-map), turns those demands into a capability map for both marketplace types and uses it to decide what a group like Corvane should share.
+
+{id: stays-marketplace-economics--sources-and-evidence}
+## Sources and Evidence
+
+{id: stays-marketplace-economics--company-engineering-and-investor-sources}
+### Company engineering and investor sources
+
+- [Booking Holdings Inc., Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), Booking Holdings / SEC, 2026: marketing expense ($8.2 billion) and its composition, direct and app share of room nights, cancellation rates and marketing efficiency, booking-window definition, revenue at check-in, merchant and agency revenue, quarterly seasonality, AI disintermediation risk, property counts.
+- [Expedia Group, Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm), Expedia Group / SEC, 2026: direct selling and marketing ($7.35 billion, 49.9% of revenue), dependence on search engines and metasearch, revenue lag for hotels versus alternative accommodations, Vrbo first-quarter booking seasonality, revenue mix.
+- [Airbnb, Inc., Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), Airbnb / SEC, 2026: GBV and revenue, brand and performance marketing, "lower reliance on paid marketing channels", seasonality, revenue at check-in, exclusions from revenue, move to a single host-only fee.
+- [Airbnb Q2 2026 Shareholder Letter](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf), Airbnb, 2026: take rate for the quarter, funds held on behalf of guests at 30 June 2026, hotel growth.
+- [Airbnb service fees (Help Center article 1857)](https://www.airbnb.com/help/article/1857), Airbnb, n.d. (read 2026): split-fee and single-fee percentages and the coexistence rule.
+- [How we work](https://www.booking.com/content/how_we_work.html), Booking.com, 2025 (updated 31 May 2025): ranking inputs including net bookings, commission and program membership.
+- [Agoda Growth Program](https://www.partnerhub.agoda.com/?p=95313), Agoda Partner Hub, 2025: paid program with badge, ranking boost and additional metasearch spend.
+- [Rapid shopping rate limiting](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting), Expedia Group Developer Hub, n.d. (read 2026): partner rate limits recalculated from traffic versus revenue.
+- [How Agoda scaled its price cache with DragonflyDB](https://medium.com/agoda-engineering/how-agoda-scaled-its-price-cache-with-dragonflydb-0828e478e84f), Agoda Engineering, 2026: read and write volumes and latency requirements of an OTA price cache.
+- [150 successful machine learning models: 6 lessons learned at Booking.com](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/), Adrian Colyer, The Morning Paper, 2019: review of the KDD 2019 paper by Bernardi, Mavridis and Estevez; latency versus conversion.
+
+{id: stays-marketplace-economics--standards-regulation-and-documentation}
+### Standards, regulation and documentation
+
+- [Regulation (EU) 2019/1150 on promoting fairness and transparency for business users of online intermediation services](http://publications.europa.eu/resource/celex/32019R1150), European Parliament and Council, 2019 (applicable from 12 July 2020): Article 5 disclosure of ranking parameters, including remuneration.
+- [Price Accuracy Policy](https://support.google.com/hotelprices/answer/6064419?hl=en), Google Hotel Center Help, n.d. (read 2026): accurate and bookable prices, mandatory taxes and fees, sampling.
+
+{id: stays-marketplace-economics--research-and-practitioner-sources}
+### Research and practitioner sources
+
+- [Is Metasearch to Blame for Hospitality's 5-Digit Look-to-Book?](https://www.hospitalitynet.org/opinion/4074433.html), Jonathan Boffey (Triometric), Hospitality Net, 2016: vendor opinion on distributor look-to-book ratios of about 20,000:1.
+- [Platform Competition in Two-Sided Markets](https://doi.org/10.1162/154247603322493212), Jean-Charles Rochet and Jean Tirole, Journal of the European Economic Association, 2003: the economics of two-sided platforms and pricing across sides.
+- Productscape reference models for travel-accommodation and hosted-stays marketplaces, the author's sibling repository, n.d.: KPI tree names such as search-to-book conversion, take-rate quality, availability accuracy and calendar accuracy rate (generic models, not descriptions of any company).
+
+Corvane is fictional; architectural recommendations and labeled inferences are the author's judgement.

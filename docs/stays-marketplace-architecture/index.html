@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</title>
+    <meta name="description" content="How architects and engineering leaders design, scale, govern and evolve the systems behind accommodation marketplaces — the OTA that sells hotel rooms by rate plan and the hosted-stays marketplace that sells nights in someone's home — from supply connectivity and availability to search, booking, money, trust and the platforms beneath them. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:description" content="How architects and engineering leaders design, scale, govern and evolve the systems behind accommodation marketplaces — the OTA that sells hotel rooms by rate plan and the hosted-stays marketplace that sells nights in someone's home — from supply connectivity and availability to search, booking, money, trust and the platforms beneath them. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/journal-logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/journal-logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/journal-logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+        <div style="padding: 4px;">
+            <h1>BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</h1>
+            <p>How architects and engineering leaders design, scale, govern and evolve the systems behind accommodation marketplaces — the OTA that sells hotel rooms by rate plan and the hosted-stays marketplace that sells nights in someone's home — from supply connectivity and availability to search, booking, money, trust and the platforms beneath them. This is a living journal and a work in progress: I revise it as I learn more through <a href="https://obren.io">my work</a>.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-label="Book edition" hidden></section>
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <div id="visual" hidden></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Preface", "description": "", "posts": [{"id": "", "status": "", "title": "Introduction: Architecture for a Perishable Promise", "excerpt": "What is an architecture book about accommodation marketplaces for, and how should you read it? It argues that a stays marketplace sells a perishable promise (a specific night, in a specific place, at a specific price, fulfilled by someone else), judges the architecture by how reliably that promise holds, compares the OTA and the hosted-stays marketplace wherever their machinery differs, and routes you from the decision on your desk to the chapters that answer it.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Overbooked: Sixteen Ways Stay Platforms Go Wrong", "excerpt": "Stays marketplaces rarely fail through one bad decision; they break the promise of a night through recurring patterns that each looked reasonable when they were chosen. This guide names sixteen of them, from Phantom Availability to The Unwatched Model, explains how each happens, what it costs, which marketplace type it hits hardest, and which chapters address it.", "url": "where-stay-platforms-go-wrong.html", "icon": "assets/icons/where-stay-platforms-go-wrong.png", "logo": "assets/images/where-stay-platforms-go-wrong/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Meet Corvane: Two Marketplaces, One Group", "excerpt": "Every chapter in this book tests its argument against the same fictional travel group: Corvane, which runs an OTA-style accommodation marketplace, a hosted-stays marketplace, a channel-manager business and a payments institution on three clouds, with two of almost everything. This page introduces its brands, business models, volumes, systems, people, the problems it starts 2027 with, the One Stay program that sets out to fix them, the group platforms the chapters design and the worked examples they reuse.", "url": "meet-corvane.html", "icon": "assets/icons/meet-corvane.png", "logo": "assets/images/meet-corvane/logo.jpeg", "tags": []}]}, {"title": "Part I — MARKETPLACE: The Business of a Night's Stay", "description": "What kind of accommodation marketplace this is and why it decides the architecture: the OTA and the hosted-stays marketplace, their history and economics, the capabilities each needs and the bounded contexts that divide them.", "posts": [{"id": "", "status": "", "title": "Part I — MARKETPLACE: The Business of a Night's Stay", "excerpt": "What kind of accommodation marketplace is this, and why does the answer decide the architecture? Part I describes the business before the systems: the two marketplace types and their history, the economics that set budgets, the capabilities each needs and the boundaries that let a group share the guest's promise without sharing one supply model.", "url": "part-1.html", "icon": "assets/icons/part-1-intro.png", "logo": "assets/images/part-1-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew", "excerpt": "What kinds of accommodation marketplace exist, and why does the type decide the architecture? An OTA-style marketplace sells counted rooms whose truth lives in the hotel's systems, while a hosted-stays marketplace sells one home whose calendar, money and trust it holds itself; each wave of industry history left systems that still encode that difference, and a group that runs both should share the guest-facing commitment layer, not the supply layer.", "url": "two-stay-marketplaces.html", "icon": "assets/icons/01-two-stay-marketplaces.png", "logo": "assets/images/01-two-stay-marketplaces/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces", "excerpt": "What does a stays marketplace sell, how does it make money, and how do its economics become architecture requirements? It sells a perishable, local match between a guest and a night, earns a take rate only on the stays that happen, and pays for traffic and searches that mostly never book. Those facts, measured per brand, set the cost per search, the staleness budget, the metric definitions and the capacity curves that the architecture has to meet.", "url": "stays-marketplace-economics.html", "icon": "assets/icons/02-stays-marketplace-economics.png", "logo": "assets/images/02-stays-marketplace-economics/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Mapping the Business: Capability Maps for Two Marketplaces", "excerpt": "What business capabilities does an accommodation marketplace need, what does a hosted-stays marketplace need, and which of them should a group build once? Map both against generic reference models, match them by meaning rather than by name, add the cross-cutting capabilities that journey-based models leave out, and decide per capability whether to share an engine, share a contract or keep it separate.", "url": "stays-capability-map.html", "icon": "assets/icons/03-stays-capability-map.png", "logo": "assets/images/03-stays-capability-map/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Drawing the Lines: Bounded Contexts for Stays", "excerpt": "Where should the service and team boundaries of a stays platform go? Draw them where the meaning of a night changes, give the offer and the reservation one owner each as the two aggregates that carry the promise, put anti-corruption layers toward partner systems and monoliths, and let a group running hotels and homes share contracts and money, trust and identity services, but not one supply model.", "url": "stays-bounded-contexts.html", "icon": "assets/icons/04-stays-bounded-contexts.png", "logo": "assets/images/04-stays-bounded-contexts/logo.jpeg", "tags": []}]}, {"title": "Part II — SUPPLY: Properties, Homes and the Partners Behind Them", "description": "How supply is modeled and enters the marketplace: properties and listings, partner and host onboarding, content and media, connectivity to the hotel stack, calendar sync for multichannel hosts, and the tools partners and hosts work in.", "posts": [{"id": "", "status": "", "title": "Part II — SUPPLY: Properties, Homes and the Partners Behind Them", "excerpt": "How does a night someone else owns become something a marketplace can sell, describe and keep true? Part II treats supply as master data with many writers: one model of what exists and how it is sold, verified parties, governed content, connectivity and calendar sync that keep a copy of someone else's truth, and workspaces that declare who owns each field.", "url": "part-2.html", "icon": "assets/icons/part-2-intro.png", "logo": "assets/images/part-2-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Hotels and Homes: Modeling What Is Being Sold", "excerpt": "How should a marketplace model the thing a guest books, when a hotel sells a pool of interchangeable rooms under several rate plans and a host sells one specific home? Separate what physically exists (property, unit, spaces and beds) from how it is sold (room type and rate plan, or listing), give every sellable unit a stable identity even where you sell pools, and share identifiers and vocabulary across the two marketplaces rather than one supply model.", "url": "property-and-listing-model.html", "icon": "assets/icons/05-property-and-listing-model.png", "logo": "assets/images/05-property-and-listing-model/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Sign-Up to First Booking: Partner and Host Onboarding", "excerpt": "How do properties and hosts join a marketplace, get verified and become bookable? Treat onboarding as a sequence of explicit, risk-ordered gates over a supply-party model (who the partner is, what they may sell, where the money goes), with one readiness service that decides activation and keeps deciding it after go-live.", "url": "partner-onboarding.html", "icon": "assets/icons/06-partner-onboarding.png", "logo": "assets/images/06-partner-onboarding/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Describing a Stay: Content, Media and Property Mapping", "excerpt": "How does a marketplace turn supplier feeds and host-written listings into descriptions that guests can trust and compare? Treat content as a governed catalog with field-level provenance, render policies and fees from structured data instead of free text, run media and translation as shared pipelines, and operate property and room mapping as an entity-resolution service with stable identifiers, review queues and measured accuracy.", "url": "content-and-media.html", "icon": "assets/icons/07-content-and-media.png", "logo": "assets/images/07-content-and-media/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards", "excerpt": "How does an OTA connect to the systems hotels actually run? It sells against a local copy of availability that someone else's software asserts, so the connectivity layer must validate every message against what it knows about the property, apply updates in order, reconcile the copy against the source, prove that every reservation reached the hotel, and score each connectivity partner on how faithful its connections are.", "url": "connectivity-and-channel-managers.html", "icon": "assets/icons/08-connectivity-and-channel-managers.png", "logo": "assets/images/08-connectivity-and-channel-managers/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Home, Many Calendars: iCal, APIs and Multichannel Hosts", "excerpt": "How does a hosted-stays marketplace keep one home's calendar correct when the same nights are sold on several platforms? It cannot make a polled iCal feed transactional. It can measure and shrink the conflict window, keep provenance on every blocked night, detect and resolve conflicts as a first-class flow, and move professional hosts to API connections where one system of record pushes changes.", "url": "calendar-sync.html", "icon": "assets/icons/09-calendar-sync.png", "logo": "assets/images/09-calendar-sync/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Running the Supply Side: Extranets, Host Tools and Operations", "excerpt": "What tools do hotel partners and hosts need to run their business on a marketplace, and how should they be built? Build the extranet and the host app as clients of one partner back-end with explicit field ownership, delegation as relationships with scope, reservation exceptions as work items with owners and deadlines, and partner analytics served from the same data the marketplace ranks and pays on.", "url": "extranets-and-host-tools.html", "icon": "assets/icons/10-extranets-and-host-tools.png", "logo": "assets/images/10-extranets-and-host-tools/logo.jpeg", "tags": []}]}, {"title": "Part III — INVENTORY: Availability, Rates and Price", "description": "The perishable heart of the business: the ARI data model, availability search and caching, never selling a night twice, dynamic pricing, and promotions and loyalty.", "posts": [{"id": "", "status": "", "title": "Part III — INVENTORY: Availability, Rates and Price", "excerpt": "How does a marketplace say, thousands of times a second, which nights can be sold and at what price, without selling a night twice or showing a price it cannot honor? Part III treats inventory as facts and rules owned by others, computed into offers by one kernel, served from read models with a staleness budget, and committed where each unit's truth lives.", "url": "part-3.html", "icon": "assets/icons/part-3-intro.png", "logo": "assets/images/part-3-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Rooms, Rates and Restrictions: The ARI Data Model", "excerpt": "How should availability, rates and inventory be modeled so they stay correct and searchable? Store a small number of independent facts (inventory counts, base price series, restrictions) under one precise vocabulary, keep derived rates, audience discounts and fees as explicit rules, and evaluate every stay with one shared function, because every extra rate plan and every second interpretation of a restriction becomes a wrong price somewhere.", "url": "rates-and-availability-model.html", "icon": "assets/icons/11-rates-and-availability-model.png", "logo": "assets/images/11-rates-and-availability-model/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Is It Still Available? Availability Search, Caching and Price Accuracy", "excerpt": "How do you answer \\\"what can I book, and for how much\\\" tens of thousands of times a second, correctly enough? Serve search from a precomputed read model of supply with an explicit staleness budget, compute every price with one offer kernel, measure accuracy yourself, and confirm the offer against the system of record at the moment of commitment.", "url": "availability-engine.html", "icon": "assets/icons/12-availability-engine.png", "logo": "assets/images/12-availability-engine/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency", "excerpt": "How do you prevent selling inventory that does not exist, and what do you do when it happens anyway? Enforce the guarantee where the unit's truth lives, shorten every window you cannot close, detect oversells before the guest arrives, and treat relocation as a designed, measured and billed product rather than a support ticket.", "url": "inventory-integrity.html", "icon": "assets/icons/13-inventory-integrity.png", "logo": "assets/images/13-inventory-integrity/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Setting the Price of a Night: Revenue Management and Smart Pricing", "excerpt": "Who sets the price of a night, with what data, and how far should the marketplace intervene? Hotels price with their own revenue management and the marketplace mostly receives and checks their prices; hosts need help, so the marketplace recommends or sets prices for them. That makes it the owner of a consequential model, which needs explicit precedence rules, guardrails, honest measurement and a named owner.", "url": "dynamic-pricing.html", "icon": "assets/icons/14-dynamic-pricing.png", "logo": "assets/images/14-dynamic-pricing/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Deals, Members and Programs: Promotions and Loyalty", "excerpt": "How should discounts, member prices and partner programs be built so they are honest, funded correctly and measurable? Treat every promotion as a priced, audience-scoped modifier with a named funder: compose it in one pricing service used by search, page and checkout, settle it through the ledger according to who pays, and judge it against a holdout rather than its redemptions.", "url": "promotions-and-loyalty.html", "icon": "assets/icons/15-promotions-and-loyalty.png", "logo": "assets/images/15-promotions-and-loyalty/logo.jpeg", "tags": []}]}, {"title": "Part IV — DISCOVERY: From Intent to Bookable Stay", "description": "Search that has dates, guests and a price: search architecture, destinations and maps, ranking, personalization and saved intent, and the property page where the guest decides.", "posts": [{"id": "", "status": "", "title": "Part IV — DISCOVERY: From Intent to Bookable Stay", "excerpt": "How does a marketplace turn \\\"Lisbon, 2–9 August, two adults and two children\\\" into an ordered list of stays it can actually sell, at the price the guest will pay? Part IV treats discovery as a pipeline over promises rather than documents: places resolved once, availability joined for every night, order set by a bounded and explainable policy, intent remembered, and one quote shown everywhere.", "url": "part-4.html", "icon": "assets/icons/part-4-intro.png", "logo": "assets/images/part-4-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Searching Dates, Not Documents: Search Architecture for Stays", "excerpt": "How should search be built when every query has dates, guests and a price that changes by the minute? Split the index into a slow content layer and a fast availability projection, compute exact stay totals only for the page you show, and share the query contract and price composition across marketplaces long before you share an index.", "url": "stays-search-architecture.html", "icon": "assets/icons/16-stays-search-architecture.png", "logo": "assets/images/16-stays-search-architecture/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Where Exactly? Destinations, Geo and Map Search", "excerpt": "How does a stays marketplace understand places and let guests browse by map? Keep one versioned destination graph that resolves what guests type into search areas built from where guests actually stay, and treat the map as a separate result surface with its own query shape, ranking, privacy rule for homes and cost model.", "url": "destinations-and-maps.html", "icon": "assets/icons/17-destinations-and-maps.png", "logo": "assets/images/17-destinations-and-maps/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Ordering the Results: Ranking for Guests, Partners and the Marketplace", "excerpt": "How should a stays marketplace order its results, and how much should commission and partner programs move that order? Rank on the probability of a stay that actually happens, keep every commercial and trust adjustment in a separate, bounded and versioned policy layer, and log each position with its reasons, so that the order can be explained to a guest, a partner and a regulator from data rather than from archaeology.", "url": "stays-ranking.html", "icon": "assets/icons/18-stays-ranking.png", "logo": "assets/images/18-stays-ranking/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Remembering the Traveler: Personalization, Recommendations and Saved Intent", "excerpt": "How do you personalize a purchase that most guests make once or twice a year, often as a different persona each time? Model the trip, not the person: capture trip intent from searches, wishlists and alerts into one owned store, re-price every recommendation and alert at the moment it is shown, and prove with holdouts that personalization creates bookings rather than just claiming them.", "url": "personalization-and-recommendations.html", "icon": "assets/icons/19-personalization-and-recommendations.png", "logo": "assets/images/19-personalization-and-recommendations/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Moment of Decision: Property Pages, Room Selection and Total Price", "excerpt": "How should the page where a guest decides be assembled, and what must it get right? Assemble content, reviews and trust evidence as independently owned fragments, but take every price from one quote with an itemized breakdown that search, page and checkout all share, and let a per-market display policy, not each page, decide what goes into the headline total.", "url": "property-page-and-room-selection.html", "icon": "assets/icons/20-property-page-and-room-selection.png", "logo": "assets/images/20-property-page-and-room-selection/logo.jpeg", "tags": []}]}, {"title": "Part V — BOOKING: Making and Keeping the Reservation", "description": "From offer to checkout: booking orchestration, the reservation lifecycle and its delivery to properties and hosts, changes and cancellations, the trip and its messages, and customer service.", "posts": [{"id": "", "status": "", "title": "Part V — BOOKING: Making and Keeping the Reservation", "excerpt": "What does it take to turn a quote into exactly one reservation and keep the guest, the marketplace and the property or host in agreement until check-out? Part V treats the reservation as a versioned, multi-party agreement: created by a saga with one key, delivered and verified like a contract, changed by one policy engine, carried to the guest by a trip and messaging platform, and recovered by decisions with a funder and a liable party.", "url": "part-5.html", "icon": "assets/icons/part-5-intro.png", "logo": "assets/images/part-5-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Turning an Offer Into a Booking: Checkout Orchestration", "excerpt": "How do you turn a quote into exactly one confirmed booking across inventory, payment and supplier, when any step can time out? Run checkout as a booking saga with a server-minted checkout attempt as its idempotency key, a deliberately placed pivot, honest compensations before it and retries after it, and an explicit unknown-outcome state that is resolved by looking up, never by guessing.", "url": "checkout-orchestration.html", "icon": "assets/icons/21-checkout-orchestration.png", "logo": "assets/images/21-checkout-orchestration/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Life of a Reservation: State Machines, Delivery and Operations", "excerpt": "What happens to a reservation between booking and check-out, and how do the guest, the marketplace and the property or host stay in agreement? Model the reservation as a versioned agreement with separate commercial, delivery, stay and money states, count it as delivered only when the supplier's system has accepted it, verify it again before arrival, and let the stay outcome drive money and reviews through events.", "url": "reservation-lifecycle.html", "icon": "assets/icons/22-reservation-lifecycle.png", "logo": "assets/images/22-reservation-lifecycle/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "When Plans Change: Modifications, Cancellations and Policies", "excerpt": "How do you build change and cancellation flows that are fair, consistent and cheap to operate when one booking involves a guest, a supplier and a marketplace that may or may not hold the money? Freeze each booking's policy as versioned data, evaluate every change through one cancellation policy engine that says who pays what, and treat mass disruptions as declared events that run as batch decisions and self-service, not as ten thousand support tickets.", "url": "changes-and-cancellations.html", "icon": "assets/icons/23-changes-and-cancellations.png", "logo": "assets/images/23-changes-and-cancellations/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Between Booking and Check-Out: Trips, Messaging and Notifications", "excerpt": "How should a marketplace support the guest's trip and the conversation with the property or host? Treat the trip as a read model that explains itself, check-in information as a deliverable with a deadline, messaging as a governed three-party channel, and notification routing as one shared platform that tracks every promise to the moment it is seen.", "url": "trip-and-messaging.html", "icon": "assets/icons/24-trip-and-messaging.png", "logo": "assets/images/24-trip-and-messaging/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "When Something Goes Wrong: Customer Service and Recovery", "excerpt": "How do you build support for a marketplace where most problems involve three parties and a deadline? Model the case, not the ticket: bind the guest, the property or host and the reservation to a clock set by the arrival date, make every refund, rebooking and compensation a recorded recovery decision with a policy, a funder and a liable party, and let humans and AI agents act through the same grounded APIs.", "url": "customer-service.html", "icon": "assets/icons/25-customer-service.png", "logo": "assets/images/25-customer-service/logo.jpeg", "tags": []}]}, {"title": "Part VI — MONEY: Who Pays Whom, When and How Much", "description": "Merchant, agency and facilitated payment models, payments for future nights, payouts and settlement, taxes on stays, and refunds and reconciliation.", "posts": [{"id": "", "status": "", "title": "Part VI — MONEY: Who Pays Whom, When and How Much", "excerpt": "How does a stays marketplace know, for every booking, who collects the guest's money, when it is charged, who is owed what, which part belongs to a city or a tax authority, and who pays when it moves backwards? Part VI treats money as recorded decisions: a payment arrangement per booking, a payment plan over time, one settlement ledger, a tax engine with a liability decision, and reconciliation against the reservation itself.", "url": "part-6.html", "icon": "assets/icons/part-6-intro.png", "logo": "assets/images/part-6-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Takes the Money? Merchant, Agency and Facilitator Models", "excerpt": "Which payment model should a stays marketplace run, and what does each one demand from its systems? Treat the payment model as a per-booking fact resolved at quote time and frozen at booking: it decides who charges the guest, who holds the money, who carries the risk and which ledger, tax and settlement flows follow, so it must be normalized in one place rather than re-derived by every system that touches money.", "url": "merchant-and-agency-models.html", "icon": "assets/icons/26-merchant-and-agency-models.png", "logo": "assets/images/26-merchant-and-agency-models/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Paying for a Future Night: Payment Orchestration for Stays", "excerpt": "How do you take payment for a night that will be consumed weeks or months later, from guests paying in dozens of currencies and methods? Model each booking's money as a versioned payment plan of future obligations, run it through one orchestration layer that owns stored credentials, deferred charges, virtual cards, deposits, currency and disputes, and publish every state change as events the reservation and the ledger can trust.", "url": "stay-payments.html", "icon": "assets/icons/27-stay-payments.png", "logo": "assets/images/27-stay-payments/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Paying the Supply Side: Payouts, Commissions and Settlement", "excerpt": "How does money reach hotels and hosts correctly, on time and auditably, and how does commission come back from properties that collected the money themselves? Keep one double-entry settlement ledger per partner as the only place that knows who is owed what, let a payout engine pay only what that ledger says is available, and treat commission invoices, deductions, holds and statements as views and postings on the same ledger rather than as separate systems.", "url": "payouts-and-settlement.html", "icon": "assets/icons/28-payouts-and-settlement.png", "logo": "assets/images/28-payouts-and-settlement/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting", "excerpt": "How should a stays platform calculate, collect, remit and report taxes across thousands of jurisdictions? Treat tax as its own bounded context: a tax engine that decides, at quote time and from versioned rules, which taxes apply, who owes them and who collects them, freezes that decision on the reservation, posts it to the ledger by jurisdiction, and feeds the same records into remittance and platform reporting such as DAC7.", "url": "taxes-on-stays.html", "icon": "assets/icons/29-taxes-on-stays.png", "logo": "assets/images/29-taxes-on-stays/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Closing the Books: Refunds, Chargebacks and Reconciliation", "excerpt": "How does a stays marketplace prove that every euro is where it should be? By reconciling three things every day, transaction by transaction: what the reservation says should have happened, what the ledger recorded, and what banks, payment providers and card issuers say actually moved. Refunds, chargebacks and corrections then become typed, funded and approved ledger events instead of fixes discovered at month end.", "url": "refunds-and-reconciliation.html", "icon": "assets/icons/30-refunds-and-reconciliation.png", "logo": "assets/images/30-refunds-and-reconciliation/logo.jpeg", "tags": []}]}, {"title": "Part VII — TRUST: Making Strangers Safe to Stay With", "description": "Trust and safety as a platform, fraud on both sides, identity and access, reviews, protection and incident response, and the regulations that turn into system requirements.", "posts": [{"id": "", "status": "", "title": "Part VII — TRUST: Making Strangers Safe to Stay With", "excerpt": "How does a stays marketplace make strangers safe enough to book, host and pay each other, and prove it to the people it restricts and the authorities that regulate it? Part VII treats trust as one platform of records: shared decisions, enforcement, identity, review history and market rules, with detection and policy kept close to each marketplace.", "url": "part-7.html", "icon": "assets/icons/part-7-intro.png", "logo": "assets/images/part-7-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Trust as a Platform: Trust and Safety for Stays", "excerpt": "How should trust and safety be architected across guests, hosts, properties, listings and messages? As one platform that turns signals into recorded trust decisions and typed enforcement actions, propagates every action to all the systems it must stop, and explains each decision to the person it affects, while detection models stay close to the brand that knows the risk.", "url": "stays-trust-and-safety.html", "icon": "assets/icons/31-stays-trust-and-safety.png", "logo": "assets/images/31-stays-trust-and-safety/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel", "excerpt": "How do stays marketplaces detect and stop fraud on both sides of the booking? Score the actor, the session and the booking on one shared risk spine, time each decision to the moment the loss becomes irreversible rather than to the moment of sale, and treat partner accounts and the platform's own messaging as the attack surface they have become.", "url": "travel-fraud.html", "icon": "assets/icons/32-travel-fraud.png", "logo": "assets/images/32-travel-fraud/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Is Booking, Who Is Hosting: Identity, Accounts and Access", "excerpt": "How much should a stays marketplace know about its guests, hosts and partner staff, and how should it manage their access? Separate the person from the brand account, the evidence from the decision, and the role from the user: one identity core with passkeys, sessions and step-up; identity levels earned with dated evidence and required by policy only where an action needs them; brand accounts that link only by the person's choice; and an authorization engine that evaluates delegation grants for staff, co-hosts and software alike.", "url": "identity-accounts-and-access.html", "icon": "assets/icons/33-identity-accounts-and-access.png", "logo": "assets/images/33-identity-accounts-and-access/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Trustworthy Reviews: Collection, Integrity and Quality Operations", "excerpt": "How do you collect reviews that guests trust and partners accept as fair? Make every review a fact about a completed stay, owned by a review service that takes eligibility from the reservation record, checks integrity before publication, keeps an auditable event history, and feeds scores, ranking and quality programs from one published stream.", "url": "reviews-and-reputation.html", "icon": "assets/icons/34-reviews-and-reputation.png", "logo": "assets/images/34-reviews-and-reputation/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Damage, Parties and Emergencies: Protection and Incident Response", "excerpt": "What protections should a stays marketplace offer, and how should damage, parties and emergencies be handled from the first warning sign to the last euro? Treat protection as one domain with four parts on the reservation: screening before the booking, an incident workflow during the stay, a claims workflow after it, and a protection ledger that says who paid, who recovered and what the next screening decision should learn.", "url": "protection-and-incidents.html", "icon": "assets/icons/35-protection-and-incidents.png", "logo": "assets/images/35-protection-and-incidents/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law", "excerpt": "Which regulations shape a stays marketplace's architecture, and how do they become system requirements? Treat each rule as versioned data with a legal source, an effective date and an owner, held in one market policy registry and enforced at a few fixed points (publish, book, sweep and report), with every decision recorded with its reason so it can be explained to a host, a guest or an authority, and reversed when a court changes the law.", "url": "stays-regulation.html", "icon": "assets/icons/36-stays-regulation.png", "logo": "assets/images/36-stays-regulation/logo.jpeg", "tags": []}]}, {"title": "Part VIII — PLATFORM: The Distributed System Underneath", "description": "Events, global scale and reliability, marketplace intelligence, experimentation, the ML platform, and the channels guests arrive through.", "posts": [{"id": "", "status": "", "title": "Part VIII — PLATFORM: The Distributed System Underneath", "excerpt": "What platform runs beneath both marketplaces, and what should a group share in it? Part VIII covers events, scale and reliability, metrics, experimentation, machine learning and demand channels, and argues that the machinery should be one group platform while the meanings it carries stay with each marketplace.", "url": "part-8.html", "icon": "assets/icons/part-8-intro.png", "logo": "assets/images/part-8-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Streams of Nights: Event-Driven Architecture for Stays", "excerpt": "Which events drive a stays platform, and how should they be designed so that the ledger, search, partners and guests all see the same reservation? Separate the high-volume ARI firehose from the low-volume, high-value reservation and payment streams, publish the valuable ones as versioned full-state contracts through a transactional outbox, and govern them like APIs, with owners, compatibility rules, replay rules and completeness checks.", "url": "event-driven-stays.html", "icon": "assets/icons/37-event-driven-stays.png", "logo": "assets/images/37-event-driven-stays/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Peaks, Regions and Languages: Global Scale and Reliability", "excerpt": "How do you keep a global stays platform fast, available, localized and affordable when demand arrives in peaks and failures arrive together? Set objectives on the guest and partner journeys rather than on services, design degradation modes before you need them, replicate reads but give every night and reservation one writing home, and track cost per booking as an architecture metric.", "url": "global-scale-and-reliability.html", "icon": "assets/icons/38-global-scale-and-reliability.png", "logo": "assets/images/38-global-scale-and-reliability/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Knowing the Marketplace: Data Platform, Metrics and Partner Insight", "excerpt": "How should a stays group collect, govern and use its data, for its own decisions and for its partners and hosts? Define the booking once with its time basis, serve every board number, experiment, ranking label, partner dashboard and regulator report from one governed metric layer over owned data products, and treat partner insight as a product with privacy rules, not as a report export.", "url": "marketplace-intelligence.html", "icon": "assets/icons/39-marketplace-intelligence.png", "logo": "assets/images/39-marketplace-intelligence/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Testing Everything: Experimentation Platforms for Stays", "excerpt": "How do you run trustworthy experiments on a two-sided stays marketplace, where the outcome that matters arrives months after the test and a treated guest can take the night a control guest wanted? Judge funnel changes on stays that actually happen, read early on validated surrogates and finally on matured outcomes, choose the randomization unit per experiment from the market's constraints, and run one governed platform whose metrics come from the group's metric layer.", "url": "stays-experimentation.html", "icon": "assets/icons/40-stays-experimentation.png", "logo": "assets/images/40-stays-experimentation/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Models in Production: ML Platforms and Use Cases for Stays", "excerpt": "Which machine-learning capabilities matter in a stays marketplace, and what platform runs them responsibly? A few dozen model families decide prices, order, risk and forecasts; they need one platform that computes features once and point-in-time correct, serves them the same way online and offline, watches outputs as well as inputs, and records for every model an owner, its approved uses and the consequence of being wrong.", "url": "stays-ml-platform.html", "icon": "assets/icons/41-stays-ml-platform.png", "logo": "assets/images/41-stays-ml-platform/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Where Guests Come From: Web, Apps, Metasearch and Partner Distribution", "excerpt": "How should a stays marketplace architect the channels that bring it guests: its own web and apps, search engines, metasearch and the partners who resell its supply? Treat every channel as a client of one stay query, one offer computation and one reservation contract, give each external channel its own integration with quotas and a click-and-quote record, and judge channels on stayed, cancellation-adjusted contribution rather than clicks.", "url": "demand-channels.html", "icon": "assets/icons/42-demand-channels.png", "logo": "assets/images/42-demand-channels/logo.jpeg", "tags": []}]}, {"title": "Part IX — LEADERSHIP: The Chief Architect's Agenda", "description": "Whether hotels and homes should share a platform, how to organize engineering, modernizing a live booking platform, AI across the stay, and evolving the platform over a decade.", "posts": [{"id": "", "status": "", "title": "Part IX — LEADERSHIP: The Chief Architect's Agenda", "excerpt": "What does a Chief Architect decide once both marketplaces have been designed part by part? Part IX covers the group-level agenda (what to share, who owns it, how to move a live platform, where AI may act and how to stay coherent for a decade) and argues that each answer is a governed record, not a one-off decision.", "url": "part-9.html", "icon": "assets/icons/part-9-intro.png", "logo": "assets/images/part-9-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Platform or Two? Converging Hotels and Homes", "excerpt": "Should a group that runs an OTA and a hosted-stays marketplace share one platform, and what exactly should it share? Share a core of contracts and engines for everything that follows the guest, the money and the law; keep one supply engine per type of supply, choose the engine by supply segment rather than by brand, and govern the shared list as a decision register, not a slogan.", "url": "converging-two-marketplaces.html", "icon": "assets/icons/43-converging-two-marketplaces.png", "logo": "assets/images/43-converging-two-marketplaces/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Owns What: Organizing Engineering for Stays", "excerpt": "Which organizational design makes a two-marketplace architecture work? Give guest, partner and host journeys to brand teams, put the shared engines in group platform teams and the hard calculation in complicated-subsystem teams, make someone steward each shared contract, and govern decisions in three classes: team-level ones by advice, contract-level ones by a forum, group-level ones by a board.", "url": "organizing-stays-engineering.html", "icon": "assets/icons/44-organizing-stays-engineering.png", "logo": "assets/images/44-organizing-stays-engineering/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Changing the Engine in Flight: Modernizing a Live Stays Marketplace", "excerpt": "How do you move a live booking platform to a new architecture without losing bookings or money? Move the contract before the code, prove every step with parallel runs judged on explained differences, and plan the migration around the reservations already on the books, which outlive any cutover date by months.", "url": "modernizing-a-live-marketplace.html", "icon": "assets/icons/45-modernizing-a-live-marketplace.png", "logo": "assets/images/45-modernizing-a-live-marketplace/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "AI Across the Stay: Agents, Assistants and Automation", "excerpt": "Where do AI assistants and agents create value in a stays marketplace, and what architecture keeps them under control? Put them in front of the marketplace's existing contracts, never in place of them: models talk and plan, while tools that call the offer, policy, reservation and trust services decide prices, places and outcomes. Make every consequential action carry an explicit authority, from a human's final click to a signed mandate.", "url": "ai-in-travel-stays.html", "icon": "assets/icons/46-ai-in-travel-stays.png", "logo": "assets/images/46-ai-in-travel-stays/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Built for the Next Disruption: Evolving a Stays Platform Over a Decade", "excerpt": "How does a Chief Architect keep a stays platform coherent over ten years of regulation, disruption, convergence and technology change that nobody can forecast? Test the architecture against stressors rather than predictions, keep the records that carry the guest's promise portable while letting engines be replaced, and govern the decade with a few fitness functions that show whether the promise is kept better or worse each year.", "url": "evolving-the-platform.html", "icon": "assets/icons/47-evolving-the-platform.png", "logo": "assets/images/47-evolving-the-platform/logo.jpeg", "tags": []}]}, {"title": "Part X — PRACTICE: How Others Built It", "description": "Test the book's patterns against publicly documented companies: what each built, why, what it teaches and where the public evidence stops.", "posts": [{"id": "", "status": "", "title": "Part X — PRACTICE: How Others Built It", "excerpt": "Do the book's patterns hold up against what real stays marketplaces built and published? Part X tests them against four public cases (Booking.com, Airbnb, Expedia Group and Vrbo, Agoda and Trip.com), keeping dated fact, the author's reading and labeled inference apart, and keeping the real companies separate from fictional Corvane.", "url": "part-10.html", "icon": "assets/icons/part-10-intro.png", "logo": "assets/images/part-10-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Booking.com: Experimentation, Connectivity and the Agency Model at Scale", "excerpt": "What does the best-documented accommodation marketplace teach a Chief Architect, once its public record is separated from guesswork? That a published supply contract and an experimentation habit carry an OTA through two technology eras, that a hotel-shaped platform can carry millions of homes only by growing home-specific seams, and that commission, ranking and payments have become regulated architecture.", "url": "case-booking-com.html", "icon": "assets/icons/48-case-booking-com.png", "logo": "assets/images/48-case-booking-com/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Airbnb: From Monolith to Platform for Hosted Stays", "excerpt": "What does the best-documented hosted-stays marketplace teach a Chief Architect about building one? That holding the guest's money until check-in shapes the payments platform more than any technology choice, that one-unit inventory shapes search, ranking and trust, and that a platform designed around 'a reservation for a stay' has to be generalized before it can sell experiences, services and hotels.", "url": "case-airbnb.html", "icon": "assets/icons/49-case-airbnb.png", "logo": "assets/images/49-case-airbnb/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Expedia Group and Vrbo: Consolidating Brands Onto One Platform", "excerpt": "What does Expedia Group's move of Hotels.com and Vrbo onto one platform teach a group that runs both hotels and homes? The guest-facing layers, loyalty and shared services can converge, but the hosted-stays supply model survives underneath, and the brand whose shape differs most from the shared front end carries the migration risk.", "url": "case-expedia-vrbo.html", "icon": "assets/icons/50-case-expedia-vrbo.png", "logo": "assets/images/50-case-expedia-vrbo/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Agoda and Trip.com: Asian OTAs at Scale", "excerpt": "What can an architect learn from two Asian OTAs that publish very different amounts about their systems? Agoda's dated engineering record shows an OTA that sells from a write-heavy price cache, rations supplier queries and designs its booking path for partial failure; Trip.com's filing shows an agency OTA built on guaranteed allotments and hotel matching, and almost nothing below that level.", "url": "case-agoda-trip-com.html", "icon": "assets/icons/51-case-agoda-trip-com.png", "logo": "assets/images/51-case-agoda-trip-com/logo.jpeg", "tags": []}]}, {"title": "Reference", "description": "The model-to-chapter coverage map, templates, plain-language definitions and the sources consulted.", "posts": [{"id": "", "status": "", "title": "Domain Coverage: From Productscape Models to Chapters", "excerpt": "Which chapter covers which part of a stays marketplace? This reference page maps every root group, group and product brick of the two generic Productscape reference models (one OTA-style, one hosted-stays) to the chapters that cover it, shows where the two models overlap and where the book argues the difference, and lists the domains the book added and the few it leaves out on purpose.", "url": "domain-coverage.html", "icon": "assets/icons/domain-coverage.png", "logo": "assets/images/domain-coverage/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Field Kit: Templates for the Stays Architect", "excerpt": "Which records does a Chief Architect need to keep a hotel marketplace and a homes marketplace coherent, correct and changeable? Fourteen copyable templates, from the two-marketplace capability map to the decision record, each with a hotel column and a home column where the two differ, and each filled in once with Corvane's numbers from the chapter that teaches it.", "url": "toolkit.html", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Glossary: The Language of Stays Marketplaces", "excerpt": "Plain-language definitions of the book's marketplace, supply, inventory, discovery, booking, money, trust, platform and leadership terms, grouped by part, with Corvane's fictional names in their own section, an alphabetical index and a link from every term to the chapter that owns it.", "url": "glossary.html", "icon": "assets/icons/glossary.png", "logo": "assets/images/glossary/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Bibliography: Sources and Evidence", "excerpt": "Find the public sources behind every chapter by topic or by chapter, with the year each was published, the kind of evidence it is and the pages that cite it. Every entry was cited in a chapter; nothing is added as further reading.", "url": "bibliography.html", "icon": "assets/icons/bibliography.png", "logo": "assets/images/bibliography/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'});
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
+                        }
+                    }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
+                        }
+                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
+                });
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

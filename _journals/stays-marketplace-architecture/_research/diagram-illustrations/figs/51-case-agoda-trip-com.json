@@ -1,0 +1,20 @@
+[
+ {
+  "id": "51-agoda-price-path",
+  "visual_goal": "Show the price path: pushed updates flow through a distributor and writer into a two-cluster cache; search reads by itinerary; misses trigger rationed pulls that write back. One dotted edge is the author's reading.",
+  "prompt": "A left-to-right diagram. Upper left: a cluster of small plain supplier buildings labeled 'Push suppliers', with one solid arrow to a box labeled 'Distributor'. From 'Distributor', one dotted arrow to a box labeled 'Price Writer'. From 'Price Writer', one solid arrow to a large central box drawn as two side-by-side memory blocks marked A and B, labeled 'Price Cache'. Lower left: a small search-page icon labeled 'Search', with one arrow to a box labeled 'Price API'. From 'Price API', one arrow up into 'Price Cache' labeled 'read by itinerary', and one arrow down-right to a box labeled 'On-demand fetch' labeled 'miss'. From 'On-demand fetch', one arrow right to a cluster of small plain buildings behind a narrow turnstile labeled 'Pull suppliers', and one arrow back up to 'Price Writer' labeled 'write back'. Exactly seven arrows, only the one from Distributor to Price Writer dotted.",
+  "alt": "Push suppliers feed a distributor, then (dotted, author's reading) a price writer into a two-cluster price cache; search reads through the price API, and misses trigger an on-demand fetch from rationed pull suppliers that writes back."
+ },
+ {
+  "id": "51-risk-ordered-cart-booking",
+  "visual_goal": "Show the cart booking graph: merged per-product graphs, card pre-authorized once, the free-cancellable product confirmed first, then settle on success or cancel the first on failure.",
+  "prompt": "A top-to-bottom flow. Top: an envelope icon labeled 'Booking signal'. One arrow down to a box where two small node graphs join into one, labeled 'Merged graph'. One arrow down to a box with a card-shaped plain rectangle and a lock, labeled 'Pre-authorize'. One arrow down to a balance-scale box labeled 'Risk Profiler'. One arrow down to a green box with an open unlock icon labeled 'Free-cancellable first'. One arrow down to an orange box with a closed lock icon labeled 'Non-refundable'. From 'Non-refundable', two arrows fork: left green arrow labeled 'success' to a box labeled 'Settle'; right red arrow labeled 'failure' to a box with a curved undo arrow icon labeled 'Cancel first'. Exactly seven arrows.",
+  "alt": "A booking signal leads to a merged graph, a single pre-authorization and a risk profiler that confirms the free-cancellable product first, then the non-refundable one, settling on success or cancelling the first product on failure."
+ },
+ {
+  "id": "51-allotment-and-on-request",
+  "visual_goal": "Show two plausible confirmation paths for an agency OTA: allotment confirms instantly from the OTA's counter, on-request waits on the hotel.",
+  "prompt": "A left-to-right diagram, drawn in slightly lighter, sketch-like lines to suggest a hypothetical design. At the left, an unlabeled guest with a phone sends one arrow into a diamond labeled 'Contract type'. From the diamond, two paths split. Upper path: one arrow labeled 'allotment' to a counter box showing a row of small room-key icons, one of them being removed, labeled 'OTA counter', then one arrow to a green check box labeled 'Instant confirmation', then one arrow to a reception desk with a small service bell labeled 'Notify hotel'. Lower path: one arrow labeled 'on-request' to a reception desk with a small service bell and a question mark labeled 'Ask hotel', then one arrow to an hourglass box labeled 'Pending', which forks into two arrows: one to a green check box labeled 'Confirm' and one to a box of three small alternative house icons labeled 'Alternatives'. Exactly eight arrows. No buildings appear; the desks carry no signs or writing, and no digits appear anywhere.",
+  "alt": "A guest booking splits by contract type: allotment decrements the OTA's counter, confirms instantly and notifies the hotel; on-request asks the hotel, waits pending, then confirms or offers alternatives."
+ }
+]

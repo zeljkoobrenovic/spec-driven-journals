@@ -1,0 +1,26 @@
+[
+ {
+  "id": "24-trip-timeline-sources",
+  "visual_goal": "Show the trip as a read model that owns no facts: five services feed a timeline builder, and the status line the guest reads is explained from those facts.",
+  "prompt": "A left-to-right illustration. On the left, five small boxes stacked vertically, each with one arrow right into a single box 'Timeline builder': 'Reservations', 'Payments', 'Conversations', 'Arrival package', 'Notifications'. From 'Timeline builder', one arrow right to a vertical timeline card with a few dots and short grey lines, labeled 'Trip read model'. From it, one arrow right to a speech-bubble card labeled 'Status explanation'. From that, one arrow right to a phone screen held by an unlabeled generic guest.",
+  "alt": "Reservations, payments, conversations, the arrival package and notifications feed a timeline builder that produces a trip read model and a status explanation shown on the guest's phone."
+ },
+ {
+  "id": "24-arrival-package-states",
+  "visual_goal": "Show the arrival package's own state machine: draft, ready, delivered and seen, with deadlines moving it to at risk and any reservation change sending it back to draft.",
+  "prompt": "A state diagram of rounded boxes in a left-to-right row: 'Not started', 'Draft', 'Ready', 'Delivered', 'Seen', joined by single arrows; the arrow into 'Ready' is labeled 'code present' and the arrow into 'Seen' is labeled 'opened'. 'Seen' is green with a small eye icon. 'Ready' shows a small key-box icon. Below the row, an orange box 'At risk' with a small clock: one arrow down into it from 'Draft' labeled 'T minus 18h', and one arrow down into it from 'Delivered' labeled 'T minus 6h'. From 'At risk', one arrow up into 'Ready' labeled 'host completes'. Above the row, one long curved dashed arrow from 'Seen' back to 'Draft', labeled 'reservation altered'.",
+  "alt": "Arrival package states from Not started through Draft, Ready and Delivered to Seen, with deadline arrows to At risk at T minus 18h and T minus 6h, a return from At risk to Ready, and a reservation change sending Seen back to Draft."
+ },
+ {
+  "id": "24-notification-loop",
+  "visual_goal": "Show notification routing as a closed loop: event to intent to policy to channel plan to adapters, with delivery tracking feeding the trip timeline, falling back to another channel and escalating to a human.",
+  "prompt": "A loop-shaped flow illustration. Along the top, left to right, boxes joined by single arrows: 'Domain event', 'Intent' with a small clock tag, 'Policy' with a small shield, 'Channel plan', and 'Adapters' drawn as three small plugs for push, e-mail and text message icons. From 'Adapters', one arrow down to a box 'Delivery tracker' with a check-mark list. From 'Delivery tracker', one curved arrow back up-left into 'Channel plan', labeled 'not seen'. From 'Delivery tracker', one arrow down to a generic support person at a headset, labeled 'Human escalation'. From 'Delivery tracker', one arrow left to a box 'Trip timeline', labeled 'seen'.",
+  "alt": "Domain event to intent, policy, channel plan and adapters, then a delivery tracker that loops back to the channel plan when a message is not seen, escalates to a human and feeds the trip timeline."
+ },
+ {
+  "id": "24-replay-check-in-message",
+  "visual_goal": "Show the Maré Alta check-in message on the new design as swimlanes: the policy reads the stage, the arrival package extracts and validates the code, and Courier tracks it to seen at 18:40.",
+  "prompt": "A left-to-right swimlane diagram with five horizontal lanes labeled at their left edge: 'PMS', 'Threadline', 'Arrival package', 'Courier', 'Guest'. Arrows flow left to right in time, in this order: 'PMS' to 'Threadline' labeled 'check-in message'; a small loop on 'Threadline' labeled 'stage check'; 'Threadline' to 'Arrival package' labeled 'extract code'; a small loop on 'Arrival package' labeled 'Ready'; 'Arrival package' to 'Courier' labeled 'arrival-critical'; 'Courier' to 'Guest' labeled 'push and e-mail'; a final arrow pointing straight up from the 'Courier' lane and ending inside the 'Arrival package' lane, one lane above Courier (not in the 'Threadline' lane), labeled 'seen 18:40'. Above the lanes, a time ribbon starting at 'Fri 18:00'.",
+  "alt": "Swimlanes for the PMS, Threadline, the arrival package, Courier and the guest: the check-in message passes a stage check, the code is extracted and validated, and Courier sends an arrival-critical push and e-mail that is seen at 18:40."
+ }
+]

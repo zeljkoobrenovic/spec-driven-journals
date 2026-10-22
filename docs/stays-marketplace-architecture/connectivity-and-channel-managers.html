@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards</title>
+    <meta name="description" content="How does an OTA connect to the systems hotels actually run? It sells against a local copy of availability that someone else's software asserts, so the connectivity layer must validate every message against what it knows about the property, apply updates in order, reconcile the copy against the source, prove that every reservation reached the hotel, and score each connectivity partner on how faithful its connections are.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards">
+    <meta property="og:description" content="How does an OTA connect to the systems hotels actually run? It sells against a local copy of availability that someone else's software asserts, so the connectivity layer must validate every message against what it knows about the property, apply updates in order, reconcile the copy against the source, prove that every reservation reached the hotel, and score each connectivity partner on how faithful its connections are.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/connectivity-and-channel-managers.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/08-connectivity-and-channel-managers/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="content-and-media.html" title="Describing a Stay: Content, Media and Property Mapping">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="calendar-sync.html" title="One Home, Many Calendars: iCal, APIs and Multichannel Hosts">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — SUPPLY: Properties, Homes and the Partners Behind Them</p>
+        <h1>Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  37 min read · <a class="spec-link" href="connectivity-and-channel-managers.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/08-connectivity-and-channel-managers/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/08-connectivity-and-channel-managers/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="content-and-media.html" title="Describing a Stay: Content, Media and Property Mapping">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="calendar-sync.html" title="One Home, Many Calendars: iCal, APIs and Multichannel Hosts">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "How does an OTA connect to the systems hotels actually run? It sells against a local copy of availability that someone else's software asserts, so the connectivity layer must validate every message against what it knows about the property, apply updates in order, reconcile the copy against the source, prove that every reservation reached the hotel, and score each connectivity partner on how faithful its connections are.", "permalink": "connectivity-and-channel-managers", "timetoread": "37 min read", "icon": "assets/icons/08-connectivity-and-channel-managers.png", "logo": "assets/images/08-connectivity-and-channel-managers/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Walk the hotel technology stack (PMS, CRS, channel manager, RMS, booking engine, GDS) from the OTA's side of the wire. You will see how ARI messages and reservations move through OpenTravel and proprietary APIs, and how to design a connectivity gateway that validates, orders, reconciles, delivers and scores those flows.\n\n> **WHY THE BUSINESS CARES:** At an OTA most hotel room nights arrive through software the marketplace does not own. Each wrong price, missing stop-sell or reservation that never reaches the hotel is paid for twice: once in compensation or relocation, and again in partner and guest trust. A head of supply who cannot rank connectivity partners by reliability cannot manage the channel that brings in most of the revenue.\n\n> **WHY ARCHITECTS SHOULD CARE:** The connectivity layer is where the marketplace's inventory truth enters, and that truth lives in someone else's system. Treat it as a thin XML adapter and every upstream mistake reaches search and checkout within seconds. Treat it as a product with contracts, semantic validation, ordering, reconciliation and delivery guarantees, and upstream mistakes become contained, measured incidents.\n\n> **KEY POINTS:**\n>\n> * **Availability is an assertion from someone else's system.** An OTA sells against a local copy of the ARI that a PMS, CRS or channel manager pushes to it. The connectivity layer's job is to keep that copy faithful, and to know for each property which source asserted each value, when it did so, and how far the copy may have drifted.\n> * **The contract is the channel's profile plus certification, not the standard.** OpenTravel supplies the element names. Each channel's code lists, pricing models, limits and guard rails are the real contract, and certification tests partners against it. Validation that checks a price against the property's own sibling rates catches errors that schemas and fixed bounds miss, such as a €12 rate.\n> * **Delta streams drift, so design reconciliation and delivery proof as first-class flows.** Apply updates in order per property, accept absolute values rather than increments, compare the copy with the source on a schedule, and track every reservation until the hotel's system acknowledges it. Score partners on these signals and enforce the score: that is what turns connectivity into a product.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Connectivity Roulette** — a gateway that accepts any well-formed message, has no per-partner health score and no reconciliation turns every rate update into a gamble on someone else's mapping table.\n> * **Phantom Availability** — a lost stop-sell or an out-of-order inventory update leaves the marketplace selling rooms the hotel no longer has, and nothing notices until a guest is walked.\n> * **Lost at the Front Desk** — a reservation that was \"sent\" but never acknowledged by the hotel's PMS looks the same as a delivered one, unless delivery state is tracked per reservation version.\n\n<br>\nA hotel's rooms, rates and restrictions do not live at the OTA. They live in the hotel's **property management system (PMS)**, a chain's **central reservation system (CRS)** or a **channel manager**, and a revenue manager or a pricing algorithm changes them many times a day. The OTA holds a copy. Every search result, property page and checkout reads that copy, so **the copy's accuracy is the OTA's accuracy**. The connectivity layer is what keeps it accurate.\n\nThis is unusual for a marketplace. An accommodation marketplace (OTA-style, after \"online travel agency\") has outsourced the most important write path in its system to thousands of properties and the hundred or so software vendors they use. It cannot fix their bugs or see their logs. It can define the contract precisely, check everything that arrives against it, detect drift, prove delivery in the other direction, and make reliability something partners compete on.\n\nPart II follows supply from the property model ([Hotels and Homes: Modeling What Is Being Sold](property-and-listing-model.html)) through onboarding ([From Sign-Up to First Booking: Partner and Host Onboarding](partner-onboarding.html)) and content ([Describing a Stay: Content, Media and Property Mapping](content-and-media.html)) to the machinery that keeps it current. This chapter owns the **ARI message**, the **channel manager**, the **PMS** (as an integration counterparty), the **connectivity partner** and the **full sync**. The data model belongs to [Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html), the cache that search reads to [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html), and two channels selling the last room to [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html).\n\n## Setting the Scene at Corvane: Thirty-Eight Minutes at €12\n\nCorvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), owns both ends of the wire that failed on Tuesday **9 March 2027**. Roomstead, its accommodation marketplace, receives **82%** of its hotel room nights through **140 certified connectivity partners**. Its connectivity gateway, **Switchyard**, ingests about **650 million** ARI update messages a day, with peaks of **38,000** per second. Corvane Connect, the channel manager the group bought in 2024 (formerly ChannelPier), serves **14,500 hotels**, distributes to more than 60 channels including Roomstead's competitors, and serves **21%** of Roomstead's connected hotels.\n\nOne of them is **Hotel Miradouro**, an independent 84-room four-star hotel in Lisbon. Its revenue manager, Duarte Silva, runs a cloud PMS that sends rates to Corvane Connect, which maps them to each channel's codes. The previous Friday a Corvane Connect specialist had mapped a new rate plan for Miradouro, \"Standard Double – Flexible\", to Roomstead and two other channels.\n\n| Time (WET) | Event |\n| --- | --- |\n| 07:14 | Duarte's bulk update for **14–16 May 2027** leaves the PMS with €120.00 for the new plan. In Corvane Connect, the new plan's mapping applies the wrong decimal setting and sends **€12.00** to Roomstead and two other channels. |\n| 07:14 | Switchyard validates the message against the schema and Roomstead's profile: known property, mapped product, valid dates, a price above the absolute floor. Roomstead's price-anomaly check compares each rate with **the same rate plan's previous value**; the plan is new, so there is none. The message is applied. |\n| 07:15 | Pricegrid, Roomstead's availability cache, refreshes from the change events. Metasearch price feeds pick up the €12 rate within minutes. |\n| 07:14–07:52 | **41** Roomstead reservations for **63** room nights are made in **38** minutes. Each one is delivered through Corvane Connect to the PMS. |\n| 07:52 | Duarte sees the run of €12 bookings in his PMS and corrects the price. |\n\n![A €120.00 price tag losing its decimal to become €12.00 on a hotel facade, with a stream of 41 booking slips and a stopwatch showing 38 minutes.](assets/images/08-connectivity-and-channel-managers/08-38-minutes-at-12.jpeg)\n**Figure 1:** *One wrong decimal setting turned €120.00 into €12.00, and 41 reservations arrived in 38 minutes before the hotel noticed.*\n\nRoomstead honored all 41 reservations. Corvane Connect compensated the hotel for the difference: 63 room nights × €108 = **€6,804**. The money was small; the questions were not. Mariana Costa, Group Chief Architect since January, put them to Aisha Rahman (VP Supply and Connectivity, Roomstead) and Priyanka Shah (Head of Product, Corvane Connect):\n\n1. Hotel Miradouro had **36 other rate plans** on its six room types; for the same dates its other Standard Double prices ranged from €104 to €189. Why did a gateway that held all of them accept a price nine-tenths below every one?\n2. Corvane Connect's mapping was new and untested in production. Why could a newly mapped product sell at full speed from its first message?\n3. Corvane owns a channel manager that serves Roomstead's competitors. Whatever Switchyard learns must apply equally to all 140 partners, and whatever Corvane Connect fixes must protect the other two channels as much as Roomstead. Who makes sure of that?\n\n## The Hotel Stack: Who Holds the Truth\n\nEach system on the other side of the wire asserts a different part of the truth and fails differently.\n\n| System | What it owns | Who runs it | Examples (public) |\n| --- | --- | --- | --- |\n| **Property management system (PMS)** | The hotel's operational record: physical rooms, in-house guests, reservations, folios, housekeeping. For an independent hotel, usually the system of record for inventory. | Each property | Oracle OPERA Cloud, Mews, apaleo, Cloudbeds |\n| **Central reservation system (CRS)** | One \"single image of inventory\" and rates across a chain's properties; distributes to the chain's website, call centers, GDSs and OTAs | Chains and some groups | SynXis (Sabre Hospitality Solutions, sold to TPG in July 2025) |\n| **Channel manager** | Fan-out of ARI from one source to many channels, and fan-in of reservations from many channels back to one PMS; holds the code mappings per channel | Mostly independent and small-chain hotels, as SaaS | SiteMinder, D-EDGE, RateGain, STAAH; Corvane Connect in this book |\n| **Revenue management system (RMS)** | Demand forecasts and pricing decisions: best available rate, length-of-stay restrictions, overbooking levels | Hotels with a revenue function | IDeaS and others |\n| **Booking engine** | The hotel's own direct-booking checkout on its website | Each property, often bundled with the CRS or channel manager | Many |\n| **Global distribution system (GDS) and switch** | Distribution to travel agents through Amadeus, Sabre and Travelport; the \"switch\" translates between hotel CRSs and the GDSs | Chains and their CRS vendors | Pegasus began in 1989 as a hotel-industry switch |\n\nA few definitions this chapter owns:\n\n- An **ARI message** is a single update to availability, rates or inventory (ARI) for one property, sent from a supply system to a channel. It addresses products by code, covers a date range, and sets values such as rooms to sell, a price per occupancy, or a restriction such as minimum length of stay (MinLOS) or closed to arrival (CTA). The data model behind these terms is defined in [Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html).\n- A **channel manager** is software that keeps one property's ARI consistent across many sales channels and brings their reservations back to the PMS. Its core asset is the **mapping table** from the hotel's own room and rate codes to each channel's identifiers.\n- A **connectivity partner** is any third party certified to write ARI and content to a marketplace on a property's behalf, or to receive its reservations: a channel manager, a PMS with a direct connection, or a CRS. The property authorizes the partner; the marketplace certifies it.\n- A **full sync** is a complete re-send of a property's ARI over a date horizon, as opposed to the **delta** updates that carry only changes. Full syncs repair drift, but they rewrite every value downstream, so they need to be designed, not just allowed.\n\n![Behind a wall, an RMS feeds a PMS, which feeds a CRS and a channel manager; only the channel manager connects through the wall to the OTA gateway with ARI pushes and reservations.](assets/images/08-connectivity-and-channel-managers/08-hotel-stack-behind-partner.jpeg)\n**Figure 2:** *The OTA sees only its connectivity partner. Behind it, an RMS, a PMS and often a CRS each assert part of the truth, so a wrong price can originate three systems away from the gateway that accepts it.*\n\nTwo facts about this stack drive most of the architecture.\n\n**First, the source of truth is outside the marketplace.** Expedia states it plainly in its supply documentation (copyright 2025, read in an archived copy from December 2025): guests \"book against the most recent information received from you ... and stored locally in Expedia Group's systems\", reservations sent to the hotel \"have already been confirmed with the traveler\", and the partner \"cannot reject these reservation notifications\", because \"inventory issues are not an acceptable reason to reject a booking\" ([Expedia Group, Booking Notification API](https://developers.expediagroup.com/supply/lodging/docs/booking_apis/booking_notification/getting_started/introduction), 2025). The OTA pushes the consequences of a stale copy onto the supplier by contract, which only works if the copy is fresh.\n\n**Second, push wins because of look-to-book.** Asking the hotel's system for a price on every search would load it in proportion to shopping. A 2016 industry analysis reported distributor look-to-book ratios of about 20,000:1, mostly because several wholesalers sent the same request to the same supply source and because of automated price scraping ([Boffey, Hospitality Net](https://www.hospitalitynet.org/opinion/4074433.html), 2016; GDS-era figures, not a current measurement). A push channel loads the supplier in proportion to change, which is bounded by how often the hotel reprices. That is why OTAs with large direct hotel supply standardize on ARI push into a local store, and why [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) can cache at all.\n\n![Left, many searches hammering a hotel server directly; right, searches answered from a local ARI store that receives only occasional changes from the hotel.](assets/images/08-connectivity-and-channel-managers/08-push-beats-pull.jpeg)\n**Figure 3:** *Pulling a price per search loads the hotel in proportion to shopping; pushing changes into a local store loads it only in proportion to how often it reprices.*\n\n## Standards and Dialects: OpenTravel, HTNG and the Proprietary APIs\n\n### The OpenTravel message set\n\nThe **OpenTravel Alliance** (OTA, a name that collides with \"online travel agency\"; this chapter says \"OpenTravel\" for the standard) publishes the XML message set that most hotel connectivity is built on. The messages an architect meets most often are:\n\n| Message | Typical direction | Carries |\n| --- | --- | --- |\n| `OTA_HotelAvailNotifRQ` | Supplier → channel | Open/close status and restrictions (MinLOS, MaxLOS, CTA, closed to departure) per product and date range; at some channels also rooms to sell |\n| `OTA_HotelInvCountNotifRQ` | Supplier → channel | Inventory counts per room type and date |\n| `OTA_HotelRateAmountNotifRQ` | Supplier → channel | Prices per product, date range and occupancy |\n| `OTA_HotelResNotifRQ` / `RS` | Channel → supplier, or pulled by the supplier | New, modified and canceled reservations; the response acknowledges |\n| `OTA_HotelDescriptiveContentNotifRQ`, `OTA_HotelInvNotifRQ` | Supplier → channel | Property content and room-type definitions |\n\nThe directions are common practice, not a rule of the standard. The lesson is that **\"OpenTravel-compliant\" means \"uses OpenTravel element names\", not \"interoperable without mapping\"**. Implementers pin different schema versions and add their own extensions:\n\n- Booking.com's connectivity APIs \"use OTA version 2003B\", supplemented by its own B.XML because \"OTA cannot support all the functionality we want to offer\", and by JSON APIs for newer functions ([Booking.com Connectivity APIs](https://developers.booking.com/connectivity/docs), n.d., live October 2026).\n- AlpineBits, a regional profile used by Alpine and German-speaking hotels, is based on OpenTravel 2015A and certifies implementations against a new release every two years ([AlpineBits Alliance](https://www.alpinebits.org/hotel-data/), n.d., current release 2024-10).\n- Even date ranges differ: Booking.com's B.XML end date is exclusive, Agoda's OpenTravel `End` inclusive (per their current API documentation), so one wrong setting produces off-by-one stop-sells.\n\n**HTNG** (Hospitality Technology Next Generation, founded 2002, now part of the American Hotel & Lodging Association) builds most distribution specifications on OpenTravel messages ([AltexSoft](https://www.altexsoft.com/blog/hotel-tech-specifications-htng-opentravel/), 2020; evidence more than three years old). OpenTravel itself now promotes \"OpenTravel 2.0\", a model-driven route from XML to JSON ([OpenTravel Alliance](https://opentravel.org/), n.d.).\n\n### Proprietary channel APIs\n\n| Channel | Format | What the public documentation shows |\n| --- | --- | --- |\n| Booking.com | OpenTravel 2003B, B.XML, JSON, CSV for length-of-stay pricing | Delta updates only (\"Send only changes, not full refreshes\"); one hotel and one month per request; ARI from one day in the past to five years ahead, at least 12 months loaded; prices below €5 or above €50,000 rejected; per-minute rate limits by endpoint; four pricing models (standard, derived, occupancy-based, length-of-stay), each requiring certification (n.d., live October 2026) |\n| Expedia Group | XML Availability and Rates (AR) API; GraphQL for newer property, reservation and compliance functions | Updates by Expedia IDs only; inventory per room type, not per rate plan; up to two years ahead; rates as sell (gross) or net; AR \"cannot be implemented alone\" and must be paired with a reservation API (2025, archived copy). The supply hub states: \"At this time we're not accepting direct connections from individual properties\" (n.d., live October 2026) |\n\nTwo details matter. Both channels take updates in their own IDs, so **the mapping lives at the partner**, and a mapping error like Miradouro's is invisible to the channel's schema validation by construction. And Expedia's refusal of direct property connections is a **partner-architecture decision**: it deals with certified software vendors, not each hotel's IT.\n\n### Four delivery models\n\nGoogle's documentation describes four ways for prices to reach a channel, and between them they cover the industry ([Google Hotel Ads, pricing delivery modes](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode), 2025). Google also states that \"each `<OTA_HotelAvailNotifRQ>` message is treated as a delta update\" ([Google Hotel Prices](https://developers.google.com/hotels/hotel-prices/xml-reference/ari-avail), last updated 2025-04-14).\n\n| Model | Who opens the connection | Freshness | Load on the supplier | Where it fits |\n| --- | --- | --- | --- | --- |\n| **ARI push (delta)** | Supplier → channel | Seconds to minutes after a change | Proportional to change rate | OTAs with direct hotel supply |\n| **Pull (cache refresh)** | Channel → supplier on a schedule | Bounded by the poll interval | Catalog size × frequency | Suppliers that do not know when their prices change |\n| **Changed-pricing pull** | Channel → supplier for a subset | Better than full pull | Smaller | Large catalogs with a \"what changed\" feed |\n| **Live query** | Channel → supplier per shopper request | Real time | Proportional to shopping | Bedbanks, GDSs and metasearch auctions; always behind a cache |\n\nReservations travel the other way, also by push or pull (see the delivery section below). PMS vendors offer the same spectrum: Oracle added a GraphQL-subscription streaming API to its OPERA integration platform in November 2021 and keeps unconsumed streamed events for seven days and polled events for 48 hours ([Oracle OHIP FAQ](https://docs.oracle.com/en/industries/hospitality/integration-platform/ohipu/c_faqs.htm), n.d.); Mews calls polling \"not very efficient\" and warns that webhooks can lag \"up to several minutes\" ([Mews](https://docs.mews.com/connector-api/events/communicate), n.d.).\n\n## Architecture: The Connectivity Gateway\n\nThe connectivity gateway terminates every partner connection, turns partner dialects into changes to the ARI store, and turns reservations into partner deliveries. At Corvane it is Switchyard. A gateway that only parses XML and writes rows is how Connectivity Roulette starts; the version I recommend has seven responsibilities, each with a boundary.\n\n![Partner ARI messages pass edge, normalize, validate (suspicious ones go to a hold queue), sequencing and the ARI store; reconciliation sends a drift report back to the partner.](assets/images/08-connectivity-and-channel-managers/08-inbound-gateway-pipeline.jpeg)\n**Figure 4:** *The inbound half of a connectivity gateway. Messages are normalized to internal products, judged against what the marketplace already knows about the property, applied in order per property, and continuously compared with the partner's own view.*\n\n| Component | Responsibility | Owns | Must not |\n| --- | --- | --- | --- |\n| **Edge** | Authenticate the partner, check that the partner is authorized for this property and message type, enforce quotas | Partner credentials, property–partner authorizations, quotas | Parse business content; one partner's backlog must never block another's |\n| **Normalize and resolve** | Convert every dialect (OpenTravel version, proprietary JSON) into one internal ARI command; resolve codes to internal products; normalize dates (inclusive vs exclusive), currency and decimals | The canonical internal ARI command, dialect adapters | Guess at unknown codes; an unmapped code is an error, not a skip |\n| **Validate** | Schema and profile checks, then **semantic guards** against the property's own state | Guard rules, thresholds, hold policy | Silently \"fix\" values |\n| **Sequence** | Apply updates for one property in a single, defined order; drop duplicates | Per-property ordering, idempotency records | Reorder across properties for throughput at the cost of per-property order |\n| **ARI store** | Hold the current asserted state per product and date, with the source, partner sequence and time of each value | ARI state and its provenance | Compute guest-facing prices; that is [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) |\n| **Reconciliation** | Detect drift between the store and the partner's view; drive targeted resends and full syncs | Digests, read-back APIs, drift metrics | Overwrite state on suspicion; repair goes through the same validated path |\n| **Reservation delivery** | Deliver each reservation version to the partner, track acknowledgement, escalate to fallback channels | Delivery outbox and delivery state per reservation version | Own the reservation itself; that is [The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html) |\n\nBehind all seven sits a **partner registry**: which partner is authorized for which property and functions (ARI, content, reservations), its certifications and its health score; the record of who is responsible for a property's data.\n\n### Normalize first, then validate against the property\n\nMy rule: **every dialect is translated at the edge into one internal ARI command, and nothing downstream knows which dialect a value came from, except through its provenance fields.** An internal command at Switchyard looks like this:\n\n| Field | Example |\n| --- | --- |\n| Property, product | Roomstead property 4471923; product \"Standard Double – Flexible\" (internal ID) |\n| Date range, convention | 2027-05-14 to 2027-05-16, check-in dates, end inclusive |\n| Operation | Set price; occupancy 2; amount 12.00 EUR |\n| Source | Partner Corvane Connect, connection 8812, partner message ID, partner sequence 1,204,551 |\n| Received, accepted, applied | Three timestamps |\n\nThe command carries **absolute values, never increments**. \"Set rooms to sell to 4\" is idempotent; \"decrease rooms to sell by 1\" is not, because a retried message corrupts the count. The decrement on a sale belongs in the store, as a separate fact with its own reservation reference ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html)).\n\nValidation then runs in layers that catch different errors:\n\n| Guard | Catches | Misses | Typical action |\n| --- | --- | --- | --- |\n| **Schema and profile** | Malformed XML, unknown codes, dates outside the horizon, unsupported pricing model | Any well-formed wrong value | Reject with a coded error |\n| **Absolute bounds** | Prices that are absurd anywhere: Booking.com documents a €5 floor and a €50,000 ceiling | €12 for a Lisbon four-star; €900 for a hostel bed | Reject |\n| **Same-product history** | A sudden drop or jump against the product's previous value for the same date | Any value on a **new** product; slow drift | Hold or warn |\n| **Sibling band** | A price far outside the property's independently priced products on the same room type and date (derived products follow their parent and prove nothing) | Errors that hit all products at once (a currency mix-up) | Hold |\n| **Derivation consistency** | A child rate that breaks its parent relationship (Booking.com rejects updates to fields a derived rate follows) | Errors in the parent itself | Reject |\n| **Property and market envelope** | Values outside the property's own 12-month range or average daily rate (ADR) band, or far from the comp-set median for similar hotels on those dates ([Setting the Price of a Night: Revenue Management and Smart Pricing](dynamic-pricing.html)) | Thin markets; genuine flash sales | Hold |\n| **Burst and volume** | A partner suddenly sending far more changes for one property than usual; mass closures | Single wrong values | Throttle and alert |\n\nIn March 2027 Switchyard ran the first three rows. The €12 message passed the first two, and the third had nothing to compare on a new product, so the only guards that could have seen it did not exist.\n\nThe second design choice is **what \"hold\" means**. Rejecting a suspicious price makes the partner's software retry or give up, and most channel managers surface rejections poorly. Accepting it with a warning sells at the wrong price. A hold has two options:\n\n- For a product **with** a previous price for the date, keep selling at the **last good value** and hold the new one. The risk is a price minutes stale.\n- For a product **without** one, keep the product **closed** for the affected dates. The risk is lost sales on a product nobody has sold yet.\n\nEither way the hold must reach the hotel quickly, through a coded API warning and the extranet ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)); a hold it never sees is a silent stop-sell.\n\n### Ordering and idempotency\n\nARI messages overlap. \"€120 for 1–31 May\" followed by \"€150 for 14–16 May\" is correct only in that order; reversed, the event price is lost. Three rules make ordering tractable:\n\n1. **Order per property, not globally.** All updates for one property go through one ordered lane, for example one Kafka partition keyed by property ID with a single writer. Booking.com's one-hotel-per-request rule makes this natural, and throughput scales with the number of properties.\n2. **Use the partner's sequence, not its clock.** Timestamps reflect whichever node built the message. If the partner supplies a monotonic sequence number per connection, the gateway can detect gaps and late arrivals. If it does not, arrival order within the property's lane is the order, and certification should test that the partner never sends concurrently for one property.\n3. **Deduplicate by message ID.** Partners retry after timeouts. The gateway records partner message IDs per property for a window long enough to cover retries (hours, not seconds) and acknowledges duplicates without applying them twice.\n\nOrdering problems also arrive from outages. On **26 April 2027**, Hotel Prinsenkade's channel manager queued updates for **47 minutes** during an outage, and the hotel ended King's Day oversold by 9 rooms across channels ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html) tells that story). Queued updates are stale when flushed: a \"4 rooms left\" built before a sale elsewhere is wrong on arrival. A gateway cannot fix stale truth, but it can notice that a partner has gone silent for a property during a busy period, and mark that property's availability as **low-confidence** for the availability engine and for checkout's price-and-availability recheck ([Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html)).\n\n### Accepted is not applied\n\nMost channel APIs return success synchronously. Booking.com's ARI responses can carry `Success` together with warnings, for example warning 367 when \"Rooms to Sell were set below the Minimum Contracted rooms\" for some dates (n.d., live October 2026). Whether success means \"parsed\", \"durably queued\" or \"visible to guests\" is a contract question public documentation rarely answers; at high volume it is usually \"durably queued\".\n\nThe gateway should make the three states explicit: **accepted** (durably recorded and will be applied in order), **applied** (in the ARI store), and **visible** (the availability cache has refreshed). The partner gets \"accepted\" synchronously and can query the others. Accepted-to-visible is the gateway's most important latency, because it bounds how long a corrected price stays wrong. At Roomstead the gateway was not the bottleneck: Switchyard applied most updates within seconds, while Pricegrid's refresh from change events was the main cause of the **91%** metasearch price accuracy against a **97%** target ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) owns that problem).\n\n### Reconciliation and full sync\n\nA delta stream drifts. Messages are lost in outages, a remapping stops updates for an old product, a deploy drops a message type for an hour, or a hotel edits values in the extranet that the channel manager does not know about. A mature gateway offers three ways to compare the copy with the source.\n\n| Mechanism | How it works | Cost | When to use |\n| --- | --- | --- | --- |\n| **Read-back API** | The partner reads the channel's current values and compares them with its own. Booking.com's `roomrateavailability` endpoint returns rooms to sell, booked and canceled rooms, closures and minimum contracted rooms per product and date, up to 31 days per call (n.d., live October 2026), and Booking.com's update guidance tells partners to use it \"to retrieve current values before sending updates\" | Read load on the channel; partner effort | Routine partner-side verification; after outages |\n| **Digest comparison** | The gateway publishes a hash per property, product and month of the values it holds; the partner compares hashes with its own and resends only mismatched months | Cheap; needs the same canonical form on both sides | Daily drift detection at scale |\n| **Full sync** | The partner re-sends the whole horizon for a property | Rewrites every value for the property | After mapping changes, onboarding, a long outage, or a digest mismatch the partner cannot localize |\n\nThe trap in full sync is downstream. Written straight through, every product-date becomes a \"change\" event for the availability cache, search indexing and partner analytics, though nearly all values are identical. At Hotel Miradouro a 365-day full sync touches about **61,000 product-days** (168 active products × 365 dates), and Pricegrid would recompute all of them. **The gateway should diff a full sync against the stored state and emit only real changes**, while recording that the sync happened so drift metrics can count what it corrected. Booking.com's instruction to \"send only changes, not full refreshes\" protects the channel from exactly this load. A full sync also has a semantic risk: it asserts the partner's whole view, including values the hotel has since changed elsewhere. In September 2027 Corvane Connect's nightly 02:00 full sync reopened a room type Miradouro's staff had closed in Roomstead's extranet; [Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html) describes the override rules that followed.\n\nDrift is the best single measure of partner quality: digests mismatching on 3% of property-months mean Phantom Availability, whatever the uptime figure says.\n\n### Reservation delivery and acknowledgement\n\nThe outbound half makes \"the hotel has this reservation\" a fact the marketplace can check, not an assumption.\n\n![Swimlanes for Switchyard, channel manager, PMS and Partner Hub: version 1 is pushed and acknowledged with a confirmation number, or after 10 minutes without acknowledgement, the booking goes to Partner Hub with an alert.](assets/images/08-connectivity-and-channel-managers/08-reservation-delivery-tracked.jpeg)\n**Figure 5:** *Reservation delivery as a tracked state, not a fire-and-forget call. Each reservation version is pushed in order, acknowledged with the PMS confirmation number, and escalated to a human channel when acknowledgement is late.*\n\nFive rules follow from the public designs and from how delivery fails:\n\n1. **Write the reservation and its delivery intent in one transaction** (an outbox), so a crash between \"booked\" and \"sent\" cannot lose the delivery. [Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html) covers the outbox pattern.\n2. **Deliver per reservation in version order.** A modification must not overtake its creation, and a cancellation must not arrive before the modification it cancels. Expedia's documented rule, waiting for the previous notification for the same booking to succeed before sending the next, is the minimum.\n3. **Acknowledgement means the PMS has it, not that the channel manager received it.** Ask for the PMS confirmation number in the acknowledgement and store it; the front desk will search by it ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)).\n4. **Escalate on a clock, and make the fallback sticky.** Booking.com has providers poll a per-provider queue \"once per twenty seconds\", returns reservations repeatedly \"until they are acknowledged\", and emails a reservation to the property if it is not acknowledged within 30 minutes, a window that can be extended to 24 hours at the cost of larger queues and more overbookings ([Booking.com, Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview) and [Retrieving new reservations](https://developers.booking.com/connectivity/docs/reservations-api/retrieving-new-reservations-ota), n.d., live October 2026). Expedia's Booking Notification API pushes, retries, then falls back to email and keeps all later changes to that booking on email; as of the December 2025 copy it was closed to new adoption. Sticky fallback avoids split-brain: version 1 on paper, version 2 by XML into a PMS that has never seen the booking.\n5. **Make duplicates harmless.** At-least-once delivery plus a human fallback can deliver a reservation twice; the partner must deduplicate on the marketplace's reservation ID, and certification should test it.\n\nDelivery state per reservation version (**booked → sent → acknowledged → confirmed with PMS number**, plus **fallback**) is the data that prevents Lost at the Front Desk. A dashboard of unacknowledged reservations by age, partner and arrival date should page someone when an arrival within 24 hours is still unacknowledged.\n\n### Rate limits and capacity\n\nThe shape of a channel's limits says what it considers hot. Booking.com documents an overall limit of 10,000 calls per minute, with structural endpoints such as `OTA_HotelInvNotif` and `OTA_HotelProductNotif` limited to 75 calls per minute each, and reserves the right to change limits \"at any time, without prior notice\" (n.d., live October 2026). Structure is treated as slow-changing configuration; ARI is the hot stream.\n\nARI volume is bursty because pricing is automated. Agoda reported in 2024 that \"a single supplier can provide 1.5M price updates and offer details in just one minute\", and that uneven message costs and heterogeneous hardware broke naive Kafka partitioning in its supply pipeline ([Agoda Engineering](https://medium.com/agoda-engineering/how-we-solve-load-balancing-challenges-in-apache-kafka-8cd88fdad02b), 2024). Roomstead's 38,000 messages per second at peak are about five times its average of roughly 7,500, driven by early-morning RMS batch runs in each time zone, not by guests.\n\nThree design rules keep capacity fair:\n\n- **Quota by work, not by call.** One product for one date and 400 products for a month are not the same load; Switchyard measures quota in product-date cells per minute.\n- **Isolate partners.** Per-partner queues in front of the per-property lanes, so one partner's RMS storm delays only its own properties.\n- **Prefer backpressure to silent queueing.** An HTTP 429 with a retry hint tells the partner its updates are late; a hidden internal queue lets the marketplace sell on stale data while reporting success.\n\n## Supply In From Bedbanks and GDSs\n\nOTAs also buy inventory from **bedbanks** (wholesalers that contract hotel rooms and resell them to distributors) and from GDS hotel content, and those suppliers are queried, not pushed. Hotelbeds' booking flow is availability, then a `CheckRate` call that \"re-evaluates the pricing and availability\" of a rate marked `RECHECK`, then booking ([Hotelbeds](https://developer.hotelbeds.com/documentation/hotels/booking-api/workflow/), n.d.). Agoda described in 2020 how each non-direct supplier \"only allows Agoda to fetch for the hotel price with a limited amount of Queries Per Second\", which \"is never enough to cover all user searches\", and how a system it called PriceAggregator decides \"when, how and what to send to the suppliers\" ([Agoda, arXiv](https://arxiv.org/abs/2008.02087), 2020; the current state is not public).\n\nPull supply changes the design in three ways: the gateway spends a **query budget** per supplier on the searches most likely to convert; the cache carries a **time-to-live per value** instead of event-driven refresh; and \"price changed at booking\" becomes an **expected outcome** with a designed guest flow. The same hotel often arrives both by push from its channel manager and by pull from two bedbanks, which is how The Same Hotel Twice starts; mapping and deduplication belong to [Describing a Stay: Content, Media and Property Mapping](content-and-media.html), building on the entity-resolution techniques in [One Property, Three Listings: Duplicates and Entity Resolution](../listing-systems-architecture/entity-resolution.html).\n\n## Certification and Partner Health: Connectivity as a Product\n\nA marketplace cannot own its partners' uptime, mapping quality or release discipline. It can test them before they go live, measure them afterwards, and attach consequences to the measurement.\n\n| Program | What is publicly documented |\n| --- | --- |\n| Booking.com Connectivity Partner | Partners \"must meet specific onboarding requirements\" and keep up with API changes; going live requires certification by test requests for business-critical APIs or a self-assessment for basic ones; Booking.com advises offering a new API \"to a small beta group for the first few weeks\" (n.d., live October 2026). Partner press releases report tiers (Standard, Advanced, Premier) scored on business value, implementation, connection quality and engagement; official weights are not public |\n| Expedia Group | Connections only from PMS, channel-manager and CRS vendors, not from individual properties (n.d., live October 2026) |\n| Oracle OHIP | Production access requires a Marketplace listing, Oracle Partner Network membership and customer approval of an integration user; usage is paid per event or call (n.d.) |\n| Vrbo (hosted stays) | \"Elite or Preferred\" designations; providers \"rated on several technical and performance criteria\", including connection reliability (n.d.) |\n\nCertification proves a partner can implement the profile on test properties, not how it behaves in production a year later. That needs a **partner health score**, computed from data the gateway already has.\n\n| Signal | Definition | What it predicts |\n| --- | --- | --- |\n| **ARI freshness** | Share of the partner's active properties with an update in the last 24 hours, and the longest silence during business hours | Stale availability, Phantom Availability |\n| **Rejection and hold rate** | Rejected or held messages per 10,000 | Mapping and validation quality |\n| **Drift rate** | Share of property-months whose digest mismatches, and time to repair | Silent divergence |\n| **Mapping coverage** | Share of the property's sellable products mapped and receiving updates | Products that sell on old values |\n| **Acknowledgement latency** | 95th-percentile time from reservation push to acknowledgement with a PMS number | Lost at the Front Desk |\n| **Fallback rate** | Reservations escalated to the fallback channel per 1,000 | Delivery reliability |\n| **Attributed incidents** | Overbookings and wrong-price incidents traced to the partner, per 10,000 reservations | Guest harm |\n\nThe score needs consequences. Three levers work: **visibility** (hotels see their partner's score in the extranet), **access** (new message types, pricing models and API versions open first to partners in good standing), and **remediation** (a partner below threshold enters a time-boxed plan; persistent failure ends certification for new properties). Ranking hotels lower for a poor channel manager punishes the wrong party and, for a dominant platform, invites regulatory questions ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html)).\n\nTreating connectivity as a product also means **deprecation as a discipline**. Booking.com has announced that several OpenTravel content endpoints will be sunset for Home providers on **31 December 2026**, two years after deprecating `OTA_HotelDescriptiveInfo` for them in December 2024 (n.d., live October 2026). Partners need that kind of horizon, because every change waits for their release train and each hotel's migration.\n\n## In Practice: Corvane Redesigns Switchyard After Miradouro\n\nThe architecture forum took the Miradouro case in April 2027, with Aisha Rahman presenting Switchyard's changes and Priyanka Shah presenting Corvane Connect's. Every figure below is fictional.\n\n### Switchyard: guards that know the property\n\nSwitchyard's team replayed 30 days of price messages through the guards. First, a sibling band of **±60%** around the median of the property's independently priced products on the same room type and date would have held the **first** €12 message at 07:14:03 (€12 against a median of €141), so none of the 41 reservations would have been made. Second, the same band would have held about 1 in 9,000 price messages: tens of thousands a day at Switchyard's volume, far too many for a human queue.\n\nThe design that went live in June 2027 therefore splits holds by product state and automates release:\n\n![Received prices go to Applied, Held or Rejected; held prices are Released on confirmation and then Applied, or Rejected after 4 hours.](assets/images/08-connectivity-and-channel-managers/08-hold-states.jpeg)\n**Figure 6:** *Switchyard's hold states after March 2027. A suspicious price never sells at full speed: an existing product keeps its last good price, a new product stays closed, and the hold is released by confirmation rather than by a human queue.*\n\nThree details made it workable:\n\n- **Confirmation by resend.** A partner that resends the same value with a confirmation flag releases the hold, so a deliberate flash-sale discount goes through in one round trip.\n- **Hotel confirmation in Partner Hub.** Holds appear in the extranet with the sibling comparison (\"€12 against €104–€189 for the same dates\"), and the hotel can confirm or correct.\n- **New-product first-price check.** For the first seven days after a product is mapped, any price is compared with the property envelope as well as the siblings, because most mapping errors show up in the first message.\n\n### Corvane Connect: mappings as code\n\nCorvane Connect made three changes. New mappings send the PMS's current values through a **dry-run channel profile** and show the revenue manager the result before activation, which would have shown Duarte \"€12.00\" next to his €120.00. Mappings are versioned, so a bad one is found by version in minutes, not reconstructed from logs. And Corvane Connect now runs **digest comparison** with every channel that offers a read-back API, not only with Roomstead.\n\n### The neutrality rule\n\nThe third question, Corvane owning both a channel and a channel manager, was settled as a governance rule, not a technical change. From May 2027:\n\n- Corvane Connect connects to Switchyard through the **same public APIs, quotas, guards and certification** as the other 139 partners. It gets no private endpoints and no early access to Roomstead API versions beyond the partner-preview program open to all partners in good standing.\n- Corvane Connect's data about rates it distributes to other channels is **not available to Roomstead**, and Roomstead's partner health scores for Corvane Connect are published to hotels in the same format as everyone else's.\n- Disputes about either rule go to the group architecture board, not to either business unit.\n\nThe rule costs Corvane some synergy. It is also what keeps the other 60-plus channels willing to accept a channel manager owned by a competitor, and keeps Roomstead's partner scores credible.\n\n## Trade-offs\n\n| Choice | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| **ARI delivery** | Push deltas into a local store | Pull or live query with a cache | Direct hotel supply at scale; look-to-book makes per-search queries unaffordable | Bedbanks and wholesalers; suppliers that cannot push; long-tail supply where freshness matters less than coverage |\n| **Format** | OpenTravel XML profile | Proprietary JSON or GraphQL | Partner reach: every channel manager already speaks it | New capabilities OpenTravel cannot express; most marketplaces end up running both, and need a sunset policy for each |\n| **Suspicious values** | Reject | Hold (last good value or closed) | Values impossible anywhere; schema and profile errors | Plausible-but-unusual values where the partner or hotel can confirm quickly |\n| **Ordering** | Per-property lane with a single writer | Per-product-date last-writer-wins by timestamp | Range updates overlap; partners lack reliable sequence numbers | Very high volume with non-overlapping cell updates and trustworthy sequence numbers |\n| **Drift repair** | Digest comparison plus targeted resend | Scheduled full sync | Large partner populations; downstream costs matter | Small partners that cannot implement digests; after mapping changes |\n| **Reservation delivery** | Pull and acknowledge (partner polls a queue) | Push with per-booking sequencing | Partners behind firewalls; the marketplace wants the queue to absorb partner outages | Low latency matters and partners can host reliable endpoints |\n| **Who connects** | Certified vendors only | Vendors and individual properties | Large populations; the marketplace needs control over software quality | Small markets, or chains with strong in-house IT; requires per-property support capacity |\n\n## Hotels and Homes: Where the Two Marketplaces Differ\n\nThe two marketplace types differ most here, because their source of truth sits in different places.\n\n| Dimension | Accommodation marketplace (Roomstead) | Hosted-stays marketplace (Nookaway) |\n| --- | --- | --- |\n| **Source of truth for availability** | Usually outside the marketplace: PMS, CRS or channel manager; the OTA holds an asserted copy | Usually inside: the marketplace calendar, unless a professional manager connects software |\n| **Who connects** | 140 certified partners carry **82%** of hotel room nights; the rest is entered in the extranet | Most hosts edit in the app; **61%** of listings are multichannel, and of those **53%** sync through PMS or channel-manager APIs and **47%** by iCal only |\n| **Standards** | OpenTravel profiles, HTNG, regional profiles like AlpineBits, plus proprietary APIs | No open commercial standard; proprietary partner APIs plus iCalendar (RFC 5545), which carries busy dates only |\n| **Unit of update** | Product × date: rooms to sell, price per occupancy, restrictions | Listing × night: free or taken, a nightly price, minimum nights |\n| **Intermediaries** | Deep: RMS → PMS → CRS → channel manager → OTA | Shallow: vacation-rental software that bundles PMS, channel manager, messaging and pricing |\n| **Who owns content through the connection** | Content mostly pushed once from the property or a content hub | Software may own the whole listing: Airbnb lets connected hosts choose \"Sync everything\" or only pricing and availability (n.d.) |\n| **Reservation delivery** | Push or pull to the PMS with acknowledgement and fallback | Usually none for single-unit hosts; webhooks to the PMS for professional managers |\n| **Typical failure** | A wrong price or lost stop-sell at scale (Miradouro); stale queues after an outage (King's Day) | The same night sold on two platforms inside the sync window (the Seville double booking) |\n| **Regulation through the connection** | License and registration fields reach hotel APIs too: Booking.com has a Licences API; Expedia a compliance API for regulatory information | Registration numbers under the EU Short-Term Rental Regulation, applicable from 20 May 2026, must flow from software to listing ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html)) |\n\nNookaway's partner API (2020) mirrors Switchyard: for professional managers, the PMS is the system of record and Nookaway the copy. Corvane Connect is on both sides, with **8,200 vacation-rental managers and 96,000 units** connected to Nookaway as well as hotels connected to Roomstead.\n\nMy judgement for Corvane matches the One Stay program's decision not to share connectivity for now, with one refinement. **The gateways should stay separate**: they speak different protocols to different partner populations, update different data models, and fail differently. **The disciplines and a few components should be shared**: one partner registry (Corvane Connect and the large vacation-rental vendors are partners of both brands), one partner health model, one certification process, and one reservation-delivery outbox library with the same delivery states. There a partner benefits from dealing with one \"Corvane\", and the group gets one view of the software vendors its supply depends on. [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) takes the hosted-stays side in depth, and [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html) makes the group-level argument.\n\n## Failure Modes\n\n- **Schema-valid, semantically wrong.** The gateway checks structure and absolute bounds only, so mapping, decimal and currency errors sell at full speed, and history checks are blind on a new product's first message.\n- **Increments and parallel writes.** A retried \"minus one room\", or one property's messages processed in parallel, drifts inventory until a full sync, if anyone runs one.\n- **Full sync storms.** A partner re-onboarding 3,000 properties pushes five years of ARI overnight; written through, it keeps the availability cache rebuilding for hours on stale prices.\n- **Success that means nothing.** The API returns success on receipt, the update fails later, and the partner's software shows \"synced\".\n- **Delivered to the channel manager, rejected by the PMS.** The PMS refused the reservation on a closed room type and nobody told the marketplace; the guest arrives to \"we have no booking for you\".\n- **Silent fallback.** Reservations fall back to a mailbox nobody reads on Sundays, and later modifications arrive by XML for a booking the PMS has never seen.\n- **One partner starves everyone.** A partner's RMS storm fills a shared queue, and every other partner's properties wait behind it.\n- **Credentials as a fraud path.** Partner API credentials and extranet accounts can change prices and read guest data; their security belongs to [Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](travel-fraud.html).\n\n## The Chief Architect's View\n\nConnectivity looks like an integration problem and is in fact a governance problem: the marketplace's most important write path runs through software it does not control. The group-level decisions are few and long-lived.\n\n**Decide what \"accepted\" means, and publish it.** Put the difference between accepted, applied and visible, with targets for each, in the partner contract, and measure accepted-to-visible end to end: it is how long a corrected error stays on sale.\n\n**Own the semantic guards centrally.** Guard thresholds have revenue consequences (false holds lose sales; missing holds sell at €12). They belong to the supply and connectivity owner, versioned and reviewed, with hold rate and caught-error rate reported side by side.\n\n**Make partner health a governed metric.** Define the signals once, compute them from gateway data, show them to hotels, and attach consequences.\n\n**Keep a deprecation calendar.** Every format and API version the gateway accepts has an owner and a sunset date. OpenTravel versions living for decades is fine if each is a deliberate choice.\n\n**Separate the channel from the channel manager if you own both.** Few groups own both, but the principle is general: the partner contract must be the same for the marketplace's own subsidiaries as for their competitors, or the scores and the contract lose their authority.\n\nWhat I watch every week: ARI accepted-to-visible latency at the 99th percentile; holds and rejections by partner; digest drift by partner; unacknowledged reservations by age and arrival date; fallback rate; and incidents attributed to connectivity per 10,000 reservations.\n\n## Questions to Ask\n\n1. For each property, which system asserts availability, rates and restrictions, and can we show the source and time of every value we sold against?\n2. What does a synchronous success from our ARI API mean: parsed, durably queued, or applied? Do partners know?\n3. Which semantic guards run on price and inventory messages, and what would they have done with a new rate plan priced at one tenth of its siblings?\n4. Are partner updates applied in a defined order per property, and how do we handle retries, duplicates and gaps in sequence?\n5. How do we detect drift between our copy and the partner's view, and what does a full sync cost downstream?\n6. For each reservation version, can we say whether the PMS has acknowledged it, with which confirmation number, and what happens if it has not within ten minutes of booking? Within 24 hours of arrival?\n7. How is each connectivity partner scored after certification, who sees the score, and what happens when it falls?\n8. What is our deprecation policy for message formats and API versions, and how long does a partner get?\n9. If we own a channel manager, or a channel manager owns us, what keeps the partner contract the same for everyone?\n\nConnectivity keeps a hotel's copy honest when the hotel's systems are the truth. A home sold on several platforms often has no system of record at all, only calendars that copy each other on a timer, and the conflict window between them becomes the design problem. [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) takes up Carmen Ruiz's apartment in Seville and the iCal feeds that let it be sold twice.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Connectivity APIs overview](https://developers.booking.com/connectivity/docs), Booking.com, n.d. (live October 2026). OpenTravel 2003B, B.XML and JSON formats; rate limits; partner onboarding requirements.\n- [OTA_HotelRateAmountNotif](https://developers.booking.com/connectivity/docs/ota-rateamountnotif) and [OTA_HotelAvailNotif](https://developers.booking.com/connectivity/docs/ota-hotelavailnotif), Booking.com, n.d. (live October 2026). Delta-only updates, one hotel and one month per request, horizon, success-with-warnings responses, warning 367.\n- [Rates & Availability FAQ](https://developers.booking.com/connectivity/docs/con-faq-rates-availability), Booking.com, n.d. (live October 2026). The €5 and €50,000 price bounds.\n- [roomrateavailability](https://developers.booking.com/connectivity/docs/b_xml-roomrateavailability), Booking.com, n.d. (live October 2026). Read-back of current inventory per product and date, 31 days per call.\n- [Rates & Availability API](https://developers.booking.com/connectivity/docs/ari) and [Pricing models](https://developers.booking.com/connectivity/docs/pricing-models), Booking.com, n.d. (live October 2026). Pricing models and their certification requirement.\n- [Understanding the Reservations API](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview) and [Retrieving new reservations](https://developers.booking.com/connectivity/docs/reservations-api/retrieving-new-reservations-ota), Booking.com, n.d. (live October 2026). Per-provider queue, 20-second polling, acknowledgement, 30-minute email fallback.\n- [Going live](https://developers.booking.com/connectivity/docs/going_live), Booking.com, n.d. (live October 2026). Certification, self-assessment and beta rollout.\n- [Managing room amenities](https://developers.booking.com/connectivity/docs/tsk-modify-room-amenities.md), Booking.com, n.d. (live October 2026). Sunset of OpenTravel content endpoints for Home providers on 31 December 2026.\n- [Availability and Rates API: introduction](https://developers.expediagroup.com/supply/lodging/docs/avail_and_rate_apis/avail_rates/getting_started/introduction), Expedia Group, 2025 (archived copy, December 2025). AR scope, Expedia IDs only, pairing with a reservation API.\n- [Booking Notification API: introduction](https://developers.expediagroup.com/supply/lodging/docs/booking_apis/booking_notification/getting_started/introduction), Expedia Group, 2025 (archived copy, December 2025). Booking against the local copy; no rejection for inventory; per-booking sequencing; email fallback; closed to new adoption.\n- [Lodging supply connectivity](https://developers.expediagroup.com/supply/lodging), Expedia Group, n.d. (live October 2026). No direct connections from individual properties; GraphQL supply APIs including compliance.\n- [Pricing delivery modes](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode), Google Hotel Ads, 2025. ARI push, pull, changed pricing and live queries.\n- [OTA_HotelAvailNotifRQ](https://developers.google.com/hotels/hotel-prices/xml-reference/ari-avail), Google Hotel Prices, 2025. Each message treated as a delta; independent LOS restrictions.\n- [OHIP FAQs](https://docs.oracle.com/en/industries/hospitality/integration-platform/ohipu/c_faqs.htm), Oracle, n.d.; [Release 21.4](https://docs.oracle.com/en/industries/hospitality/integration-platform/axern/c_release_21_4.htm), Oracle, 2021. Streaming and polling retention, commercial access gate.\n- [Ways to communicate](https://docs.mews.com/connector-api/events/communicate), Mews, n.d. Polling, webhooks and their lag.\n- [SiteMinder FY26 earnings release](https://www.siteminder.com/wp-content/uploads/2026/08/Earnings-Release-SiteMinder-FY26.pdf), SiteMinder, 2026; [SiteConnect](https://developer.siteminder.com/siteminder-apis/channels/introduction/siteconnect/api-reference/availability-and-restrictions), SiteMinder, n.d. Channel-manager scale and an OpenTravel-based channel API.\n- [How we solve load balancing challenges in Apache Kafka](https://medium.com/agoda-engineering/how-we-solve-load-balancing-challenges-in-apache-kafka-8cd88fdad02b), Agoda Engineering, 2024. 1.5 million price updates per minute from one supplier.\n- [PriceAggregator: an intelligent system for hotel price fetching](https://arxiv.org/abs/2008.02087), Agoda, 2020. QPS-capped pull from non-direct suppliers.\n- [Booking API workflow](https://developer.hotelbeds.com/documentation/hotels/booking-api/workflow/), Hotelbeds, n.d. Check-rate before booking on pull supply.\n- [Ways to sync listings through API-connected software](https://www.airbnb.com/help/article/2348/what-are-the-ways-i-can-sync-listings-through-my-api-connected-software), Airbnb Help Center, n.d. \"Sync everything\" vs pricing and availability only.\n- [Vrbo connectivity solutions](https://partner.expediagroup.com/en-au/industries/vacation-rentals/vrbo-connectivity-solutions), Expedia Group, n.d. Vrbo partner designations and criteria.\n- [Sabre closes hospitality business sale](https://www.phocuswire.com/sabre-closes-hospitality-business-sale), PhocusWire, 2025. SynXis sale to TPG.\n\n### Standards, regulation and documentation\n\n- [OpenTravel Alliance](https://opentravel.org/), OpenTravel Alliance, n.d. OpenTravel 2.0 and the move from XML to JSON.\n- [AlpineBits HotelData](https://www.alpinebits.org/hotel-data/), AlpineBits Alliance, n.d. (release 2024-10). A regional OpenTravel profile with release-based certification.\n- [Hotel technology specifications: HTNG and OpenTravel](https://www.altexsoft.com/blog/hotel-tech-specifications-htng-opentravel/), AltexSoft, 2020. HTNG's distribution specifications and their OpenTravel basis.\n- [Hotel Technology Next Generation](https://en.wikipedia.org/wiki/Hotel_Technology_Next_Generation), Wikipedia, n.d. HTNG's founding and renaming.\n- [RFC 5545: iCalendar](https://www.rfc-editor.org/rfc/rfc5545), IETF, 2009. The calendar format behind hosted-stays sync.\n- [Regulation (EU) 2024/1028 on short-term rental data](http://publications.europa.eu/resource/celex/32024R1028), European Union, 2024. Registration numbers that now travel through connectivity.\n\n### Research and practitioner sources\n\n- [Is metasearch to blame for hospitality's 5-digit look-to-book?](https://www.hospitalitynet.org/opinion/4074433.html), J. Boffey, Hospitality Net, 2016. Distributor look-to-book ratios and their causes.\n- [HFTP Board of Directors rejects AHLA unsolicited merger offer](https://www.hospitalitynet.org/news/4110267.html), Hospitality Net, 2022. HTNG's move into AHLA.\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

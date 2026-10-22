@@ -1,0 +1,27 @@
+[
+ {
+  "id": "16-stays-search-pipeline",
+  "visual_goal": "Show the stays search pipeline as stages that narrow the candidate set, with availability entering twice: as a projection into retrieval and as an exact check served from a price cache or quote engine.",
+  "prompt": "A left-to-right pipeline of seven rounded stations that get narrower from left to right, like a gently tapering funnel lying on its side. In order, with one arrow between each neighbouring pair: 'Stay query', 'Destination', 'Retrieval', 'Exact availability', 'Pricing', 'Ranking', 'Presentation'. Above the 'Retrieval' station, a small stream of event envelopes labeled 'ARI events' with one dashed arrow down into 'Retrieval', labeled 'project'. Below the pipeline, a cylinder labeled 'Price cache' with two dashed arrows up, one into 'Exact availability' and one into 'Pricing', each labeled 'serve'.",
+  "alt": "A tapering pipeline from stay query through destination, retrieval, exact availability, pricing and ranking to presentation, with ARI events projected into retrieval and a price cache serving exact availability and pricing."
+ },
+ {
+  "id": "16-two-layer-index",
+  "visual_goal": "Show the two speeds of a stays index: content events update content fields, a projector filters the high-volume ARI stream down to open-closed flips for the availability summary, and exact prices stay in a separate price cache joined after retrieval.",
+  "prompt": "A top-to-bottom diagram with two vertical lanes that meet at the bottom. Left lane, slow and calm: a stack of documents labeled 'Content sources' at the top, one arrow down labeled 'content events' into a box labeled 'Content fields'. Right lane, fast and busy: at the top a wide, dense stream of many small envelopes labeled 'ARI stream'. The stream splits into two unlabeled arrows: one thick arrow down into a cylinder labeled 'Price cache', and one arrow into a small sieve-shaped box labeled 'Projector'. The words 'ARI stream' appear exactly once, at the top of the stream. From 'Projector' only a thin trickle of a few envelopes goes down, along one arrow labeled 'open-closed flips', into a box labeled 'Availability summary' placed next to 'Content fields'. Both 'Content fields' and 'Availability summary' have one arrow down into a box labeled 'Retrieval'. From 'Retrieval' one arrow right labeled 'candidates' into a box labeled 'Exact totals', which also receives one arrow from 'Price cache'.",
+  "alt": "Content sources feed content fields through content events; a busy ARI stream feeds a price cache directly and an availability summary through a projector that passes only open-closed flips; retrieval reads both index layers and hands candidates to exact totals."
+ },
+ {
+  "id": "16-one-search-traced",
+  "visual_goal": "Show one Nookaway Lisbon search in the target design as a swimlane: the place is resolved, the index returns 2,600 bookable candidates, 600 are quoted and 571 succeed, and the ranked page goes back to the guest.",
+  "prompt": "A left-to-right swimlane sequence diagram with six vertical lanes, each headed by a simple generic icon and a label: 'Guest app', 'Search API', 'Waypoint', 'Search index', 'Quote engine', 'Ranker'. Horizontal arrows between lanes, top to bottom in this order: from 'Guest app' to 'Search API', labeled 'Lisbon, 2 to 9 August'; from 'Search API' to 'Waypoint', labeled 'resolve place'; from 'Search API' to 'Search index', labeled 'valid 7-night arrival'; a dashed return arrow from 'Search index' to 'Search API', labeled '2,600 candidates'; from 'Search API' to 'Quote engine', labeled 'quote top 600'; a dashed return arrow from 'Quote engine' to 'Search API', labeled '571 quotes'; from 'Search API' to 'Ranker', labeled 'rank'; and a final dashed arrow from 'Search API' back to 'Guest app', labeled 'page 1'.",
+  "alt": "A swimlane of one Lisbon search: the search API resolves the place in Waypoint, gets 2,600 candidates with a valid seven-night arrival from the index, quotes the top 600 and receives 571 quotes, ranks them and returns page 1 to the guest app.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "16-shared-search-contract",
+  "visual_goal": "Show Corvane's 2027 decision: one stay search API with a shared contract, a shared place service and shared price composition, while each marketplace keeps its own search engine and ranker.",
+  "prompt": "A left-to-right architecture illustration. At the far left, two device stacks: 'Roomstead apps' on top and 'Nookaway apps' below, each with one arrow into a single central box 'Stay search API'. From 'Stay search API' one arrow up to a map-pin box 'Waypoint', and two arrows right: one to an upper box 'Roomstead search' and one to a lower box 'Nookaway search'. From 'Roomstead search' one arrow right to 'Roomstead ranker'; from 'Nookaway search' one arrow right to 'Nookaway ranker'. Between the two search boxes, a box 'Price composition' receives one arrow from 'Roomstead search' and one from 'Nookaway search'. The shared pieces, 'Stay search API', 'Waypoint' and 'Price composition', sit on one soft teal background panel; the per-marketplace search and ranker boxes sit on soft orange panels, one for the upper row and one for the lower row.",
+  "alt": "Roomstead and Nookaway apps call one stay search API that uses a shared Waypoint place service and shared price composition, while each marketplace keeps its own search engine and ranker."
+ }
+]

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Where Guests Come From: Web, Apps, Metasearch and Partner Distribution</title>
+    <meta name="description" content="How should a stays marketplace architect the channels that bring it guests: its own web and apps, search engines, metasearch and the partners who resell its supply? Treat every channel as a client of one stay query, one offer computation and one reservation contract, give each external channel its own integration with quotas and a click-and-quote record, and judge channels on stayed, cancellation-adjusted contribution rather than clicks.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Where Guests Come From: Web, Apps, Metasearch and Partner Distribution">
+    <meta property="og:description" content="How should a stays marketplace architect the channels that bring it guests: its own web and apps, search engines, metasearch and the partners who resell its supply? Treat every channel as a client of one stay query, one offer computation and one reservation contract, give each external channel its own integration with quotas and a click-and-quote record, and judge channels on stayed, cancellation-adjusted contribution rather than clicks.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/demand-channels.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/42-demand-channels/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="stays-ml-platform.html" title="Models in Production: ML Platforms and Use Cases for Stays">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-9.html" title="Part IX — LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VIII — PLATFORM: The Distributed System Underneath</p>
+        <h1>Where Guests Come From: Web, Apps, Metasearch and Partner Distribution</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  36 min read · <a class="spec-link" href="demand-channels.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/42-demand-channels/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/42-demand-channels/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="stays-ml-platform.html" title="Models in Production: ML Platforms and Use Cases for Stays">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-9.html" title="Part IX — LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Where Guests Come From: Web, Apps, Metasearch and Partner Distribution", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "How should a stays marketplace architect the channels that bring it guests: its own web and apps, search engines, metasearch and the partners who resell its supply? Treat every channel as a client of one stay query, one offer computation and one reservation contract, give each external channel its own integration with quotas and a click-and-quote record, and judge channels on stayed, cancellation-adjusted contribution rather than clicks.", "permalink": "demand-channels", "timetoread": "36 min read", "icon": "assets/icons/42-demand-channels.png", "logo": "assets/images/42-demand-channels/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Map the demand side of a stays marketplace: web and app front ends and their backends-for-frontends, search-engine landing pages, metasearch integrations with price feeds, live queries and landing pages, and the partner distribution APIs that serve affiliates, white-label sites, travel agents and corporate travel. You will see how each channel connects to the same offer and reservation contracts, and how to measure what each channel really earns.\n\n> **WHY THE BUSINESS CARES:** An OTA spends a third or more of its revenue buying guests, and much of that spend goes to a few companies whose rules it does not set. Which channels the marketplace can afford, and how exposed it is when one of them changes its rules, depends on engineering choices: price accuracy, landing speed, quotas and attribution.\n\n> **WHY ARCHITECTS SHOULD CARE:** Most shopping traffic on an OTA comes from systems outside it, and those systems read the most expensive data the platform has. If every channel builds its own price, its own landing logic and its own booking path, the marketplace pays for the same offer several times and shows several different prices for it.\n\n> **KEY POINTS:**\n>\n> * **A channel is a client of the offer, not a copy of it.** Web, apps, landing pages, metasearch feeds and partner APIs should all call one stay query, one offer computation and one reservation contract. The channel layer adds what is specific to each audience: rendering, feeds, quotas, payment flows and tracking. It must never add its own price arithmetic or its own booking path.\n> * **Metasearch and partner APIs are integrations with contracts, not marketing tools.** A metasearch engine enforces price accuracy, response deadlines and landing rules. A partner API carries look-to-book ratios ten times those of the marketplace's own site. Both need an owned integration service, quotas set by traffic against revenue, retry budgets, and a click-and-quote record that ties every paid click to the offer it advertised.\n> * **Judge channels on stayed contribution and dependence, not on clicks.** A channel's real value is revenue from stays it brought, minus its media cost, its search cost and its cancellations. Measure the share of bookings whose last external click came from one company, and invest in owned channels (apps, accounts, loyalty) and in accuracy, rather than trying to win every paid auction.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Phantom Availability** — a metasearch feed, a landing page or a partner cache that advertises a price the marketplace no longer sells costs a paid click and, at scale, the channel itself.\n> * **Price Drift** — when the feed exporter, the landing page and the partner API each compose taxes, fees, currency and member prices their own way, the guest who clicked an ad sees a different number on arrival.\n> * **Built for Sunny Days** — partner and metasearch traffic grows with guest demand, so a channel layer without quotas, retry budgets and traffic classes fails on exactly the days the marketplace needs it most.\n\n<br>\nA guest rarely arrives at a stays marketplace by typing its address. They arrive from a search engine's ad or its hotel results, from a metasearch site that compared five sellers of the same hotel, from an airline's \"book a hotel\" page, from a travel agent's tool, from a link in a newsletter, or from the app on their phone. Each of these is a **demand channel**: a path by which guest demand reaches the marketplace's supply. Some of them the marketplace owns, and some it rents at a price set in someone else's auction.\n\nChannel budgets sit with marketing, but their **architecture is not a marketing matter**. A metasearch engine sends price queries and enforces accuracy policies. A white-label site calls the shopping API thousands of times per booking. A search engine indexes destination pages. A corporate travel tool books a room and pays by virtual card. Each is an integration with the offer and reservation systems, and each fails differently.\n\nThis chapter owns three terms: **metasearch integration**, the **B2B distribution API** (business-to-business) and **landing assembly**. It builds on [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html), which owns price accuracy and the offer kernel, on [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html), whose pipeline every channel must call, and on [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](stays-marketplace-economics.html), which owns look-to-book. Bot defense and traffic classes belong to [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html), and attribution models to [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html); this chapter uses both.\n\n## Setting the Scene at Corvane: How Much of Roomstead Belongs to One Company?\n\nCorvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), spent **€390 million** on marketing at Roomstead in 2026, its OTA-style marketplace. **€330 million** of it was performance marketing: about €150 million on paid search, €140 million on metasearch and €40 million on affiliates and social. Paid search and metasearch brought **38%** of Roomstead's sessions.\n\nOn **Monday 6 September 2027**, preparing the 2028 budget, Marco Bellini (Group CFO) asked a question that the May metasearch downgrade had made urgent ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) tells that story): *how much of Roomstead's business depends on decisions made by one company we do not control?* Kenji Arai's data team and Roomstead's distribution team traced the last external click before each of Roomstead's roughly 45 million gross reservations of 2026. The figures, like everything about Corvane, are illustrative.\n\n| Channel (last external touch) | Share of gross reservations | Shopping requests per reservation in that channel | Media or commission cost |\n| --- | --- | --- | --- |\n| Direct and app (no external touch) | 37% | about 400, across the four rows that land on own web and apps | Brand share of €60M |\n| Organic search | 19% | (same pool) | None per click |\n| Paid search | 15% | (same pool) | ~€150M |\n| Link affiliates and CRM e-mail | 4% | (same pool) | Part of ~€40M |\n| **Metasearch** (price feed, live queries, landing) | **18%** | **about 3,600** | **~€140M** |\n| **Affiliate API and white label** | **7%** | **about 6,300** | Part of ~€40M |\n\nThe shopping-request column reconciles with the 1,400 shopping requests per gross reservation that Roomstead serves across all channels: about 300 per reservation come from its own web and apps, about 650 from metasearch queries and about 450 from affiliate API calls. Metasearch traffic therefore costs Roomstead about **€20.5 million** a year in search infrastructure, partner API traffic about **€14.2 million**, and its own sites about **€9.5 million**, at the €0.0007 per request that [Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces](stays-marketplace-economics.html) derives.\n\nTwo numbers stood out. First, **one search engine** supplied the last external click on about **41%** of Roomstead's gross reservations: nearly all organic search, all paid search and a large share of metasearch clicks through its hotel results. Second, a stayed reservation from metasearch carried about **€26** of media cost and **€4** of search cost against Roomstead's average **€40** of revenue per stayed reservation, which left about €10 of contribution against Roomstead's average of €25.\n\n![A coin stack of €40 shrinks by €26 of media and €4 of search to €10, beside a dashed outline of a €25 average stack.](assets/images/42-demand-channels/42-metasearch-contribution.jpeg)\n**Figure 1:** *A stayed reservation from metasearch carried about €26 of media cost and €4 of search cost against €40 of revenue, leaving about €10 of contribution against Roomstead's average of €25.*\n\nThe investigation also found that Roomstead's channel layer had grown one channel at a time:\n\n- The **metasearch feed exporter** (2014, inside Keystone, Roomstead's Java monolith) produced hotel lists and price feeds; landing URLs were built by a separate marketing service; click tracking lived in a third-party tag. Nobody could join a click to the price it had advertised.\n- The **affiliate XML API** (2013, also in Keystone) served about **2,300** affiliates, of which **46** API partners (white-label sites of three airlines, two banks and several travel-agency tools) made **78%** of API bookings. Every partner had the same fixed quota of 50 requests a second, whatever it sold. One price-comparison partner made one booking per **48,000** requests.\n- **Destination landing pages**: about **2.6 million** indexable URLs, generated from a 2016 place list. For a default stay of the next weekend for two adults, **58%** of them showed fewer than five bookable properties. The search results page had been a client-rendered single-page application since 2019, so crawlers saw a loading shell unless a separate prerendering service answered.\n\nNookaway, Corvane's hosted-stays marketplace, had the opposite profile: about **58%** of its gross reservations came direct or through its app, **24%** from organic search, **11%** from guest referrals and CRM, and **7%** from paid search, with almost no metasearch. Its question was different: should it distribute its homes to other sellers at all?\n\nMariana Costa, Group Chief Architect, framed the work for the architecture forum of **12 October 2027** as one question: *which parts of the demand side should be shared contracts, which should be channel-specific integrations, and what should we measure to know whether a channel is worth having?*\n\n## Concepts: Channels, Integrations and What They Share\n\n### Demand channels\n\nA **demand channel** is a route by which a guest's intent reaches the marketplace, defined by who controls the surface the guest sees and how the marketplace pays for the visit. Four families matter in stays:\n\n| Family | Who controls the surface | How the marketplace pays | Examples |\n| --- | --- | --- | --- |\n| **Owned** | The marketplace | Development and brand cost | Web, iOS and Android apps, e-mail and push to known guests |\n| **Search engines** | The search engine | Organic: nothing per click; paid: cost per click (CPC) | Organic results for \"hotels in Alfama\"; paid text ads |\n| **Metasearch** | A comparison site that shows several sellers of the same property | Per click, or a commission per booking or stay, depending on the engine and program | Google's hotel results, trivago, KAYAK |\n| **Partner distribution** | A reseller that shows the marketplace's supply under its own brand or inside its own tool | Commission share or a margin the reseller adds | Affiliates, white-label sites, travel agents, corporate travel tools |\n\nThe families overlap: trivago is a metasearch business majority-owned by Expedia Group, which reports it as a separate segment earning advertising revenue from referrals ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)); KAYAK is one of Booking Holdings' primary consumer brands ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). An OTA may buy clicks from a metasearch site its competitor owns.\n\n### Metasearch integration\n\n**Metasearch integration** is the set of interfaces through which an accommodation marketplace supplies a comparison engine with the properties it sells, the prices for specific stays, and the pages where a clicking guest lands, and through which it measures what those clicks became. Google's partner documentation is the most complete public description of the parts ([Google for Developers, 2025–2026](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-syntax)):\n\n- A **hotel list feed**: an XML file of the partner's properties, with name, address and coordinates, which Google matches to its own map listings. Each ID \"must be unique to your site for all time\" ([Google, Hotel list feed, 2025](https://developers.google.com/hotels/hotel-prices/dev-guide/hlf)). This is [Describing a Stay: Content, Media and Property Mapping](content-and-media.html)'s mapping problem, run in reverse: the marketplace's property is matched to someone else's.\n- **Price delivery**, in four documented modes ([Google, Pricing delivery modes, 2025](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode)): ARI push (availability, rates and inventory messages from which Google computes prices itself, visible \"within 15 to 20 minutes\"); Pull, in which \"Google queries your service on a regular basis to refresh its cache\"; Changed Pricing, which pulls only a subset; and Live Pricing Queries, \"pricing requests from Google for a current auction\".\n- A **point-of-sale file** that defines landing pages: for each point of sale (POS, the market, language, currency and device of the user), a URL template into which Google substitutes the stay and the click context.\n- **Price accuracy** enforcement, which [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) covers: Google requires prices to be \"accurate and bookable online\" and hides itineraries or switches off partners whose landing pages disagree ([Google Hotel Center Help, n.d.](https://support.google.com/hotelprices/answer/6064419?hl=en)).\n\nGoogle's documentation says each Live Pricing Query has a deadline \"typically up to 4000 milliseconds\", that a late answer loses that search but should still be sent so it can be cached, and that live queries apply only where Google holds no cached price ([Google, Query messages, 2026](https://developers.google.com/hotels/hotel-prices/dev-guide/query-messages)). The same page notes that in European Economic Area (EEA) countries, Live Query is no longer available for hotel-specific searches under Google's \"New Search experience\". **The rules of a metasearch channel are written by the engine and change without the marketplace's consent**, which is the architectural reason to keep them inside one integration service rather than spread across the platform.\n\n### The B2B distribution API\n\nA **B2B distribution API** lets another business sell the marketplace's supply to its own customers: search, price, book and manage stays, under the reseller's brand or inside its tools. Expedia Group's Rapid API is the most fully documented example. Its lodging flow is content, geography, shopping, price check, booking and itinerary management ([Expedia Group Developer Hub, n.d.](https://developers.expediagroup.com/rapid/lodging)). Content is pulled as files and \"requires daily refreshes\". Shopping returns rates for up to 250 properties per request and returns tokenized links that \"expire after a short period\" ([Rapid Shopping, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/about-shopping-api)). The response schema is \"the same for B2B and B2C\", and \"only the launch and compliance requirements differ by audience\".\n\nThe commercial weight of this channel is visible in filings. Expedia Group's fiscal 2025 annual report describes its B2B segment as fueling \"a wide range of travel and non-travel companies including airlines, offline travel agents, online retailers, corporate travel management and financial institutions\", connected through Rapid, white-label or co-branded templates, or an agent tool. B2B gross bookings were **$35.7 billion** in 2025, up 20%, while consumer gross bookings grew about 3% ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)). Booking.com's Demand API serves the same kind of partner and documents three payment flows: the partner charges the traveler and pays Booking.com by virtual credit card (VCC); a corporate flow in which the partner \"pays using VCC (e.g. AirPlus) or MOTO flows for business travel\" (mail order or telephone order, a card-not-present method); and payment at the property ([Booking.com Developers, n.d.](https://developers.booking.com/demand/docs/payments/overview)).\n\nThe forms differ in what the partner controls:\n\n| Form | Who renders the guest experience | Who takes payment | Typical contract |\n| --- | --- | --- | --- |\n| **Link affiliate** | The marketplace (the guest is sent to its site with a tracking ID) | The marketplace | Commission share on stayed bookings |\n| **White label** | The marketplace, themed in the partner's brand | Usually the marketplace | Commission share; partner brand on the page |\n| **API reseller** | The partner, from API data | Partner or marketplace, per flow | Commission or net rate plus partner margin |\n| **Travel agent tool** | The marketplace's agent tool, or the agency's own system | Agency, guest at property, or marketplace | Agent commission |\n| **Corporate travel** | A travel management company (TMC) or a corporate booking tool | The company's central card or VCC; invoice | Negotiated rates; policy and duty-of-care data |\n\n### Landing assembly\n\n**Landing assembly** is the composition of an entry page (a destination page, a metasearch landing, a campaign page) from a default or supplied stay query, the search pipeline's results, editorial and structured content, and merchandising slots, rendered so that crawlers, humans and accuracy checkers read the same prices. [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html) establishes that landing pages must call the same pipeline as guest search. This chapter owns the rest: which pages exist, how they render, which slots they carry and how they are measured.\n\n## Architecture: One Offer, Many Doors\n\nThe architecture I recommend has three layers. At the bottom are the **shared contracts** that [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html), [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) and [Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html) own: the stay query, the offer with its price composition and validity stamp, the price check and the reservation. In the middle are **channel adapters**, one per family, each owning what is specific to its audience. At the top is the **edge**, which classifies traffic before it costs anything.\n\n![Web and apps, metasearch and the partner API each send one arrow to a single offer API on the right and one dotted arrow to a channel ledger on the left.](assets/images/42-demand-channels/42-every-door-one-offer.jpeg)\n**Figure 2:** *Every door calls the same offer. Web and app backends, the metasearch integration and the partner API are adapters over one stay query and offer API. Each writes to a channel ledger that joins clicks, quotes and bookings, so channels can be compared on what they earned.*\n\nThe three adapters have different responsibilities and, above all, different prohibitions:\n\n| Adapter | Responsibility | Owns | Must not |\n| --- | --- | --- | --- |\n| **Backend for frontend (BFF)**, per surface | Assemble pages and app screens from domain APIs; server-render crawlable pages; apply surface-specific layout and merchandising | Page composition, rendering budget, slot layout | Compute prices, decide availability, or call the ARI store directly |\n| **Metasearch integration** | Hotel list feeds, price delivery, live-query answers, landing resolution, click-and-quote logging, partner reporting | Engine contracts, feed schedules, POS mapping, click records | Hold its own copy of fee, tax, currency or member logic |\n| **Partner distribution API** | Partner onboarding and keys; content files; shop, price check, book and manage; quotas and retry budgets; partner payment flows | Partner contracts, quotas, partner reporting | Bypass the price check or create reservations outside the reservation contract |\n| **Channel ledger** | One record per click, quote, session and booking with its channel, and its later outcome (stayed, canceled) | Channel facts for attribution and accuracy | Decide attribution credit itself; [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html) owns the models |\n\n### Web and apps: backends for frontends and server rendering\n\nA **backend for frontend** is a thin service per client surface (web, iOS, Android) that composes domain APIs into the shape one screen needs, so that search never learns about app versions and the offer service never learns about page layouts.\n\nThree documented cases show the range of designs. Booking.com, in a September 2026 post, says each major page (home, search results, property page) has its own Node.js rendering service owned by the team for that page, that sections such as the rooms table are owned by different teams and can be deployed independently through Webpack Module Federation, and that pages are server-rendered because they \"have to work when client-side JavaScript is not available, and they have to be crawl-able\". The same post describes leaving Perl rendering \"one fragment at a time\", each swap behind an experiment ([Booking.com Engineering, 2026](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002)). Airbnb described in 2021 a server-driven UI system, the Ghost Platform, that sends screen structure from the server to web, iOS and Android to address the problem that \"each time we need to add new features to our listing page, we need to release a new version of our mobile apps\" ([Airbnb Engineering, 2021](https://medium.com/airbnb-engineering/a-deep-dive-into-airbnbs-server-driven-ui-system-842244c5f5); five years old, and the current state is not public). Agoda, in May 2026, described serving white-label partners from one design system with design tokens and per-partner themes: \"New partner = new theme, not new code\" ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-agoda-powers-multiple-travel-brands-with-one-design-system-a48de5f906af)).\n\nApps carry many of the bookings and the longest tail of versions. Trip.com reported that \"over 90% of our total transaction orders were executed through our mobile channels\" in 2025 ([Trip.com Group 20-F, 2026](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm)); Booking Holdings reported its mobile-app share of room nights as a mid-fifties percentage ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). The consequence is that **app releases cannot be recalled**: a rule in the client (a retry policy, a price label) stays wrong while old versions remain installed. Corvane learned this from a retry shipped in a January 2027 app release, which created 212 duplicate bookings ([Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html)). The rules I use:\n\n1. **Prices, policies and eligibility are rendered from server data, never computed in the client.** The client may format a number; it may not add a fee.\n2. **Every client call that changes state carries a server-minted idempotency key**, and client retry behavior is part of the API contract, with a server-side minimum supported version.\n3. **Server-driven layout for surfaces that change weekly** (landing modules, merchandising slots, trip screens); native screens for the booking path, where stability matters more than speed of change.\n\n### Landing pages and SEO\n\nSearch-engine optimization (SEO) for stays is about destination and theme pages: \"Hotels in Alfama\", \"Apartments with a pool in the Algarve\", \"Hotels near Lisbon airport\". No company in this book's research has published its landing-page architecture; the design below is my recommendation, consistent with [Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html) and [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html).\n\n- **The page set comes from the destination graph.** Places and their parent edges define which pages exist, their URLs and breadcrumbs. A page exists only where the place holds enough bookable supply for a default stay; below the threshold it redirects to its parent.\n- **Pages are search results with a default stay.** Landing assembly runs the search pipeline with a declared default (for example, next weekend, two adults) and caches the result. Every \"from €62\" carries the offer's validity stamp and is recomputed when it expires; a price claim on a landing page is subject to the same consumer law as a search result ([The Moment of Decision: Property Pages, Room Selection and Total Price](property-page-and-room-selection.html)).\n- **Server-render the first view** with the prices and the property list in the HTML, and the same structured data for crawlers and for price-accuracy checkers. Google's hotel price structured data, based on Schema.org's `Hotel` and `HotelRoom` types, exists so that Google can \"accurately extract prices from your webpages\" for validation ([Google for Developers, n.d.](https://developers.google.com/hotels/hotel-prices/structured-data/hotel-price-structured-data)).\n- **Search-engine crawlers are served from cache**, never from live availability ([Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html)).\n\n### Merchandising slots\n\nLanding pages and the home screen carry **merchandising slots**: a \"deals this weekend\" strip, a member-price banner, a campaign tile, a sponsored property. A slot is a placement that the BFF fills from a decision service. Two rules keep slots from becoming a second, unaudited ranking. First, a slot's content comes from the same offer and eligibility services as search, so a \"deal\" shown on a landing page is a real, bookable price for the shown guest ([Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html) owns eligibility). Second, any slot that a partner pays for is labeled and logged as paid visibility, under the same disclosure rules as ranking ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html)).\n\n## Metasearch in Practice\n\n### The click as a contract\n\nA metasearch click is a promise made on the marketplace's behalf by someone else: \"this hotel, these dates, this party, this total, from this seller\". The landing page either honors it or does not. The documentation gives the integrator an unusual gift: Google substitutes the advertised stay and price into the landing URL. Its documented variables include the check-in and check-out dates, `PARTNER-HOTEL-ID`, `PARTNER-ROOM-ID` and `RATE-PLAN-ID`, the occupancy, `USER-COUNTRY`, `USER-DEVICE`, `USER-CURRENCY`, and `PRICE-DISPLAYED-TOTAL`, `PRICE-DISPLAYED-TAX` and `PRICE-DISPLAYED-FEES`, \"the total room cost shown to the user\" ([Google, Landing page URLs, 2026](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-urls)).\n\nThat makes a design possible that the marketplace should not skip: **check every paid click on arrival**. The landing resolver reads the advertised total, re-quotes the stay through the offer API, compares the two, logs the result in the click record, and only then renders the page. The marketplace then measures accuracy on every paid click it receives, rather than waiting for the engine's sample. [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)'s sampler remains the measure of the cache; the click-time check is the measure of what guests actually saw.\n\n![Swimlanes for metasearch, integration, offer API, landing page and channel ledger: the integration answers a live query from the offer API, and when the guest clicks it re-quotes the offer, records both totals in the ledger and tells the landing page whether the price matches.](assets/images/42-demand-channels/42-click-checked-on-arrival.jpeg)\n**Figure 3:** *A metasearch click checked on arrival. The integration answers the engine's live query from the offer API, then re-quotes the same offer when the guest lands, records both totals against the click, and tells the page whether the advertised price still holds and why not.*\n\n### What the landing page should do when the price has moved\n\nThe engine's policy and consumer law limit the options. The page must not hide the change, and it must not show the old price as available. My rules for the landing resolver:\n\n| Outcome of the click-time re-quote | Landing behavior | Recorded as |\n| --- | --- | --- |\n| Same offer, same total | Show the advertised room and rate first, total identical to the ad | Match |\n| Same offer, lower total | Show the lower total | Match (in the guest's favor) |\n| Same offer, higher total | Show the new total, say that the price changed since the search, offer alternatives | Mismatch, with the cause from the kernel's composition trace |\n| Rate sold out, others available | Say so, show the next-best rate of the same room type | Mismatch: stale availability |\n| Property sold out for the stay | Say so, show alternatives nearby and other dates | Mismatch: stale availability |\n| Advertised rate was audience-restricted (member, mobile) and the guest is not eligible | Show the public total; offer sign-in if eligibility is possible | Mismatch: audience leakage |\n\nThe cause column matters more than the count. [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) decomposed Roomstead's nine points of mismatch in May 2027 into stale price (3.6), stale availability (2.1), fee and tax composition (1.4), currency (0.8), member-price leakage (0.6) and other (0.5). The first two are cache problems. The last three are channel problems: the feed exporter composed taxes, currency and audience differently from the landing page. **A channel adapter that composes prices is a Price Drift generator**, and the cure is that it calls the offer kernel and nothing else.\n\n### Price delivery: which mode, for which supply\n\n| Mode | Who does the arithmetic | Freshness | Load on the marketplace | Fits |\n| --- | --- | --- | --- | --- |\n| **ARI push** | The engine computes prices from rates, restrictions and taxes the marketplace sends | Minutes after a change | Low; one message per change | Hotels and properties with simple, push-based ARI; partners that want few queries |\n| **Pull and Changed Pricing** | The marketplace | Bounded by the pull schedule and hint frequency | Moderate, scheduled | Marketplaces with a fast offer cache and complex price composition |\n| **Live queries** | The marketplace | Current, within the deadline | Proportional to engine traffic, peaky | Long-tail itineraries; supply with volatile prices |\n\nFor an OTA with derived rates, member prices and city taxes, ARI push hands the composition problem to the engine, whose arithmetic will disagree with the marketplace's in exactly the cases guests notice. Pull and live queries keep the arithmetic in one place, at the price of load. My default is **pull for the popular head of itineraries, live queries for the tail, and push only where the marketplace's own composition is trivially reproducible**. In every mode, the feed is generated from the offer API, never from a separate export of the ARI store.\n\n### Who metasearch is good for\n\nThe economics are uncomfortable. Metasearch lets every seller of the same hotel compete on displayed price, and the hotel itself increasingly competes there too. Under the EU Digital Markets Act (DMA), Booking was designated a gatekeeper for Booking.com on 13 May 2024, and Article 5(3) of the DMA bars gatekeepers from preventing business users from offering different prices or conditions through other intermediaries or their own direct channels ([European Commission, DMA gatekeepers, n.d.](https://digital-markets-act.ec.europa.eu/gatekeepers_en); [Regulation (EU) 2022/1925](https://eur-lex.europa.eu/eli/reg/2022/1925/oj), 2022); courts in several EU countries had already restricted such clauses ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html) covers the details). An OTA's metasearch position therefore rests on accuracy, landing conversion, payment and member options and supply breadth, not on a guaranteed lowest price.\n\nBooking Holdings' 2025 annual report states the alternative strategy plainly. It reports that consumers \"coming directly to our platforms\" booked a mid-fifties percentage of its room nights in 2025, up year on year, which \"benefited our marketing efficiency\" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Airbnb's report credits its brand with allowing \"lower reliance on paid marketing channels\" ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Metasearch is a channel to be accurate and efficient in, and one whose share a marketplace should reduce over time by turning first bookings into returning guests.\n\n## Partner Distribution in Practice\n\n### The flow and its freshness contract\n\nA partner distribution API exposes the same steps as the marketplace's own checkout, separated by explicit freshness contracts. I would design it on Rapid's documented pattern, which is the clearest public one:\n\n![A flow from content files to shop, price check, book and manage, with a quotas gauge governing shopping and notifications attached to management.](assets/images/42-demand-channels/42-partner-distribution-flow.jpeg)\n**Figure 4:** *The partner distribution flow. Each step trades freshness for cost: content is cached by the partner, shopping is live but rate-limited by what the partner sells, the price check produces a binding quote, and booking and management go through the same reservation contract as the marketplace's own checkout.*\n\n- **Content** is pulled as files with incremental updates and an inactive-property list, so the partner can map properties into its own catalog.\n- **Shopping** is live, bounded in size (Rapid caps it at 250 properties and 8 rooms per request) and rate-limited.\n- **Price check** returns a binding quote with a validity period, or a new price, or \"search again\". At Corvane, binding quotes are held for 15 minutes from the price check, the same as on Roomstead's own checkout ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)).\n- **Booking** creates a reservation through the reservation contract, with the partner's payment flow, and returns retrieval links.\n- **Management** covers changes, cancellations and notifications, through the same cancellation policy engine as the marketplace's own site ([When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html)).\n\n### Quotas by traffic against revenue\n\nPartner traffic has the highest look-to-book ratios on the platform, because partners aggregate many sellers and refresh their own caches broadly. Agoda described in 2023 how broad searches from affiliate traffic drove evictions in its Price Delivery System, which serves prices for its \"web, mobile, and affiliate APIs\" ([Agoda Engineering, 2023](https://medium.com/agoda-engineering/improving-performance-using-distributed-cache-with-couchbase-aa7ebf3a12c9)). Expedia's Rapid documentation states the governing rule: rate limits are calculated \"monthly, taking into account a partner's traffic vs. revenue\", typically over a three-month window, with \"a very generous allowance for the first 3 months\" for new partners ([Rapid rate limiting, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting)).\n\nThat is a look-to-book contract, and I would make it explicit in four parts:\n\n1. **A shopping budget per partner**, recalculated monthly from stayed bookings over a trailing window, with a floor for new partners and a seasonal adjustment.\n2. **A retry budget**: every rejection returns HTTP 429 with a Retry-After header, and the partner contract caps retries. [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html) describes what happened when Corvane forgot the header on Black Friday 2027: one affiliate's client retried immediately and tripled its request rate.\n3. **A traffic class at the edge**, so a partner's broad crawl is shed before guest traffic on a peak day.\n4. **A cost line per partner** in the channel ledger: commission or margin plus search cost, against stayed revenue. A partner whose search cost exceeds its commission margin is a partner the marketplace is paying to browse.\n\n### Travel agents and corporate travel\n\nAgency and corporate demand adds requirements that a consumer API lacks:\n\n- **Payment flows**: the corporation's central card or a VCC, an invoice with the right VAT details, or payment at the property with the company's card on file. Booking.com's Demand API documents the corporate VCC and MOTO flows ([Booking.com Developers, n.d.](https://developers.booking.com/demand/docs/payments/overview)); [Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html) owns the card mechanics.\n- **Negotiated and qualified rates**: corporate rate plans visible only to an authenticated company, which are audience-restricted offers and must go through the same eligibility checks as member prices. Rapid exposes business rates through a `travel_purpose=business` attribute ([Rapid Shopping, n.d.](https://developers.expediagroup.com/rapid/lodging/shopping/about-shopping-api)).\n- **Traveler data and duty of care**: the company needs to know where its travelers are staying, so reservations carry the traveler's identity, the booker's and the company's references, and changes must be delivered back to the agency or TMC.\n- **Policy**: corporate booking tools enforce travel policy (price caps per city, approved properties). The marketplace provides the data; the tool enforces the policy.\n\nI would not build a separate stack for corporate demand: it is a set of rate audiences, payment flows and data fields on the same partner API.\n\n### AI assistants as the next partner\n\nBooking Holdings' 10-K warns that AI features of third-party platforms may \"satisfy user intent without directing users to our services\". To the architecture, an assistant shopping for a guest is a partner API client with many broad queries and few bookings, so the partner API's quotas and price-check contract are its natural foundation. [AI Across the Stay: Agents, Assistants and Automation](ai-in-travel-stays.html) takes up the strategy.\n\n## A Worked Example: One Click on Hotel Miradouro\n\nIn the target design that Corvane's forum approved in October 2027, Roomstead's metasearch integration is a service called **Lantern** and its partner API is **Gangway** (both described in the next section). To test the design, the distribution team replayed real clicks from early October 2027 through a Lantern prototype. Here is one of them.\n\nOn **Tuesday 5 October 2027**, a guest in Madrid compared hotels in Lisbon for **Friday 22 to Sunday 24 October**, two adults. Hotel Miradouro, the 84-room four-star hotel run by Duarte Silva's revenue team, sells its Standard Double Flexible rate at **€132** a night that weekend, including Portugal's 6% reduced VAT on accommodation. Lisbon's city tax is **€4** per adult per night, payable at the hotel on Roomstead's agency bookings.\n\n1. **The live query.** In the replay, the engine has no cached price for this itinerary and sends a live query for 20 Lisbon properties. Lantern calls the offer API in one batch; 18 offers come from Pricegrid's hot tier, 2 from on-demand computation. Lantern answers in **310 ms**, well inside the engine's deadline, with the room total of **€264** and a tax element of **€16** marked \"payable at the property\".\n2. **The click.** The guest clicks Roomstead's offer. The landing URL carries the stay, `PARTNER-HOTEL-ID`, the rate plan ID, `USER-COUNTRY=ES`, `USER-CURRENCY=EUR` and `PRICE-DISPLAYED-TOTAL=280`.\n3. **The re-quote.** Lantern resolves the point of sale (Spain, Spanish, euro, mobile) and re-quotes the same offer through the offer API. Kernel version and composition are identical; the total is €264 plus €16. Lantern writes the click record: advertised €280, current €280, match, kernel version, Pricegrid cell age 41 seconds.\n4. **The landing page.** The BFF renders Miradouro's property page with the advertised room and rate first, the total of €280 shown with the €16 city tax labeled as payable at the hotel, and the hotel's other rooms below. The guest books, as the real guest did.\n5. **The outcome.** The reservation carries the click record's ID. When the stay completes, the channel ledger marks the click \"stayed\"; if it had been canceled, the ledger would carry the cancellation against metasearch.\n\nIn the real October click, the old design failed. The 2014 feed exporter composed the city tax into the advertised total for some points of sale and not others, while the landing page showed the room total alone: the guest saw €264 under a €280 ad, and the engine's checker would have scored it as a mismatch. Neither number was wrong; their composition differed. That is the **1.4 points** of fee and tax mismatch in [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)'s audit. Of the 1.2 million Spanish and Portuguese clicks replayed, the prototype matched **96.9%** on arrival, against **95.7%** measured on the same clicks in the old path; nearly all the remaining mismatches were stale prices and availability, which belong to Pricegrid's freshness work rather than to the channel.\n\n## Corvane's Decisions: Lantern, Gangway and the Page Set\n\nThe forum of **12 October 2027** approved four decisions.\n\n**1. Lantern, Roomstead's metasearch integration.** One service owns the hotel list feeds, price delivery (pull for the popular head, live queries for the tail), point-of-sale and landing resolution, click-time re-quoting and the click-and-quote record. It replaces the 2014 feed exporter and the marketing landing-URL service by the end of Q2 2028. It calls the offer API and the offer kernel for every price; it has no pricing code of its own. Owner: Roomstead distribution engineering in Dublin. Its accuracy dashboard reports two numbers side by side: Corvane's click-time match rate on all paid clicks, and each engine's reported score.\n\n**2. Gangway, the group partner distribution API.** Content files, shop, price check, book and manage, on the One Stay offer and reservation contracts, with partner keys, quotas recalculated monthly from stayed revenue against shopping traffic, mandatory Retry-After, a retry budget in every contract, and a cost line per partner. It replaces the 2013 affiliate XML API by the end of 2028. The 46 API partners migrate first; the 2,300 link affiliates keep tracking links. Corporate and agency rates arrive as audience-restricted offers in 2029.\n\n**3. Landing pages from Waypoint.** The page set is derived from Waypoint, the group destination graph ([Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html)); a page exists only where the place has at least **ten** bookable properties (or, for Nookaway, ten listings) for the default stay, otherwise it redirects to its parent. Pages are server-rendered from the search pipeline and carry validity-stamped prices. The client-rendered search page gets a server-rendered first view in 2028, which retires the prerendering service. On the 2027 page list, the rule removes or redirects about **1.5 million** of the 2.6 million indexable URLs.\n\n**4. Dependence as a tracked number.** The share of gross reservations whose last external click came from one company (2026 baseline **41%**) is reported quarterly to the executive team. There is no cap; the ambition is **35% by 2030**, through the app, signed-in guests and Roomstead Circle, not by withdrawing from paid channels.\n\n![A reservoir fed by one thick pipe tagged 41% whose valve is held by an outside hand, and thinner owned pipes for the app, signed-in guests and membership, with a target of 35% by 2030.](assets/images/42-demand-channels/42-one-company-dependence.jpeg)\n**Figure 5:** *One search engine supplied the last external click on about 41% of Roomstead's gross reservations in 2026; the ambition is 35% by 2030, reached through the app, signed-in guests and Roomstead Circle rather than by leaving paid channels.*\n\nNookaway's listings would **not** be distributed through Gangway before 2029, and then only as a calendar-first product with host opt-in, for the reasons in the Hotels and Homes section below.\n\n## Trade-offs\n\n| Decision | Option A | Option B | Choose A when | Choose B when |\n| --- | --- | --- | --- | --- |\n| Metasearch price delivery | Push ARI and let the engine compute | Pull and live queries answered by the offer API | Price composition is simple and stable; traffic budget is tight | Derived rates, member prices, local taxes; accuracy is the binding constraint |\n| Where the metasearch logic lives | Inside the search or pricing teams' services | A dedicated integration service | One engine, low volume | Several engines, engine-specific rules, significant spend |\n| Web rendering | Client-rendered single-page application | Server-rendered first view, then hydration | Signed-in tools (extranets, agent tools) that crawlers never see | Destination, search and property pages that need crawling, fast first paint and price checks |\n| App UI changes | Native screens per release | Server-driven layout | Booking path, payment, anything safety-critical | Landing modules, merchandising, trip timeline |\n| Partner surface | Link affiliates and white label only | Full API reseller program | Few large partners; supply is the differentiator | Many resellers, travel agents and corporate demand worth its look-to-book |\n| Partner quotas | Fixed per partner | Recalculated from traffic against revenue | Small program, few partners | Large program; partners with very different conversion |\n| Landing page set | Generated for every place and filter | Derived from the destination graph and gated on bookable supply | Never, in my view | Always |\n\nThe row with the largest consequences is the second. Spreading metasearch logic across search and pricing services saves a service but scatters engine-specific rules (point-of-sale mapping, live-query deadlines, landing URL variables, EEA changes) across teams that do not own the commercial relationship. A dedicated integration service has one owner, who answers both to the engine and to the CFO.\n\n## Hotels and Homes: Where the Two Marketplaces Differ\n\n| Dimension | Accommodation marketplace (OTA-style) | Hosted-stays marketplace |\n| --- | --- | --- |\n| **Channel mix** | Large paid share: paid search and metasearch; affiliates and B2B resellers | Mostly direct, app and organic; referrals; little metasearch |\n| **What guests compare** | The same hotel from several sellers, on price | Different homes, on fit, photos and trust; the home is often sold only by its host's chosen platforms |\n| **Metasearch** | Central: price feeds, live queries, accuracy policies, landing rules | Vacation-rental comparison sites exist, but the comparison is between homes rather than sellers |\n| **Landing pages** | Destination and hotel pages; bid targets for paid search as much as organic pages | Destination and category pages (\"cabins\", \"homes with a pool\"); mostly organic |\n| **Outbound distribution** | Natural: room-type inventory with many units can be resold | Constrained: one-unit calendars, host acceptance, house rules, deposits; already multi-listed by hosts |\n| **Partner API shape** | Shop by room type and rate plan, occupancy, many units | Calendar first: per-day availability, valid arrival and departure days, one rate plan, payment schedules |\n| **Look-to-book exposure** | Highest; partner and metasearch traffic dominate | Lower; mostly own traffic |\n| **Main channel failure** | Phantom Availability and Price Drift on paid clicks | Double booking when a distributed calendar is stale |\n| **What can be shared** | Edge and traffic classes, BFF framework, landing assembly on the shared search pipeline, channel ledger, partner API framework (keys, quotas, retry budgets) | The same, with different products on the partner API |\n\nRapid's documentation is the clearest public evidence of how different hosted stays are when distributed. Vrbo inventory in Rapid is \"single-unit only\" with \"a single rate plan\"; same-day bookings and windows under 72 hours are excluded \"because hosts need time to process bookings and prepare the property\"; a rental agreement \"must be displayed on any check-out page\"; and the availability calendar returns per-day availability and stay rules, with \"Caching is not supported at this time\" ([Rapid Vrbo integration guide](https://developers.expediagroup.com/rapid/lodging/vacation-rentals/vrbo-integration-guide) and [availability calendar](https://developers.expediagroup.com/docs/products/rapid/lodging/vacation-rentals/vrbo-availability-calendar), n.d.; the vacation-rentals page says the product is available only to a limited number of partners). **A hotel-shaped shopping API cannot sell homes**, and a hosted-stays marketplace that distributes its homes adds one more channel to the calendar-sync problem that [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) describes.\n\nMy judgement for a group running both: **share the channel machinery, not the channel strategy.** The edge, the BFF framework, landing assembly, the channel ledger and the partner API framework are one platform. The OTA should invest in metasearch accuracy and partner distribution because its guests compare sellers. The hosted-stays marketplace should invest in direct, app and organic channels, and distribute outward only for hosts who opt in, through a calendar-first product with no caching and a lead time. Corvane chose exactly that, and Nookaway's homes stayed out of Gangway until at least 2029.\n\n## Failure Modes\n\n**The feed with its own arithmetic.** The metasearch exporter, the landing page and the partner API each compose taxes, fees, currency and member prices. Each copy is right in its own tests and wrong against the others. The symptom is mismatch causes that name a tax, a fee or an audience rather than availability. The fix is that channel adapters call the offer kernel and nothing else.\n\n**Landing on the wrong thing.** The click advertised a specific room and rate; the landing page shows the property's cheapest room, a different currency, or a search results page. The guest cannot find what they clicked and leaves. Engines score this as a mismatch, and the marketplace paid for the click.\n\n**Partners without budgets.** Fixed quotas, or none, give a price-comparison partner the same shopping capacity as an airline's white-label site that books a hundred times more. On peak days, the broadest crawler evicts the cache guests need. Without Retry-After and retry budgets, quota rejections multiply the load they were meant to shed.\n\n**The partner booking path.** Partner reservations go through an older path than the main checkout, without idempotency keys, price check or the same cancellation policy. Duplicate bookings and Policy Spaghetti follow.\n\n**A million thin pages.** Pages generated for every place and filter dilute crawl budget, show near-empty results and carry \"from\" prices cached for days.\n\n**Measuring clicks, not stays.** Channels are compared on bookings made, so the channel that brings refundable bookings that later cancel looks best. The marketplace pays for the booking and earns on the stay; the channel ledger must carry the stay outcome.\n\n**Dependence nobody owns.** The share of business that one external company controls grows quietly, spread across marketing, search and distribution, until an engine changes its rules.\n\n## The Chief Architect's View\n\n**What to decide.**\n\n1. **The channel-adapter rule.** Every channel calls the stay query, the offer API and the reservation contract; no adapter computes prices or creates reservations by another path. This is the rule that prevents Price Drift across channels, and the architecture board should own it.\n2. **One owner per external integration.** Metasearch integration, partner distribution and landing assembly each have an owning team that answers for the engine's or partner's contract and for the channel's cost. At Corvane, Lantern belongs to Roomstead distribution engineering and Gangway to a group team, because Gangway's framework is shared across brands.\n3. **The look-to-book contract.** Quotas per partner and per engine, recalculated from stayed revenue, with retry budgets and traffic classes. Distribution sets the commercial terms; the platform sets the capacity envelope; neither may change the other's numbers alone.\n4. **The channel ledger as a governed data product.** Clicks, quotes, sessions and bookings with their stay outcomes, owned jointly with the data platform, so that attribution, accuracy and channel profitability read the same records ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)).\n5. **The dependence metric.** Report the share of business controlled by the largest external company, and decide which owned-channel investments reduce it.\n\n**Who decides.** The CFO and the brand's commercial lead decide spend per channel; the Chief Architect decides how channels connect and what they may not do; the data platform decides how the facts are recorded. Disputes go to the architecture forum, with the channel ledger as evidence.\n\n**What to watch.** Click-time match rate by engine and cause; live-query latency against each engine's deadline; shopping requests and search cost per stayed booking by partner; stayed, cancellation-adjusted contribution per channel; and the dependence share.\n\n**Long-term considerations.** Engines change their surfaces (the EEA live-query change removed an integration mode by a rule nobody at the marketplace wrote); AI assistants may shop through partner APIs at scale; and hotels' direct-booking pressure, strengthened by the end of parity clauses, will keep compressing metasearch margins. The durable answer to all three is the same: **accurate, cheap offers behind every door, and more guests who come back without being bought again.**\n\n## Questions to Ask\n\n1. Which channels call our offer API, and which compute or cache prices themselves? Who owns reducing the second list to zero?\n2. Can we join a single paid click to the price it advertised, the price we showed on landing, and whether the stay happened?\n3. What is our click-time match rate by engine and point of sale, and how does it compare with the engines' own scores?\n4. Which price delivery mode do we use with each metasearch engine, and why? What is our live-query latency at the 99th percentile against each engine's deadline?\n5. How are partner quotas set? What is each partner's search cost against its commission margin, and do our rejections return Retry-After?\n6. Do partner bookings go through the same price check, idempotency keys, reservation contract and cancellation policy engine as our own checkout?\n7. How many landing pages do we publish, how many have enough bookable supply for their default stay, and are their prices validity-stamped?\n8. Which business rules live in the app client, and how long would it take to correct one in every installed version?\n9. What share of our gross bookings comes from the last click of one external company, and what are we doing about it?\n10. For the hosted-stays side: if we distributed our homes to other sellers, how would their calendars stay as fresh as our own?\n\nEvery channel in this chapter depends on one decision being made well: what the marketplace can share between its two businesses and what it must keep apart. The demand side argued for shared machinery and separate strategies. [Part IX — LEADERSHIP: The Chief Architect's Agenda](part-9.html) opens the Chief Architect's agenda, and its first chapter, [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html), makes that argument for the whole platform.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Booking Holdings Form 10-K for fiscal 2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), Booking Holdings, 2026 — marketing scale, direct and mobile-app shares of room nights, KAYAK as a consumer brand, AI risk factor.\n- [Expedia Group Form 10-K for fiscal 2025](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm), Expedia Group, 2026 — B2B segment, its partners and connection modes, B2B and B2C gross bookings, trivago as a metasearch segment.\n- [Airbnb Form 10-K for fiscal 2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), Airbnb, 2026 — lower reliance on paid marketing.\n- [Trip.com Group Form 20-F for fiscal 2025](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369d20f.htm), Trip.com Group, 2026 — over 90% of orders through mobile channels.\n- [Node.js at Scale, Rebalanced](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002), Booking.com Engineering, 2026 — per-page rendering services, fragment ownership, server rendering for crawlability, strangler migration from Perl.\n- [A Deep Dive into Airbnb's Server-Driven UI System](https://medium.com/airbnb-engineering/a-deep-dive-into-airbnbs-server-driven-ui-system-842244c5f5), Airbnb Engineering (Ryan Brooks), 2021 — server-driven UI to avoid app releases for listing-page changes.\n- [How Agoda Powers Multiple Travel Brands with One Design System](https://medium.com/agoda-engineering/how-agoda-powers-multiple-travel-brands-with-one-design-system-a48de5f906af), Agoda Engineering, 2026 — white-label partners as themes.\n- [Improving Performance Using Distributed Cache with Couchbase](https://medium.com/agoda-engineering/improving-performance-using-distributed-cache-with-couchbase-aa7ebf3a12c9), Agoda Engineering, 2023 — affiliate traffic driving price-cache evictions.\n\n### Standards, regulation and documentation\n\n- [Pricing delivery modes](https://developers.google.com/hotels/hotel-ads/dev-guide/delivery-mode), Google for Developers, 2025 — ARI push, Pull, Changed Pricing and Live Pricing Queries, with freshness expectations.\n- [Query messages](https://developers.google.com/hotels/hotel-prices/dev-guide/query-messages), Google for Developers, 2026 — live query deadlines, eligibility and the EEA restriction.\n- [Landing page URLs](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-urls), Google for Developers, 2026 — variables substituted into landing URLs, including the displayed total.\n- [Point of Sale file syntax](https://developers.google.com/hotels/hotel-prices/dev-guide/pos-syntax), Google for Developers, 2025 — landing pages per point of sale.\n- [Hotel list feed](https://developers.google.com/hotels/hotel-prices/dev-guide/hlf), Google for Developers, 2025 — property feed and permanent IDs.\n- [Hotel price structured data](https://developers.google.com/hotels/hotel-prices/structured-data/hotel-price-structured-data), Google for Developers, n.d. — machine-readable prices for validation.\n- [Price Accuracy Policy](https://support.google.com/hotelprices/answer/6064419?hl=en), Google Hotel Center Help, n.d. — accurate and bookable prices and their enforcement.\n- [Rapid Lodging overview](https://developers.expediagroup.com/rapid/lodging), [About the Shopping API](https://developers.expediagroup.com/rapid/lodging/shopping/about-shopping-api) and [Rate limiting](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting), Expedia Group Developer Hub, n.d. — content, shop, price check, book and manage; request limits; quotas by traffic against revenue.\n- [Vrbo integration guide](https://developers.expediagroup.com/rapid/lodging/vacation-rentals/vrbo-integration-guide) and [Vrbo availability calendar](https://developers.expediagroup.com/docs/products/rapid/lodging/vacation-rentals/vrbo-availability-calendar), Expedia Group Developer Hub, n.d. — distributing hosted stays: single unit, lead time, rental agreement, uncached calendar.\n- [Demand API payments overview](https://developers.booking.com/demand/docs/payments/overview), Booking.com Developers, n.d. — partner, corporate (VCC and MOTO) and pay-at-property flows.\n- [Gatekeepers](https://digital-markets-act.ec.europa.eu/gatekeepers_en), European Commission (Digital Markets Act), n.d. — Booking's designation for Booking.com.\n- [Regulation (EU) 2022/1925, the Digital Markets Act](https://eur-lex.europa.eu/eli/reg/2022/1925/oj), Official Journal of the EU, 2022 (CELEX 32022R1925) — Article 5(3) on price and condition parity.\n\n### Research and practitioner sources\n\n- No primary engineering source on any company's SEO landing-page architecture was found; the landing-page design in this chapter is the author's recommendation.\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

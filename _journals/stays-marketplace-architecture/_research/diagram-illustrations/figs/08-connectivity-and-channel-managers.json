@@ -1,0 +1,26 @@
+[
+ {
+  "id": "08-hotel-stack-behind-partner",
+  "visual_goal": "Show that the OTA sees only its connectivity partner, while behind it an RMS, a PMS and often a CRS each assert part of the truth.",
+  "prompt": "A left-to-right illustration with a tall vertical wall in the right third. Left of the wall, four generic server boxes: 'RMS' at the far left, 'PMS' to its right, 'CRS' above-right of 'PMS', and 'Channel manager' just left of the wall. One arrow from 'RMS' to 'PMS' labeled 'rates'. One arrow from 'PMS' up to 'CRS'. One arrow from 'PMS' to 'Channel manager'. One arrow from 'CRS' down to 'Channel manager'. One arrow passes through an opening in the wall from 'Channel manager' to a box right of the wall labeled 'OTA gateway', labeled 'ARI push'. One return arrow from 'OTA gateway' back to 'Channel manager' labeled 'reservations'. A small generic observer figure stands beside 'OTA gateway', looking at the opening in the wall. These eight labels are the only words in the image.",
+  "alt": "Behind a wall, an RMS feeds a PMS, which feeds a CRS and a channel manager; only the channel manager connects through the wall to the OTA gateway with ARI pushes and reservations."
+ },
+ {
+  "id": "08-inbound-gateway-pipeline",
+  "visual_goal": "Show the inbound half of the gateway: messages are normalized, validated against what the marketplace knows, held if suspicious, sequenced per property, stored, and reconciled back to the partner.",
+  "prompt": "A strictly linear left-to-right pipeline of single arrows, each element connected only to the next. Far left: a plug connector box labeled 'Partner'. One arrow labeled 'ARI message' into a gate labeled 'Edge'. One arrow from 'Edge' into a box labeled 'Normalize'. One arrow from 'Normalize' into a magnifier box labeled 'Validate'. From 'Validate' two arrows: one down into an orange waiting tray labeled 'Hold queue', and one right labeled 'accepted' into a box with stacked numbered tickets labeled 'Sequence'. One arrow from 'Sequence' into a database cylinder labeled 'ARI store'. One arrow from 'ARI store' down into a box labeled 'Reconciliation'. One long arrow along the bottom from 'Reconciliation' back to 'Partner', labeled 'drift report'. Edge has exactly one arrow in and one arrow out.",
+  "alt": "Partner ARI messages pass edge, normalize, validate (suspicious ones go to a hold queue), sequencing and the ARI store; reconciliation sends a drift report back to the partner."
+ },
+ {
+  "id": "08-reservation-delivery-tracked",
+  "visual_goal": "Show reservation delivery as a tracked state: pushed in order, acknowledged with the PMS confirmation number, or escalated to Partner Hub when acknowledgement is late.",
+  "prompt": "A left-to-right swimlane illustration with four vertical lanes headed by icons and labels: an outbox tray labeled 'Switchyard', a plain connector box labeled 'Channel manager', a hotel desk computer labeled 'PMS', and an inbox with a bell labeled 'Partner Hub'. Upper part, in green: an arrow from 'Switchyard' to 'Channel manager' labeled 'version 1'; an arrow from 'Channel manager' to 'PMS' labeled 'create booking'; a return arrow from 'PMS' to 'Channel manager' labeled 'confirmation number'; a return arrow from 'Channel manager' to 'Switchyard' labeled 'acknowledge'. A thin horizontal divider. Lower part, in orange, with a small stopwatch icon labeled '10 minutes': one arrow from 'Switchyard' across to 'Partner Hub' labeled 'alert'.",
+  "alt": "Swimlanes for Switchyard, channel manager, PMS and Partner Hub: version 1 is pushed and acknowledged with a confirmation number, or after 10 minutes without acknowledgement, the booking goes to Partner Hub with an alert."
+ },
+ {
+  "id": "08-hold-states",
+  "visual_goal": "Show Switchyard's hold states: a suspicious price is held (last good price kept, or product closed), released by confirmation, or rejected after 4 hours.",
+  "prompt": "A simple state map of five rounded tiles. Left: blue 'Received'. Top right: green 'Applied'. Center: orange 'Held'. Right of 'Held': teal 'Released'. Bottom: red 'Rejected'. Exactly six arrows: one from 'Received' to 'Applied'; one from 'Received' to 'Held'; one from 'Received' to 'Rejected'; one from 'Held' to 'Released' labeled 'confirmed'; one from 'Held' down to 'Rejected' labeled '4 hours'; one from 'Released' up to 'Applied'. A small padlock-on-price-tag icon inside 'Held'.",
+  "alt": "Received prices go to Applied, two held states or Rejected; held prices are Released on confirmation and then Applied, or Rejected after 4 hours."
+ }
+]

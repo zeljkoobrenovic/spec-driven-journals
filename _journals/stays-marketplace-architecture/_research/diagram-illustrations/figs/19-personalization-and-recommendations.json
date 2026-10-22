@@ -1,0 +1,20 @@
+[
+ {
+  "id": "19-five-personalization-capabilities",
+  "visual_goal": "Show personalization as separately owned capabilities: intent captured and stored once, embeddings and recommenders proposing candidates, an alert evaluator watching saved stays, and everything passing a live price and availability path before reaching a guest.",
+  "prompt": "A left-to-right architecture illustration. At the far left, a phone and a laptop with small footprints, labeled 'Guest sessions'. One arrow right, labeled 'journey events', into a funnel box 'Intent capture'. One arrow right into a filing-cabinet box 'Trip intent store'. From 'Trip intent store' two arrows: one up-right into a box with a constellation-of-dots icon 'Embeddings', and one down-right into a box with a bell-and-magnifier icon 'Alert evaluator'. From 'Embeddings' one arrow right into a box 'Recommendations'. In the middle right, a gate-shaped box with a price-tag and calendar icon 'Live price and availability' receives one arrow from 'Recommendations' and one from 'Alert evaluator'. From the gate one arrow right, labeled 'bookable totals', into a screen with cards 'Surfaces'. From 'Alert evaluator' one more arrow right along the bottom into a megaphone box 'Notifications'.",
+  "alt": "Guest sessions feed intent capture and a trip intent store; embeddings and recommendations propose candidates and an alert evaluator watches saved stays; both pass through live price and availability before surfaces show bookable totals, and alerts go to notifications."
+ },
+ {
+  "id": "19-trip-intent-lifecycle",
+  "visual_goal": "Show the lifecycle of a trip intent as a small state machine where booking, dismissal and expiry each end it.",
+  "prompt": "A state diagram of six rounded state bubbles on a light background. At the left, a teal bubble 'Inferred'. One arrow right from 'Inferred' into a large green bubble 'Active', labeled 'save or alert'. One arrow down from 'Inferred' into a grey bubble 'Expired' at the bottom middle. Below 'Active', a pale blue bubble 'Dormant', with one arrow from 'Active' down to 'Dormant' labeled 'no activity' and one arrow from 'Dormant' back up to 'Active' labeled 'guest returns'. One arrow from 'Dormant' left into 'Expired'. To the right of 'Active', two end bubbles: an orange bubble 'Booked' with one arrow from 'Active', and a grey bubble 'Dismissed' with one arrow from 'Active'. 'Booked', 'Dismissed' and 'Expired' each have a small end-dot beside them.",
+  "alt": "Trip intent states: Inferred becomes Active on a save or alert or Expired; Active and Dormant move back and forth; Dormant can expire; Active ends as Booked or Dismissed."
+ },
+ {
+  "id": "19-event-triggered-price-alert",
+  "visual_goal": "Show an event-triggered price alert as a swimlane: the price change only nominates a watch, the alert is decided on a fresh quote for the exact stay, and the message carries the total.",
+  "prompt": "A left-to-right swimlane sequence diagram with six vertical lanes, each headed by a simple generic icon and a label: 'Host', 'Calendar and pricing', 'Alert evaluator', 'Trip intent store', 'Live pricing', 'Notifications'. Horizontal arrows, top to bottom in this order: from 'Host' to 'Calendar and pricing', labeled 'lower August price'; from 'Calendar and pricing' to 'Alert evaluator', labeled 'price change event'; from 'Alert evaluator' to 'Trip intent store', labeled 'find watches'; a dashed return arrow from 'Trip intent store' to 'Alert evaluator', labeled '2 to 9 Aug, 4 guests'; from 'Alert evaluator' to 'Live pricing', labeled 'quote total'; a dashed return arrow from 'Live pricing' to 'Alert evaluator', labeled '€1,271.20 total'; a small loop arrow on 'Alert evaluator', labeled 'threshold and cap'; and a final arrow from 'Alert evaluator' to 'Notifications', labeled 'alert with total'.",
+  "alt": "A swimlane of an event-triggered alert: the host lowers the August price, the calendar emits a change event, the evaluator finds the watch for 2 to 9 August and 4 guests, gets a fresh total of 1,271.20 euros, applies threshold and cap, and sends an alert with the total."
+ }
+]

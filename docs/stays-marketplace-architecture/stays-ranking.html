@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ordering the Results: Ranking for Guests, Partners and the Marketplace</title>
+    <meta name="description" content="How should a stays marketplace order its results, and how much should commission and partner programs move that order? Rank on the probability of a stay that actually happens, keep every commercial and trust adjustment in a separate, bounded and versioned policy layer, and log each position with its reasons, so that the order can be explained to a guest, a partner and a regulator from data rather than from archaeology.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Ordering the Results: Ranking for Guests, Partners and the Marketplace">
+    <meta property="og:description" content="How should a stays marketplace order its results, and how much should commission and partner programs move that order? Rank on the probability of a stay that actually happens, keep every commercial and trust adjustment in a separate, bounded and versioned policy layer, and log each position with its reasons, so that the order can be explained to a guest, a partner and a regulator from data rather than from archaeology.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/stays-ranking.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/18-stays-ranking/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="destinations-and-maps.html" title="Where Exactly? Destinations, Geo and Map Search">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="personalization-and-recommendations.html" title="Remembering the Traveler: Personalization, Recommendations and Saved Intent">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — DISCOVERY: From Intent to Bookable Stay</p>
+        <h1>Ordering the Results: Ranking for Guests, Partners and the Marketplace</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  34 min read · <a class="spec-link" href="stays-ranking.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/18-stays-ranking/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/18-stays-ranking/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="destinations-and-maps.html" title="Where Exactly? Destinations, Geo and Map Search">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="personalization-and-recommendations.html" title="Remembering the Traveler: Personalization, Recommendations and Saved Intent">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Ordering the Results: Ranking for Guests, Partners and the Marketplace", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "How should a stays marketplace order its results, and how much should commission and partner programs move that order? Rank on the probability of a stay that actually happens, keep every commercial and trust adjustment in a separate, bounded and versioned policy layer, and log each position with its reasons, so that the order can be explained to a guest, a partner and a regulator from data rather than from archaeology.", "permalink": "stays-ranking", "timetoread": "34 min read", "icon": "assets/icons/18-stays-ranking.png", "logo": "assets/images/18-stays-ranking/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Take apart the order of a stays results page: what counts as a good result when a third of bookings are canceled, the signals and their owners, the documented learning-to-rank lineage at Airbnb, Expedia Group and Booking.com, and where commission, partner programs and trust demotions should enter the ranking. You will see why EU law makes the main ranking parameters, and the effect of payment on them, something a marketplace must be able to explain.\n\n> **WHY THE BUSINESS CARES:** The first ten results decide most bookings, and every ranking change moves conversion, cancellations, partner-program revenue and partner trust at once. A marketplace GM who cannot say why a hotel sits at position 23 cannot defend the commission that depends on it, and since 2024 competition and consumer authorities have been asking exactly that question of the largest OTA.\n\n> **WHY ARCHITECTS SHOULD CARE:** Ranking is where search, the offer computed from availability and price, the commercial model, trust signals and regulation meet, on every query. If program boosts and demotions live as multipliers in a scoring function, nobody can reason about the whole or answer a partner's complaint. If they live in a versioned policy layer with a ranking log, the order becomes testable, explainable and portable.\n\n> **KEY POINTS:**\n>\n> * **Rank on the stay, not the click or the booking.** Train the relevance model on bookings that are not canceled and that the property or host honors. With 34% of room nights canceled on an OTA, a model trained on gross bookings learns to promote offers guests will abandon.\n> * **Commission and programs belong in a bounded policy layer, not in the model.** A commercial adjustment that has a cap, a relevance floor and its own version history can be logged, explained per position and switched off per market. Folded into the model objective or stacked as multipliers, it becomes Pay-to-Rank Creep that nobody can measure.\n> * **Write the transparency page from the configuration.** The P2B Regulation, the Omnibus Directive and the Digital Services Act require the main ranking parameters and the effect of payment to be described. Generate that description and the partner-facing explanation from the same policy configuration and ranking log that serve results, so the public text cannot drift from the code.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Pay-to-Rank Creep** — commission tie-breaks, program multipliers, a value-weighted objective and a parity demotion accumulate one at a time until paid properties hold a third of the first page and nobody can explain a single position.\n> * **The Unwatched Model** — a ranking model decides the exposure of every property and home, trained on a label nobody revisited and without an owner for its guardrails.\n> * **Phantom Availability** — a ranker that scores stale prices and availability promotes offers that fail at the property page or checkout, and learns from the failures as if they were the guest's choice.\n\n<br>\n\"Our top picks\", \"Recommended\" and \"Relevance\" are not neutral sorts; each is a policy that decides which partners and hosts get the guests' attention. **There is no neutral order**, only orders whose effects have been measured and orders whose effects have not.\n\nRanking stays is harder than ranking products or classified ads. The thing ranked is an **offer**: a property or home for specific dates and a party, at a computed total that may be stale by the time the guest clicks. The outcome that matters, a stay that happens, arrives weeks later and is often reversed by a cancellation. And the marketplace serves **three parties at once**: the guest, the partner or host who wants exposure, and itself, earning different amounts from different properties and selling programs whose stated benefit is visibility.\n\n[Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html) retrieves the candidates and [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) prices them; this chapter turns them into an order. It owns **learning to rank for stays**, **program-driven visibility** and **ranking transparency**, and shows where personalization, promotions ([Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html)), experiments ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html)) and the wider regulatory map ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html)) enter the ranking function.\n\n## Setting the Scene at Corvane: Why Did Hotel Prinsenkade Fall to Page Three?\n\nCorvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), runs **Roomstead**, an accommodation marketplace with 640,000 bookable properties, and **Nookaway**, a hosted-stays marketplace with 1.15 million listings. Ranking had been group-wide under Jonas Weber, Head of Search and Ranking, since January 2027. In practice that meant two separate rankers, two experimentation platforms (Trialroom and Flipside) and one person who had to answer for both.\n\nOn **18 May 2027**, the general manager of **Hotel Prinsenkade**, the 140-room independent hotel in Amsterdam, wrote to Roomstead's partner support. Over the previous three weeks the hotel's average position in Amsterdam searches had fallen from **6** to **23**, and its Roomstead bookings for June were down by almost half. The hotel wanted to know why. Partner support could not tell them. The ranking service logged a final score per result, not the terms that produced it, and nobody could reconstruct the order for a past search.\n\nJonas's team needed four days to reconstruct it. Three things had happened at once:\n\n1. After the **King's Day overbooking** on 27 April, when the hotel's channel manager had queued updates for 47 minutes and **4** Roomstead guests were walked (see [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html)), an automatic **reliability demotion** multiplied the hotel's score by **0.7** for 60 days.\n2. The hotel's month-by-month subscription to **Front Row**, Roomstead's paid visibility program (tiers add 2, 4 or 6 percentage points of commission), had lapsed on **1 May**, removing a **×1.30** multiplier.\n3. A **rate-competitiveness** rule, fed by a rate-shopping service, found the hotel's own website **8%** cheaper than Roomstead for late May and multiplied its score by **0.85**.\n\nTogether these cut the hotel's score to **0.46** of its former value (0.7 × 0.85 ÷ 1.30). Each rule had been added by a different team, in a different year, and tested alone. The reconstruction turned into an archaeology of Roomstead's ranking:\n\n![A hotel card slides down a ranking ladder from rung 6 to rung 23, pulled by weights labeled ×0.7 and ×0.85 after a ×1.30 balloon has burst, while three separate teams stand apart.](assets/images/18-stays-ranking/18-prinsenkade-multiplier-stack.jpeg)\n**Figure 1:** *Three rules added by three teams in different years combined on Hotel Prinsenkade: a ×0.7 reliability demotion, a ×0.85 rate rule and a lapsed ×1.30 Front Row multiplier moved it from position 6 to 23, and nobody could explain why.*\n\n| Year | Change | Where it lived | Who asked for it | Disclosed? |\n| --- | --- | --- | --- | --- |\n| 2015 | Gradient-boosted ranker replaces hand-tuned sort; label = **gross booking** | Keystone search module, later the ranking service | Search | Yes, \"relevance to your search\" |\n| 2019 | **Commission tie-break**: within a 2% score band, higher commission first | Ranking service | Commercial | No |\n| 2020 | **Front Row** launched: score multipliers ×1.15, ×1.30, ×1.45 for its three tiers | Ranking service configuration | Partner sales | Yes, \"participation in partner programs\" |\n| 2022 | **Circle boost**: ×1.10 for properties offering Roomstead Circle member rates, for signed-in members | Ranking service configuration | Loyalty | No |\n| 2023 | **Value objective**: candidates ordered by P(book) × expected commission | Model objective | Commercial analytics | No |\n| 2024 | **Rate competitiveness**: ×0.85 if the property is cheaper on its own website | Ranking service configuration | Partner sales | No |\n| 2025 | **Reliability demotion**: ×0.7 for 60 days after a walked guest or partner-caused cancellation | Ranking service configuration | Customer service | No |\n\nThe transparency page that Roomstead had published in **July 2020**, when the EU Platform-to-Business (P2B) Regulation began to apply, still described the order as \"relevance to your search, reviews, price, and participation in partner programs\". Four of the seven layers were not on it.\n\nJonas's sample of May 2027 searches in Roomstead's 20 largest European destinations showed what the layers did together (the figures, like everything about Corvane, are illustrative). Front Row properties made up about **6%** of bookable properties in those destinations and held **34%** of the top-ten positions. **28%** of the gross bookings made from those top-ten positions were later canceled, against 24% for the other bookings from the same pages, because the value objective and the gross-booking label both rewarded refundable, high-commission rates that guests booked as a hold.\n\nNoor van Dijk, Head of Regulatory Affairs and Privacy, put the legal point in one sentence: the P2B Regulation requires the terms to describe \"the main parameters determining ranking\", and where payment can influence ranking, \"the effects of such remuneration on ranking\"; Roomstead's terms described neither accurately. Aisha Rahman, VP Supply and Connectivity, put the commercial counterpoint: Front Row earned about **€40 million** of incremental commission in 2026 from about 38,000 participating properties, partners bought it because it worked, and the reliability demotion existed because walked guests are Roomstead's problem as much as the hotel's.\n\nNookaway had the same question in another form. After the **Seville double booking** in February ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html)), Rafael Mendes's team proposed demoting all **330,000** iCal-only listings, without knowing how many hosts that would hurt or whether they would be told.\n\nMariana Costa, Group Chief Architect, asked the architecture forum: **what should own the order of a results page, and how do we explain any position to a guest, a partner and a regulator from data instead of from archaeology?**\n\n## What Ranking Means in a Stays Marketplace\n\nThe most useful definition comes from EU consumer law. The Omnibus Directive, (EU) 2019/2161, defines **ranking** as \"the relative prominence given to products, as presented, organised or communicated by the trader, irrespective of the technological means used\" ([Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161), 2019, inserting point (m) into Article 2 of the Unfair Commercial Practices Directive). Three consequences follow for a stays marketplace:\n\n1. **Prominence, not a sort.** Badges, larger cards, \"Top pick\" carousels, the first map pins and the property pinned to the top of an affiliate landing page are all ranking.\n2. **Every surface that orders stays is in scope:** the results list, the map, destination landing pages, \"similar properties\" on a sold-out property page and the order of rooms and rates inside a property page ([The Moment of Decision: Property Pages, Room Selection and Total Price](property-page-and-room-selection.html)).\n3. **\"Irrespective of the technological means\"**: a multiplier in a configuration file is as much ranking as a neural network.\n\nThe chapter uses five more terms.\n\n- **Default sort** is the order a guest gets without choosing one (\"Our top picks\", \"Recommended\"); price or distance sorts are the guest's choice, the default is the marketplace's.\n- **Relevance model** estimates, for one search and one candidate offer, how likely the guest is to complete a stay with it.\n- **Ranking policy** is the set of explicit rules applied to the model's scores: **commercial adjustments** (anything that depends on what the marketplace earns from the candidate), reliability and trust demotions, diversity and exploration.\n- **Program-driven visibility** is exposure a partner gets by joining a program, usually in exchange for a higher commission or a discount it funds.\n- **Ranking transparency** is the ability to describe the main parameters, their relative importance and the effect of payment, in general and for one position.\n\n### What a candidate is\n\nOn an accommodation marketplace (an **OTA**, online travel agency, selling hotel rooms by room type and **rate plan**, a priced package of conditions such as breakfast or free cancellation), a candidate is a **property** with many sellable combinations of room type, rate plan and occupancy. The result card shows one of them, usually the cheapest that fits the party, and ranking scores the property using that offer. On a hosted-stays marketplace a candidate is **one unit with one calendar**: the home is either free for every night of the stay or it is not, and its total includes host-set cleaning fees and the platform's guest fee. The OTA ranker chooses among properties that many guests can book on the same night; the hosted-stays ranker chooses among homes that only one guest can have.\n\n### What counts as a good result: the label\n\nThe **label** a ranking model learns from is a business decision disguised as a technical one.\n\n| Label | Volume | What it rewards | Problem in stays |\n| --- | --- | --- | --- |\n| Click | High | Attractive photos, low headline prices | Rewards \"from\" prices that the exact stay does not get |\n| Gross booking | Medium | Converting offers | Rewards refundable rates booked as holds; Roomstead cancels 34% of room nights |\n| **Net booking** (booking minus cancellation) | Medium, delayed | Bookings that survive | Label arrives weeks to months later, after the stay date |\n| **Honored stay** | Lower, delayed | Bookings the property or host also keeps | Needs host-side cancellations, walked guests and declined requests joined in |\n| Problem-free stay | Low, very delayed | Stays without support cases, damage or relocation | Needs customer-service and trust data as labels |\n\nPublished practice has moved down this table. Booking.com's ranking disclosure, updated on 31 May 2025, names **net bookings**, \"how many bookings are made with that Accommodation minus how many are canceled\", alongside click-through rate and gross bookings as the signals properties perform on ([Booking.com, \"How we work\"](https://www.booking.com/content/how_we_work.html), 2025). Airbnb's ranking papers report **uncancelled bookings** as the primary online metric throughout; its 2023 Journey Ranker paper adds host-side outcomes, because a reservation request can be \"rejected or cancelled by the host prior to check-in\" ([Tan et al., 2023](https://arxiv.org/abs/2305.18431)), and a 2025 paper feeds the predicted likelihood that a guest–host pairing will need customer support into ranking ([Kim et al., 2025](https://arxiv.org/abs/2503.17329)). Expedia Group's 2024 description of its lodging learning-to-rank model uses graded labels, \"booking > click > impression\" ([Expedia Group Tech, 2024](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b)).\n\nMy recommendation is a **multi-task model with the honored stay as the target**: predict the booking, predict the cancellation and the host or property failure separately, and rank on their product. Separate heads let the booking head learn from labels a few days old while the cancellation head learns from older searches whose outcomes are complete; waiting months for every label makes the model too old to be useful.\n\n### The signals\n\nSignals fall into families with different owners, update rates and risks; I use this table when a team proposes \"just adding a boost\".\n\n| Family | OTA examples | Hosted-stays examples | Owner and source | Update rate | Main risk |\n| --- | --- | --- | --- | --- | --- |\n| **Offer** | Total price for the stay and party, cheapest qualifying rate, free cancellation, meal plan | Total with cleaning and guest fees, minimum-stay fit, instant book | Availability engine ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)) | Per query | Stale prices: Phantom Availability |\n| **Price competitiveness** | Price against comparable properties for the same dates | Price against comparable homes nearby | Pricing analytics | Daily | Comparing against the same property elsewhere enforces parity |\n| **Quality** | Review score and volume, photo quality, content completeness | Reviews, listing completeness, verified amenities | Reviews ([Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html)), content | Hours to days | Review manipulation; rewarding volume |\n| **Engagement** | Click-through, gross and net booking rates | Saves, contact and booking rates | Behavioral events | Minutes to hours | Position bias; feedback loops |\n| **Location** | Distance to the searched landmark or center, district | Distance, neighborhood, map viewport | Geo ([Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html)) | Static per query | Approximate locations for homes |\n| **Reliability** | Walked guests, partner-caused cancellations, connectivity health | Host cancellations, acceptance rate, calendar sync freshness | Reservations, connectivity, calendar | Hours | A demotion is a restriction that must be explained |\n| **Commercial** | Commission level, program tier, sponsored bid | Usually none: fees are uniform | Partner contracts | On change | Pay-to-Rank Creep |\n| **Personal** | Past searches, traveler type, loyalty tier | Past stays, viewed listings | Personalization ([Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html)) | Per session | Consent; opt-out duties |\n\nTwo rules come from this table. **First, rank on the price the guest will see.** The offer price must be the same all-in total the property page and checkout will show; ranking on a pre-fee nightly rate promotes listings whose totals are higher, which is the start of Price Drift. At Nookaway this has a specific trap: a listing on the 12% guest fee and a listing on the 17% host-only fee have nightly prices that are not comparable, but their guest totals are. **Second, price competitiveness means comparison with alternatives, not with the same property elsewhere.** Airbnb tells hosts that \"listings priced below other comparable listings\" tend to rank higher ([Airbnb Help Center, article 39](https://www.airbnb.com/help/article/39), n.d., live 2026). Penalizing a hotel because its own website is cheaper is a different signal: it enforces price parity, which the EU Digital Markets Act prohibits for designated gatekeepers and the Court of Justice has refused to treat as a necessary restraint (see below).\n\n## Architecture: Relevance, Policy, Log and Disclosure\n\nLarge stays platforms that describe their ranking converge on a **multi-stage pipeline**, each stage scoring fewer candidates with a more expensive method. Airbnb's 2026 retrieval paper describes narrowing \"tens of thousands of homes\" through embedding-based retrieval to a first-stage model and then a setwise re-ranker, inside a scatter-gather search stack ([Abdool et al., 2026](https://arxiv.org/abs/2601.06873)). Expedia Group described in 2024 a ranking stage that \"arrives after the candidate generator selects a subset of properties to rank and before the final business adjustments are applied\" ([Expedia Group Tech, 2024](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b)). Expedia draws the business adjustments as a **separate stage**, and its 2023 \"Juggler\" post requires them to be \"easy to interpret and explain to stakeholders\", including property managers asking why a property has a given rank ([Expedia Group Tech, 2023](https://medium.com/expedia-group-tech/the-juggler-model-balancing-expectations-in-lodging-rankings-6d09b9b8e341)).\n\nI draw the stays ranking function as five components. The first two are the familiar ones; the last three are the ones whose absence produced Roomstead's archaeology.\n\n![Offer pricing feeds a relevance model that estimates the honored stay; a policy layer driven by a versioned config orders the page with reason codes, writes a ranking log that feeds training labels back, and partner and regulator views read the log and a description generated from the config.](assets/images/18-stays-ranking/18-stays-ranking-function.jpeg)\n**Figure 2:** *The stays ranking function. The relevance model estimates the honored stay; a separate, versioned policy layer applies every commercial, program and reliability rule; the ranking log records what was shown and why, and feeds training, partner explanations and the public description of the parameters.*\n\nRoomstead's failure was missing boundaries, not bad models, so each component needs a written contract.\n\n| Component | Responsibility | Owns | Must not |\n| --- | --- | --- | --- |\n| **Candidate retrieval** | Return every property or home that fits the destination, dates, party and hard filters | Recall, filter correctness | Apply commercial preferences |\n| **Offer pricing** | Attach the exact or near-exact all-in total and the offer's conditions to each candidate | Price accuracy, offer snapshot id | Return a price different from what the property page will show |\n| **Relevance model** | Estimate the probability of an honored stay per candidate | Features, labels, training, offline metrics | Read commission, program tier or sponsored bids as features |\n| **Ranking policy layer** | Turn scores into an order under explicit rules: commercial and program adjustments, reliability demotions, diversity, exploration, sponsored slots | Policy configuration, version history, reason codes | Hide rules inside model features or scoring scripts |\n| **Ranking log and disclosure** | Record served features, offers, scores, positions, policy version and reasons; generate explanations | Impression data, retention, generated descriptions | Drop losing candidates' features, which training needs |\n\n**The relevance model must not read commission.** As a feature, commission teaches the model that high-commission properties get more bookings (because they were shown higher) and turns payment into \"relevance\" nobody can separate again. Roomstead's 2023 value objective did something subtler and equally opaque: it multiplied the booking probability by expected commission inside the model's ranking step, so the commercial weight had no version, no cap and no line on the transparency page. Ordering by expected value is a legitimate commercial choice; Expedia names profitable inventory as one of the marketplace's own objectives in the Juggler post. The question is where it lives, not whether it exists.\n\n### One ranked search, recorded\n\nEvery ranked page produces data that training, experiment analysis, partner support and regulatory affairs depend on. One Roomstead search in the target architecture:\n\n![A swimlane of one ranked search: the search service gets totals and snapshot ids for 2,600 candidates, the ranking service reads the policy version, returns the top 25 with reason codes and writes features, scores and reasons to the ranking log, and the guest gets results with labels.](assets/images/18-stays-ranking/18-one-ranked-search.jpeg)\n**Figure 3:** *One ranked search. The policy version is read at ranking time, and every result leaves with reason codes and an offer snapshot id. Training, experiment analysis, partner explanations and audits all read the same log.*\n\nFour interface decisions make this work.\n\n1. **Program and contract effects arrive as data.** The partner-contract system publishes \"Front Row tier 2 active until 31 July\" or \"commission 17% from 1 June\" to a read model; the ranking service never queries contracts at request time.\n2. **The policy is configuration with a version.** A change to a cap is a reviewed change to a versioned file with an experiment plan, not an edit to a scoring script. Every page records `policy_version`.\n3. **Every result carries reason codes**, for example `organic`, `program_lift(+2)`, `reliability_demotion(-4)`, `exploration_new`, `sponsored_slot`. Presentation uses them for labels, support uses them to answer partners, the log uses them for audits.\n4. **Every result carries the offer snapshot id.** When a guest reaches checkout and the price has changed, the gap can be traced to the offer that was ranked. A ranker that scored €447 and a checkout that charges €489 is the same incident whether the cause is a stale cache or a fee added late ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) owns the cache).\n\n### Features as served\n\nLearning to rank needs the feature values **as the ranker saw them**, joined to later outcomes. Recomputing features offline introduces **training-serving skew**, worse in stays because the price changes with every rate update. The ranking service logs the feature vector and offer for every scored candidate, including a sample of those not shown, and training joins that log to bookings, cancellations and stays by an impression id ([Models in Production: ML Platforms and Use Cases for Stays](stays-ml-platform.html) owns the feature platform).\n\n### The description is generated, not written\n\nThe P2B Regulation, the Omnibus Directive and the Digital Services Act all ask for the same artifact in slightly different words: a plain description of the main parameters, their relative importance and the effect of payment. Roomstead's 2020 page drifted because it was a document written once by lawyers about a system that kept changing. The fix is to make the description a build product of the policy configuration.\n\n![A policy change goes through the ranking council and an experiment to a new policy version, which feeds the ranking service, a generated description and an explanation API; the generated description produces the transparency page and partner terms.](assets/images/18-stays-ranking/18-description-build-product.jpeg)\n**Figure 4:** *The description is a build product. A policy change cannot reach the ranking service without also producing the public description, the partner-facing text and the explanation interface, so the disclosure and the code change in the same release.*\n\nA lawyer still writes the prose around the generated text, but each configured parameter carries a plain-language description and an importance class (\"main\", \"secondary\", \"tie-break\"), and a release fails if one is missing: **an undisclosed parameter becomes a build error instead of a regulatory finding.**\n\n## Learning to Rank for Stays: What the Public Record Shows\n\n**Learning to rank (LTR)** is the use of supervised machine learning to order candidates, trained on logged outcomes. It replaced hand-tuned scoring in stays because hand-tuned weights stop scaling beyond a handful of signals. The public record is uneven: Airbnb has published a dated series of papers since 2018, Expedia Group a handful of engineering posts, Booking.com one well-known 2019 paper and a disclosure page. Agoda, Trip.com and Vrbo have published nothing on ranking that this book's research could find, so nothing is attributed to them here.\n\n### Airbnb, 2018–2026\n\nAirbnb's papers describe at least four generations, so each must be read as history at its date.\n\n| Year | Change | What it teaches |\n| --- | --- | --- |\n| 2018 | Listing and user embeddings for search ranking and similar listings, which together \"drive 99% of conversions\" ([Grbovic and Cheng, 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)) | Single-unit inventory changes the problem: a home can host one booking per date range |\n| 2018 | Gradient-boosted trees plateau; neural networks take over ([Haldar et al., 2018](https://arxiv.org/abs/1810.09591)) | Move to neural ranking when tree gains stop, not before |\n| 2020 | Position-bias handling gives \"one of the largest gains\"; cold-start changes for new listings ([Haldar et al., 2020](https://arxiv.org/abs/2002.05515)) | Train on positions, not only on clicks |\n| 2022 | Booking probability of one listing is not independent of the others shown ([Haldar et al., 2022](https://arxiv.org/abs/2210.07774)) | Budget for a whole-page re-ranking stage |\n| 2023 | Journey Ranker: multi-task model over intermediate guest actions and host rejections or cancellations ([Tan et al., 2023](https://arxiv.org/abs/2305.18431)) | Two-sided outcomes belong in the objective |\n| 2024 | Separate ranking theory for map pins ([Haldar et al., 2024](https://arxiv.org/abs/2407.00091)) | Maps are not lists (below) |\n| 2025 | Predicted customer-support need fed into ranking ([Kim et al., 2025](https://arxiv.org/abs/2503.17329)); interleaving raises experiment sensitivity \"by a factor of up to 100\" ([Zhang et al., 2025](https://arxiv.org/abs/2508.00751)) | Support data is ranking data; experimentation is the bottleneck |\n| 2026 | A Transformer over up to 80 long-term and 200 short-term guest events, with a setwise ranker; +0.28% uncancelled bookings from the setwise stage ([Airbnb Tech, 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)) | Heavy sequence models run as a daily batch, off the request path |\n\nThree properties recur across the series, and they are the core of what makes hosted-stays ranking different: **single-unit inventory** (popularity cannot be scaled, so diversity matters), **host-side failure** (rejections and cancellations make the uncancelled stay the target) and **long, multi-session journeys** (guests compare for weeks).\n\n### Expedia Group, 2023–2026\n\nExpedia Group's posts describe an OTA ranking stack in three layers: a **lightweight candidate generator**; a deep neural network that ranks on search context (destination, dates, rooms, adults, children, point of sale, device) and property features (price, review score, star rating, amenities, a learned property embedding), with labels \"booking > click > impression\"; and **business adjustments** after it ([Expedia Group Tech, 2024](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b)). The 2023 Juggler post names three stakeholders: travelers (the best property at the lowest price), properties (\"best exposure while paying the lowest fees\", with \"mechanisms to improve their rankings in exchange for fees or special deals\") and the marketplace (profitable inventory, short-term conversion against long-term repeat rate). A meta-learning model predicts the adjustment weights per search; the adjustments themselves are, in Expedia's words, \"proprietary information\" ([Expedia Group Tech, 2023](https://medium.com/expedia-group-tech/the-juggler-model-balancing-expectations-in-lodging-rankings-6d09b9b8e341)). In August 2026 Expedia described serving the ranker through ONNX and TensorRT on Triton, cutting P99 inference latency by about two-thirds ([Expedia Group Tech, 2026](https://medium.com/expedia-group-tech/how-keras-3-helped-modernise-expedia-groups-lodging-ranking-stack-7fec96f052fd)).\n\n### Booking.com, 2019–2026\n\nBooking.com's 2019 KDD paper, \"150 successful machine learning models\", is best known for the lesson that **better offline model performance does not reliably produce better business results**, so every model is judged in randomized experiments ([The Morning Paper, 2019](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). The paper is seven years old; the current public record is operational: an AWS case study reports Booking.com's ranking platform on Amazon EKS serving up to 250,000 requests per second at about 40 ms p99.9 ([AWS, n.d., live 2026](https://aws.amazon.com/solutions/case-studies/booking-eks-case-study/)), and the 2025 disclosure page lists the ranking signals and commercial factors discussed below. How Booking.com's current model is built is not public.\n\n### Position bias, new supply and diversity\n\nGuests click what is on top because it is on top. Training on raw outcomes therefore teaches a model to reproduce yesterday's order. Joachims, Swaminathan and Schnabel showed in 2017 that weighting outcomes by the inverse of each position's examination probability gives unbiased learning to rank ([Joachims et al., 2017](https://arxiv.org/abs/1608.04468)); Airbnb's 2020 paper reports position-bias treatment among its largest gains. Estimating examination probabilities needs a small amount of randomized ordering among the top results, which costs a little conversion; that cost is worth budgeting explicitly.\n\nPosition bias hurts **new supply** most: no engagement history, low rank, no engagement. For Nookaway, where **82%** of hosts have one listing, a host without a booking in the first weeks has little reason to stay; for Roomstead, a property never on page one is wasted onboarding cost ([From Sign-Up to First Booking: Partner and Host Onboarding](partner-onboarding.html)). Two tools address it: **exploration slots** reserved for new candidates chosen by a content-only score, and **content-based priors** that do not depend on history.\n\n**Diversity** follows from single-unit inventory: ten near-identical apartments from one manager are ten results to the ranker and one choice to the guest. Airbnb's 2022 paper formalizes this; the simpler policy tool is a **per-manager cap** (say, three listings in the first twenty positions), tunable per destination where one manager legitimately holds most of the stock.\n\n### Which model family\n\nFor a marketplace of Roomstead's or Nookaway's size, my recommendation is a **gradient-boosted ranker with a LambdaMART-style objective**, trained on the multi-task honored-stay target with position-bias weighting, and a light whole-page re-ranking stage for diversity and caps. Move to neural rankers when tree gains have plateaued in online tests (Airbnb's 2018 trigger), text, photo or sequence understanding is the limiting factor, and the team can serve GPU inference within the latency budget.\n\n### Maps are not lists\n\nAirbnb's 2024 map-ranking paper found that guests do not read pins in order and that **fewer pins can produce more bookings** ([Haldar et al., 2024](https://arxiv.org/abs/2407.00091); [Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html) covers it). The map and the list are two ranking surfaces over the same scores, and the policy layer must apply program labels and caps to both: **a pin is a position**.\n\n## Commission, Programs and Paid Visibility\n\n### What the platforms disclose\n\nBooking.com's 2025 disclosure is the most specific. Beyond the performance signals, \"other things can also influence an Accommodation's ranking\": the commission the property pays and how quickly it pays it, participation in its Genius loyalty program or its Preferred Partner program (whose members \"pay us a higher commission\"), and the guest's past searches unless personalization is turned off. Booking.com calls these \"purely secondary\", mainly tie-breakers, and marks paid results \"Ad\" ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)). Expedia's Juggler post describes paid ranking mechanisms only in general terms. Airbnb's help page lists quality, popularity, price, location, variety and host-influenced factors such as responsiveness, cancellations and Instant Book, and names no commercial factor ([Airbnb Help Center, article 39](https://www.airbnb.com/help/article/39), n.d., live 2026).\n\nRegulators read these pages:\n\n- On **30 July 2024** Spain's competition authority, the CNMC, fined Booking.com **€413.24 million** for abusing a dominant position; the reported findings included opaque paid visibility programs and the use of total bookings on Booking.com as a default ranking factor. Booking.com appealed, and the Audiencia Nacional suspended the fine pending the appeal, as reported in March 2025 ([TechCrunch, 2024](https://techcrunch.com/2024/07/30/spains-antitrust-watchdog-fines-booking-com-nearly-450m-for-unfair-terms-and-restricting-rivals); [Hosteltur, 2025](https://www.hosteltur.com/168767_la-audiencia-nacional-paraliza-la-multa-millonaria-de-la-cnmc-a-booking.html)).\n- On **22 April 2026** Italy's competition authority, the AGCM, opened an investigation into Booking.com's Preferred Partner and Preferred Plus programs, concerned that selection \"appears to be driven largely by criteria that favour accommodation providers paying higher commissions\", which may lead consumers to believe the properties offer better value and \"could even lead consumers to book accommodation that is, on average, more expensive\" ([AGCM, PS13115](https://en.agcm.it/en/media/press-releases/2024/4/PS13115), 2026). This is an investigation, not a finding.\n\nNeither case says paid visibility is unlawful; both say that **ranking features and program criteria are regulated**, and a platform must be able to show what payment did to the order.\n\n### Five ways to let money into the order\n\n| Design | How it works | Strength | Risk | When it fits |\n| --- | --- | --- | --- | --- |\n| **No commercial influence** | Order by relevance only | Simplest to explain; maximum guest trust | Leaves program revenue on the table; uniform-fee platforms are already here | Hosted stays with uniform fees |\n| **Tie-break only** | Commission or program decides only among near-equal scores | Small, easy to disclose; Booking.com describes its commercial factors this way | \"Near-equal\" bands drift wider over time | OTAs that want a light touch |\n| **Bounded adjustment with a relevance floor** | Program or commission moves a candidate up by at most k positions, only past candidates within a set relevance margin | Explainable per position (\"moved up two places\"); cannot bury a much better result | Needs tuning per destination; partners must understand what they buy | My default for an OTA |\n| **Expected-value objective** | Order by P(stay) × marketplace margin | Maximizes short-term revenue per search | Commercial weight is invisible and unbounded; hard to disclose | Only as an explicit, logged policy term, never inside the model |\n| **Sponsored slots** | Labeled ad positions sold by bid, merged with organic results | Clean ad economics and clear labels | Two notions of relevance on one page; ad irrelevance in sparse destinations | Alongside organic ranking, with a relevance floor for ads |\n\n**Multipliers**, Roomstead's 2020 design, are absent on purpose: their effect depends on each query's score distribution (×1.30 moves a property ten places where scores are close and none where they are spread), so nobody can tell a partner what they bought or a regulator what payment does.\n\n### What EU law requires of the ranking function\n\n[Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html) owns the full map. The table shows the ranking-specific duties and what each means for the system.\n\n| Instrument | What it requires | Engineering consequence |\n| --- | --- | --- |\n| **P2B Regulation (EU) 2019/1150, Art. 5**, from 12 July 2020 (business users: partners and professional hosts) | Terms must set out \"the main parameters determining ranking and the reasons for the relative importance of those main parameters\"; where ranking can be influenced \"against any direct or indirect remuneration\", a description of those possibilities and \"the effects of such remuneration on ranking\". Algorithms need not be disclosed (Art. 5(6)) ([Regulation (EU) 2019/1150](http://publications.europa.eu/resource/celex/32019R1150), 2019) | Every policy parameter has a description and an importance class; program effects are described as effects, for example \"at most three positions\" |\n| **Omnibus Directive (EU) 2019/2161**, from 28 May 2022 (guests) | Main ranking parameters and their relative importance are material information, \"directly and easily accessible from the page where the query results are presented\" (Art. 7(4a) of the Unfair Commercial Practices Directive); search results \"without clearly disclosing any paid advertisement or payment specifically for achieving higher ranking\" are blacklisted (Annex I, point 11a) ([Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161), 2019) | A link from every results page to the generated description; labels on paid and program results, rendered from reason codes |\n| **Digital Services Act (EU) 2022/2065**, from 17 February 2024 | Art. 26: each ad identifiable as an ad, with who paid, in real time. Art. 27: the main parameters of recommender systems in plain language in the terms, and where several options exist, a functionality to select and modify the preferred option \"directly and easily accessible\" where results are prioritized. Art. 17: a statement of reasons for restrictions of visibility, including demotion, imposed because content is illegal or incompatible with the terms ([Regulation (EU) 2022/2065](http://publications.europa.eu/resource/celex/32022R2065), 2022) | Ad flag travels in the ranking response; the sort control is a regulated surface; a reliability or trust demotion produces a statement of reasons to the partner or host |\n| **DSA Art. 38** (very large online platforms only) | At least one recommender option \"not based on profiling\" | A non-personalized ranking path, served on request, tested like any other. Booking.com B.V. is on the Commission's list of designated platforms; Airbnb and Expedia were not, as of 21 October 2026 ([European Commission](https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses), live 2026) |\n| **Digital Markets Act (EU) 2022/1925, Art. 5(3)** (designated gatekeepers: Booking since 13 May 2024) | The gatekeeper may not prevent business users from offering different prices or conditions through other channels or their own website ([Regulation (EU) 2022/1925](http://publications.europa.eu/resource/celex/32022R1925), 2022) | Ranking must not penalize a property for being cheaper elsewhere; a parity demotion is a measure with equivalent effect |\n\nThe parity row deserves a sentence for platforms that are not gatekeepers. In **Case C-264/23** (judgment of 19 September 2024), the Court of Justice held that wide and narrow parity clauses between hotel booking platforms and hotels are not ancillary restraints exempt from Article 101 TFEU ([CJEU, C-264/23](http://publications.europa.eu/resource/celex/62023CJ0264), 2024). A ranking rule that demotes a property for pricing lower on its own website achieves what a parity clause would. I would not ship one in the EU without competition-law advice, and Roomstead removed its 2024 rule on that advice.\n\nTwo judgements about how these duties apply are mine, not settled law. First, a program whose stated benefit is better visibility in exchange for higher commission is \"payment specifically for achieving higher ranking\", so the prudent reading of point 11a is to **label every participating property wherever it appears in results**, not only when the lift happened to change its position. Second, an automatic reliability demotion under partner terms is a restriction \"incompatible with the terms\" in the Art. 17 sense, so the partner is owed a statement of reasons. Both are cheap to honor if reason codes exist, and expensive to retrofit if they do not.\n\n## In Practice at Corvane: Ranking Policy v1\n\nThe architecture forum approved Jonas's proposal in June 2027 with three decisions. **Separate the policy from the model**: remove the value objective and the commission tie-break from the model, and express every commercial and reliability rule as a versioned policy term with reason codes. **Change the label** from gross booking to the honored stay, with separate booking and cancellation heads. **Generate the description** from the policy configuration, as in Figure 4, with Noor's team owning the prose around it. The rate-competitiveness rule was deleted outright.\n\nFront Row survived, with a new definition that a partner could understand and a regulator could read: **a participating property can move up at most three positions, and only past properties whose relevance is less than 10% higher than its own.** The tier, which sets the commission uplift, now changes how often the lift is applied across a property's searches rather than its size, so that the effect of payment on any single position is bounded and the same for every tier. The reliability demotion became a bounded term too: at most five positions, for 60 days, with a statement of reasons sent to the partner through the extranet ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)).\n\n![Left, a multiplier launches a starred result card far up the list unpredictably; right, under Policy v1 the starred card moves up at most three places and stops at a 10% relevance margin line.](assets/images/18-stays-ranking/18-multipliers-versus-bounded-lift.jpeg)\n**Figure 5:** *A multiplier moves a result by an amount nobody can predict; Ranking Policy v1 lifts a Front Row property at most three positions, and only past properties less than 10% more relevant, so the effect of payment is bounded and explainable.*\n\n### A worked search\n\nOn **3 June 2027** a guest searches Roomstead for Lisbon, **18–21 June**, 2 adults. Retrieval returns 2,600 available properties; offer pricing attaches all-in totals; the relevance model scores them; the policy layer orders the top 200. The table shows five properties that compete for positions 2 to 6 of that page (the property names other than Hotel Miradouro are fictional, like the scores).\n\n| Property | Front Row | 3-night total | P(honored stay) | Old order (multipliers) | Policy v1 order | Reason codes |\n| --- | --- | --- | --- | --- | --- | --- |\n| Casa do Largo | Tier 2 | €462 | 0.0335 | 2 (×1.30) | 2 | `organic` |\n| **Hotel Miradouro** | No | €447 | 0.0310 | 5 | 4 | `organic` |\n| Lapa Boutique Rooms | No | €429 | 0.0305 | 6 | 5 | `organic` |\n| Alfama Riverside Apartments | Tier 3 | €498 | 0.0290 | 3 (×1.45) | 3 | `program_lift(+2)` |\n| Hotel Avenida Sul | Tier 3 | €471 | 0.0270 | 4 (×1.45) | 6 | `organic` |\n\nUnder the old multipliers, the two tier-3 properties jumped ahead of **Hotel Miradouro**, Duarte Silva's 84-room hotel, even though both were less likely to produce an honored stay. Under policy v1, Alfama Riverside Apartments moves up two places: Miradouro (0.0310) and Lapa (0.0305) are both within 10% of its 0.0290. Hotel Avenida Sul does not move: the nearest property above it, Lapa, is 13% more relevant. Every row carries its reason code, so Duarte's revenue-management screen can say \"position 4, organic; one property above you is there through a partner program\", and the guest sees a program label on the three participants.\n\nThe same log answered Hotel Prinsenkade's question. Replayed under policy v1, the hotel's average Amsterdam position for the second half of May would have been **11**: `reliability_demotion(-5)` for the King's Day walk, no program lift after its subscription lapsed, and no parity term. The partner would have received the statement of reasons on **28 April**, three weeks before it had to ask.\n\n### The experiment\n\nTrialroom ran policy v1 against the old ranking for four weeks, **6 September to 3 October 2027**, randomized by guest, in the 20 largest European destinations, with destination-level guardrails because a ranking change moves bookings between properties that both arms compete for ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html) covers this interference). The results, illustrative like all Corvane figures:\n\n| Metric | Change, policy v1 vs old |\n| --- | --- |\n| Gross bookings per search | +0.4% |\n| **Honored stays per search** | **+1.1%** |\n| Share of bookings canceled | −0.9 percentage points |\n| Front Row share of top-ten positions | 34% → 22% |\n| Front Row incremental commission | −11% (about €4.4 million a year at the 2026 run rate) |\n| Commission per search, all bookings | +0.3% |\n| Partner support contacts about ranking | −38% (from reason codes in the extranet) |\n\nThe program earned less and the marketplace slightly more in total, because fewer ranked bookings were canceled. Marco Bellini, Group CFO, accepted the program loss on two conditions: a quarterly review of the lift cap with the commercial team, and a repricing of Front Row around what it now guaranteed. Policy v1 went live in EEA markets on **12 October 2027**, together with the regenerated transparency page.\n\n### Nookaway: calendar confidence instead of a blanket demotion\n\nNookaway's version of the problem was not money but reliability. Rafael's blanket demotion would have hit about 330,000 iCal-only listings (61% of the 1.15 million active listings are multichannel, and 47% of those sync by iCal only), most of them single-listing hosts who had never caused a double booking. His team's analysis showed the risk was concentrated: host cancellations for calendar conflicts clustered in listings whose iCal import was more than three hours stale, for arrival dates in high-demand weeks, at hosts with a previous conflict. The team replaced the proposal with a **calendar-confidence feature** in the relevance model's host-failure head (it predicts an honored stay, so it belongs in the model, not in the policy layer), and a policy rule that no listing can lose more than four positions to calendar confidence alone. Hosts see the reason in their dashboard with a single recommended fix: connect through the partner API or a PMS ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html)). The demotion that would have punished 330,000 hosts became an incentive that affected the few thousand whose calendars were actually unreliable.\n\n## Hotels and Homes: Where the Two Marketplaces Differ\n\n| Dimension | Accommodation marketplace (Roomstead) | Hosted-stays marketplace (Nookaway) |\n| --- | --- | --- |\n| Candidate | Property with many room-type, rate-plan and occupancy offers; card shows the cheapest qualifying offer | One unit, one calendar; available for every night or not |\n| Label | Net or honored stay; cancellations high (34% of room nights) and driven by refundable rates | Honored stay; host rejection, host cancellation and support need are part of the target |\n| Distinctive signals | Star rating, brand, review volume, rate conditions, connectivity health | Host responsiveness and acceptance, calendar confidence, listing uniqueness, approximate location |\n| Commercial influence | Commission varies by property; paid programs sell visibility | Fees mostly uniform; no paid visibility, so the tension is guest relevance against host fairness |\n| Typical failure | Pay-to-Rank Creep; ranking stale prices from a supplier cache | Burying new hosts; promoting listings whose hosts cannot honor the booking |\n| Map | Supporting surface; guests choose by district, brand and stars | Primary surface for many searches; location is the main differentiator |\n| Regulation | P2B and Omnibus disclosures carry the commission story; DMA and competition cases target programs and parity | P2B for professional hosts, Omnibus for guests, DSA Art. 17 for demotions; little commercial disclosure |\n| What can be shared | Policy engine, ranking log schema, reason codes, disclosure generator, evaluation tooling | The same |\n\nThe judgement: **share the machinery, not the models or the policy values.** One Stay keeps ranking models separate, rightly: candidates, labels and failure modes differ. But the policy layer, ranking log, reason codes, disclosure generator and evaluation tooling are the same problem twice, and building them twice guarantees two answers to the same regulator. When Nookaway pilots boutique hotels in 2028, a shared policy engine lets it rank hotel-like candidates under Nookaway's rules without inheriting Roomstead's commercial terms.\n\n## Failure Modes\n\nEach failure has a warning sign that can be checked:\n\n- **Stacked multipliers**: nobody can compute a property's position from its inputs without running the ranker.\n- **Commission inside the model**: the feature-importance report lists commission, or offline relevance drops when it is removed.\n- **The gross-booking label**: top positions convert well and cancel worse than the page average.\n- **Ranking the wrong price**: high click-through with low booking at the top, and price-change errors concentrated on page one.\n- **Parity by another name**: a \"competitiveness\" feature fed by a rate-shopping feed of the property's own website.\n- **Silent demotions**: partner support answers \"ranking is automated\" and escalates to engineering.\n- **The orphaned transparency page**: its last-modified date is older than the latest policy change.\n- **Starved new supply**: more new properties and homes go without a booking in their first 30 days.\n- **No owner for the model**: drift is noticed by partners first, The Unwatched Model ([Models in Production: ML Platforms and Use Cases for Stays](stays-ml-platform.html) owns model governance).\n\n## The Chief Architect's View\n\n**What to decide at group level.** Five things: the label (honored stay, defined once for both brands, with the cancellation and host-failure joins owned by the data platform); the rule that commission and program tier never enter the relevance model; the policy-layer contract (bounded terms, reason codes, versioned configuration); the ranking log schema; and the disclosure pipeline. These are architecture, because they cut across search, partner contracts, data, customer service and legal, and no single product team can hold them.\n\n**What to leave to the brands.** The models, their features, the policy values (how far a program can move, how long a demotion lasts) and the experiments; one model for both would be The Hotel-Shaped Home in ranking form.\n\n**Who decides.** A small **ranking council**: the head of search and ranking as owner (Jonas at Corvane), regulatory affairs (Noor), each program's commercial owner, customer service for reliability terms, and the Group Chief Architect as tie-breaker on contract changes. It approves policy terms and caps, not model retrains, which go through ordinary experiments; its records are the audit trail regulators ask for.\n\n**What to watch.** Six numbers belong on the group dashboard, each split by brand and market:\n\n| Metric | Why |\n| --- | --- |\n| Honored stays per search | The primary outcome, net of cancellations and host failures |\n| Share of top-ten positions held by program participants, against their share of eligible supply | The direct measure of Pay-to-Rank Creep |\n| Cancellation rate of bookings from top positions, against the page average | Detects a label or price problem |\n| Search-to-checkout price change rate for ranked offers | Detects ranking on stale offers |\n| New supply with a booking in its first 30 days | Two-sided health; exposure for new partners and hosts |\n| Days since the transparency description last regenerated, and parameters without a description | Disclosure drift; the second number should always be zero |\n\n**Long-term considerations.** **Thresholds**: the DSA's non-profiling obligation applies only to platforms with 45 million or more average monthly active recipients in the EU; Roomstead had about 30 million in the first half of 2027, and building the non-personalized path now costs little. **Conversational search**: documented LLM search features in travel sit in front of the existing ranking stack, and an assistant's suggestions are ranking in the Omnibus sense ([AI Across the Stay: Agents, Assistants and Automation](ai-in-travel-stays.html)). **Agents and metasearch as the front door**: when a third party orders the results, the offer the marketplace exposes matters more than its own ranking policy ([Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](demand-channels.html)).\n\n## Questions to Ask\n\n1. What label does the ranker train on, and how are cancellations, host or property failures and walked guests joined into it?\n2. Does any model read commission, program tier or sponsored bids as a feature or in its objective? How do you know?\n3. Can you state, in one sentence, the most a paid program can move a property, and show it in the configuration?\n4. For a position shown last Tuesday, can you list every term that produced it, from data, within an hour?\n5. Is the price the ranker scored the same all-in total the property page and checkout show? What share of top-ten offers change price before checkout?\n6. Which demotions exist, who owns each, and does the affected partner or host get a statement of reasons?\n7. Is the public description of ranking parameters generated from the configuration, and when did it last change?\n8. How much exposure do new properties and homes get in their first 30 days, and who owns that number?\n9. Which parts of the ranking stack are shared between the two marketplaces, and which differences are deliberate?\n\nRanking decides which stay a guest sees first, but most guests who book have searched before, saved something or abandoned a search halfway through. The next chapter, [Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html), follows the Novak family's abandoned Lisbon search and asks how a marketplace remembers a traveler who books once or twice a year, and where personalization must stop.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [How we work](https://www.booking.com/content/how_we_work.html) — Booking.com, 2025 (updated 31 May 2025). Default sort, ranking signals including net bookings, commission and program factors described as secondary, \"Ad\" labels.\n- [150 successful machine learning models: 6 lessons learned at Booking.com (review)](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/) — Adrian Colyer, The Morning Paper, 2019. Offline gains not translating to business gains; latency cost; randomized experiments.\n- [Booking.com EKS case study](https://aws.amazon.com/solutions/case-studies/booking-eks-case-study/) — AWS, n.d. (live 2026). Ranking platform scale: up to 250,000 requests per second, about 40 ms p99.9.\n- [Real-time Personalization using Embeddings for Search Ranking at Airbnb](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb) — Grbovic and Cheng, KDD, 2018. Embeddings; search and similar listings drive 99% of conversions.\n- [Applying Deep Learning to Airbnb Search](https://arxiv.org/abs/1810.09591) — Haldar et al., 2018. GBDT plateau and move to neural ranking.\n- [Improving Deep Learning for Airbnb Search](https://arxiv.org/abs/2002.05515) — Haldar et al., 2020. Position bias and cold start.\n- [Learning To Rank Diversely at Airbnb](https://arxiv.org/abs/2210.07774) — Haldar et al., 2022. Non-independence of results; diversity.\n- [Optimizing Airbnb Search Journey with Multi-task Learning](https://arxiv.org/abs/2305.18431) — Tan et al., 2023. Journey Ranker; host rejections and cancellations in the objective.\n- [Learning to Rank for Maps at Airbnb](https://arxiv.org/abs/2407.00091) — Haldar et al., 2024. Uniform map attention; fewer pins; +1.9% uncancelled bookings.\n- [Predicting Potential Customer Support Needs and Optimizing Search Ranking](https://arxiv.org/abs/2503.17329) — Kim et al., 2025. Support need as a ranking input.\n- [Harnessing the Power of Interleaving and Counterfactual Evaluation for Airbnb Search Ranking](https://arxiv.org/abs/2508.00751) — Zhang et al., 2025. Up to 100× experiment sensitivity.\n- [Applying Embedding-Based Retrieval to Airbnb Search](https://arxiv.org/abs/2601.06873) — Abdool et al., 2026. Retrieval, first-stage and setwise ranking stages.\n- [Personalizing Airbnb Search by Learning from the Guest Journey](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/) — Airbnb Tech, 2026. Sequence model and setwise ranker; online gains.\n- [How search results work](https://www.airbnb.com/help/article/39) — Airbnb Help Center, n.d. (live 2026). Ranking factors; price against comparable listings; no commercial factor listed.\n- [Channel-Smart Property Search: How Expedia Tailors Rankings for You](https://medium.com/expedia-group-tech/learning-to-rank-at-expedia-group-how-to-adapt-the-property-search-result-page-based-on-f4ebef78c94b) — Expedia Group Tech, 2024. Pipeline stages, labels, features, pinned-property variant.\n- [The Juggler Model: Balancing Expectations in Lodging Rankings](https://medium.com/expedia-group-tech/the-juggler-model-balancing-expectations-in-lodging-rankings-6d09b9b8e341) — Expedia Group Tech, 2023. Relevance plus weighted business adjustments; three stakeholders; explainability.\n- [How Keras 3 Helped Modernise Expedia Group's Lodging Ranking Stack](https://medium.com/expedia-group-tech/how-keras-3-helped-modernise-expedia-groups-lodging-ranking-stack-7fec96f052fd) — Expedia Group Tech, 2026. Serving architecture and latency.\n\n### Standards, regulation and documentation\n\n- [Regulation (EU) 2019/1150 (P2B Regulation)](http://publications.europa.eu/resource/celex/32019R1150) — EU, 2019. Art. 5 ranking transparency and remuneration; applies from 12 July 2020.\n- [Directive (EU) 2019/2161 (Omnibus Directive)](http://publications.europa.eu/resource/celex/32019L2161) — EU, 2019. Definition of ranking; Art. 7(4a) UCPD; Annex I point 11a; applies from 28 May 2022.\n- [Regulation (EU) 2022/2065 (Digital Services Act)](http://publications.europa.eu/resource/celex/32022R2065) — EU, 2022. Arts. 17, 26, 27 and 38.\n- [Regulation (EU) 2022/1925 (Digital Markets Act)](http://publications.europa.eu/resource/celex/32022R1925) — EU, 2022. Art. 5(3) parity prohibition.\n- [Judgment in Case C-264/23, Booking.com v 25hours Hotel Company Berlin](http://publications.europa.eu/resource/celex/62023CJ0264) — Court of Justice of the EU, 2024. Parity clauses are not ancillary restraints.\n- [List of designated VLOPs and VLOSEs](https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses) — European Commission, live 2026 (checked 21 October 2026). Booking.com B.V. designated; Airbnb and Expedia not listed.\n- [Italian Competition Authority launches investigation into Booking.com (PS13115)](https://en.agcm.it/en/media/press-releases/2024/4/PS13115) — AGCM, 2026. Preferred Partner program selection and commission.\n- [Spain's antitrust watchdog fines Booking.com](https://techcrunch.com/2024/07/30/spains-antitrust-watchdog-fines-booking-com-nearly-450m-for-unfair-terms-and-restricting-rivals) — TechCrunch, 2024. CNMC fine and findings on ranking and programs (secondary report).\n- [La Audiencia Nacional paraliza la multa de la CNMC a Booking](https://www.hosteltur.com/168767_la-audiencia-nacional-paraliza-la-multa-millonaria-de-la-cnmc-a-booking.html) — Hosteltur, 2025. Fine suspended pending appeal (secondary report).\n\n### Research and practitioner sources\n\n- [Unbiased Learning-to-Rank with Biased Feedback](https://arxiv.org/abs/1608.04468) — Joachims, Swaminathan and Schnabel, 2017. Propensity weighting for position bias.\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

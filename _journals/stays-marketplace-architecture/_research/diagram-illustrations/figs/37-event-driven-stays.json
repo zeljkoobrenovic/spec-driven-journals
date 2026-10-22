@@ -1,0 +1,14 @@
+[
+ {
+  "id": "37-two-tier-streams",
+  "visual_goal": "Show the two tiers: high-volume ARI and calendar streams stay on each brand's own bus next to their read models, while a few contract events travel on one group backbone to the ledger, tax engine and notifications.",
+  "prompt": "A landscape diagram in two horizontal bands. Upper band, on a soft blue background: at the left a box labeled 'Switchyard and Tally' with one thick, busy arrow right into a wide pipe labeled 'Roomstead bus', and below it a box labeled 'Almanac' with one thick arrow right into a second wide pipe labeled 'Nookaway bus'; one arrow from the Roomstead bus right into a box labeled 'Search projectors', and one arrow from the Nookaway bus right into the same box. Lower band, on a soft orange background: a slim, calm pipe labeled 'Group backbone'. Three boxes at the lower left each send one thin arrow right into the backbone: 'Burrow outbox', 'Keystone CDC' and 'Payments'. From the right end of the backbone three thin arrows fan out to three boxes: 'Fathom ledger', 'Levy tax' and 'Notifications'. The upper pipes are visibly much fatter and crowded with many small droplets; the lower pipe carries a few neat sealed envelopes.",
+  "alt": "Upper band: Switchyard and Tally and Almanac feed fat brand buses into search projectors. Lower band: Burrow outbox, Keystone CDC and payments feed a slim group backbone that delivers sealed envelopes to the Fathom ledger, Levy tax engine and notifications."
+ },
+ {
+  "id": "37-outbox-idempotent-consumer",
+  "visual_goal": "Show the outbox sequence as swimlanes: one transaction writes the reservation and its outbox row, a relay publishes keyed by reservation ID, and the consumer skips duplicates and posts entries with the event ID in one transaction.",
+  "prompt": "A left-to-right swimlane diagram with five horizontal lanes, each lane named at its left edge: 'Burrow', 'PostgreSQL', 'Outbox relay', 'Group backbone', 'Fathom'. Messages run left to right as diagonal arrows between lanes: an arrow from Burrow down into PostgreSQL labeled 'one transaction', next to which a small database icon holds two stacked cards labeled 'version 3' and 'outbox row'. An arrow from PostgreSQL down into Outbox relay labeled 'read in log order'. An arrow from Outbox relay down into Group backbone labeled 'publish by reservation'. Two parallel arrows from Group backbone down into Fathom, the second drawn dashed, labeled 'maybe twice'. In the Fathom lane, a small filter funnel labeled 'skip if seen' passes only one envelope through to a ledger book.",
+  "alt": "Swimlanes for Burrow, PostgreSQL, outbox relay, group backbone and Fathom: one transaction writes version 3 and an outbox row, the relay publishes in log order keyed by reservation, the backbone may deliver twice and Fathom skips anything already seen."
+ }
+]

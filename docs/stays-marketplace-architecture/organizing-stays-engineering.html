@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Who Owns What: Organizing Engineering for Stays</title>
+    <meta name="description" content="Which organizational design makes a two-marketplace architecture work? Give guest, partner and host journeys to brand teams, put the shared engines in group platform teams and the hard calculation in complicated-subsystem teams, make someone steward each shared contract, and govern decisions in three classes: team-level ones by advice, contract-level ones by a forum, group-level ones by a board.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Who Owns What: Organizing Engineering for Stays">
+    <meta property="og:description" content="Which organizational design makes a two-marketplace architecture work? Give guest, partner and host journeys to brand teams, put the shared engines in group platform teams and the hard calculation in complicated-subsystem teams, make someone steward each shared contract, and govern decisions in three classes: team-level ones by advice, contract-level ones by a forum, group-level ones by a board.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/organizing-stays-engineering.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/44-organizing-stays-engineering/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="converging-two-marketplaces.html" title="One Platform or Two? Converging Hotels and Homes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="modernizing-a-live-marketplace.html" title="Changing the Engine in Flight: Modernizing a Live Stays Marketplace">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IX — LEADERSHIP: The Chief Architect's Agenda</p>
+        <h1>Who Owns What: Organizing Engineering for Stays</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  34 min read · <a class="spec-link" href="organizing-stays-engineering.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/44-organizing-stays-engineering/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/44-organizing-stays-engineering/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="converging-two-marketplaces.html" title="One Platform or Two? Converging Hotels and Homes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="modernizing-a-live-marketplace.html" title="Changing the Engine in Flight: Modernizing a Live Stays Marketplace">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Who Owns What: Organizing Engineering for Stays", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "Which organizational design makes a two-marketplace architecture work? Give guest, partner and host journeys to brand teams, put the shared engines in group platform teams and the hard calculation in complicated-subsystem teams, make someone steward each shared contract, and govern decisions in three classes: team-level ones by advice, contract-level ones by a forum, group-level ones by a board.", "permalink": "organizing-stays-engineering", "timetoread": "34 min read", "icon": "assets/icons/44-organizing-stays-engineering.png", "logo": "assets/images/44-organizing-stays-engineering/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn how to design the team structure, decision rights and on-call model for a group that runs an accommodation marketplace and a hosted-stays marketplace on partly shared platforms. The chapter covers who owns each journey, engine and contract, how architecture decisions are made and recorded, and who answers the page when a partner's system fails.\n\n> **WHY THE BUSINESS CARES:** A convergence program pays off only if the shared engines are built once and run well. Its money is spent through teams, so the org chart decides whether a shared tax engine ships in a year or becomes three projects that argue. Ownership gaps cost money too: a reservation nobody watches turns into a walked guest, and an alert nobody owns turns into a weekend of redacted check-in codes.\n\n> **WHY ARCHITECTS SHOULD CARE:** Conway's law runs in both directions. A context map with no owners for its contracts will be redrawn by whoever ships first. And architecture governance that cannot decide a cross-brand question within weeks will be bypassed by teams that have deadlines.\n\n> **KEY POINTS:**\n>\n> * **Own journeys, engines and contracts separately, and name all three.** Stream-aligned brand teams own guest, partner and host journeys end to end, including their journey SLOs (service-level objectives). Platform and complicated-subsystem teams own engines. A small stewardship team with no engine to protect owns each shared contract. Most expensive incidents happen where one of the three has no owner.\n> * **Govern decisions by blast radius, not by seniority.** A decision inside one bounded context should go through the advice process and an ADR (architecture decision record) in the repository. A change to a shared contract or a boundary needs a forum decision with the consumers' sign-off. Funding, disputes and accepted risks go to a board. One body that decides everything becomes either a rubber stamp or a five-week queue.\n> * **On-call for supplier integrations is a product, not a rota.** Page on journey symptoms such as unacknowledged reservations, stale ARI and calendar conflicts. Route each page by partner through an ownership catalog, and give the on-call engineer partner-level controls and a contact registry. Send partner-caused noise into partner-health remediation instead of the night shift.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Lost at the Front Desk** — reservation delivery runs through a gateway team, a channel-manager team, a reservation team and customer service, and no single team owns whether the booking reached the property.\n> * **Connectivity Roulette** — partner integrations have commercial owners but no technical owner for each partner's whole behavior, so nobody is on call for a partner, only for pieces of the pipe.\n> * **The Unwatched Model** — pricing, ranking and screening models ship from data-science teams without a named owner for their outcomes or the authority to freeze them.\n\n<br>\nMost chapters before this one ended with a decision and an owner. **This chapter asks whether those owners add up to an organization.** A group that runs two marketplaces on a partly shared platform has more ownership seams than either marketplace alone. The same reservation crosses brand teams, group platforms, partner integrations and customer service, and each seam is a place where a failure can wait unnoticed.\n\nThe chapter owns two terms. A **stays team topology** is the assignment of guest, partner and host journeys, engines, shared contracts and partner integrations to teams of known types, with defined ways of working between them. **Architecture governance (stays)** is the set of decision rights, forums, records and measures that decide how those teams change shared things. Boundaries come from [Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html) and the shared-versus-separate argument from [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html). The journey SLOs that on-call protects come from [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html). How the organization moves a live platform is the subject of [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html).\n\n## Setting the Scene at Corvane: Two Incidents, Eleven Teams\n\nCorvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), had two incidents in the summer of 2027 that looked unrelated. Both are described in earlier chapters; here they matter for **who was involved and who was not**.\n\nThe first was **Hotel Miradouro's missing reservations** ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)). On 5 July at 23:30 a PMS (property-management system) release at the Lisbon hotel began rejecting reservations on four legacy rate-plan codes. Corvane Connect, the group's channel-manager business, had already acknowledged each message to Switchyard, Roomstead's connectivity gateway. Keystone, Roomstead's Java monolith, marked the bookings as sent. Connect parked the failures in a dashboard and a shared inbox. Two guests arrived unknown on 10 and 13 July. On 16 July at 18:40 a family from Lyon was walked to a hotel in Belém. By then **33** messages had failed, **19** of them new Roomstead reservations. At least five teams touched these messages: Connect's integration team in Utrecht, the Switchyard team in Dublin, Keystone's reservations team, Roomstead partner support, and the outsourced contact center that took the guests' calls. Each team did its own job correctly. **None of them owned the outcome that mattered: whether the reservation had reached the front desk.**\n\n![Five desks pass an envelope along a relay track, each marked done, while the envelope falls off before reaching the hotel front desk where a family waits.](assets/images/44-organizing-stays-engineering/44-miradouro-nobody-owns.jpeg)\n**Figure 1:** *At Miradouro at least five teams did their own jobs correctly, and none owned whether the reservation reached the front desk.*\n\nThe second was the **check-in instructions that never arrived** ([Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html)). On Thursday 5 August a Nookaway trust team shipped a contact-detail detector to stop off-platform scams before booking. The detector read the trip stage from a field that partner-API messages left empty, and redacted door codes and phone numbers in post-booking messages for 53 hours. The detector belonged to the trust team. The partner API belonged to Nookaway's connectivity team. Post-booking messaging belonged to a Burrow messaging team. Support belonged to Elena Petrova's organization. A support team lead noticed the pattern on Saturday evening, after **1,870** check-in contacts. **The team that made the change had no signal about its consequence, and the team that saw the consequence had no way to trace it to the change.**\n\nOn 2 September, at the end of the forum session that created Courier and Threadline, Tobias Lindqvist, the Group CTO, put a question to Mariana Costa, the Group Chief Architect:\n\n> \"We have a capability map, a context map, sixteen shared engines and six shared contracts on paper. Who builds them, who runs them at three in the morning, and who decides when two of them disagree? Bring me an org design for One Stay by October.\"\n\nMariana started with an audit rather than an org chart. The rest of this chapter follows what she found and what Corvane decided, generalized for any group with two marketplaces.\n\n## Concepts: Teams, Ownership and Decision Rights\n\n### Conway's law, in both directions\n\nMelvin Conway observed in 1968 that organizations which design systems \"are constrained to produce designs which are copies of the communication structures of these organizations.\" For a stays group this has a forward and a reverse reading. **Forward:** two brand engineering organizations that rarely talk will build two of everything, and Corvane's 2027 landscape has two identity systems, two trust stacks, two search engines and two experimentation platforms. **Reverse:** if the group wants a shared reservation contract, some team must be organized to own it, or the contract will drift toward whichever engine team edits it most often. The \"inverse Conway maneuver\", choosing the team structure that produces the architecture you want, works only when the architecture is already decided.\n\n### Team types and interaction modes\n\nMatthew Skelton and Manuel Pais's *Team Topologies* (2019) gives a vocabulary that fits stays platforms well. It has four team types and three interaction modes.\n\n| Team type | Definition (Team Topologies) | In a stays group |\n| --- | --- | --- |\n| **Stream-aligned** | Aligned to \"a flow of work from (usually) a segment of the business domain\", owning it end to end | A guest journey (search, property page, checkout, trip), a partner journey (onboarding, extranet) or a host journey (listing, calendar, payouts) in one brand |\n| **Platform** | Provides \"a compelling internal product to accelerate delivery by Stream-aligned teams\" | Identity, payments and ledger, tax engine, trust platform, messaging and notifications, data and ML platform, search platform, runtime |\n| **Complicated-subsystem** | Owns a part \"where significant mathematics/calculation/technical expertise is needed\" | Availability and price caches, calendar sync, ranking models, dynamic pricing, fraud and risk models, property matching |\n| **Enabling** | \"Helps a Stream-aligned team to overcome obstacles\", meant to be temporary | Monolith extraction, SLO and on-call adoption, contract migration support |\n\nThe three interaction modes are **collaboration** (two teams work closely for a defined period to discover something), **X-as-a-service** (one team consumes another's product through its interface) and **facilitation** (one team coaches another). A good design states the mode for each important pair of teams **and when it ends**. Collaboration that never ends is a merged team with two backlogs.\n\nTeam Topologies grounds all of this in **cognitive load**: a team can own only as much domain and technology as it can understand. Stays platforms test that limit. A Roomstead checkout team has to understand rate plans, payment arrangements, cancellation policies, tax display and fraud screening. It cannot also own the price cache or the PSP (payment service provider) integration. The topology exists to keep each team's load bounded.\n\n### Three kinds of thing to own\n\nThe two incidents above suggest a distinction the generic vocabulary does not make. Three kinds of thing need owners in a stays platform:\n\n1. **Journeys.** A journey is an outcome a guest, partner or host experiences, for example \"the reservation reached the front desk\" or \"the check-in code arrived\". Its owner holds the journey SLO, sees the end-to-end signal and is paged when it breaks.\n2. **Engines.** An engine is a running system with a store and an API: Tally, Almanac, Fathom, Levy, Courier. Its owner holds the service's SLOs, capacity and change safety.\n3. **Contracts.** A contract is a shared schema and its semantics: the offer, the reservation, the payment arrangement, the stay query. Its owner holds versioning, compatibility tests and the meaning of each field.\n\nWhen one team owns all three, as in a small marketplace, the distinction is invisible. In a group it is the main design decision. Miradouro's missing reservations had engine owners and no journey owner. The redaction incident had a journey owner (support) without the signal, and engine owners without the journey. Chapter [Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html) already gave the shared contracts a **contracts stewardship group** in the Group Chief Architect's office, because a contract owned by one engine team serves that engine first.\n\n### Decision rights and architecture governance\n\n**Architecture governance** decides who may change what, after consulting whom, and where the decision is recorded. Three mechanisms recur:\n\n- An **architecture decision record (ADR)** is a short document: context, decision, options considered, consequences, and the advice received. It is stored with the code or in a shared decision log.\n- The **advice process**, described by Andrew Harmel-Law (martinfowler.com, 2021): \"anyone can make an architectural decision\", provided they first consult the people significantly affected and the people with relevant expertise. Advice must be sought and recorded, but it need not be followed. It is supported by ADRs, a weekly **architecture advisory forum** where decisions are discussed in public, team-sourced principles, and a technology radar.\n- A **design authority** or **architecture board**: a body that approves or rejects decisions above some threshold.\n\nThe advice process scales well when decisions are local. A two-marketplace group also has decisions with many affected parties and one natural decision-taker who is biased: the engine team that wants to change a shared contract. The governance design question is therefore **which decisions are local enough for advice, and which need a decision right held by someone with no engine to protect.**\n\n## Architecture: A Team Topology for Two Marketplaces\n\n### The shape\n\nMap the topology onto the context map, not onto the current org chart. Its shape for a group with an accommodation marketplace and a hosted-stays marketplace has six layers.\n\n1. **Brand stream-aligned teams, split by side.** Each brand has guest-journey teams and supply-journey teams. On the accommodation side the supply teams serve **partners**: properties and their revenue managers, through onboarding, the extranet and rate tools. On the hosted-stays side they serve **hosts**: individuals and professional managers, through listing creation, calendars, pricing tools, co-hosts and earnings. Each team owns its journey's SLO.\n2. **Partner-facing connectivity teams per brand.** These are product teams whose users are channel managers, PMS vendors and iCal feeds. They own the gateway, certification, partner health and the partner integration on-call. They are separate from the extranet teams, because their users are software vendors, not hotels.\n3. **Complicated-subsystem teams** where the depth is real: the availability and price cache, calendar-claim sync, ranking per brand, dynamic pricing, risk models, property and room matching. They serve stream-aligned teams through APIs and keep the specialist knowledge in one place.\n4. **Group platform teams** for the shared engines: identity, payments and ledger, tax, trust, messaging and notifications, customer-service platform, data and ML platform, search platform, booking platform, place registry and supply party, runtime and developer experience.\n5. **Contract stewardship** for the shared contracts, with no engine.\n6. **Enabling teams** for time-bound work, above all extracting the monoliths and adopting journey SLOs and on-call. Each has an exit date.\n\n![Brand journey teams use connectivity, subsystems and group platforms as a service; contract stewards supply schemas to the group platforms.](assets/images/44-organizing-stays-engineering/44-stays-team-topology.jpeg)\n**Figure 2:** *A stays team topology. Brand journey teams own the journeys; engines sit in connectivity, complicated-subsystem and group platform teams consumed as a service. Shared contracts have stewards who own no engine and supply the schemas.*\n\n### What makes this stays-specific\n\nTeam Topologies applies anywhere. In stays, four boundaries are not obvious:\n\n| Boundary | Where teams often draw it | Where I would draw it | Why |\n| --- | --- | --- | --- |\n| Checkout vs price composition | Checkout team computes the final price | Price composition is a complicated subsystem, shared by search, property page and checkout | Price Drift starts when each surface adds fees and taxes itself ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)) |\n| Reservation vs delivery | Gateway team owns \"sent\"; reservation team owns state | One stream-aligned team owns **reservation delivery** as a journey, with acceptance and arrivals SLOs | \"Sent\" is an engine fact; \"the hotel has it\" is a journey fact ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)) |\n| Extranet vs connectivity | One \"partner\" org owns both | Separate teams: extranet serves people, connectivity serves software vendors | Different users, release cycles and failure modes ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)) |\n| Model vs outcome | Data science owns the model; product owns the screen | Model outcome owned by the product or domain team, with freeze authority; ML platform owns training and serving | Without freeze authority, ownership is decorative ([Setting the Price of a Night: Revenue Management and Smart Pricing](dynamic-pricing.html)) |\n\n### Ownership catalog\n\nThe topology is only real if it is machine-readable. An **ownership catalog** lists every production asset with its owning team and on-call rotation. Assets include services, monolith modules, event topics, shared contracts, data products, models, partner connections and scheduled jobs. Each entry also records the bounded context it belongs to and the journey SLOs it contributes to. Alert routing, incident tooling, cost reports and the decision log all read the catalog. Two catalog entries are specific to stays and often missing:\n\n- **Partner connection.** Each certified partner (a channel manager, a PMS vendor, a bedbank) gets a technical owner, a commercial owner, an escalation contact at the partner, a health score and the controls the on-call engineer may use on it.\n- **Model.** Each production model gets an outcome owner with freeze authority, a serving owner and an evaluation schedule ([Models in Production: ML Platforms and Use Cases for Stays](stays-ml-platform.html)).\n\nThe catalog's most important number is the count of **orphans**: assets with no owning team or no rotation. The target is zero, and every new asset is registered before it reaches production.\n\n## Architecture Governance: Three Classes of Decision\n\n### Why one body is not enough\n\nA single architecture review board that approves every significant change fails in a predictable way. Its agenda grows faster than its meetings, teams learn to frame changes as \"not architectural\", and the board ends up approving what has already shipped. A pure advice process fails in the opposite way in a group. It lets the engine team that wants a contract change take the decision after \"seeking advice\" from twelve consumers, and the contract ends up serving the engine.\n\nThe design I use sorts decisions by **blast radius**, meaning how many teams, brands and money flows the decision binds.\n\n| Class | What falls in it | Who decides | Record | Typical lead time |\n| --- | --- | --- | --- | --- |\n| **T: team** | Anything inside one bounded context that does not change a shared contract, a published event's meaning or a journey SLO | The owning team, after the advice process | ADR in the team's repository, linked from the decision log | Days |\n| **C: contract** | Changes to shared contracts (offer, reservation, payment arrangement, stay query); new or moved context boundaries; new shared engines' interfaces; events that money systems consume; degradation ladders | The architecture forum, with each consuming team's sign-off and mandatory reviewers by topic | Group decision log, versioned | 1–3 weeks |\n| **G: group** | New shared engines and their funding; disputes between brands or with the channel-manager business; accepted risks (a single-region system, a deferred migration); decisions that change commercial terms with partners | The group architecture board | Group decision log plus board minutes | Monthly cycle |\n\n**Mandatory reviewers** are what make class C safe. They are named per topic and have the right to block, which advisers in the advice process do not have. In a stays group the list is short:\n\n- **finance** for anything that changes money boundaries;\n- **regulatory and privacy** for display rules, retention and statements of reasons;\n- **trust** for messaging policy;\n- **payments** for the payment arrangement.\n\nKeep it short, or class C becomes the review board again.\n\n![A proposal passes two questions and goes to the team, the forum or the board; all three write to one decision log, which feeds governance measures.](assets/images/44-organizing-stays-engineering/44-decision-routing.jpeg)\n**Figure 3:** *Routing a decision by blast radius. Most decisions stay with teams under the advice process. Contract and boundary changes go to the forum, and funding, disputes and accepted risks go to the board. All three write to one decision log, which is also where governance is measured.*\n\n### What the architecture forum is for\n\nThe forum takes class C decisions and also *shows* class T decisions. Harmel-Law's advisory forum is \"a weekly, hour-long\" session whose main value is that everyone learns from decisions taken in public. A stays group needs both functions, kept separate on the agenda: a decision section with a quorum and reviewers, and a learning section where a team presents a class T ADR and receives advice it may ignore.\n\nThree rules keep the forum useful:\n\n1. **Bring a real case, not a principle.** The forum decisions in this book that worked started from an incident or a traced reservation: the €12 rate, the Seville double booking, the Novak price drift. A field-by-field trace forces specifics that a slide about \"alignment\" does not.\n2. **Decide or schedule.** Every class C item leaves the session with a decision, a named list of missing information and a date, or an escalation to the board. \"Let's discuss again\" is not an outcome.\n3. **Publish reversals.** A decision changed after new evidence is a sign of health. Count reversals, and present them in the learning section.\n\n### Measuring governance\n\nGovernance that is not measured becomes ceremony. I track five numbers, all from the decision log and the ownership catalog:\n\n| Measure | What it shows | Warning sign |\n| --- | --- | --- |\n| Median lead time for class C decisions, from first presentation to decision | Whether the forum is a bottleneck | Over three weeks for two quarters |\n| Share of decisions taken as class T | Whether teams have real autonomy | Falling, while the forum's agenda grows |\n| Contract changes merged without a forum decision | Whether the contract boundary holds | Any, found by the contract repository's checks |\n| Orphan assets in the ownership catalog | Whether ownership keeps up with change | Above zero for a month |\n| Changes that needed more than one team ([Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html)) | Whether the boundaries fit the teams | Rising after a reorganization |\n\n## On-Call for What You Do Not Control\n\n### The problem\n\nIn a stays platform the most important write paths run through other companies' software: ARI (availability, rates and inventory) from channel managers and PMSs, reservations delivered to them, calendars imported from competing platforms. When those fail, the symptom shows up in the marketplace's journey, while the cause and the fix are with the partner. Two bad on-call designs follow from this:\n\n- **On-call by component.** The gateway team is paged when the gateway is unhealthy. But the gateway is healthy: it is accepting messages from a partner whose mapping is wrong, or receiving 200 responses from a channel manager whose PMS is rejecting reservations. Miradouro's missing reservations triggered no alert, because no component failed.\n- **On-call for everything partner-related.** One rotation receives every partner anomaly and drowns in noise caused by the partners. Google's *Site Reliability Engineering* (2016) sets a ceiling of about **two incidents per 12-hour shift**. Above it, engineers cannot investigate properly and start to acknowledge without acting. It also sets a minimum rotation of **eight** engineers on one site, or **six** per site across two sites.\n\n### The design\n\nOn-call for supplier integrations works when it is treated as a product with five parts:\n\n1. **Page on journey symptoms.** Alerts come from the journey SLOs: reservation versions not accepted within the deadline, arrivals not verified 24 hours before arrival, ARI freshness by partner, calendar conflicts found on import, held or rejected ARI messages above a partner's baseline. These are the partner-health signals of [Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html) and [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html), computed continuously.\n2. **Route by partner through the catalog.** An alert names the partner connection. The catalog gives the owning connectivity team's rotation, the partner's escalation contact, and the properties and arrivals at risk.\n3. **Give the on-call engineer partner-level controls.** The controls are: pause a connection's ARI and keep the last good values; switch reservation delivery for affected properties to the extranet inbox; close inventory for affected properties with notice to the hotel; trigger a full re-sync once the partner recovers; for calendars, switch a broken feed's listings to request-to-book. Each control is scoped, logged and expiring, as degradation modes are in [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html).\n4. **Bring in customer service early.** Any incident with arrivals inside 48 hours opens a liaison with the customer-service duty manager, so guests are contacted before they reach a locked door or a front desk that has no booking ([When Something Goes Wrong: Customer Service and Recovery](customer-service.html)).\n5. **Send partner-caused noise to remediation, not to the night.** A recurring partner-caused alert with no guest impact inside the next 48 hours goes to a business-hours partner-engineering queue and counts against the partner's health score. The night page is reserved for journey SLOs that are burning.\n\n![Swimlanes for channel manager, gateway, tracker, on-call and duty manager: a rejection reaches the tracker, which pages on-call; on-call opens a partner incident and alerts the duty manager about arrivals; the fix is resent and accepted.](assets/images/44-organizing-stays-engineering/44-supplier-oncall.jpeg)\n**Figure 4:** *On-call for a supplier integration. The page comes from the delivery journey, not from a component, and is routed to the connectivity team that owns the partner. The on-call engineer uses partner-level controls, opens a partner incident and brings in customer service while arrivals are still days away.*\n\nThe design also has to say who handles a partner that is part of the same group. When the group owns a channel manager, as Corvane owns Corvane Connect, the incident protocol must be the same one used with every other partner. Otherwise private escalation paths grow, and the neutrality promised to hotels becomes a story.\n\n## In Practice: What the Public Record Shows\n\nCompanies rarely publish their org charts. What they do publish shows how ownership follows architecture.\n\n### Expedia Group: a platform operating model, then brand general managers\n\nExpedia Group's annual reports describe an organizational change made before the technical consolidation. Its FY2023 10-K (published February 2024) says that \"during 2020, Expedia Group unified its technology, product, data engineering, and data science teams\". The FY2025 10-K (published February 2026) describes a \"platform operating model strategy\" under which the Hotels.com and Vrbo front-end stacks moved onto the Brand Expedia stack, completed in 2023. In 2024, the same filing says, Expedia added **general managers per consumer brand** \"while also leveraging the scale and efficiency of our unified tech platform\". The first quarter of 2024 also showed the cost of that path: Expedia's CEO said that \"Vrbo's recovery following the recent re-platforming has been slower than anticipated\" (earnings release, May 2024).\n\n> **INFERENCE, NOT DOCUMENTED:** The filings do not explain the 2024 brand general managers. One plausible reading, offered as the author's interpretation and not as Expedia's explanation, is that a unified platform organization optimizes for shared capability while the brands' commercial outcomes need a single accountable owner. If so, this is the same tension as journey ownership versus engine ownership in this chapter, resolved at executive level.\n\n### Booking.com: page owners and data owners\n\nTwo Booking.com engineering sources show ownership drawn deliberately. In a 2026 post on its Node.js rendering platform, Booking.com writes that each major page has \"its own Node rendering service, owned by the team responsible for that page\". It adds that sections of a page, such as the photo gallery, reviews or rooms table, are owned by different teams, some loaded at runtime through Webpack Module Federation so that a section owner can deploy without redeploying the page. That is stream-aligned ownership at the level of a page fragment. In a 2024 SREcon talk on its MySQL estate (more than 250 clusters), the database team described its ownership boundary as \"We do not own data. We do not own tables or schemas\". That is a platform team stating explicitly what it does not own. A 2017 paper by Kaufman, Pitchforth and Vermeer credits Booking.com's spread of experimentation across a decentralized organization to shared tooling and safeguards rather than a central team; it is nine years old ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html)).\n\n### Airbnb: the organizational cost of a shared monolith\n\nAirbnb's account of leaving its Rails monolith, Monorail, is mostly about architecture, and its starting point was organizational. In a 2018 QCon talk Jessica Tai described more than **200** engineers committing to Monorail by about 2015, with about **15 hours** of deploy blockage a day. The migration defined service types with a strict dependency direction (data services, derived data services, a middle tier for shared validation such as reservation validation, and presentation services), each with clear ownership of its data. By 2022, an Airbnb post on incident management described \"over a thousand micro services with hundreds of small teams\". A 2025 post on Viaduct, its GraphQL data-oriented service mesh, reported that more than **130** teams host code in it. Both posts describe a later state; the 2018 evidence describes a migration then in its early stages.\n\n### Agoda: boundaries enforced in the build, not the org chart\n\nAgoda's 2026 post on its post-booking API describes an alternative to splitting teams and services. Merge requests on the post-booking codebase \"more than quadrupled between 2022 and 2025\". Agoda introduced a **modular monolith** with domain components (`rebook`, `cancellation`, `payment`) enforced by architecture tests in continuous integration. It reports that merge requests in the framework-backed area completed review 64% faster at the median in Q2 2026, on a small sample. The lesson for organization design is that ownership boundaries can be enforced by tooling inside one deployable before they become service or team boundaries.\n\n### What the record does not show\n\nNone of these companies publishes how it runs on-call for supplier integrations, how architecture decisions are governed across brands, or how it assigns ownership of shared contracts. The designs in this chapter for those three areas are recommendations, not descriptions of any company.\n\n## Corvane Worked Example: One Stay Org Design v1\n\nThe figures below are fictional and illustrative, like everything about Corvane.\n\n### The audit\n\nIn September 2027 Mariana's office loaded every production asset into a first ownership catalog: Roomstead's **180** AWS services, Nookaway's **60** Go services, Keystone and Burrow modules, event topics, models and partner connections. Each item was checked against three questions: does it have an owning team, an on-call rotation, and a journey it contributes to?\n\n| Finding | Count (September 2027) | Consequence |\n| --- | --- | --- |\n| Services with no on-call rotation listed | **31** of 240 | Alerts routed to a shared channel nobody watched at night |\n| Services straddling two or more contexts | **44**, 17 in the booking path ([Drawing the Lines: Bounded Contexts for Stays](stays-bounded-contexts.html)) | Changes in checkout needed two to four teams |\n| Event topics with no owning team | **96** of about 600 | Schema changes discovered by consumers in production |\n| Production models with no outcome owner | **9** of 38 | Smart Rate and the screening model got owners only after incidents |\n| Certified Roomstead connectivity partners with one technical owner for their whole behavior | **0** of 140 | Each partner had a commercial account manager; the pipe, delivery and fallback belonged to three teams |\n| Roomstead connectivity on-call pages per week, Q3 2027 | **31** average, **64%** partner-caused | Above the 28 a week that a 24-hour, two-incidents-per-shift ceiling allows |\n\nThe governance side had its own numbers. Mariana had started the **architecture forum** in **February 2027**, a month after joining, as a weekly 90-minute session. By the end of September it had recorded **71** decisions in the group decision log, from the checkout attempt contract in February to Courier and Threadline on 2 September. Three had gone to the **group architecture board**, which Tobias chairs monthly with the Group CFO, the Group Chief Architect and the brand leaders: the Corvane Connect neutrality rule (May), Fathom as settlement ledger of record (May, with the CFO's co-signature), and Ranking Policy v1 (September). The forum had worked, and it had become the bottleneck: by August its decision queue was **five weeks** long, and teams had started describing changes as \"internal\" to avoid it.\n\n### The design\n\nTobias approved **One Stay Org Design v1** at the group architecture board on **19 October 2027**, after the forum's advice session on 13 October. It took effect on **1 January 2028**. Its engineering population is about **1,750** engineers in **190** teams.\n\n| Team type | Corvane examples | Teams | Engineers |\n| --- | --- | --- | --- |\n| Stream-aligned, Roomstead guest | Search and results, property page, checkout, trips and post-booking, reservation delivery, Circle, apps | 42 | 400 |\n| Stream-aligned, Roomstead partner | Onboarding, Partner Hub, Rate Insights, partner finance views | 18 | 160 |\n| Stream-aligned, Nookaway guest | Search and listing page, checkout and Pay Later, trips and arrival packages | 18 | 170 |\n| Stream-aligned, Nookaway host | Listing creation, calendar and host app, professional managers and co-hosts, earnings | 16 | 150 |\n| Partner-facing connectivity | Switchyard and certification, partner engineering (Roomstead); partner API and Calendar Sync v2 (Nookaway) | 10 | 95 |\n| Complicated-subsystem | Tally and Pricegrid, Almanac claims, Roomstead and Nookaway ranking, Smart Rate, price composition, Concord matching, booking risk score models, Levy rules engine | 16 | 140 |\n| Group platform | Runtime and developer experience, Corvane ID, Courier, data and ML platform, search platform and Waypoint, Corvane Payments with Fathom and Plumbline, Levy, Warden, support platform, booking platform with Clause and Stayline, place registry and supply party | 46 | 450 |\n| Enabling and stewardship | Keystone extraction, SLO and on-call adoption, contracts stewardship group (grown from four to six engineers) | 5 | 40 |\n| Legacy core | Keystone core, Burrow core | 9 | 75 |\n| Corvane Connect | Separate product organization in Utrecht; ordinary partner of Switchyard | 10 | 70 |\n| **Total** | | **190** | **1,750** |\n\nFive decisions shaped the table.\n\n**1. Reservation delivery became a journey with an owner.** A Roomstead stream-aligned team in Dublin took \"the reservation reached the property\" end to end: the acceptance SLO, the 7-day and 48-hour arrivals manifests from [The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html), and the Partner Hub fallback inbox. Switchyard remained the pipe, owned by the connectivity team. On Nookaway, the trips team took the equivalent journey, \"the guest can get in\", with the arrival-package SLO from [Between Booking and Check-Out: Trips, Messaging and Notifications](trip-and-messaging.html).\n\n**2. Group platforms report to the CTO, and brand-hosted platforms are explicit.** Most shared engines sit in a group platform organization under Tobias. Three do not, and the design says so: **Threadline** stays with Nookaway engineering under Rafael Mendes, because Nookaway has the deeper conversation problem. **Clause** and **Stayline** stay with the group booking platform team in Lisbon, which sits with Nookaway's teams. A brand-hosted platform carries one extra obligation. Its roadmap is reviewed by the forum each quarter, so the other brand is not a second-class customer.\n\n**3. Complicated subsystems are owned where the expertise is, and consumed as a service.** Pricegrid and Tally stay with Roomstead in Dublin, Almanac with Nookaway in Lisbon. The two ranking teams stay separate, consistent with the June 2027 search decision ([Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html)). Kenji Arai's data and ML platform in Barcelona serves both. Each model has a domain owner with freeze authority.\n\n**4. Interaction modes have end dates.** The design lists the collaborations and when each turns into X-as-a-service.\n\n| Pair | Mode | Until |\n| --- | --- | --- |\n| Booking platform (Stayline) and Nookaway checkout | Collaboration | Nookaway reservations on Stayline, end of 2028 |\n| Booking platform (Stayline) and Keystone extraction team | Collaboration | Keystone reservation module retired, end of 2029 |\n| Corvane Payments and Roomstead checkout (payment arrangement) | X-as-a-service | Permanent |\n| Contracts stewardship and every engine team | Facilitation for compatibility tests | Each engine's tests in CI |\n| SLO and on-call enabling team and brand teams | Facilitation | Every journey SLO has an owner and a rotation, end of Q2 2028 |\n\n**5. Governance split into the three classes.** Class T decisions moved out of the forum, into ADRs in team repositories under the advice process, and the forum's learning section shows a sample each week. Class C kept the forum, with mandatory reviewers named per topic: Marco Bellini's finance team for money events, Noor van Dijk's team for display, retention and statements of reasons, Sofia Marín's trust team for messaging policy, Leila Haddad's team for the payment arrangement. The contracts stewardship group became the forum's secretariat for contract changes. Class G stayed with the board.\n\n### Miradouro, replayed under v1\n\nThe forum replayed July's missing reservations against the new design in November 2027. It assumed the August delivery decisions (acceptance only with a PMS confirmation number or a reason code) had been certified for Corvane Connect, as planned for Q4 2027.\n\n| Moment | July 2027 (actual) | Under Org Design v1 (replay) |\n| --- | --- | --- |\n| First rejection, 6 July | Connect parks it in a dashboard; Switchyard has \"acknowledged\" | Rejection with reason code reaches the delivery tracker within minutes |\n| Detection | 10 July, by a front desk | Acceptance SLO alert for one partner after the third rejection, routed to the Roomstead connectivity on-call |\n| First action | 16 July, after a walked family | The on-call switches Miradouro's delivery to the Partner Hub inbox and opens a partner incident with Connect through the same protocol as any partner |\n| Guest contact | After arrival | Customer-service liaison for the two arrivals inside 48 hours |\n| Reservations exposed | 19 new, 3 modified, 4 canceled over 12 days | The replay stopped exposure at under an hour of bookings |\n| Who owned the outcome | No one | The reservation-delivery team's acceptance SLO |\n\nThe replay changed one thing in the design. The connectivity on-call had a 31-page week as its baseline. Mariana's office routed **partner-caused alerts without arrivals inside 48 hours** to a business-hours partner-engineering queue, to be counted against the partner's health score. Applied to Q3 2027 data, that rule cut night-relevant pages to about **11** a week. The forum also accepted that Switchyard's rotation, eight engineers in Dublin, gets a second site in Kraków in 2028 so that nobody is on call alone across the Asia-Pacific night.\n\n![A funnel splits a stream of alert bells: most go to a daytime partner queue, a few reach the night on-call engineer.](assets/images/44-organizing-stays-engineering/44-night-pages-filter.jpeg)\n**Figure 5:** *Sending partner-caused alerts without arrivals inside 48 hours to a business-hours queue cut the night-relevant pages from 31 a week to about 11.*\n\n### What it cost\n\nOrg Design v1 moved about **210** engineers between reporting lines and created **14** new teams. Most new teams were group platform teams, built from engineers who had owned the brands' duplicate engines. Nobody was hired for the change. Mariana's estimate for the board was a **six-week** productivity dip in the affected teams, scheduled after Black Friday. Funding for the group platforms came from the €145 million One Stay budget; the brands kept funding their stream-aligned teams.\n\n## Trade-offs\n\n### Organizing two marketplaces\n\n| Option | How it works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **Brand-aligned** | Two engineering organizations, each owning everything for its marketplace | Fast within a brand; clear accountability | Two of everything; shared services become negotiations between equals | The marketplaces share little, or one may be sold |\n| **Functional across brands** | One search org, one supply org, one booking org, each serving both brands | Maximum reuse; one expert community per domain | Brand outcomes have no single engineering owner; one model is forced onto both marketplaces (The Hotel-Shaped Home) | The two marketplaces are converging on one supply model |\n| **Brand journeys plus group platforms** (Corvane) | Brands own journeys and their core subsystems; group owns shared engines; stewards own contracts | Brand speed on what differs, reuse where the problem is the same | More interfaces to govern; platform teams can become ticket queues | Shared engines for person, money and law, separate engines for supply and inventory |\n| **One platform organization, brand general managers** | Unified technology organization; brands are commercial units on it | Single platform roadmap; strongest economies of scale | Brand-specific depth competes for one roadmap; costly re-platforming of the different brand | The brands are commercially distinct but technically alike |\n\n### Governing architecture\n\n| Option | Strength | Weakness | When it is right |\n| --- | --- | --- | --- |\n| **Central review board approves all significant changes** | Consistency; visible control | Queue; decisions framed to avoid the board; architects as gatekeepers | Small organizations, or a regulated change freeze |\n| **Pure advice process** | Speed; ownership stays with teams; learning in public | Shared contracts drift toward the loudest engine; no one can say no | One marketplace, few shared contracts |\n| **Three classes by blast radius** | Local speed with a decision right on shared things | Classification arguments; needs a steward with no engine | Groups with shared contracts and money flows |\n\n## Hotels and Homes: Where the Two Marketplaces Differ\n\nThe organizational principles are the same for both marketplaces. The team portfolio is not, because the users on the supply side and the core subsystems differ.\n\n| Dimension | Accommodation marketplace | Hosted-stays marketplace |\n| --- | --- | --- |\n| Supply-side users | Revenue managers and front offices, mostly through software | Individual hosts in an app; professional managers through software |\n| Largest supply-side teams | Connectivity, certification and partner engineering; extranet for the 18% not connected | Host product: listing creation, calendar, pricing tools, co-hosts, earnings |\n| Core complicated subsystems | Price and availability cache, rate-plan derivation, property matching | Calendar claims and sync, automatic pricing, reservation screening |\n| What pages at night | Partner ARI and delivery failures; cache staleness at peaks | Calendar conflicts, arrival packages, host cancellations close to arrival, pricing anomalies |\n| Trust organization | Partner-account security and payment fraud | Guest–host trust, screening, protection claims, many policy decisions about people |\n| Regulatory load on teams | Display, ranking transparency, P2B (platform-to-business) notices | Plus short-term-rental registration, data sharing and city rules for every market ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html)) |\n| Operations beside engineering | Market and account managers for properties | Community and host support; field quality where homes are inspected |\n\n**What can be shared** is the organizational machinery: the team types, the ownership catalog, the three decision classes, the decision log, the on-call protocol, partner-health definitions and journey SLO templates. Group platform teams and the contracts stewardship group are shared by definition. **What should not be shared** is the supply-side team portfolio. An accommodation marketplace that organizes its supply teams like a hosted-stays marketplace under-invests in connectivity. A hosted-stays marketplace organized like an OTA builds an extranet for people who live in a phone app. Convergence adds a third case. When the hosted-stays brand starts selling boutique hotels, as Nookaway plans to pilot in 2028, those hotels need connectivity. The design should make that an X-as-a-service request to the accommodation brand's connectivity teams, not a third gateway ([One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html)).\n\n## Failure Modes\n\n**The platform team as a ticket queue.** A group platform team takes requests from both brands and prioritizes by whoever escalates. *Symptom:* brand teams build workarounds; the shared engine has two forks within a year. *Defense:* the platform has a product owner, a published roadmap reviewed by the forum each quarter, and self-service interfaces. Track the share of consumer integrations completed without a ticket.\n\n**The contract owned by its biggest engine.** The reservation contract sits in the Roomstead reservations team's repository, so changes that suit Keystone pass easily. *Symptom:* the hosted-stays brand maps its concepts into hotel-shaped fields. *Defense:* a steward with no engine, compatibility tests run by consumers, and class C decisions for meaning changes.\n\n**Built by the group, paged in the brand.** A group team ships a shared engine but the brand's on-call is paged when it fails, because the brand owns the journey. *Symptom:* brand engineers restart services they do not understand. *Defense:* the engine's owner carries its rotation; journey owners are paged on symptoms and escalate to engine rotations through the catalog.\n\n**Reorganizing instead of deciding.** The org chart changes before the context map and the shared contracts exist. *Symptom:* new group teams with unclear scope and the same old dependencies. *Defense:* contracts and boundaries first, as Corvane did with Context Map v1 in May and Org Design v1 in October.\n\n**The enabling team that never leaves.** A monolith-extraction team becomes the owner of everything nobody else wants. *Symptom:* it has its own on-call for production services. *Defense:* an exit date and a rule that it never owns production assets in the catalog.\n\n**The in-house partner with a private line.** The group's own channel manager or PMS gets earlier API access, a shared Slack channel and favorable incident handling. *Symptom:* other partners' certification issues take weeks; Connect's take hours. *Defense:* one partner-incident protocol for all, and disputes to the board, as Corvane's neutrality rule requires.\n\n## The Chief Architect's View\n\n**Draw ownership from the context map, and keep the map and the catalog in sync.** I would not approve an org design that cannot list, for every bounded context, the team that owns its engine. For every shared contract it must list the steward, and for every journey SLO the team that is paged. The ownership catalog is how I would check that, and the orphan count is the first number I would look at each month.\n\n**Separate journey ownership from engine ownership in the group's design, and let teams combine them where they can.** Small marketplaces get both from one team for free. In a group, someone must own \"the reservation reached the hotel\" and \"the guest could get in\" as journeys, separately from the teams that run the gateway and the messaging engine. These are the outcomes guests remember and regulators ask about.\n\n**Keep the forum's decision right narrow and its learning function wide.** The forum decides contract and boundary changes. It does not approve team designs. Everything else it hears, in public, so that the next team learns from it. If its queue passes three weeks, the cure is reclassification, not more meetings.\n\n**Put finance and regulatory affairs inside governance, not after it.** In a stays group, money events and display rules carry legal consequences. The CFO's co-signature on money boundaries and the regulatory team's veto on display and retention cost a few days per decision. Without them, an audit finding or a regulator's letter arrives months later.\n\n**Fund on-call as a product.** Supplier-integration on-call needs alert design, a partner contact registry, partner-level controls, a customer-service liaison and enough engineers for a humane rotation. Budget it like the gateway. A rotation over the SRE ceiling is a sign of a design gap, not a staffing gap.\n\n**Watch two trends.** Regulation keeps creating standing obligations with deadlines, such as data sharing under the Short-Term Rental Regulation and DSA (Digital Services Act) statements of reasons; each needs an owning team, not a project ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html)). And AI coding agents let a team maintain more code but not more domain, so team boundaries should still follow domain depth ([AI Across the Stay: Agents, Assistants and Automation](ai-in-travel-stays.html)).\n\n## Questions to Ask\n\n1. For each guest, partner and host journey with an SLO, which team is paged when it burns, and does that team see the end-to-end signal?\n2. Who owns each shared contract, and does that owner run an engine that benefits from changing it?\n3. How many production assets in the ownership catalog have no owning team or no on-call rotation today?\n4. Which decisions can a team take alone, which need the forum, and which need the board, and is that written down?\n5. What is the median lead time for a contract-level decision, and how many contract changes were merged without one last quarter?\n6. When a channel manager starts rejecting reservations, which alert fires, who receives it, and which controls can they use without asking anyone?\n7. How many supplier-integration pages per shift does the on-call receive, and what share is caused by partners with no guest impact in the next 48 hours?\n8. For each production model, who can freeze it at three in the morning?\n9. Which collaborations between teams have no end date?\n10. If the group owns a channel manager or PMS, does it follow exactly the same certification and incident process as competing partners?\n\n## From Owners to Migration\n\nAn organization designed for the target architecture still has to get there while the old one is selling rooms. Keystone holds parts of nine contexts and Burrow of seven, and the teams of Org Design v1 own engines that do not yet exist alongside monoliths that still take every booking. [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html) turns to that problem: moving a live booking platform to the new boundaries without losing reservations or money on the way.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Expedia Group, Inc. Form 10-K for fiscal year 2023](https://www.sec.gov/Archives/edgar/data/1324424/000132442424000007/expe-20231231.htm), Expedia Group / SEC, 2024 — 2020 unification of technology, product, data engineering and data science teams.\n- [Expedia Group, Inc. Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm), Expedia Group / SEC, 2026 — platform operating model; unified front-end stack in 2023; brand general managers in 2024.\n- [Expedia Group first quarter 2024 earnings release](https://www.sec.gov/Archives/edgar/data/1324424/000132442424000024/earningsrelease-q12024.htm), Expedia Group / SEC, 2024 — Vrbo's slower recovery after re-platforming.\n- [Node.js at scale, rebalanced: how we cut cost by 38%](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002), Booking.com Engineering, 2026 — page-owning teams and section ownership with Module Federation.\n- [MySQL at Booking.com (SREcon24 EMEA slides)](https://usenix.org/system/files/srecon24emea_slides-androulidakis.pdf), Androulidakis / USENIX, 2024 — database team owns infrastructure, \"not data\".\n- [The Great Migration: from Monolith to Service-Oriented](https://www.infoq.com/presentations/airbnb-soa-migration/), Jessica Tai / InfoQ (QCon SF), 2018 — Monorail committers and deploy blockage; service types and dependency direction.\n- [Incident Management at Airbnb](https://medium.com/airbnb-engineering/incident-management-ae863dc5d47f), Airbnb Engineering, 2022 — \"over a thousand micro services with hundreds of small teams\".\n- [Viaduct, five years on](https://airbnb.tech/infrastructure/viaduct-five-years-on-modernizing-the-data-oriented-service-mesh/), Airbnb Tech, 2025 — more than 130 teams hosting code in a shared data-oriented service mesh.\n- [How we cut the coupling tax in a post-booking API](https://medium.com/agoda-engineering/how-we-cut-the-coupling-tax-in-a-post-booking-api-2156a3175538), Agoda Engineering, 2026 — modular monolith with domain components enforced by architecture tests.\n\n### Standards, regulation and documentation\n\n- [Being On-Call](https://sre.google/sre-book/being-on-call/), Andrea Spadaccini, in *Site Reliability Engineering*, Google / O'Reilly, 2016 — two incidents per 12-hour shift; minimum rotation of eight on one site or six per site on two.\n- [Team Topologies key concepts](https://teamtopologies.com/key-concepts), Team Topologies, n.d. — definitions of the four team types, three interaction modes and cognitive load.\n\n### Research and practitioner sources\n\n- [How Do Committees Invent?](https://www.melconway.com/Home/Committees_Paper.html), Melvin E. Conway, *Datamation*, 1968 — designs copy the communication structures of the organizations that make them.\n- [Team Topologies: Organizing Business and Technology Teams for Fast Flow](https://teamtopologies.com/book), Matthew Skelton and Manuel Pais, IT Revolution, 2019 — team types, interaction modes, cognitive load and the inverse Conway maneuver.\n- [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html), Andrew Harmel-Law / martinfowler.com, 2021 — the advice process, decision records and the weekly architecture advisory forum.\n- [Democratizing online controlled experiments at Booking.com](https://arxiv.org/abs/1710.08217), Kaufman, Pitchforth and Vermeer / arXiv, 2017 — four practices that spread experimentation across a decentralized organization.\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

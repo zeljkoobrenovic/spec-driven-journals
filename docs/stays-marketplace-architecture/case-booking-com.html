@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Booking.com: Experimentation, Connectivity and the Agency Model at Scale</title>
+    <meta name="description" content="What does the best-documented accommodation marketplace teach a Chief Architect, once its public record is separated from guesswork? That a published supply contract and an experimentation habit carry an OTA through two technology eras, that a hotel-shaped platform can carry millions of homes only by growing home-specific seams, and that commission, ranking and payments have become regulated architecture.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Booking.com: Experimentation, Connectivity and the Agency Model at Scale">
+    <meta property="og:description" content="What does the best-documented accommodation marketplace teach a Chief Architect, once its public record is separated from guesswork? That a published supply contract and an experimentation habit carry an OTA through two technology eras, that a hotel-shaped platform can carry millions of homes only by growing home-specific seams, and that commission, ranking and payments have become regulated architecture.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/case-booking-com.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/48-case-booking-com/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="part-10.html" title="Part X — PRACTICE: How Others Built It">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-airbnb.html" title="Airbnb: From Monolith to Platform for Hosted Stays">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part X — PRACTICE: How Others Built It</p>
+        <h1>Booking.com: Experimentation, Connectivity and the Agency Model at Scale</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  31 min read · <a class="spec-link" href="case-booking-com.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/48-case-booking-com/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/48-case-booking-com/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="part-10.html" title="Part X — PRACTICE: How Others Built It">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-airbnb.html" title="Airbnb: From Monolith to Platform for Hosted Stays">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Booking.com: Experimentation, Connectivity and the Agency Model at Scale", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "What does the best-documented accommodation marketplace teach a Chief Architect, once its public record is separated from guesswork? That a published supply contract and an experimentation habit carry an OTA through two technology eras, that a hotel-shaped platform can carry millions of homes only by growing home-specific seams, and that commission, ranking and payments have become regulated architecture.", "permalink": "case-booking-com", "timetoread": "31 min read", "icon": "assets/icons/48-case-booking-com.png", "logo": "assets/images/48-case-booking-com/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Read Booking.com's public record (annual reports, its connectivity API documentation, engineering and research publications, and regulatory decisions) as an architecture case. You will separate what Booking.com documented, with dates, from the author's interpretation, see where the evidence stops, and compare the case with the book's patterns and Corvane's choices.\n\n> **WHY THE BUSINESS CARES:** Booking.com is the competitor and the channel almost every accommodation business measures itself against. Its documented moves (agency to merchant, ranking tied to commission programs, homes at scale) are the moves a marketplace GM will be asked to copy, and its regulatory record prices what copying them can cost.\n\n> **WHY ARCHITECTS SHOULD CARE:** No other stays marketplace publishes its supply contract, its experimentation practice and its infrastructure history in this much dated detail. The record shows which architectural choices survived a change of technology era, and which ones regulators have since turned into compliance requirements.\n\n> **KEY POINTS:**\n>\n> * **The supply contract outlives the technology underneath it.** Booking.com's connectivity APIs still use OpenTravel's 2003B XML version, extended with its own XML and JSON. They encode a precise online travel agency (OTA) model: deltas only, one hotel and one month per request, four pricing models fixed per property, and reservations that are pulled, acknowledged and emailed as a fallback after 30 minutes. Over the same period the platform beneath moved from bare metal and Perl toward Kubernetes, Node.js and AWS.\n> * **Experimentation is the operating system, migrations included.** Booking.com runs about 1,000 parallel experiments (2026). It moved pages from Perl to Node.js one fragment at a time, each swap behind an experiment. Its own record also shows the limits: experiment quality had to be measured before it improved, and partner programs need designs that a visitor A/B test cannot supply.\n> * **Money and ranking have become regulated architecture.** Merchant bookings reached 70% of gross bookings in 2025. Booking.com's own disclosure names commission and program membership among ranking influences. Spain's competition authority (2024), the EU Digital Markets Act (2024) and an Italian investigation (2026) have turned parity, ranking features and program eligibility into compliance requirements.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Connectivity Roulette** — Booking.com's public connectivity documentation is the clearest published counter-example: certification, batching rules, rate limits and price guard rails written down as a contract.\n> * **Pay-to-Rank Creep** — commission level, program membership and paid boosts are disclosed ranking influences, and three regulators have challenged how they were used.\n> * **The Hotel-Shaped Home** — about 3.9 million of Booking.com's 4.4 million properties are homes sold on a room-type and rate-plan model, adapted with home-specific APIs, request-to-book and separate payout rails.\n\n<br>\nBooking.com is the largest accommodation marketplace by most measures, and the one that has published most about itself, in three registers. Its parent's **annual reports** give audited numbers on supply, room nights and revenue mix. Its **connectivity API documentation** describes the contract every hotel channel manager integrates against. Its **engineering and research record** (the Booking.com Development blog, booking.ai, talks and papers) spans 2017 to 2026. **The case is valuable not because Booking.com is a model to imitate, but because its choices are dated and checkable.**\n\nThis chapter asks three questions of that record. *What does the published supply contract say about how an OTA must model inventory and deliver reservations? What does a decade of experimentation do to the way a platform changes? And what happens when commission, programs and payments become something regulators read as architecture?* A fourth runs underneath: what Booking.com's growth in homes says about the book's claim that hotels and homes need different machinery.\n\nThe chapter opens [Part X — PRACTICE: How Others Built It](part-10.html), the book's practice part. Corvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), appears only in the final comparison; its Roomstead is not a disguised Booking.com.\n\n## How to Read This Case\n\nPart X cases follow stricter rules than Parts I–IX. A **documented fact** carries its source and publication year in the sentence. **The author's interpretation** is marked \"my reading\" or sits in the Chief Architect's view. A **reference-architecture inference** sits in a callout labeled `INFERENCE, NOT DOCUMENTED`. Undated API documentation is cited as \"read October 2026\" and treated as current but changeable.\n\n**The evidence describes at least two technology eras, and old sources must not be read in the present tense.** Sources from 2017 to 2020 describe Perl and MySQL on bare metal in Booking.com's own data centers. Sources from 2024 to 2026 describe a hybrid estate in which ranking, machine-learning (ML) serving, the data lake and parts of the MySQL fleet run on Amazon Web Services (AWS). A 2017 talk is cited as a 2017 talk, not as a description of today.\n\n**The case is strongest on the supply contract, experimentation and infrastructure, and weakest at the core of the booking path.** No primary source describes how Booking.com computes availability and price for a destination search, how its reservation system is structured, or how its homes and hotels share code. The section \"Where the Public Evidence Stops\" lists these gaps.\n\n## Timeline: Booking.com in Dated Events\n\nDates are those of the cited publications and decisions. Litigation, product names and API limits are volatile as of October 2026.\n\n| Date | Event | Source type |\n| --- | --- | --- |\n| 2015–2017 | Container platform prototyped on Mesos (2015), moved to OpenShift (2016), then an in-house Kubernetes platform on bare metal | Cloud Native Computing Foundation (CNCF) case study, 2020 |\n| Oct 2017 | Paper on democratized online controlled experiments, describing more than ten years of decentralized experimentation | arXiv paper, 2017 |\n| Aug 2019 | Paper at KDD, the ACM conference on Knowledge Discovery and Data Mining, \"150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com\" | Paper, via a 2019 review |\n| 25 Apr 2023 | Designated a Very Large Online Platform (VLOP) under the EU Digital Services Act | European Commission, 2023 |\n| 13 May 2024 | Designated a gatekeeper under the EU Digital Markets Act (DMA); compliance due 14 November 2024 | European Commission, 2024 |\n| 30 Jul 2024 | Spain's competition authority (CNMC) fines Booking.com €413.24 million for abuse of dominance | Press, 2024 |\n| 19 Sep 2024 | Court of Justice of the EU rules on parity clauses in Case C-264/23 | Judgment, 2024 |\n| Dec 2024 | Parity provisions removed for partners in the European Economic Area (EEA) (reported effective 2 December) | Booking.com-authored opinion, 2024 |\n| 2025 | 80–90 PB moved from Hadoop to a data exchange on AWS S3 and Snowflake | Engineering blog, Oct 2026 |\n| Dec 2025 | Berlin Regional Court finds Booking.com liable to more than 1,000 German accommodation providers over 2013–2016 parity practices | Press, 2025–2026 |\n| Mar 2026 | Experiment Tool (\"ET\") runs about 1,000 parallel experiments | booking.ai, 2026 |\n| 22 Apr 2026 | Italy's competition authority (AGCM) opens an investigation into Preferred Partner programs | AGCM release, 2026 |\n| Sep 2026 | Perl-to-Node.js page migration and 38% Node.js compute saving described | Engineering blog, 2026 |\n| 31 Dec 2026 | Scheduled sunset of the OpenTravel room-content message for home providers | API documentation, read 2026 |\n\n## The Business Underneath: Supply, Room Nights and Money\n\nThe FY2025 Form 10-K, filed in February 2026, gives the frame. Booking Holdings reported **1,235 million room nights in 2025**, up 8% from 1,144 million, and total revenues of **$26,917 million**. Gross bookings were about **$186.1 billion**: $130.0 billion merchant and $56.1 billion agency ([Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), 2026). Room nights include Agoda and other brands; agency revenue is \"almost entirely\" Booking.com accommodation commissions.\n\nTwo facts in the same filing reshape the usual picture of an OTA.\n\n**By property count, Booking.com is mostly a homes platform.** At 31 December 2025 it listed about **4.4 million properties**: about **500,000 \"hotels, motels and resorts\"** and about **3.9 million \"homes, apartments and other unique places to stay\"**. By room nights the balance runs the other way: alternative accommodations were about **36%** of Booking.com room nights in 2025, up from about 35% in 2024. The corporate \"About\" page (read October 2026) adds \"33M+ reported listings\". My reading: the gap between properties and listings is the gap between the contracted *property* and the bookable *unit*, which is why OTA and hosted-stays listing counts cannot be compared without a definition ([Hotels and Homes: Modeling What Is Being Sold](property-and-listing-model.html)).\n\n**The money model has flipped from agency to merchant in three years.**\n\n| Revenue type ($ million) | 2023 | 2024 | 2025 |\n| --- | --- | --- | --- |\n| Merchant revenues | 10,936 (51%) | 14,142 (60%) | 17,755 (66%) |\n| Agency revenues | 9,414 (44%) | 8,524 (36%) | 7,968 (30%) |\n| Advertising and other | 1,015 (5%) | 1,073 (5%) | 1,194 (4%) |\n| **Total** | **21,365** | **23,739** | **26,917** |\n\n*Source: Booking Holdings Form 10-K FY2025 (2026); shares computed by the author.*\n\nThe merchant share of gross bookings reached **70% in 2025**, up from 63% in 2024. The filing attributes this to \"the ongoing shift from agency to merchant bookings at Booking.com\". It also reports that in 2025 \"the incremental revenues from facilitating payments were greater than the associated incremental variable expenses\". Payments have moved from a cost to a contributor to profit.\n\n## The Supply Contract: Connectivity as a Public Specification\n\nMost hotel inventory reaches an OTA through channel managers and property-management systems (PMS). Booking.com does not publish what share arrives this way, but it does publish the contract those systems integrate against (developers.booking.com, read October 2026). **For an architect, this documentation is the most detailed public specification of an OTA's supply model**, and most of the book's Part II and Part III vocabulary can be checked against it ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html), [Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html)).\n\n### Formats: a 2003 standard that still drives the contract\n\n\"The Booking.com Connectivity APIs use OTA version 2003B\": the OpenTravel Alliance XML schema in its 2003 release. Booking.com adds **B.XML**, its own XML dialect, because \"OTA cannot support all the functionality we want to offer\". Newer APIs use JSON, and length-of-stay prices can be loaded as CSV. The catalog lists more than twenty modules, from Rates & Availability (ARI: availability, rates and inventory) and Reservations to Licences, Messaging and Promotions.\n\nMy reading: thousands of channel managers integrated against these messages over two decades, and the platform behind them moved from Perl on bare metal toward Kubernetes and AWS without forcing them to change. The contract was extended, not replaced. **The partner-facing contract is the most durable architecture an OTA owns.**\n\n![A bridge labeled Connectivity contract carries steady traffic while its pillars are swapped from bare-metal server racks to cloud containers underneath.](assets/images/48-case-booking-com/48-contract-outlives-platform.jpeg)\n**Figure 1:** *My reading: the connectivity contract stayed in place, extended rather than replaced, while the platform beneath it moved from Perl on bare metal toward Kubernetes and AWS.*\n\n### The product model: room type, rate plan, roomrate\n\nBooking.com's documentation defines the sellable unit precisely. A **room type** is a category of physical rooms with a `Quantity`, the number of units; a property can have at most **100** room types. A **rate plan** \"is simply a name you use to organize prices\". The bookable product is the **roomrate**, \"a unique combination of room type, rate plan, and conditions\" (cancellation policy, prepayment policy, meal plan, restrictions, child prices), with at most **400** active roomrates per property. Derived rate plans can follow a parent's price, restrictions, policy or open/closed status.\n\nThe documented limits are guard rails against Rate Plan Sprawl: the 400-roomrate ceiling decides how much combinatorics the platform will carry for one property.\n\n### ARI as a delta stream with guard rails\n\nThe Rates & Availability API sets \"inventory, pricing, and restrictions for a property's rooms\". Its rules describe a stream, not a file transfer:\n\n- **Deltas only.** \"Send only changes, not full refreshes\", and read current values first if needed.\n- **Narrow messages.** \"All updates must belong to one hotel only\", and \"one month per request\".\n- **A long horizon.** Dates from one day in the past (Central European Time) to five years ahead, with at least 12 months of availability recommended.\n- **Restrictions as data.** Rooms to sell (`BookingLimit`), minimum and maximum length of stay (LOS), closures, closed to arrival or departure, and advance-booking windows. The API does not validate overlapping restrictions, which can make a room unbookable without an error.\n- **Static price guard rails.** Prices above €50,000 or below €5, or their local-currency equivalents, are rejected.\n\nThe four documented **pricing models** set how much data a property generates:\n\n| Pricing model | What the partner sends | Notes in the documentation |\n| --- | --- | --- |\n| Standard | A price for maximum adult occupancy plus a single-adult price, per roomrate and date | Default |\n| Derived (rate-level occupancy) | A base price plus percentage or fixed offsets per occupancy | Single-occupancy pricing not supported |\n| Occupancy-based | A price for every combination of room type, rate plan, date and number of occupants | Certification required |\n| Length of stay | A price per check-in date, occupancy and number of nights | Certification required; up to 729 days ahead; CSV or OpenTravel |\n\n*Source: Booking.com Developers, \"Pricing models\" (n.d., read October 2026).*\n\nThe pricing type is set **per property**, and \"changing a pricing type removes all existing prices for the affected room-rates\". My reading: fixing the type per property bounds the combinatorics, and wiping prices on a switch avoids reinterpreting every stored price.\n\nPublished **rate limits** show which traffic is hot: 10,000 calls per minute across all endpoints, but only **75 per minute** for each content and product-structure message. Structure is slow-changing configuration; ARI is the stream.\n\n### Reservations: pull, acknowledge, fall back to email\n\nReservation delivery is the part of the contract that decides whether the guest has a room on arrival ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)). Booking.com documents a **pull** model.\n\n![Swimlanes for guest, booking platform, provider and property: the guest books, the provider polls and receives the reservation until it acknowledges, writes it into the PMS, and after 30 minutes the platform falls back to email.](assets/images/48-case-booking-com/48-reservation-pull-delivery.jpeg)\n**Figure 2:** *Booking.com's documented reservation delivery: at-least-once pull with acknowledgement, and a human fallback after 30 minutes. The time between the sale and the PMS closing inventory on other channels is the overbooking window.*\n\nThe documented details matter:\n\n- **At-least-once delivery.** A \"message dispatcher\" queues reservations per provider. `GET OTA_HotelResNotif` \"will repetitively return bookings until they are acknowledged\", so providers must de-duplicate.\n- **A time-bounded fallback.** If a reservation is not acknowledged (OpenTravel flow) or retrieved (B.XML flow) within **30 minutes**, it is emailed to the property. Connectivity Support can extend the window to 24 hours, \"but that can increase queue size and overbookings\".\n\nBooking.com also documents the causes of overbooking it sees: outages that stop availability updates, \"incorrect auto-replenishment of cancelled reservations\", late closures, rates not delivered over XML, and unmapped rates. **Auto-replenishment** puts canceled rooms back on sale by default, even on closed dates unless the property disables it, and connectivity partners cannot turn it off. When a room is overbooked, Booking.com's customer service arranges an alternative.\n\nMy reading: Booking.com bounds its own side (30 minutes to fallback) but cannot bound the provider's side, from acknowledgement to the PMS pushing a new `BookingLimit` to every other channel. That is where the overbooking window lives, a shared integrity problem between marketplace, connectivity partner and PMS ([Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html)).\n\n> **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture for ingestion, not a description of Booking.com's systems, is an edge that validates each message synchronously (schema, mapping, limits, guard rails), then an ordered per-property write into the inventory store and change events that refresh search caches. The documentation states only that responses are synchronous. It does not say how quickly an update becomes bookable.\n\n## Experimentation as an Operating System\n\nBooking.com's experimentation record is the longest in travel ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html) uses it alongside Airbnb's and Agoda's).\n\n**The culture is documented from 2017 and confirmed in 2026.** A 2017 paper by Lopez Kaufman, Pitchforth and Vermeer describes more than ten years of decentralized experimentation: a central repository of results, a library that separates experiments from business logic, pipeline monitoring, and safeguards that let anyone own an experiment end to end ([arXiv, 2017](https://arxiv.org/abs/1710.08217)). In March 2026 Booking.com stated that its in-house **Experiment Tool (\"ET\")** runs \"approximately 1,000 parallel experiments\" at any moment ([Cano et al., booking.ai, 2026](https://booking.ai/scaling-experimentation-quality-at-booking-com-726152ee4ef0)).\n\n**Quality had to be measured before it improved.** The same 2026 post describes a deliberate choice of \"education over enforcement\", which left experiment quality unreported. When Booking.com built an Experimentation Quality measure, it found that \"80% of experiments did not have a power calculation\". The response was tooling, not a review board: a quality tab, automatic power calculation and embedded ambassadors. A September 2026 post adds a hypothesis-quality score checked by a language model ([booking.ai, 2026](https://booking.ai/a-problem-well-defined-is-half-solved-measuring-hypothesis-quality-at-booking-com-a85e845178a3)).\n\n**Experiments judge infrastructure as well as product.** The September 2026 Node.js post describes how pages left Perl rendering: \"Rather than rewriting a page in one go, we replaced it one fragment at a time … with each swap behind an experiment so it could be measured and reverted on its own.\" ([Booking.com Development, 2026](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002)).\n\n**Latency is a business metric.** The 2019 KDD paper on 150 production models, as summarized in Adrian Colyer's 2019 review (the paper itself was not accessible), reports that \"an increase of about 30% in latency cost about 0.5% in conversion rates\". The paper's central lesson is that offline model gains do not reliably become business gains, so every model is judged by a randomized controlled trial ([Colyer, 2019](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). The 2019 model inventory is surely not current. The lessons are.\n\n**Two-sided problems are visible in the research agenda.** booking.ai's 2026 output includes a post on the causal impact of *voluntary adoption* in two-sided marketplaces. My reading: partners who opt into loyalty discounts, preferred status or facilitated payments differ systematically from those who do not, so comparing them overstates impact, and a visitor A/B test cannot randomize a partner's choice. Supply-side designs are needed ([Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html)).\n\nMy reading: experimentation at Booking.com is less a tool than a **change-control mechanism**. Many teams can change one product and one platform without central coordination because every change is measured and reversible. The cost is that the metric and the test's quality decide what ships.\n\n## The Platform Underneath: Two Eras, Partly Overlapping\n\n| Layer | Earlier evidence (2017–2020) | Recent evidence (2024–2026) |\n| --- | --- | --- |\n| Languages and rendering | Base images for \"our main stacks, Perl and Java\" (CNCF, 2020) | \"A mix of Java, Perl, Rust and Node.js\"; one Node rendering service per major page, owned by its page team (2026) |\n| Compute | In-house Kubernetes on bare metal; about 500 new services in eight months (CNCF, 2020) | Ranking on a dedicated Amazon EKS cluster, up to 250,000 requests/s at about 40 ms p99.9 (AWS case study, undated) |\n| Relational data | — | More than 250 MySQL clusters, 10,000+ servers, 100M+ queries/s; \"In general, choose availability over consistency\"; usually three European regions (SREcon slides, 2024) |\n| Analytical data | — | About 250 PB on Hadoop 2; 80–90 PB moved in 2025 to a data exchange on S3 and Snowflake; about 110 PB of raw data left behind (2026) |\n| ML serving | \"Hundreds of machine-learned models\" (2018); latency mitigations (2019) | Feature platform on ElastiCache, 200,000 requests/s at p99.9 below 25 ms, serving ranking, fraud detection and user-facing predictions (2026) |\n| Search | \"Sherlock\", an in-house engine over *reservations*, >20,000 requests/s below 40 ms (2017) | Vector search moving from OpenSearch to Weaviate after a 100-million-embedding benchmark (2026) |\n| Generative AI | — | AI Trip Planner beta (2023); Smart Filter (2024); AgentHub agent platform (2026) |\n\n*Sources: CNCF (2020); arXiv (2018); Colyer (2019); Highload++ (2017); SREcon EMEA slides (2024); Booking.com Development blog (2026); AWS case study and Database Blog (2026); booking.ai (2026).*\n\nThree points stand out.\n\n**First, migrations were incremental and measured.** Perl pages became Node fragments behind experiments. The data lake moved in prioritized waves within a year and deliberately left most raw data behind ([Booking.com Development, 2026](https://medium.com/booking-com-development/how-we-migrated-europes-largest-data-lake-on-time-and-without-turning-the-lights-off-61ee8a07db76)). The database team called cloud adoption \"a journey, not a switch\" (2026). [Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html) argues for the same discipline.\n\n**Second, the relational estate states its consistency stance outright.** \"Choose availability over consistency\", with tens to hundreds of read replicas per primary, is the classic shape for read-heavy shopping traffic. My reading: it is consistent with shopping pages that tolerate replica lag and an authoritative check at booking, but the slides do not describe the booking path.\n\n**Third, the data migration's stated drivers include stays-specific ones:** access that \"was too broad\", regulation, and seasonality (\"more bookings in summer than in winter\") ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)).\n\n## Where Search and Availability Go Dark\n\nThe center of an OTA, turning a destination, dates and party size into priced, available offers across millions of properties, is the part of Booking.com with the least public evidence. The 2017 Sherlock talk is about searching *reservations*, not consumer availability, and its current status is unknown. The 2026 feature-platform and EKS sources describe ranking *after* candidates exist. No primary source describes the availability index, price cache, refresh path from ARI updates or how room × rate × occupancy × LOS combinations are resolved per search.\n\n> **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture, not a description of Booking.com's systems, follows from the documented constraints. About 500,000 hotels pushing ARI deltas, 3.9 million homes and four pricing models make live evaluation of every property per search implausible at the documented ranking load. A system of this kind would precompute availability and a base price per property, date and party from the ARI stream. It would compute the full price (occupancy, LOS, member discounts, taxes and currency) only for the page of results, and recheck it at booking. Ranking and the feature platform would sit after candidate retrieval. [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) develops this design for Corvane, and [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html) the retrieval pipeline.\n\n![Shopping path with the ARI contract, ranking, feature platform and results lit as documented, and the availability and price station in the middle dark with a question mark.](assets/images/48-case-booking-com/48-shopping-path-coverage.jpeg)\n**Figure 3:** *What the public record covers on the shopping path: the supply contract and the ranking layer are documented; the availability and price computation between them is not.*\n\n## Agency to Merchant: The Money Model in Motion\n\nBooking.com's \"How we work\" page (updated 31 May 2025) still says, \"We don't buy or (re)sell any products or services\"; the provider \"just pays us a commission\". The filings show most money now flowing differently, and the partner documentation (read October 2026) describes how ([Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html), [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html)).\n\n| | Agency (pay at property) | Merchant (Payments by Booking.com) |\n| --- | --- | --- |\n| Who charges the guest | The property, at the stay or in advance with card details forwarded by Booking.com | Booking.com, at booking or before the stay |\n| How Booking.com earns | Invoices commission to the property after the stay | Deducts commission and payment fees from the payout (\"net\"), or pays the full amount and invoices separately (\"gross\") |\n| How the property is paid | Directly by the guest | Bank transfer (monthly, weekly or, in some countries, daily); a single-use virtual card holding \"the exact amount the guest paid\"; or Stripe, \"only available for Home properties in the US and Canada\", released per reservation on the check-in day |\n| Who carries fraud, chargeback and currency risk | Mostly the property (author's reading) | Mostly Booking.com (author's reading) |\n\n*Sources: Booking.com Developers, \"Understanding payouts\" (n.d.); Booking.com for Partners, \"Payments by Booking.com\" (n.d.); risk allocation is the author's reading.*\n\nA property can also run a **mixed model**: some reservations facilitated, others collected by the property, with commission and fees invoiced monthly. The 10-K names the cost side of merchant: higher processing costs, especially across currencies, and fraud management.\n\n![Guest pays the platform at booking; the platform pays the hotel gross and invoices commission, or pays the home partner net; dashed agency arrows show the guest paying the hotel at the stay and the hotel paying commission after.](assets/images/48-case-booking-com/48-three-settlement-paths.jpeg)\n**Figure 4:** *Three documented settlement paths on one platform: agency (dashed), merchant with a gross payout and a commission invoice, and merchant with a net payout. Every booking must carry which path it is on.*\n\nMy reading: when one property has agency and merchant bookings in the same month, the platform runs **payables** and **receivables** side by side for the same partner, and the payment arrangement must be a versioned attribute of each booking. A booking modified from pay-at-property to prepaid changes its ledger flow, invoice and tax treatment.\n\n> **INFERENCE, NOT DOCUMENTED:** Booking.com's growth in homes plausibly contributes to its shift toward merchant. An individual renting out one flat often cannot accept cards, so the platform must collect. The Stripe option limited to home properties, released on check-in day, is consistent with that reading. The filings do not break the shift down by supply type.\n\n**Tax follows money.** The FY2025 10-K records a **$337 million accrual in 2024** for the settlement of Italian indirect-tax matters and $89 million of expense in 2025 for \"certain other indirect tax matters\". Earlier filings, as summarized in press reports, describe the 2024 matter as a dispute over whether a 2017 Italian law required withholding of 21% on payments to certain short-term-rental partners, settled without admitting liability. My reading: platform withholding only works where the platform controls the money and knows which partners are short-term-rental hosts, a hosted-stays requirement landing on an OTA ([The Tax Patchwork: VAT, Tourist Taxes and Platform Reporting](taxes-on-stays.html)).\n\n## Ranking, Commission and the Regulator\n\nBooking.com's ranking disclosure, required by the EU's Platform-to-Business (P2B) Regulation, is unusually direct. The \"How we work\" page (updated 31 May 2025) says the default sort is driven by click-through rate, gross bookings and **net bookings**, \"how many bookings are made with that Accommodation minus how many are canceled\". It adds that \"other things can also influence an Accommodation's ranking\", including \"how much commission they pay us on bookings\"; that \"we might give preference to Accommodations that are part of our Genius program\", its traveler loyalty program; and that Preferred Partners \"pay us a higher commission if you make a booking\".\n\nThe Preferred Partner page (read October 2026) caps the program at \"30% of partners in a particular geographic area who meet all the requirements\" and claims members collect \"up to 20% more bookings\".\n\n**Three regulators have since read these mechanisms as architecture.**\n\n- **Spain, 2024.** On 30 July 2024 the CNMC fined Booking.com **€413.24 million** for abuse of a dominant position since at least 2019. As reported, the findings included price parity on hotels' own websites, opaque paid visibility programs, total bookings on Booking.com as a default ranking factor, and program eligibility based \"primarily on the profitability of each hotel for Booking.com\" ([TechCrunch, 2024](https://techcrunch.com/2024/07/30/spains-antitrust-watchdog-fines-booking-com-nearly-450m-for-unfair-terms-and-restricting-rivals)). The fine was reported in March 2025 to be suspended pending appeal; no ruling on the merits was found as of October 2026.\n- **EU, 2024.** The Commission designated Booking Holdings a DMA gatekeeper for Booking.com on 13 May 2024, with compliance due on 14 November 2024. The obligations include a ban on parity clauses and equivalent measures, and data access and portability for business users. The 10-K says Booking.com \"has implemented changes to address the DMA prohibition on parity arrangements in the European Economic Area\". A German hotel association disputes this, alleging lower ranking for hotels that are cheaper elsewhere ([hotellerie.de, 2025](https://www.hotellerie.de/news/newsdetail/bookingcom-violates-dma-regulations)). Separately, the Court of Justice held on 19 September 2024 that neither wide nor narrow parity clauses fall outside Article 101(1) of the Treaty as ancillary restraints ([Case C-264/23](http://publications.europa.eu/resource/celex/62023CJ0264), 2024).\n- **Italy, 2026.** On 22 April 2026 the AGCM opened an investigation into Preferred Partner and Preferred Plus. Its concern is that selection \"appears to be driven largely by criteria that favour accommodation providers paying higher commissions\", which could lead consumers \"to book accommodation that is, on average, more expensive\" ([AGCM, 2026](https://en.agcm.it/en/media/press-releases/2024/4/PS13115)). This is an investigation, not a finding.\n\nBooking.com has also been a **Very Large Online Platform** under the Digital Services Act since 25 April 2023, the only travel platform in the first designation. That brings annual risk assessments and independent audits.\n\nMy reading: these cases name specific **ranking features** (booking volume on the platform, price relative to other channels) and specific **program eligibility rules** (profitability to the platform) as the problem. Which features a model may use, how a paid boost is bounded, and whether it can be shown per impression are compliance decisions, answerable from logs rather than model weights. [Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html) develops the policy layer, [Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html) the obligations, and [Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html) the member-rate mechanics behind programs like Genius.\n\n## Homes on a Hotel Platform: Where Booking.com's Two Businesses Differ\n\nBooking.com grew from hotels into homes, the reverse of Airbnb's path ([Airbnb: From Monolith to Platform for Hosted Stays](case-airbnb.html)). Its documentation shows a single supply model (property, room type, roomrate) stretched to carry homes, and a growing set of seams where homes behave differently.\n\n| Dimension | Hotel business (≈500,000 properties) | Homes business (≈3.9 million properties) | Source |\n| --- | --- | --- | --- |\n| Data model | Room types with a `Quantity` of identical rooms; rate plans; roomrates | A home is a room type whose `Quantity` counts identical units, with \"multi-bedroom setups\" built from subrooms | API docs (read 2026) |\n| Content APIs | OpenTravel content messages | Moved to the Rooms and Facilities APIs; the OpenTravel room-content message sunsets for home providers on 31 December 2026 | API docs (read 2026) |\n| Booking mode | Instant confirmation | Request to Book: 24 hours to respond; check-in at least three days ahead; in version 2.0 the partner blocks its own availability | API docs (read 2026) |\n| Payout | Bank transfer or a virtual card per booking | Also Stripe for US and Canadian homes, released on check-in day, after Know Your Partner checks | API docs (read 2026) |\n| Onboarding | Account managers and certified connectivity providers | \"Self-managed\" partners without an account manager; a retrieval-augmented onboarding agent | booking.ai (2026) |\n| Regulation | Parity, ranking and program rules | Also registration numbers (a Licences API) and host tax withholding | API docs; 10-K |\n| Share of room nights | About 64% (2025, implied) | About 36% (2025) | 10-K FY2025 |\n\nMy reading: Booking.com is the strongest public evidence *against* a strict reading of the Hotel-Shaped Home pattern. A room-type model can carry millions of homes at commercial scale. The record also shows the cost. Request to Book was grafted on with a three-day lead time and a rule that the *partner* holds the inventory, because a pending request holds none on Booking.com's side. Homes needed their own content APIs, payout rail and onboarding path. Those seams are where [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html) argues a group should share *contracts* but keep separate engines. The record does not say whether Booking.com runs one engine with home-specific adapters underneath, or how much of its homes inventory comes from professional managers rather than individual owners.\n\n![A grid-shaped hotel frame carrying many small homes attached by stitched seams tagged Request to Book, Home payouts and Home content.](assets/images/48-case-booking-com/48-homes-grafted-seams.jpeg)\n**Figure 5:** *My reading: one room-type model carries about 3.9 million homes, but request-to-book, payouts and content grew as home-specific seams grafted onto it.*\n\n## Trade-offs the Case Illustrates\n\n| Choice | What Booking.com's record shows | When it is right | When it fails |\n| --- | --- | --- | --- |\n| **Publish a strict, certified supply contract** | Public APIs, certification per pricing type, batching rules, rate limits, guard rails | Thousands of third-party systems of varying quality integrate | The contract cannot evolve: a 2003 schema extended twice must still be supported |\n| **Pull-and-acknowledge delivery with a human fallback** | At-least-once pull; email after 30 minutes | Providers vary in reliability and no booking may be lost | Acknowledgement means \"received\", not \"in the PMS\" |\n| **Decentralized experimentation on everything** | About 1,000 parallel experiments; migrations behind experiments | Many teams change one product and every change must be reversible | Test quality is unmeasured, or metrics stop at the booking |\n| **Move from agency to merchant** | 51% to 66% of revenue in two years; payments now profitable | The platform can carry fraud, chargeback, licensing and tax | The reservation model still assumes agency |\n| **Let commission and programs influence ranking** | Disclosed; challenged in Spain, under the DMA and in Italy | Bounded, disclosed, logged per impression, never tied to parity | Boosts blend into relevance, or eligibility rewards platform profit |\n| **Carry homes on the hotel supply model** | 3.9 million homes, 36% of room nights; home-specific seams | Most homes are professionally managed, unit-like supply | Individual hosts need one-unit calendars, request flows and trust tooling |\n\n## Failure Modes the Record Exposes\n\n1. **Overbooking lives between two systems.** The documented causes (outages, auto-replenishment, late closures, unmapped rates) all sit at the seam between marketplace and PMS. A 30-minute email fallback protects the guest's reservation but not the other channels' inventory.\n2. **Static guard rails do not catch plausible errors.** A floor of €5 and a ceiling of €50,000 stop absurd prices. A rate entered at a tenth of its value usually falls inside both. Relative checks against the property's own prices are a separate layer, not described publicly.\n3. **Unvalidated restriction conflicts.** Overlapping restrictions can make a room unbookable with no error, so every channel manager must validate separately.\n4. **Ranking features that become legal findings.** The CNMC named total bookings as a default factor and profitability-based eligibility: rules optimized for revenue that could not be defended to a regulator.\n5. **Experiment quality that nobody measured.** After a decade of experimentation culture, 80% of experiments had no power calculation (2026).\n\n## Where the Public Evidence Stops\n\nNo public source found for this book answers these questions.\n\n| Question | What is public | What is not |\n| --- | --- | --- |\n| How does consumer availability search work? | The ARI contract; ranking on EKS; the feature platform (2026) | Availability index, price cache, refresh latency from ARI to search, combinatorics per search |\n| What does a reservation acknowledgement mean? | Re-delivery until acknowledged; 30-minute email fallback | Whether it requires PMS acceptance; delivery reliability |\n| How fast is an ARI update bookable? | Synchronous responses | Processing behind them; any latency commitment |\n| How are hotels and homes separated in code? | Different APIs, booking modes and payout rails | Whether one engine serves both, and how far the code paths diverge |\n| What do Genius and Preferred cost partners? | Disclosure that they influence ranking; the 30% cap | Commission uplifts and discount terms (partner pages were not accessible; vendor reports only) |\n| How did the DMA change ranking? | Parity removal; the 10-K statement | Compliance report content; any Commission finding |\n| How did the legal cases end? | CNMC fine suspended (2025); Berlin liability ruling (2025); class actions filed | Rulings on the merits and damages, as of October 2026 |\n\n## The Chief Architect's View\n\nBooking.com's record gives me five decision rules.\n\n**Treat the partner contract as the long-lived asset.** The connectivity API has outlived a platform era. I would version, publish and certify it independently, and give it an adapter, not a breaking change, when the internal model moves.\n\n**Make reversibility the default way of changing the platform.** Booking.com's most transferable practice is not the number of experiments but that page migrations and model launches go through the same measured, reversible mechanism. A platform that cannot A/B test an infrastructure change will rewrite in big steps. I would also measure experiment quality, because Booking.com's own data shows culture alone does not keep it up.\n\n**Build the money model for both directions before the shift.** An OTA moving from agency to merchant needs payables and receivables for the same partner, a versioned payment arrangement on every booking, and a ledger that can answer who is owed what ([Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html)). A platform that bolts merchant flows onto an agency-era reservation model pays for it in reconciliation.\n\n**Govern ranking as policy, with an audit trail.** I would keep every commercial influence (commission, program, paid boost) as a separate, bounded, logged term outside the relevance model, and keep any feature that compares a property's price with other channels out of ranking in DMA markets. The test: for any impression, can the platform show which part of the rank was paid?\n\n**Decide where homes need their own seams, and design them on purpose.** Booking.com shows that one supply model can carry homes at scale, and also that request flows, payouts, content and onboarding grew home-specific paths. A group running both marketplaces should design those seams in advance rather than discover them one API at a time.\n\n## Comparing the Case to the Book's Patterns and to Corvane\n\nBooking.com's record supports most of the book's patterns and qualifies one.\n\n| Book pattern or claim | Booking.com's record | Verdict |\n| --- | --- | --- |\n| A certified, contract-first connectivity gateway prevents Connectivity Roulette ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html)) | Published APIs, certification per pricing type, batching rules, rate limits, guard rails | Strongly supported |\n| Reservation delivery needs acknowledgement, retries and a time-bounded fallback ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)) | Re-delivery until acknowledged; email after 30 minutes | Supported; what \"acknowledged\" means is not public |\n| Bound rate-plan combinatorics ([Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html)) | 100 room types, 400 roomrates, pricing type fixed per property | Supported |\n| Govern commercial influence on ranking as bounded, disclosed policy ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html)) | Commission and programs are disclosed influences; three regulators challenged their use | Supported, by the regulatory record |\n| Payment arrangement as a per-booking, versioned fact ([Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html)) | Mixed model per property; gross and net payouts; three payout rails | Supported |\n| Modernize by strangling, measured step by step ([Changing the Engine in Flight: Modernizing a Live Stays Marketplace](modernizing-a-live-marketplace.html)) | Perl fragments replaced behind experiments; data lake in waves | Strongly supported |\n| The Hotel-Shaped Home: one supply model forced onto both ([One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html)) | 3.9 million homes on a room-type model, with home-specific seams | Qualified: workable at scale for unit-like homes, at the cost of grafted seams |\n\nCorvane's choices sit close to Booking.com's documented practice in places and diverge deliberately in others. All Corvane facts below are fictional.\n\n| Corvane choice (2027) | Booking.com parallel | What the case suggests |\n| --- | --- | --- |\n| **Switchyard** adds a sibling band of ±60% around the property's other prices, after the €12 rate at Hotel Miradouro | A €5 floor and €50,000 ceiling; no documented relative check | A static floor would not have stopped a €12 rate; the relative guard is the layer the public record does not show |\n| Delivery closes only on PMS acceptance with a confirmation number; no acknowledgement in **10 minutes** moves the booking to the Partner Hub inbox | Acknowledgement; email fallback after 30 minutes | Corvane's definition answers the question Booking.com's documentation leaves open, and the shorter window shrinks the overbooking window |\n| Roomstead is **70% agency** by room nights (2026), targeting 40% merchant by end of 2028 | Merchant 70% of gross bookings (2025), up from 63% | Same direction; Keystone's agency-era reservation model is the constraint to fix first |\n| **Ranking Policy v1** (EEA markets, October 2027): Front Row moves a property at most three positions, the own-website rate-competitiveness demotion is removed, and the transparency page is generated from policy configuration | Commission and programs disclosed as influences; parity-like ranking alleged by hoteliers; CNMC findings on ranking factors | The case is the strongest argument for Corvane's bounded, configuration-driven policy. Roomstead is below the DSA's VLOP threshold, but P2B and national competition law still apply |\n| **Experimentation Standard v1**: one group platform, stayed reservations as the decision metric, review classes | ET, about 1,000 experiments, quality measured as a KPI | Corvane adds governance Booking.com chose not to impose; without a quality metric it will not know whether that works |\n| **One Stay**: shared offer and reservation contracts, separate engines (Tally and Pricegrid for room types, Almanac for one-unit calendars) | One supply model carrying both, with home-specific seams | The case shows a single engine is possible for unit-like homes. Corvane's split is justified by Nookaway's individual hosts, iCal-synced calendars and trust posture, not by impossibility |\n| Keystone's reservation module retired by end of 2029 | Perl replaced fragment by fragment behind experiments | Corvane should put every Keystone carve-out behind a measured, reversible switch, as Booking.com did with pages |\n\n**The sharpest lesson for Corvane concerns Roomstead's own homes.** Roomstead already carries 435,000 alternative-accommodation properties on Tally, about 61,000 of them multi-unit pools, while Nookaway runs 1.15 million listings on Almanac. Booking.com's record says Roomstead's model can keep carrying professionally managed apartments. It also says that request-to-book, home payouts and home content will keep pulling at Tally's seams. That argues for Mariana Costa's One Stay contracts, which let a home move between engines without a rewrite, not for moving Nookaway onto Tally. [One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html) makes the decision; this case is the strongest public evidence on both sides of it.\n\n## Questions to Ask\n\n1. Is our partner-facing connectivity contract versioned, published and certified independently of the systems behind it? What would a platform migration force partners to change?\n2. What exactly does a reservation acknowledgement mean in our contract: received, or accepted by the PMS with a confirmation number? How long is our fallback window, and who handles it?\n3. Which of our price guard rails are absolute, and which compare a price with the property's own prices? Would a rate entered at a tenth of its value pass?\n4. How many of our experiments last quarter had a power calculation and a pre-declared decision metric? Do we measure experiment quality at all?\n5. Can we change infrastructure (a renderer, a runtime, a cache) behind an experiment and revert it by itself, or only in releases?\n6. For every booking, can we say which payment arrangement applies, and does a modification that changes it update invoicing, payouts and tax?\n7. For any impression in our results, can we show which part of the rank came from commission, programs or paid boosts? Does any ranking feature compare a property's price with other channels?\n8. Where do our homes need different machinery from our hotels (booking mode, payout, content, onboarding, registration, tax), and are those seams designed or accidental?\n\nBooking.com shows an accommodation marketplace that grew into homes while keeping its hotel-shaped core. The next case, [Airbnb: From Monolith to Platform for Hosted Stays](case-airbnb.html), follows the opposite path: a hosted-stays marketplace that rebuilt a monolith into a platform and then began selling hotels.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Booking Holdings Form 10-K for FY2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), Booking Holdings (SEC EDGAR), 2026: room nights, revenues and revenue mix, gross bookings, property counts, merchant share, DMA and DSA status, Italian tax accruals, CNMC accrual.\n- [About Booking Holdings](https://www.bookingholdings.com/about/), Booking Holdings, n.d. (read October 2026): alternative property and listing counts.\n- [Node.js at scale, rebalanced: how we cut cost by 38%](https://medium.com/booking-com-development/node-js-at-scale-rebalanced-how-we-cut-cost-by-38-62ce247a3002), Booking.com Development, 2026: back-end languages, fragment-by-fragment Perl migration behind experiments, page ownership, 38% saving.\n- [How we migrated Europe's largest data lake](https://medium.com/booking-com-development/how-we-migrated-europes-largest-data-lake-on-time-and-without-turning-the-lights-off-61ee8a07db76), Dennis Abrazhevich and Koen van Berge Henegouwen, Booking.com Development, 2026: Hadoop to S3 and Snowflake, volumes, drivers, wave method.\n- [Breaking the loop: migrating our backup catalog for 250+ MySQL clusters to AWS](https://medium.com/booking-com-development/breaking-the-loop-how-we-migrated-our-backup-catalog-for-250-mysql-clusters-to-aws-6f5a53a519b9), Ioannis Androulidakis and Mohammed Gaafar, Booking.com Development, 2026: \"a journey, not a switch\".\n- [Sailing the database seas: applying SRE principles at scale](https://usenix.org/system/files/srecon24emea_slides-androulidakis.pdf), Martin Alderete and Ioannis Androulidakis, SREcon EMEA, 2024: MySQL scale, topology, \"availability over consistency\", ownership model.\n- [Booking.com case study](https://www.cncf.io/case-studies/bookingcom/), CNCF, 2020: container and Kubernetes history (dated).\n- [Booking.com EKS case study](https://aws.amazon.com/solutions/case-studies/booking-eks-case-study/), AWS, n.d. (read October 2026): ranking platform on EKS, throughput and latency.\n- [Inside Booking.com's ultra-low latency feature platform with Amazon ElastiCache](https://aws.amazon.com/blogs/database/inside-booking-coms-ultra-low-latency-feature-platform-with-amazon-elasticache/), Klaus Schaefers, Basak Eskili et al., AWS Database Blog, 2026: feature platform scale and uses.\n- [Building a WebScale search engine with a data driven architecture](https://www.highload.ru/2017/abstracts/2979), Tarek Sheasha, Highload++, 2017: Sherlock reservation search (dated).\n- [How we selected the next vector database at Booking.com](https://booking.ai/how-we-selected-the-next-vector-database-at-booking-com-1e738a5e3bb0), booking.ai, 2026: OpenSearch to Weaviate.\n- [Scaling experimentation quality at Booking.com](https://booking.ai/scaling-experimentation-quality-at-booking-com-726152ee4ef0), Edgar Cano et al., booking.ai, 2026: ET, about 1,000 parallel experiments, education over enforcement, quality metric.\n- [A problem well defined is half solved: measuring hypothesis quality at Booking.com](https://booking.ai/a-problem-well-defined-is-half-solved-measuring-hypothesis-quality-at-booking-com-a85e845178a3), booking.ai, 2026: hypothesis-quality score.\n- [booking.ai feed](https://booking.ai/feed), booking.ai, 2026: list of 2026 posts, including voluntary adoption in two-sided marketplaces.\n- [Introducing AgentHub](https://booking.ai/introducing-agenthub-booking-com-platform-for-modular-travel-ai-agents-68bc521a0f50), Moran Beladev, Hadas Harush and Chana Ross, booking.ai, 2026: agent platform and use cases.\n- [From static help content to a RAG-based onboarding agent for partners](https://booking.ai/from-static-help-content-to-a-rag-based-onboarding-agent-for-partners-f7d5a789c4f7), booking.ai, 2026: self-managed partners and the onboarding agent.\n- [Booking.com enhances travel planning with new AI-powered features](https://www.bookingholdings.com/press-releases/booking-com-enhances-travel-planning-with-new-ai-powered-features-for-easier-smarter-decisions/), Booking Holdings, 2024: Smart Filter, Property Q&A, Review Summaries.\n- [How we work](https://www.booking.com/content/how_we_work.html), Booking.com, 2025: ranking inputs and influences, business model, payment options.\n- [Preferred Partner Programme](https://partner.booking.com/en-gb/solutions/preferred-partner-programme), Booking.com for Partners, n.d. (read October 2026): 30% cap, booking claim, parity condition outside the EEA.\n- [Payments by Booking.com](https://partner.booking.com/en-gb/solutions/payments-bookingcom), Booking.com for Partners, n.d. (read October 2026): full facilitation and mixed model; partner claims.\n- [Complying with the DMA: Booking.com's commitment](https://www.hospitalitynet.org/opinion/4124644.html), Booking.com (opinion on Hospitality Net), 2024: parity removal date and waivers.\n\n### Standards, regulation and documentation\n\n- [Connectivity APIs overview](https://developers.booking.com/connectivity/docs), Booking.com Developers, n.d. (read October 2026): formats, API catalog, rate limits, partner requirements.\n- [Rates & Availability API](https://developers.booking.com/connectivity/docs/ari) and [OTA_HotelAvailNotif](https://developers.booking.com/connectivity/docs/ota-hotelavailnotif), Booking.com Developers, n.d.: delta rules, batching, horizon, restrictions.\n- [Pricing models](https://developers.booking.com/connectivity/docs/pricing-models), Booking.com Developers, n.d.: the four pricing types and switching rules.\n- [Rates & Availability FAQ](https://developers.booking.com/connectivity/docs/con-faq-rates-availability), Booking.com Developers, n.d.: price guard rails.\n- [Understanding pricing types](https://developers.booking.com/connectivity/docs/understanding-pricing-types), Booking.com Developers, n.d.: unvalidated restriction conflicts.\n- [Managing roomrates](https://developers.booking.com/connectivity/docs/room-type-and-rate-plan-management/managing-roomrates), Booking.com Developers, n.d.: roomrate definition and limits.\n- [Reservations API overview](https://developers.booking.com/connectivity/docs/reservations-api/reservations-overview), Booking.com Developers, n.d.: pull, message dispatcher, acknowledgement, 30-minute fallback.\n- [Troubleshooting overbookings](https://developers.booking.com/connectivity/docs/con-faq-reservations-troubleshooting-overbookings), Booking.com Developers, n.d.: causes of overbooking, auto-replenishment.\n- [Request to Book overview](https://developers.booking.com/connectivity/docs/request-to-book/overview), Booking.com Developers, n.d.: response windows, lead time, partner-held availability.\n- [Understanding payouts](https://developers.booking.com/connectivity/docs/payments-by-booking-onboarding-api/understanding-payouts), Booking.com Developers, n.d.: bank transfer, virtual card and Stripe payouts; gross and net.\n- [Gatekeepers](https://digital-markets-act.ec.europa.eu/gatekeepers_en), European Commission, n.d. (read October 2026): DMA designation of Booking, Case DMA.100019.\n- [DMA compliance: Booking Holdings faces new obligations](https://transition-pathways.europa.eu/news/dma-compliance-booking-holdings-inc-faces-new-obligations), EU Transition Pathways, 2024: compliance date and obligations.\n- [DSA: Commission designates first set of very large online platforms and search engines](https://digital-strategy.ec.europa.eu/en/news/digital-services-act-commission-designates-first-set-very-large-online-platforms-and-search-engines), European Commission, 2023: VLOP designation.\n- [Judgment in Case C-264/23, Booking.com and Booking.com (Deutschland)](http://publications.europa.eu/resource/celex/62023CJ0264), Court of Justice of the EU, 2024: parity clauses and ancillary restraints.\n- [AGCM press release PS13115](https://en.agcm.it/en/media/press-releases/2024/4/PS13115), Autorità Garante della Concorrenza e del Mercato, 2026: investigation into Preferred Partner programs.\n\n### Research and practitioner sources\n\n- [Democratizing online controlled experiments at Booking.com](https://arxiv.org/abs/1710.08217), Raphael Lopez Kaufman, Jegar Pitchforth and Lukas Vermeer, arXiv, 2017: decentralized experimentation practices.\n- [Learning to Match](https://arxiv.org/abs/1802.03102), Themis Mavridis, Pablo Estevez and Lucas Bernardi, arXiv, 2018: the platform as advisor; hundreds of models.\n- [150 successful machine learning models: 6 lessons learned at Booking.com](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/), Adrian Colyer, the morning paper, 2019: review of the KDD 2019 paper; latency and conversion; model families.\n- [Spain's antitrust watchdog fines Booking.com nearly $450M](https://techcrunch.com/2024/07/30/spains-antitrust-watchdog-fines-booking-com-nearly-450m-for-unfair-terms-and-restricting-rivals), TechCrunch, 2024: CNMC fine and findings.\n- [La Audiencia Nacional paraliza la multa millonaria de la CNMC a Booking](https://www.hosteltur.com/168767_la-audiencia-nacional-paraliza-la-multa-millonaria-de-la-cnmc-a-booking.html), Hosteltur, 2025: suspension of the fine pending appeal.\n- [Booking.com violates DMA regulations](https://www.hotellerie.de/news/newsdetail/bookingcom-violates-dma-regulations), hotellerie.de, 2025: German hotel association's dispute of DMA compliance.\n- [German court orders Booking.com to compensate hotels](https://www.pymnts.com/cpi-posts/german-court-orders-booking-com-to-compensate-hotels-in-competition-law-case/), PYMNTS/CPI, 2025: Berlin Regional Court liability ruling.\n- [Booking.com launches ChatGPT-powered trip planner](https://www.businesstraveller.com/news/bookingcom-launches-chatgpt-trip-planner/), Business Traveller, 2023: AI Trip Planner beta.\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

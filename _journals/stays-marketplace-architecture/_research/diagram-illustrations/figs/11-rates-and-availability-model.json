@@ -1,0 +1,16 @@
+[
+ {
+  "id": "11-ari-model-entities",
+  "visual_goal": "Show how rate plans and room types combine into products, products hold nightly facts, and one stay evaluator combines facts with fees and policies into one answer.",
+  "prompt": "A left-to-right landscape diagram of rounded cards. Far left, stacked vertically: an upper card labeled 'Room type' with a small bed icon, and a lower card labeled 'Rate plan' with a small tag icon. One arrow from 'Room type' and one arrow from 'Rate plan' converge into a center-left card labeled 'Product'. One arrow from 'Product' into a card to its right drawn as a strip of small calendar squares, labeled 'Product-night'. Below the 'Rate plan' card, a document card labeled 'Cancellation policy' with one arrow pointing up into 'Rate plan'. At the bottom center, a receipt-shaped card labeled 'Fees and taxes'. At the far right, one large gear-shaped card labeled 'Stay evaluator'. Three arrows enter 'Stay evaluator': one from 'Product-night', one from 'Fees and taxes', and one long arrow from 'Cancellation policy'. Exactly seven cards and six arrows.",
+  "alt": "Room type and rate plan combine into a product, which holds product-night facts; the product-nights, the fee and tax schedule and the cancellation policy all feed one stay evaluator.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "11-ari-write-read-paths",
+  "visual_goal": "Show the ARI write path (normalize and validate once at the edge, then store) and read paths (projections for search, the evaluator for checkout), with the same evaluator library behind both.",
+  "prompt": "A left-to-right landscape diagram. Far left, an envelope labeled 'ARI update'. One arrow from it to a funnel labeled 'Normalize', then one arrow to a checkpoint gate labeled 'Validate'. From 'Validate' two arrows leave: a green arrow right into a database cylinder labeled 'Fact store', and an orange arrow down into a small tray labeled 'Exception queue'. From 'Fact store' two arrows leave to the right: an upper arrow labeled 'change event' into a stack of cached cards labeled 'Projections', and a lower arrow into a gear labeled 'Stay evaluator'. One arrow from 'Projections' right to a magnifying-glass card labeled 'Search'. One arrow from 'Stay evaluator' right to a cart card labeled 'Checkout'. Between 'Stay evaluator' and 'Projections' a dotted vertical line connects them, labeled 'same library'.",
+  "alt": "Inbound ARI updates are normalized and validated at the edge, rejected ones go to an exception queue, accepted ones land in the fact store, which feeds projections for search and the stay evaluator for checkout, both using the same library.",
+  "aspect_ratio": "16:9"
+ }
+]

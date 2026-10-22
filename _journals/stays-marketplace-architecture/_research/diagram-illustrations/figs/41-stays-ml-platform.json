@@ -1,0 +1,14 @@
+[
+ {
+  "id": "41-ml-platform-loop",
+  "visual_goal": "Show the stays ML platform: features defined once feed training and serving, the registry gates which version serves, and monitoring compares served scores with late labels and can hold a model through the registry.",
+  "prompt": "A left-to-right loop diagram of rounded boxes. At the far left, a database cylinder labeled 'Events and warehouse' with one arrow right into a box labeled 'Feature platform'. From the feature platform two arrows: one up-right into a box labeled 'Training', and one straight right into a box labeled 'Serving'. From 'Training' one arrow down-right into a gate-shaped box labeled 'Model registry', and from the registry one arrow down into 'Serving'. From 'Serving' one arrow right into a box labeled 'Decisions', and one long arrow from 'Decisions' curving back along the bottom into 'Events and warehouse'. Below 'Serving', a box shaped like a heart-rate monitor labeled 'Monitoring' receives one arrow from 'Serving' and one dashed arrow from 'Events and warehouse' labeled 'late labels', and sends one arrow up into 'Model registry' labeled 'hold'.",
+  "alt": "Events feed a feature platform that supplies both training and serving; training passes a model registry gate into serving, which drives decisions that flow back into the events; monitoring compares serving with late labels and can hold a model at the registry."
+ },
+ {
+  "id": "41-one-definition-two-computations",
+  "visual_goal": "Show one feature definition compiled into a batch backfill and a streaming job, with the streaming job writing both stores from the same records and serving logging what it read, so training sees what production saw.",
+  "prompt": "A top-down diagram. At the top, a single document with a code-branch icon labeled 'Feature definition'. Two arrows go down from it: left into a box labeled 'Batch backfill' and right into a box labeled 'Streaming job'. Beside them, a scroll labeled 'Change logs' at the far left with one arrow into each job. Below: from 'Batch backfill' one arrow down into a cylinder labeled 'Offline store'; from 'Streaming job' one arrow down into a cylinder labeled 'Online store' and one diagonal arrow down-left into 'Offline store' labeled 'same records'. From 'Online store' one arrow down into a box labeled 'Model serving', which sends one arrow back left into 'Offline store' labeled 'served log'. From 'Offline store' one arrow down into a stack of sheets labeled 'Training sets'.",
+  "alt": "One feature definition compiles into a batch backfill and a streaming job; both read change logs; the streaming job writes the online store and the offline store from the same records, serving logs what it read into the offline store, and training sets come from the offline store."
+ }
+]

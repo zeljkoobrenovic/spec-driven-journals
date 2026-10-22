@@ -1,0 +1,20 @@
+[
+ {
+  "id": "22-commercial-lifecycle",
+  "visual_goal": "Show the reservation's commercial lifecycle: modification is a new version, not a state, and canceled, no-show and stayed all settle into completed.",
+  "prompt": "A state diagram of rounded boxes on a light background. On the left, a box 'Pending'. One arrow from 'Pending' right to a large central box 'Confirmed' and one arrow from 'Pending' down to a grey box 'Declined or expired'. On 'Confirmed', a small curved self-loop arrow labeled 'version n+1' with a small stacked-pages icon. From 'Confirmed', three arrows fan right to three boxes stacked vertically: 'Canceled', 'No-show' and 'Stayed'. One short arrow from 'No-show' to 'Stayed', labeled 'reversed'. From each of 'Canceled', 'No-show' and 'Stayed', one arrow converges right into a green box 'Completed'.",
+  "alt": "Reservation states from Pending to Confirmed, with a version loop on Confirmed, branches to Canceled, No-show and Stayed, a no-show reversal to Stayed, and all three settling into Completed."
+ },
+ {
+  "id": "22-reservation-service-neighbors",
+  "visual_goal": "Show the reservation service as the single writer of the agreement, publishing one event stream that delivery, exceptions, payments, the trip and reporting consume, with delivery results flowing back.",
+  "prompt": "A left-to-right architecture illustration. On the left, a box 'Checkout saga' with one arrow into a large central box 'Reservation service' with a small unlabeled stack of paper sheets inside it. Below-left, a plain building with no sign or lettering and a smartphone together labeled 'Property or host', with one arrow up into 'Reservation service' labeled 'no-shows, changes'. From 'Reservation service', one thick arrow right into a horizontal pipe labeled 'Event stream'. From the pipe, exactly five short arrows drop, one into each of five boxes in a row, including the first box: 'Delivery tracker', 'Exceptions', 'Payments', 'Trip', 'Reporting'. From 'Delivery tracker', one arrow down-left to the 'Property or host' group labeled 'push', and one curved arrow back to 'Reservation service' labeled 'accepted or rejected'.",
+  "alt": "Checkout and the property or host feed the reservation service, which publishes one event stream consumed by delivery, exceptions, payments, the trip and reporting, with the delivery tracker reporting acceptance back."
+ },
+ {
+  "id": "22-delivery-states",
+  "visual_goal": "Show that receipt by an intermediary is not delivery: only PMS acceptance or staff confirmation closes delivery, and a rejection with its reason goes to a person.",
+  "prompt": "A state diagram of rounded boxes from left to right: 'Queued', 'Sent', 'Received by intermediary', with single arrows between them. From 'Received by intermediary', one arrow up-right into a green box 'Accepted by PMS' labeled 'confirmation number', and one arrow down-right into a red box 'Rejected by PMS' labeled 'reason'. One arrow from 'Sent' directly up into 'Accepted by PMS'. Below, an orange box 'Fallback to extranet' receiving one arrow from 'Rejected by PMS' and one dashed arrow from 'Received by intermediary' labeled '10 minutes'. One arrow from 'Fallback to extranet' right into a green box 'Confirmed by staff', which shows a small generic hotel clerk figure at a screen. The two green boxes have a small check mark; 'Received by intermediary' has a small hourglass.",
+  "alt": "Delivery states from Queued to Sent to Received by intermediary, then either Accepted by PMS with a confirmation number or Rejected by PMS with a reason, with a fallback to the extranet after 10 minutes and confirmation by staff."
+ }
+]

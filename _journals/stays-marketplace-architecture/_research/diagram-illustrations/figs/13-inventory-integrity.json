@@ -1,0 +1,23 @@
+[
+ {
+  "id": "13-four-integrity-layers",
+  "visual_goal": "Show inventory integrity as four layers around the commit point: guarantee, shorten, detect and recover, with the oversell rate feeding governance.",
+  "prompt": "A left-to-right loop diagram. Far left, a small building and a small house side by side together labeled 'Supplier'. One arrow from 'Supplier' right labeled 'claims' into a database cylinder labeled 'Inventory store'. One arrow from 'Inventory store' right into a sturdy vault door labeled 'Commit point'. From 'Commit point' one arrow curves back along the top to 'Supplier', labeled 'delivery'. Below the inventory store, a magnifying glass labeled 'Integrity monitor', with one arrow up into 'Inventory store'. From 'Integrity monitor' one arrow right into a box with a small bed and a moving arrow, labeled 'Relocation', and from 'Relocation' one arrow up into 'Commit point'. From 'Integrity monitor' one arrow down-left into a small gavel-and-clipboard box labeled 'Governance'. Exactly six boxes with labels and seven arrows.",
+  "alt": "Supplier claims flow into the inventory store and the commit point, reservations are delivered back to the supplier, and an integrity monitor reads the store, opens relocations that create linked reservations, and feeds governance.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "13-overwrite-race",
+  "visual_goal": "Show the overwrite race: a stale count arrives after Roomstead sold the last room, and an acknowledgement watermark keeps it at zero until the hotel acknowledges.",
+  "prompt": "A left-to-right swimlane diagram with three horizontal lanes, each labeled at its left edge: top lane 'Roomstead', middle lane 'Channel manager', bottom lane 'Hotel PMS'. Messages run left to right as diagonal arrows between lanes. First, an arrow from 'Roomstead' down to 'Channel manager' labeled 'reservation'. Second, an orange arrow from 'Hotel PMS' up to 'Channel manager' labeled 'old count'. Third, an orange arrow from 'Channel manager' up to 'Roomstead' labeled 'count 1'. On the Roomstead lane at that point, a small shield with a water-level line labeled 'watermark' shows a counter reading '0'. Fourth, later to the right, a green arrow from 'Channel manager' down to 'Hotel PMS' carrying the reservation, and a green arrow from 'Hotel PMS' back up to 'Roomstead' labeled 'acknowledged'.",
+  "alt": "Three lanes for Roomstead, the channel manager and the hotel PMS: Roomstead delivers a reservation, an old count of 1 arrives back, a watermark keeps Roomstead's count at 0, and the hotel later acknowledges the reservation.",
+  "aspect_ratio": "16:9"
+ },
+ {
+  "id": "13-oversell-case-states",
+  "visual_goal": "Show an oversold reservation as a state machine that closes only with a liable party and a cause code.",
+  "prompt": "A state diagram of six rounded state cards, left to right, connected by plain unlabeled arrows. Leftmost, a green card 'Confirmed'. One arrow to an orange card 'At risk'. From 'At risk' two arrows fan out: an upper arrow to a teal card 'Resolved in place', and a lower arrow to a blue card 'Relocated', which has a small chain-link icon. From 'Relocated' one arrow right to a card 'Cost claimed' with a small invoice icon. At the far right, a grey card 'Closed' with a small tag icon, receiving one arrow from 'Resolved in place' and one arrow from 'Cost claimed'. The arrows carry no words at all; the only text in the image is the six card names.",
+  "alt": "Confirmed reservation becomes at risk when an oversell is detected, then is either resolved in place or relocated with a linked reservation and the cost claimed, and both paths end closed.",
+  "aspect_ratio": "16:9"
+ }
+]

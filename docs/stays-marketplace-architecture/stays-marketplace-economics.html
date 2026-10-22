@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces</title>
+    <meta name="description" content="What does a stays marketplace sell, how does it make money, and how do its economics become architecture requirements? It sells a perishable, local match between a guest and a night, earns a take rate only on the stays that happen, and pays for traffic and searches that mostly never book. Those facts, measured per brand, set the cost per search, the staleness budget, the metric definitions and the capacity curves that the architecture has to meet.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces">
+    <meta property="og:description" content="What does a stays marketplace sell, how does it make money, and how do its economics become architecture requirements? It sells a perishable, local match between a guest and a night, earns a take rate only on the stays that happen, and pays for traffic and searches that mostly never book. Those facts, measured per brand, set the cost per search, the staleness budget, the metric definitions and the capacity curves that the architecture has to meet.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/stays-marketplace-economics.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/02-stays-marketplace-economics/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="two-stay-marketplaces.html" title="Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="stays-capability-map.html" title="Mapping the Business: Capability Maps for Two Marketplaces">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — MARKETPLACE: The Business of a Night's Stay</p>
+        <h1>Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  37 min read · <a class="spec-link" href="stays-marketplace-economics.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/02-stays-marketplace-economics/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/02-stays-marketplace-economics/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="two-stay-marketplaces.html" title="Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="stays-capability-map.html" title="Mapping the Business: Capability Maps for Two Marketplaces">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Liquidity, Take Rates and Look-to-Book: The Economics of Stays Marketplaces", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "What does a stays marketplace sell, how does it make money, and how do its economics become architecture requirements? It sells a perishable, local match between a guest and a night, earns a take rate only on the stays that happen, and pays for traffic and searches that mostly never book. Those facts, measured per brand, set the cost per search, the staleness budget, the metric definitions and the capacity curves that the architecture has to meet.", "permalink": "stays-marketplace-economics", "timetoread": "37 min read", "icon": "assets/icons/02-stays-marketplace-economics.png", "logo": "assets/images/02-stays-marketplace-economics/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn the economic quantities that drive a stays marketplace (local liquidity, perishability, take rate, marketing dependence, look-to-book, cancellations and the booking window), see how they differ between an accommodation marketplace and a hosted-stays marketplace, and turn each one into a concrete architecture requirement.\n\n> **WHY THE BUSINESS CARES:** A stays marketplace pays for most of its demand, earns only on the stays that are not canceled, and serves hundreds or thousands of searches for every booking. A general manager who cannot see contribution per stayed reservation, by channel, cannot tell whether growth is making money or buying it.\n\n> **WHY ARCHITECTS SHOULD CARE:** The cost per search, the acceptable staleness of a cached price, the horizon of the availability store, the duration of an experiment and the shape of the capacity curve are economic numbers before they are technical ones. An architecture copied from the other marketplace type, or sized without them, will be either too expensive or too wrong.\n\n> **KEY POINTS:**\n>\n> * **A stays marketplace sells a local, perishable match, so liquidity is measured per destination, date and party.** Network effects in stays are real but leaky: hotels and many hosts sell on every channel, and guests compare through metasearch. Supply that is bookable for the dates and party size a guest asks for is what wins, and the metrics must be cut by that cell.\n> * **Revenue arrives on stays; costs arrive on searches and bookings.** The take rate is earned at check-in on the stays that survive cancellation. Marketing, cache refreshes and live price checks are spent on every search and every booking. Contribution per stayed reservation, not gross bookings, is the number that tells an architect what a search may cost.\n> * **Look-to-book decides the read architecture, and the two marketplace types sit an order of magnitude apart.** An OTA that feeds metasearch and affiliates serves over a thousand shopping requests per reservation and must answer from precomputed caches with an explicit staleness budget. A hosted-stays marketplace that owns its calendars and its traffic can afford to compute at query time. Copying either design onto the other is an economic mistake before it is a technical one.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Phantom Availability** — Look-to-book forces caching, and nobody sets the staleness budget from what a wrong price costs in wasted clicks and partner penalties, so the cache is tuned for cost alone.\n> * **Pay-to-Rank Creep** — Commission levels and paid programs are the easiest way to raise the take rate, and they reach the ranking long before anyone measures what they do to conversion and trust.\n> * **Built for Sunny Days** — Capacity is sized for average traffic, while the booking curve, the stay curve and campaign peaks arrive at different times of the year for each marketplace type.\n\n<br>\nA stays marketplace sells something it does not own and cannot store. The night in Room 214 on 15 May, or in Carmen's apartment in Triana on 22 April, exists once. If nobody books it, it is gone; if two people book it, one of them has a problem. The marketplace earns a share of the price only if the guest arrives, and pays for the guest's attention long before. **Each of these facts has an architectural consequence** that most reviews never write down.\n\n![A bed-shaped block of ice holding a crescent moon melts on a counter as dusk falls, while two travelers reach for the same block.](assets/images/02-stays-marketplace-economics/02-night-melts.jpeg)\n**Figure 1:** *A night exists once: if nobody books it by the evening it begins it is gone, and if two people book it, one of them has a problem.*\n\nThis chapter owns four terms the rest of the book uses: **take rate**, **look-to-book ratio**, **booking window** and **local liquidity**. It compares an accommodation marketplace (an OTA-style marketplace selling rooms in professionally run properties) with a hosted-stays marketplace (selling nights in homes run by hosts), because the two earn and spend money in different places. [Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html) defined the two types; this chapter explains what they live on.\n\nMy method for any architect joining a stays business: **build the unit economics of one stayed reservation, per brand, and ask of every number: what system does this force, and how good must it be?** The answers set budgets for cost per search, cache staleness, metric definitions and capacity that are otherwise argued from taste.\n\n## Setting the Scene at Corvane: A Cheaper Search Stack?\n\nCorvane, the fictional travel group this book follows (see [Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), runs **Roomstead**, an accommodation marketplace founded in 2001, and **Nookaway**, a hosted-stays marketplace acquired in 2021. In February 2027 Mariana Costa, the new Group Chief Architect, was preparing the architecture case for the One Stay program, due at the board in April. Marco Bellini, the Group CFO, sent her a two-line question.\n\n*\"Roomstead's search and availability platform cost us €44 million to run in 2026. Nookaway's cost €9 million. Nookaway computes prices at query time with no giant cache. Why don't we move Roomstead onto Nookaway's design?\"*\n\nThe figures were right (like everything about Corvane, they are illustrative). Mariana asked Kenji Arai's data team for one page first: **the unit economics of a stayed reservation at each brand in 2026**, with search and marketing costs allocated per reservation.\n\n| 2026, per brand | Roomstead (accommodation marketplace) | Nookaway (hosted stays) |\n| --- | --- | --- |\n| Gross reservations made | about 45 million | about 6.9 million |\n| Canceled | 34% of room nights | 13% of reservations |\n| Stayed reservations | about 30 million | about 6.0 million |\n| Nights per stayed reservation | 2.4 room nights | 3.5 nights |\n| Price per night | average daily rate (ADR) €128 | €142 including cleaning fee |\n| Gross booking value (GBV) per stayed reservation | about €307 | about €497 |\n| Revenue | €1.200 billion | €430 million |\n| **Take rate** (revenue ÷ GBV of stayed nights) | **about 13%** | **about 14.4%** |\n| **Revenue per stayed reservation** | **about €40** | **about €72** |\n| Marketing (brand and performance) | €390 million (32.5% of revenue) | €68 million (16% of revenue) |\n| Marketing per stayed reservation | about €13 | about €11 |\n| Shopping requests per gross reservation (**look-to-book**) | about **1,400** (300 from own web and apps) | about **420** (85% from own web and apps) |\n| Search and availability run cost | €44 million | €9 million |\n| Run cost per shopping request | about €0.0007 | about €0.0031 |\n| Run cost per stayed reservation | about €1.47 | about €1.50 |\n| Contribution after marketing and search, per stayed reservation | about **€25** | about **€59** |\n\nThree things on that page answered Marco's question.\n\nFirst, **per stayed reservation, the two search platforms cost the same**: about €1.50. Roomstead's platform is bigger because it serves more traffic, not because it is less efficient.\n\nSecond, **per shopping request, Nookaway's design is more than four times as expensive**. That is fine for Nookaway, which serves 420 requests per booking, mostly from its own apps. At Roomstead's ratio of 1,400 requests per booking, Nookaway's per-request cost would have meant about 63 billion requests × €0.0031 ≈ **€195 million** a year: half of Roomstead's whole marketing budget, spent on answering searches that do not book.\n\nThird, the two brands **make money on different things**. Roomstead earns €40 a stay and spends €13 of it buying the guest, mostly through paid channels; Nookaway earns €72 a stay on longer whole-home stays and spends less per guest. Roomstead's economics punish every wasted search and every inaccurate price shown on a paid channel. Nookaway's punish every failed stay: a double-booked night, a host cancellation, a damage claim, each of which can wipe out the margin of several stays.\n\n## What a Stays Marketplace Sells\n\n### A match, not a product\n\nA stays marketplace does not sell rooms. It sells **a match between a guest's intent (a place, a set of dates, a party) and a night that someone else will provide**, at a price the guest accepts and with terms both sides will honor. The marketplace earns when that match turns into a stay.\n\nThree properties of that match drive everything else.\n\n- **It is perishable.** An unsold night has no value once it passes. Hotels manage this with revenue management and many channels; hosts with price and calendars on several platforms. Both raise the marketplace's costs: more channels mean more updates and more comparison shopping.\n- **It is local and dated.** \"Lisbon, 2–9 August, two adults and two children\" is a different market from \"Lisbon, Tuesday night, one business traveler\".\n- **It is fulfilled by someone else.** Revenue depends on a property or host honoring the booking, and on the guest not canceling.\n\n### Two-sided network effects, and why they leak in stays\n\nLike every marketplace, a stays marketplace has **cross-side network effects** (the general theory is in the listings book: [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](../listing-systems-architecture/liquidity-and-network-effects.html)). **In stays they are real but leaky, and they leak differently on each side.**\n\n- **Professional supply multi-homes by design.** A hotel distributes through every OTA it can, its own website, wholesalers and global distribution systems (GDS), with a channel manager pushing the same rates to all of them ([Plugging Into the Hotel Stack: Connectivity, Channel Managers and Standards](connectivity-and-channel-managers.html)); Corvane's own Corvane Connect serves more than 60 channels, including Roomstead's competitors.\n- **Hosted supply multi-homes too, but less and worse.** At Nookaway, **61%** of active listings are also sold elsewhere; 47% of those keep their calendars in sync by iCal alone, polled every few hours ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html)). Multi-homing hosts bring supply, and they bring double-booking risk with it.\n- **Demand multi-homes through metasearch.** Guests compare prices on metasearch and search engines, which weakens an OTA's network effect exactly where it pays for the guest. Expedia Group's fiscal-2025 annual report says it buys \"meaningful traffic\" from search engines and \"travel metasearch websites, such as Kayak, TripAdvisor and trivago\" ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)).\n\nWhat remains defensible is **depth of bookable supply in the cells guests ask for, the accuracy of what is shown, and a direct relationship with the guest** (app, account, loyalty), more than \"more listings\".\n\n![A loop of guests, stays booked and partners and hosts feeding each other, with marketing feeding guests, multi-homing leaking guests and supply away, and accuracy converting searches into stays.](assets/images/02-stays-marketplace-economics/02-local-liquidity-loop.jpeg)\n**Figure 2:** *The local liquidity loop in stays. The loop runs per destination and date; marketing feeds it, multi-homing leaks it on both sides, and the accuracy of what is shown decides how much of the paid-for attention turns into stays.*\n\n### Local liquidity, defined\n\n**Local liquidity** is the likelihood that a guest searching a given **cell** finds and books a suitable stay, and that supply offered in that cell is booked. The cell has more dimensions in stays than in most marketplaces:\n\n| Dimension | Why it matters | Accommodation marketplace | Hosted stays |\n| --- | --- | --- | --- |\n| Destination | Stays are bought for a place | City, district, point of interest | Same, plus neighborhoods and rural areas where hotels are scarce |\n| Dates | Each night is a different market | Weekday business demand, weekend leisure, events | Seasons, holidays, events; minimum stays shape which dates work |\n| Party | Capacity is physical | Room occupancy; families often need two rooms or a rare family room | Bedrooms and beds; a home sleeps a group in one booking |\n| Price band | Guests filter by budget | Strong segmentation by star rating and rate plan | Wide spread; cleaning fee changes the effective price of short stays |\n| Lead time | Who is still searching | Many bookings within days of arrival | More bookings months ahead for summer and holidays |\n\nThe party dimension is the one that most often surprises architects. On **11 February 2027** the Novak family from Prague (two adults, children aged 9 and 12) searched for Lisbon, 2–9 August. That evening, by Corvane's own count, Nookaway had about **2,350** Lisbon homes with two or more bedrooms open for all seven nights. Roomstead had far more hotel rooms, but a family of four in one unit is a thin cell for hotels: Hotel Miradouro, an 84-room four-star in Lisbon, has exactly **2** family rooms. They abandoned the search, received a price alert and booked a Nookaway apartment in Alfama on **14 February**, 169 days before arrival ([Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html) covers the alert).\n\nThe **same city is liquid for one brand and thin for the other, depending on the party**, which \"listings in Lisbon\" hides; the metric layer must cut liquidity by cell ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)).\n\nThe metrics I use for local liquidity, by side:\n\n- **Demand side:** search-to-book conversion per cell; the share of searches that return few or no bookable results (a **thin-result rate**); the share of sessions that end on a \"sold out\" or \"price changed\" message.\n- **Supply side:** **bookable nights** (open, priced and not blocked by restrictions); **availability coverage** (bookable nights as a share of the nights a property or listing could sell); occupancy in that cell; and, for request-to-book listings, the **host acceptance rate**.\n\n### Perishability and seasonality\n\nPerishability makes time the main axis of every stays system: each night has its own inventory and price, changed repeatedly before it occurs. Seasonality stretches the load into two curves that do not peak together, and the filings document both. Airbnb's fiscal-2025 10-K (February 2026) says nights booked are \"highest in the first, second, and third quarters and lowest in the fourth quarter, with the peak travel season occurring in the third quarter\", and because revenue is recognized at check-in, revenue peaks in the third quarter ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)). Expedia Group's fiscal-2025 10-K says revenue lags bookings \"by several weeks for our hotel business and can be several months or more for our alternative accommodations business\", and that \"Vrbo has seen seasonally stronger bookings in the first quarter\" ([Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm)). Airbnb's second-quarter 2026 letter shows the money side of the same curve: **$12.2 billion** of funds held for guests on 30 June 2026, against $6.96 billion at the end of 2025 ([Airbnb Q2 2026 letter, 2026](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf)).\n\nMy architectural reading of those filings: **there is a booking curve and a stay curve**. The booking curve loads search, availability, checkout and payment authorization. The stay curve loads check-in, messaging, customer service, payouts and claims. For hosted stays the booking curve leads the stay curve by months; for a global OTA the booking curve is flatter. At Corvane, about **34%** of Nookaway's 2026 gross bookings were made in January to March, and **41%** of its nights were stayed in July to September; Roomstead's quarters were much closer to even. A capacity plan, a support rota or a payout batch window built on the annual average is wrong for both.\n\n## How a Stays Marketplace Makes Money\n\n### Take rate, defined\n\n**Take rate** is the marketplace's revenue from stays divided by the gross booking value of those stays, over the same period. It is the industry's most quoted number and easy to quote inconsistently. The definitions I insist on:\n\n- **Numerator:** accommodation revenue (commission, merchant margin, guest and host fees); say whether advertising and paid programs are in.\n- **Denominator:** GBV, including the partner's or host's share; state whether it is **gross** (at booking) or **stayed**, and whether it includes cleaning fees, taxes and the guest fee. Airbnb, for example, excludes taxes and cleaning and pet fees from revenue ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)).\n- **Timing:** the major companies recognize revenue at check-in, not at booking. Booking Holdings' 10-K notes that \"because we recognize revenues from bookings when the traveler checks in, our reported revenues are not at risk of being reversed due to cancellations\" ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Gross bookings and revenue from the same quarter describe two different populations of stays.\n\nThe public numbers sit close together. Airbnb's fiscal-2025 revenue of $12.24 billion on GBV of $91.3 billion gives an implied take rate of about **13.4%** (my arithmetic from the 10-K table), and the company itself reported 13.2% for the second quarter of 2026 ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm); [Airbnb Q2 2026 letter, 2026](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf)). Booking Holdings' 2025 revenue of $26.9 billion on gross bookings of $186.1 billion is about **14.5%**, but that mixes flights, cars and advertising and gross bookings with check-in revenue. Corvane's brands, at about 13% and 14.4%, sit in the same band by design.\n\n### How the take rate is assembled\n\nThe same 13–15% is earned through very different mechanisms, and **each mechanism lands in different systems**.\n\n| Mechanism | How it works | Who pays | When the money moves | Systems it demands |\n| --- | --- | --- | --- | --- |\n| **Agency commission** | Property charges the guest; marketplace invoices a percentage of room revenue after the stay | Property | Monthly invoice after departure | Stay confirmation, commission invoicing, collections, dispute handling |\n| **Merchant margin** | Marketplace charges the guest and pays the property a net amount, by bank transfer or virtual card | Effectively the property (netted) | Guest pays at booking or later; property paid after check-in or on a schedule | Payment orchestration, virtual-card issuing, settlement, safeguarding, chargebacks |\n| **Split fee** | Guest pays a service fee on top of the host's price; host pays a smaller fee deducted from payout | Guest and host | Guest at booking (or later); host fee deducted at payout | All-in price display, fee engine, payout deductions |\n| **Host-only fee** | One fee deducted from the host's payout; guest sees one price | Host | Deducted at payout | Price gross-up for connected hosts, payout deductions |\n| **Paid programs and boosts** | Property or host pays a higher commission or fee for visibility, a badge or member exposure | Property or host | With the commission | Ranking policy, eligibility, disclosure, program billing |\n| **Advertising** | Sponsored placement paid per click or per impression | Property or host | Per campaign | Ad server, auction, delivery accounting, labeling |\n\nTwo examples from Corvane make the difference concrete. A two-night stay at Hotel Miradouro on its Flexible rate of €120 is €240 of room revenue; Roomstead's commission at Miradouro's **15%** is **€36**, invoiced after departure under the agency model or netted from the virtual card under \"Pay with Roomstead\". A three-night stay in Carmen Ruiz's apartment in Seville at €110 a night plus a €60 cleaning fee is a **€390** subtotal; Nookaway charges the guest a **12%** service fee (€46.80) and deducts a **4%** host fee (€15.60), earning **€62.40**, or 16% of the subtotal, collected in full before the stay ([Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) shows Carmen's actual February payout).\n\nThe 16% nominal fee does not become a 16% take rate. Nookaway's realized take rate in 2026 was about **14.4%**, because long-stay fee reductions, promotional fee credits, fees refunded on host cancellations and guest-guarantee costs netted against revenue all come out of it. That gap is itself an architecture requirement: **the take rate a dashboard shows must be computed from the ledger, not from the fee table**, or nobody will notice when a new credit or waiver erodes it.\n\nFee mechanisms change fast, so they must be data, not code. Airbnb's 10-K (February 2026) says that \"in October 2025, the Company began transitioning to a single-fee structure, charging only the host a service fee\", and its help center sets the single fee at 15.5% for most hosts, against a historical split of 3% for hosts and a guest fee of about 14.1–16.5% ([Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm); [Airbnb Help Center, article 1857, read 2026](https://www.airbnb.com/help/article/1857)). Old bookings keep the old fee even when the stay happens after the switch, so **two fee models coexist per host for months**. A fee engine that versions fee schedules, freezes the applicable version on each reservation and lets the ledger read it is the minimum.\n\nOn the OTA side the revenue mix is moving from agency commission toward merchant margin. Booking Holdings' merchant revenues grew from $10.9 billion in 2023 to $17.8 billion in 2025 while agency revenues fell from $9.4 billion to $8.0 billion ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). Roomstead's target of 40% merchant room nights by the end of 2028 is the same move ([Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html)). **The take rate is no longer one number from one system.**\n\n### The take-rate levers that reach ranking\n\nThe easiest way to raise a take rate is to let partners pay more for visibility. Booking.com's \"How we work\" page (updated 31 May 2025) says that ranking can be influenced by \"how much commission they pay us on bookings\" ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)); Agoda's partner documentation (February 2025) describes a Growth Program that gives joining properties a badge, a ranking boost and extra Agoda metasearch spend ([Agoda Partner Hub, 2025](https://www.partnerhub.agoda.com/?p=95313)).\n\nThese programs are legitimate and disclosed; the EU's Platform-to-Business Regulation requires marketplaces to describe the main ranking parameters, including where \"direct or indirect remuneration\" influences ranking ([Regulation (EU) 2019/1150](http://publications.europa.eu/resource/celex/32019R1150), Article 5, applicable since 12 July 2020). The trap is that each program is approved on its own business case and nobody measures the sum: **Pay-to-Rank Creep** is a take-rate strategy that leaked into ranking without an owner. The answer ([Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html), [Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html)) is a separately owned, versioned ranking policy whose effect on conversion and trust is measured.\n\n### Paying for demand\n\nThe filings show what the marketplace spends to get the guest, and the two types at very different points.\n\n| Company, fiscal 2025 | Marketing as reported | Relative to revenue | Relative to gross bookings | Source |\n| --- | --- | --- | --- | --- |\n| Booking Holdings | $8.2 billion performance and brand marketing; performance marketing \"a substantial majority\", mainly search engines (\"primarily Google\"), affiliates, metasearch and social | about 30% | about 4.4% | 10-K, February 2026 |\n| Expedia Group | $7.35 billion direct selling and marketing (traffic generation, affiliate and B2B partner commissions, brand) | 49.9% | about 6.1% | 10-K, February 2026 |\n| Airbnb | $1.60 billion brand and performance marketing ($2.59 billion total sales and marketing) | about 13% (21% total) | about 1.7% | 10-K, February 2026 |\n\nThe ratios are my arithmetic from the filed figures ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm); [Expedia Group 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm); [Airbnb 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm)); the categories differ across companies, so read them as orders of magnitude.\n\nThe difference is not only scale. Airbnb's 10-K credits its brand with \"lower reliance on paid marketing channels\"; Booking Holdings reports that consumers \"coming directly to our platforms\" booked a mid-fifties percentage of its 2025 room nights. An OTA's distinctive asset is broad hotel supply that guests compare everywhere, so it competes in the paid channels where the comparison happens; a hosted-stays marketplace's supply is harder to find elsewhere, so more guests start with it directly.\n\nTwo clauses in the Booking Holdings filing are, in my reading, architecture requirements in disguise:\n\n- Performance-marketing returns depend on \"our ability to convert paid traffic to booking customers\", which depends on latency, price accuracy and availability accuracy.\n- \"Increases in cancellation rates can negatively impact our marketing efficiency as a result of incurring performance marketing expenses at the time a booking is made even though that booking could be canceled in the future.\" **The marketplace pays for the booking and earns on the stay.** Every canceled reservation carries its acquisition cost with nothing to offset it.\n\nAt Corvane, Roomstead's 2026 traffic mix was **38%** of sessions from paid search and metasearch, **29%** direct and app, **21%** organic search and **12%** affiliates and CRM. Its €390 million of marketing was **€330 million** of performance marketing (about €150 million paid search, €140 million metasearch and €40 million affiliates and social) and **€60 million** of brand. Nookaway spent €68 million, most of it on brand and on guest-referral credits, and almost none on metasearch.\n\n## The Cost of Looking: Look-to-Book\n\n### Look-to-book, defined\n\nThe **look-to-book ratio** is the number of shopping requests a marketplace serves per reservation made. It is the most important single number for sizing a stays read path, and it is routinely misquoted because nobody states the units. I use these conventions:\n\n- **Numerator:** shopping requests that ask for availability or price for a stay: search result pages, map moves, property-page offer loads, metasearch price queries, affiliate and partner API calls. Say whether a request for 30 properties counts once or 30 times. At Corvane a \"shopping request\" is one request from a client (a search page, a property page, an API availability call); each one fans out to about ten **Pricegrid reads**, the property-level offer reads that the per-second \"availability lookups\" figures count.\n- **Denominator:** gross reservations (before cancellations), unless stated otherwise. Look-to-book per *stayed* reservation is higher by the cancellation rate.\n- **Scope:** by channel. The ratio for a marketplace's own apps and the ratio for metasearch and affiliate traffic differ by an order of magnitude, and they are paid for differently.\n\n### Why it is so high for an OTA\n\nThe public record on actual ratios is thin and old, but its direction is not disputed. A 2016 opinion piece by Triometric, a channel-analytics vendor, said top hotel distributors had seen about 500 searches per booking five years earlier and that the ratio \"is now the order of 20,000:1\", attributing most of the growth to automated price scraping rather than to metasearch alone ([Hospitality Net, 2016](https://www.hospitalitynet.org/opinion/4074433.html)). The figure is vendor opinion and ten years old; no OTA publishes its own ratio.\n\nThe control mechanisms are better documented than the ratios. Expedia Group's Rapid API, which lets other sellers book Expedia's supply, sets shopping rate limits per partner and recalculates them monthly, \"taking into account a partner's traffic vs. revenue\" ([Expedia Group Developer Hub, n.d., read 2026](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting)). That is a look-to-book ratio enforced as an API quota. Agoda's August 2026 description of its price cache shows the read path such traffic requires: about 300,000 reads and close to 1.5 million writes a second before a migration, with a 99th-percentile latency requirement under 50 milliseconds ([Agoda Engineering, 2026](https://medium.com/agoda-engineering/how-agoda-scaled-its-price-cache-with-dragonflydb-0828e478e84f)).\n\nRoomstead serves about **1,400 shopping requests per gross reservation**: about 300 from its own web and apps, the other 1,100 from metasearch price queries and affiliate and partner APIs. At about ten Pricegrid reads per request, that gives an average of **21,000 availability lookups a second** in 2026 and a peak of **64,000** ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html) shows the read model).\n\nNookaway serves about **420 search requests per gross reservation**, 85% from its own web and apps. The ratio is lower for structural reasons: Nookaway sends almost no prices to metasearch; each listing has one calendar and one nightly price, not dozens of room-and-rate combinations ([Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html)); and its guests book further ahead for longer stays.\n\n### What a search may cost\n\nThe rule I use: **the search and availability run cost per gross reservation must stay a small, stable fraction of contribution per reservation, and the cost per request must be designed from that fraction and the look-to-book ratio, not the other way round.**\n\nAt Roomstead, a run cost of about €1 per gross reservation spread over 1,400 requests gives a budget of about **€0.0007 per shopping request**, or €0.00007 per Pricegrid read. Only precomputed price grids, event-driven refresh and partner quotas can meet that. At Nookaway, about €1.30 per gross reservation over 420 requests gives about **€0.003 per request**, which leaves room to compute availability and price from the calendar at query time and to spend more per request on ranking.\n\n![Two funnels: Roomstead's wide funnel of 63 billion searches at 1,400 per booking yielding 30 million stays at about €40 each, and Nookaway's narrow funnel of 2.9 billion searches at 420 per booking yielding 6.0 million stays at about €72 each.](assets/images/02-stays-marketplace-economics/02-search-to-revenue-funnels.jpeg)\n**Figure 3:** *From search to revenue at Corvane's two marketplaces (illustrative 2026 figures). Roomstead answers about twenty times as many searches as Nookaway for six or seven times as many bookings, and earns less on each one, which is why its read path has to be built for cost per request.*\n\n### Latency is also an economic number\n\nBooking.com's 2019 KDD paper on its machine-learning models, as summarized by Adrian Colyer, reported that \"an increase of about 30% in latency cost about 0.5% in conversion rates\" ([The Morning Paper, 2019](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/)). The evidence is seven years old and may be superseded, but it frames the trade-off: **latency spent on a better model or a fresher price must earn back the conversion it costs**. At Roomstead's scale, half a point of conversion on own-channel traffic is worth more than the whole search platform's run cost, so the latency budget (owned by [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html)) is a commercial decision, not an engineering preference.\n\n## Price Accuracy: Where Look-to-Book Meets Marketing\n\nLook-to-book forces caching, and caching makes answers stale. **How stale is acceptable is an economic question**, answered per channel.\n\nOn paid channels a wrong answer is a paid click that lands on a different price or \"sold out\". Google's Hotel Center policy states the rule: \"Prices must be accurate and bookable online\", checked by sampling the partner's booking page against the price shown, with taxes and fees required to \"represent all mandatory charges\" ([Google Hotel Center Help, n.d., read 2026](https://support.google.com/hotelprices/answer/6064419?hl=en)). Partners whose accuracy falls are shown less.\n\nIn February 2027, Roomstead's metasearch price accuracy was **91%** against a target of **97%**. Mariana's team priced the gap with an explicit assumption: a click landing on a mismatched price converts at about one third of the normal rate.\n\n| | At 91% accuracy | At 97% accuracy |\n| --- | --- | --- |\n| Metasearch spend (2026) | €140 million | €140 million |\n| Clicks landing on a mismatched price | 9% | 3% |\n| Spend wasted on those clicks (two thirds of their value) | about **€8.4 million** a year | about **€2.8 million** a year |\n| Exposure to partner downgrades | High | Low |\n\nThe **€5.6 million** a year difference is not precise, and the larger risk is a metasearch partner hiding Roomstead's offers, which happened three months later in Spain and Portugal ([Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html)). The estimate still turned \"97%\" into a number with a budget: **a fresher cache was worth paying for up to a few million euros a year**.\n\nOn own channels a stale \"available\" costs a disappointed guest rather than a paid click. On Nookaway, which computes from the calendar at query time, the dominant inaccuracy is not a stale cache but a calendar that is wrong at the source because another platform sold the night ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html)). The economics point to different investments: **freshness of the price cache for Roomstead, integrity of the calendar for Nookaway**.\n\n## Cancellations and the Booking Window\n\n### The cost of a booking that does not stay\n\nCancellations are an economic feature of stays: free cancellation raises conversion, but every canceled booking has already consumed marketing, search, payment authorization and often weeks of a partner's inventory.\n\n![A timeline where a coin is spent on every search and every booking, including a canceled one, while one green coin of revenue arrives only at the stay.](assets/images/02-stays-marketplace-economics/02-costs-every-search-revenue-on-stays.jpeg)\n**Figure 4:** *Costs arrive on every search and booking, revenue only on stays that survive cancellation: at Roomstead, marketing is about €8.70 per gross reservation but about €13 per stayed reservation.*\n\nAt Roomstead **34%** of 2026 room nights were canceled, typical of a marketplace in which most bookings carry free cancellation and the guest pays at the property. At Nookaway it was **13%** of reservations, lower because more bookings are paid up front, cancellation policies are stricter and whole-home stays are planned further ahead. The difference shows up in the unit economics: Roomstead's marketing cost is about €8.70 per gross reservation but about **€13 per stayed reservation**.\n\nCancellation also feeds look-to-book: a guest who cancels often rebooks the same trip at a lower price found later. Measuring that loop needs cancellation and new booking to be joinable by guest and trip.\n\nThree requirements follow.\n\n- **Net, not gross, as the default metric.** Ranking features, experiments, partner dashboards and marketing bids should optimize bookings net of cancellation, or they will reward behavior that inflates gross bookings. Booking.com's ranking disclosure names \"net bookings (How many bookings are made with that Accommodation minus how many are canceled)\" as a ranking input ([Booking.com, 2025](https://www.booking.com/content/how_we_work.html)).\n- **Cancellation as a first-class event** with a reason and a party (guest, host, property, marketplace), joinable to the original search and marketing click, so that acquisition cost can be attributed to stays and not only to bookings.\n- **Delayed outcomes in experiments.** A test that measures bookings for two weeks will declare a winner before the cancellations arrive. [Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html) owns the methods.\n\n### Booking window, defined\n\nThe **booking window** (lead time) is the time from booking to the first night of the stay. Booking Holdings defines it the same way and notes that it links gross bookings (at booking) to revenue (at check-in) ([Booking Holdings 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm)). I report it as a **distribution**, not an average: the median and the 90th percentile tell an architect far more than the mean.\n\nAt Corvane in 2026 the median booking window was **18 days** at Roomstead (mean 39 days) and **41 days** at Nookaway (mean 63 days); the Novaks' 169 days was long but not unusual for an August family holiday.\n\nThe booking window is an architecture parameter in at least six places:\n\n| Where it bites | What the booking window decides | Accommodation marketplace | Hosted stays |\n| --- | --- | --- | --- |\n| Availability and rates store | The horizon of nights that must be loaded, priced and cached | Most demand within weeks; a long tail to a year | More demand months ahead; calendars open a year or two |\n| Price cache | Which dates to precompute and refresh most often | Near dates churn most | Far summer and holiday dates matter early in the year |\n| Money | How long guest funds or deferred revenue are held; float and safeguarding | Short for pay-at-property; longer for merchant | Long: collected at booking, paid out after check-in |\n| Experiments and attribution | How long before an outcome (stay, cancellation, review) is known | Weeks | Months |\n| Change and disruption load | How many future stays a strike, regulation or outage touches | Fewer, nearer stays | More stays, further out |\n| Data retention and audit | How long price and availability history must be kept to answer disputes | Over a year of ARI change history | Calendar and price history for the same period |\n\nCorvane's forum later derived **13 months** of retention for Roomstead's availability change stream from this distribution plus a dispute period ([Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html)).\n\n## Supply Economics: Bookable Nights and Acceptance\n\nFor an accommodation marketplace, supply is **contracted properties connected through partners**: at Roomstead, **82%** of hotel room nights arrive through 140 certified connectivity partners (channel managers, property-management systems (PMS) and central reservation systems). The supply metrics that matter economically are availability coverage (how many of a property's sellable nights are open on Roomstead compared with its other channels), **rate competitiveness** (whether the price on Roomstead is at least as good as elsewhere, a question bounded by competition law and the EU Digital Markets Act's ban on parity clauses for designated gatekeepers ([Rules of the Stay: Short-Term Rental Regulation, DSA and Consumer Law](stays-regulation.html))), connectivity health and the **partner-caused relocation rate**.\n\nFor a hosted-stays marketplace, supply is **individual units with individual operators**: at Nookaway, **82%** of hosts have one listing, and **32%** of listings are request-to-book, with 24 hours for the host to accept. The economic supply metrics are calendar accuracy (nights shown open that are actually available), the **host acceptance rate** (the share of booking requests that hosts accept: **79%** at Nookaway in 2026), the **host cancellation rate** (about **0.8%** of 2026 reservations were canceled by hosts) and new-listing activation. Each request a host declines is a search session that ended without a booking; each host cancellation is a guest-guarantee cost, as the Seville double booking showed when Nookaway funded **€420** to rehouse the Bauer family ([One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html)).\n\n**Roomstead's supply problem is accuracy at scale over connections it does not control; Nookaway's is reliability of a million individual commitments.** One is solved with connectivity contracts, caches and reconciliation; the other with calendars, verification, trust and protection.\n\n## From Economics to Requirements\n\nThe table below is the one Mariana attached to the One Stay proposal: for each economic quantity, the metric that tracks it, the requirement it creates and the chapter that owns the design.\n\n| Economic quantity | Metric that tracks it | Requirement it creates | Roomstead value (2027) | Nookaway value (2027) | Owner |\n| --- | --- | --- | --- | --- | --- |\n| Look-to-book | Shopping requests per gross reservation, by channel | Cost budget per request; quotas for partner traffic | ≤ €0.0007 per request; partner quotas by traffic versus revenue | ≤ €0.003 per request | [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html), [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](demand-channels.html) |\n| Paid-traffic dependence | Share of bookings by channel; marketing per stayed reservation | Price accuracy on paid channels; landing pages; direct relationship (app, account, CRM) | Metasearch price accuracy ≥ 97% | Calendar accuracy first; no metasearch target | [Is It Still Available? Availability Search, Caching and Price Accuracy](availability-engine.html), [Where Guests Come From: Web, Apps, Metasearch and Partner Distribution](demand-channels.html) |\n| Conversion sensitivity to latency | Conversion by latency band | Latency budget per search stage | p95 budgets per stage | p95 budgets per stage | [Searching Dates, Not Documents: Search Architecture for Stays](stays-search-architecture.html) |\n| Cancellations | Net bookings; cancellation rate by reason and party | Cancellation events joinable to search and click; net metrics in ranking and experiments | 34% of room nights | 13% of reservations | [When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html), [Testing Everything: Experimentation Platforms for Stays](stays-experimentation.html) |\n| Booking window | Lead-time distribution by market | Availability horizon; cache priorities; retention; experiment duration | Median 18 days | Median 41 days | [Rooms, Rates and Restrictions: The ARI Data Model](rates-and-availability-model.html), [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html) |\n| Seasonality and peaks | Booking curve and stay curve by week | Capacity plans for both curves; degradation modes | Peak 64,000 lookups a second in 2026 | Q1 booking peak; Q3 stay and payout peak | [Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html) |\n| Local liquidity | Search-to-book and thin-result rate per cell | Metrics cut by destination × dates × party; supply acquisition by gap | Cells by city and date | Cells by city, date and bedrooms | [Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html) |\n| Take rate | Revenue ÷ stayed GBV, from the ledger | Versioned fee schedules; revenue computed from ledger postings | About 13% | About 14.4% | [Who Takes the Money? Merchant, Agency and Facilitator Models](merchant-and-agency-models.html), [Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html) |\n| Paid programs | Program revenue; ranking exposure share | Ranking policy separated from relevance; disclosure | Program share of first-page exposure | Fees and quality, not paid visibility | [Ordering the Results: Ranking for Guests, Partners and the Marketplace](stays-ranking.html), [Deals, Members and Programs: Promotions and Loyalty](promotions-and-loyalty.html) |\n| Supply reliability | Relocation rate; acceptance and host-cancellation rates | Reservation delivery acknowledgement; calendar integrity | Partner-caused relocations | Acceptance 79%; host cancellations 0.8% | [Never Sell the Same Night Twice: Overbooking, Allotments and Concurrency](inventory-integrity.html), [One Home, Many Calendars: iCal, APIs and Multichannel Hosts](calendar-sync.html) |\n\nThe figure compresses the table into the chain the forum used to defend each requirement.\n\n![Three rows tracing economic facts (1,400 per booking, paid traffic, revenue on stays) through metrics (cost per request, price accuracy, contribution per stay) to requirements (precomputed read model, staleness budget, cancellation events).](assets/images/02-stays-marketplace-economics/02-economics-to-requirements.jpeg)\n**Figure 5:** *From economics to requirements. Each requirement in the One Stay architecture case is traced from an economic fact through the metric that measures it; a requirement that cannot be traced this way is a preference.*\n\n### The answer to the CFO\n\nMariana's reply to Marco, sent in March 2027, was three sentences: *\"Per booking, the two search stacks cost the same. Per search, Nookaway's design costs four times as much, and Roomstead answers more than three times as many searches per booking, mostly for metasearch partners we pay. Moving Roomstead to query-time computation would cost about €195 million a year; the money to save is in metasearch price accuracy, worth a few million a year, and in not running two of everything else.\"*\n\nThe One Stay program, approved in April 2027, followed that logic: shared platforms for identity, money, trust, messaging, data, service and tax, and **shared contracts but separate engines** for availability ([One Platform or Two? Converging Hotels and Homes](converging-two-marketplaces.html)).\n\n## Trade-offs\n\nEach economic lever buys revenue or efficiency with a commitment the architecture has to carry.\n\n| Lever | What it buys | What it costs the architecture | When it is right | When it is not |\n| --- | --- | --- | --- | --- |\n| **Grow paid and metasearch traffic** | Fast demand in new markets; reach for broad hotel supply | Look-to-book rises; price-accuracy regime; partner quotas; bot management | OTA with broad, comparable supply; new markets | When contribution per stayed reservation is already thin after marketing |\n| **Invest in direct (app, account, loyalty, CRM)** | Lower acquisition cost per stay; repeat bookings; first-party data | Identity, consent, personalization, app release engineering, member pricing that must not leak into public feeds | Both types; especially where paid share is high | When it is funded by discounts that cost more than the clicks they replace |\n| **Offer free cancellation widely** | Conversion; earlier bookings | Higher cancellation; cancel-and-rebook searches; net metrics needed everywhere | OTA hotel supply, where properties resell nights easily | Hosted stays with single units and long lead times, where a late cancellation leaves a night unsold |\n| **Move from agency to merchant** | Payment revenue, payment methods, fewer no-shows, control of the guest's money | Licensing or a payment partner, virtual cards, settlement, chargebacks, reconciliation | When the payment platform exists and partner settlement is reliable | On legacy reservation models that cannot carry the payment model per booking |\n| **Paid visibility programs** | Higher take rate from partners who value exposure | Ranking policy governance; disclosure; measured effect on conversion | When bounded by a relevance floor and measured | When approved program by program with no view of the total |\n| **Precompute availability and price** | Low cost per request at high look-to-book | Staleness; refresh pipeline; cache key explosion from rate plans and audiences | High look-to-book; many offers per property | Low look-to-book; one unit, one price |\n| **Compute at query time** | Exact answers from the source; simpler pipeline | Higher cost per request; load on the system of record | Owned calendars, low look-to-book, own traffic | Metasearch and affiliate traffic at OTA scale |\n\n## Hotels and Homes, Side by Side\n\nOne consolidated view of the economic differences; where the two are alike, the table says so.\n\n| Economic quantity | Accommodation marketplace (Roomstead) | Hosted stays (Nookaway) | What can be shared |\n| --- | --- | --- | --- |\n| What is sold | A room type and rate plan at a property, on a date range | A whole home or room, one calendar, on a date range | The offer and reservation contract; not the supply model |\n| Local liquidity | Deep in cities for one or two guests; thin for families and groups | Deep for families, groups and longer stays; thin in hotel-dense centers and for one night | One cell-based liquidity metric layer |\n| Network effects | Leaky: hotels multi-home through channel managers; guests compare on metasearch | Less leaky: unique supply; but 61% of listings multi-home via iCal or APIs | The same measurement, different strategy |\n| Revenue mechanism | Agency commission, merchant margin, paid programs | Guest and host fees, or host-only fee | Fee and commission engines differ; the ledger is shared |\n| Take rate | About 13% | About 14.4% | Same definition, computed from the ledger |\n| Marketing dependence | High: paid search and metasearch are the main channels | Lower: more direct, brand and referral | Identity, CRM and consent; not the channel mix |\n| Look-to-book | About 1,400 shopping requests per reservation, mostly partner traffic | About 420 per reservation, mostly own channels | Not the read architecture |\n| Cancellations and booking window | 34% of room nights canceled; median window 18 days | 13% of reservations canceled; median 41 days | Net-booking and lead-time metrics; not the horizon settings |\n| Seasonality | Flatter booking curve | Q1 booking peak, Q3 stay and payout peak | Capacity planning method |\n| Supply risk that destroys margin | Inaccurate price or availability from connections; walked guests | Double bookings, host cancellations, damage claims | Trust, protection and support platforms |\n| Paid visibility | Commission-based programs and ads | Fees and quality signals more than paid boosts | One ranking-policy governance process |\n\n**Judgement:** the economics argue for **sharing the measurement and the money, not the read path or the supply model**. One governed definition of take rate, net bookings, booking window, look-to-book and local liquidity, one ledger from which revenue is computed and one identity that carries the direct relationship are worth the effort, because both brands need them and they are where duplication costs most. The availability read path should not be shared, because one cost per request cannot be right at both 1,400 and 420 shopping requests per reservation. Convergence makes this harder ([Two Marketplaces for a Night's Stay: OTAs, Hosted Stays and How They Grew](two-stay-marketplaces.html)): when Nookaway pilots boutique hotels in 2028, its hotel supply will bring hotel economics with it, and the unit economics should then be cut by **supply type**, not by brand.\n\n## Failure Modes\n\n**Gross bookings as the north star.** If the dashboard shows gross bookings, free cancellation, discounts and broad metasearch bidding all look good until the stays do not arrive. The fix is making net bookings and contribution per stayed reservation computable from events and the ledger, and using them in ranking, experiments and bids.\n\n**A take rate nobody can reproduce.** Finance, product and the board deck report three take rates, because denominators differ or credits and waivers are missing. The fix is one governed definition computed from ledger postings ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)).\n\n**Look-to-book without units.** \"Our look-to-book is 500\" can mean shopping requests or Pricegrid-style reads, gross or stayed, own channels or all. Capacity plans built on the wrong one are wrong by an order of magnitude.\n\n**A staleness budget set by the cache team.** If the only number on the price cache is its cost, it will be tuned for cost, and Phantom Availability follows. Set the budget from what a wrong price costs on each channel, and own it jointly with distribution.\n\n**Capacity planned on the average.** The booking curve and the stay curve peak at different times, and campaign peaks arrive on top. At Corvane, Black Friday 2027 drove Roomstead to **96,000** availability lookups (Pricegrid reads) a second, 1.5 times its 2026 peak, and its price cache hit rate fell from 94% to 71% ([Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html)). A plan that knew only the annual average would not have had a degradation mode ready.\n\n**Cost per booking with no owner.** Map, search, cache, live checks and fraud scoring each have a bill that nobody charges to the stays that caused it. Cost per booking ([Peaks, Regions and Languages: Global Scale and Reliability](global-scale-and-reliability.html)) needs a target derived from contribution per stay.\n\n## The Chief Architect's View\n\n**Decide what the unit is, and keep the unit economics current.** I would ask for one page per brand, refreshed quarterly, with the quantities in the opening table, by channel where it matters. Finance and data own it jointly; architecture is its most demanding reader.\n\n**Derive budgets, then designs.** Every major read-path proposal should state the cost per request or per booking it will achieve and the economic number it derives from.\n\n**Own the definitions, not the dashboards.** Take rate, net bookings, look-to-book, booking window and local liquidity should be governed, versioned definitions computed the same way everywhere ([Knowing the Marketplace: Data Platform, Metrics and Partner Insight](marketplace-intelligence.html)); in a group they are the first and cheapest thing to share.\n\n**Make the commercial levers visible to the architecture forum.** A new paid program, a change in fee structure, a free-cancellation default or a metasearch expansion changes the load, the ranking and the ledger. The rule I use: **any commercial change that alters what a search costs, what a booking earns or what the ranking optimizes comes to the forum with its system impact**, before it is launched.\n\n**Decide who decides.** At Corvane, the CFO owns the unit-economics model; the Group Chief Architect the derived budgets (cost per request, staleness, retention, capacity); the brand GMs channel mix and commercial levers; the Head of Data and ML Platform the metric definitions; distribution and the platform jointly the partner-traffic quotas.\n\n**Watch:** look-to-book by channel, especially from AI assistants that shop on a guest's behalf ([AI Across the Stay: Agents, Assistants and Automation](ai-in-travel-stays.html)); contribution per stayed reservation by channel; the gap between nominal fee and realized take rate; the booking-window distribution; metasearch price accuracy against its budget and calendar accuracy for hosted stays; and the share of first-page exposure influenced by paid programs.\n\n## Questions to Ask\n\n1. What is our contribution per **stayed** reservation, by brand and by channel, after marketing and search costs, and who maintains that figure?\n2. What is our look-to-book ratio, with units stated, for own channels, metasearch and partner APIs separately, and how did it move in the last year?\n3. What does one shopping request cost us, and what is the budget, derived from contribution per reservation, that our read path must stay under?\n4. What is the staleness budget for prices shown on paid channels, and what is it based on: an estimate of wasted spend and partner penalties, or the cache's cost?\n5. Is our take rate computed from ledger postings, with one definition of numerator and denominator, and does it reconcile with the fee schedule?\n6. Which metrics in ranking, experiments, partner dashboards and marketing bids use gross bookings, and why not net?\n7. Which settings (availability horizon, cache priorities, retention, experiment duration) were derived from the booking-window distribution?\n8. Is local liquidity cut by party size and bedrooms as well as by destination and dates?\n\n## From Economics to Capabilities\n\nThe economics say what a stays marketplace must be good at: answering searches cheaply and accurately, keeping each night's promise, moving money correctly and knowing its own numbers. The next chapter, [Mapping the Business: Capability Maps for Two Marketplaces](stays-capability-map.html), turns those demands into a capability map for both marketplace types and uses it to decide what a group like Corvane should share.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Booking Holdings Inc., Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm), Booking Holdings / SEC, 2026: marketing expense ($8.2 billion) and its composition, direct and app share of room nights, cancellation rates and marketing efficiency, booking-window definition, revenue at check-in, merchant and agency revenue, quarterly seasonality, AI disintermediation risk, property counts.\n- [Expedia Group, Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1324424/000132442426000008/expe-20251231.htm), Expedia Group / SEC, 2026: direct selling and marketing ($7.35 billion, 49.9% of revenue), dependence on search engines and metasearch, revenue lag for hotels versus alternative accommodations, Vrbo first-quarter booking seasonality, revenue mix.\n- [Airbnb, Inc., Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), Airbnb / SEC, 2026: GBV and revenue, brand and performance marketing, \"lower reliance on paid marketing channels\", seasonality, revenue at check-in, exclusions from revenue, move to a single host-only fee.\n- [Airbnb Q2 2026 Shareholder Letter](https://s26.q4cdn.com/656283129/files/doc_financials/2026/q2/Airbnb-Q2-2026-Shareholder-Letter-FINAL.pdf), Airbnb, 2026: take rate for the quarter, funds held on behalf of guests at 30 June 2026, hotel growth.\n- [Airbnb service fees (Help Center article 1857)](https://www.airbnb.com/help/article/1857), Airbnb, n.d. (read 2026): split-fee and single-fee percentages and the coexistence rule.\n- [How we work](https://www.booking.com/content/how_we_work.html), Booking.com, 2025 (updated 31 May 2025): ranking inputs including net bookings, commission and program membership.\n- [Agoda Growth Program](https://www.partnerhub.agoda.com/?p=95313), Agoda Partner Hub, 2025: paid program with badge, ranking boost and additional metasearch spend.\n- [Rapid shopping rate limiting](https://developers.expediagroup.com/rapid/lodging/shopping/rate-limiting), Expedia Group Developer Hub, n.d. (read 2026): partner rate limits recalculated from traffic versus revenue.\n- [How Agoda scaled its price cache with DragonflyDB](https://medium.com/agoda-engineering/how-agoda-scaled-its-price-cache-with-dragonflydb-0828e478e84f), Agoda Engineering, 2026: read and write volumes and latency requirements of an OTA price cache.\n- [150 successful machine learning models: 6 lessons learned at Booking.com](https://blog.acolyer.org/2019/10/07/150-successful-machine-learning-models/), Adrian Colyer, The Morning Paper, 2019: review of the KDD 2019 paper by Bernardi, Mavridis and Estevez; latency versus conversion.\n\n### Standards, regulation and documentation\n\n- [Regulation (EU) 2019/1150 on promoting fairness and transparency for business users of online intermediation services](http://publications.europa.eu/resource/celex/32019R1150), European Parliament and Council, 2019 (applicable from 12 July 2020): Article 5 disclosure of ranking parameters, including remuneration.\n- [Price Accuracy Policy](https://support.google.com/hotelprices/answer/6064419?hl=en), Google Hotel Center Help, n.d. (read 2026): accurate and bookable prices, mandatory taxes and fees, sampling.\n\n### Research and practitioner sources\n\n- [Is Metasearch to Blame for Hospitality's 5-Digit Look-to-Book?](https://www.hospitalitynet.org/opinion/4074433.html), Jonathan Boffey (Triometric), Hospitality Net, 2016: vendor opinion on distributor look-to-book ratios of about 20,000:1.\n- [Platform Competition in Two-Sided Markets](https://doi.org/10.1162/154247603322493212), Jean-Charles Rochet and Jean Tirole, Journal of the European Economic Association, 2003: the economics of two-sided platforms and pricing across sides.\n- Productscape reference models for travel-accommodation and hosted-stays marketplaces, the author's sibling repository, n.d.: KPI tree names such as search-to-book conversion, take-rate quality, availability accuracy and calendar accuracy rate (generic models, not descriptions of any company).\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Between Booking and Check-Out: Trips, Messaging and Notifications</title>
+    <meta name="description" content="How should a marketplace support the guest's trip and the conversation with the property or host? Treat the trip as a read model that explains itself, check-in information as a deliverable with a deadline, messaging as a governed three-party channel, and notification routing as one shared platform that tracks every promise to the moment it is seen.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces">
+    <meta property="og:title" content="Between Booking and Check-Out: Trips, Messaging and Notifications">
+    <meta property="og:description" content="How should a marketplace support the guest's trip and the conversation with the property or host? Treat the trip as a read model that explains itself, check-in information as a deliverable with a deadline, messaging as a governed three-party channel, and notification routing as one shared platform that tracks every promise to the moment it is seen.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/trip-and-messaging.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/stays-marketplace-architecture/assets/images/24-trip-and-messaging/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="changes-and-cancellations.html" title="When Plans Change: Modifications, Cancellations and Policies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="customer-service.html" title="When Something Goes Wrong: Customer Service and Recovery">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part V — BOOKING: Making and Keeping the Reservation</p>
+        <h1>Between Booking and Check-Out: Trips, Messaging and Notifications</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-21  ·  37 min read · <a class="spec-link" href="trip-and-messaging.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/24-trip-and-messaging/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/24-trip-and-messaging/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">BOOKED: Architecting Travel Accommodation and Hosted Stays Marketplaces</a><span class="nav-right"><a class="nav-prev" href="changes-and-cancellations.html" title="When Plans Change: Modifications, Cancellations and Policies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="customer-service.html" title="When Something Goes Wrong: Customer Service and Recovery">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Between Booking and Check-Out: Trips, Messaging and Notifications", "date": "2026-10-21", "author": "Željko Obrenović", "excerpt": "How should a marketplace support the guest's trip and the conversation with the property or host? Treat the trip as a read model that explains itself, check-in information as a deliverable with a deadline, messaging as a governed three-party channel, and notification routing as one shared platform that tracks every promise to the moment it is seen.", "permalink": "trip-and-messaging", "timetoread": "37 min read", "logo": "assets/images/24-trip-and-messaging/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)", "icon": "assets/icons/24-trip-and-messaging.png"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow a reservation from confirmation to the review invitation through the eyes of the guest: the trip timeline and what it must explain, check-in information and digital keys, guest–property and guest–host messaging with its translation, safety and retention rules, and the notification platform that carries all of it to e-mail, push, SMS and messaging apps.\n\n> **WHY THE BUSINESS CARES:** Between booking and check-out the marketplace has already been paid, so every failure here is pure cost: a support contact, a rehoused guest, a lost repeat customer, a host who stops trusting the platform. A guest who cannot get into a home at 23:00 does not care whose system dropped the door code; they blame the brand on the confirmation e-mail.\n\n> **WHY ARCHITECTS SHOULD CARE:** Trip, messaging and notifications sit downstream of everything and are owned by nobody in particular, so they collect copies of other services' state and silent failure modes: a trip page says \"all set\" while the access code is missing, and a strike-day e-mail waits behind a marketing campaign.\n\n> **KEY POINTS:**\n>\n> * **The trip is a read model that must explain itself.** Build the trip timeline from reservation, payment, message, access and notification events, and derive each status line from facts (\"your door code was delivered at 18:02 and opened at 18:40\"), not from the reservation's state alone. \"Confirmed\" is not \"ready to arrive\".\n> * **Messaging is a governed channel, and its rules depend on the stage of the trip.** One conversation store serves guests, hosts, hotel staff, property-management software and support. Contact redaction, link scanning, translation and retention apply as policy by stage, so that a rule written to stop off-platform deals before booking does not hide a door code the night before arrival.\n> * **Some messages are deliverables with deadlines, and the platform must track them to the guest.** Notification routing chooses channels by event class, falls back when a channel stays silent, and escalates to a human when an arrival-critical message has not been seen. A delivery receipt from an e-mail vendor proves only that an e-mail vendor accepted the message.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-stay-platforms-go-wrong.html):**\n>\n> * **Lost at the Front Desk** — The reservation reached the host, but the door code, the late-arrival note or the changed check-in time did not reach the right person, and the guest stands at a locked door.\n> * **Trust After the Incident** — Messaging safety rules arrive as reactions to scam waves, each bolted onto one code path, until a filter written for inquiries silently redacts arrival messages.\n> * **Built for Sunny Days** — Disruption notices, rebooking offers and arrival-day messages all peak on the same days, and a notification stack sized for confirmations queues them behind newsletters.\n\n<br>\nAfter checkout ([Turning an Offer Into a Booking: Checkout Orchestration](checkout-orchestration.html)) and delivery to the property ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)), the reservation enters the longest and quietest part of its life: for a Nookaway apartment booked in February for August, six months of a trip page, a few notifications and a conversation with a host the guest has never met. Then, in the last 48 hours, everything happens at once: arrival times, door codes, parking, a delayed flight.\n\nThe architectural problem is that **the marketplace owns the guest's experience of the trip but almost none of its facts.** The reservation belongs to the reservation service, the money to payments, the door code to the host's property management system (PMS) or lock platform, the address to the place registry, the delivery of an e-mail to a vendor. Assembled badly, these facts give the guest a confident status that is not true; carried badly, they reach nobody.\n\nThis chapter owns three terms: **trip timeline**, **guest–host messaging** (including guest–property messaging on the OTA side) and **notification routing**. It builds on the reservation state machine and delivery ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)), the supply-side workspace and access codes ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)) and the address rules for homes ([Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html)). It does not re-teach changes and cancellations ([When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html)), support case management ([When Something Goes Wrong: Customer Service and Recovery](customer-service.html)), fraud through hijacked partner accounts ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](travel-fraud.html)) or review moderation ([Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html)); it shows where each one meets the trip.\n\n## Setting the Scene at Corvane: The Door Code That Said \"[hidden]\"\n\nCorvane, the fictional travel group this book follows ([Meet Corvane: Two Marketplaces, One Group](meet-corvane.html)), runs Nookaway, a hosted-stays marketplace, and Roomstead, an accommodation marketplace in the style of an online travel agency (OTA). In 2027 each brand still has its own messaging and e-mail stack: Nookaway's in Burrow, its Django monolith, Roomstead's in Keystone, its Java monolith. The One Stay program approved in April 2027 had put \"one messaging and notifications platform\" on its shared list, but nothing had been built.\n\nIn July 2027 Nookaway's trust team saw a rise in off-platform payment scams that started in pre-booking inquiries: a \"host\" would ask the guest to continue on WhatsApp and pay a deposit by bank transfer. Sofia Marín's team shipped a stronger contact-detail detector on **Thursday 5 August 2027 at 16:30**. It recognized phone numbers, e-mail addresses and digit sequences of six or more characters split by spaces or dots, a common way to slip a phone number past simpler filters, and replaced them with \"[hidden]\". The rule was meant for pre-booking threads only. Its exemption for confirmed reservations was keyed on a `thread_stage` field that Burrow's app and web code set. Messages sent by PMSs through Nookaway's partner API took an older code path that left the field empty, and the detector treated an empty stage as \"inquiry\".\n\n**Maré Alta Stays**, the Algarve property manager with 340 units that had moved to Nookaway through its PMS in May 2027, sends check-in details automatically at 18:00 the day before arrival: the address, the key-box or keypad code, the Wi-Fi password and an after-hours phone number. On Friday 6 August those messages went out for Saturday's arrivals, Maré Alta's busiest changeover of the year. The partner API answered `201 Created` for each one. The guests saw this:\n\n> *Welcome to Casa Sol, Albufeira! Your door code is [hidden]. If you need us after 20:00, call [hidden].*\n\nWhat followed is the subject of this chapter (the figures are illustrative, like everything about Corvane):\n\n| Time (Western European Summer Time) | What happened | What the systems said |\n| --- | --- | --- |\n| Fri 6 Aug, 18:00 | Maré Alta's PMS sends 118 check-in messages for Saturday arrivals; 64 contain a code or phone number and are redacted | Partner API: 64 × `201 Created`. PMS: \"sent\" |\n| Fri 6 Aug, 18:00–23:00 | Guests reply \"the code is hidden?\"; Maré Alta's staff resend; the resends are redacted too | Message volume normal; read receipts normal |\n| Sat 7 Aug, 09:00 | Nookaway's own \"Your trip is tomorrow / today\" e-mail and push go out: \"Check-in details: sent by your host\" | Trip page: **\"Confirmed — you're all set\"** |\n| Sat 7 Aug, 15:00–22:00 | Guests arrive at locked doors across Portugal, Spain and Greece; Nookaway's support receives **1,870** check-in contacts against a normal Saturday of about 450 | Support tool: contacts tagged \"host unresponsive\" and \"can't access listing\" |\n| Sat 7 Aug, 19:30 | A support team lead notices that three guests quote \"[hidden]\" and escalates to Rafael Mendes's on-call engineers | First incident ticket |\n| Sat 7 Aug, 21:40 | Rule rolled back; Burrow re-renders the original text of redacted post-booking messages | Guests see codes in old messages, if they reopen the thread |\n\nAcross Nookaway the rule redacted about **11,800** post-booking messages in 53 hours, of which about **2,960** were check-in messages in **1,140** reservations arriving 6–8 August. Most guests reached their hosts by phone or were let in by a neighbor. **41** families were rehoused for the night under Nookaway's guest guarantee at a cost of **€9,840**, and Maré Alta's after-hours line took 212 calls on Saturday evening.\n\nRafael's post-incident review listed four failures, and none of them was a bug in the detector:\n\n1. **The rule had no idea of the trip's stage.** It inferred the stage from a field one client did not set, rather than asking the reservation service.\n2. **The check-in message was just a message.** Nothing knew that a door code for a Saturday arrival was a deliverable with a deadline.\n3. **The trip page reported state, not facts.** \"Confirmed — you're all set\" was correct about the reservation and said nothing about whether the guest could get in.\n4. **Every signal was green.** The only signal that worked was a human in support reading three tickets.\n\n![A family with suitcases at a locked holiday-house door at dusk, the phone showing Confirmed and a door code reading [hidden], while status lights glow green.](assets/images/24-trip-and-messaging/24-confirmed-not-ready.jpeg)\n**Figure 1:** *On 7 August the trip page said the guests were all set while the door code read \"[hidden]\": the reservation was confirmed, but the guest could not get in.*\n\nMariana Costa, Group Chief Architect, put Rafael's list next to a Roomstead problem she had been carrying since the air-traffic-control (ATC) strike weekend in June, when Roomstead's disruption e-mails queued behind a marketing campaign (see \"Notification Routing\" below), and asked the architecture forum one question: **what should the group's shared trip, messaging and notification platform guarantee, and to whom?**\n\n## Concepts: Trip, Conversation, Notification\n\nPrecise words help here, because each product team uses \"message\" and \"notification\" for different things.\n\n- **Trip.** The guest-facing view of one or more reservations for one journey, from confirmation to the end of the review window. It owns no booking, payment or supply fact.\n- **Trip timeline.** The ordered past and upcoming events of a trip, each with who acts and by when: a **read model** built from other services' events ([Streams of Nights: Event-Driven Architecture for Stays](event-driven-stays.html)).\n- **Trip status explanation.** The sentence at the top of the trip that says where the guest stands, derived from facts with a source and a time.\n- **Arrival package.** Everything a guest needs to get from the street to the bed: address, check-in window, how to get in, parking, Wi-Fi, house rules, emergency contact. For a home part of it is secret and per reservation.\n- **Access credential.** A code or digital key valid for one reservation's window, with a lifecycle driven by reservation events ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html) owns access codes on the supply side).\n- **Conversation.** A thread between a guest and a property or host about one inquiry or reservation, with the platform as a third party that can annotate, redact and intervene, and delegates (staff, co-hosts, a PMS, an assistant) as participants.\n- **Structured request.** A message with a type and fields (arrival time, early check-in, date change, \"cancel for less\") that can be routed, answered with one tap and turned into a reservation change.\n- **Notification** and **notification routing.** A notification is a message the platform sends a person through a channel *about* something; routing decides whether, when, through which channels and in which language, and what to do when a channel stays silent.\n- **Disintermediation.** Guest and host completing the transaction off the platform, removing the marketplace's fee and protections; pre-booking contact rules exist mainly to prevent it.\n\nTwo distinctions carry most of the chapter. **A message is between people; a notification is from the platform**, even when a notification announces a message. And **a fact belongs to the service that owns it; the trip only explains it**. Every design mistake in the Saturday incident broke one of these two.\n\n## The Trip Timeline: A Read Model That Must Explain Itself\n\nTrip pages have converged on one shape. Airbnb's 2021 Trips tab redesign showed an arrival countdown, check-in details and upcoming reservations ([Airbnb 2021 Winter Release](https://news.airbnb.com/2021-winter-release/), 2021; the current design may differ), and its 2023 release made the host's **arrival guide** editable next to the amenities ([Airbnb 2023 Winter Release](https://news.airbnb.com/en-uk/airbnb-2023-winter-release/), 2023). Expedia Group's May 2024 release added self-service booking management for changes and cancellations on Expedia and Hotels.com ([Expedia Group, EXPLORE 2024](https://ir.expediagroup.com/news-and-events/news/news-details/2024/Put-Your-Trip-on-Autopilot-Expedia-Group-Introduces-New-Innovations-at-EXPLORE-to-Take-the-Stress-out-of-Travel-and-Enhance-Partner-Experience/default.aspx), 2024). None of these companies has published how its trip page is built; what follows is a reference architecture, not a description of theirs.\n\n![Reservations, payments, conversations, the arrival package and notifications feed a timeline builder that produces a trip read model and a status explanation shown on the guest's phone.](assets/images/24-trip-and-messaging/24-trip-timeline-sources.jpeg)\n**Figure 2:** *The trip owns no facts. It is built from events of five services, and the status line the guest reads is derived from those facts, each with a source and a time, not from the reservation's state alone.*\n\nThe builder consumes ordered events, keyed by reservation, and keeps one document per trip: the reservations in it, the timeline entries, the current status explanation and the next action. The read model is rebuildable from the event streams, which matters more than it seems: when the explanation rules change, every trip must be recomputed, and when a producer had a bug, the trip must be repaired by replay rather than by hand.\n\n### What the timeline shows\n\n| Timeline entry | Source of the fact | What the guest should see | Who acts next |\n| --- | --- | --- | --- |\n| Booking confirmed | Reservation service | Dates, guests, total paid or due, policy in force | Nobody |\n| Payment scheduled or taken | Payment state feed ([Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html)) | \"€1,271.20 will be charged on …\" or \"Paid\" | Guest, if a card fails |\n| Free cancellation ends | Policy snapshot on the reservation ([When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html)) | Exact date and time in the guest's time zone | Guest |\n| Host or property message | Conversation service | Unread count, last message, any open request | Guest or host |\n| Check-in details | Arrival package service | Address, window, how to get in, readiness | Host until ready, then guest |\n| Arrival | Reservation service, lock events where available | \"Checked in at 16:42\" (from a lock or the host) | Nobody |\n| Check-out | Reservation service | Time and instructions | Guest |\n| Review invitation | Review service ([Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html)) | Window and deadline | Guest |\n\nThree rules keep this honest.\n\n1. **Derive status from facts with provenance.** Every status sentence cites the event it came from. \"Your host shared check-in details at 18:02\" is generated from an arrival-package event, not from a hope. If the fact is missing, say so: \"Your host hasn't shared check-in details yet.\"\n2. **Show the next action and its owner.** A trip page that lists events is a log; one that says \"Your host usually shares the door code by 18:00 the day before. If you don't have it by 20:00, tap here\" is a plan. The owner of the next step is often not the guest.\n3. **Never compute money or policy in the trip.** The trip shows the refund the guest would receive if they canceled now by calling the policy evaluation that checkout and support use, not by re-implementing it. A second copy of the cancellation rules in the trip page is how **Policy Spaghetti** starts.\n\n### One trip, many readers\n\nThe same read model serves the guest app, the web, the support agent's screen and AI assistants. Booking.com's October 2026 description of AgentHub, its platform for travel AI agents, places a \"customer support chatbot\" under \"Cross-Sell & Trip Management\" ([booking.ai, Introducing AgentHub](https://booking.ai/introducing-agenthub-booking-com-platform-for-modular-travel-ai-agents-68bc521a0f50), 2026). An assistant that answers \"can I still cancel for free?\" must read the same trip facts and call the same policy service as the screen, or it gives a third answer ([AI Across the Stay: Agents, Assistants and Automation](ai-in-travel-stays.html)); a 2026 secondary, unconfirmed report attributes the difficulties of Expedia's discontinued Romie assistant to answers not grounded in real-time reservation data ([Let's Data Science](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a), 2026). On 7 August, support agents had to read each thread to find what a timeline entry \"check-in details: redacted\" would have stated in one line.\n\n## Check-In Information as a Deliverable\n\nOn Saturday 7 August, the reservation was right, the host had acted and the platform had \"delivered\" a message. The guest still could not get in. The fix is to stop treating the most important information of the trip as one more message in a thread and to model it as an **arrival package** with an owner, a deadline and a readiness state.\n\n### What goes into the package\n\n| Element | Hotel on Roomstead | Home on Nookaway |\n| --- | --- | --- |\n| Exact address and pin | Public, from the property content | Secret until booking; released at confirmation for instant book, at acceptance for request to book ([Where Exactly? Destinations, Geo and Map Search](destinations-and-maps.html)) |\n| Check-in window | Property policy; late arrival handled by the front desk | Host's listing setting, often changed per reservation |\n| How to get in | \"Reception open 24 hours\" or opening hours | Key box, keypad, smart lock, meeting the host, a concierge desk |\n| Secret per reservation | None, or a self-check-in kiosk reference | Door code or digital key, Wi-Fi password |\n| Who produces it | Content team and property, once | Host, co-host, PMS or lock platform, per reservation |\n| Failure on the day | Guest waits at the front desk; staff solve it | Guest stands outside a locked door; the marketplace's support solves it |\n\nThe asymmetry is the point. For a hotel, check-in, keys and housekeeping are the hotel's own operations, run in its PMS and key-card system, and the OTA is mostly out of the loop after delivering the reservation. For a home the marketplace participates in arrival: it carries the instructions and often the code, and it pays when check-in fails, through a guarantee such as Nookaway's. Airbnb's guest protection is documented to cover \"inability to check-in\" ([Airbnb Form 10-K FY2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), 2026), which makes a failed arrival a marketplace cost, not only a host's problem.\n\n### Digital keys\n\nDigital keys move part of the package into software. In August 2024 Airbnb made smart-lock integrations available to all US and Canada hosts with compatible Schlage, August and Yale locks: a unique code per reservation, \"only active for the duration of a stay\", updated when check-in or check-out times change, with host alerts when a lock goes offline ([Airbnb Newsroom](https://news.airbnb.com/smart-lock-integrations-available-to-all-us-and-canada-hosts), 2024). For PMS-managed locks, the PMS generates the codes, Airbnb relays them, and hosts must provide backup entry instructions ([Airbnb Help, article 4163](https://www.airbnb.com/help/article/4163), live page as of October 2026).\n\nTwo consequences follow for the architecture. First, the credential's lifecycle is driven by reservation events, and a missed alteration locks a guest out ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html) works through that case). Second, even the best-integrated lock needs a non-digital fallback, and the fallback is part of the package the platform must deliver.\n\n### Readiness as a state machine\n\nAt Corvane the forum's design made each reservation's arrival package an object with its own state, owned by an arrival package service and checked against deadlines measured back from the check-in time.\n\n![Arrival package states from Not started through Draft, Ready and Delivered to Seen, with deadline arrows to At risk at T minus 18h and T minus 6h, a return from At risk to Ready, and a reservation change sending Seen back to Draft.](assets/images/24-trip-and-messaging/24-arrival-package-states.jpeg)\n**Figure 3:** *The arrival package has its own state machine. Deadlines measured back from check-in move it to \"at risk\", which notifies the host and then a person, and any change to the reservation sends it back to draft so the code and window are regenerated.*\n\nThe rules that make it work:\n\n- **Assemble from sources, do not copy text.** The package references the arrival guide version, the access credential and the reservation version; a code a PMS sends as free text is extracted into the package so readiness can be checked.\n- **Measure readiness, not sending.** Ready means every element is present and valid for the current dates; delivered means a channel confirmed it; seen means the guest opened it.\n- **Deadlines by arrival type.** A self-check-in home needs the package seen hours before arrival; a hotel with a 24-hour desk needs only the address and window.\n- **Escalate along a ladder.** At-risk notifies the host as an \"act now\" event ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html) defines the supply-side event classes), then the guest through a second channel, then a support queue with the reservation, the package and the thread already attached ([When Something Goes Wrong: Customer Service and Recovery](customer-service.html)).\n- **Secrets are secrets.** Codes are stored encrypted, shown only to the guest and the host's delegates with an operations role, removed from the guest's view after check-out, and never placed in e-mail subject lines or push previews on a locked screen.\n\nReplayed against 7 August, this design catches the problem twice. The 64 Maré Alta packages would have stayed in \"draft\" because the extracted code was \"[hidden]\", not a code, and gone at risk at 21:00 on Friday, eighteen hours before a 15:00 check-in, with Maré Alta notified while its staff were still on shift. And the redaction itself could not have happened, for reasons in the next section.\n\n## Guest–Host Messaging: A Governed Three-Party Channel\n\nMessaging looks like a chat feature. In a stays marketplace it is a **three-party conversation store** with several kinds of client, time windows, safety controls, translation and legal retention, and it is both a product and a trust-and-safety surface.\n\n### What the public record shows\n\nBooking.com's Connectivity Messaging API documentation is the most detailed public description of guest–property messaging (all quotations from live pages as of October 2026):\n\n- **Windows.** Properties can message \"From the time of booking until 7 days after the guest checkout\" or after cancellation; when the guest writes, \"the property gets an additional 14-day window to reply\"; guests can message \"till 66 days after the checkout\" ([Understanding the Messaging API](https://developers.booking.com/connectivity/docs/messaging-api/understanding-the-messaging-api)).\n- **Structured self-service requests.** Seven types, including check-in and check-out time, date change, \"cancel for less\", parking, bed preference, extra crib and extra bed. Date change and cancel-for-less \"require response via the Extranet\", and \"Sending a message through the API will deactivate the property's ability to respond via the extranet\" (same page): a **single-channel-of-reply** rule.\n- **Redaction.** Messages flagged for phishing are replaced with \"This message was deleted\", attachments are removed, and from API version 1.3 an `is_redacted` attribute exposes the fact to the PMS (same page).\n- **Integration pattern.** PMS and channel managers poll for new messages and tag them as read ([Use cases and best practices](https://developers.booking.com/connectivity/docs/messaging-api/use-cases-and-best-practices)).\n- **Pre-reservation messaging** for request-to-book homes: each booking request opens a conversation that persists into the reservation; attachments are rejected and \"contact information sharing is not allowed\" ([Pre-reservation messaging](https://developers.booking.com/connectivity/docs/request-to-book/pre-reservation-messaging)).\n\nOn hosted stays, Airbnb reported **over 1.3 billion** messages in the twelve months to 30 June 2022, \"more than 3.5 million a day\" ([Airbnb via Hospitality Net](https://www.hospitalitynet.org/news/4112343.html), 2022; no newer figure was found). Its host messaging upgrades of around late 2024 add templates, AI-suggested replies visible only to the host and scheduled messages ([Airbnb Resources](https://www.airbnb.com/resources/hosting-homes/a/communicate-more-efficiently-with-messaging-upgrades-696), live page). Response rate is a Superhost criterion, at 90% ([Airbnb Help, article 829](https://www.airbnb.com/help/article/829), live page as of October 2026), so **message timestamps feed a host credential and ranking**. Airbnb has not published its messaging back end; nothing below describes it.\n\n### The conversation model\n\n> **INFERENCE, NOT DOCUMENTED:** The model below is a reference architecture derived from the public behavior above and from engineering principles. It is not a description of Booking.com's or Airbnb's systems.\n\n| Element | Design |\n| --- | --- |\n| **Thread** | One per inquiry or reservation, keyed by reservation ID once booked; an inquiry thread continues into the reservation. Carries the trip **stage**, read from the reservation service, not set by clients |\n| **Participants** | Guest and co-travelers; the host or property and its delegates under their grants; the platform (system messages, support agents) |\n| **Message** | Immutable original text, author (person and the client used: app, extranet, PMS API, assistant), language, attachments, policy outcome, versioned edits |\n| **Kinds** | Free text, structured request (typed, with state: open, accepted, declined, expired), system message, platform payment request |\n| **Views** | Per reader: translated text, redacted or annotated rendering, unread count |\n| **Events** | Message posted, request opened and resolved, read, redacted, reported, for the trip timeline, response-time metrics and trust |\n\nSeveral clients write to the same thread, which brings back the ownership problem from the extranet chapter. A structured request answered in the extranet must not also be answered by the PMS. Booking.com's single-channel-of-reply rule is one answer; a lock on the request (first client to respond owns it, visible to the others) is another.\n\n**Payments never travel as free text.** If the only legitimate way to ask a guest for money is a platform payment request, a system object rendered with the platform's own controls, then any free-text request to pay is anomalous by definition and can be blocked or flagged. That rule matters most on the OTA side, as the next paragraphs show.\n\n### Safety: the channel is an attack surface\n\nThe best-documented fraud pattern in accommodation runs through the messaging channel. In 2023 Secureworks described an infostealer that took a hotel's Booking.com credentials, with which attackers could \"see all upcoming bookings and directly message customers\" and ask them to confirm payment details at malicious links ([Sophos/Secureworks](https://www.sophos.com/en-us/blog/vidar-infostealer-steals-booking-com-credentials-in-fraud-scam), 2023). In November 2024 KrebsOnSecurity documented such a message inside the Booking.com app minutes after a booking; Booking.com said \"there has been no compromise of Booking.com's internal systems\" and that the attacks \"stem from partners' machines being compromised with malware\" ([KrebsOnSecurity](https://krebsonsecurity.com/2024/11/booking-com-phishers-may-leave-you-with-reservations/), 2024). Corvane's version, the **November 2027 extranet phishing wave**, reached 4,100 Roomstead guests through Keystone's messaging; 310 paid, and Roomstead reimbursed **€212,000** ([Stolen Cards, Hijacked Extranets and Fake Homes: Fraud in Travel](travel-fraud.html) owns the incident and the account-security response).\n\nWhen the attacker writes from a genuine partner account, the guest sees a genuine thread. Controls therefore sit on the content and context of messages:\n\n- **Link handling.** Extract URLs, check reputation and domain age, and warn or block links to payment pages that are not the platform's.\n- **Language and pattern detection.** \"Verify your card\", \"pay again\", \"your booking will be cancelled unless\" from a property, especially to many guests within minutes.\n- **Context.** A partner session that is new, from a new device, reading many upcoming reservations and messaging many of them is the pattern; rate-limit and hold such messages for review.\n- **Redaction with notice.** When a message is hidden, both sides and the sender's software must be told, as Booking.com's `is_redacted` attribute does. Silent redaction turns a safety control into a delivery failure, which is exactly what happened in Albufeira.\n\n### Policy by stage\n\nThe Albufeira incident had a simple cause: a rule that was right for one stage of the trip ran at another. The fix is to make the stage an explicit input to every messaging policy, read from the reservation service, and to write the policies as one table rather than as code scattered across clients.\n\n| Stage | Contact details | Links and attachments | Payment requests | Who may start a thread |\n| --- | --- | --- | --- | --- |\n| **Inquiry or request to book** | Redacted, with notice to both sides | Blocked or images only; no files | Not allowed | Guest |\n| **Confirmed, before arrival window** | Allowed from host to guest; guest's real contact masked by a relay | Scanned; external payment links blocked | Platform payment request only | Both |\n| **Arrival window (T−72h to check-out)** | Allowed; arrival-critical content is never redacted, only flagged | Scanned; images and PDFs allowed | Platform payment request only | Both |\n| **After check-out** | Allowed, masked relay | Scanned | Only for documented damage, through the claims flow ([Damage, Parties and Emergencies: Protection and Incident Response](protection-and-incidents.html)) | Both, within a window |\n| **Closed** | Read-only for the parties; retained for disputes and legal holds | n/a | n/a | Nobody; support can reopen |\n\nTwo design choices underpin the table. Policies are **versioned configuration evaluated by one policy service**, called by every client path, including the partner API; that would have prevented the empty-stage bug, because the service, not the client, would have looked up the stage. And every policy outcome is an event with the rule version, so a spike of redactions on post-booking threads is a metric that alerts within minutes, not a pattern a support lead notices after four hours.\n\n### Translation\n\nAirbnb's Translation Engine, announced in November 2021 for listing descriptions in \"over 60 languages\", was extended to messages in summer 2022 so that \"Messages are automatically translated in the user's preferred language\" ([Airbnb via Hospitality Net](https://www.hospitalitynet.org/news/4112343.html), 2022; the system has likely changed since). In a market where a Czech family writes to a Portuguese host, translation is not a feature but a condition of the conversation.\n\nThe pattern I recommend stores the **original text as the record**, translates asynchronously on posting, caches by target language, and always lets either party and support see the original, because disputes are decided on what was written. Two traps are specific to stays: **translation must not touch secrets** (a door code \"4417 #\" must survive translation byte for byte, so arrival-package content is rendered from structured fields rather than translated) and **translation must not hide abuse** (safety scanning runs on the original and on the translation).\n\n### Attachments and retention\n\nAttachments carry check-in videos, damage photos, identity documents hosts should not ask for, and malware: scan on upload, store apart from message text, strip photo location metadata, and refuse document types that have no place in a stay conversation.\n\nRetention is a legal question with an architectural answer. Under the General Data Protection Regulation (GDPR), personal data is kept identifiable \"for no longer than is necessary\" ([Regulation (EU) 2016/679, Article 5(1)(c) and (e)](http://publications.europa.eu/resource/celex/32016R0679), 2016), yet messages are evidence for chargebacks months later ([Paying for a Future Night: Payment Orchestration for Stays](stay-payments.html)), damage claims and trust cases. A defensible design keeps the thread for a fixed period after the trip closes, extends it only under a recorded legal hold, deletes attachments earlier than text, and removes door codes from view at check-out and from storage soon after.\n\n## Notification Routing\n\nThe Saturday incident was about messages; Roomstead's June problem was about notifications. During the **ATC strike weekend (5–7 June 2027)**, about 17,000 Roomstead reservations were affected. Keystone's disruption e-mail (\"Your trip may be affected: here are your options\") went out through the same e-mail vendor account and sending queue as the \"Summer weekends\" campaign scheduled for Saturday morning, and the median disruption e-mail reached the guest **3 hours and 10 minutes** after the job started. Roomstead received 6,200 cancellation requests in 48 hours; a share of them would have been self-service changes if the e-mail had arrived first. Nobody had decided that a disruption notice outranks a newsletter, because no single system sent both and knew the difference.\n\n### The pipeline\n\nA notification platform has five stages, and most failures live between them.\n\n![Domain event to intent, policy, channel plan and adapters, then a delivery tracker that loops back to the channel plan when a message is not seen, escalates to a human and feeds the trip timeline.](assets/images/24-trip-and-messaging/24-notification-loop.jpeg)\n**Figure 4:** *Notification routing as a closed loop. A domain event becomes an intent with a class and a deadline; policy decides whether and how to send; the delivery tracker feeds receipts back, falls back to another channel when the first stays silent, and hands arrival-critical failures to a person.*\n\n1. **Intent.** A producing service (reservations, payments, conversation, alerts from [Remembering the Traveler: Personalization, Recommendations and Saved Intent](personalization-and-recommendations.html)) emits an *intent*: recipient, event class, template key with typed data, deadline, idempotency key. It does not choose channels or render text.\n2. **Policy.** Consent (marketing needs it; a check-in instruction does not), channel preferences, quiet hours, deduplication, frequency caps and suppression after cancellation.\n3. **Channel plan.** An ordered plan per class (push now, e-mail now, SMS if neither is seen within 30 minutes, then a human), rendered in the recipient's language and time zone.\n4. **Adapters.** One per provider, each behind an interface so it can be replaced.\n5. **Delivery tracking.** Accepted, delivered, seen, bounced, failed; receipts feed the trip timeline, the arrival package and the fallback loop.\n\n### Classes, not campaigns\n\nThe supply-side chapter defined event classes for hosts and partners ([Running the Supply Side: Extranets, Host Tools and Operations](extranets-and-host-tools.html)). Guests need the same structure, and the class decides priority, channels and whether the guest may mute it.\n\n| Class | Guest examples | Default plan | Mutable | Separate lane |\n| --- | --- | --- | --- | --- |\n| **Arrival-critical** | Check-in details, door code changed, host canceled, today's check-in time moved | Push + e-mail; SMS or messaging app if not seen; then support | No | Yes, highest priority |\n| **Disruption** | Strike or weather affects your trip, rebooking options, property closed | Push + e-mail at once, SMS for arrivals within 72 hours | No | Yes |\n| **Transactional** | Booking confirmed, payment taken or failed, refund issued, receipt | E-mail, push | Channel only | Yes |\n| **Conversation** | New message, request answered | Push; e-mail digest if unread | Yes, with digest | No |\n| **Account security** | New login, password changed | E-mail + push | No | Yes |\n| **Engagement** | Price alerts, wishlist changes, review reminders | Push or e-mail within caps | Yes | No |\n| **Marketing** | Campaigns, newsletters | E-mail, push, by consent only | Yes | Separate sending identity |\n\nSeparate lanes mean separate queues and quotas inside the platform and, for e-mail, separate sending domains or IP pools, so a bulk campaign can never delay an arrival-critical message and a campaign's spam complaints do not damage the reputation that transactional mail depends on. Mailbox providers enforce this from outside: since **1 February 2024**, Google requires senders of more than 5,000 messages a day to Gmail accounts to authenticate mail with SPF and DKIM (Sender Policy Framework and DomainKeys Identified Mail), publish a DMARC (Domain-based Message Authentication, Reporting and Conformance) policy, keep spam complaints below **0.30%** in its Postmaster Tools and offer one-click unsubscribe on marketing and subscribed messages ([Google Workspace Admin Help, Email sender guidelines](https://support.google.com/a/answer/81126), live page as of October 2026). A marketplace that mixes marketing and check-in mail on one domain lets its marketing team spend the check-in mail's deliverability.\n\n![A three-lane highway where single envelopes in the arrival-critical and disruption lanes move freely to a guest's phone while the marketing lane is jammed with envelopes.](assets/images/24-trip-and-messaging/24-separate-lanes.jpeg)\n**Figure 5:** *Separate lanes keep a bulk campaign from delaying arrival-critical and disruption messages; in June 2027 Roomstead's disruption e-mail arrived a median 3 hours and 10 minutes late behind a campaign.*\n\n### Messaging apps are not SMS with a logo\n\nGuests increasingly expect trip messages in WhatsApp, and on the supply side Agoda's August 2026 Partner Portal announcement included KakaoTalk booking notifications for South Korean motels and plans for WhatsApp and WeChat ([Agoda via Kyodo News PR Wire](https://kyodonewsprwire.jp/release/202608174214), 2026). Messaging-app channels come with their own rules. On the WhatsApp Business Platform, when a user writes to a business a 24-hour \"customer service window\" opens; \"Businesses can only send non-template messages to users when this window is open\", and outside it they can reach users only with pre-registered template messages in the marketing, utility or authentication categories ([Meta for Developers, WhatsApp pricing](https://developers.facebook.com/docs/whatsapp/pricing), live page reflecting pricing effective 1 October 2026). So arrival-critical templates must be approved in every language before they are needed, and the channel plan must know whether a window is open; the adapter, not the producing service, owns those rules.\n\n### Locale, time zone and quiet hours\n\nThree cheap-to-prevent bugs recur. **Time zones**: \"check-in from 15:00\" is the property's time, while a free-cancellation deadline must say whose time it is, so templates take typed times, never pre-formatted strings. **Language**: each recipient's own, with property names and addresses untranslated. **Quiet hours**: respected for engagement and conversation classes, overridden for arrival-critical and disruption classes, which is why those classes must stay narrow.\n\n## In Practice at Corvane: Replaying 7 August\n\nThe architecture forum met on **2 September 2027**. Its decisions, in summary:\n\n- **Courier**, a group notification platform (intents, policy, channel plans, adapters, delivery tracker), owned by the group platform engineering team in Kraków. Nookaway moves first (Q1 2028); Roomstead's Keystone notifications follow by the end of 2028, transactional and disruption classes first.\n- **Threadline**, a group conversation service (threads, participants, messages, structured requests, policy service, translation, attachments), owned by Nookaway engineering in Lisbon under Rafael Mendes, with Sofia Marín's trust team as mandatory reviewer of every policy change. Policy packs are per brand; the stage table is shared.\n- **Arrival package service and trip timeline**, owned by Nookaway and built on the events of **Stayline**, the One Stay reservation service agreed in August ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html)), so that Roomstead can adopt them; Roomstead keeps its trip page but reads the same timeline events from 2028. For hotels, the arrival package complements Stayline's arrivals manifests, which confirm 7 days and 48 hours before arrival that the property holds the booking.\n- **One rule for every client.** The partner API, Burrow's app and web paths and Keystone's extranet all call Threadline's policy service, which reads the stage from Stayline.\n\nThe **November 2027 phishing wave** hit Roomstead before any of this reached Keystone, and pulled Roomstead's guest–property messaging onto Threadline's safety scanning ahead of plan: the honest way a shared platform often gets its second tenant.\n\nThe sequence below replays Maré Alta's check-in message for one Saturday arrival on the new design.\n\n![Swimlanes for the PMS, Threadline, the arrival package, Courier and the guest: the check-in message passes a stage check, the code is extracted and validated, and Courier sends an arrival-critical push and e-mail that is seen at 18:40.](assets/images/24-trip-and-messaging/24-replay-check-in-message.jpeg)\n**Figure 6:** *The same message on the new design. The policy service reads the trip's stage from the reservation, the arrival package extracts and validates the code, and Courier tracks the arrival-critical intent to \"seen\", so the trip page can say so.*\n\nThe counterfactual checks show where each piece earns its place:\n\n| Failure on 7 August | What catches it on the new design | When |\n| --- | --- | --- |\n| 64 Maré Alta codes redacted (2,960 check-in messages group-wide) | Stage read from the reservation service: arrival-window threads are never redacted, only flagged | At send, Fri 18:00 |\n| A code missing or invalid for whatever reason | Arrival package stays in draft; \"at risk\" at T−18h notifies Maré Alta as an act-now event | Fri 21:00 for Saturday arrivals |\n| Package delivered but not seen | Courier falls back to SMS at T−6h, then routes to a support queue with the package attached | Sat 09:00 onward |\n| Trip page says \"you're all set\" | Status derived from package state: \"Your host hasn't shared check-in details yet\" | Continuously |\n| Redaction spike invisible | Policy outcomes are events; redactions on post-booking threads above baseline page the on-call | Within 15 minutes of Thu 16:30 |\n\nThe forum also set four service-level objectives (SLOs) that Courier and the arrival package service report weekly per brand: **arrival packages seen by the guest before T−6h** (target 98% for self-check-in homes), **arrival-critical intents delivered within 2 minutes** (99.5%), **disruption intents sent to all affected reservations within 15 minutes of the declaration** (from [When Plans Change: Modifications, Cancellations and Policies](changes-and-cancellations.html)), and **the share of guest check-in support contacts per 1,000 arrivals**, which on 7 August had been about four times normal. The last metric is the one the business reads; the first three are the ones engineers can act on.\n\nThe cost is modest. SMS, the expensive channel, is used only as a fallback for arrival-critical and disruption classes; in Corvane's illustrative sizing it reaches about 6% of self-check-in arrivals. The €9,840 of rehousing on one Saturday buys a great many text messages.\n\n## The End of the Trip: Completion and the Review Invitation\n\nCheck-out is a reservation event ([The Life of a Reservation: State Machines, Delivery and Operations](reservation-lifecycle.html) owns completion), and the trip reacts in three ways.\n\n- **Hide secrets.** Door codes and Wi-Fi passwords disappear from the guest's view; the arrival package is archived.\n- **Open the review window.** The review service decides eligibility from the completed booking (stayed, not canceled, no-show or disputed); the timeline shows the invitation and deadline, and Courier sends it as an engagement-class intent. Collection, publication and moderation belong to [Trustworthy Reviews: Collection, Integrity and Quality Operations](reviews-and-reputation.html).\n- **Keep the conversation open for the window.** Lost items and damage evidence arrive after check-out; the thread stays writable for a defined period, then read-only.\n\nThe same stay events drive money: Nookaway pays the host 48 hours after scheduled check-in ([Paying the Supply Side: Payouts, Commissions and Settlement](payouts-and-settlement.html)), so for the Novak family's Alfama stay, checking in on 2 August 2027, the trip timeline and the host's payout on 4 August read the same events and never disagree about the dates.\n\n## Trade-offs\n\n| Decision | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| **Build or buy the notification platform** | Build intents, policy, plans and tracking in house; buy only channel delivery | Buy a customer-engagement platform that owns templates, journeys and sending | Many producing services, arrival-critical classes, fallback and escalation tied to trip state | Few producers, mostly marketing and lifecycle messaging, a small team |\n| **Conversation store** | One group service with per-brand policy packs | One messaging system per brand | Shared safety, translation and retention rules; guests and professional managers active on both brands | Brands with genuinely different conversation models and no shared trust team |\n| **Door codes** | Structured access credential in the arrival package | Free-text code in a message | Codes generated by integrations, self-check-in common, readiness must be checked | Mostly hosts meeting guests in person; codes rare |\n| **Messaging-app channels** | Templates per class through the official business platform | No messaging apps; push, e-mail and SMS only | Markets where guests expect WhatsApp or similar, international guests without roaming data | Markets where push and e-mail are reliable, or where template approval cannot keep up with product changes |\n\nCorvane chose Option A on every row except messaging apps: it started with WhatsApp templates for arrival-critical and disruption classes only, in the four markets where guests asked for them most. It also translates on post and caches per language, and redacts contact details before booking with notice to both sides.\n\n## Hotels and Homes: Where the Two Marketplaces Differ\n\nThe trip, messaging and notification platform is the most shareable of all the post-booking systems. The rules that sit on top of it differ sharply.\n\n| Dimension | Accommodation marketplace (Roomstead) | Hosted-stays marketplace (Nookaway) |\n| --- | --- | --- |\n| **Who answers the guest** | Hotel staff in shifts, often through the PMS via a messaging API; replies are operational | One host or a small manager team, on a phone; replies are personal and pre-booking questions are common |\n| **Typical content** | Structured: arrival time, parking, bed type, invoice, early check-in | Free text: house rules, how to find the key box, neighborhood tips, questions before booking |\n| **Pre-booking messaging** | Rare; mostly request-to-book homes sold on the OTA | Central: request-to-book inquiries, with a 24-hour host response window on Nookaway |\n| **Check-in** | Front desk; the OTA is out of the loop after delivery | Self-check-in common; the platform carries codes and pays when arrival fails |\n| **Main messaging risks** | Hijacked partner accounts phishing guests at scale (the Nov 2027 wave) | Off-platform payment scams before booking; harassment; party planning |\n| **Response time** | An operational SLA in partner analytics | An input to host credentials and ranking |\n| **Integration** | Messaging API for PMS and channel managers is a must-have connectivity surface | Partner API for professional managers; most individual hosts use the app |\n| **Regulation and evidence** | Guest data passed to the hotel under the agency model; messages as evidence for payment disputes | Guest contact usually masked by a relay; messages as evidence for damage claims and trust cases |\n\n**My judgement: share the channel, not the conversation rules.** Threadline, Courier, the stage model, translation, safety scanning, retention and the trip timeline builder are one problem in two marketplaces and should be built once, under One Stay. A guest who books a hotel on Roomstead in May and a home on Nookaway in August should get the same trip timeline, the same notification preferences and the same protection against phishing links. What stays per brand is the policy pack (pre-booking contact rules, structured request types, response-time targets) and the arrival package template: a front desk and a key box are different things. The hosted-stays pack would redact hotels' operational messages; the hotel model would drop the pre-booking conversation that sells request-to-book homes, a small case of **The Hotel-Shaped Home**.\n\nConvergence makes the shared layer more valuable, not less. Roomstead's apartments from professional managers need self-check-in packages, and Nookaway's 2028 boutique-hotel pilot will need a hotel-style package and structured requests. With policy packs keyed to the unit type rather than the brand, both cases are configuration.\n\n## Failure Modes\n\n| Failure | What it looks like | Design response |\n| --- | --- | --- |\n| **\"Confirmed\" means \"ready\"** | Trip page says \"all set\" while the code is missing | Status from facts with provenance; arrival package readiness on the timeline |\n| **Safety rule without stage** | A rule written for inquiries redacts arrival messages; nobody is told | One policy service reads the stage from reservations; redaction with notice; redaction-rate alerts by stage |\n| **Delivery receipts as success** | E-mail \"delivered\" to a mailbox nobody checks while traveling | Track \"seen\" for arrival-critical classes; fall back to another channel; escalate |\n| **Marketing shares the lane** | Disruption notices queue behind a campaign; campaign spam complaints hurt check-in e-mail deliverability | Separate lanes, quotas and sending identities per class |\n| **Two clients answer one request** | The extranet accepts an early check-in that the PMS declines | Single-channel-of-reply or request locking; request state visible to all clients |\n| **Free-text payment requests** | Phishing \"verify your card\" messages look like the hotel's own | Payments only as platform payment requests; block external payment links |\n| **Disruption at peak** | Rebooking offers, cancellations and arrival messages peak on the same weekend | Disruption class with its own capacity; load tests at strike-weekend volumes |\n\n## The Chief Architect's View\n\n**What to decide.** Four decisions shape everything else. First, that trip, conversation and notification are **platform services with owners**, not features inside each brand's monolith. Second, the **stage model**: one definition of inquiry, confirmed, arrival window, after check-out and closed, read from the reservation service by every policy. Third, the **class model** for notifications, with arrival-critical and disruption classes that cannot be muted, delayed by marketing or silently fail. Fourth, that **arrival information is a deliverable** with readiness, deadlines and escalation, for every reservation where the guest will not meet a person at a desk.\n\n**Who decides.** Policy packs need joint ownership: the trust team (Sofia Marín) owns safety rules, regulatory and privacy (Noor van Dijk) own retention, consent and the masked relay, and the brand product teams own structured request types and arrival templates. The forum's rule at Corvane is that any change to a messaging policy goes through Threadline's policy service with a shadow run against a week of real traffic, segmented by stage, before it enforces. The August rule would have shown 11,800 redactions on post-booking threads in its shadow run.\n\n**What to watch.** A short list, reviewed weekly per brand:\n\n- check-in support contacts per 1,000 arrivals, the business metric for this whole chapter;\n- arrival packages seen before T−6h, and the share that went at risk;\n- redactions and blocks per stage, with alerts on change;\n- arrival-critical and disruption delivery latency, and fallback rate by channel;\n- host and property response times, which also feed credentials and partner analytics;\n- notification complaints, unsubscribe and spam rates per class.\n\n**Long term.** AI assistants are becoming participants on both sides; each must act as a delegate under a grant, with its messages labeled. As trust incidents increasingly start in messages, what holds is stage-aware, versioned policy with shadow runs, the original text kept as evidence, and scanning results recorded as decisions the trust platform ([Trust as a Platform: Trust and Safety for Stays](stays-trust-and-safety.html)) can audit.\n\n## Questions to Ask\n\n1. Where does the trip page's status sentence come from? Can you name the event behind each line, and what the page says when that event is missing?\n2. Which messages in a trip are deliverables with deadlines, and what checks that each one was seen in time?\n3. How is the trip stage determined for each messaging policy, and can any client path (API, extranet, PMS, assistant) bypass the policy service?\n4. When a message is redacted or blocked, who is told, and what alert fires if redactions on post-booking threads rise?\n5. Are door codes and other secrets structured, versioned and regenerated on reservation alterations, or are they free text in a message?\n6. Which notification classes can a guest or host mute, and which can a marketing campaign delay?\n7. Do transactional, arrival-critical and marketing e-mail share a sending domain, an IP pool or a queue?\n8. What happens when an arrival-critical notification is delivered but not seen? After how long, through which channel, and when does a person get involved?\n9. How long are messages, attachments and codes retained, and who can place a legal hold?\n10. If an AI assistant writes a message on behalf of a host or answers a guest's question about their trip, which facts does it read and how is its output labeled?\n\nEven with the best trip platform, some trips go wrong: a host cancels the night before, a family is walked from an oversold hotel, a strike strands thousands. The conversation and the trip timeline are then the evidence, and a support agent becomes the fourth party. [When Something Goes Wrong: Customer Service and Recovery](customer-service.html) takes up how a marketplace handles cases that involve three parties and a deadline.\n\n## Sources and Evidence\n\n### Company engineering and investor sources\n\n- [Airbnb 2021 Winter Release](https://news.airbnb.com/2021-winter-release/), Airbnb Newsroom, 2021: Trips tab redesign with arrival countdown and check-in details; Translation Engine launch.\n- [Airbnb 2023 Winter Release](https://news.airbnb.com/en-uk/airbnb-2023-winter-release/), Airbnb Newsroom, 2023: editable arrival guide.\n- [Translation Engine launches Reviews after expanding to Messages](https://www.hospitalitynet.org/news/4112343.html), Airbnb via Hospitality Net, 2022: message translation; 1.3 billion messages in twelve months.\n- [Smart lock integrations now available to all hosts in the US and Canada](https://news.airbnb.com/smart-lock-integrations-available-to-all-us-and-canada-hosts), Airbnb Newsroom, 2024: per-reservation codes, alteration handling, lock notifications.\n- [Communicate more efficiently with messaging upgrades](https://www.airbnb.com/resources/hosting-homes/a/communicate-more-efficiently-with-messaging-upgrades-696), Airbnb, n.d. (c. 2024): quick replies, AI-suggested replies, scheduled messages, edit and unsend windows.\n- [Form 10-K for fiscal year 2025](https://www.sec.gov/Archives/edgar/data/1559720/000155972026000004/abnb-20251231.htm), Airbnb, Inc., 2026: guest protection covering inability to check in.\n- [Introducing AgentHub](https://booking.ai/introducing-agenthub-booking-com-platform-for-modular-travel-ai-agents-68bc521a0f50), Booking.com (booking.ai), 2026: trip-management and support agents, tracing and guards.\n- [Put Your Trip on Autopilot (EXPLORE 2024)](https://ir.expediagroup.com/news-and-events/news/news-details/2024/Put-Your-Trip-on-Autopilot-Expedia-Group-Introduces-New-Innovations-at-EXPLORE-to-Take-the-Stress-out-of-Travel-and-Enhance-Partner-Experience/default.aspx), Expedia Group, 2024: self-service booking management.\n- [Agoda Partner Portal announcement](https://kyodonewsprwire.jp/release/202608174214), Agoda via Kyodo News PR Wire, 2026: messaging-app booking notifications for partners.\n\n### Standards, regulation and documentation\n\n- [Understanding the Messaging API](https://developers.booking.com/connectivity/docs/messaging-api/understanding-the-messaging-api), Booking.com, n.d. (live as of October 2026): messaging windows, structured self-service requests, single-channel-of-reply rule, phishing redaction.\n- [Messaging API: Use cases and best practices](https://developers.booking.com/connectivity/docs/messaging-api/use-cases-and-best-practices), Booking.com, n.d.: polling integration pattern, read tagging.\n- [Pre-reservation messaging](https://developers.booking.com/connectivity/docs/request-to-book/pre-reservation-messaging), Booking.com, n.d.: request-to-book conversations, no attachments, no contact sharing.\n- [Smart lock integration via PMS (article 4163)](https://www.airbnb.com/help/article/4163), Airbnb Help Center, n.d.: PMS-generated codes, first lock only, backup instructions.\n- [How do I become a Superhost? (article 829)](https://www.airbnb.com/help/article/829), Airbnb Help Center, n.d.: response rate as a credential criterion.\n- [Email sender guidelines](https://support.google.com/a/answer/81126), Google Workspace Admin Help, n.d. (requirements from 1 February 2024): authentication, spam-rate threshold, one-click unsubscribe for bulk senders.\n- [WhatsApp Business Platform pricing](https://developers.facebook.com/docs/whatsapp/pricing), Meta for Developers, n.d. (pricing effective 1 October 2026): customer service window and template categories.\n- [Regulation (EU) 2016/679 (GDPR)](http://publications.europa.eu/resource/celex/32016R0679), CELEX 32016R0679, 2016: data minimization and storage limitation (Article 5).\n\n### Research and practitioner sources\n\n- [Vidar infostealer steals Booking.com credentials in fraud scam](https://www.sophos.com/en-us/blog/vidar-infostealer-steals-booking-com-credentials-in-fraud-scam), Sophos (Secureworks Counter Threat Unit), 2023: hijacked partner accounts messaging guests.\n- [Booking.com phishers may leave you with reservations](https://krebsonsecurity.com/2024/11/booking-com-phishers-may-leave-you-with-reservations/), KrebsOnSecurity, 2024: in-app phishing message after booking; Booking.com's statement.\n- [Expedia Group shares AI chatbot lessons learned](https://letsdatascience.com/news/expedia-group-shares-ai-chatbot-lessons-learned-239f348a), Let's Data Science, 2026: secondary report on grounding trip assistants in live reservation data (low confidence).\n\nCorvane is fictional; architectural recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>
