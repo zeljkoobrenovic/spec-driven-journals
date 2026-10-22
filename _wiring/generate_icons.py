@@ -105,15 +105,23 @@ def write_post_with_added_fm(path: Path, fm_lines, body, additions):
 # ---------- prompt construction ----------
 
 def build_prompt(title: str, excerpt: str) -> str:
-    """Construct an image-generation prompt for a small square icon."""
+    """Construct an image-generation prompt for a small square icon.
+
+    Icons are shown at 100 x 100 px on the journal index, so the prompt asks
+    for one bold symbol that still reads at that size.
+    """
     parts = [
-        "Icon requirements:"
-        "- A minimalist icon in a clean, professional line-art style, no text"
-        "- No text, or labels."
-        "- No borders or frames."
-        "- The design features bold, consistent black outlines with rounded stroke ends."
-        "- Use thick, uniform line weights and simple geometric shapes."
-        "- No shading, no gradients, and no colors—only high-contrast black and white vector-style graphics. ",
+        "Design a square app-style icon that will be displayed at only 100 x 100 pixels.",
+        "Pick ONE simple, concrete object or symbol that stands for the article's main idea "
+        "(for example a magnifier, a key, a shield, a map pin, a scale, a ladder, a funnel).",
+        "Requirements:",
+        "- Exactly one central symbol, built from at most three or four simple geometric shapes.",
+        "- Very thick, uniform black outlines with rounded ends (each stroke about 1/20 of the icon width).",
+        "- The symbol fills about 70% of the canvas, centred, with generous white margins.",
+        "- No small details: no text, letters, numbers, labels, grids, tiny icons, arrows clusters, "
+        "diagrams, people crowds or background scenery.",
+        "- Flat black on a plain white background; no shading, no gradients, no colours, no border or frame.",
+        "- It must stay instantly recognisable when shrunk to a thumbnail.",
         "",
         f"Article title: {title}",
     ]
@@ -202,7 +210,8 @@ def _icon_paths(journal_dir: Path, post_src: Path):
     )
 
 
-def process_post(journal_dir: Path, post_src: Path, api_key: str, dry_run: bool) -> str:
+def process_post(journal_dir: Path, post_src: Path, api_key: str, dry_run: bool,
+                 overwrite: bool = False) -> str:
     """Returns a short status string for the post."""
     label = post_src.relative_to(journal_dir / "posts").as_posix()
 
@@ -214,7 +223,7 @@ def process_post(journal_dir: Path, post_src: Path, api_key: str, dry_run: bool)
     meta = parse_fm_dict(fm_lines)
     icon_path, icon_value = _icon_paths(journal_dir, post_src)
 
-    if icon_path.exists():
+    if icon_path.exists() and not overwrite:
         # File on disk is the source of truth. If the front-matter field is
         # already set, leave the post alone; otherwise wire it up.
         if meta.get("icon"):
@@ -263,6 +272,19 @@ def main(argv=None):
         help="List what would be done without calling the API or writing files.",
     )
     parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Regenerate icons whose image file already exists (front matter is "
+        "left unchanged when the icon field is already set).",
+    )
+    parser.add_argument(
+        "--only",
+        action="append",
+        default=[],
+        metavar="FOLDER",
+        help="Only process this post folder (repeatable).",
+    )
+    parser.add_argument(
         "--sleep",
         type=float,
         default=2.0,
@@ -302,6 +324,8 @@ def main(argv=None):
             if key in seen:
                 continue
             seen.add(key)
+            if args.only and post_src.parent.name not in args.only:
+                continue
             targets.append(post_src)
 
     print(
@@ -317,7 +341,8 @@ def main(argv=None):
             missing += 1
             continue
         try:
-            status = process_post(journal_dir, post_src, api_key, args.dry_run)
+            status = process_post(journal_dir, post_src, api_key, args.dry_run,
+                                  overwrite=args.overwrite)
         except Exception as e:  # noqa: BLE001 -- keep going on per-post errors
             status = f"ERROR ({label}): {e}"
         print(f"[{i + 1}/{len(targets)}] {status}")
