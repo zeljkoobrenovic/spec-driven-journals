@@ -486,6 +486,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
     description = config.get("description") or ""
     logo = config.get("logo") or ""
     logo_credit = config.get("logo_credit") or ""
+    ai_credit_html = _ai_credit_html(config.get("ai_credit") or "")
     sections = config.get("sections") or []
     base_url = (config.get("site_url") or f"{SITE_URL}/{journal_dir.name}").rstrip("/")
 
@@ -599,6 +600,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                         meta.get("logo") or logo))
                     .replace("__SECTION_HTML__", _spec_header_html(spec_status, spec_revised))
                     .replace("__BYLINE__", "")
+                    .replace("__AI_CREDIT__", "")
                     .replace("__LOGO_HTML__", "")
                     .replace("__SPEC_LINK__", "")
                     .replace("__POST_NAV__", spec_back)
@@ -615,6 +617,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                     meta.get("logo") or logo))
                 .replace("__SECTION_HTML__", section_html)
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
+                .replace("__AI_CREDIT__", ai_credit_html)
                 .replace("__LOGO_HTML__", post_logo_html)
                 .replace("__SPEC_LINK__", spec_link_html)
                 .replace("__POST_NAV__", nav_html)
@@ -779,6 +782,13 @@ def _byline(meta: dict) -> str:
     if meta.get("timetoread"):
         parts.append(meta["timetoread"])
     return "  ·  ".join(parts)
+
+
+def _ai_credit_html(credit: str) -> str:
+    """The journal's `ai_credit:` disclosure, shown under each post's byline."""
+    if not credit:
+        return ""
+    return f'<p class="ai-credit">{_description_html(credit)}</p>'
 
 
 _MD_LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)")

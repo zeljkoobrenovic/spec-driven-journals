@@ -362,6 +362,8 @@ class JournalExporter:
         intro += f"{{id: book-{identifier(self.journal.name)}}}\n# {title}\n\n"
         if authors:
             intro += ", ".join(authors) + "\n\n"
+        if self.config.get("ai_credit"):
+            intro += self.config["ai_credit"] + "\n\n"
         intro += self.logo(self.config, self.journal / "config.yaml", title)
         if self.config.get("description"):
             intro += self.config["description"] + "\n\n"

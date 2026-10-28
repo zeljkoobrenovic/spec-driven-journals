@@ -38,7 +38,7 @@ There is no test suite, lint config, or CI yet.
 5. Embeds the structured data as JSON inside `_templates/index.html` and `_templates/post.html` via `__DATA_JSON__` placeholder substitution; client-side JS does the rendering.
 6. Writes output to `docs/<j>/index.html` and `docs/<j>/<slug>.html` (posts sit alongside the index, not under a `posts/` subdir). Journal-level assets are copied wholesale from `_journals/<j>/assets/` to `docs/<j>/assets/`. Per-post `assets/` directories (when posts use the folder layout) are merged into the same destination.
 
-The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders in `index.html`: `__TITLE__`, `__META_TAGS__`, `__DESCRIPTION__`, `__JOURNAL__`, `__LOGO_HTML__`, `__DATA_JSON__`. In `post.html`: `__TITLE__`, `__META_TAGS__`, `__SECTION_HTML__`, `__BYLINE__`, `__LOGO_HTML__`, `__POST_NAV__`, `__DATA_JSON__`. `__META_TAGS__` holds the description and Open Graph tags (title, excerpt, absolute page URL, hero image) that give shared links a preview card; absolute URLs use the journal's `site_url:` or `SITE_URL` in `build.py`.
+The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders in `index.html`: `__TITLE__`, `__META_TAGS__`, `__DESCRIPTION__`, `__JOURNAL__`, `__LOGO_HTML__`, `__DATA_JSON__`. In `post.html`: `__TITLE__`, `__META_TAGS__`, `__SECTION_HTML__`, `__BYLINE__`, `__AI_CREDIT__`, `__LOGO_HTML__`, `__POST_NAV__`, `__DATA_JSON__`. `__META_TAGS__` holds the description and Open Graph tags (title, excerpt, absolute page URL, hero image) that give shared links a preview card; absolute URLs use the journal's `site_url:` or `SITE_URL` in `build.py`.
 
 ### HTML includes (`docs/_includes/`)
 
@@ -52,12 +52,15 @@ description: <site subtitle>   # plain text; a markdown link [text](https://…)
 logo: assets/images/<file>      # optional; rendered as a hero image on the index
 logo_credit: <optional caption shown under the logo>
 site_url: <optional>                # public root of this journal for link previews; defaults to the GitHub Pages URL
+ai_credit: <optional>               # AI-use disclosure shown under every post's byline and on the manuscript title page; a markdown link [text](https://…) is rendered as an anchor
 sections:
   - title: <section title>
     description: <optional>
     posts:
       - <relative-path>.md     # path relative to _journals/<j>/posts/
 ```
+
+`ai_credit:` is set per journal, not per post, so it stays out of `author:` — the human author remains the accountable author, and the tools are disclosed separately with their roles (e.g. text vs. images). Spec pages don't show it.
 
 The `logo` path is journal-relative (resolved against `docs/<j>/`); no rewrite is applied since the index sits at the journal root.
 
