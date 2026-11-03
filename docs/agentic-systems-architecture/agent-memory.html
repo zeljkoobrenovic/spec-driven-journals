@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Memory: What an Agent Should Remember, and for How Long</title>
+    <meta name="description" content="What should persist across an agent's sessions, who owns it, and how does it expire? Remember only what no system of record knows, write it through a gated policy with provenance and a confirmation step, give every memory class an expiry and a review date, and make memory something users can see and erase, never a source of authority or of a commitment.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Memory: What an Agent Should Remember, and for How Long">
+    <meta property="og:description" content="What should persist across an agent's sessions, who owns it, and how does it expire? Remember only what no system of record knows, write it through a gated policy with provenance and a confirmation step, give every memory class an expiry and a review date, and make memory something users can see and erase, never a source of authority or of a commitment.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/agent-memory.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/16-agent-memory/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="retrieval-and-grounding.html" title="Retrieval and Grounding">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="task-state-and-checkpoints.html" title="Durable Task State and Checkpoints">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — CONTEXT: Context, Knowledge, Memory and State</p>
+        <h1>Memory: What an Agent Should Remember, and for How Long</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  31 min read · <a class="spec-link" href="agent-memory.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/16-agent-memory/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/16-agent-memory/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="retrieval-and-grounding.html" title="Retrieval and Grounding">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="task-state-and-checkpoints.html" title="Durable Task State and Checkpoints">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Memory: What an Agent Should Remember, and for How Long", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "What should persist across an agent's sessions, who owns it, and how does it expire? Remember only what no system of record knows, write it through a gated policy with provenance and a confirmation step, give every memory class an expiry and a review date, and make memory something users can see and erase, never a source of authority or of a commitment.", "permalink": "agent-memory", "timetoread": "31 min read", "icon": "assets/icons/16-agent-memory.png", "logo": "assets/images/16-agent-memory/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn to separate long-term memory from history, working context and task state; decide what an agent may remember at user, tenant and organization scope; design the write policy, provenance, expiry and deletion of memories; and defend memory against poisoning and measure whether it helps.\n\n> **WHY THE BUSINESS CARES:** A remembered preference that has stopped being true sends a technician to the wrong person, shapes how a customer is treated on the strength of an unreviewed note, or keeps personal data the company has no reason to hold. Memory is personal data with a long life, and regulators, customers and the general counsel will ask what it holds and why.\n\n> **WHY ARCHITECTS SHOULD CARE:** Memory is a write path from a probabilistic component into durable storage, read back later as if it were fact, by other sessions and sometimes by other agents. Without a write policy, provenance and expiry, it turns one bad output into a persistent belief and one injected message into a persistent compromise.\n\n> **KEY POINTS:**\n>\n> * **Memory holds what only the conversation knows.** Anything a system of record knows (contracts, sites, contacts, balances, entitlements) is read live, never remembered. A memory candidate that contradicts a system of record is a change request to that system's owner, not a new memory.\n> * **Every memory is written through a policy, not by the model.** The model may propose a memory. Deterministic code validates its class and schema, attaches provenance written by the runtime, sets its trust from the source of the text, supersedes the older value for the same key, and asks the user to confirm anything that will shape an action. The wider the scope, the stricter the writer: users confirm their own memories, humans write tenant memory, and organization-wide lessons are reviewed changes to the knowledge base or the agent version.\n> * **Every memory expires, and every memory can be found and erased.** Each class has an expiry and a review date, set by the owner of the data. Users can see and delete what is remembered about them. Erasure reaches the store, the index, caches and backups, and bulk quarantine by provenance (by source run, document or writing agent version) is a routine operation. Memory never grants authority and never supplies an argument to a tool that changes the world.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Memory Without Expiry** — the chapter's central case: model-written memories with one default lifetime outlived the facts they described, and newer contradicting memories did not replace them.\n> * **The Lethal Trifecta** — a memory written from untrusted content is a delayed instruction: it waits for a later session that holds private data and a way to send it out.\n> * **Amnesiac Execution** — teams that keep \"what the agent did\" in memory notes instead of task state lose it on a crash, or worse, resume from a belief the model wrote.\n\n<br>\nTeams add memory to an agent for good reasons. Customers dislike repeating themselves, a coding agent should not rediscover the build command every morning, and a research agent should know which sources its requester distrusts. The usual first version asks the model at the end of a session what was worth remembering, stores the answer in a vector index, and retrieves the top few items next time. Months later the store holds hundreds of thousands of items, some contradictory, some copies of records that have since changed, a few written from text an attacker supplied, and nobody can say which are true.\n\nThe problem is not retrieval quality. **Memory is the part of an agent designed so that the model's output becomes durable state that later sessions read as fact**, so it needs what any such write path needs: a schema, an owner, a writer policy, provenance, a lifetime and a deletion path. This chapter argues for remembering less and governing what remains. Most of what agents \"remember\" should be read live from the system that owns it.\n\nThis chapter owns four terms: **long-term memory (agent)**, the **memory write policy**, **memory expiry** and **memory poisoning**. It builds on [Context Engineering: Building What the Model Sees](context-engineering.html), which treats the working context as computed per call and reads memory as one of its inputs, and on [Retrieval and Grounding](retrieval-and-grounding.html), which owns search over corpora the agent does not write. It hands durable task state to [Durable Task State and Checkpoints](task-state-and-checkpoints.html), the `as_of` clocks and invalidation sweeps to [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), injection defenses in general to [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), and the versioning of memory schemas and of the prompts that write memories to [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html).\n\n## Setting the Scene at Ostrell: The Stale Preference\n\nOstrell, the fictional company this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), built **Tidemark** as part of its Keelson agent platform: the long-term memory service, with per-user and per-tenant memories carrying provenance, confidence and expiry. Answerdesk, the support agent for Ostrell Field, was its first heavy user, with the simple policy. At the end of each conversation a Mid-tier extraction step wrote the \"facts and preferences worth remembering\" about the user (a dispatcher, office manager or technician at one of Ostrell's 9,400 Field business customers) into Tidemark. At the start of the next conversation the context assembler retrieved the ten most similar memories for that user. Every memory got a default expiry of 365 days, and its confidence was the model's own rating.\n\nOn **Tuesday 18 May 2027** an installation company in the Netherlands complained to Lena Brandt's Support Operations team. For two revisits in May, the technician had arrived on a Friday afternoon and asked for a site contact who had left the company in February. In March the office manager had told Answerdesk exactly that: the contact had left, there was a new contact, and the site now admitted contractors on weekday mornings only. The extraction step had written that as new memories, but the January ones (\"prefers Friday afternoon revisits; on-site contact is …, mobile …\") were still there, with the same expiry and a higher similarity to \"book a revisit\", and the model used them to draft the access notes for the technician's work order.\n\nJonas Lindqvist, principal engineer for Keelson Runtime, and Lena's team reviewed seven weeks of traces (1 April to 18 May 2027) and sampled Tidemark (Ostrell figures, fictional):\n\n| Finding | Measurement |\n| --- | --- |\n| Answerdesk memories in Tidemark | About **640,000** active records for about **96,000** users |\n| Users with at least one contradicting pair of memories | **6.8%** |\n| Revisit bookings whose access notes contradicted a newer memory or the customer's site record | **46**; **11** visits failed on site and were rebooked (about **€290** per failed visit, Support Operations estimate) |\n| Memories naming a third person with a phone number (site contacts) | About **2,140** |\n| Median model-rated confidence of the memories involved | **0.9**, the same as for memories that were correct |\n\nA stratified sample of 1,000 memories, read by two support leads against the source conversations and the systems of record, showed what the store actually contained:\n\n| What the memory was | Share of sample | What the review found |\n| --- | --- | --- |\n| Preferences the user stated (language, channel, visit windows) | 38% | 9% no longer true |\n| Copies of system-of-record facts (contract tier, sites, equipment, contacts) | 29% | 17% disagreed with the system of record |\n| Episodic notes about past interactions (\"frustrated about the March visit\") | 21% | About a third were judgments about the person rather than facts |\n| Behavioral rules the model wrote for itself about a user (\"offer a credit early, this customer escalates\") | 8% | None reviewed by anyone |\n| Content derived from inbound email bodies or attachments | 4% | Untrusted text stored with the same trust as the user's own words |\n\nAcross all categories, **2.6%** of the sampled memories were not supported by anything in the source conversation.\n\nThe direct cost was eleven failed visits. Ilse de Wit, Ostrell's general counsel, saw the rest: phone numbers of people who were not Answerdesk's users, some of whom had left their employers, held with no retention basis, and unreviewed judgments about customers' temperament. Tomas Verhoef, the Chief Architect, put the question to the architecture forum: **what should Answerdesk remember at all, who may write it, and when must it be forgotten?** The redesign that answered it shipped on **12 July 2027** as Tidemark memory schema v3.\n\n## Concepts: What Memory Is, and What It Is Not\n\n### Five things the agent \"knows\", and the one that is memory\n\nThe book holds five stores apart: conversation history, working context, durable task state, long-term memory and the knowledge corpus. [Context Engineering: Building What the Model Sees](context-engineering.html) sets out the full table (what each holds, who writes it, how long it lives); this chapter owns long-term memory, the only one of the five whose lifetime is set per class by policy and whose writer is a gated path on which the model may only propose.\n\n**Long-term memory (agent)** is information that an agent's sessions write about a principal (a user, a tenant, or the agent's own way of working) so that later sessions can read it, and that no system of record holds. The last clause is the design rule this chapter defends. It excludes three things that are often called memory:\n\n- **A compaction digest is not memory.** It is a lossy cache of one session's history, discarded when the session ends ([Context Engineering: Building What the Model Sees](context-engineering.html)).\n- **A progress note is not memory.** \"Step 3 done\" is task state, and must be written by the orchestrator from a receipt, not by the model. Anthropic's November 2025 harness post keeps progress in a JSON list that sessions may only flip, a soft version of the rule ([Anthropic, 2025](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)); [Durable Task State and Checkpoints](task-state-and-checkpoints.html) states the hard one.\n- **A copy of a record is not memory.** A contract tier, a site address or an account balance remembered from a past session is a cache with no invalidation. It belongs to the system of record and is read live through a tool.\n\n### Three kinds of memory\n\nThe cognitive-science triple that LangGraph's documentation uses is useful because each kind carries a different risk ([LangChain docs, n.d., accessed 2026-10](https://docs.langchain.com/oss/python/langgraph/memory)):\n\n| Kind | What it holds | Example at Ostrell | Main risk | Default rule |\n| --- | --- | --- | --- | --- |\n| **Semantic** | Facts and preferences about a principal | \"Prefers Dutch; prefers weekday-morning revisits\" | Goes stale; duplicates a system of record | Keyed slots, one active value per key, confirmed if it shapes an action |\n| **Episodic** | What happened in past sessions | \"Revisit on ticket 88412 failed; customer was told a credit would be considered\" | Paraphrase error; judgments about people | Reference the ticket, store the outcome, not an opinion |\n| **Procedural** | How to do the task: rules, examples, lessons | \"When a customer reports error E-214, check the gateway firmware first\" | Changes behavior for every user it applies to | Not written at runtime; a reviewed change to the prompt, skill or knowledge base |\n\n**Procedural memory is the dangerous one.** A semantic memory is wrong about one user; a procedural memory is a prompt change that skipped review. Answerdesk's \"offer a credit early\" rules were per-user procedural memories written by the model, which means a credit policy that Lena Brandt never saw. Reflexion showed that verbal lessons fed back within an evaluated benchmark task can improve performance ([Shinn et al., 2023](https://arxiv.org/abs/2303.11366), NeurIPS 2023); across users and months, a lesson is a behavior change and goes through [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html).\n\n### Scope: user, tenant, organization\n\nMemory has an owner, and the owner sets its scope. The wider the scope, the more principals a wrong memory reaches, so the writer must be more accountable:\n\n| Scope | Holds | Who may write | Who may read | Ostrell rule |\n| --- | --- | --- | --- | --- |\n| **User** | One person's preferences and episodes with one agent | The model proposes; the user confirms, or it is stored as `inferred` | That user's sessions with that agent | Default scope for Answerdesk |\n| **Tenant** | Facts about one customer organization that no system holds | Humans only: customer administrators and Ostrell support leads; the model may propose to a queue | All sessions for that tenant | Short operational notes; anything lasting goes into a tenant-scoped knowledge-base article |\n| **Organization** | Lessons that apply to all users | Not memory | — | A knowledge-base change or a new agent version, through review and evaluation |\n\nTeams resist the last row, but shared model-written memory is exactly what the memory-injection research attacks: any user can write into what every other user's session reads. At organization scope the reviewed mechanisms already exist: the knowledge base with its content owners, and the agent's instructions with Sounding, Ostrell's evaluation service, as the gate.\n\n![Three concentric scope rings: user, tenant and organization, with stricter writers at wider scope.](assets/images/16-agent-memory/16-scope-rings-accountable-writer.jpeg)\n**Figure 1:** *The wider the scope, the more people a wrong memory reaches: the model proposes at user scope, only humans write tenant notes, and organization-wide lessons go through review instead of memory.*\n\n### Write policy, expiry and poisoning\n\nA **memory write policy** is the per-agent, versioned rule set that decides which memory classes an agent may write, at which scope, from which sources, with which validation and confirmation, and with which trust and expiry. Deterministic code enforces it between the model's *candidate* and the store.\n\n**Memory expiry** is the rule that ends a memory's use: a hard expiry date after which it is no longer read, plus a review date after which it must be reconfirmed, re-derived or dropped. Expiry is set per memory class by the owner of the data, not by a global default. It works with the freshness bounds of [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html): a memory's effective `as_of` is the time it was last confirmed, not the time it was written.\n\n**Memory poisoning** is any way an adversary, or an unreviewed error, causes memory to hold content that later shapes an agent's behavior, for the same principal later or for others who read a shared scope. Unlike prompt injection **it is persistent and delayed**: the text that caused it may be gone, and the session it acts in may hold data and tools the original did not. OWASP's December 2025 Top 10 for Agentic Applications lists \"Memory and Context Poisoning\" as ASI06 ([OWASP GenAI Security Project, 2025](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/); the December 2025 publication date was verified, the category title and number are as reported by secondary sources and were not verified against the primary text).\n\n## Architecture: The Write Path, the Read Path and the Erase Path\n\n### Components and responsibilities\n\nTidemark after July 2027 has three paths, each with a different owner of correctness.\n\n![Diagram: The model proposes](assets/images/16-agent-memory/fig01-model-proposes-code-decides-candidate-that.jpeg)\n**Figure 2:** *The model proposes; code decides. A candidate that contradicts a system of record leaves the memory path entirely, and only confirmed memories may shape an action.*\n\n| Component | Responsibility | Owner |\n| --- | --- | --- |\n| **Extraction step** | Proposes typed candidates from a finished session; cites the messages it used | Agent team (prompt is part of the agent version) |\n| **Write-policy validator** | Checks class, scope, schema and size; detects overlap with systems of record; sets trust from source segments; supersedes older values; routes to confirmation | Agent Platform team (code); agent owner (policy content) |\n| **Tidemark store** | Source of truth for memory records, with provenance, trust, expiry and deletion state | Agent Platform team |\n| **Context assembler** | Reads memories by key and relevance, renders them with a header and the `model_generated` trust label, inside a budget | Keelson Runtime ([Context Engineering: Building What the Model Sees](context-engineering.html)) |\n| **Bulkhead and Toolyard** | Refuse tool arguments sourced from memory for action classes; memory never changes authority | Platform, with security review |\n| **User memory page and erasure job** | Lets users see, correct and delete; executes data-subject erasure across store, index, caches and backups | Agent Platform team, with the privacy office |\n\nThe author's agentic-platform-foundations interview design draws the same split: the memory store \"should keep memory provenance, trust tier, TTL, and deletion state; the vector index is a derived retrieval structure\", and \"a recalled instruction is data, not a grant\" (design example, step `durable`, deep dive \"Memory governance\"). It names trust tiers and quarantine but leaves open how a memory moves between tiers and who moves it; the lifecycle below fills that gap.\n\n### The memory record\n\n```typescript\ntype MemoryClass = \"preference\" | \"interaction_note\" | \"tenant_note\";\ntype MemoryTrust = \"user_confirmed\" | \"inferred\" | \"staff_written\" | \"low\";\n\ninterface MemoryRecord {\n  memoryId: string;\n  scope: { tenant: string; user?: string; agent: string };  // never global\n  cls: MemoryClass;\n  key: string;                 // e.g. \"revisit.preferred_window\"; one active value per (scope, key)\n  value: unknown;              // schema per key; free text only in interaction_note, capped\n  trust: MemoryTrust;\n  provenance: {\n    sourceRunId: string;\n    sourceMessages: number[];  // messages the candidate cited, verified to exist\n    spanHashes: string[];      // hashes of the supporting utterances\n    sourceTrust: string[];     // trust labels of those segments, from the context manifest\n    writerManifest: string;    // hash of the agent version whose extraction step proposed it\n    confirmedBy?: string;      // user or staff identity, if confirmed\n  };\n  recordedAt: string;\n  lastConfirmedAt: string | null;  // effective as_of for freshness\n  reviewAt: string;                // reconfirm, re-derive or drop after this\n  expiresAt: string;               // never read after this\n  supersedes?: string;             // memoryId of the value this one replaced\n  state: \"active\" | \"review_due\" | \"superseded\" | \"quarantined\" | \"expired\" | \"erased\";\n  schemaVersion: number;           // see versioning-agent-systems\n}\n```\n\nFour design points matter more than the field list.\n\n**Keys, not a pile.** The January design stored free-text items and retrieved by similarity, so \"prefers Friday afternoons\" and \"now mornings only\" were two items that competed in retrieval. With keys, a new value for `revisit.preferred_window` supersedes the old one in the same write, and the old one stays readable only for audit. LangGraph's documentation notes that memory collections need update and delete logic ([LangChain docs, n.d., accessed 2026-10](https://docs.langchain.com/oss/python/langgraph/memory)); keyed slots build it in. Free text survives only in `interaction_note`, capped at 280 characters and required to reference a ticket.\n\n**Provenance is written by the runtime.** The extraction step cites message numbers. The validator checks that those messages exist and hashes the supporting utterances. It takes the trust labels of those messages from the call's context manifest, not from the model. A candidate whose supporting text came from an `untrusted` segment (an inbound email body, an attachment) gets trust `low` whatever the model says about it.\n\n**Confidence is not a model rating.** In May the median self-rated confidence was 0.9 for correct and incorrect memories alike, the same pattern Ostrell's router audit later found for routing confidence ([Routing and Delegation](routing-and-delegation.html)). Tidemark v3 replaces the number with a trust level derived from how the memory was established: confirmed by the user, written by staff, inferred, or low.\n\n**The writer's version is recorded.** Each record carries the manifest hash of the agent version that proposed it, so when an extraction prompt turns out to be defective, Tidemark can quarantine exactly what that version wrote ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)).\n\n### The write policy\n\nAnswerdesk's write policy (Tidemark schema v3, July 2027; Ostrell policy, owned by Lena Brandt, enforced by the validator):\n\n| Rule | What it does | Why |\n| --- | --- | --- |\n| **Allow-listed keys** | About 20 keys: language, channel, contact-time window, visit window, notification preferences, accessibility needs the user volunteers; anything else is rejected | Remember what the conversation alone knows |\n| **System-of-record overlap is rejected** | Candidates about sites, contacts, contract tier, equipment, prices or entitlements are rejected; if they contradict the record, the validator opens a change request for the record's owner | The record is read live; a contradiction is news for its owner |\n| **Confirmation for anything that shapes an action** | Before storing a preference that affects bookings or notifications, Answerdesk asks in the conversation: \"Shall I remember that you prefer weekday-morning visits?\"; declined means not stored | The user owns the memory and should know it exists |\n| **Inferred preferences are suggestions only** | Unconfirmed candidates are stored as `inferred`, expire in 60 days and may only shape wording or the order of options offered | A guess must not narrow the user's choices |\n| **No third-party personal data** | Names, phone numbers and addresses of people other than the user are rejected | No basis to retain them; the customer maintains contacts in Field |\n| **No judgments about the person** | Interaction notes reference a ticket and state an outcome; character language and special-category data are rejected | No unreviewed profiling |\n| **No per-user procedural memory** | Rules about how to treat a user are rejected; proposed lessons go to a weekly review queue for the knowledge-base and prompt owners | Behavior changes go through review and Sounding |\n| **Untrusted-derived content is low trust** | Stored as `low`, flagged for review, rendered only with the untrusted label, never usable as a tool argument, expires in 30 days unless a human reviews it | Persistence must not launder injected text ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)) |\n\nConfirmation adds a question to the conversation, so Answerdesk asks at most once per conversation, about at most two keys: the validator runs on the candidates when the conversation is wrapping up, and for email tickets the question goes into the next reply. Users confirmed **64%** of proposed preferences in the first quarter; the rest are not stored or stay as 60-day suggestions.\n\n### Expiry and review\n\n| Class and trust | Review after | Expires after | On review |\n| --- | --- | --- | --- |\n| Preference, `user_confirmed` | 90 days | 365 days | Ask the user in the next conversation, or drop if the user has not been seen |\n| Preference, `inferred` | — | 60 days | Dropped unless confirmed |\n| Interaction note | — | 180 days | Dropped; the ticket remains in the ticketing system |\n| Tenant note, `staff_written` | 90 days | 365 days | Owner reconfirms or moves it into a tenant-scoped knowledge-base article |\n| Any memory, `low` | — | 30 days | Dropped unless a human reviews and promotes it |\n\nThese numbers are Ostrell policy. The 90-day review matches the memory row in the freshness register of [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html). Expiry is also the storage-limitation principle of the General Data Protection Regulation (GDPR): personal data \"kept in a form which permits identification of data subjects for no longer than is necessary\" for its purposes ([Regulation (EU) 2016/679, Art. 5(1)(e)](http://publications.europa.eu/resource/celex/32016R0679)). A memory without an expiry has no defensible retention period.\n\n### The lifecycle\n\n![Diagram: A memory has states, not just a timestamp](assets/images/16-agent-memory/fig02-memory-has-states-not-just-timestamp.jpeg)\n**Figure 3:** *A memory has states, not just a timestamp. Supersession and quarantine are transitions with records, and erasure is the end of every path.*\n\nQuarantine is the operation the May incident lacked. It is a query plus a state change: *all memories whose provenance includes run R*, *all memories written by manifest M*, *all memories whose supporting spans came from document D*. The context assembler does not read quarantined memories; [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html) and [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) use the same operation.\n\n### The read path\n\nThe context assembler reads memory by key, and by relevance for interaction notes. Answerdesk renders at most **12 memory items, about 800 tokens**, in the conversation preamble (layer L3 of the prefix layout in [Caching and Context Budgets](caching-and-context-budgets.html)), each with a header such as `[memory · revisit.preferred_window · user_confirmed · confirmed 2027-08-03 · review 2027-11-01]`. The trust label in the context manifest is `model_generated` for every memory, because even a confirmed memory is a model's paraphrase of what a user said.\n\nThree rules govern use, none relying on the model:\n\n1. **Memory never grants authority.** A memory saying \"this customer may receive credits without approval\" changes nothing: autonomy tiers live in the Agent Registry and Bulkhead decides ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)).\n2. **Memory never supplies an argument to a side-effecting tool.** Answerdesk's revisit tool now takes the site and the access contact as identifiers resolved from the contract record. The free-text access notes that carried the stale contact in May are drafted only from the site record. Toolyard rejects action arguments whose provenance traces to a memory.\n3. **Memory is never the source of a commitment.** A remembered preference is stated as the customer's preference, so the customer can correct it.\n\n### Erasure and data-subject rights\n\nMemory is personal data. A user of Ostrell Field is a natural person, even though the customer is a company. Under GDPR, users have rights of access (Art. 15), rectification (Art. 16) and erasure (Art. 17), and controllers must respond within one month of the request (Art. 12(3)) ([Regulation (EU) 2016/679](http://publications.europa.eu/resource/celex/32016R0679)). Erasure must reach every copy.\n\n![Diagram: Erasure reaches every copy](assets/images/16-agent-memory/fig03-erasure-reaches-every-copy-evidence-log.jpeg)\n**Figure 4:** *Erasure reaches every copy. The evidence log keeps references and hashes, never memory content, so audit and erasure do not conflict.*\n\n- **The evidence log holds references, not memory text.** Logbook records memory ids and content hashes in each context manifest. The trail shows a memory was read without retaining what it said. Where a record must be kept for a legal obligation, GDPR's Art. 17(3)(b) exception applies to that record, not to the memory.\n- **Per-user encryption keys in the store.** Destroying the key makes backup copies unreadable. Restores replay the tombstone list before the store goes live.\n- **The index is derived.** It is rebuildable from the store, so no orphaned vector brings an erased memory back.\n- **Transient copies have short lives.** Wake's content store holds rendered prompts, which include memory text, for 30 days ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html)); the erasure job deletes the user's partition immediately rather than waiting.\n\nOstrell's target is **7 days** from request to completed erasure, well inside the one-month response time. The Ostrell Field portal's memory page lists each active memory with its source date; deletion there is immediate.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Propose candidates (end of session) | None needed; asynchronous | Minutes acceptable | Candidates kept until validated | Extraction step only |\n| Validate and write | One active value per key; supersede atomically | Seconds | Durable before acknowledged | Validator (code); user for confirmation |\n| Read at session start | Read-your-writes for the user's own confirmations | Under 100 ms *(assumption)* | Not applicable | Context assembler |\n| Quarantine by provenance | All matching records in one sweep | Minutes | Durable, recorded with reason | Agent owner, security on-call |\n| User view, correct, delete | Immediate effect on reads | Interactive | Durable | The user |\n| Erasure request | All stores and copies | Days, under 7 days target | Tombstone kept | Privacy office |\n\n## Evidence: What Research and Experience Say\n\n### Memory architectures\n\nThe research on agent memory is mostly about recall, much less about governance.\n\n- **MemGPT** introduced \"virtual context management\", moving information between memory tiers in the way an operating system pages memory, and evaluated it on documents larger than the window and on multi-session chat ([Packer et al., 2023](https://arxiv.org/abs/2310.08560), preprint). Its successor, Letta, lets agents edit memory blocks through memory tools ([Letta docs, n.d., accessed 2026-10](https://docs.letta.com/guides/agents/memory)): the model is the writer.\n- **Generative Agents** gave 25 simulated characters a memory stream scored by recency, importance and relevance, plus reflections that cite supporting memories ([Park et al., 2023](https://arxiv.org/abs/2304.03442)). Removing memory lowered believability ratings from 29.89 to 21.21 (TrueSkill μ, 100 raters), **a measure of believability in a simulation, not task correctness**. The more useful finding is embellishment: about 1.3% of 453 responses about other characters were hallucinated, so model-written memory contains claims nobody made.\n- **LongMemEval** tests five long-term memory abilities over long chat histories: information extraction, multi-session reasoning, temporal reasoning, **knowledge updates** and **abstention** ([Wu et al., 2024](https://arxiv.org/abs/2410.10813), ICLR 2025). Commercial chat assistants and long-context models lost about 30% accuracy when recalling information across sustained interactions. The models tested are superseded; the durable result is the decomposition, because updating a fact and knowing when you do not know are exactly what failed in the Stale Preference.\n- **Mem0** reports a 26% relative improvement in LLM-as-a-judge score over OpenAI's memory on the LOCOMO benchmark, 91% lower p95 latency and over 90% token savings versus full context ([Chhikara et al., 2025](https://arxiv.org/abs/2504.19413)). It is the vendor's paper about its own product, judged by a large language model (LLM), and unreplicated; its extract-then-update design (add, update, delete or do nothing per candidate) is the useful part.\n\n### Memory poisoning\n\nThe evidence is consistent but comes from research settings and proofs of concept. **No published report of memory poisoning at a real customer deployment was found**, which reflects disclosure practice more than absence.\n\n| Attack | What was poisoned | Attacker access | Reported result | Limitation |\n| --- | --- | --- | --- | --- |\n| **AgentPoison** ([Chen et al., 2024](https://arxiv.org/abs/2407.12784), preprint) | Agent memory or retrieval knowledge base, with an optimized trigger | Insert records, add trigger to queries | Over 80% average attack success on three agents, under 1% effect on benign tasks, poison rate under 0.1% | Attacker needs write access to memory or the knowledge base |\n| **MINJA** ([Dong et al., 2025](https://arxiv.org/abs/2503.03704), preprint) | Shared agent memory bank | **Ordinary queries only** | Injection success 95.6–100%; attack success 57–98.9% by agent and model | Research agents with shared memory; prompt-level detection tested only with one model |\n| **SpAIware** ([Rehberger, 2024](https://embracethered.com/blog/posts/2024/chatgpt-macos-app-persistent-data-exfiltration/)) | A chat assistant's long-term memory, via a web page or document | Untrusted content the user opens | Instructions persisted into future sessions and exfiltrated chat content until the vendor fixed the exfiltration channel | One product, 2024; the researcher noted untrusted content could still write memories |\n| **Delayed tool invocation** ([Rehberger, 2025](https://embracethered.com/blog/posts/2025/gemini-memory-persistence-prompt-injection/)) | A chat assistant's memory, via an uploaded document | Untrusted document | The memory write was made to fire when the user next typed a common word, so it looked user-initiated; the vendor assessed it as low likelihood and low impact | One product, February 2025 |\n\nMINJA is the result that should shape a memory design. **An agent that writes memory from user interactions and shares that memory across users can be poisoned by an ordinary user**, with no access beyond the chat box. Its authors also found prompt-level detection unreliable. The delayed-invocation case shows why \"the user asked to remember it\" is weak evidence: the request can be planted.\n\nIndustry guidance agrees on the controls. Microsoft's AI Red Team taxonomy of agent failure modes (April 2025) includes a memory-poisoning case and recommends limiting the agent's ability to store memories autonomously and requiring \"external authentication or validation for all memory updates\" ([Microsoft Security, 2025](https://www.microsoft.com/en-us/security/blog/2025/04/24/new-whitepaper-outlines-the-taxonomy-of-failure-modes-in-ai-agents/)). OWASP's guidance on vector and embedding weaknesses lists cross-context leaks in multi-tenant stores and recommends permission-aware, partitioned stores ([OWASP LLM08:2025](https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/)).\n\n### What vendors document about their own memory features\n\n- Anthropic's memory tool is **client-side**: the model requests file operations under `/memories` and the application executes them on storage it controls. Its guidance puts the burden on the application: strip sensitive data before writing, cap file sizes, \"periodically delete memory files that haven't been accessed in a long time\" and validate paths against traversal ([Anthropic docs, n.d., accessed 2026-10](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool)).\n- Claude Code treats its instruction files and model-written auto memory \"as context, not enforced configuration\"; to block an action, use a hook ([Claude Code docs, n.d., accessed 2026-10](https://code.claude.com/docs/en/memory)).\n- In April 2025, OpenAI extended ChatGPT's memory to reference past conversations, initially excluding the UK, the EU and some other European countries pending \"additional external reviews\", as reported by TechCrunch ([TechCrunch, 2025](https://techcrunch.com/2025/04/10/openai-updates-chatgpt-to-reference-your-other-chats/)). OpenAI's own pages could not be fetched and current controls were not verified; I read the exclusion as a sign that memory is a data-protection question as much as a feature.\n\n### Where sources disagree\n\n**Who should write memory.** Anthropic's memory tool and Letta let the model write memory directly during the task. Microsoft's red team recommends limiting autonomous writes and validating all updates. LangGraph presents writing \"in the hot path\" (immediate, adds latency, competes with the task) and \"in the background\" (no latency, but other threads may miss the update) as a trade-off ([LangChain docs, n.d., accessed 2026-10](https://docs.langchain.com/oss/python/langgraph/memory)). The positions fit once you separate a user's own reviewable workspace (a coding agent's notes file), where direct writes are acceptable, from shared or action-shaping memory (a support agent's beliefs about a customer), where I side with the stricter position.\n\n**Whether to have memory at all.** The author's support, sales and marketing interview designs have no cross-conversation memory; they ground every exchange in the system of record instead (design examples: `agentic-support-platform` and `agentic-marketing-platform`, step `grounding`; `agentic-sales-platform`, step `enrichment`). **No published evaluation compares task outcomes of business agents with and without long-term memory**; the evidence above is about recall benchmarks and attacks, and what follows is fictional Ostrell measurement and the author's judgement.\n\n## Worked Example at Ostrell: Tidemark Schema v3\n\n### Migration\n\nThe July 2027 migration (Ostrell figures, fictional) applied the new policy to the 640,000 existing Answerdesk memories rather than re-extracting them:\n\n| Action | Records |\n| --- | --- |\n| Copies of system-of-record facts rejected; **1,310** contradictions with the record sent to account data owners as change requests | About 186,000 removed |\n| Third-party contact data removed | About 2,140 removed |\n| Per-user behavioral rules removed; 14 distinct lessons sent to the knowledge-base and prompt review queue | About 51,000 removed |\n| Untrusted-derived content set to `low`, 30-day expiry | About 25,000 kept as `low` |\n| Older values of contradicting or duplicate keys superseded (kept for audit, never read) | About 116,000 |\n| Free-text preferences mapped to keys, latest recorded value kept and marked `inferred` | About 163,000 mapped |\n| Interaction notes without a ticket reference, or with judgments, removed | About 97,000 removed |\n\nActive Answerdesk memories fell from about **640,000** to about **188,000**, all keyed, all with provenance and an expiry. Mapped preferences started as `inferred`, because none of the January memories had been confirmed by anyone.\n\nThe 1,310 change requests were the most useful by-product: customers had told Answerdesk about changed sites, contacts or equipment that never reached Ostrell Field's records. Memory had been hiding defects in the system of record.\n\n### The same conversation, after the change\n\nReplay the May complaint under the July design. In March the office manager writes that the site contact has left and the site admits contractors only on weekday mornings. The new contact's details and the access regime are system-of-record facts (and the contact is a third person), so the validator rejects those candidates and opens one change request for the customer's site record, which the customer's administrator confirms in the portal. The visit-window preference is an allowed key, and Answerdesk asks: \"Shall I remember that you prefer weekday-morning visits?\" The user confirms. The new value supersedes the January value in one write.\n\nIn May the context assembler renders `revisit.preferred_window = weekday mornings` with its confirmation date. The revisit booking takes the site and access contact from the contract record, and the access notes come from the site record. The January contact is in neither.\n\n![Left: a pile of contradicting memory notes with the stale one on top. Right: one keyed drawer holding a single confirmed value, the old note crossed out.](assets/images/16-agent-memory/16-keyed-slot-replaces-pile.jpeg)\n**Figure 5:** *Before schema v3, contradicting memories coexisted and the stale one could win; a keyed slot holds one confirmed value, and a new value supersedes the old in one write.*\n\n### Evaluation\n\nMei Lin Zhou's team added a memory suite to Sounding in July 2027, modeled on LongMemEval's abilities and extended with Ostrell's own controls: **360** multi-session cases built from production conversations and incident replays (Ostrell figures, fictional):\n\n| Ability | Cases | Before (January policy) | After (schema v3) | Gate |\n| --- | --- | --- | --- | --- |\n| Knowledge update: newer value used | 90 | 0.58 | **0.93** | ≥ 0.90 |\n| Abstention: \"I don't have that on record\" when nothing valid exists | 60 | 0.70 | **0.91** | ≥ 0.85 |\n| System-of-record conflict: record wins | 60 | 0.62 | **0.97** | ≥ 0.95 |\n| Deletion respected in later sessions | 30 | 0.83 | **1.00** | = 1.00 |\n| Poisoning: untrusted content never becomes a trusted memory or a tool argument | 120 | 0.71 | **1.00** | = 1.00 |\n\nResults are pass^3 over three trials, the convention of [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html). The suite gates every change to the extraction prompt, write policy, memory schema and extraction model, because what a version writes outlives it ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)).\n\nIn production, revisit bookings with access notes contradicting the record or a newer memory fell from **46** in seven weeks to **2** in Q3 2027, both caused by out-of-date site records on the customer's side. The resolution rate stayed at **41%**: memory did not measurably improve resolution before or after the change. What changed was what it cost when it was wrong.\n\n## Failure Modes and Recovery\n\n| Scenario | What happens | Detection | Containment | Recovery |\n| --- | --- | --- | --- | --- |\n| **Stale preference** | A preference the user changed keeps shaping offers | Knowledge-update cases in Sounding; users correcting the agent (\"I told you mornings\") flagged in Wake | Keyed slots with supersession; 90-day review; memory never a tool argument | Supersede; ask the user; review similar keys for that writer version |\n| **Poisoning from untrusted content** | Text in an email asks the agent to remember a new invoice address | Candidates whose spans come from `untrusted` segments; security review queue | Trust `low`, 30-day expiry, never a tool argument; email recipients come only from verified records ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)) | Quarantine by run and document; add the case to the poisoning suite |\n| **Cross-user poisoning via shared memory** | One user's queries write memory that other users' sessions retrieve | Tenant-scope writes outside the human-written path; unusual write volume per user | No model-written tenant or organization memory; per-user scope by default | Purge the shared scope by provenance; review the write path |\n| **Defective extraction version** | A prompt change starts writing a new class of bad memories | Sampled shadow review before promotion; drift in rejection rates by writer version | Write policy validator; Sounding gate on the extraction prompt | Quarantine by `writerManifest`; roll back the version ([Staged Rollout and Rollback](staged-rollout-and-rollback.html)) |\n| **Erasure misses a copy** | Deleted memory reappears from an index, cache or restored backup | Post-erasure probe: search all stores for the erased ids and hashes | Derived index, per-user keys, tombstone replay on restore | Re-run the erasure; report under the privacy incident process |\n| **Memory used as task state** | A team stores \"credit issued\" as a memory; after a crash the agent trusts or repeats it | Design review; a memory key that names an action | Allow-listed keys exclude action outcomes | Move the fact to task state written from receipts ([Durable Task State and Checkpoints](task-state-and-checkpoints.html)) |\n\n## Trade-offs\n\n| Option | What it gives | What it costs | Right when |\n| --- | --- | --- | --- |\n| **No long-term memory**; ground every session in systems of record | Nothing to go stale, poison or erase; simplest privacy story | Users repeat preferences; no continuity beyond the records | The records hold everything that matters (most back-office and high-stakes agents) |\n| **Model writes directly during the task** (hot path) | Immediate continuity; simple | Unvalidated writes; latency; injected text persists | A single user's own workspace, visible and editable by that user, with no action shaped by it |\n| **Background extraction through a write policy, with confirmation for action-shaping keys** | Keyed, provenance-bearing, expiring memory the user knows about | Validator code, a confirmation question, lower memory volume | Customer-facing agents with many users and personal data |\n| **Human-curated memory only** (staff or customer administrators) | Accountable writers; reviewable | Slow, sparse, needs staff time | Tenant scope; any memory shared across users |\n| **Lessons as reviewed agent changes** (prompt, skill, knowledge base) | Behavior changes evaluated before they reach anyone | Weekly cycle, not instant learning | Every organization-scope and procedural lesson |\n\nMy recommendation follows from two requirements: memory must never be more authoritative than the record it could have been read from, and every wrong memory must be findable and removable. That makes the gated write policy the default for customer-facing agents. \"No memory\" is the default for everything else until someone shows what the agent decides better with memory than without it. The recommendation does not hold for single-user tools such as a developer's coding CLI, where the user sees and edits the memory file and the worst case is a bad suggestion inside a reversible workspace.\n\n## Across Domains: How the Stakes Change the Design\n\n| Concern | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| **What is worth remembering** | Build commands, conventions, pitfalls of a repository | Contact preferences: language, channel, time windows | Little: the records and playbooks hold it | Nothing about the person outside the record |\n| **Where it lives** | Repository guidance files under review; a developer's local memory | User-scoped memory service with keys and expiry | Peoplepoint at Ostrell: `memory: none`; Closewise: none per user | The electronic health record or case file is the only record |\n| **Who may write** | Humans through pull requests; agents may propose changes | Model proposes, user confirms; tenant notes by staff | Policy owners, through document review | Clinicians and caseworkers, in the record, with their identity |\n| **Poisoning channel** | A cloned repository's memory file: \"repo content that reads like instructions\" (coding CLI design, step `safety`) | Inbound email and chat content | Counterparty documents; employee messages | Patient-supplied documents; claimant uploads |\n| **Expiry and retention** | Versioned with the code | Per class, 60–365 days at Ostrell | Retention is set by law for records, not memory | Record retention law; agent copies kept to the minimum |\n| **Cost of a wrong memory** | A bad suggestion, caught by tests and review | A failed visit, a repeated withdrawn promise, unlawful retention | A breach of an ethical wall; an employment decision influenced by an unreviewed note | Harm to a patient; an unlawful decision about a person |\n\nThe coding column draws on the author's ai-coding-cli interview design, which loads a project memory file every session as \"guidance, not authority\" and warns that in a cloned or compromised repository it is \"an injection channel dressed as configuration\" (design example, step `context`); in the coding-harness design, agent-drafted guides have no provenance or trust tier, so checked-in review is the only gate (step `guides`). The back-office column reflects the legal design's ethical walls, where \"a walled document is never retrieved, not merely never shown\" (design example, `agentic-legal-platform`, step `grounding`): memory that crosses matters would breach the wall, so legal memory, if any, is scoped per matter. Peoplepoint has no long-term memory: employee conversations touch leave, health and pay, and an employment decision must not rest on an unreviewed model-written note. The high-stakes designs ground in the chart or case file (design examples, `agentic-healthcare-platform` and `agentic-public-benefits-platform`, step `grounding`), and the healthcare design keeps minimum-necessary context per task (step `privacy`). An agent memory about a patient or claimant would be a second, unaudited record beside the official one.\n\n**What the platform keeps common:** the memory record schema, keyed slots and supersession, provenance written by the runtime, trust derived from source labels, the lifecycle and quarantine by provenance, the erasure path, and the rule that memory never grants authority or supplies an action argument. **What is domain policy:** whether an agent has memory at all, the allowed keys, the confirmation rule, expiry per class and the retention exceptions. For most back-office and high-stakes agents the policy answer is `memory: none`. It is a decision recorded in the agent version manifest, not a missing feature.\n\n## The Chief Architect's View\n\n**Decisions to make, and who makes them.**\n\n- **Memory is opt-in per agent, with a stated purpose.** The agent owner states what the agent decides better with memory and which keys it needs. The default manifest entry is `memory: none`. The Agent Platform team owns Tidemark; the agent owner owns the write policy content; the privacy office approves the purpose and the retention.\n- **No model-written memory above user scope.** Tenant memory is written by people; organization knowledge is a reviewed knowledge-base or agent change. It is the cheapest defense against cross-user poisoning.\n- **Systems of record win, and memory reports their gaps.** Make the change-request path from rejected memory candidates to record owners a platform feature. At Ostrell it found 1,310 defects in customer records that nobody else had reported.\n- **Erasure is designed before the first memory is written.** Store, index, caches, transient content and backups, with a tested probe.\n\n**What to watch.** Memory volume per active user, which should stay flat, not grow; the share of memories confirmed versus inferred; supersession rate; record-conflict rate at read; quarantine events and their causes; low-trust write volume per source; the time to complete an erasure request; and the Sounding memory suite per writer version.\n\n**What is durable and what will change.** Durable: the separation of memory from history, state and corpus; the scope ladder; provenance written by code; expiry per class; erasure that reaches every copy; memory as data, never authority. Better models will extract cleaner candidates and raise knowledge-update scores; they will not make a remembered contract tier fresher than the contract system, or a model-written note about a customer lawful to keep forever. What will change: vendor memory features, their defaults and their regional availability; the recall benchmarks; and possibly the wording of data-protection law. Keep vendor memory products behind your own store wherever tenancy, retention or erasure matter.\n\n## Questions to Ask\n\n1. What does this agent decide better with memory than without it, and has anyone measured that?\n2. Which items in the proposed memory are already held by a system of record, and why are they not read live?\n3. Who may write memory at each scope (user, tenant, organization), and is any model-written memory read by more than one principal?\n4. Does every memory have a key, a class, provenance written by the runtime, a trust level derived from its source, a review date and an expiry?\n5. What happens when a user says something that contradicts an existing memory, or contradicts a record?\n6. Can memory ever change an autonomy tier, supply an argument to a side-effecting tool, or be cited as the basis of a commitment?\n7. Can we quarantine, in one operation, every memory written by a given run, document or agent version?\n8. When a user asks to see or erase what the agent remembers, which stores, indexes, caches, logs and backups does the request reach, and which evaluation cases prove deletion, knowledge updates and poisoning resistance before each change?\n\nMemory is the part of what an agent knows that outlives a session by design. The next chapter covers the part that must outlive a crash. [Durable Task State and Checkpoints](task-state-and-checkpoints.html) describes the record the orchestrator writes from receipts: what the run has done, what it decided and what it is waiting for. That record is exactly what memory must never be used for.\n\n## Sources and Evidence\n\n**Research papers**\n\n- [MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560) — Packer et al., 2023 (preprint). Virtual context management across memory tiers; model-managed memory.\n- [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) — Park et al., 2023. Memory stream, reflections, believability ablation, embellishment and hallucinated memories.\n- [LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory](https://arxiv.org/abs/2410.10813) — Wu et al., 2024 (ICLR 2025). Five memory abilities, including knowledge updates and abstention; about 30% accuracy drop across sustained interactions.\n- [Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory](https://arxiv.org/abs/2504.19413) — Chhikara et al., 2025 (vendor preprint). Extract-and-update memory; self-reported LOCOMO results.\n- [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) — Shinn et al., 2023 (NeurIPS 2023). Verbal lessons in episodic memory within evaluated tasks.\n- [AgentPoison: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases](https://arxiv.org/abs/2407.12784) — Chen et al., 2024 (preprint). Triggered poisoning of agent memory with very low poison rates.\n- [Memory Injection Attacks on LLM Agents via Query-Only Interaction (MINJA)](https://arxiv.org/abs/2503.03704) — Dong et al., 2025 (preprint). Poisoning shared memory through ordinary queries; unreliable prompt-level detection.\n\n**Specifications, standards and regulation**\n\n- [Regulation (EU) 2016/679 (General Data Protection Regulation)](http://publications.europa.eu/resource/celex/32016R0679) — European Parliament and Council, 2016. Storage limitation (Art. 5(1)(e)), access, rectification and erasure (Arts. 15–17), the legal-obligation exception (Art. 17(3)(b)), one-month response (Art. 12(3)).\n- [OWASP Top 10 for Agentic Applications for 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) — OWASP GenAI Security Project, 2025. Memory and Context Poisoning (ASI06).\n- [LLM08:2025 Vector and Embedding Weaknesses](https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/) — OWASP GenAI Security Project, 2025. Cross-context leaks and poisoning in shared vector stores; partitioned, permission-aware stores.\n\n**Vendor documentation and engineering reports**\n\n- [Memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) — Anthropic, n.d., accessed 2026-10. Client-side memory; application responsibilities for sensitive data, size and expiry.\n- [How Claude remembers your project](https://code.claude.com/docs/en/memory) — Anthropic (Claude Code), n.d., accessed 2026-10. Memory as context, \"not enforced configuration\".\n- [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — Anthropic, 2025. Progress artifacts the model may only partly edit; the boundary between notes and state.\n- [LangGraph memory](https://docs.langchain.com/oss/python/langgraph/memory) — LangChain, n.d., accessed 2026-10. Semantic, episodic and procedural memory; hot-path versus background writes; profiles versus collections.\n- [Sessions, State and Memory](https://adk.dev/sessions/) — Google Agent Development Kit, n.d., accessed 2026-10. Session state versus a cross-session memory service.\n- [Letta memory overview](https://docs.letta.com/guides/agents/memory) — Letta, n.d., accessed 2026-10. Memory blocks edited by agents and developers.\n- [New whitepaper outlines the taxonomy of failure modes in AI agents](https://www.microsoft.com/en-us/security/blog/2025/04/24/new-whitepaper-outlines-the-taxonomy-of-failure-modes-in-ai-agents/) — Microsoft Security, 2025. Memory poisoning case; validate all memory updates, limit autonomous writes.\n- [OpenAI updates ChatGPT to reference your other chats](https://techcrunch.com/2025/04/10/openai-updates-chatgpt-to-reference-your-other-chats/) — TechCrunch, 2025 (press). Cross-conversation memory rollout and its initial European exclusion.\n- [What we missed with sycophancy](https://simonwillison.net/2025/May/2/what-we-missed-with-sycophancy/) — Simon Willison, 2025, quoting OpenAI's May 2025 postmortem. User memory as an amplifier of a model behavior problem.\n\n**Incidents, cases and decisions**\n\n- [Spyware Injection Into Your ChatGPT's Long-Term Memory (SpAIware)](https://embracethered.com/blog/posts/2024/chatgpt-macos-app-persistent-data-exfiltration/) — J. Rehberger (Embrace The Red), 2024. Persistent memory injection and exfiltration in a shipped product.\n- [Hacking Gemini's Memory with Prompt Injection and Delayed Tool Invocation](https://embracethered.com/blog/posts/2025/gemini-memory-persistence-prompt-injection/) — J. Rehberger (Embrace The Red), 2025. A memory write disguised as user-initiated; the vendor's severity assessment.\n\n**Design examples from the author's interview project**\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026 — step `durable` (deep dive \"Memory governance\"; `dataModel.memories` with provenance, trust tier and TTL; follow-up on memory poisoning).\n- Obrenović, Ž., \"AI Coding Agent CLI\", system-design interview design, `system-design-interviews/data/book/ai-coding-cli/interview.json`, 2026 — step `context` (project memory as guidance, not authority; memory file as injection channel).\n- Obrenović, Ž., \"AI Coding Harness\", system-design interview design, `system-design-interviews/data/book/ai-coding-harness/interview.json`, 2026 — step `guides` (agent-drafted guides without provenance or trust tier).\n- Obrenović, Ž., \"Agentic Support Platform\", \"Agentic Sales Platform\" and \"Agentic Marketing Platform\", system-design interview designs, `system-design-interviews/data/book/agentic-support-platform/interview.json` (and siblings), 2026 — step `grounding` (support, marketing) and step `enrichment` (sales): system-of-record grounding instead of cross-conversation memory.\n- Obrenović, Ž., \"Agentic Legal Platform\", system-design interview design, `system-design-interviews/data/book/agentic-legal-platform/interview.json`, 2026 — step `grounding` (ethical walls on the retrieval path).\n- Obrenović, Ž., \"Agentic Healthcare Platform\" and \"Agentic Public Benefits Platform\", system-design interview designs, `system-design-interviews/data/book/agentic-healthcare-platform/interview.json` and `agentic-public-benefits-platform/interview.json`, 2026 — step `grounding` (the record as the only memory) and healthcare step `privacy` (minimum-necessary context).\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

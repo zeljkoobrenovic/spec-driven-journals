@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecting Agentic Systems</title>
+    <meta name="description" content="How software architects, senior engineers and technical leaders design, operate and evolve systems in which a language model plans and acts: where the model may decide and what stays in code, what it may touch, what it remembers, how its actions are made durable, reversible or approved, and how evidence earns it more autonomy. Evidence-led and vendor-neutral, with a fictional running example and contrasting designs from coding, customer operations, back-office and high-stakes domains. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Architecting Agentic Systems">
+    <meta property="og:description" content="How software architects, senior engineers and technical leaders design, operate and evolve systems in which a language model plans and acts: where the model may decide and what stays in code, what it may touch, what it remembers, how its actions are made durable, reversible or approved, and how evidence earns it more autonomy. Evidence-led and vendor-neutral, with a fictional running example and contrasting designs from coding, customer operations, back-office and high-stakes domains. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/journal-logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/journal-logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/journal-logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+        <div style="padding: 4px;">
+            <h1>Architecting Agentic Systems</h1>
+            <p>How software architects, senior engineers and technical leaders design, operate and evolve systems in which a language model plans and acts: where the model may decide and what stays in code, what it may touch, what it remembers, how its actions are made durable, reversible or approved, and how evidence earns it more autonomy. Evidence-led and vendor-neutral, with a fictional running example and contrasting designs from coding, customer operations, back-office and high-stakes domains. This is a living journal and a work in progress: I revise it as I learn more through <a href="https://obren.io">my work</a>.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-label="Book edition" hidden></section>
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <div id="visual" hidden></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Preface", "description": "", "posts": [{"id": "", "status": "", "title": "Introduction: Bounding the Component That Decides", "excerpt": "What is an architecture book about agentic systems for, and how should you read it? It argues that an agentic system is an ordinary distributed system with one component whose proposals vary, that the architecture's job is to bound that component, and it routes you from the decision on your desk to the chapters that answer it.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Where Agentic Systems Go Wrong: Sixteen Failure Patterns", "excerpt": "Agentic systems rarely fail because the model is weak; they fail through recurring architectural patterns, each of which looked reasonable when someone chose it. This guide names sixteen of them, from The Agent-Shaped Hammer to The Silent Upgrade, with the warning signs, mechanism, cost, public evidence and fictional Ostrell incident for each, and the chapters that address it.", "url": "where-agentic-systems-go-wrong.html", "icon": "assets/icons/where-agentic-systems-go-wrong.png", "logo": "assets/images/where-agentic-systems-go-wrong/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Meet Ostrell: Seven Agents, One Platform", "excerpt": "Every chapter in this book tests its argument against the same fictional group: Ostrell, a field-service software company that runs seven agents on one internal platform, Keelson, through 2027. This page introduces the company, the agents and their autonomy tiers, the platform components, the people, the nine incidents the chapters reuse, the Keelson 2.0 roadmap, and the two non-Ostrell contrast designs from clinical work and public-benefits casework.", "url": "meet-ostrell.html", "icon": "assets/icons/meet-ostrell.png", "logo": "assets/images/meet-ostrell/logo.jpeg", "tags": []}]}, {"title": "Part I — FOUNDATIONS: When a System Should Be Agentic", "description": "What makes a system agentic, when an agent is worth its cost, how consequence and reversibility set autonomy, and the three execution styles: deterministic workflows, bounded loops and autonomous agents.", "posts": [{"id": "", "status": "", "title": "Part I — FOUNDATIONS: When a System Should Be Agentic", "excerpt": "Where should a model choose the next step, and how much may that step do? Part I argues that \\\"agent\\\" is a property of individual decision points, that each one must earn its place on a ladder of simpler designs, that what a model-chosen action may do is set per action class by consequence and reversibility, and that the way the steps run is a choice between a workflow, a bounded loop and an autonomous agent, each with limits code enforces.", "url": "part-1.html", "icon": "assets/icons/part-1-intro.png", "logo": "assets/images/part-1-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Makes a System Agentic", "excerpt": "What is actually different about a system in which a model chooses the next step, and what is just automation with a language model inside? The difference sits at individual decision points: where the model chooses the next action from an action space that deterministic code defines and enforces, the system is agentic there, and four properties of that choice change the architecture while the distributed-systems fundamentals stay exactly as they were.", "url": "what-makes-a-system-agentic.html", "icon": "assets/icons/01-what-makes-a-system-agentic.png", "logo": "assets/images/01-what-makes-a-system-agentic/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "When Agents Are Worth It", "excerpt": "When does an agentic approach beat a deterministic workflow, a single model call or no model at all? Climb the decision ladder one rung at a time, and only as far as the task forces you: a higher rung is justified when the path cannot be written down in advance, an independent check of the result is cheaper than producing it, and the cost per verified outcome still beats the rung below.", "url": "when-agents-are-justified.html", "icon": "assets/icons/02-when-agents-are-justified.png", "logo": "assets/images/02-when-agents-are-justified/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Autonomy, Reversibility and the Cost of Being Wrong", "excerpt": "How should uncertainty, autonomy, task duration, reversibility and the consequences of failure set a system's boundaries? Grant autonomy per action class, not per agent: classify each action by what it changes and how it can be undone, let consequence and reversibility set a ceiling no evidence can lift, and bound the blast radius with limits the model cannot reach.", "url": "autonomy-and-consequence.html", "icon": "assets/icons/03-autonomy-and-consequence.png", "logo": "assets/images/03-autonomy-and-consequence/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Deterministic Workflows, Bounded Loops and Autonomous Agents", "excerpt": "How do the three execution styles differ architecturally, and how do you combine them? A workflow keeps the next step in code, a bounded loop lends it to the model inside budgets and stop conditions that code enforces, and an autonomous agent lends it for hours, which moves state, verification and limits out of the conversation; most production systems should be a workflow skeleton with a few bounded loops inside it.", "url": "workflows-loops-and-autonomous-agents.html", "icon": "assets/icons/04-workflows-loops-and-autonomous-agents.png", "logo": "assets/images/04-workflows-loops-and-autonomous-agents/logo.jpeg", "tags": []}]}, {"title": "Part II — ARCHITECTURE: The Reference Architecture", "description": "The components of an agentic system and their responsibilities: the reference architecture, models and the model gateway, the agent runtime, connections to the enterprise and the design of human interaction.", "posts": [{"id": "", "status": "", "title": "Part II — ARCHITECTURE: The Reference Architecture", "excerpt": "Which components must sit around a model whose proposals vary, and what must each own and never do? Part II argues that every path from model output to the world crosses the same few components, and that the gateway, the runtime, the enterprise integrations and the interaction surfaces each enforce one boundary without deciding what another owns.", "url": "part-2.html", "icon": "assets/icons/part-2-intro.png", "logo": "assets/images/part-2-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "A Reference Architecture for Agentic Systems", "excerpt": "Which components does an agentic system need, what is each responsible for, and how do they relate? A small set of components exists only because the model's proposals vary: a runtime that records them, a policy enforcement point that decides, a tool broker that executes, an evidence log that proves. A control plane decides what may run, and a data plane runs every call on pinned versions.", "url": "agentic-reference-architecture.html", "icon": "assets/icons/05-agentic-reference-architecture.png", "logo": "assets/images/05-agentic-reference-architecture/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Models and the Model Gateway", "excerpt": "How should a system choose, access and isolate the models it depends on? Choose models per role rather than per agent, pin each step to exact, evaluated routes, and send every call through one gateway that holds the credentials, enforces quotas and data-handling eligibility and records which model actually served, while keeping provider differences visible instead of hiding them.", "url": "models-and-the-model-gateway.html", "icon": "assets/icons/06-models-and-the-model-gateway.png", "logo": "assets/images/06-models-and-the-model-gateway/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Agent Runtime: Running the Loop", "excerpt": "What does the component that runs the agent loop have to do, and what should it never do? It owns the run: its lifecycle, its turns, its budgets, its inbox and its isolation. It turns model output into validated, recorded proposals, and it leaves authorization, credentials and side effects to the components built for them.", "url": "agent-runtime.html", "icon": "assets/icons/07-agent-runtime.png", "logo": "assets/images/07-agent-runtime/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Connecting Agents to the Enterprise", "excerpt": "How do agents connect to existing applications, data platforms and organizational processes without becoming a parallel shadow system? Leave every system of record authoritative, make agents clients of its APIs and governed views under an identity it can see, and put the agent's work into the queues, approvals and records the organization already runs.", "url": "agents-in-the-enterprise.html", "icon": "assets/icons/08-agents-in-the-enterprise.png", "logo": "assets/images/08-agents-in-the-enterprise/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Interaction Design for Agents: Chat, Delegation and Handoff to Humans", "excerpt": "How should people interact with agents, and what does each interaction pattern demand of the architecture? Choose the interaction mode deliberately, because it fixes who waits, where state lives and where the human gate sits. Render progress, evidence and commitments from records rather than from model prose, and when work passes to a person, hand over a typed escalation package and the authority with it.", "url": "agent-interaction-design.html", "icon": "assets/icons/09-agent-interaction-design.png", "logo": "assets/images/09-agent-interaction-design/logo.jpeg", "tags": []}]}, {"title": "Part III — ORCHESTRATION: Planning, Delegation and Coordination", "description": "Planning and decomposition, routing and delegation, when more agents add value, and how agents and humans hand work to each other.", "posts": [{"id": "", "status": "", "title": "Part III — ORCHESTRATION: Planning, Delegation and Coordination", "excerpt": "When work is split, sent to handlers and passed between agents and people, what keeps it from multiplying, going to the wrong place or losing what it needs on the way? Part III argues that every orchestration step is a boundary where the model may propose but code decides and records what crosses: plans as validated data, routes that select without authorizing, delegations and handoffs as typed contracts, and a second agent only where evidence shows one is not enough.", "url": "part-3.html", "icon": "assets/icons/part-3-intro.png", "logo": "assets/images/part-3-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Planning and Task Decomposition", "excerpt": "When should an agentic system plan explicitly, who should write the plan, and how is it checked and revised? Plan explicitly when the task is long, costly or consequential; treat the plan as typed data that deterministic code validates, budgets, approves and executes; and make replanning a bounded event with explicit triggers, never a loop the model runs on its own.", "url": "planning-and-decomposition.html", "icon": "assets/icons/10-planning-and-decomposition.png", "logo": "assets/images/10-planning-and-decomposition/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Routing and Delegation", "excerpt": "How should work reach the right model, agent, tool or human, and what does handing it over transfer? Treat the router as a classifier with a cost matrix, calibrated thresholds and an explicit human route, and treat every delegation as a contract that carries attenuated authority, a carved-out budget and the decisions already taken.", "url": "routing-and-delegation.html", "icon": "assets/icons/11-routing-and-delegation.png", "logo": "assets/images/11-routing-and-delegation/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Agent or Many?", "excerpt": "When do additional agents add value, and what do they cost in tokens, latency, shared state and accountability? Start with one agent and split only on evidence: for context isolation, parallel read-only breadth, separated authority or independent verification, with one writer per artifact and budgets enforced on the whole task tree.", "url": "single-and-multi-agent-designs.html", "icon": "assets/icons/12-single-and-multi-agent-designs.png", "logo": "assets/images/12-single-and-multi-agent-designs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Coordination, Handoffs and Agent-to-Agent Protocols", "excerpt": "How do agents and humans pass work, context and responsibility to one another without losing any of it? Treat a handoff as a recorded transfer of ownership with a typed payload filled from the system of record, coordinate through a shared task record rather than through conversation, and use agent-to-agent protocols only where you cannot see inside the other side.", "url": "coordination-and-handoffs.html", "icon": "assets/icons/13-coordination-and-handoffs.png", "logo": "assets/images/13-coordination-and-handoffs/logo.jpeg", "tags": []}]}, {"title": "Part IV — CONTEXT: Context, Knowledge, Memory and State", "description": "What the model sees at each step, how it finds and cites knowledge, what it remembers and for how long, what state survives a crash, and how stale or wrong facts propagate.", "posts": [{"id": "", "status": "", "title": "Part IV — CONTEXT: Context, Knowledge, Memory and State", "excerpt": "What does an agent know at each step, and what happens when some of it is old or wrong? Part IV argues that conversation history, working context, durable task state and long-term memory are four stores with different writers and lifetimes, that only deterministic code writes what later steps treat as fact, and that every fact carries its source and age so a wrong one is stopped before an action and traced afterwards.", "url": "part-4.html", "icon": "assets/icons/part-4-intro.png", "logo": "assets/images/part-4-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Context Engineering: Building What the Model Sees", "excerpt": "How should the system assemble the model's working context for each step? Build it in deterministic code as a budgeted, ordered and labeled artifact computed from durable sources, compact it with pinned facts that never pass through a summary, and log a manifest of every call so any decision can be traced to what the model actually saw.", "url": "context-engineering.html", "icon": "assets/icons/14-context-engineering.png", "logo": "assets/images/14-context-engineering/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Retrieval and Grounding", "excerpt": "How should agents find and cite the knowledge they need, and how do you know an answer is grounded? Expose retrieval as a tool whose authorization is applied in the query, pick the retrieval mode by the question and the source, check every cited claim for existence, support, authority and currency, and treat a well-placed \\\"no evidence\\\" as a success.", "url": "retrieval-and-grounding.html", "icon": "assets/icons/15-retrieval-and-grounding.png", "logo": "assets/images/15-retrieval-and-grounding/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Memory: What an Agent Should Remember, and for How Long", "excerpt": "What should persist across an agent's sessions, who owns it, and how does it expire? Remember only what no system of record knows, write it through a gated policy with provenance and a confirmation step, give every memory class an expiry and a review date, and make memory something users can see and erase, never a source of authority or of a commitment.", "url": "agent-memory.html", "icon": "assets/icons/16-agent-memory.png", "logo": "assets/images/16-agent-memory/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Durable Task State and Checkpoints", "excerpt": "What state must survive a crash, a deploy or a week-long wait for approval, and where should it live? A structured task record, written only by the deterministic orchestrator, that records each model decision before it is acted on and each side effect as an intent and a receipt, so a failed run resumes from what actually happened instead of asking the model again.", "url": "task-state-and-checkpoints.html", "icon": "assets/icons/17-task-state-and-checkpoints.png", "logo": "assets/images/17-task-state-and-checkpoints/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Provenance, Freshness and Consistency of What Agents Know", "excerpt": "How do wrong and stale facts travel through an agent's context, retrieval, memory and state, and how do you contain them? Carry a provenance envelope on every fact, give every class of data a freshness SLO measured at the point of use, re-read the system of record before any write that depends on a fact, and keep enough lineage to find and void everything a bad fact touched.", "url": "provenance-and-freshness.html", "icon": "assets/icons/18-provenance-and-freshness.png", "logo": "assets/images/18-provenance-and-freshness/logo.jpeg", "tags": []}]}, {"title": "Part V — TOOLS: Tools and Execution Boundaries", "description": "Tool contracts a model can use correctly, tool ecosystems and the tool broker, sandboxes and execution environments, and actions that change the world.", "posts": [{"id": "", "status": "", "title": "Part V — TOOLS: Tools and Execution Boundaries", "excerpt": "When a model's output becomes a call, a command or a credit on a customer's invoice, what decides whether anything happens, and how does anyone know what did? Part V argues that an agent can do only what its tools, credentials and environment allow, so that reach is designed in code at four boundaries: the tool contract, the tool broker, the sandbox and the action object.", "url": "part-5.html", "icon": "assets/icons/part-5-intro.png", "logo": "assets/images/part-5-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Tool Contracts: Inputs, Outputs and Validation", "excerpt": "How should tools be designed so that a model can use them correctly and the system can trust what happens? Shape each tool around one decision the model makes, let code supply every fact the system already knows, validate everything again outside the model, and return errors and results written for the model's next step, with side-effect semantics declared in a reviewed contract rather than in a server's hints.", "url": "tool-contracts.html", "icon": "assets/icons/19-tool-contracts.png", "logo": "assets/images/19-tool-contracts/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Tool Ecosystems, MCP and the Tool Broker", "excerpt": "How should an organization expose, discover, govern and broker tools across many agents? Standardize on MCP for how tools are described and called, but put a registry and a tool broker between every agent and every tool: the broker decides which tools a run can see and call, holds the credentials, and treats every tool definition as supply-chain input.", "url": "tool-ecosystems-and-mcp.html", "icon": "assets/icons/20-tool-ecosystems-and-mcp.png", "logo": "assets/images/20-tool-ecosystems-and-mcp/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Sandboxes and Execution Environments", "excerpt": "Where should agent-generated actions run, and what boundaries keep them contained? Run them in an execution environment whose isolation strength follows autonomy and the provenance of the code, with egress denied by default, credentials held outside, and one reviewed exit path; treat permission rules, hooks and classifiers as policy layered on top of that boundary, never as the boundary.", "url": "sandboxes-and-execution-environments.html", "icon": "assets/icons/21-sandboxes-and-execution-environments.png", "logo": "assets/images/21-sandboxes-and-execution-environments/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Side Effects: When Agents Touch the World", "excerpt": "How should actions that change external systems be designed so they are safe to propose, approve, execute and verify? Turn every proposed effect into a typed, hashed action object that deterministic code validates, a human or a limit authorizes, the tool broker executes once and a receipt proves, and treat what the agent says to people outside the company as a side effect with the same discipline.", "url": "side-effects-and-external-actions.html", "icon": "assets/icons/22-side-effects-and-external-actions.png", "logo": "assets/images/22-side-effects-and-external-actions/logo.jpeg", "tags": []}]}, {"title": "Part VI — RELIABILITY: Long-Running Work and Recovery", "description": "Durable execution for work that lasts hours or weeks, safe retries when model outputs vary, and recovery from partial failure with compensating actions.", "posts": [{"id": "", "status": "", "title": "Part VI — RELIABILITY: Long-Running Work and Recovery", "excerpt": "What keeps an agent's work correct when workers crash, deploys land mid-run, tools time out and a job fails halfway? Part VI argues that the model's decisions must be recorded once and never re-asked, that every retry repeats a keyed action object rather than a model call, and that deterministic code, not the model, decides whether a half-finished run goes forward, goes backward or waits for a human.", "url": "part-6.html", "icon": "assets/icons/part-6-intro.png", "logo": "assets/images/part-6-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Durable Execution for Long-Running Agents", "excerpt": "How do you run agent work that lasts minutes, hours or weeks through crashes, deploys and waits for humans? Run the agent loop as deterministic workflow code over a recorded history, make every model call and tool call a recorded activity, wait for people and events with durable timers and signals, and pin each run to the code, model and prompt versions it started on.", "url": "durable-agent-execution.html", "icon": "assets/icons/23-durable-agent-execution.png", "logo": "assets/images/23-durable-agent-execution/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Retries, Idempotency and Concurrency", "excerpt": "How do you retry safely when model outputs vary and actions change external systems? Retry the recorded action, never the model: bind an idempotency key to the action object before execution, look up the outcome before any retry, give each layer one owner and a budget, and guard each business entity against two runs acting on it at once.", "url": "retries-idempotency-and-concurrency.html", "icon": "assets/icons/24-retries-idempotency-and-concurrency.png", "logo": "assets/images/24-retries-idempotency-and-concurrency/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Partial Failure, Recovery and Compensating Actions", "excerpt": "What happens when an agent has done half of a multi-step job, and how do you recover safely? Classify every tool by reversibility before an agent may use it, let deterministic code (not the model) choose between finishing, compensating and holding for a human, and run incidents with kill switches that hold work, quarantines that freeze runs and their outputs, and reverts that are reviewed compensation plans.", "url": "partial-failure-and-compensation.html", "icon": "assets/icons/25-partial-failure-and-compensation.png", "logo": "assets/images/25-partial-failure-and-compensation/logo.jpeg", "tags": []}]}, {"title": "Part VII — CONTROL: Security, Privacy and Human Oversight", "description": "Trust boundaries and the threat model, prompt injection, agent identity and least privilege, human oversight that is real rather than ceremonial, and policy enforcement and audit.", "posts": [{"id": "", "status": "", "title": "Part VII — CONTROL: Security, Privacy and Human Oversight", "excerpt": "How do you keep an agent safe when any text it reads may steer it and every approval may be a reflex? Part VII argues that the model is never the security boundary: authority comes from verified identity and deterministic policy at points the model cannot route around, humans approve only what they can check, and an evidence log proves afterwards what happened.", "url": "part-7.html", "icon": "assets/icons/part-7-intro.png", "logo": "assets/images/part-7-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Trust Boundaries and the Agent Threat Model", "excerpt": "Where are the trust boundaries in an agentic system, and what can go wrong at each? They run through the context window, the model provider, the tool broker, stored content, other agents and the network, and the threat model must be drawn per session type: which legs of the lethal trifecta each session holds, and every path by which data can leave the scope it was authorized for.", "url": "agent-threat-model.html", "icon": "assets/icons/26-agent-threat-model.png", "logo": "assets/images/26-agent-threat-model/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Prompt Injection: Designing for an Unsolved Problem", "excerpt": "How do you build agents that stay safe when any text they read may contain instructions? Assume the model will sometimes follow injected text, and design so that it cannot matter: keep untrusted content away from authority, label every value with its provenance, and check every sink in deterministic code.", "url": "prompt-injection-defense.html", "icon": "assets/icons/27-prompt-injection-defense.png", "logo": "assets/images/27-prompt-injection-defense/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Agent Identity, Delegation and Least Privilege", "excerpt": "Whose authority does an agent act with, and how do you keep that authority minimal? Give every agent and every run its own identity, carry the human or tenant it serves as a delegation rather than an impersonation, and turn that pair into short-lived, audience-bound, account-scoped tokens that deterministic code decides and the system of record re-checks.", "url": "agent-identity-and-least-privilege.html", "icon": "assets/icons/28-agent-identity-and-least-privilege.png", "logo": "assets/images/28-agent-identity-and-least-privilege/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Human Oversight and Bounded Autonomy", "excerpt": "Where should humans approve, intervene or review an agent's actions, and how do you keep that oversight real? Put human gates only where a person can see and check what matters, bind every approval to the exact action and the evidence shown, and measure approvers as carefully as you measure the agent.", "url": "human-oversight-and-bounded-autonomy.html", "icon": "assets/icons/29-human-oversight-and-bounded-autonomy.png", "logo": "assets/images/29-human-oversight-and-bounded-autonomy/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Policy Enforcement and Audit", "excerpt": "How do you enforce rules outside the model, and prove afterwards what an agent did and why? Put deterministic, versioned policy decisions at four points no action can route around, let guardrail models only tighten policy, and keep a never-sampled, tamper-evident evidence log that answers an auditor's question by query.", "url": "policy-enforcement-and-audit.html", "icon": "assets/icons/30-policy-enforcement-and-audit.png", "logo": "assets/images/30-policy-enforcement-and-audit/logo.jpeg", "tags": []}]}, {"title": "Part VIII — EVIDENCE: Evaluation and Observability", "description": "What to evaluate at each level, how to build eval suites and regression gates, what to trace, and how evidence decides what ships and how much autonomy it gets.", "posts": [{"id": "", "status": "", "title": "Part VIII — EVIDENCE: Evaluation and Observability", "excerpt": "What evidence entitles an agent to ship, and how much autonomy does it earn? Part VIII argues that evaluation at four levels, suites gated on every change to the agent version, production traces that record what actually answered, and pre-registered criteria signed by a risk owner together decide what runs and at which tier.", "url": "part-8.html", "icon": "assets/icons/part-8-intro.png", "logo": "assets/images/part-8-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems", "excerpt": "What should be evaluated in an agentic system, at which level, and with what kind of evidence? Evaluate at four levels (component, trajectory, workflow and system), grade outcomes for success and trajectories for constraints, and measure reliability as pass^k over repeated trials, because a single run of a nondeterministic agent is an anecdote.", "url": "evaluating-agentic-systems.html", "icon": "assets/icons/31-evaluating-agentic-systems.png", "logo": "assets/images/31-evaluating-agentic-systems/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Building Eval Suites: Datasets, Graders and Regression Gates", "excerpt": "How do you build the datasets, graders and harnesses that catch an agent's regressions before users do? Treat the eval suite as a versioned product: cases mined from traces, incidents and experts, environments that grade end state, a grader stack in which code decides what code can check and calibrated judges handle the rest, and statistical gates triggered by every change to the agent version manifest.", "url": "building-agent-eval-suites.html", "icon": "assets/icons/32-building-agent-eval-suites.png", "logo": "assets/images/32-building-agent-eval-suites/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Observability: Traces, Metrics and Investigating Failures", "excerpt": "What must an agentic system record so that it can be operated and its failures investigated? One trace per run with typed spans for every model call, tool call, retrieval, policy decision and approval, content kept by reference under its own access rules, metrics on outcomes rather than activity, and alerts that fire on changed behavior even when nothing was deployed.", "url": "agent-observability.html", "icon": "assets/icons/33-agent-observability.png", "logo": "assets/images/33-agent-observability/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Evidence to Autonomy: Deployment Gates and Autonomy Decisions", "excerpt": "How should evaluation and operational evidence decide what ships and how much autonomy each action class gets? Make autonomy a runtime setting per action class, bound to an exact agent version, raised only by pre-registered promotion criteria that a named risk owner signs, and lowered automatically by pre-registered demotion triggers.", "url": "evidence-for-autonomy.html", "icon": "assets/icons/34-evidence-for-autonomy.png", "logo": "assets/images/34-evidence-for-autonomy/logo.jpeg", "tags": []}]}, {"title": "Part IX — ECONOMICS: Performance, Cost and Scale", "description": "Where an agent's time and money go, and how routing, parallelism, caching and budgets trade quality, reliability, response time and cost.", "posts": [{"id": "", "status": "", "title": "Part IX — ECONOMICS: Performance, Cost and Scale", "excerpt": "Where do an agent's time and money go, and how much agent work can a platform carry at once? Part IX argues that the same re-read tokens sit on the critical path, on the invoice and against the shared rate limit, so latency, cost and capacity are one design problem, controlled by deadlines, budgets and prompt layouts that the runtime and gateway enforce, and judged per successful task.", "url": "part-9.html", "icon": "assets/icons/part-9-intro.png", "logo": "assets/images/part-9-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Latency and Throughput", "excerpt": "Where does an agent's time go, and how do you make it fast enough for its interaction mode? Set a latency budget per user-visible milestone, shorten the critical path by removing serial model calls and running only read-only work in parallel, and treat shared rate limits and human queues as throughput ceilings that need admission control, not retries.", "url": "agent-latency-and-throughput.html", "icon": "assets/icons/35-agent-latency-and-throughput.png", "logo": "assets/images/35-agent-latency-and-throughput/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Cost, Model Selection and Routing", "excerpt": "What does an agentic task cost, and how do you trade quality, reliability, response time and cost? Measure cost per successful task, including retries, fan-out and human work; choose models per step with evaluated routers and cascades; and enforce budgets that terminate a run instead of alerting after the invoice.", "url": "agent-cost-and-model-routing.html", "icon": "assets/icons/36-agent-cost-and-model-routing.png", "logo": "assets/images/36-agent-cost-and-model-routing/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Caching and Context Budgets", "excerpt": "How do caching and context discipline cut an agent's cost and latency without serving stale or wrong answers? Lay the prompt out from most stable to least stable so the provider's prefix cache works, cap every model call with a context budget the runtime enforces, and cache answers and tool results only where the cache key carries everything that makes them correct.", "url": "caching-and-context-budgets.html", "icon": "assets/icons/37-caching-and-context-budgets.png", "logo": "assets/images/37-caching-and-context-budgets/logo.jpeg", "tags": []}]}, {"title": "Part X — EVOLUTION: Deployment, Change and Ownership", "description": "Versioning everything an agent depends on, releasing and rolling back safely, and who owns, operates and evolves an agentic system as capabilities change.", "posts": [{"id": "", "status": "", "title": "Part X — EVOLUTION: Deployment, Change and Ownership", "excerpt": "How does an agentic system change safely after launch, and who keeps it safe? Part X argues that an agent changes in more places than its code and on other organizations' calendars, so its version must be one immutable manifest, every release a staged exposure with a written forward-fix plan, and every agent one named owner whose authority the platform enforces.", "url": "part-10.html", "icon": "assets/icons/part-10-intro.png", "logo": "assets/images/part-10-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Versioning Prompts, Models, Tools, Policies and Memory", "excerpt": "What are the versioned artifacts of an agentic system, and how do you manage change across them? Bind exact model, prompts, tool contracts, policies, index snapshot, memory schema and code into one immutable manifest, pin it per run and record it on every trace, and measure behavior daily because it changes under a pin anyway.", "url": "versioning-agent-systems.html", "icon": "assets/icons/38-versioning-agent-systems.png", "logo": "assets/images/38-versioning-agent-systems/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Staged Rollout and Rollback", "excerpt": "How do you release a change to an agent safely, and what does rollback mean when actions and memories have already happened? Move each new manifest through offline gate, shadow, canary and ramp with pre-registered exits, treat rollback as a pointer move that stops new effects, and write the forward-fix plan for the effects it cannot undo before the first canary run.", "url": "staged-rollout-and-rollback.html", "icon": "assets/icons/39-staged-rollout-and-rollback.png", "logo": "assets/images/39-staged-rollout-and-rollback/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Ownership, Operations and Evolving the Architecture", "excerpt": "Who owns an agent, who operates it, and how should the architecture adapt as models change? Give every agent one named owner and a risk owner per action class, run its lifecycle through an enforced registry and a proportionate architecture review, and keep the seams that bound the model while expecting to replace most of what sits between them.", "url": "owning-agentic-systems.html", "icon": "assets/icons/40-owning-agentic-systems.png", "logo": "assets/images/40-owning-agentic-systems/logo.jpeg", "tags": []}]}, {"title": "Part XI — DOMAINS: How Requirements Change Across Domains", "description": "Four domains end to end — coding agents, customer operations, back office, and clinical and public-benefits decisions — each with a reference design, an execution flow, failure scenarios and the controls its stakes require.", "posts": [{"id": "", "status": "", "title": "Part XI — DOMAINS: How Requirements Change Across Domains", "excerpt": "What changes in an agentic system when the same platform serves developers, customers, controllers and patients? Part XI argues that autonomy comes from what the domain makes cheap to undo and cheap to check, not from the model, so as reversibility and ground truth disappear the gate moves from reviewing a disposable workspace to rules that decide and a named human who owns every adverse outcome.", "url": "part-11.html", "icon": "assets/icons/part-11-intro.png", "logo": "assets/images/part-11-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Coding Agents: CLIs, Harnesses and the Developer Loop", "excerpt": "Why can coding agents run with more autonomy than any other agent, and what keeps that safe? Because the domain supplies cheap reversibility (branches, sandboxes, review) and cheap ground truth (tests and builds); the architecture's job is to keep both out of the agent's reach, so the agent can never edit what checks it or cross from the workspace into the world.", "url": "domain-coding-agents.html", "icon": "assets/icons/41-domain-coding-agents.png", "logo": "assets/images/41-domain-coding-agents/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Customer Operations: Support, Sales and Marketing Agents", "excerpt": "What does customer operations demand beyond the platform's general mechanisms? Treat every statement as the organization's own, render commitments from records, gate outbound contact on suppression and consent by purpose, and measure verified resolution rather than deflection.", "url": "domain-customer-operations.html", "icon": "assets/icons/42-domain-customer-operations.png", "logo": "assets/images/42-domain-customer-operations/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Back Office: Finance, Legal and HR Agents", "excerpt": "What does the back office demand of an agentic system that the platform's general mechanisms do not already give? Its outputs land in books, contracts and employment records that other people rely on as truth, under professional duties and law. So the agent proposes into a staging store, a person independent of every maker approves the exact version, deterministic code writes to the system of record, and the evidence is built to answer an auditor, a court or a regulator a year later.", "url": "domain-back-office.html", "icon": "assets/icons/43-domain-back-office.png", "logo": "assets/images/43-domain-back-office/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "High-Stakes Decisions: Clinical and Public-Benefits Agents", "excerpt": "What changes when an agent's output can injure a patient or take away a citizen's benefits? The model becomes a drafter and evidence gatherer inside a deterministic pipeline: rules decide or veto, a named and accountable human owns every adverse outcome, and the record is built so that the affected person can contest it.", "url": "domain-high-stakes-decisions.html", "icon": "assets/icons/44-domain-high-stakes-decisions.png", "logo": "assets/images/44-domain-high-stakes-decisions/logo.jpeg", "tags": []}]}, {"title": "Reference", "description": "The interview designs behind the book, decision templates, plain-language definitions and the sources consulted.", "posts": [{"id": "", "status": "", "title": "Source Coverage: The Interview Designs Behind This Book", "excerpt": "Which of the author's twelve system-design interview designs stand behind which chapters, at which step, and where does the book disagree with them? This reference page maps every interview source to the parts and chapters that cite it, lists the patterns adopted and the departures made, records each source's known weaknesses, and names what the sources did not cover and where external research filled the gap.", "url": "source-coverage.html", "icon": "assets/icons/source-coverage.png", "logo": "assets/images/source-coverage/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Toolkit: Templates for Agentic Architecture Decisions", "excerpt": "Which records does an architect need before an agent may act on anything that matters? Twelve copyable templates, from the justification canvas to the incident runbook and a one-page design-review checklist, each built from the chapter that teaches it and filled in once with Ostrell's numbers.", "url": "toolkit.html", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Glossary", "excerpt": "What exactly does this book mean by a turn, a receipt, an action class or a harness? 266 plain-language definitions in alphabetical order, each linked to the chapter that owns the term, with the acronyms, Ostrell's autonomy tiers, the fictional Keelson components and the sixteen failure patterns in the same list.", "url": "glossary.html", "icon": "assets/icons/glossary.png", "logo": "assets/images/glossary/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Bibliography", "excerpt": "Find the public sources behind every chapter by topic or by chapter, with the year each was published, the kind of evidence it is and the pages that cite it. Every entry was cited in a chapter; nothing is added as further reading.", "url": "bibliography.html", "icon": "assets/icons/bibliography.png", "logo": "assets/images/bibliography/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'});
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
+                        }
+                    }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
+                        }
+                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
+                });
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

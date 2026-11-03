@@ -1,0 +1,975 @@
+[
+ {
+  "post": "02-when-agents-are-justified",
+  "figure": 1,
+  "id": "fig01-three-levers-error-compounding-fewer-model",
+  "asset": "assets/images/02-when-agents-are-justified/fig01-three-levers-error-compounding-fewer-model.jpeg",
+  "mermaid": "flowchart LR\n    subgraph U[\"Unchecked chain\"]\n        A1[\"Step 1\"] --> A2[\"Step 2\"] --> A3[\"Step 3\"] --> A4[\"Step 4\"] --> AE[\"Effect\"]\n    end\n    subgraph C[\"Checked chain\"]\n        B1[\"Step 1\"] --> V1{\"Check\"}\n        V1 -->|\"fail\"| B1\n        V1 -->|\"pass\"| B2[\"Code step\"]\n        B2 --> B3[\"Step 2\"] --> V2{\"Check\"}\n        V2 -->|\"fail\"| B3\n        V2 -->|\"pass\"| BE[\"Effect\"]\n    end"
+ },
+ {
+  "post": "02-when-agents-are-justified",
+  "figure": 2,
+  "id": "fig02-ladder-test-each-question-must-be",
+  "asset": "assets/images/02-when-agents-are-justified/fig02-ladder-test-each-question-must-be.jpeg",
+  "mermaid": "flowchart TB\n    S[\"Decision point\"] --> Q1{\"Can code or rules decide it?\"}\n    Q1 -->|\"yes\"| R0[\"Rung 0: code\"]\n    Q1 -->|\"no\"| Q2{\"Is one model output enough?\"}\n    Q2 -->|\"yes\"| R1[\"Rung 1: single call, checked\"]\n    Q2 -->|\"no\"| Q3{\"Can the steps be written in advance?\"}\n    Q3 -->|\"yes\"| R2[\"Rung 2: workflow with model steps\"]\n    Q3 -->|\"no\"| Q4{\"Cheap independent check before the effect?\"}\n    Q4 -->|\"no\"| D[\"Rung 3 that drafts only; a human or rule decides\"]\n    Q4 -->|\"yes\"| Q5{\"Short horizon, budget fits?\"}\n    Q5 -->|\"yes\"| R3[\"Rung 3: bounded loop\"]\n    Q5 -->|\"no\"| R4[\"Rung 4: autonomous, in an envelope\"]"
+ },
+ {
+  "post": "02-when-agents-are-justified",
+  "figure": 3,
+  "id": "fig03-peoplepoint-s-leave-flow-after-review",
+  "asset": "assets/images/02-when-agents-are-justified/fig03-peoplepoint-s-leave-flow-after-review.jpeg",
+  "mermaid": "flowchart LR\n    E[\"Employee message\"] --> X[\"Model call: extract leave type and dates\"]\n    X --> V{\"Schema and policy rules\"}\n    V -->|\"invalid or unclear\"| Q[\"Ask one clarifying question\"]\n    Q --> X\n    V -->|\"valid\"| B[\"Code: HRIS balance and team calendar\"]\n    B --> C[\"Confirmation card to employee\"]\n    C -->|\"confirmed\"| S[\"Code: submit to HRIS with idempotency key\"]\n    C -->|\"changed\"| X"
+ },
+ {
+  "post": "01-what-makes-a-system-agentic",
+  "figure": 1,
+  "id": "fig01-agent-loop-model-holds-locus-control",
+  "asset": "assets/images/01-what-makes-a-system-agentic/fig01-agent-loop-model-holds-locus-control.jpeg",
+  "mermaid": "flowchart LR\n    O[\"Observation in context\"] --> M[\"Model proposes next action\"]\n    M -->|\"final answer\"| V[\"Harness verifies completion\"]\n    M -->|\"tool call\"| C[\"Harness validates and authorizes\"]\n    C -->|\"rejected\"| O\n    C -->|\"allowed\"| T[\"Tool executes with brokered credentials\"]\n    T --> E[\"External systems\"]\n    E -->|\"result as untrusted data\"| O\n    C -->|\"budget exhausted\"| H[\"Stop and escalate\"]\n    V -->|\"not done\"| O"
+ },
+ {
+  "post": "01-what-makes-a-system-agentic",
+  "figure": 2,
+  "id": "fig02-closewise-s-decision-point-map-code",
+  "asset": "assets/images/01-what-makes-a-system-agentic/fig02-closewise-s-decision-point-map-code.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Close calendar starts task\"] --> B[\"Fetch balances and transactions\"]\n    B --> R[\"Rule-based matching\"]\n    R -->|\"unmatched differences\"| I[\"Investigate differences: bounded loop\"]\n    R -->|\"accrual candidates\"| K[\"Classify candidate: single model call\"]\n    K --> P[\"Gather evidence and draft entry: bounded loop\"]\n    I --> W[\"Accountant workbench\"]\n    P --> A[\"Controller approves entry\"]\n    A -->|\"approved action object\"| E[\"Workflow posts to ERP\"]"
+ },
+ {
+  "post": "03-autonomy-and-consequence",
+  "figure": 1,
+  "id": "fig01-classifying-action-effect-type-commitment-question",
+  "asset": "assets/images/03-autonomy-and-consequence/fig01-classifying-action-effect-type-commitment-question.jpeg",
+  "mermaid": "flowchart TB\n    Q1{\"Does it change anything outside the run?\"} -->|\"no\"| R[\"Read: size cost and data exposure\"]\n    Q1 -->|\"yes\"| Q2{\"Does a human act on it before it takes effect?\"}\n    Q2 -->|\"yes\"| D[\"Draft in a staging store\"]\n    Q2 -->|\"no\"| Q3{\"Does it bind the organization to a third party?\"}\n    Q3 -->|\"yes\"| X[\"External commitment\"]\n    Q3 -->|\"no\"| Q4{\"Can the system restore it exactly, alone, inside a known window?\"}\n    Q4 -->|\"yes\"| W[\"Reversible write\"]\n    Q4 -->|\"no\"| Q5{\"Can a forward action offset it?\"}\n    Q5 -->|\"yes\"| C[\"Compensable write\"]\n    Q5 -->|\"no\"| I[\"Irreversible write\"]"
+ },
+ {
+  "post": "03-autonomy-and-consequence",
+  "figure": 2,
+  "id": "fig02-tier-resolution-action-time-tier-comes",
+  "asset": "assets/images/03-autonomy-and-consequence/fig02-tier-resolution-action-time-tier-comes.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Model proposes action object\"] --> B[\"Bulkhead: map to action class\"]\n    REG[\"Agent Registry: tier, ceiling, limits\"] --> B\n    SIG[\"Uncertainty and fraud signals: may only lower\"] --> B\n    B -->|\"A0\"| S[\"Suggestion to a human\"]\n    B -->|\"A1\"| Q[\"Approval queue bound to content hash\"]\n    B -->|\"A2 or A3\"| T[\"Toolyard: limits and idempotency key\"]\n    Q -->|\"approved\"| T\n    T --> E[\"External system\"]\n    T --> L[\"Logbook: tier used, receipt\"]"
+ },
+ {
+  "post": "04-workflows-loops-and-autonomous-agents",
+  "figure": 1,
+  "id": "fig01-three-styles-hybrid-between-them-moving",
+  "asset": "assets/images/04-workflows-loops-and-autonomous-agents/fig01-three-styles-hybrid-between-them-moving.jpeg",
+  "mermaid": "flowchart LR\n    W[\"Deterministic workflow: code holds every next step\"] -->|\"model chooses inside one step\"| H[\"Workflow skeleton with bounded loops\"]\n    H -->|\"model chooses the whole path\"| L[\"Bounded loop: budgets and stop conditions in code\"]\n    L -->|\"long horizon, own sub-goals\"| A[\"Autonomous agent: durable state, milestones, tree budgets\"]\n    A -->|\"evidence shows the path is stable\"| H\n    L -->|\"evidence shows the path is fixed\"| W"
+ },
+ {
+  "post": "04-workflows-loops-and-autonomous-agents",
+  "figure": 2,
+  "id": "fig02-how-bounded-loop-ends-model-can",
+  "asset": "assets/images/04-workflows-loops-and-autonomous-agents/fig02-how-bounded-loop-ends-model-can.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Running\n    Running --> Verifying: model proposes final answer\n    Verifying --> Completed: check passes\n    Verifying --> Running: check fails, under rejection limit\n    Verifying --> Escalated: rejection limit reached\n    Running --> WrappingUp: budget would be exceeded\n    Running --> Escalated: no progress or escalation trigger\n    Running --> PolicyStopped: hard deny\n    Running --> Cancelled: cancel or kill switch\n    WrappingUp --> BudgetExhausted: partial result recorded, actions held\n    Completed --> [*]\n    Escalated --> [*]\n    PolicyStopped --> [*]\n    Cancelled --> [*]\n    BudgetExhausted --> [*]"
+ },
+ {
+  "post": "04-workflows-loops-and-autonomous-agents",
+  "figure": 3,
+  "id": "fig03-workflow-skeleton-one-agentic-step-loop",
+  "asset": "assets/images/04-workflows-loops-and-autonomous-agents/fig03-workflow-skeleton-one-agentic-step-loop.jpeg",
+  "mermaid": "flowchart LR\n    T[\"Trigger and typed input\"] --> S1[\"Fixed stage: fetch and validate\"]\n    S1 --> L[\"Bounded loop: read-only tools, budgets, stop conditions\"]\n    L -->|\"draft or escalation package\"| G[\"Gate: rules, verifier, human approval\"]\n    G -->|\"approved action object\"| X[\"Fixed stage: execute with idempotency key\"]\n    G -->|\"rejected or abstained\"| Q[\"Human work queue\"]\n    X --> R[\"Receipt and evidence record\"]"
+ },
+ {
+  "post": "06-models-and-the-model-gateway",
+  "figure": 1,
+  "id": "fig01-every-model-call-takes-one-path",
+  "asset": "assets/images/06-models-and-the-model-gateway/fig01-every-model-call-takes-one-path.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Keelson Runtime: step with role, manifest and data class\"] -->|\"model request\"| GW[\"Keelson Gateway\"]\n    AR[\"Agent Registry: manifests and route catalog\"] -->|\"routes per agent version\"| GW\n    GW -->|\"route eligibility\"| BH[\"Bulkhead\"]\n    GW -->|\"exact model id, brokered key\"| PA[\"Provider A\"]\n    GW -->|\"declared fallback route\"| PB[\"Provider B\"]\n    GW -->|\"self-hosted route\"| OW[\"Open-weight model in Ostrell cloud account\"]\n    GW -->|\"spans, usage, served model\"| WK[\"Wake\"]\n    GW -->|\"route and served model per call\"| LB[\"Logbook\"]"
+ },
+ {
+  "post": "06-models-and-the-model-gateway",
+  "figure": 2,
+  "id": "fig02-failover-happens-only-within-routes-manifest",
+  "asset": "assets/images/06-models-and-the-model-gateway/fig02-failover-happens-only-within-routes-manifest.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as Runtime\n    participant GW as Gateway\n    participant BH as Bulkhead\n    participant PA as ProviderA\n    participant PB as ProviderB\n    participant WK as Wake\n    RT->>GW: request with role, manifest hash, data class, deadline\n    GW->>BH: which manifest routes may this data class use\n    BH-->>GW: eligible routes a-mid and b-mid\n    GW->>PA: call the pinned model on route a-mid\n    PA-->>GW: overloaded\n    GW->>PA: one retry with jitter\n    PA-->>GW: overloaded, route marked unhealthy\n    GW->>PB: call the pinned model on route b-mid\n    PB-->>GW: response with served model and usage\n    GW->>WK: span with requested route, served route and failover reason\n    GW-->>RT: normalized response with route id and stop reason"
+ },
+ {
+  "post": "07-agent-runtime",
+  "figure": 1,
+  "id": "fig01-keelson-runtime-s-run-lifecycle-only",
+  "asset": "assets/images/07-agent-runtime/fig01-keelson-runtime-s-run-lifecycle-only.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Created\n    Created --> Running: \"admitted\"\n    Running --> WaitingForTool: \"tool call dispatched\"\n    WaitingForTool --> Running: \"receipt, error or timeout recorded\"\n    Running --> WaitingForHuman: \"reply or approval needed\"\n    WaitingForHuman --> Running: \"input arrives or timer fires\"\n    Running --> Suspended: \"kill switch, quarantine, pause, quota\"\n    WaitingForTool --> Suspended: \"kill switch, quarantine, pause, quota\"\n    WaitingForHuman --> Suspended: \"kill switch, quarantine, pause, quota\"\n    Suspended --> Running: \"released by the same authority\"\n    Running --> Cancelling: \"cancel accepted\"\n    WaitingForHuman --> Cancelling: \"cancel accepted\"\n    Suspended --> Cancelling: \"cancel accepted\"\n    Cancelling --> Cancelled: \"in-flight work settled, report written\"\n    Running --> Completed: \"final output with outcome code\"\n    Running --> Failed: \"budget, turn limit, deadline or fatal error\"\n    Completed --> [*]\n    Failed --> [*]\n    Cancelled --> [*]"
+ },
+ {
+  "post": "07-agent-runtime",
+  "figure": 2,
+  "id": "fig02-runtime-coordinates-it-does-not-decide",
+  "asset": "assets/images/07-agent-runtime/fig02-runtime-coordinates-it-does-not-decide.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Surfaces - chat, email, CRM, CI, schedules\"] -->|\"start run, send input, cancel\"| R[\"Agent runtime - lifecycle, turns, budgets, inbox\"]\n    R -->|\"assemble context\"| C[\"Context assembly\"]\n    R -->|\"model call with deadline\"| G[\"Model gateway\"]\n    R -->|\"may this action run\"| P[\"Policy enforcement point\"]\n    R -->|\"dispatch with idempotency key\"| T[\"Tool broker\"]\n    T -->|\"effects with brokered credentials\"| X[\"Systems of record\"]\n    R -->|\"record every step\"| D[\"Durable history and task record\"]\n    R -->|\"run events\"| E[\"Evidence log and traces\"]"
+ },
+ {
+  "post": "08-agents-in-the-enterprise",
+  "figure": 1,
+  "id": "fig01-four-agent-integration-patterns-every-one",
+  "asset": "assets/images/08-agents-in-the-enterprise/fig01-four-agent-integration-patterns-every-one.jpeg",
+  "mermaid": "flowchart LR\n    SOR[\"System of record: ERP, CRM, ticketing, HRIS\"]\n    T[\"1. Tool over existing API\"]\n    E[\"2. Event-triggered agent\"]\n    W[\"3. Agent step inside a workflow\"]\n    S[\"4. Agent as a service inside an application\"]\n    TY[\"Toolyard broker\"]\n    T -->|\"typed call, delegated token\"| TY\n    TY -->|\"API call with receipt\"| SOR\n    SOR -->|\"domain event\"| E\n    E -->|\"reads and proposes via tools\"| TY\n    W -->|\"typed result to workflow, workflow writes\"| SOR\n    SOR -->|\"user opens assistant in the app\"| S\n    S -->|\"returns draft, app saves it\"| SOR"
+ },
+ {
+  "post": "08-agents-in-the-enterprise",
+  "figure": 2,
+  "id": "fig02-choosing-read-interface-more-agent-s",
+  "asset": "assets/images/08-agents-in-the-enterprise/fig02-choosing-read-interface-more-agent-s.jpeg",
+  "mermaid": "flowchart TB\n    Q[\"What will the result be used for?\"] --> A{\"Does it drive an action or a commitment?\"}\n    A -->|\"yes\"| L[\"Typed lookup on the owning API, re-read before commit\"]\n    A -->|\"no\"| B{\"Is it a defined business metric or entity?\"}\n    B -->|\"yes\"| M[\"Semantic layer or governed view, row policy for the principal\"]\n    B -->|\"no\"| C{\"Will a person read the result before it is used?\"}\n    C -->|\"yes\"| F[\"Free SQL in an analyst copilot, read-only, row limits\"]\n    C -->|\"no\"| X[\"Do not give the agent this read; ask the data owner for a view\"]"
+ },
+ {
+  "post": "08-agents-in-the-enterprise",
+  "figure": 3,
+  "id": "fig03-closewise-s-write-path-into-erp",
+  "asset": "assets/images/08-agents-in-the-enterprise/fig03-closewise-s-write-path-into-erp.jpeg",
+  "mermaid": "sequenceDiagram\n    participant WF as Closewise workflow\n    participant ST as Staging store\n    participant WB as Accountant workbench\n    participant BH as Bulkhead\n    participant TY as Toolyard executor\n    participant ERP as ERP\n    participant LB as Logbook\n    WF->>ST: Write proposed entry v1 with evidence refs\n    ST->>WB: Item appears in the controller queue\n    WB->>ST: Controller approves content hash of v1\n    WF->>BH: May agent-closewise-post post this entry for this approver\n    BH-->>WF: Allow, policy version recorded\n    WF->>TY: Post action object with key task, entry, version\n    TY->>ERP: Post with external reference and approver id\n    ERP-->>TY: Document number as receipt\n    TY->>LB: Intent, decision, receipt\n    TY-->>WF: Posted, staging record becomes evidence"
+ },
+ {
+  "post": "05-agentic-reference-architecture",
+  "figure": 1,
+  "id": "fig01-reference-architecture-every-path-model-proposal",
+  "asset": "assets/images/05-agentic-reference-architecture/fig01-reference-architecture-every-path-model-proposal.jpeg",
+  "mermaid": "flowchart TB\n    U[\"Interaction surfaces\"] --> R[\"Agent runtime\"]\n    R -->|\"assemble\"| C[\"Context assembly\"]\n    C -->|\"reads\"| K[\"Retrieval, memory, task state\"]\n    R -->|\"model call\"| G[\"Model gateway\"]\n    R -->|\"proposed action\"| P[\"Policy enforcement point\"]\n    P -->|\"allowed\"| B[\"Tool broker\"]\n    B --> X[\"Execution environments and systems of record\"]\n    R -->|\"intent, receipt, decisions\"| L[\"Evidence log\"]\n    R -->|\"spans\"| O[\"Observability\"]\n    CP[\"Control plane: registry, evaluation, policy authoring\"] -->|\"pinned versions\"| R"
+ },
+ {
+  "post": "05-agentic-reference-architecture",
+  "figure": 2,
+  "id": "fig02-control-plane-publishes-versioned-artifacts-that",
+  "asset": "assets/images/05-agentic-reference-architecture/fig02-control-plane-publishes-versioned-artifacts-that.jpeg",
+  "mermaid": "flowchart LR\n    subgraph CP[\"Control plane - decides what may run\"]\n        AR[\"Agent Registry\"]\n        TR[\"Toolyard registry\"]\n        PA[\"Bulkhead policy repository\"]\n        SD[\"Sounding gates\"]\n    end\n    subgraph DP[\"Data plane - runs every call\"]\n        RT[\"Keelson Runtime\"]\n        GW[\"Keelson Gateway\"]\n        BH[\"Bulkhead decision points\"]\n        TB[\"Toolyard broker\"]\n        ST[\"Tidemark, task state, Logbook, Wake\"]\n    end\n    AR -->|\"manifests and tiers by hash\"| RT\n    TR -->|\"pinned tool snapshots\"| TB\n    PA -->|\"signed policy bundles\"| BH\n    ST -->|\"traces and evidence\"| SD\n    SD -->|\"gate verdicts\"| AR"
+ },
+ {
+  "post": "05-agentic-reference-architecture",
+  "figure": 3,
+  "id": "fig03-180-credit-crosses-every-data-plane",
+  "asset": "assets/images/05-agentic-reference-architecture/fig03-180-credit-crosses-every-data-plane.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant RT as Keelson Runtime\n    participant GW as Keelson Gateway\n    participant BH as Bulkhead\n    participant TY as Toolyard\n    participant BL as Billing\n    participant LB as Logbook\n    C->>RT: Missed visit, asks for compensation\n    RT->>TY: Read contract and visit history\n    TY-->>RT: Results with provenance envelopes\n    RT->>GW: Context with pinned model version\n    GW-->>RT: Proposal issue_credit 180 EUR\n    RT->>RT: Record proposal, build action object and key\n    RT->>BH: Evaluate action at tier for credit up to 250\n    BH-->>RT: Allow at A2 within limits\n    RT->>LB: Intent with key and policy version\n    RT->>TY: Execute action object\n    TY->>BL: Credit with idempotency key and minted token\n    BL-->>TY: Receipt\n    TY-->>RT: Receipt\n    RT->>LB: Receipt and outcome\n    RT-->>C: Credit confirmed with reference"
+ },
+ {
+  "post": "10-planning-and-decomposition",
+  "figure": 1,
+  "id": "fig01-model-proposes-plan-consulted-again-only",
+  "asset": "assets/images/10-planning-and-decomposition/fig01-model-proposes-plan-consulted-again-only.jpeg",
+  "mermaid": "flowchart LR\n    G[\"Goal record\"] --> P[\"Planner model call\"]\n    P -->|\"proposed plan\"| V[\"Plan validator\"]\n    V -->|\"rejected with reasons\"| P\n    V -->|\"needs approval\"| H[\"Human approval\"]\n    V -->|\"valid\"| S[\"Plan store in task state\"]\n    H -->|\"approval bound to hash\"| S\n    S --> D[\"Dispatcher\"]\n    D -->|\"ready steps\"| W[\"Workers and tools\"]\n    W -->|\"results and receipts\"| E[\"Progress evaluator\"]\n    E -->|\"continue\"| D\n    E -->|\"replan trigger\"| P\n    E -->|\"complete or abstain\"| R[\"Report and Logbook\"]"
+ },
+ {
+  "post": "10-planning-and-decomposition",
+  "figure": 2,
+  "id": "fig02-every-path-back-active-passes-through",
+  "asset": "assets/images/10-planning-and-decomposition/fig02-every-path-back-active-passes-through.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Rejected: validation fails\n    Rejected --> Proposed: planner revises within limit\n    Proposed --> AwaitingApproval: valid and above threshold\n    Proposed --> Active: valid and below threshold\n    AwaitingApproval --> Active: approved for this hash\n    AwaitingApproval --> Abandoned: rejected or expired\n    Active --> Replanning: trigger fires\n    Replanning --> Proposed: new version with diff\n    Active --> Completed: completion criteria met\n    Active --> Abstained: abstain criteria met\n    Replanning --> Abandoned: replan limit reached\n    Completed --> [*]\n    Abstained --> [*]\n    Abandoned --> [*]"
+ },
+ {
+  "post": "10-planning-and-decomposition",
+  "figure": 3,
+  "id": "fig03-replan-touched-only-three-failed-branches",
+  "asset": "assets/images/10-planning-and-decomposition/fig03-replan-touched-only-three-failed-branches.jpeg",
+  "mermaid": "sequenceDiagram\n    participant A as Analyst\n    participant P as Planner\n    participant V as Validator\n    participant D as Dispatcher\n    participant W as Workers\n    A->>P: Question and constraint\n    P->>V: Plan v2 with 14 sub-questions\n    V->>A: Plan card needs approval\n    A->>V: Approve hash of v2\n    V->>D: Activate v2\n    D->>W: Wave of 8 then wave of 6\n    W->>D: 11 complete, 2 insufficient, 1 contradiction\n    D->>P: Replan trigger for 3 branches only\n    P->>V: Plan v3 diff adds distributor lists and subscription tiers\n    V->>D: Within scope and budget, no re-approval\n    D->>W: 3 replanned sub-questions\n    W->>D: 2 complete, 1 insufficient again\n    D->>A: Report with 13 markets and 1 abstention"
+ },
+ {
+  "post": "11-routing-and-delegation",
+  "figure": 1,
+  "id": "fig01-staged-router-decides-cheaply-it-safely",
+  "asset": "assets/images/11-routing-and-delegation/fig01-staged-router-decides-cheaply-it-safely.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Inbound message and account context\"] --> R0[\"Stage 0: rules\"]\n    R0 -->|\"exact match\"| D[\"Route decision record\"]\n    R0 -->|\"no rule fired\"| R1[\"Stage 1: calibrated classifier\"]\n    R1 -->|\"expected cost below margin\"| D\n    R1 -->|\"uncertain\"| R2[\"Stage 2: LLM router, enum output\"]\n    R2 -->|\"agrees with classifier top two\"| D\n    R2 -->|\"disagrees or invalid\"| H[\"Human triage queue\"]\n    D --> P[\"Handler: skill, tier, agent or queue\"]\n    P -->|\"every action\"| B[\"Policy enforcement point\"]"
+ },
+ {
+  "post": "11-routing-and-delegation",
+  "figure": 2,
+  "id": "fig02-model-proposes-delegation-runtime-validates-it",
+  "asset": "assets/images/11-routing-and-delegation/fig02-model-proposes-delegation-runtime-validates-it.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Parent as Parent run\n    participant RT as Keelson Runtime\n    participant Pol as Bulkhead\n    participant Child as Sub-agent run\n    participant TY as Toolyard\n    Parent->>RT: propose delegation with task, inputs, tools, budget\n    RT->>RT: check depth, child count, tools within parent set\n    RT->>Pol: may this root run delegate these scopes\n    Pol-->>RT: allow with policy version\n    RT->>RT: reserve budget from parent and persist contract\n    RT->>Child: start with contract and input references only\n    Child->>TY: tool call with delegation id\n    TY->>TY: verify tool is in contract and inject brokered credential\n    TY-->>Child: result and receipt\n    Child-->>RT: schema-valid result or abstention\n    RT->>RT: release unused budget to parent\n    RT-->>Parent: result marked as untrusted content"
+ },
+ {
+  "post": "12-single-and-multi-agent-designs",
+  "figure": 1,
+  "id": "fig01-bounded-task-tree-lead-plans-runtime",
+  "asset": "assets/images/12-single-and-multi-agent-designs/fig01-bounded-task-tree-lead-plans-runtime.jpeg",
+  "mermaid": "flowchart TB\n    U[\"Requester\"] -->|\"task\"| L[\"Lead agent\"]\n    L -->|\"delegation spec\"| R[\"Keelson Runtime\"]\n    R -->|\"budget check\"| B[\"Budget ledger\"]\n    R -->|\"spawn with budget slice\"| W1[\"Worker 1\"]\n    R -->|\"spawn with budget slice\"| W2[\"Worker 2\"]\n    W1 -->|\"read-only tools\"| T[\"Toolyard\"]\n    W2 -->|\"read-only tools\"| T\n    W1 -->|\"typed result plus refs\"| V[\"Verifier\"]\n    W2 -->|\"typed result plus refs\"| V\n    V -->|\"checked findings\"| L\n    L -->|\"single write\"| A[\"Artifact store\"]"
+ },
+ {
+  "post": "12-single-and-multi-agent-designs",
+  "figure": 2,
+  "id": "fig02-review-test-proposed-split-no-evidence",
+  "asset": "assets/images/12-single-and-multi-agent-designs/fig02-review-test-proposed-split-no-evidence.jpeg",
+  "mermaid": "flowchart LR\n    Q[\"Proposed split\"] --> C1{\"Single agent failed on evals?\"}\n    C1 -->|\"no\"| S[\"Keep one agent; fix tools and prompt\"]\n    C1 -->|\"yes\"| C2{\"Which reason?\"}\n    C2 -->|\"context overflow\"| I[\"Read-only worker returns summary\"]\n    C2 -->|\"independent breadth\"| P[\"Orchestrator-worker with tree budget\"]\n    C2 -->|\"untrusted plus private data\"| A[\"Quarantined context, no shared tools\"]\n    C2 -->|\"self-checks miss errors\"| V[\"Clean-context verifier\"]\n    C2 -->|\"team ownership or personas\"| S\n    P --> W{\"Workers must write shared state?\"}\n    W -->|\"yes\"| X[\"Partition or serialize through one writer\"]\n    W -->|\"no\"| OK[\"Approve with caps and verifier\"]"
+ },
+ {
+  "post": "12-single-and-multi-agent-designs",
+  "figure": 3,
+  "id": "fig03-one-scout-breadth-run-runtime-reserves",
+  "asset": "assets/images/12-single-and-multi-agent-designs/fig03-one-scout-breadth-run-runtime-reserves.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Lead as Scout lead\n    participant RT as Keelson Runtime\n    participant W as Market workers\n    participant V as Citation verifier\n    participant LB as Logbook\n    Lead->>RT: plan with 6 independent sub-questions\n    RT->>RT: reserve 6 budget slices on the root run\n    RT->>W: spawn 6 workers, depth 1, deadline 20 min\n    W->>LB: store sources and findings by reference\n    W-->>RT: typed market findings\n    Note over RT,W: one worker exceeds its deadline\n    RT-->>Lead: 5 findings plus 1 timeout\n    Lead->>V: verify claims against stored passages\n    V-->>Lead: 2 claims rejected, rest accepted\n    Lead->>LB: write report marking the missing market"
+ },
+ {
+  "post": "14-context-engineering",
+  "figure": 1,
+  "id": "fig01-assembler-only-writer-working-context-it",
+  "asset": "assets/images/14-context-engineering/fig01-assembler-only-writer-working-context-it.jpeg",
+  "mermaid": "flowchart LR\n    I[\"Agent version - instructions and policy text\"] --> A[\"Context assembler\"]\n    T[\"Toolyard - tool definitions\"] --> A\n    S[\"Task state and pinned facts\"] --> A\n    R[\"Retrieval and account reads\"] --> A\n    H[\"Conversation history\"] -->|\"digest plus recent exchanges\"| A\n    A -->|\"budgeted, ordered, labeled request\"| G[\"Keelson Gateway\"]\n    A -->|\"context manifest\"| L[\"Logbook\"]\n    G --> M[\"Model\"]\n    M -->|\"proposed tool call\"| B[\"Bulkhead and Toolyard\"]\n    B -->|\"receipt and shaped result\"| H\n    B -->|\"receipt-derived facts\"| S"
+ },
+ {
+  "post": "14-context-engineering",
+  "figure": 2,
+  "id": "fig02-answerdesk-s-working-context-runs-most",
+  "asset": "assets/images/14-context-engineering/fig02-answerdesk-s-working-context-runs-most.jpeg",
+  "mermaid": "flowchart TB\n    L0[\"L0 Tool definitions - canonical order, per agent version\"] --> L1[\"L1 Agent instructions and policy summary\"]\n    L1 --> L2[\"L2 Segment instructions - product and language\"]\n    L2 --> L3[\"L3 Preamble and pinned facts - verified customer, contract, commitments\"]\n    L3 --> L4[\"L4 History - digest plus recent exchanges, append-only within an exchange\"]\n    L4 --> V[\"Volatile tail - clock, this exchange's evidence, new message, restated task\"]"
+ },
+ {
+  "post": "14-context-engineering",
+  "figure": 3,
+  "id": "fig03-compaction-recorded-event-over-recorded-range",
+  "asset": "assets/images/14-context-engineering/fig03-compaction-recorded-event-over-recorded-range.jpeg",
+  "mermaid": "sequenceDiagram\n    participant R as Runtime\n    participant A as Assembler\n    participant G as Gateway\n    participant L as Logbook\n    R->>A: assemble exchange 19, history at 17200 tokens\n    A->>A: history over the 16000 trigger\n    A->>G: summarize exchanges 1 to 14 with the Small tier, digest schema\n    G-->>A: digest with decisions, open questions, documents referenced\n    A->>A: validate digest, pinned facts rendered separately\n    A->>L: compaction event with replaced range and digest hash\n    A->>G: call with prefix, pinned facts, digest, last 4 exchanges, tail"
+ },
+ {
+  "post": "09-agent-interaction-design",
+  "figure": 1,
+  "id": "fig01-delegated-task-requester-sees-it-every",
+  "asset": "assets/images/09-agent-interaction-design/fig01-delegated-task-requester-sees-it-every.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Submitted\n    Submitted --> Acknowledged: \"contract stated\"\n    Acknowledged --> AwaitingPlanApproval: \"over budget threshold\"\n    AwaitingPlanApproval --> Working: \"plan hash approved\"\n    Acknowledged --> Working: \"within threshold\"\n    Working --> InputRequired: \"typed question\"\n    InputRequired --> Working: \"answered\"\n    InputRequired --> Abandoned: \"timed out\"\n    Working --> Delivered: \"artifact recorded\"\n    Working --> Failed: \"budget or error\"\n    Working --> Cancelled: \"requester cancels\"\n    Delivered --> [*]\n    Failed --> [*]\n    Cancelled --> [*]\n    Abandoned --> [*]"
+ },
+ {
+  "post": "09-agent-interaction-design",
+  "figure": 2,
+  "id": "fig02-interaction-layer-reads-state-task-record",
+  "asset": "assets/images/09-agent-interaction-design/fig02-interaction-layer-reads-state-task-record.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Person in a channel\"] -->|\"message, steer, cancel\"| CA[\"Channel adapter\"]\n    CA -->|\"input event\"| RT[\"Keelson Runtime\"]\n    RT -->|\"step, intent, receipt\"| TR[\"Task record\"]\n    RT -->|\"model text, labeled\"| CV[\"Conversation and task view\"]\n    TR -->|\"progress, pending actions, outcomes\"| CV\n    CV -->|\"render\"| CA\n    TR -->|\"waits and results\"| NT[\"Notifier and inbox\"]\n    RT -->|\"escalate\"| HS[\"Handoff service\"]\n    HS -->|\"escalation package\"| Q[\"Human work queue\"]\n    Q -->|\"take ownership\"| BH[\"Bulkhead\"]"
+ },
+ {
+  "post": "09-agent-interaction-design",
+  "figure": 3,
+  "id": "fig03-escalation-ownership-transfer-package-assembled-records",
+  "asset": "assets/images/09-agent-interaction-design/fig03-escalation-ownership-transfer-package-assembled-records.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant A as Answerdesk\n    participant H as Handoff service\n    participant Q as Support queue\n    participant S as Specialist\n    participant B as Bulkhead\n    A->>H: Escalate with reason and task id\n    H->>H: Build package from task record and receipts\n    H->>Q: Enqueue package with priority and SLA\n    A-->>C: A person will take over, expected wait, pending items\n    S->>Q: Claim case\n    Q->>B: Ownership moves to specialist\n    B-->>A: Write tools denied on this ticket\n    S->>C: Reply as a named person\n    A-->>S: Suggested reply drafts, labeled"
+ },
+ {
+  "post": "15-retrieval-and-grounding",
+  "figure": 1,
+  "id": "fig01-retrieval-mode-follows-source-facts-that",
+  "asset": "assets/images/15-retrieval-and-grounding/fig01-retrieval-mode-follows-source-facts-that.jpeg",
+  "mermaid": "flowchart TB\n    Q[\"What does the claim need?\"] --> SOR{\"Is there a system of record for this fact?\"}\n    SOR -->|\"yes\"| LOOK[\"Structured lookup tool\"]\n    SOR -->|\"no\"| SIZE{\"Is the corpus small, versioned and mostly relevant?\"}\n    SIZE -->|\"yes\"| LOAD[\"Load whole corpus, cached\"]\n    SIZE -->|\"no\"| NAV{\"Is the source navigable with exact identifiers, like code?\"}\n    NAV -->|\"yes\"| AGS[\"Agentic search\"]\n    NAV -->|\"no\"| TOOL[\"Retrieval tool over a hybrid index\"]"
+ },
+ {
+  "post": "15-retrieval-and-grounding",
+  "figure": 2,
+  "id": "fig02-model-writes-query-bulkhead-tool-s",
+  "asset": "assets/images/15-retrieval-and-grounding/fig02-model-writes-query-bulkhead-tool-s.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Agent runtime\"] -->|\"tool call: query, hints\"| TB[\"Toolyard retrieval tool\"]\n    TB -->|\"principal, agent, purpose\"| BH[\"Bulkhead policy\"]\n    BH -->|\"allowed corpora and filter\"| TB\n    TB -->|\"filtered hybrid query\"| IX[\"Hybrid index: lexical and vector\"]\n    IX -->|\"candidates\"| RR[\"Reranker\"]\n    RR -->|\"evidence items with ids, versions, spans\"| TB\n    TB -->|\"shaped results, marked untrusted\"| RT\n    RT -->|\"draft answer with claim citations\"| GC[\"Groundedness check\"]\n    GC -->|\"verdicts\"| RT\n    TB -->|\"retrieval event\"| LB[\"Logbook\"]"
+ },
+ {
+  "post": "15-retrieval-and-grounding",
+  "figure": 3,
+  "id": "fig03-one-answerdesk-exchange-model-chooses-queries",
+  "asset": "assets/images/15-retrieval-and-grounding/fig03-one-answerdesk-exchange-model-chooses-queries.jpeg",
+  "mermaid": "sequenceDiagram\n    participant U as Customer\n    participant A as Answerdesk\n    participant T as Toolyard\n    participant B as Bulkhead\n    participant G as Grounding check\n    U->>A: E-217 on closing work orders, is a revisit covered\n    A->>T: kb_search E-217 work order close\n    T->>B: grant for tenant VDI, purpose support\n    B-->>T: corpora kb, filter global or VDI, published only\n    T-->>A: 6 evidence items incl. KB-4471 v3\n    A->>T: get_contract_terms for verified tenant\n    T-->>A: Assure Standard, revisit clause 4.2, snapshot 2027-07-14\n    A->>G: draft with 3 claims and citations\n    G-->>A: 2 supported, 1 uncertain\n    A->>U: answer with 2 cited claims, revisit question routed to ticket"
+ },
+ {
+  "post": "18-provenance-and-freshness",
+  "figure": 1,
+  "id": "fig01-stale-fact-gains-authority-every-hop",
+  "asset": "assets/images/18-provenance-and-freshness/fig01-stale-fact-gains-authority-every-hop.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Source or copy\"] -->|\"retrieval or tool read\"| C[\"Working context\"]\n    C -->|\"model commits\"| O[\"Output or draft\"]\n    O -->|\"summary, brief, memory\"| M[\"Model-derived artifact\"]\n    M -->|\"retrieved later\"| C2[\"Another run's context\"]\n    C2 -->|\"proposal\"| A[\"Action object\"]\n    A -->|\"approval and execution\"| W[\"External commitment\"]\n    S -.->|\"lineage\"| L[\"Lineage index\"]\n    O -.->|\"lineage\"| L\n    M -.->|\"lineage\"| L\n    A -.->|\"lineage\"| L"
+ },
+ {
+  "post": "18-provenance-and-freshness",
+  "figure": 2,
+  "id": "fig02-finalize-tool-not-model-re-reads",
+  "asset": "assets/images/18-provenance-and-freshness/fig02-finalize-tool-not-model-re-reads.jpeg",
+  "mermaid": "sequenceDiagram\n    participant AE as Account executive\n    participant RT as Keelson Runtime\n    participant BH as Bulkhead\n    participant TY as Toolyard\n    participant PB as CRM price book\n    AE->>RT: approve draft quote Q-5512 hash h1\n    RT->>BH: may finalize, dependencies f1 to f6\n    BH-->>RT: allowed only with live re-read\n    RT->>TY: finalize_quote Q-5512 h1\n    TY->>PB: read lines with versions\n    PB-->>TY: five lines match, one line changed\n    TY-->>RT: price_changed with diff, approval void\n    RT->>RT: redraft line, new hash h2\n    RT->>AE: approval card shows diff and as_of\n    AE->>RT: approve h2\n    RT->>TY: finalize_quote Q-5512 h2\n    TY->>PB: conditional write if version matches\n    PB-->>TY: finalized with price book version"
+ },
+ {
+  "post": "18-provenance-and-freshness",
+  "figure": 3,
+  "id": "fig03-derived-items-are-marked-suspect-not",
+  "asset": "assets/images/18-provenance-and-freshness/fig03-derived-items-are-marked-suspect-not.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Valid\n    Valid --> Suspect: \"source version corrected\"\n    Suspect --> Valid: \"re-derived, unchanged\"\n    Suspect --> Invalidated: \"depends on wrong fact\"\n    Invalidated --> Superseded: \"re-derived from corrected source\"\n    Invalidated --> Remediated: \"commitment already made, owner decides\"\n    Superseded --> [*]\n    Remediated --> [*]"
+ },
+ {
+  "post": "16-agent-memory",
+  "figure": 1,
+  "id": "fig01-model-proposes-code-decides-candidate-that",
+  "asset": "assets/images/16-agent-memory/fig01-model-proposes-code-decides-candidate-that.jpeg",
+  "mermaid": "flowchart LR\n    H[\"Conversation history\"] -->|\"end of session\"| X[\"Extraction step\"]\n    X -->|\"memory candidates\"| V[\"Write-policy validator\"]\n    V -->|\"contradicts a record\"| R[\"Change request to record owner\"]\n    V -->|\"shapes an action\"| U[\"Ask the user to confirm\"]\n    U -->|\"confirmed\"| T[\"Tidemark store\"]\n    V -->|\"accepted, inferred or low trust\"| T\n    T -->|\"derived\"| I[\"Memory index\"]\n    I -->|\"keyed read, at most 12 items\"| A[\"Context assembler\"]\n    T -->|\"view, correct, delete\"| P[\"User memory page\"]"
+ },
+ {
+  "post": "16-agent-memory",
+  "figure": 2,
+  "id": "fig02-memory-has-states-not-just-timestamp",
+  "asset": "assets/images/16-agent-memory/fig02-memory-has-states-not-just-timestamp.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Candidate\n    Candidate --> Rejected: \"fails policy or overlaps a record\"\n    Candidate --> Active: \"accepted, confirmed or inferred\"\n    Active --> ReviewDue: \"review date reached\"\n    ReviewDue --> Active: \"reconfirmed\"\n    ReviewDue --> Expired: \"not reconfirmed\"\n    Active --> Superseded: \"new value for the same key\"\n    Active --> Quarantined: \"suspect source, version or run\"\n    Quarantined --> Active: \"human review clears it\"\n    Quarantined --> Expired: \"review confirms it is bad\"\n    Active --> Erased: \"user or erasure request\"\n    Expired --> Erased: \"retention ends\"\n    Rejected --> [*]\n    Erased --> [*]"
+ },
+ {
+  "post": "16-agent-memory",
+  "figure": 3,
+  "id": "fig03-erasure-reaches-every-copy-evidence-log",
+  "asset": "assets/images/16-agent-memory/fig03-erasure-reaches-every-copy-evidence-log.jpeg",
+  "mermaid": "sequenceDiagram\n    participant U as User or privacy office\n    participant P as Privacy request service\n    participant T as Tidemark\n    participant I as Memory index\n    participant W as Wake content store\n    participant L as Logbook\n    U->>P: erasure request for one user\n    P->>T: erase all memories for the user in every scope\n    T->>T: delete content, destroy the per-user key, keep a tombstone\n    T->>I: remove embeddings and keys\n    P->>W: delete rendered prompts in the user partition\n    P->>L: record the erasure event\n    L-->>P: memory ids and hashes stay, content does not\n    P-->>U: confirmation within the policy deadline"
+ },
+ {
+  "post": "13-coordination-and-handoffs",
+  "figure": 1,
+  "id": "fig01-handoff-complete-only-when-it-accepted",
+  "asset": "assets/images/13-coordination-and-handoffs/fig01-handoff-complete-only-when-it-accepted.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Refused: required field missing or receiver not allowed\n    Refused --> [*]\n    Proposed --> Offered: payload validated and persisted\n    Offered --> Accepted: receiver claims within deadline\n    Offered --> Declined: receiver rejects with reason\n    Offered --> Expired: acceptance deadline passes\n    Declined --> Offered: next receiver or fallback queue\n    Expired --> Offered: next receiver or fallback queue\n    Accepted --> Active\n    Active --> Returned: owner hands back\n    Returned --> Offered\n    Active --> Closed: task outcome recorded\n    Closed --> [*]"
+ },
+ {
+  "post": "13-coordination-and-handoffs",
+  "figure": 2,
+  "id": "fig02-handoff-runs-through-task-record-runtime",
+  "asset": "assets/images/13-coordination-and-handoffs/fig02-handoff-runs-through-task-record-runtime.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Sender agent\"] -->|\"propose handoff\"| RT[\"Keelson Runtime\"]\n    RT -->|\"fill identifiers from receipts\"| TR[\"Task record\"]\n    RT -->|\"may this receiver take this task\"| BH[\"Bulkhead\"]\n    RT -->|\"offer with deadline\"| RX[\"Receiver agent or human queue\"]\n    RX -->|\"accept with task version\"| TR\n    TR -->|\"owner field\"| TY[\"Toolyard\"]\n    TY -->|\"writes only for current owner\"| SOR[\"Systems of record\"]\n    RT -->|\"ownership events\"| LB[\"Logbook\"]"
+ },
+ {
+  "post": "13-coordination-and-handoffs",
+  "figure": 3,
+  "id": "fig03-after-28-april-2027-ambiguous-contract",
+  "asset": "assets/images/13-coordination-and-handoffs/fig03-after-28-april-2027-ambiguous-contract.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant T as Triage agent\n    participant RT as Keelson Runtime\n    participant TY as Toolyard\n    participant B as Billing agent\n    C->>T: credit for the missed visit please\n    T->>RT: transfer_to_billing with reason\n    RT->>TY: contracts of the verified customer\n    TY-->>RT: three contracts with receipts\n    RT-->>T: refused, contract ambiguous\n    T->>C: which site, Delft, Gouda or Leiden\n    C->>T: Gouda\n    T->>RT: transfer_to_billing with reason\n    RT->>RT: fill ids and commitments, persist payload\n    RT->>B: offer with acceptance deadline\n    B->>RT: accept at task version 7\n    RT-->>T: ownership moved, triage now read-only"
+ },
+ {
+  "post": "19-tool-contracts",
+  "figure": 1,
+  "id": "fig01-constrained-decoding-removes-parse-failures-it",
+  "asset": "assets/images/19-tool-contracts/fig01-constrained-decoding-removes-parse-failures-it.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Model proposes name and arguments\"] -->|\"constrained decoding\"| S[\"Schema-valid call\"]\n    S -->|\"full contract and live state\"| V[\"Tool validation\"]\n    V -->|\"model-fixable error\"| M\n    V -->|\"valid\"| P[\"Policy decision\"]\n    P -->|\"deny or approval required\"| M\n    P -->|\"allow\"| X[\"Execution with key\"]\n    X -->|\"typed status and receipt\"| R[\"Shaped result\"]\n    R --> M"
+ },
+ {
+  "post": "19-tool-contracts",
+  "figure": 2,
+  "id": "fig02-five-outcome-classes-five-different-permissions",
+  "asset": "assets/images/19-tool-contracts/fig02-five-outcome-classes-five-different-permissions.jpeg",
+  "mermaid": "flowchart TB\n    C[\"Tool call outcome\"] --> F[\"Model-fixable: field, rule, valid values\"]\n    C --> D[\"Definite business outcome: a fact\"]\n    C --> P[\"Policy stop: denied or pending approval\"]\n    C --> U[\"Unknown outcome\"]\n    C --> T[\"Platform failure: tool not available\"]\n    F -->|\"may correct, at most 2 times\"| M[\"Model's next step\"]\n    D -->|\"may explain, may not retry\"| M\n    P -->|\"must not argue or rephrase\"| M\n    U -->|\"runtime suspends the run, model sees nothing\"| H[\"Lookup or repair queue\"]\n    T -->|\"escalate\"| E[\"Human or fallback route\"]"
+ },
+ {
+  "post": "19-tool-contracts",
+  "figure": 3,
+  "id": "fig03-rejected-proposal-never-left-platform-so",
+  "asset": "assets/images/19-tool-contracts/fig03-rejected-proposal-never-left-platform-so.jpeg",
+  "mermaid": "sequenceDiagram\n    participant A as Answerdesk\n    participant R as KeelsonRuntime\n    participant T as Toolyard\n    participant B as Billing\n    A->>R: issue_credit TCK-00418822 VIS-20271104 missed_visit null\n    R->>T: action object v1 with key\n    T->>T: static checks pass\n    T->>B: referential check of visit on ticket\n    B-->>T: visit not on ticket\n    T-->>R: rejected visit_not_on_ticket, valid visits listed\n    R-->>A: model-fixable error, retry 1 of 2\n    A->>R: issue_credit TCK-00418822 VIS-20271097 missed_visit null\n    R->>T: action object v2 with new key\n    T->>B: checks pass, policy amount 80.00 EUR, create with client reference\n    B-->>T: credit CR-2027-118734\n    T-->>R: issued with receipt\n    R-->>A: issued 80.00 EUR on next invoice"
+ },
+ {
+  "post": "22-side-effects-and-external-actions",
+  "figure": 1,
+  "id": "fig01-model-s-only-output-proposal-deterministic",
+  "asset": "assets/images/22-side-effects-and-external-actions/fig01-model-s-only-output-proposal-deterministic.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Model in Keelson Runtime\"] -->|\"tool call proposal\"| R[\"Runtime action builder\"]\n    R -->|\"action object v1 with hash\"| B[\"Bulkhead policy decision\"]\n    B -->|\"allow within limits\"| T[\"Toolyard executor\"]\n    B -->|\"needs approval\"| H[\"Approver sees preview\"]\n    H -->|\"approval bound to hash\"| T\n    T -->|\"keyed call with brokered credential\"| S[\"System of record\"]\n    S -->|\"receipt\"| T\n    T -->|\"read-back and compare\"| S\n    T -->|\"intent, decision, receipt, verification\"| L[\"Logbook\"]\n    T -->|\"action state\"| R"
+ },
+ {
+  "post": "22-side-effects-and-external-actions",
+  "figure": 2,
+  "id": "fig02-action-becomes-executable-only-authorization-exact",
+  "asset": "assets/images/22-side-effects-and-external-actions/fig02-action-becomes-executable-only-authorization-exact.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Rejected: fails contract or policy\n    Proposed --> Validated: checks pass\n    Validated --> AwaitingApproval: tier requires a human\n    Validated --> Authorized: within automatic limits\n    AwaitingApproval --> Authorized: approval bound to hash\n    AwaitingApproval --> Voided: expiry or changed facts\n    Authorized --> Voided: revalidation fails before dispatch\n    Authorized --> Dispatched: executor starts\n    Dispatched --> Applied: receipt recorded\n    Dispatched --> Failed: definite rejection\n    Applied --> Verified: read-back matches\n    Applied --> Mismatch: read-back differs\n    Mismatch --> Compensating: owner decides\n    Verified --> [*]\n    Rejected --> [*]\n    Voided --> [*]\n    Failed --> [*]"
+ },
+ {
+  "post": "22-side-effects-and-external-actions",
+  "figure": 3,
+  "id": "fig03-a1-credit-customer-hears-only-states",
+  "asset": "assets/images/22-side-effects-and-external-actions/fig03-a1-credit-customer-hears-only-states.jpeg",
+  "mermaid": "sequenceDiagram\n    participant A as Answerdesk\n    participant R as KeelsonRuntime\n    participant B as Bulkhead\n    participant H as Approver\n    participant T as Toolyard\n    participant S as Billing\n    A->>R: propose issue_credit 420 EUR\n    R->>B: action object v1 with hash\n    B-->>R: approval required at A1\n    R-->>A: status awaiting_approval for reply slot\n    H->>B: approve v1 hash after preview\n    R->>T: dispatch v1\n    T->>T: re-read visit status, version changed\n    T-->>R: voided, dependency changed\n    A->>R: propose v2 280 EUR\n    H->>B: approve v2 hash\n    T->>S: keyed credit call\n    S-->>T: receipt with credit note id\n    T->>S: read back credit\n    T-->>R: applied and verified\n    R-->>A: status applied for reply slot"
+ },
+ {
+  "post": "20-tool-ecosystems-and-mcp",
+  "figure": 1,
+  "id": "fig01-every-tool-call-agent-run-or",
+  "asset": "assets/images/20-tool-ecosystems-and-mcp/fig01-every-tool-call-agent-run-or.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Keelson Runtime agent runs\"] -->|\"tool call with action id\"| BR[\"Toolyard broker\"]\n    CLI[\"Local coding CLI\"] -->|\"remote internal tools\"| BR\n    REG[\"Toolyard registry\"] -->|\"pinned tool snapshot\"| BR\n    BR -->|\"decide\"| BH[\"Bulkhead policy\"]\n    BR -->|\"brokered credential\"| INT[\"Internal MCP servers\"]\n    INT --> SOR[\"Systems of record\"]\n    BR -->|\"egress proxy\"| EXT[\"Third-party remote MCP servers\"]\n    BR -->|\"call, decision, receipt\"| LB[\"Logbook\"]\n    BR -->|\"spans\"| WK[\"Wake\"]"
+ },
+ {
+  "post": "20-tool-ecosystems-and-mcp",
+  "figure": 2,
+  "id": "fig02-side-effecting-call-model-s-proposal",
+  "asset": "assets/images/20-tool-ecosystems-and-mcp/fig02-side-effecting-call-model-s-proposal.jpeg",
+  "mermaid": "sequenceDiagram\n    participant R as Runtime\n    participant T as Toolyard\n    participant P as Bulkhead\n    participant S as BillingServer\n    participant L as Logbook\n    R->>T: call issue_credit with action id and arguments\n    T->>T: check snapshot, definition hash and full schema\n    T->>P: decide for principal, agent version, tool, arguments\n    P-->>T: allow at A2 within limits\n    T->>T: look up receipt for action id\n    T->>S: invoke with idempotency key and minted token\n    S-->>T: receipt\n    T->>L: append call, decision and receipt\n    T-->>R: shaped result with receipt id"
+ },
+ {
+  "post": "20-tool-ecosystems-and-mcp",
+  "figure": 3,
+  "id": "fig03-permission-narrows-catalog-before-relevance-ranks",
+  "asset": "assets/images/20-tool-ecosystems-and-mcp/fig03-permission-narrows-catalog-before-relevance-ranks.jpeg",
+  "mermaid": "flowchart TB\n    C[\"Toolyard catalog: 386 active tools\"] -->|\"agent version manifest\"| M[\"Tools Answerdesk may ever use: 34\"]\n    M -->|\"route, principal and tier policy\"| A[\"Authorized set for this run: 30\"]\n    A -->|\"resident core in the cached prefix\"| K[\"Always loaded: 14\"]\n    A -->|\"deferred\"| D[\"Searchable: 16\"]\n    D -->|\"search returns up to 5\"| L[\"Loaded for this turn\"]"
+ },
+ {
+  "post": "20-tool-ecosystems-and-mcp",
+  "figure": 4,
+  "id": "fig04-tool-version-s-lifecycle-registry-changed",
+  "asset": "assets/images/20-tool-ecosystems-and-mcp/fig04-tool-version-s-lifecycle-registry-changed.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Reviewed: owner and security review passed\n    Reviewed --> Active: eval with agents passed\n    Active --> Unreviewed: definition hash changed\n    Unreviewed --> Active: re-review passed\n    Active --> Quarantined: incident or advisory\n    Quarantined --> Active: cleared with reason\n    Quarantined --> Retired: removed\n    Active --> Deprecated: successor active\n    Deprecated --> Retired: window over and no pinning manifest\n    Retired --> [*]"
+ },
+ {
+  "post": "17-task-state-and-checkpoints",
+  "figure": 1,
+  "id": "fig01-action-lifecycle-task-record-only-path",
+  "asset": "assets/images/17-task-state-and-checkpoints/fig01-action-lifecycle-task-record-only-path.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Intended\n    Intended --> AwaitingApproval: \"policy requires approval\"\n    AwaitingApproval --> Intended: \"approved, hash matches\"\n    AwaitingApproval --> Voided: \"expired or action changed\"\n    Intended --> Executing: \"dispatched with idempotency key\"\n    Executing --> Committed: \"receipt recorded\"\n    Executing --> Failed: \"definite rejection\"\n    Executing --> Unknown: \"timeout, no receipt\"\n    Unknown --> Committed: \"status lookup finds receipt\"\n    Unknown --> Intended: \"lookup proves never applied\"\n    Unknown --> RepairQueue: \"still unknown\"\n    Committed --> [*]\n    Failed --> [*]\n    Voided --> [*]\n    RepairQueue --> [*]"
+ },
+ {
+  "post": "17-task-state-and-checkpoints",
+  "figure": 2,
+  "id": "fig02-resume-after-crash-between-erp-posting",
+  "asset": "assets/images/17-task-state-and-checkpoints/fig02-resume-after-crash-between-erp-posting.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Controller\n    participant R as Keelson Runtime\n    participant H as Run history\n    participant T as Toolyard\n    participant E as ERP\n    C->>R: Approve 52 entries, bound to content hashes\n    R->>H: Record approvals\n    loop For each approved entry\n        R->>H: Record posting intent with idempotency key\n        R->>T: Post entry\n        T->>E: Post with idempotency key\n        E-->>T: Journal id\n        T-->>R: Receipt\n        R->>H: Record receipt\n    end\n    Note over R: Worker killed after entry 37 is posted, before its receipt\n    R->>H: New worker resumes, reads history\n    R->>T: Status lookup for entry 37 by key\n    T->>E: Query by idempotency key\n    E-->>T: Already posted, journal id\n    R->>H: Record receipt for 37, continue at 38"
+ },
+ {
+  "post": "23-durable-agent-execution",
+  "figure": 1,
+  "id": "fig01-loop-deterministic-workflow-code-everything-that",
+  "asset": "assets/images/23-durable-agent-execution/fig01-loop-deterministic-workflow-code-everything-that.jpeg",
+  "mermaid": "flowchart LR\n    W[\"Run workflow - deterministic loop code\"] -->|\"schedule\"| C[\"Context activity - retrieval and memory reads\"]\n    W -->|\"schedule\"| M[\"Model activity - via the model gateway\"]\n    W -->|\"validate and decide, in code\"| W\n    W -->|\"schedule\"| P[\"Policy activity - check before side effect\"]\n    W -->|\"schedule with idempotency key\"| T[\"Tool activity - via the tool broker\"]\n    W -->|\"durable wait\"| H[\"Timer or signal - approval, callback, deadline\"]\n    W -->|\"start\"| S[\"Child workflow - sub-agent run\"]\n    C --> E[\"Durable history\"]\n    M --> E\n    P --> E\n    T --> E"
+ },
+ {
+  "post": "23-durable-agent-execution",
+  "figure": 2,
+  "id": "fig02-every-wait-durable-run-has-timer",
+  "asset": "assets/images/23-durable-agent-execution/fig02-every-wait-durable-run-has-timer.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Running\n    Running --> WaitingForTool: \"tool activity scheduled\"\n    WaitingForTool --> Running: \"receipt recorded\"\n    Running --> WaitingForHuman: \"approval required\"\n    WaitingForHuman --> Running: \"approval valid for this action version\"\n    WaitingForHuman --> Escalated: \"timer fired\"\n    Escalated --> Running: \"second approver acts\"\n    Escalated --> Expired: \"expiry reached\"\n    Expired --> Running: \"record expiry, re-plan or stop\"\n    Running --> CancelRequested: \"cancel request\"\n    WaitingForHuman --> CancelRequested: \"cancel request\"\n    CancelRequested --> Cancelled: \"in-flight work settled, report written\"\n    Running --> Completed: \"finish\"\n    Running --> Failed: \"budget or terminal error\"\n    Completed --> [*]\n    Cancelled --> [*]\n    Failed --> [*]"
+ },
+ {
+  "post": "23-durable-agent-execution",
+  "figure": 3,
+  "id": "fig03-after-crash-replay-returns-recorded-model",
+  "asset": "assets/images/23-durable-agent-execution/fig03-after-crash-replay-returns-recorded-model.jpeg",
+  "mermaid": "sequenceDiagram\n    participant WF as Run workflow\n    participant ENG as Engine history\n    participant GW as Model gateway\n    participant TB as Tool broker\n    participant ERP as ERP\n    WF->>GW: model activity, turn 12\n    GW-->>ENG: proposal recorded with model id and prompt version\n    WF->>TB: tool activity post_entry with key run-turn12\n    TB->>ERP: post with idempotency key\n    ERP-->>TB: journal id J-4471\n    Note over TB,ENG: worker crashes before the result is recorded\n    WF->>ENG: replay after restart\n    ENG-->>WF: turn 12 proposal returned from history, model not called\n    WF->>TB: tool activity retried with the same key\n    TB->>ERP: receipt lookup by key\n    ERP-->>TB: already posted as J-4471\n    TB-->>ENG: receipt recorded once"
+ },
+ {
+  "post": "26-agent-threat-model",
+  "figure": 1,
+  "id": "fig01-keelson-s-trust-boundary-map-three",
+  "asset": "assets/images/26-agent-threat-model/fig01-keelson-s-trust-boundary-map-three.jpeg",
+  "mermaid": "flowchart LR\n    P[\"Principal: customer, employee, engineer\"] -->|\"B1 request\"| RT[\"Keelson Runtime and context assembler\"]\n    X[\"Third-party content: email, web, repos\"] -->|\"B3 untrusted segments\"| RT\n    S[\"Stored content: KB, memory, CRM notes\"] -->|\"B4 written earlier by others\"| RT\n    RT -->|\"B2 assembled context\"| PR[\"Model providers\"]\n    PR -->|\"B2 proposal\"| RT\n    RT -->|\"B7 delegation or handoff\"| AG[\"Other agents and humans\"]\n    RT -->|\"B5 proposed call\"| BT[\"Bulkhead decides, Toolyard executes\"]\n    SUP[\"Tool servers and descriptions\"] -->|\"B6 supply\"| BT\n    BT -->|\"credentialed call\"| SOR[\"Systems of record\"]\n    BT -->|\"B8 egress\"| NET[\"Outside network and recipients\"]\n    RT -->|\"observer partition\"| OBS[\"Wake, Logbook, Sounding\"]"
+ },
+ {
+  "post": "26-agent-threat-model",
+  "figure": 2,
+  "id": "fig02-trifecta-check-asked-per-session-type",
+  "asset": "assets/images/26-agent-threat-model/fig02-trifecta-check-asked-per-session-type.jpeg",
+  "mermaid": "flowchart TB\n    A[\"Session type\"] --> B{\"Untrusted text in context?\"}\n    B -->|\"no\"| OK[\"Two legs or fewer: standard review\"]\n    B -->|\"yes\"| C{\"Private data readable?\"}\n    C -->|\"no\"| OK\n    C -->|\"yes\"| D{\"Any outbound channel, incl. search, fetch, render, delegation?\"}\n    D -->|\"no\"| OK\n    D -->|\"yes\"| E{\"Data and sink scoped to the same principal?\"}\n    E -->|\"yes\"| F[\"Scoped trifecta: enforce scope, sign residual\"]\n    E -->|\"no\"| G[\"Full trifecta: split the session, remove a leg or add a human\"]"
+ },
+ {
+  "post": "26-agent-threat-model",
+  "figure": 3,
+  "id": "fig03-data-one-run-s-context-has",
+  "asset": "assets/images/26-agent-threat-model/fig03-data-one-run-s-context-has.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Context and tool results of one run\"] --> PV[\"Provider: retention, region, caching\"]\n    C --> TR[\"Traces and content store\"]\n    TR --> EV[\"Eval datasets and labelers\"]\n    C --> DA[\"Derived artifacts: embeddings, memories, digests\"]\n    DA --> OT[\"Other tenants via shared indexes and caches\"]\n    C --> OUT[\"Outputs: answers, links, handoffs\"]\n    C --> TP[\"Third parties via search, fetch, remote tools\"]"
+ },
+ {
+  "post": "24-retries-idempotency-and-concurrency",
+  "figure": 1,
+  "id": "fig01-reliability-envelope-around-one-credit-model",
+  "asset": "assets/images/24-retries-idempotency-and-concurrency/fig01-reliability-envelope-around-one-credit-model.jpeg",
+  "mermaid": "sequenceDiagram\n    participant R as KeelsonRuntime\n    participant G as KeelsonGateway\n    participant T as Toolyard\n    participant B as BillingSystem\n    participant L as Logbook\n    R->>G: decide step with conversation context\n    G-->>R: model proposes issue_credit, recorded in history\n    R->>R: build action object v1, hash it, mint key\n    R->>L: intent record with key and content hash\n    R->>T: execute action object v1 with key\n    T->>B: create credit with client reference set to key\n    B--xT: no response within 30 s\n    T->>T: mark attempt unknown\n    T->>B: look up credit by client reference\n    B-->>T: credit exists with billing id\n    T->>L: receipt record with billing id\n    T-->>R: tool result with receipt"
+ },
+ {
+  "post": "24-retries-idempotency-and-concurrency",
+  "figure": 2,
+  "id": "fig02-attempt-that-times-out-goes-unknown",
+  "asset": "assets/images/24-retries-idempotency-and-concurrency/fig02-attempt-that-times-out-goes-unknown.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Ready\n    Ready --> Executing: dispatch with key\n    Executing --> Succeeded: receipt returned\n    Executing --> Failed: definite rejection\n    Executing --> Unknown: timeout or lost worker\n    Unknown --> Reconciling: lookup by key\n    Reconciling --> Succeeded: effect found\n    Reconciling --> NotApplied: effect absent\n    Reconciling --> RepairQueue: still unknown after limit\n    NotApplied --> Executing: retry same key if keyed tool\n    NotApplied --> Failed: tool not keyed\n    RepairQueue --> Succeeded: human confirms effect\n    RepairQueue --> Failed: human confirms absence\n    Succeeded --> [*]\n    Failed --> [*]"
+ },
+ {
+  "post": "24-retries-idempotency-and-concurrency",
+  "figure": 3,
+  "id": "fig03-each-hop-has-one-retrying-owner",
+  "asset": "assets/images/24-retries-idempotency-and-concurrency/fig03-each-hop-has-one-retrying-owner.jpeg",
+  "mermaid": "flowchart TB\n    RUN[\"Run: resume from history, never restart a run that has external effects\"]\n    STEP[\"Step: re-ask the model only after a validation failure, as a new action object\"]\n    MODEL[\"Model activity: replay the recorded output after a crash\"]\n    GW[\"Keelson Gateway: retry transient provider errors, honor retry-after\"]\n    TOOL[\"Toolyard: retry keyed tools on transient errors, look up on timeout\"]\n    BUD[\"Run retry budget: attempts, tokens and cost\"]\n    RUN --> STEP\n    STEP --> MODEL\n    MODEL --> GW\n    STEP --> TOOL\n    GW -->|\"charges\"| BUD\n    TOOL -->|\"charges\"| BUD\n    STEP -->|\"charges\"| BUD"
+ },
+ {
+  "post": "24-retries-idempotency-and-concurrency",
+  "figure": 4,
+  "id": "fig04-two-runs-two-valid-keys-one",
+  "asset": "assets/images/24-retries-idempotency-and-concurrency/fig04-two-runs-two-valid-keys-one.jpeg",
+  "mermaid": "sequenceDiagram\n    participant E as EmailRun\n    participant C as ChatRun\n    participant T as Toolyard\n    participant B as BillingSystem\n    E->>T: credit action, key k1, business key ticket and visit\n    T->>T: claim business key for k1\n    T->>B: create credit with reference k1\n    B-->>T: credit created\n    C->>T: credit action, key k2, same business key\n    T->>T: claim fails, owned by k1\n    T-->>C: rejected, limit reached, receipt of k1\n    C->>C: model tells customer a credit was already issued"
+ },
+ {
+  "post": "21-sandboxes-and-execution-environments",
+  "figure": 1,
+  "id": "fig01-forge-s-execution-boundary-inner-loop",
+  "asset": "assets/images/21-sandboxes-and-execution-environments/fig01-forge-s-execution-boundary-inner-loop.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Keelson Runtime: task record, lease, budget\"] -->|\"leased activity with run token\"| SB[\"MicroVM sandbox: inner loop\"]\n    SB -->|\"all egress\"| EP[\"Egress proxy: default deny\"]\n    EP -->|\"clone and push, run token\"| GP[\"Git proxy holds code-host credential\"]\n    EP -->|\"dependencies\"| PM[\"Internal package mirror\"]\n    EP -->|\"brokered tools\"| TY[\"Toolyard\"]\n    EP -->|\"model calls\"| GW[\"Keelson Gateway holds provider credentials\"]\n    GP -->|\"push agent branch only\"| CH[\"Code host\"]\n    CH -->|\"pull request\"| RV[\"Human review and no-secrets CI\"]\n    EP -->|\"allowed and denied requests\"| LB[\"Logbook and Wake\"]"
+ },
+ {
+  "post": "21-sandboxes-and-execution-environments",
+  "figure": 2,
+  "id": "fig02-sandbox-has-no-reuse-transition-every",
+  "asset": "assets/images/21-sandboxes-and-execution-environments/fig02-sandbox-has-no-reuse-transition-every.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Requested\n    Requested --> Booting: lease acquired\n    Booting --> Ready: snapshot restored and verified\n    Ready --> Running: workspace cloned through git proxy\n    Running --> Draining: done, cancelled or budget exhausted\n    Running --> Quarantined: policy breach or anomaly\n    Draining --> Destroyed: diff and logs exported\n    Quarantined --> Destroyed: evidence preserved and reviewed\n    Destroyed --> [*]"
+ },
+ {
+  "post": "21-sandboxes-and-execution-environments",
+  "figure": 3,
+  "id": "fig03-forge-run-every-external-effect-passes",
+  "asset": "assets/images/21-sandboxes-and-execution-environments/fig03-forge-run-every-external-effect-passes.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as Keelson Runtime\n    participant SB as MicroVM sandbox\n    participant EP as Egress proxy\n    participant GP as Git proxy\n    participant CH as Code host\n    RT->>SB: boot from signed snapshot with run token\n    SB->>EP: clone task repository\n    EP->>GP: forward with run token\n    GP->>CH: clone with held credential\n    Note over SB: inner loop runs tests and applies edits\n    SB->>EP: request to an unlisted host\n    EP-->>SB: denied and logged\n    Note over SB: denial returned to the loop as a tool result\n    SB->>EP: push forge branch\n    EP->>GP: forward with run token\n    GP->>CH: push to forge task branch only\n    RT->>SB: export diff and logs then destroy"
+ },
+ {
+  "post": "30-policy-enforcement-and-audit",
+  "figure": 1,
+  "id": "fig01-four-enforcement-points-run-s-only",
+  "asset": "assets/images/30-policy-enforcement-and-audit/fig01-four-enforcement-points-run-s-only.jpeg",
+  "mermaid": "flowchart LR\n    CA[\"Context assembler\"] --> P1[\"PEP 1: before model call\"]\n    P1 --> GW[\"Keelson Gateway and model\"]\n    GW -->|\"proposed action\"| P2[\"PEP 2: before tool call\"]\n    P2 -->|\"approval required\"| HU[\"Approval card\"]\n    HU --> P3[\"PEP 3: before side effect\"]\n    P2 -->|\"allowed\"| P3\n    P3 --> TY[\"Toolyard dispatch\"]\n    GW -->|\"draft reply\"| P4[\"PEP 4: on output\"]\n    P4 --> OUT[\"Customer or user\"]\n    P1 & P2 & P3 & P4 -->|\"decision records\"| LB[\"Logbook\"]"
+ },
+ {
+  "post": "30-policy-enforcement-and-audit",
+  "figure": 2,
+  "id": "fig02-one-closewise-entry-every-decision-way",
+  "asset": "assets/images/30-policy-enforcement-and-audit/fig02-one-closewise-entry-every-decision-way.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as KeelsonRuntime\n    participant TY as Toolyard\n    participant BH as Bulkhead\n    participant CT as Controller\n    participant ERP as ERP\n    participant LB as Logbook\n    RT->>LB: proposal with action object hash\n    RT->>TY: propose post_accrual\n    TY->>BH: PEP 2 decision\n    BH-->>TY: approval required, decision recorded\n    TY-->>RT: pending approval\n    RT->>CT: approval card with evidence and policy clause\n    CT-->>RT: approve object hash with reason\n    RT->>LB: approval decided, evidence refs, time on card\n    RT->>RT: PEP 3 revalidate hash, policy, evidence, expiry\n    RT->>TY: execute with key and approval id\n    TY->>BH: PEP 3 dispatch decision\n    BH-->>TY: allow, approval valid, period open\n    TY->>LB: intent with idempotency key\n    TY->>ERP: post entry with key\n    ERP-->>TY: journal id\n    TY->>LB: receipt with journal id"
+ },
+ {
+  "post": "30-policy-enforcement-and-audit",
+  "figure": 3,
+  "id": "fig03-logbook-streams-are-source-truth-chain",
+  "asset": "assets/images/30-policy-enforcement-and-audit/fig03-logbook-streams-are-source-truth-chain.jpeg",
+  "mermaid": "flowchart LR\n    W[\"Writers: Runtime, Gateway, Bulkhead, Toolyard\"] -->|\"append\"| S[\"Per-run streams, hash-chained\"]\n    S -->|\"hourly chain heads\"| A[\"Anchor: WORM object storage\"]\n    S -->|\"projection\"| Q[\"Audit query store\"]\n    S -->|\"verify job\"| V[\"Chain verifier\"]\n    V -->|\"gap or mismatch\"| AL[\"Security alert\"]\n    Q --> R1[\"Risk owners and auditors\"]\n    Q --> R2[\"Sounding and incident review\"]"
+ },
+ {
+  "post": "27-prompt-injection-defense",
+  "figure": 1,
+  "id": "fig01-untrusted-text-reaches-planner-only-typed",
+  "asset": "assets/images/27-prompt-injection-defense/fig01-untrusted-text-reaches-planner-only-typed.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Verified principal and request\"] --> P[\"Privileged planner model\"]\n    X[\"Untrusted sources: email, web, files, tool output\"] --> S[\"Source hygiene: strip hidden text\"]\n    S --> Q[\"Quarantined reader model, no tools\"]\n    Q -->|\"typed fields, labeled UNTRUSTED\"| R[\"Runtime: values by handle\"]\n    P -->|\"plan over handles\"| R\n    R -->|\"proposed tool call\"| B[\"Bulkhead: sink policy by provenance\"]\n    B -->|\"allowed\"| T[\"Toolyard: executes with brokered credentials\"]\n    B -->|\"high-consequence\"| H[\"Human confirmation\"]\n    B -->|\"denied\"| W[\"Wake alert and Logbook record\"]\n    T --> E[\"Egress allowlist\"]"
+ },
+ {
+  "post": "27-prompt-injection-defense",
+  "figure": 2,
+  "id": "fig02-planner-never-reads-raw-email-every",
+  "asset": "assets/images/27-prompt-injection-defense/fig02-planner-never-reads-raw-email-every.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Mail as Inbound email\n    participant RT as Keelson Runtime\n    participant QR as Quarantined reader\n    participant AD as Answerdesk planner\n    participant BH as Bulkhead\n    participant TY as Toolyard\n    Mail->>RT: ticket body and attachments\n    RT->>RT: strip hidden text, label UNTRUSTED\n    RT->>QR: untrusted text only, no tools\n    QR-->>RT: TicketFacts record\n    RT->>RT: validate schema, resolve contract against sender identity\n    RT->>AD: TicketFacts as labeled handles plus verified account data\n    AD->>RT: propose send_email with contact and document handles\n    RT->>BH: proposed call with argument provenance\n    BH-->>RT: allow if recipient and documents belong to verified account\n    RT->>TY: execute with brokered credentials\n    TY-->>RT: receipt"
+ },
+ {
+  "post": "25-partial-failure-and-compensation",
+  "figure": 1,
+  "id": "fig01-recovery-decision-made-code-effect-ledger",
+  "asset": "assets/images/25-partial-failure-and-compensation/fig01-recovery-decision-made-code-effect-ledger.jpeg",
+  "mermaid": "flowchart TB\n    A[\"Terminal cause: business error, expiry, refusal, budget, wrong action found\"] --> B[\"Read effect ledger\"]\n    B --> C{\"Any effect unknown?\"}\n    C -->|\"yes\"| D[\"Lookup by key, else repair queue\"]\n    D --> B\n    C -->|\"no\"| E{\"Pivot already succeeded?\"}\n    E -->|\"yes\"| F[\"Forward: finish retryable steps\"]\n    E -->|\"no\"| G[\"Build compensations from receipts\"]\n    G --> H{\"Window open and tier allows automation?\"}\n    H -->|\"yes\"| I[\"Backward: run compensations in reverse order\"]\n    H -->|\"no\"| J[\"Hold: recovery plan to the risk owner\"]\n    F --> K[\"Recovery report in Logbook\"]\n    I --> K\n    J --> K"
+ },
+ {
+  "post": "25-partial-failure-and-compensation",
+  "figure": 2,
+  "id": "fig02-held-quarantined-recovering-are-explicit-run",
+  "asset": "assets/images/25-partial-failure-and-compensation/fig02-held-quarantined-recovering-are-explicit-run.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Running\n    Running --> Held: kill switch or budget\n    Held --> Running: human releases\n    Running --> Quarantined: outputs suspect\n    Held --> Quarantined: investigation opens\n    Running --> Recovering: terminal cause\n    Recovering --> Compensated: compensations receipted\n    Recovering --> NeedsAttention: compensation failed or plan held\n    NeedsAttention --> Compensated: human completes plan\n    Quarantined --> Compensated: revert plan executed\n    Quarantined --> Released: outputs cleared\n    Running --> Completed\n    Completed --> Quarantined: wrong action found later\n    Compensated --> [*]\n    Released --> [*]\n    Completed --> [*]"
+ },
+ {
+  "post": "28-agent-identity-and-least-privilege",
+  "figure": 1,
+  "id": "fig01-principal-s-authority-enters-once-run",
+  "asset": "assets/images/28-agent-identity-and-least-privilege/fig01-principal-s-authority-enters-once-run.jpeg",
+  "mermaid": "flowchart LR\n    P[\"Principal: customer contact in tenant\"] -->|\"verified session\"| RT[\"Keelson Runtime\"]\n    WK[\"Workload identity of the worker\"] -->|\"proves genuine code\"| IDP[\"Ostrell identity provider\"]\n    RT -->|\"token exchange: subject plus actor\"| IDP\n    IDP -->|\"run token: sub principal, act agent run\"| RT\n    RT -->|\"tool call with run token\"| TY[\"Toolyard broker\"]\n    TY -->|\"decide\"| BH[\"Bulkhead\"]\n    TY -->|\"exchange run token for call token\"| IDP\n    TY -->|\"call token: one audience, one account, 5 min\"| SRV[\"Document tool server\"]\n    SRV -->|\"row check against tenant\"| SOR[\"Document store\"]"
+ },
+ {
+  "post": "28-agent-identity-and-least-privilege",
+  "figure": 2,
+  "id": "fig02-bulkhead-decides-toolyard-executes-book-s",
+  "asset": "assets/images/28-agent-identity-and-least-privilege/fig02-bulkhead-decides-toolyard-executes-book-s.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as KeelsonRuntime\n    participant TY as Toolyard\n    participant BH as Bulkhead\n    participant IDP as IdentityProvider\n    participant DS as DocumentServer\n    RT->>TY: get_contract_document with run token and contract handle\n    TY->>TY: resolve handle to contract id from verified account\n    TY->>BH: decide for principal, agent, run, tool, arguments\n    BH-->>TY: allow, scope contracts.read, one contract\n    TY->>IDP: exchange run token for call token, audience DocumentServer\n    IDP-->>TY: call token, 5 minutes\n    TY->>DS: read contract with call token\n    DS->>DS: check audience, scope, tenant owns contract\n    DS-->>TY: document, logged as agent for contact\n    TY-->>RT: shaped result with no token in it"
+ },
+ {
+  "post": "34-evidence-for-autonomy",
+  "figure": 1,
+  "id": "fig01-evidence-ladder-each-step-measures-something",
+  "asset": "assets/images/34-evidence-for-autonomy/fig01-evidence-ladder-each-step-measures-something.jpeg",
+  "mermaid": "flowchart LR\n    O[\"Offline suites: pass^k, injection, null baseline\"] --> S[\"Shadow mode: proposals recorded, effects stubbed\"]\n    S --> P[\"Current tier with measured humans: audited approvals or suggestions\"]\n    P --> L[\"Limited autonomy: randomized slice at higher tier\"]\n    L --> F[\"Full tier within hard limits\"]\n    F -->|\"demotion trigger\"| P\n    F -->|\"invariant breach\"| H[\"Hold: queue for review\"]"
+ },
+ {
+  "post": "34-evidence-for-autonomy",
+  "figure": 2,
+  "id": "fig02-two-paths-change-tier-promotions-flow",
+  "asset": "assets/images/34-evidence-for-autonomy/fig02-two-paths-change-tier-promotions-flow.jpeg",
+  "mermaid": "flowchart TB\n    R[\"Agent Registry: tier register and decision records\"]\n    B[\"Bulkhead: resolve tier per action\"]\n    T[\"Toolyard: execute, record only, or refuse\"]\n    W[\"Wake: online metrics\"]\n    M[\"Demotion monitor\"]\n    S[\"Sounding: criteria and gate verdicts\"]\n    H[\"Risk owner: signs promotions\"]\n    L[\"Logbook: actions with tier and manifest\"]\n    B -->|\"reads tier and holds\"| R\n    B -->|\"routes action\"| T\n    T -->|\"receipts\"| L\n    L -->|\"evidence\"| S\n    W -->|\"breaches\"| M\n    M -->|\"demote or hold\"| R\n    S -->|\"verdict and evidence pack\"| H\n    H -->|\"signed promotion\"| R"
+ },
+ {
+  "post": "34-evidence-for-autonomy",
+  "figure": 3,
+  "id": "fig03-lifecycle-answerdesk-s-credit-up-250",
+  "asset": "assets/images/34-evidence-for-autonomy/fig03-lifecycle-answerdesk-s-credit-up-250.jpeg",
+  "mermaid": "stateDiagram-v2\n    state \"A1 draft for approval\" as A1\n    state \"A2 limited slice\" as A2L\n    state \"A2 act within limits\" as A2\n    state \"Hold, queued for review\" as HOLD\n    [*] --> A1\n    A1 --> A2L: criteria passed and risk owner signed\n    A2L --> A2: concurrent control shows no difference\n    A2L --> A1: control shows a difference\n    A2 --> A1: D1 audited error bound breached\n    A2 --> HOLD: D2 duplicate or D3 spend spike\n    HOLD --> A2: repair record and risk owner release\n    HOLD --> A1: risk owner demotes\n    A2 --> A1: D4 new manifest until re-gated"
+ },
+ {
+  "post": "31-evaluating-agentic-systems",
+  "figure": 1,
+  "id": "fig01-sounding-s-evaluation-pyramid-cheap-component",
+  "asset": "assets/images/31-evaluating-agentic-systems/fig01-sounding-s-evaluation-pyramid-cheap-component.jpeg",
+  "mermaid": "flowchart TB\n    S[\"System level: outcome metrics on production traffic, weekly review\"]\n    W[\"Workflow level: end-to-end tasks in simulators and sandboxes, k trials, release candidates\"]\n    T[\"Trajectory level: invariants over every recorded run, offline and online\"]\n    C[\"Component level: labeled sets per model step, retriever and router, every change and daily canary\"]\n    C -->|\"feeds\"| W\n    T -->|\"constrains\"| W\n    W -->|\"predicts\"| S\n    S -->|\"new failures become cases\"| C\n    S -->|\"new invariants\"| T"
+ },
+ {
+  "post": "31-evaluating-agentic-systems",
+  "figure": 2,
+  "id": "fig02-sounding-reads-trajectories-logbook-end-states",
+  "asset": "assets/images/31-evaluating-agentic-systems/fig02-sounding-reads-trajectories-logbook-end-states.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Keelson Runtime\"] -->|\"run events\"| LB[\"Logbook evidence log\"]\n    RT -->|\"spans\"| WK[\"Wake traces and metrics\"]\n    LB -->|\"trajectories and receipts\"| SD[\"Sounding\"]\n    SOR[\"Systems of record\"] -->|\"end states, days later\"| SD\n    SD -->|\"runs suites in\"| ENV[\"Eval sandboxes and simulators\"]\n    ENV -->|\"trial transcripts\"| SD\n    SD -->|\"results bound to manifest\"| REG[\"Agent Registry\"]\n    SD -->|\"online invariant violations\"| WK"
+ },
+ {
+  "post": "29-human-oversight-and-bounded-autonomy",
+  "figure": 1,
+  "id": "fig01-five-oversight-modes-sit-different-points",
+  "asset": "assets/images/29-human-oversight-and-bounded-autonomy/fig01-five-oversight-modes-sit-different-points.jpeg",
+  "mermaid": "flowchart LR\n    P[\"Model proposes an action object\"] --> B[\"Bulkhead: class, tier, checks\"]\n    B -->|\"A1 or flagged\"| AB[\"Approve before: human decides on the card\"]\n    B -->|\"A2 or A3, within limits\"| X[\"Toolyard executes with key\"]\n    AB -->|\"approved and revalidated\"| X\n    X --> RA[\"Review after: compensable window\"]\n    X --> SA[\"Sample audit: independent second reviewer\"]\n    X --> MO[\"Monitor: metrics, holds, incidents\"]\n    ID[\"Intervene during: pause, steer, stop that holds\"] -.-> X"
+ },
+ {
+  "post": "29-human-oversight-and-bounded-autonomy",
+  "figure": 2,
+  "id": "fig02-card-built-system-record-reads-record",
+  "asset": "assets/images/29-human-oversight-and-bounded-autonomy/fig02-card-built-system-record-reads-record.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as Runtime\n    participant BH as Bulkhead\n    participant AS as ApprovalService\n    participant TL as Approver\n    participant LB as Logbook\n    participant TY as Toolyard\n    RT->>BH: Action object, hash, class\n    BH-->>RT: Approval required at level R2, policy v41\n    RT->>AS: Request card for action hash\n    AS->>AS: Read visit, contract, schedule, prior credits\n    AS->>TL: Card with facts, clause, consequence\n    TL-->>AS: Approve with reason code\n    AS->>LB: Approval record bound to hash and evidence\n    AS-->>RT: Signal approval id\n    RT->>RT: Revalidate hash, policy, evidence, expiry\n    RT->>TY: Execute with idempotency key and approval id\n    TY->>LB: Receipt"
+ },
+ {
+  "post": "29-human-oversight-and-bounded-autonomy",
+  "figure": 3,
+  "id": "fig03-approval-has-own-lifecycle-separate-action",
+  "asset": "assets/images/29-human-oversight-and-bounded-autonomy/fig03-approval-has-own-lifecycle-separate-action.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Requested\n    Requested --> Shown: card built from current facts\n    Shown --> Approved: approve\n    Shown --> Rejected: reject\n    Shown --> InfoRequested: request information\n    InfoRequested --> Requested: new evidence, new card\n    Shown --> Escalated: above approver authority\n    Requested --> Escalated: SLA timer fired\n    Escalated --> Shown: next role\n    Approved --> Consumed: revalidated, executed\n    Approved --> Void: action, policy or evidence changed\n    Approved --> Expired: expiry passed before execution\n    Void --> [*]\n    Expired --> [*]\n    Rejected --> [*]\n    Consumed --> [*]"
+ },
+ {
+  "post": "32-building-agent-eval-suites",
+  "figure": 1,
+  "id": "fig01-eval-suite-data-pipeline-test-environment",
+  "asset": "assets/images/32-building-agent-eval-suites/fig01-eval-suite-data-pipeline-test-environment.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Case sources: traces, incidents, experts, synthetic, adversarial\"] -->|\"curated, labeled, versioned\"| D[\"Dataset registry\"]\n    M[\"Candidate agent version manifest\"] --> H[\"Evaluation harness\"]\n    D -->|\"cases and splits\"| H\n    H -->|\"tool calls\"| T[\"Tool twins with fault injection\"]\n    H -->|\"turns\"| U[\"User simulator\"]\n    H -->|\"transcript and end state\"| G[\"Grader stack: code, judge, human sample\"]\n    G -->|\"scores with versions\"| R[\"Results store\"]\n    R --> X[\"Regression gate\"]\n    X -->|\"pass or block\"| A[\"Agent Registry\"]"
+ },
+ {
+  "post": "32-building-agent-eval-suites",
+  "figure": 2,
+  "id": "fig02-regression-gate-runs-candidate-production-same",
+  "asset": "assets/images/32-building-agent-eval-suites/fig02-regression-gate-runs-candidate-production-same.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Dev as Prompt author\n    participant CI as CI pipeline\n    participant Snd as Sounding harness\n    participant Env as Twins and simulator\n    participant Grd as Grader stack\n    participant Reg as Agent Registry\n    Dev->>CI: PR changes the tool prompt\n    CI->>Snd: run regression suite on candidate and production manifests\n    Snd->>Env: reset fixtures, run k trials per case\n    Env-->>Snd: transcripts and end states\n    Snd->>Grd: grade with pinned grader versions\n    Grd-->>Snd: per-case scores and invariant results\n    Snd->>Snd: paired comparison against pre-registered thresholds\n    alt hard criterion failed or paired drop beyond margin\n        Snd-->>CI: block with failing cases linked to transcripts\n    else all criteria met\n        Snd->>Reg: record immutable eval run id for the candidate\n        Snd-->>CI: pass\n    end"
+ },
+ {
+  "post": "32-building-agent-eval-suites",
+  "figure": 3,
+  "id": "fig03-error-analysis-loop-that-keeps-suite",
+  "asset": "assets/images/32-building-agent-eval-suites/fig03-error-analysis-loop-that-keeps-suite.jpeg",
+  "mermaid": "flowchart LR\n    P[\"Production traces\"] -->|\"stratified weekly sample\"| R[\"Read and annotate\"]\n    R --> T[\"Failure taxonomy with counts\"]\n    T -->|\"largest ungraded class\"| C[\"New cases and graders\"]\n    C -->|\"grader checked on annotated examples\"| S[\"Regression suite next version\"]\n    S --> G[\"Regression gate\"]\n    G -->|\"only passing versions ship\"| P\n    I[\"Incidents\"] --> C"
+ },
+ {
+  "post": "38-versioning-agent-systems",
+  "figure": 1,
+  "id": "fig01-manifest-built-repository-registered-gated-once",
+  "asset": "assets/images/38-versioning-agent-systems/fig01-manifest-built-repository-registered-gated-once.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Agent repository: code, prompts, policy refs\"] -->|\"CI builds\"| B[\"Manifest: immutable, hashed\"]\n    B -->|\"registration checks\"| C[\"Agent Registry\"]\n    C -->|\"evaluate candidate\"| D[\"Sounding gate\"]\n    D -->|\"gate result\"| C\n    C -->|\"production pointer\"| E[\"Keelson Runtime: resolves at run start\"]\n    E -->|\"exact model id\"| F[\"Keelson Gateway\"]\n    E -->|\"tool contract and hash\"| G[\"Toolyard\"]\n    E -->|\"policy version\"| H[\"Bulkhead\"]\n    E -->|\"manifest hash and served versions\"| I[\"Logbook and Wake\"]"
+ },
+ {
+  "post": "38-versioning-agent-systems",
+  "figure": 2,
+  "id": "fig02-coupling-inside-one-manifest-change-upstream",
+  "asset": "assets/images/38-versioning-agent-systems/fig02-coupling-inside-one-manifest-change-upstream.jpeg",
+  "mermaid": "flowchart TB\n    M[\"Model id and settings\"] --> P[\"Prompts\"]\n    T[\"Tool contracts and descriptions\"] --> P\n    P --> O[\"Output schema\"]\n    O --> W[\"Workflow validators and code\"]\n    T --> W\n    E[\"Embedding model\"] --> X[\"Retrieval index snapshot\"]\n    S[\"Memory schema\"] --> R[\"Memory reader and writer prompt\"]\n    R --> P\n    Y[\"Policy version\"] --> W"
+ },
+ {
+  "post": "35-agent-latency-and-throughput",
+  "figure": 1,
+  "id": "fig01-after-redesign-answerdesk-exchange-has-most",
+  "asset": "assets/images/35-agent-latency-and-throughput/fig01-after-redesign-answerdesk-exchange-has-most.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Customer message\"] --> B[\"Gateway and scope check\"]\n    B --> C[\"Intake router\"]\n    B --> D[\"Knowledge-base search\"]\n    B --> E[\"Account and contract reads\"]\n    C --> F[\"Mid-tier decide or answer\"]\n    D --> F\n    E --> F\n    F -->|\"answer\"| G[\"Stream through output guard\"]\n    F -->|\"read-only tools\"| H[\"Parallel tool calls\"]\n    H --> I[\"Mid-tier answer\"]\n    I --> G\n    F -->|\"side effect\"| J[\"Durable action with idempotency key\"]\n    J -.->|\"status update\"| G"
+ },
+ {
+  "post": "35-agent-latency-and-throughput",
+  "figure": 2,
+  "id": "fig02-quota-pools-turn-one-shared-provider",
+  "asset": "assets/images/35-agent-latency-and-throughput/fig02-quota-pools-turn-one-shared-provider.jpeg",
+  "mermaid": "flowchart TB\n    A[\"Answerdesk chat and other interactive agents\"] -->|\"interactive class\"| Q[\"Keelson Gateway admission queue\"]\n    B[\"Scout, Forge, Answerdesk email\"] -->|\"background class\"| Q\n    C[\"Closewise bulk steps and Sounding suites\"] -->|\"batch class\"| Q\n    Q --> P1[\"Interactive pool, reserved share\"]\n    Q --> P2[\"Background pool, borrows only spare capacity\"]\n    Q --> P3[\"Provider batch tier\"]\n    P1 --> M[\"Provider rate limits per model class\"]\n    P2 --> M\n    Q -.->|\"deadline expired or saturated\"| R[\"Retryable rejection or checkpoint and resume\"]"
+ },
+ {
+  "post": "35-agent-latency-and-throughput",
+  "figure": 3,
+  "id": "fig03-answerdesk-action-exchange-waits-receipt-only",
+  "asset": "assets/images/35-agent-latency-and-throughput/fig03-answerdesk-action-exchange-waits-receipt-only.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant R as Runtime\n    participant G as Gateway\n    participant T as Toolyard\n    participant W as Workflow\n    C->>R: Message, exchange deadline set to 6 s\n    par Off the critical path\n        R->>G: Route intake\n    and Reads\n        R->>T: Knowledge-base search and account read\n    end\n    R->>G: Decide or answer on Mid tier\n    G-->>R: Credit action object\n    R-->>C: Progress line naming the step\n    R->>W: Submit credit with idempotency key\n    W->>T: Issue credit once\n    alt Receipt within 8 s\n        T-->>R: Receipt\n        R-->>C: Credit confirmed with reference\n    else Receipt late\n        R-->>C: Credit pending, reference and email confirmation\n        T-->>W: Receipt arrives later\n        W-->>C: Outcome posted to the conversation\n    end"
+ },
+ {
+  "post": "33-agent-observability",
+  "figure": 1,
+  "id": "fig01-every-component-that-acts-model-s",
+  "asset": "assets/images/33-agent-observability/fig01-every-component-that-acts-model-s.jpeg",
+  "mermaid": "flowchart LR\n    RT[\"Keelson Runtime\"] -->|\"run and step spans\"| COL[\"Wake collectors\"]\n    GW[\"Keelson Gateway\"] -->|\"model call spans\"| COL\n    TY[\"Toolyard\"] -->|\"tool call spans\"| COL\n    BH[\"Bulkhead\"] -->|\"policy decision spans\"| COL\n    GW -->|\"prompts and responses\"| CS[\"Content store\"]\n    TY -->|\"arguments and results\"| CS\n    COL -->|\"tail sampling\"| TS[\"Trace store\"]\n    COL -->|\"all spans, before sampling\"| MET[\"Metrics and alerts\"]\n    TS -->|\"run id and action id\"| LB[\"Logbook\"]\n    TS -->|\"sampled traces\"| SD[\"Sounding\"]"
+ },
+ {
+  "post": "33-agent-observability",
+  "figure": 2,
+  "id": "fig02-long-running-run-several-traces-joined",
+  "asset": "assets/images/33-agent-observability/fig02-long-running-run-several-traces-joined.jpeg",
+  "mermaid": "flowchart TB\n    R[\"Run segment: Closewise entity close, day 1\"] --> P[\"Plan step\"]\n    R --> RET[\"Retrieval: ledger balances, as_of\"]\n    R --> M[\"Model call: classify accrual, resolved model\"]\n    R --> POL[\"Policy decision: before side effect\"]\n    R --> A[\"Action object proposed, action id\"]\n    A -.->|\"span link across the wait\"| R2[\"Run segment: day 2 resumes\"]\n    R2 --> AP[\"Approval span: controller, wait time\"]\n    R2 --> T[\"Tool call: post to ERP, receipt id\"]\n    T -.->|\"action id\"| LB[\"Logbook entry\"]"
+ },
+ {
+  "post": "33-agent-observability",
+  "figure": 3,
+  "id": "fig03-scope-first-then-ask-what-changed",
+  "asset": "assets/images/33-agent-observability/fig03-scope-first-then-ask-what-changed.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Signal: alert, complaint, eval drop\"] --> SC[\"Scope: which agent, version, model, tenant, since when\"]\n    SC --> CH[\"What changed: deploys, manifests, resolved models, indexes, policies\"]\n    CH --> SEL[\"Select runs: failed and matched good runs\"]\n    SEL --> RD[\"Read traces: inputs, proposal, policy, effect\"]\n    RD --> LOC[\"Locate the first wrong step\"]\n    LOC --> RP[\"Replay with the suspect component changed\"]\n    RP --> FX[\"Contain, fix, and add the runs to the eval suite\"]"
+ },
+ {
+  "post": "36-agent-cost-and-model-routing",
+  "figure": 1,
+  "id": "fig01-routers-decide-before-call-cascades-decide",
+  "asset": "assets/images/36-agent-cost-and-model-routing/fig01-routers-decide-before-call-cascades-decide.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Agent step from Keelson Runtime\"] --> G[\"Keelson Gateway\"]\n    G -->|\"static tier per step type\"| M[\"Mid tier\"]\n    G -->|\"router predicts easy\"| SM[\"Small tier\"]\n    SM --> V{\"Verifier: schema, rule or test\"}\n    V -->|\"pass\"| R[\"Result to runtime\"]\n    V -->|\"fail\"| L[\"Large tier\"]\n    M --> R\n    L --> R\n    G -->|\"router predicts hard or risky\"| L"
+ },
+ {
+  "post": "36-agent-cost-and-model-routing",
+  "figure": 2,
+  "id": "fig02-each-level-bounds-different-failure-step",
+  "asset": "assets/images/36-agent-cost-and-model-routing/fig02-each-level-bounds-different-failure-step.jpeg",
+  "mermaid": "flowchart TB\n    O[\"Organization: provider spend caps and rate limits\"] --> T[\"Team or cost center: monthly budget\"]\n    T --> A[\"Agent: monthly budget in Agent Registry\"]\n    A --> N[\"Tenant: daily quota per customer\"]\n    N --> R[\"Run budget: tokens, cost, time, depth, fan-out\"]\n    R --> S[\"Step: max output tokens and reasoning effort\"]"
+ },
+ {
+  "post": "36-agent-cost-and-model-routing",
+  "figure": 3,
+  "id": "fig03-runtime-admits-each-step-against-run",
+  "asset": "assets/images/36-agent-cost-and-model-routing/fig03-runtime-admits-each-step-against-run.jpeg",
+  "mermaid": "sequenceDiagram\n    participant RT as KeelsonRuntime\n    participant BL as BudgetLedger\n    participant GW as KeelsonGateway\n    participant P as ModelProvider\n    participant WK as Wake\n    RT->>BL: admit step with run tree id and estimate\n    BL-->>RT: allow, warn or terminate\n    RT->>GW: model call with run, agent version, tenant, step type\n    GW->>GW: tenant quota and agent budget check, choose tier\n    GW->>P: request on chosen model\n    P-->>GW: response with token usage\n    GW->>BL: record actual tokens and cost from dated price table\n    GW->>WK: usage event with attribution attributes\n    GW-->>RT: result\n    WK->>WK: join usage to task outcome for cost per successful task"
+ },
+ {
+  "post": "36-agent-cost-and-model-routing",
+  "figure": 4,
+  "id": "fig04-cost-aware-evaluation-places-each-configuration",
+  "asset": "assets/images/36-agent-cost-and-model-routing/fig04-cost-aware-evaluation-places-each-configuration.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Profile C: Small everywhere\"] -->|\"cheapest, resolves least\"| F[\"Cost-quality frontier\"]\n    B[\"Profile B: per-step tiers\"] -->|\"near-baseline resolution, 58 percent less model spend\"| F\n    A[\"Profile A: Large planning call every exchange\"] -->|\"highest cost, best resolution\"| F\n    F --> D[\"Choose by cost per successful task and action-class policy limits\"]"
+ },
+ {
+  "post": "42-domain-customer-operations",
+  "figure": 1,
+  "id": "fig01-customer-operations-reference-design-keelson-model",
+  "asset": "assets/images/42-domain-customer-operations/fig01-customer-operations-reference-design-keelson-model.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Customer channels: chat, email, voice\"] --> GW[\"Channel gateway and identity: verified customer scope\"]\n    GW --> RT[\"Intake router: rules, classifier, model, human triage\"]\n    RT --> AG[\"Answerdesk loop on Keelson Runtime\"]\n    AG -->|\"reads\"| TY[\"Toolyard read tools: KB, contract, visits, ticket\"]\n    AG -->|\"proposes action object\"| BH[\"Bulkhead: tier, limits, contact policy\"]\n    BH -->|\"allow\"| EX[\"Toolyard executor: idempotency key, receipt, read-back\"]\n    BH -->|\"needs approval\"| HQ[\"Support queue: approval or handoff\"]\n    EX --> SOR[\"Billing, scheduling, ticketing, CRM\"]\n    EX -->|\"receipt\"| RS[\"Reply renderer: status slots from records\"]\n    RS --> GW\n    AG --> LB[\"Logbook and Wake\"]"
+ },
+ {
+  "post": "42-domain-customer-operations",
+  "figure": 2,
+  "id": "fig02-renewal-reminder-created-code-after-resolution",
+  "asset": "assets/images/42-domain-customer-operations/fig02-renewal-reminder-created-code-after-resolution.jpeg",
+  "mermaid": "flowchart TB\n    R[\"Resolved conversation\"] --> E{\"Eligible: Assure contract ends within 60 days\"}\n    E -->|\"no\"| X[\"No reminder\"]\n    E -->|\"yes\"| A[\"Code builds marketing_reminder from approved template and live price read\"]\n    A --> S{\"Suppressed for marketing, by resolved identity\"}\n    S -->|\"yes\"| B[\"Blocked: reason logged\"]\n    S -->|\"no\"| K{\"Consent for purpose marketing on this channel\"}\n    K -->|\"no\"| B\n    K -->|\"yes\"| O{\"Open complaint or escalation within 30 days\"}\n    O -->|\"yes\"| B\n    O -->|\"no\"| D[\"Executor sends with idempotency key\"]"
+ },
+ {
+  "post": "42-domain-customer-operations",
+  "figure": 3,
+  "id": "fig03-one-answerdesk-conversation-end-end-model",
+  "asset": "assets/images/42-domain-customer-operations/fig03-one-answerdesk-conversation-end-end-model.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant G as Gateway\n    participant R as Router\n    participant A as Answerdesk\n    participant T as Toolyard\n    participant B as Bulkhead\n    participant S as Billing and scheduling\n    participant L as Logbook\n    C->>G: Missed visit, credit, renewal date\n    G->>R: Message with verified customer scope\n    R->>A: Route revisit_scheduling, tools and tier\n    A->>T: Read visit, contract terms, credit policy article\n    T-->>A: Facts with provenance envelopes\n    A-->>C: Progress line, then two revisit slots\n    C->>A: Confirms Wednesday 08:00\n    A->>B: Action objects, revisit and credit\n    B-->>T: Allow at A2 within limits\n    T->>S: Execute with idempotency keys\n    S-->>T: Receipts, then read-back verified\n    T->>L: Intents, receipts, verification\n    A-->>C: Reply with rendered status slots and renewal date"
+ },
+ {
+  "post": "39-staged-rollout-and-rollback",
+  "figure": 1,
+  "id": "fig01-each-stage-produces-evidence-previous-one",
+  "asset": "assets/images/39-staged-rollout-and-rollback/fig01-each-stage-produces-evidence-previous-one.jpeg",
+  "mermaid": "flowchart LR\n    G[\"Offline gate: paired regression, invariants\"] -->|\"verdict\"| S[\"Shadow: effects stubbed\"]\n    S -->|\"adjudicated disagreements\"| C[\"Canary: sticky slice plus control\"]\n    C -->|\"guardrails in band, human approves\"| R[\"Ramp: larger shares\"]\n    R -->|\"human approves\"| F[\"Full: holdback and rollback target kept\"]\n    C -->|\"trigger fires\"| B[\"Rollback: pointer to stable\"]\n    R -->|\"trigger fires\"| B\n    F -->|\"trigger fires\"| B\n    B -->|\"effects query by manifest hash\"| X[\"Forward-fix queue\"]"
+ },
+ {
+  "post": "39-staged-rollout-and-rollback",
+  "figure": 2,
+  "id": "fig02-rollback-two-halves-registry-stops-new",
+  "asset": "assets/images/39-staged-rollout-and-rollback/fig02-rollback-two-halves-registry-stops-new.jpeg",
+  "mermaid": "sequenceDiagram\n    participant W as Wake\n    participant S as Sounding\n    participant R as Agent Registry\n    participant K as Keelson Runtime\n    participant L as Logbook\n    participant O as Agent owner\n    W->>S: guardrail metrics by manifest hash and cohort\n    S->>R: verdict roll back\n    R->>R: candidate share set to zero, event recorded\n    R-->>K: new runs resolve to stable manifest\n    K->>O: candidate runs still in flight\n    O->>K: drain or cancel with compensation\n    O->>L: effects query by candidate manifest hash\n    L-->>O: receipts, pending actions, memory writes\n    O->>O: open forward-fix cases per effect class"
+ },
+ {
+  "post": "37-caching-and-context-budgets",
+  "figure": 1,
+  "id": "fig01-keelson-prefix-layout-orders-prompt-most",
+  "asset": "assets/images/37-caching-and-context-budgets/fig01-keelson-prefix-layout-orders-prompt-most.jpeg",
+  "mermaid": "flowchart LR\n    L0[\"L0 Tool definitions - per agent version\"] --> L1[\"L1 Agent instructions and policy summary - per agent version\"]\n    L1 --> L2[\"L2 Segment instructions - product and language\"]\n    L2 --> L3[\"L3 Conversation preamble - verified customer and contract with as_of\"]\n    L3 --> L4[\"L4 History - append only\"]\n    L4 --> T[\"Volatile tail - clock, this call's retrieval, new message\"]\n    L2 -.->|\"shared by all conversations in a segment, 1-hour TTL\"| S[\"Provider prompt cache\"]\n    L4 -.->|\"per conversation, 5-minute TTL\"| S"
+ },
+ {
+  "post": "37-caching-and-context-budgets",
+  "figure": 2,
+  "id": "fig02-each-cache-sits-component-that-owns",
+  "asset": "assets/images/37-caching-and-context-budgets/fig02-each-cache-sits-component-that-owns.jpeg",
+  "mermaid": "flowchart LR\n    R[\"Keelson Runtime - context assembler and budgets\"] -->|\"layered prompt\"| G[\"Keelson Gateway - cache-aware routing\"]\n    G -->|\"exact prefix\"| P[\"Provider prompt cache\"]\n    G -->|\"salted prefix\"| V[\"Self-hosted model prefix cache\"]\n    R -->|\"read-only tool call\"| T[\"Toolyard - tool-result cache\"]\n    T -->|\"miss or expired\"| S[\"System of record\"]\n    S -.->|\"version change event\"| T\n    R -->|\"versioned question\"| A[\"Answer cache - exact keys only\"]\n    R -->|\"usage fields and cache state\"| W[\"Wake - cache-read share per agent version\"]\n    W -->|\"release check\"| Q[\"Sounding\"]"
+ },
+ {
+  "post": "40-owning-agentic-systems",
+  "figure": 1,
+  "id": "fig01-three-owners-act-one-record-registry",
+  "asset": "assets/images/40-owning-agentic-systems/fig01-three-owners-act-one-record-registry.jpeg",
+  "mermaid": "flowchart TB\n    RO[\"Risk owner: accepts loss, signs promotions\"]\n    AO[\"Agent owner: behavior, outcomes, budget, on-call\"]\n    PO[\"Platform owner: runtime, gateway, broker, policy, evidence\"]\n    REG[\"Agent Registry: lifecycle state, envelope, tiers\"]\n    FORUM[\"Architecture forum: approves envelope changes\"]\n    RUN[\"Production runs\"]\n    AO -->|\"proposes versions and envelope changes\"| REG\n    FORUM -->|\"approves envelope\"| REG\n    RO -->|\"signs tier per action class\"| REG\n    PO -->|\"enforces registry state at every call\"| RUN\n    REG -->|\"read on every run\"| RUN\n    RUN -->|\"outcomes, incidents, cost\"| AO\n    RUN -->|\"expected loss vs actual\"| RO"
+ },
+ {
+  "post": "40-owning-agentic-systems",
+  "figure": 2,
+  "id": "fig02-agent-incident-order-that-matters-hold",
+  "asset": "assets/images/40-owning-agentic-systems/fig02-agent-incident-order-that-matters-hold.jpeg",
+  "mermaid": "sequenceDiagram\n    participant W as Wake\n    participant OC as Agent on-call\n    participant B as Bulkhead\n    participant L as Logbook\n    participant RO as Risk owner\n    participant S as Sounding\n    W->>OC: outcome-shift alert with run and manifest ids\n    OC->>B: hold action class, queued actions held\n    OC->>L: scope query by manifest, class and time window\n    L-->>OC: affected runs, receipts, unknown outcomes\n    OC->>RO: impact statement and repair plan\n    RO-->>OC: approve compensations and customer contact\n    OC->>S: add incident cases to the suite\n    S-->>RO: candidate passes gate on new cases\n    RO->>B: release hold or restore tier, signed"
+ },
+ {
+  "post": "40-owning-agentic-systems",
+  "figure": 3,
+  "id": "fig03-agent-lifecycle-registry-enforces-it-every",
+  "asset": "assets/images/40-owning-agentic-systems/fig03-agent-lifecycle-registry-enforces-it-every.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Rejected: business case or review fails\n    Proposed --> ApprovedForPilot: architecture review approves envelope\n    ApprovedForPilot --> Pilot: conformance check and suite pass\n    Pilot --> Production: risk owner signs tiers on pilot evidence\n    Pilot --> Retired: pilot abandoned\n    Production --> Restricted: hold or demotion trigger\n    Restricted --> Production: candidate re-gated, risk owner signs\n    Production --> Deprecated: owner decides to retire\n    Restricted --> Deprecated: owner decides to retire\n    Deprecated --> Retired: in-flight runs drained, retirement checks pass\n    Rejected --> [*]\n    Retired --> [*]"
+ },
+ {
+  "post": "40-owning-agentic-systems",
+  "figure": 4,
+  "id": "fig04-volatile-parts-plug-into-durable-core",
+  "asset": "assets/images/40-owning-agentic-systems/fig04-volatile-parts-plug-into-durable-core.jpeg",
+  "mermaid": "flowchart LR\n    subgraph VOL[\"Volatile: tuned per model generation\"]\n        P[\"Prompts and examples\"]\n        R[\"Routing profiles and tiers\"]\n        C[\"Context budgets and compaction\"]\n        F[\"Framework and SDK code\"]\n    end\n    subgraph CORE[\"Durable core: the seams\"]\n        M[\"Decision-point map\"]\n        A[\"Action objects, keys, receipts\"]\n        PEP[\"Policy and brokered credentials\"]\n        ST[\"Durable task state\"]\n        EV[\"Evidence log and manifests\"]\n        EVAL[\"Eval datasets and autonomy register\"]\n    end\n    VOL -->|\"plugs in through\"| CORE\n    CORE -->|\"records and gates every change to\"| VOL"
+ },
+ {
+  "post": "43-domain-back-office",
+  "figure": 1,
+  "id": "fig01-back-office-spine-model-s-output",
+  "asset": "assets/images/43-domain-back-office/fig01-back-office-spine-model-s-output.jpeg",
+  "mermaid": "flowchart LR\n    I[\"Untrusted documents and system-of-record reads\"] --> P[\"Bounded model steps in a workflow\"]\n    P -->|\"typed proposal\"| S[\"Staging store\"]\n    S --> MG[\"Machine gate with invariants, rules and verifiers\"]\n    MG -->|\"clean or flagged\"| HG[\"Human gate bound to content hash\"]\n    HG -->|\"approval record\"| BH[\"Bulkhead decides\"]\n    BH -->|\"allow\"| EX[\"Toolyard executor\"]\n    EX -->|\"keyed write\"| SOR[\"System of record\"]\n    SOR -->|\"receipt or unknown\"| RC[\"Reconciler\"]\n    RC --> LB[\"Logbook decision record\"]"
+ },
+ {
+  "post": "43-domain-back-office",
+  "figure": 2,
+  "id": "fig02-one-closewise-accrual-evidence-posting-model",
+  "asset": "assets/images/43-domain-back-office/fig02-one-closewise-accrual-evidence-posting-model.jpeg",
+  "mermaid": "sequenceDiagram\n    participant WF as Close workflow\n    participant M as Model steps\n    participant ST as Staging store\n    participant C as Controller\n    participant BH as Bulkhead\n    participant TY as Toolyard executor\n    participant ERP as ERP\n    participant LB as Logbook\n    WF->>ERP: Read work orders and rate card as read-only principal\n    WF->>M: Evidence loop, then one classification call\n    M-->>WF: Typed draft with evidence references\n    WF->>WF: Entry invariants and balance pre-check\n    WF->>ST: Proposal v1 with content hash and manifest hash\n    ST->>C: Approval card in the entity queue\n    C->>ST: Approve content hash of v1\n    Note over WF,C: Up to 48 working hours, then the deputy controller\n    WF->>ERP: Revalidate period, subledger versions and policy version\n    WF->>BH: May closewise-poster post v1 under this approval\n    BH-->>WF: Allow with decision id and policy version\n    WF->>LB: Intent with idempotency key\n    WF->>TY: Dispatch action object\n    TY->>ERP: Post with key, approver id and run id\n    ERP-->>TY: Document number as receipt\n    TY->>ERP: Read back the posted lines\n    TY->>LB: Receipt and verification result"
+ },
+ {
+  "post": "43-domain-back-office",
+  "figure": 3,
+  "id": "fig03-peoplepoint-s-boundary-anything-that-could",
+  "asset": "assets/images/43-domain-back-office/fig03-peoplepoint-s-boundary-anything-that-could.jpeg",
+  "mermaid": "flowchart TB\n    Q[\"Employee message\"] --> T[\"Topic routing by rules and classifier\"]\n    T -->|\"policy question\"| A[\"Grounded policy answer, A3\"]\n    T -->|\"leave request\"| L[\"Leave workflow, employee confirms, code submits\"]\n    T -->|\"performance, pay or termination\"| R[\"Refuse and open an HR case, A0\"]\n    A -->|\"no in-force policy found\"| R\n    L -->|\"HRIS check fails\"| R\n    R --> H[\"HR staff decide\"]"
+ },
+ {
+  "post": "41-domain-coding-agents",
+  "figure": 1,
+  "id": "fig01-coding-agent-reference-design-inner-loop",
+  "asset": "assets/images/41-domain-coding-agents/fig01-coding-agent-reference-design-inner-loop.jpeg",
+  "mermaid": "flowchart LR\n    TR[\"Trigger: issue or CI failure\"] --> RT[\"Runtime workflow: task record, budget, lease\"]\n    RT -->|\"change plan\"| PV[\"Plan validator: protected paths\"]\n    RT -->|\"leased activity, run token\"| SB[\"Sandbox per run: inner loop\"]\n    SB -->|\"all egress\"| EP[\"Egress proxy\"]\n    EP -->|\"model calls\"| GW[\"Model gateway holds provider keys\"]\n    EP --> GP[\"Git proxy holds credential\"]\n    RT -->|\"diff and test results\"| VF[\"Verifier and graders\"]\n    VF -->|\"run card\"| PR[\"Pull request\"]\n    PR -->|\"outcome approval\"| RV[\"Human reviewer merges\"]\n    RV --> CI[\"Post-merge CI with secrets\"]"
+ },
+ {
+  "post": "41-domain-coding-agents",
+  "figure": 2,
+  "id": "fig02-one-forge-run-end-end-runtime",
+  "asset": "assets/images/41-domain-coding-agents/fig02-one-forge-run-end-end-runtime.jpeg",
+  "mermaid": "sequenceDiagram\n    participant TR as Code host\n    participant RT as Keelson Runtime workflow\n    participant BH as Bulkhead\n    participant SB as MicroVM sandbox inner loop\n    participant GW as Keelson Gateway via egress proxy\n    participant VF as Verifier and Sounding graders\n    participant RV as Human reviewer\n    TR->>RT: issue assigned to Forge with requester identity\n    RT->>GW: model drafts typed change plan\n    RT->>BH: validate plan against protected paths and scope\n    BH-->>RT: allowed, fixtures read-only, no label\n    RT->>SB: start leased activity with run token, clone, baseline checks\n    loop bounded edit and test turns\n        SB->>GW: model call with run token, budget checked\n        GW-->>SB: proposed edits and commands\n        SB->>SB: execute, capped output, denials as tool results\n        SB-->>RT: heartbeat and step events to Logbook\n    end\n    SB->>SB: push forge task branch through egress and git proxy\n    SB-->>RT: activity result with diff, test results and baseline\n    RT->>VF: diff, test results, baseline, plan\n    VF-->>RT: invariants pass, advisory review findings\n    RT->>RT: destroy sandbox, revoke run token\n    RT->>RV: pull request with harness run card\n    RV->>TR: approve and merge, CI with secrets runs on main"
+ },
+ {
+  "post": "part-10-intro",
+  "figure": 1,
+  "id": "fig01-pinned-manifest-makes-change-nameable-staged",
+  "asset": "assets/images/part-10-intro/fig01-pinned-manifest-makes-change-nameable-staged.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Behavior changes outside the code\"] --> B[\"Manifest: one pinned, hashed version\"]\n    B --> C[\"Staged rollout: gate, shadow, canary, ramp\"]\n    C --> D[\"Rollback: pointer back to stable\"]\n    D --> E[\"Forward fix: effects found by manifest hash\"]\n    B --> F[\"Agent Registry: owners and lifecycle\"]\n    C --> F\n    E --> F\n    F --> G[\"Platform enforces state on every call\"]"
+ },
+ {
+  "post": "44-domain-high-stakes-decisions",
+  "figure": 1,
+  "id": "fig01-clinical-design-model-drafts-once-deterministic",
+  "asset": "assets/images/44-domain-high-stakes-decisions/fig01-clinical-design-model-drafts-once-deterministic.jpeg",
+  "mermaid": "sequenceDiagram\n    participant CL as Clinician\n    participant PL as Pipeline\n    participant PH as PHI scope\n    participant RA as ReasonAgent\n    participant SF as Safety and calibrator\n    participant WL as Case store and worklist\n    participant ID as Identity\n    participant EHR as EHR\n    CL->>PL: dosing query with task type, risk tier, idempotency key\n    PL->>PH: fetch chart facts allowed for task type dosing\n    PH-->>PL: allergies, weight, renal labs, meds, snapshot time\n    PL->>RA: chart facts and pinned guideline spans\n    RA-->>PL: draft recommendation with citations and confidence\n    PL->>SF: run checks and calibration on the draft\n    SF-->>PL: all pass, calibrated score above tier threshold\n    PL->>WL: case v1 awaiting signoff with evidence bundle\n    CL->>WL: claim case and review basis\n    CL->>ID: authorize action hash at case v1 with attestation\n    ID->>PH: revalidate snapshot and care-team membership\n    PH-->>ID: unchanged\n    ID->>EHR: write signed order with correlation id\n    EHR-->>ID: receipt\n    ID->>WL: case decided, write succeeded"
+ },
+ {
+  "post": "44-domain-high-stakes-decisions",
+  "figure": 2,
+  "id": "fig02-benefits-design-model-touches-case-twice",
+  "asset": "assets/images/44-domain-high-stakes-decisions/fig02-benefits-design-model-touches-case-twice.jpeg",
+  "mermaid": "sequenceDiagram\n    participant AP as Applicant\n    participant PL as Pipeline\n    participant IA as IntakeAgent\n    participant RE as Rule engine\n    participant XV as Explanation validator\n    participant RQ as Review queue\n    participant CW as Caseworker\n    participant NS as Notice service\n    AP->>PL: application and pay stubs with idempotency key\n    PL->>IA: extract typed evidence from documents\n    IA-->>PL: evidence items with provenance and confidence\n    PL->>RE: typed evidence, applicant date and jurisdiction\n    RE-->>PL: adverse result, rule package v2027-03 pinned, rule trace\n    PL->>IA: draft plain-language reasons from the trace\n    IA-->>PL: draft explanation with rule and evidence refs\n    PL->>XV: check draft against the rule trace\n    XV-->>PL: valid\n    PL->>RQ: adverse pending with deadline and decision package hash\n    CW->>RQ: claim case and open evidence and trace\n    CW->>PL: confirm adverse at case v3 with rationale and key\n    PL->>NS: issue notice in applicant language\n    NS-->>AP: notice with reasons and appeal route\n    NS->>PL: delivery recorded and appeal clock started"
+ },
+ {
+  "post": "44-domain-high-stakes-decisions",
+  "figure": 3,
+  "id": "fig03-workflow-never-moves-missing-input-denial",
+  "asset": "assets/images/44-domain-high-stakes-decisions/fig03-workflow-never-moves-missing-input-denial.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> submitted\n    submitted --> evidence_needed: low confidence or conflict\n    evidence_needed --> submitted: applicant or caseworker supplies evidence\n    submitted --> determination_ready: evidence complete\n    determination_ready --> finalized: favorable result\n    determination_ready --> adverse_pending: adverse result\n    adverse_pending --> evidence_needed: request more evidence\n    adverse_pending --> finalized: caseworker confirms or overrides\n    finalized --> noticed: notice delivered\n    noticed --> appealed: applicant appeals in window\n    appealed --> reviewer_decided: independent reviewer decides\n    reviewer_decided --> determination_ready: remanded\n    reviewer_decided --> [*]: upheld or reversed\n    noticed --> [*]: window closes"
+ },
+ {
+  "post": "introduction",
+  "figure": 1,
+  "id": "fig01-book-s-map-part-i-sets",
+  "asset": "assets/images/introduction/fig01-book-s-map-part-i-sets.jpeg",
+  "mermaid": "flowchart TB\n    P1[\"I Foundations: when to be agentic and how much autonomy\"]\n    P2[\"II Architecture: the components and the one path to the world\"]\n    P3[\"III Orchestration: plans, routing, handoffs\"]\n    P4[\"IV Context: what the model sees and remembers\"]\n    P5[\"V Tools: what the model may touch\"]\n    P6[\"VI Reliability: work that survives failure\"]\n    P7[\"VII Control: security, identity, oversight, policy\"]\n    P8[\"VIII Evidence: evaluation and observability\"]\n    P9[\"IX Economics: time and money\"]\n    P10[\"X Evolution: versions, rollout, ownership\"]\n    P11[\"XI Domains: four sets of stakes end to end\"]\n    P1 --> P2\n    P2 --> P3\n    P2 --> P4\n    P2 --> P5\n    P3 --> P6\n    P4 --> P6\n    P5 --> P6\n    P6 --> P7\n    P7 --> P8\n    P8 -->|\"evidence sets autonomy tiers\"| P1\n    P8 --> P9\n    P8 --> P10\n    P9 --> P11\n    P10 --> P11"
+ },
+ {
+  "post": "part-4-intro",
+  "figure": 1,
+  "id": "fig01-argument-part-iv-working-context-computed",
+  "asset": "assets/images/part-4-intro/fig01-argument-part-iv-working-context-computed.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Source or copy\"] -->|\"retrieval, with envelope\"| C[\"Working context\"]\n    H[\"Conversation history\"] -->|\"digest plus recent turns\"| C\n    T[\"Task state from receipts\"] -->|\"pinned facts\"| C\n    C -->|\"model commits\"| O[\"Output or draft\"]\n    O -->|\"brief, note, memory\"| M[\"Memory or derived artifact\"]\n    M -->|\"read by a later run\"| C\n    O -->|\"re-read before write\"| A[\"Action\"]\n    A -->|\"receipt\"| T"
+ },
+ {
+  "post": "part-11-intro",
+  "figure": 1,
+  "id": "fig01-part-xi-walks-one-consequence-gradient",
+  "asset": "assets/images/part-11-intro/fig01-part-xi-walks-one-consequence-gradient.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Coding: workspace undo, tests verify\"] --> B[\"Customer operations: caps, rendered commitments\"]\n    B --> C[\"Back office: staging store, independent approver\"]\n    C --> D[\"High stakes: rules decide, humans own adverse outcomes\"]\n    P[\"One platform: action objects, receipts, policy, evidence log\"] -.-> A\n    P -.-> B\n    P -.-> C\n    P -.-> D"
+ },
+ {
+  "post": "meet-ostrell",
+  "figure": 1,
+  "id": "fig01-keelson-s-one-path-rule-every",
+  "asset": "assets/images/meet-ostrell/fig01-keelson-s-one-path-rule-every.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Users, channels and triggers\"] --> RT[\"Keelson Runtime\"]\n    RT -->|\"model call\"| GW[\"Keelson Gateway\"]\n    GW --> P[\"Two commercial providers and an open-weight model\"]\n    RT -->|\"proposed action\"| BH[\"Bulkhead\"]\n    BH -->|\"allow with scope\"| TB[\"Toolyard broker\"]\n    TB -->|\"brokered call\"| S[\"Systems of record\"]\n    RT -->|\"read and write memory\"| TM[\"Tidemark\"]\n    RT -->|\"intent and receipt\"| LB[\"Logbook\"]\n    RT -.->|\"spans\"| WK[\"Wake\"]\n    REG[\"Agent Registry\"] -->|\"manifests and tiers\"| RT\n    POL[\"Bulkhead policy repository\"] -->|\"policy bundles\"| BH\n    SND[\"Sounding\"] -->|\"release gates\"| REG"
+ },
+ {
+  "post": "meet-ostrell",
+  "figure": 2,
+  "id": "fig02-ostrell-s-2027-incidents-cluster-first",
+  "asset": "assets/images/meet-ostrell/fig02-ostrell-s-2027-incidents-cluster-first.jpeg",
+  "mermaid": "flowchart LR\n    subgraph Q1[\"Q1 2027\"]\n        direction TB\n        GA[\"Keelson GA, January\"] --> HPA[\"Half-Posted Accrual\"]\n        HPA --> WF[\"Weekend Fan-out\"]\n        WF --> DC[\"Double Credit\"]\n    end\n    subgraph Q2[\"Q2 2027\"]\n        direction TB\n        LH[\"Lost Handoff\"] --> PT[\"Poisoned Ticket\"]\n        PT --> SPB[\"Stale Price Book\"]\n        SPB --> RS[\"Rubber Stamp found\"]\n    end\n    subgraph Q3[\"Q3 2027\"]\n        direction TB\n        FP[\"Fixture Purge\"] --> AD[\"Alias Drift\"]\n        AD --> PIN[\"Alias ban and exact pinning\"]\n    end\n    subgraph Q4[\"Q4 2027\"]\n        direction TB\n        AR[\"Credits up to 250 euros promoted to A2\"] --> K2[\"Keelson 2.0 roadmap approved\"]\n    end\n    DC --> LH\n    RS --> FP\n    PIN --> AR"
+ },
+ {
+  "post": "part-1-intro",
+  "figure": 1,
+  "id": "fig01-argument-part-i-only-decision-points",
+  "asset": "assets/images/part-1-intro/fig01-argument-part-i-only-decision-points.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Decision point\"] -->|\"who chooses?\"| B[\"Model-held point\"]\n    B -->|\"ladder test\"| C[\"Justified rung\"]\n    C -->|\"consequence and reversibility\"| D[\"Tier per action class\"]\n    D -->|\"execution style\"| E[\"Workflow skeleton with bounded loops\"]"
+ },
+ {
+  "post": "part-8-intro",
+  "figure": 1,
+  "id": "fig01-evidence-chain-part-viii-levels-define",
+  "asset": "assets/images/part-8-intro/fig01-evidence-chain-part-viii-levels-define.jpeg",
+  "mermaid": "flowchart LR\n    E[\"Evaluation levels and pass^k\"] --> S[\"Eval suites and regression gates\"]\n    S --> O[\"Traces and outcome metrics in production\"]\n    O -->|\"new cases\"| S\n    S -->|\"gate verdicts\"| A[\"Tier register per action class\"]\n    O -->|\"demotion triggers\"| A\n    A -->|\"signed promotion\"| H[\"Risk owner\"]"
+ },
+ {
+  "post": "part-2-intro",
+  "figure": 1,
+  "id": "fig01-argument-part-ii-map-fixes-one",
+  "asset": "assets/images/part-2-intro/fig01-argument-part-ii-map-fixes-one.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Reference architecture: one path\"] -->|\"model calls\"| B[\"Model gateway\"]\n    B -->|\"proposals\"| C[\"Agent runtime\"]\n    C -->|\"effects\"| D[\"Systems of record\"]\n    C -->|\"state and outcomes\"| E[\"Interaction surfaces\"]\n    D -->|\"queues and audit trails\"| E"
+ },
+ {
+  "post": "part-5-intro",
+  "figure": 1,
+  "id": "fig01-argument-part-v-proposal-crosses-four",
+  "asset": "assets/images/part-5-intro/fig01-argument-part-v-proposal-crosses-four.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Model proposal\"] -->|\"contract: validate meaning\"| C[\"One tool\"]\n    C -->|\"broker: authorize and credential\"| B[\"Many tools\"]\n    B -->|\"sandbox: contain code\"| S[\"Execution environment\"]\n    S -->|\"action object: approve, execute once, verify\"| W[\"The world\"]"
+ },
+ {
+  "post": "part-3-intro",
+  "figure": 1,
+  "id": "fig01-argument-part-iii-work-crosses-four",
+  "asset": "assets/images/part-3-intro/fig01-argument-part-iii-work-crosses-four.jpeg",
+  "mermaid": "flowchart LR\n    G[\"Goal\"] -->|\"plan as data, validated\"| P[\"Plan steps\"]\n    P -->|\"route or delegation contract\"| H[\"Handlers\"]\n    H -->|\"topology rule\"| T[\"One agent, or a bounded task tree\"]\n    T -->|\"typed, accepted handoff\"| O[\"Next owner, agent or person\"]"
+ },
+ {
+  "post": "where-agentic-systems-go-wrong",
+  "figure": 1,
+  "id": "fig01-four-common-pairs-first-pattern-creates",
+  "asset": "assets/images/where-agentic-systems-go-wrong/fig01-four-common-pairs-first-pattern-creates.jpeg",
+  "mermaid": "flowchart LR\n    LT[\"Lethal Trifecta\"] -->|\"injected instruction acts\"| AA[\"Ambient Authority\"]\n    AA -->|\"reach sets the damage\"| X1[\"Exfiltration or destruction\"]\n    DSA[\"Different Second Answer\"] -->|\"second action proposed\"| FF[\"Fire-and-Forget Action\"]\n    FF -->|\"no key, no receipt\"| X2[\"Duplicate effect\"]\n    AD[\"Autonomy by Default\"] -->|\"gate decays\"| RS[\"Rubber Stamp\"]\n    RS -->|\"A1 runs as A3\"| X3[\"Errors approved at scale\"]\n    SU[\"Silent Upgrade\"] -->|\"no suite runs\"| VE[\"Vibe Evals\"]\n    VE -->|\"drift found by users\"| X4[\"Late regression\"]"
+ },
+ {
+  "post": "part-6-intro",
+  "figure": 1,
+  "id": "fig01-reliability-chain-part-vi-durable-execution",
+  "asset": "assets/images/part-6-intro/fig01-reliability-chain-part-vi-durable-execution.jpeg",
+  "mermaid": "flowchart LR\n    D[\"Durable execution - decisions recorded once\"] -->|\"at-least-once at the tool\"| R[\"Keyed retries and lookup of unknown outcomes\"]\n    R -->|\"parallel runs\"| G[\"Per-entity guards\"]\n    R -->|\"finishing no longer right\"| P[\"Recovery planner reads the effect ledger\"]\n    P --> F[\"Forward\"]\n    P --> B[\"Backward - compensations from receipts\"]\n    P --> H[\"Hold for a human\"]"
+ },
+ {
+  "post": "part-9-intro",
+  "figure": 1,
+  "id": "fig01-same-re-read-tokens-drive-latency",
+  "asset": "assets/images/part-9-intro/fig01-same-re-read-tokens-drive-latency.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Re-read context on every call\"] --> B[\"Critical path: time the user waits\"]\n    A --> C[\"Invoice: cost per successful task\"]\n    A --> D[\"Shared rate limit: throughput ceiling\"]\n    B --> E[\"Deadlines and parallel reads\"]\n    C --> F[\"Per-step models and run budgets\"]\n    D --> G[\"Quota pools and cache hit rate\"]\n    E --> H[\"Limits enforced in runtime and gateway\"]\n    F --> H\n    G --> H"
+ },
+ {
+  "post": "part-7-intro",
+  "figure": 1,
+  "id": "fig01-control-chain-part-vii-threat-model",
+  "asset": "assets/images/part-7-intro/fig01-control-chain-part-vii-threat-model.jpeg",
+  "mermaid": "flowchart LR\n    T[\"Threat model per session type\"] -->|\"untrusted text in context\"| I[\"Injection defense: quarantine and sink policy\"]\n    I -->|\"what a sink may reach\"| A[\"Delegated, scoped identity\"]\n    A -->|\"sinks no rule can bound\"| H[\"Approval gates and measured approvers\"]\n    I --> P[\"Policy enforcement points\"]\n    A --> P\n    H --> P\n    P -->|\"every decision\"| L[\"Evidence log\"]"
+ },
+ {
+  "post": "source-coverage",
+  "figure": 1,
+  "id": "fig01-five-source-groups-feed-book-s",
+  "asset": "assets/images/source-coverage/fig01-five-source-groups-feed-book-s.jpeg",
+  "mermaid": "flowchart LR\n    APF[\"Platform foundations\"] --> K[\"Keelson platform chapters, Parts II to X\"]\n    COD[\"Coding CLI and harness\"] --> F[\"Forge and coding agents\"]\n    CUS[\"Support, sales, marketing\"] --> A[\"Answerdesk and Dealroom\"]\n    BO[\"Finance, legal, HR\"] --> C[\"Closewise, Clausewise, Peoplepoint\"]\n    HS[\"Healthcare and public benefits\"] --> X[\"Contrast designs, not Ostrell\"]\n    RES[\"Research\"] --> X\n    EXT[\"Published research and vendor reports\"] --> M[\"Multi-agent decomposition, Scout\"]"
+ },
+ {
+  "post": "toolkit",
+  "figure": 1,
+  "id": "fig01-how-templates-reference-each-other-justification",
+  "asset": "assets/images/toolkit/fig01-how-templates-reference-each-other-justification.jpeg",
+  "mermaid": "flowchart LR\n    J[\"1 Justification canvas\"] --> R[\"10 Registry entry\"]\n    C[\"2 Action-class register\"] --> R\n    T[\"3 Tool contract\"] --> C\n    T --> M[\"8 Version manifest\"]\n    TM[\"6 Threat model\"] --> R\n    M --> E[\"7 Eval plan and gate\"]\n    E --> P[\"9 Rollout plan\"]\n    P --> R\n    A[\"5 Action object and approval\"] --> C\n    D[\"4 Delegation and handoff\"] --> A\n    I[\"11 Incident runbook\"] -->|\"hold or demote\"| C"
+ }
+]

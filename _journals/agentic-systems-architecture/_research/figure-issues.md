@@ -1,0 +1,66 @@
+
+## Header logos (2026-10-28)
+
+Reviewed all 62 page logos and the journal hero at full size. Hero kept (no text beyond generic labels, no brand marks).
+
+`visual_layer.py` changes (general, all logos): `LOGO_SUFFIX` now forbids dollar signs, logo-like model marks and robot mascots (agent = rounded blob), caps headlines at six short words, and forbids printing style/layout words; `logo()` rewrites the shared base prompt's "polished business explainer board" and "lightweight UI fragments" phrases, which were leaking into images as labels.
+
+Regenerated (first pass, 25): 01, 02, 03, 06, 07, 08 (garbled headline "AGENT WIT: EXISTING S TEM"), 10, 11, 17, 21, 26, 29, 30, 36, 40, 41, 42, 43, 44, bibliography, part-4-intro, part-5-intro (headline "POLISHED BUSINESS EXPLAINER BOARD"), part-6-intro, part-10-intro, toolkit. Reasons across the set: leaked prompt/style labels, garbled headings, "$" amounts, robot-like or vendor-mark-like model glyphs.
+
+Regenerated again: 01, 06, 07 (re-run after the base-prompt rewrite; the pass-1 versions still showed style-label leaks); 17 (heading "BUSINESS EXPLAINER BOARD"); 30 ("UI FRAGMENT" label); 42 and part-6-intro ("Lightweight UI" labels); 43 (headline "Back-Office Agent Explaining Board"); part-10-intro (labels "(rocket)", "(clock)", "#hashd"); 02 (third attempt; "(BRAIN ICON)" label). All accepted on re-inspection.
+
+Kept with small known flaws (micro-text only): 26 "SHAKED CACHE" typo; 40 "EBROR" typo; 20 "ACCESS GRINTS" in a log line; 14 model drawn as a rounded bot with an antenna, labelled "AI AGENT" (not humanoid, kept).
+- 13-coordination-and-handoffs / fig01-handoff-complete-only-when-it-accepted (Figure 2): third attempt invented a "Denised" state between Refused and the end dot; removed by a pixel edit (box erased, line joined), a faint background seam may remain; accepted after 3 attempts
+- 13-coordination-and-handoffs / 13-summary-versus-typed-payload (Figure 1): label reads "receipts" instead of "from receipts", model chips have small cartoon arms, plain blue panel behind the right scene; accepted after 3 attempts
+- 13-coordination-and-handoffs / 13-best-handoff-is-removed (Figure 5): two extra small labels ("customer", "finished"), consistent with the caption; accepted after 1 attempt
+- meet-ostrell / meet-ostrell-dials-per-action-class (Figure 1): tier scale shows five ticks for four tiers and middle knobs sit between ticks; knob order A3, A2, A1, A0 matches the caption; accepted after 2 attempts
+- 04-workflows-loops-and-autonomous-agents / fig02-how-bounded-loop-ends-model-can (Figure 3): budget icons on the WrappingUp and BudgetExhausted states show a "$" money bag; structure correct; accepted after 2 attempts
+- 03-autonomy-and-consequence / 03-dial-per-action-class (Figure 1): the switch shows an extra "ON" label; accepted after 2 attempts
+- 02-when-agents-are-justified / fig02-ladder-test-each-question-must-be (Figure 3): Rung 4 box carries an odd envelope-with-car icon; structure, labels and arrows correct; accepted after 1 attempt
+- 07-agent-runtime / fig01-keelson-runtime-s-run-lifecycle-only (Figure 1): the Waiting for human to Suspended arrow is missing, the Running to Cancelling arrow has no "cancel accepted" label, and the Running to Completed line also carries an arrowhead into Running; prompt simplified to a layout checklist; accepted after 6 attempts
+- 08-agents-in-the-enterprise / fig02-choosing-read-interface-more-agent-s (Figure 3): bottom-right box is clipped at the image edge and icons are busy; structure, labels and arrows correct; accepted after 1 attempt
+- 09-agent-interaction-design / 09-explained-twice-before-after (Figure 4): adds "BEFORE" and "AFTER" panel headings not in the prompt; accepted after 1 attempt
+- 12-single-and-multi-agent-designs / fig02-review-test-proposed-split-no-evidence (Figure 4): the "team ownership or personas" arrow starts at the "Read-only worker returns summary" box instead of the "Which reason?" diamond; all boxes and labels correct; accepted after 3 attempts
+- 10-planning-and-decomposition / 10-who-writes-the-plan-spectrum (Figure 5): the calendar board carries small "DAY 1"–"DAY 5" headers not in the prompt; accepted after 2 attempts
+- 11-routing-and-delegation / 11-delegation-contract-packet (Figure 2): coins carry small "€1", "€2" and "50c" denominations not in the prompt; accepted after 3 attempts
+- 16-agent-memory / fig02-memory-has-states-not-just-timestamp (Figure 3): one arrow drawn between Active and Quarantined where the source has two (the "human review clears it" return arrow is merged), and two end dots instead of one; states and other transitions correct; accepted after 4 attempts
+- 17-task-state-and-checkpoints / fig01-action-lifecycle-task-record-only-path (Figure 3): the Voided → end-dot arrow is missing; all states, labels and other transitions correct; accepted after 6 attempts (first prompts carried doubled quotation marks from staging)
+- 16-agent-memory / 16-keyed-slot-replaces-pile (Figure 5): adds small "CLOSED" and "OPEN" gate signs not in the prompt; accepted after 1 attempt
+- 19-tool-contracts / 19-model-writes-only-what-it-knows (Figure 3): the code-supplies arrow points into only one of the two locked fields; accepted after 2 attempts
+- 20-tool-ecosystems-and-mcp / fig04-tool-version-s-lifecycle-registry-changed (Figure 5): the Deprecated "window over and no pinning manifest" arrow ends at the end dot instead of at Retired; all seven states and other transitions correct; accepted after 4 attempts
+- 22-side-effects-and-external-actions / fig02-action-becomes-executable-only-authorization-exact (Figure 4): the Voided → end-dot arrow is missing; all twelve states, labels and other transitions correct; accepted after 4 attempts
+- 36-agent-cost-and-model-routing / fig02-each-level-bounds-different-failure-step (Figure 4): third attempt drew a stray empty box between Run budget and Step; removed by a manual crop, leaving a slight extra gap there; accepted after 3 attempts
+- part-10-intro / fig01-pinned-manifest-makes-change-nameable-staged (Figure 2): the Forward fix → Agent Registry arrow is drawn twice (straight and curved); all seven boxes and other arrows correct; accepted after 3 attempts
+- 34-evidence-for-autonomy / fig03-lifecycle-answerdesk-s-credit-up-250 (Figure 5): third attempt added an invented title ("Answerdesk's 'credit up to €250' / Action class, October 2027"), painted out with the background colour; "shows no difference" label nearly touches "D2"; all states and transitions correct; accepted after 3 attempts
+- part-9-intro / part-9-ceiling-follows-cache-hits (Figure 2): the queue of waiting chat bubbles is clipped at the right edge; accepted after 2 attempts
+- part-7-intro / part-7-model-inside-the-gates (Figure 1): extra accurate labels "model" and "systems of record"; accepted after 1 attempts
+- 26-agent-threat-model / 26-scout-worker-split (Figure 5): after-panel boxes carry duplicate labels ("worker"/"internal", "web" twice); accepted after 1 attempts
+- 27-prompt-injection-defense / 27-poisoned-ticket-scene (Figure 1): extra accurate labels "agent", "contract", "invoices"; accepted after 1 attempts
+- 27-prompt-injection-defense / fig02-planner-never-reads-raw-email-every (Figure 4): busy decorative icons beside every message label; structure correct; accepted after 1 attempts
+- 25-partial-failure-and-compensation / fig02-held-quarantined-recovering-are-explicit-run (Figure 3): the "kill switch or budget" icon shows a dollar sign on a hand; all states and transitions correct after the checklist was rewritten as an explicit layout and edge list; accepted after 4 attempts
+- 25-partial-failure-and-compensation / 25-reversal-drill-before-after (Figure 4): the January calendar highlights three day squares while the tag reads "2 days"; accepted after 2 attempts
+- 23-durable-agent-execution / fig02-every-wait-durable-run-has-timer (Figure 3): the three return arrows into Running share one arrowhead and the "timer fired" and "budget or terminal error" labels sit stacked, both as in the mermaid reference; accepted after 1 attempt
+- 28-agent-identity-and-least-privilege / fig02-bulkhead-decides-toolyard-executes-book-s (Figure 3): small decorative ticket icons carry illegible micro-text; accepted after 1 attempt
+- 29-human-oversight-and-bounded-autonomy / fig03-approval-has-own-lifecycle-separate-action (Figure 3): labels "request information" and "above approver authority" overlap slightly; accepted after 3 attempts
+- part-10-intro / part-10-three-cases-of-2027 (Figure 1): a small unrequested "CORRECTION TRAY" label on the tray, and the signpost shows two signs rather than one swung sign; accepted after 1 attempt
+- 39-staged-rollout-and-rollback / 39-receipts-find-the-five (Figure 4): only four orange cards are visible in the grid and the ledger shows seven green corrected cards against five in the tray; labels and amounts correct; accepted after 3 attempts
+- 40-owning-agentic-systems / 40-close-day-queue (Figure 1): extra desk labels (Support desk, Finance desk, Evaluation bench), tiny digits on gauge cards, padlock sits by the gauge stream rather than the ledger stream, and the Support pager shows signal waves; accepted after 3 attempts
+- 43-domain-back-office / fig01-back-office-spine-model-s-output (Figure 2): every attempt drew a faded duplicate row; the crisp row was cropped out and padded; some connectors are dashed where the reference is solid; accepted after 3 attempts
+- 43-domain-back-office / fig02-one-closewise-accrual-evidence-posting-model (Figure 3): Toolyard executor icon is a small industrial robot arm; structure correct; accepted after 2 attempts
+- 43-domain-back-office / 43-actions-outside-the-agents-reach (Figure 1): unrequested role labels (Controller, Lawyer, HR manager) and a mirrored "Contract" word on a small sheet; accepted after 2 attempts
+- 43-domain-back-office / 43-approval-that-ages (Figure 5): clock label reads "48 hours" where the chapter says 48 working hours; accepted after 1 attempt
+- 44-domain-high-stakes-decisions / fig01-clinical-design-model-drafts-once-deterministic (Figure 3): three generations each misrouted arrows (claim, authorize, revalidate, case decided); the plain reference rendering of the mermaid diagram is used instead; accepted after 3 attempts
+- 44-domain-high-stakes-decisions / fig02-benefits-design-model-touches-case-twice (Figure 4): monochrome rather than the accent palette; structure correct; accepted after 1 attempt
+- 44-domain-high-stakes-decisions / 44-decide-veto-screen (Figure 1): unrequested small labels (extracted facts, proposal, draft letter) and tiny hands on the model sparks; accepted after 1 attempt
+- 44-domain-high-stakes-decisions / 44-fail-safe-direction (Figure 2): unrequested "Allergy Section" and "Income Slot" labels; accepted after 1 attempt
+
+## Final figure-fix pass (2026-10-28)
+
+- 07-agent-runtime / fig01-keelson-runtime-s-run-lifecycle-only (Figure 1): FIXED. Four new generations each dropped or swapped other arrows; the accepted image was pixel-edited instead: Waiting for Human → Suspended arrow added (with its own "kill switch, quarantine, pause, quota" label; the Running → Suspended label moved above its line), "cancel accepted" added to Running → Cancelling, stray arrowhead into Running removed. All 19 transitions now match the source.
+- 12-single-and-multi-agent-designs / fig02-review-test-proposed-split-no-evidence (Figure 4): FIXED. Pixel edit: the "team ownership or personas" arrow rerouted from the "Which reason?" diamond straight up into "Keep one agent"; old route from the Read-only worker box erased.
+- 16-agent-memory / fig02-memory-has-states-not-just-timestamp (Figure 3): FIXED. Regenerated from an explicit edge list (one end dot, separate Active ⇄ Quarantined arrows); the missing Quarantined → Expired arrow was added by pixel edit and "reconfirmed" moved beside its own arrow.
+- 17-task-state-and-checkpoints / fig01-action-lifecycle-task-record-only-path (Figure 3): FIXED. Pixel edit: Voided → end connector added, joining the Repair queue line into the end dot.
+- 20-tool-ecosystems-and-mcp / fig04-tool-version-s-lifecycle-registry-changed (Figure 5): FIXED. Pixel edit: the Deprecated arrow now ends at Retired; the end dot moved to the left of Retired with a Retired → end arrow.
+- 22-side-effects-and-external-actions / fig02-action-becomes-executable-only-authorization-exact (Figure 4): FIXED. Pixel edit: Voided → end connector added along the right edge, joining Failed's line into the end dot.
+- 39-staged-rollout-and-rollback / 39-receipts-find-the-five (Figure 4): FIXED (simplified, rule c). Regenerated in 2 attempts: an uncountable heap of hash-stamped slips, a lens glow, one orange folder in the tray and a reversal symbol in the ledger; counts appear only in the labels "196 postings", "5 reversed", "€183,400". Caption unchanged; alt text updated to the new scene.
+- 44-domain-high-stakes-decisions / fig01-clinical-design-model-drafts-once-deterministic (Figure 3): FIXED. Generated in 1 attempt from the mermaid screenshot plus an explicit lane-to-lane message list; all 15 messages, directions and dashed replies match. Minor: lifelines show small gaps.

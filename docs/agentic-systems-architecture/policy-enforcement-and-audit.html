@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Policy Enforcement and Audit</title>
+    <meta name="description" content="How do you enforce rules outside the model, and prove afterwards what an agent did and why? Put deterministic, versioned policy decisions at four points no action can route around, let guardrail models only tighten policy, and keep a never-sampled, tamper-evident evidence log that answers an auditor's question by query.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Policy Enforcement and Audit">
+    <meta property="og:description" content="How do you enforce rules outside the model, and prove afterwards what an agent did and why? Put deterministic, versioned policy decisions at four points no action can route around, let guardrail models only tighten policy, and keep a never-sampled, tamper-evident evidence log that answers an auditor's question by query.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/policy-enforcement-and-audit.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/30-policy-enforcement-and-audit/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="human-oversight-and-bounded-autonomy.html" title="Human Oversight and Bounded Autonomy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-8.html" title="Part VIII — EVIDENCE: Evaluation and Observability">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VII — CONTROL: Security, Privacy and Human Oversight</p>
+        <h1>Policy Enforcement and Audit</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  33 min read · <a class="spec-link" href="policy-enforcement-and-audit.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/30-policy-enforcement-and-audit/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/30-policy-enforcement-and-audit/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="human-oversight-and-bounded-autonomy.html" title="Human Oversight and Bounded Autonomy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-8.html" title="Part VIII — EVIDENCE: Evaluation and Observability">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Policy Enforcement and Audit", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "How do you enforce rules outside the model, and prove afterwards what an agent did and why? Put deterministic, versioned policy decisions at four points no action can route around, let guardrail models only tighten policy, and keep a never-sampled, tamper-evident evidence log that answers an auditor's question by query.", "permalink": "policy-enforcement-and-audit", "timetoread": "33 min read", "icon": "assets/icons/30-policy-enforcement-and-audit.png", "logo": "assets/images/30-policy-enforcement-and-audit/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn where policy enforcement points belong in an agentic system, how to write, test and release agent policy as code, what guardrail models can and cannot carry, and how to design an evidence log that records every consequential decision so that it can be queried, verified and retained without becoming a privacy liability.\n\n> **WHY THE BUSINESS CARES:** The risk owner signs for what the agent does, and the auditor, the regulator or a court will later ask for proof. \"The model decided\" is not an answer anyone accepts. An evidence log turns a month of forensic reconstruction into a query, and enforcement outside the model means a manipulated or mistaken model cannot spend money, send data or sign anything the policy forbids.\n\n> **WHY ARCHITECTS SHOULD CARE:** Every other control in this book (scoped credentials, approval gates, autonomy tiers, idempotency keys) is only as real as the point that enforces it and the record that proves it ran. Policy that lives in a prompt is a suggestion. Evidence that lives in a sampled trace store is a hope. These two components decide whether the architecture's promises can be checked.\n\n> **KEY POINTS:**\n>\n> * **Enforce at four points the action cannot route around, and re-check at the last one.** Before the model call (what data may go to which model), before the tool call (may this principal do this, here, at this tier), immediately before the side effect (is the approval still bound to this exact object, policy and evidence), and on the output (what the reply may promise or link). Decisions are deterministic, versioned and recorded.\n> * **Guardrail models are signals, not boundaries.** Classifiers and model judges catch a share of bad inputs and outputs, and adaptive attackers beat most of them. Let their verdicts tighten policy (route to a human, block a sink), never loosen it, and never count a control that depends on a model recognizing an attack toward an agent's stated risk.\n> * **The evidence log is a curated decision record, not a transcript.** Intent before every side effect and a receipt after it, the policy decision and version, the approval with what the approver saw, the agent version manifest and the context by reference. It is never sampled, it is tamper-evident where the consequence requires it, and its retention is set per record class. Its test is simple: can it answer the auditor's question a year later by query?\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Ambient Authority** — without an enforcement point on the only path to each tool, every call can reach whatever the calling identity can reach, and nothing records that it did.\n> * **The Rubber Stamp** — an approval is a control only if its record shows who approved which exact object after seeing what, and how long they looked; without that record, nobody can measure the gate.\n> * **The Silent Upgrade** — a policy or guardrail version that changes without versioning makes it impossible to say under which rules an action ran, and a policy refactor can widen permissions without anyone noticing.\n\n<br>\nAn agentic system's model proposes actions; something else must decide whether they happen, and leave a record. A rule enforced but not recorded cannot be proved, and a record of decisions nothing enforced is a diary.\n\nThe parts are old: access control, maker–checker, audit trails, tamper-evident logs. The actor is new: a component that can be talked into proposing anything its tools allow, proposes differently on each run, and whose stated reasons are not a reliable account of why it acted. So **the policy decision sits outside the model, on a path the model cannot skip**, and the audit record describes inputs, decisions and effects, which can be checked, not the model's account of itself, which cannot.\n\nThis chapter owns four terms: the **policy enforcement point**, **policy as code** in its agent sense, the **evidence log** and the **guardrail**. It builds on [Trust Boundaries and the Agent Threat Model](agent-threat-model.html) and [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) for what policy must stop, on [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html) for whose authority a decision evaluates, on [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) for the approval records it binds, and on [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) for the intent-and-receipt protocol. It hands traces to [Observability: Traces, Metrics and Investigating Failures](agent-observability.html), manifests to [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) and the use of evidence for autonomy decisions to [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html).\n\n## Setting the Scene at Ostrell: Forty Entries and a Weekend\n\nOstrell, the fictional company this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), runs its agents on the Keelson platform. Two components carry this chapter: **Bulkhead**, the policy engine, and **Logbook**, the append-only evidence log.\n\nIn the week of **18 October 2027**, Ostrell's external auditors held their interim audit for fiscal 2027. One test concerned Closewise, the month-end close agent that proposes about **1,900 accrual entries a month** across **23 legal entities**; a controller approves each one before a deterministic workflow posts it to the enterprise resource planning (ERP) system. The auditors drew **40 posted entries**: 30 from the April to September closes, after Closewise moved onto Keelson Runtime, and 10 from the first quarter, when a script still posted. For each they asked what the proposal was based on, which rules applied, who approved it, whether the approver was independent of the preparer, and whether the posted amount was the approved amount.\n\nThe 30 Keelson-era entries took **about two hours**: one Logbook query per entry produced a dossier, and the auditors walked three through the source systems. The 10 first-quarter entries took two accountants **two and a half days** of script logs, ERP history and approval emails. For 2 of them, the approval email referred to a spreadsheet version that no longer existed. The auditors recorded a first-quarter control deficiency, already remediated by the move to Keelson.\n\n![An auditor receiving neat dossiers from one ledger in two hours, beside two accountants reconstructing evidence from scattered papers over two and a half days.](assets/images/30-policy-enforcement-and-audit/30-two-hours-versus-two-and-a-half-days.jpeg)\n**Figure 1:** *Of the auditors' 40 entries, one Logbook query per entry answered the 30 Keelson-era entries in about two hours, while the 10 first-quarter entries took two accountants two and a half days.*\n\nThen they asked a sixth question. They had read the incident report on the **Alias Drift**: over the weekend before Monday 2 August 2027, a provider moved the model alias behind Closewise's classification step to a newer version, and accuracy on the Sounding suite fell from **96.1% to 89.4%** until the team pinned the previous version on Thursday 5 August. **Which posted entries had been proposed by a model version that had never passed Ostrell's evaluation gate?** Logbook could answer, but only by inference. In August it recorded the model name Keelson had requested, the alias, not the version the provider served. The answer had to be bounded by time.\n\nFor Tomas Verhoef, Ostrell's Chief Architect, the two-hour answer showed what Bulkhead and Logbook were for. The inferred one showed how an evidence log fails: not by losing records, but by **never having recorded the field the question needs**.\n\n## Concepts: Enforcement Points, Policy, Guardrails and Evidence\n\n| Term | Definition in this book | What it is not |\n| --- | --- | --- |\n| **Policy enforcement point (PEP)** | A position on the only path an action, a model call or an output can take, where deterministic code obtains a policy decision and enforces it before anything continues. | A check the model is asked to perform, or a check on a path that has a bypass. |\n| **Policy decision point** | The component that evaluates policy and returns a decision with its rules and version; at Ostrell, Bulkhead's decision service embedded in each PEP. | The enforcement itself. |\n| **Policy as code (agent)** | Rules about what agents may do (actions, limits, data flows, routes, output constraints), written in a policy language or typed code, reviewed, tested against recorded decisions, versioned and pinned in the agent version manifest. | A policy document, a system-prompt instruction, or rules scattered through agent code. |\n| **Guardrail** | A check on text or data entering or leaving a model whose verdict is statistical: a content classifier, an injection detector, a PII detector, a groundedness check, a model judge. | A boundary. Its verdict is evidence for a policy decision, not the decision. |\n| **Evidence log** | An append-only, never-sampled record of the curated facts behind every consequential decision: inputs by reference, context manifests, proposals, policy decisions, approvals, intents, receipts, outputs and versions. Tamper-evident where the consequence requires it. | A trace store, a transcript, or a dump of model reasoning. |\n\nThe book's consistency rule keeps **authorization separate from execution**: Bulkhead decides; Toolyard, the tool broker, executes with brokered credentials ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html)). Some of the author's interview designs let an identity broker both mint authority and perform the side effect; this book does not adopt that, because a component that both decides and acts can be argued into doing both wrong at once.\n\nThree invariants follow, and the rest of the chapter is their mechanics:\n\n1. **Complete mediation.** Every consequential action passes a PEP, and the PEP sits in a component the model cannot address directly. The Open Worldwide Application Security Project (OWASP) states it for \"excessive agency\": \"Implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not\" ([OWASP LLM06:2025, accessed 2026-10](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)).\n2. **Deterministic decisions.** The same request, under the same policy version and the same recorded facts, gets the same decision. Statistical signals enter as recorded inputs, never as the evaluator.\n3. **No consequential effect without a record.** If the evidence log cannot accept the intent record, the side effect does not start.\n\n## Architecture: Bulkhead's Four Enforcement Points\n\n### Where the points sit\n\n![Diagram: Four enforcement points on the run's only paths](assets/images/30-policy-enforcement-and-audit/fig01-four-enforcement-points-run-s-only.jpeg)\n**Figure 2:** *Four enforcement points on the run's only paths: what may be sent to a model, what a proposed action may do, whether it may still happen at dispatch time, and what the output may say. Every decision goes to Logbook.*\n\nEach point answers a different question and lives in a different component:\n\n| PEP | Lives in | Question | Typical Ostrell rules | On decision-service failure |\n| --- | --- | --- | --- | --- |\n| **1. Before model call** | Keelson Gateway, after the context assembler | May this context, with these data classes, go to this model route? | Tenant-scoped knowledge-base segments only for the verified run tenant; special-category fields masked before any call to the two commercial providers, and sent only to the open-weight model in Ostrell's cloud account where Peoplepoint needs them; no secrets in any segment | Fail closed: the call does not leave |\n| **2. Before tool call** | Toolyard, on receipt of a proposal | May this principal, acting for this user, invoke this tool with these arguments, and at which tier? | Answerdesk `issue_credit` only for the verified account, ≤ €250 at A2, above that A1; email sinks closed to non-verified recipients after untrusted reads; delegated scopes a subset of the parent's | Fail closed; tier lookups fail to the lowest configured tier |\n| **3. Before side effect** | Keelson Runtime (approval revalidation) and Toolyard (dispatch decision), immediately before the call | Is everything the decision relied on still true? | Approval bound to this action-object hash, unexpired, under the current policy version; source facts unchanged (price-book version, open period); no hold or kill switch on the class; Logbook intent written | Fail closed: the action waits or voids |\n| **4. On output** | Keelson Runtime, before release | May this reply be shown or sent as written? | Links only to Ostrell domains; no auto-rendered images; no commitment without a backing receipt; no other tenant's identifiers | Fail closed: the reply is held and the conversation goes to a person |\n\nPEP 3 is the one teams leave out, and it closes the gap between deciding and doing. A Closewise proposal can wait up to 48 working hours for a controller, while the subledger changes, the period locks or the policy is revised. In the September 2027 close, the re-check voided **3 approvals** after a subledger change, and an entity close cancelled on day 4 ended with **17 proposals voided** rather than posted on stale approvals ([Durable Execution for Long-Running Agents](durable-agent-execution.html)).\n\nThe retrieval grant (agent × purpose × corpus) is evaluated at PEP 2, because retrieval is a Toolyard tool ([Retrieval and Grounding](retrieval-and-grounding.html)). Each agent version's decision-point map lists every model-held decision and the PEP that bounds it ([What Makes a System Agentic](what-makes-a-system-agentic.html)); a span showing a tool call without a PEP 2 decision fails the release check.\n\n### Authorization, then routing\n\nBulkhead's decision is two steps. First, **authorization**: is this action permitted for this principal at all, within its hard limits? Second, **routing**: given the action class and the tier register for this agent version, does the action execute, wait for approval, or become a suggestion ([Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html))? Keeping them apart lets a promotion from A1 to A2 change routing without touching who may do what.\n\nOstrell writes authorization policy in **Cedar**, which has default deny, forbid-overrides-permit semantics and skips erroring policies ([Cedar documentation, accessed 2026-10](https://docs.cedarpolicy.com/auth/authorization.html)). Its authors report a sound and complete logical encoding for analysis, with properties proved in the Lean prover ([Cutler et al., 2024, preprint](https://arxiv.org/abs/2403.04651)). An abridged excerpt of Answerdesk's policy set after October 2027:\n\n```cedar\n// bulkhead/answerdesk@2027.10.1 (excerpt)\npermit (\n  principal is Keelson::AgentRun,\n  action == Action::\"issue_credit\",\n  resource is Billing::CustomerAccount\n)\nwhen {\n  principal.agent == \"answerdesk\" &&\n  principal.customer_verified &&\n  resource == principal.verified_account &&\n  context.has_service_failure_record            // missed visit or outage on the ticket\n};                                               // amount bands are routing, not permission\n\nforbid (principal, action == Action::\"send_email\", resource)\nwhen { context.run_read_untrusted && !context.all_recipients_verified };\n```\n\nThe `context` attributes are computed by deterministic code, never by the model: `run_read_untrusted` from the context manifest's trust labels ([Context Engineering: Building What the Model Sees](context-engineering.html)), `all_recipients_verified` from handles resolved against the customer relationship management (CRM) system ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)), `has_service_failure_record` from a Toolyard lookup. Session state (counts, budgets, approvals seen) enters the same way. That is what separates agent policy from API authorization: **the decision depends on what this run has already read and done**.\n\nCedar answers only allow or deny. **Obligations** (\"re-read the price before commit\", \"route to approval\", \"redact this field\") come from the routing step, typed Python keyed by action class. Open Policy Agent (OPA), the graduated Cloud Native Computing Foundation (CNCF) engine, returns structured decisions from Rego ([OPA documentation, accessed 2026-10](https://www.openpolicyagent.org/docs/latest/)) and would fold both steps into one. Ostrell chose Cedar because Farah Haddad, the security architect, wanted a machine check that a refactor widens no permission; the price is the separate routing layer.\n\n### The decision record\n\nEvery evaluation produces one record, whatever the outcome:\n\n```python\n@dataclass(frozen=True)\nclass PolicyDecision:\n    decision_id: str\n    pep: Literal[\"pre_model\", \"pre_tool\", \"pre_effect\", \"output\"]\n    run_id: str\n    action_id: str | None            # minted by the runtime, never by the model\n    principal: PrincipalRef          # agent + on-behalf-of user + tenant\n    manifest_sha256: str\n    policy_version: str              # e.g. \"bulkhead/answerdesk@2027.10.1\"\n    request_fingerprint: str         # hash of tool, arguments, context attributes\n    signals: tuple[SignalRef, ...]   # guardrail verdicts, with model and version\n    outcome: Literal[\"allow\", \"deny\", \"approval_required\", \"suggest_only\", \"hold\"]\n    rule_ids: tuple[str, ...]\n    obligations: tuple[str, ...]     # e.g. \"reread:price_book\"\n    evaluated_at: datetime\n```\n\nDenials return to the model as tool results (\"not permitted: recipient not verified\"): a model given an exception tends to try another route; a model given a fact can tell the user. Denials are also **signals**. The Poisoned Ticket in May 2027 was blocked at the email tool and nobody knew for **6 days**; since July 2027, Bulkhead denials on email and document sinks page the security on-call through Wake within minutes.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency budget | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Decision at PEP 1, 2 or 4 | Policy bundle pinned to the run's manifest; tier register within 60 s of change | p99 ≤ 5 ms, in-process from a cached bundle *(assumption)* | Decision record in Logbook before the effect it permits; asynchronous for read-only steps | Bulkhead only |\n| Re-check at PEP 3 | Current policy version, approval and source facts, read at dispatch | ≤ 50 ms plus any freshness re-read *(assumption)* | Intent record written synchronously before dispatch | Bulkhead decides; Toolyard dispatches |\n| Policy release | One version per agent set; bundles signed | Propagation to all decision nodes ≤ 60 s; a node with a bundle older than 5 minutes fails closed | Policy repository plus Agent Registry | Agent owner with risk-owner sign-off; platform set by security |\n| Human override of a machine check | New record referencing the original verdict | Human time | Logbook, append-only | Named role with a recorded reason; never overwrites the machine verdict |\n\n## Policy as Code: Writing, Testing and Releasing Rules\n\nBulkhead holds one shared **platform policy set** (tenant isolation, data classes and model routes, egress, the trifecta split, the A1 cap on irreversible external commitments) owned by Farah Haddad and the Agent Platform team, and one **agent policy set** per agent, owned by the agent's owner with the risk owner's sign-off. A forbid in the platform set overrides any permit in an agent set, so an agent team cannot loosen a platform rule by writing a broader permit.\n\nA policy change goes through four checks before it can be bound to a manifest:\n\n1. **Unit cases.** Each rule ships with allow and deny cases, including the incident cases that caused it (the Poisoned Ticket recipient, the second revisit, a credit for an unverified account).\n2. **Static analysis.** Cedar's analysis compares the new set against the old one and lists every request shape whose decision changes. A change described as \"refactor\" must list none.\n3. **Decision replay.** Bulkhead re-evaluates the last 90 days of recorded decision requests from Logbook under the candidate policy and reports a **decision diff**: how many past decisions would change, in which direction, for which action classes.\n4. **Release as a manifest change.** A policy version is a field of the agent version manifest ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)), so a new version goes through Sounding's gate and a staged rollout like a new prompt ([Staged Rollout and Rollback](staged-rollout-and-rollback.html)).\n\nThe decision replay earns its keep. For the October 2027 promotion of Answerdesk credits of €250 or less from A1 to A2, the replay over the third quarter showed one class of change: the **4,410** credit proposals of €250 or less moved from `approval_required` to `allow`, and no other decision changed. Lena Brandt, who owns Answerdesk, signed a diff she could read. Had it also shown credits for unverified accounts moving to `allow`, the release would have stopped, whatever the change's description said.\n\nPolicies in flight follow the manifest rule: runs keep the policy version they started with, so approvals pending under it stay valid. Only a security or correctness fix migrates runs in flight, and that voids their pending approvals ([Durable Task State and Checkpoints](task-state-and-checkpoints.html)).\n\n**What not to put in Bulkhead.** Rules that the system of record owns stay there: the billing system's one-credit-per-visit uniqueness key, the ERP's period lock, the CRM's refusal to send a superseded quote. Toolyard also enforces each tool's hard limits **independently of Bulkhead** ([Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html)), so a policy bug cannot widen the blast radius on its own. Bulkhead holds rules about agents; it is not a second ERP.\n\n## Guardrails: What Statistical Checks Can Carry\n\nThe evidence on guardrail models says plainly what they are for.\n\n- **Classifiers catch known harms on the benchmarks they were built for.** Llama Guard, a 7-billion-parameter model tuned to classify prompts and responses against a safety taxonomy, was reported to match or exceed the moderation tools of its time on two public datasets ([Inan et al., 2023, preprint](https://arxiv.org/abs/2312.06674)). That is content classification, not resistance to an attacker targeting the classifier.\n- **They can be made hard to break, at a price.** Anthropic's Constitutional Classifiers withstood \"over 3,000 estimated hours of red teaming\" without a universal jailbreak on most target queries, at a 0.38-point increase in production refusals and 23.7% inference overhead ([Sharma et al., 2025, preprint](https://arxiv.org/abs/2501.18837)). The threat was jailbreaks for dangerous information, not an injected instruction in a ticket.\n- **Detectors trade utility for attack reduction.** On AgentDojo (97 tool-use tasks, 629 injection cases), a detector cut GPT-4o's targeted attack success to 8.0% while benign utility fell from 69.0% to 41.5%; fixing the tool set before reading untrusted data reached 6.8% with utility intact (Table 5, v3; [Debenedetti et al., 2024, preprint](https://arxiv.org/abs/2406.13352)). The models are retired; structural beating statistical is the durable part.\n- **Adaptive attackers beat most published defenses.** Against 12 recent jailbreak and injection defenses, adaptive attacks reached attack success \"above 90% for most\", although most had reported near-zero rates ([Nasr et al., 2025, preprint](https://arxiv.org/abs/2510.09023)).\n- **Classifiers that replace approvals miss real cases.** Anthropic reports that its coding tool's auto-mode classifier had a 0.4% false-positive rate on 10,000 internal actions and a **17% false-negative rate on 52 real overeager actions**, \"the honest number\" ([Anthropic, 2026-03-25](https://www.anthropic.com/engineering/claude-code-auto-mode)): a vendor measurement on a small sample.\n\nNo published evaluation measures how much a policy gateway at the tool boundary reduces successful attacks in production. The case for one is structural: a deterministic decision on the only path to a sink holds whatever the model was persuaded of. Guardrails lower the rate at which bad proposals reach that decision. Keelson uses both, under one rule:\n\n**A guardrail verdict may tighten a decision, never loosen it.** A high injection score routes the ticket to a person; a low score changes nothing. A groundedness check marking a money claim \"uncertain\" drops and routes it; \"supported\" raises no limit. A missing or failed guardrail counts as its most cautious verdict. That is Ostrell's June 2027 principle in practice: \"No control that depends on the model recognizing an attack counts toward an agent's stated risk.\"\n\n![A one-way ratchet dial: a guardrail's high score turns the decision stricter and routes to a person; nothing turns it back toward permissive.](assets/images/30-policy-enforcement-and-audit/30-guardrail-ratchet.jpeg)\n**Figure 3:** *A guardrail verdict may tighten a decision, never loosen it: a high score routes the case to a person, a low score changes nothing, and a missing verdict counts as the most cautious one.*\n\nOstrell's guardrails, all recorded as `signals` in the decision record with their model and version:\n\n| Guardrail | Where | What its verdict can do | What it cannot do |\n| --- | --- | --- | --- |\n| Quarantined reader (tool-less Small-tier call emitting typed `TicketFacts`) | Before Answerdesk's planner reads inbound email | Supply candidate facts; contract numbers stay candidates until resolved against the verified identity | Grant any authority; its output is data |\n| Injection classifier on inbound attachments | Intake | Route to human staff; raise PEP 2 strictness for the run | Clear a run as safe |\n| Claim-level groundedness check (Small tier) | PEP 4 for knowledge answers | Drop unsupported or uncertain money claims; trigger abstention | Approve a claim the policy forbids |\n| Commitment detector | PEP 4 | Flag \"we will credit / we will send a technician\" phrases; a deterministic rule then blocks any flagged commitment with no matching receipt in the run | Decide that a commitment is backed; only the receipt does |\n\nEach guardrail's model identifier and threshold sit in the agent version manifest; a silently changed guardrail changes the agent like a prompt edit.\n\n## Architecture: Logbook, the Evidence Log\n\n### What it records\n\nLogbook holds typed records, appended in order per run:\n\n| Record | Written by | When | Key fields |\n| --- | --- | --- | --- |\n| `run.start` | Keelson Runtime | Run start | Principal and on-behalf-of identity, tenant, agent version manifest hash, task id |\n| `context.manifest` | Context assembler | Before every model call | Ordered segments: source ref and version, content hash, token count, trust label; dropped segments with reasons |\n| `model.call` | Keelson Gateway | After every model call | Requested and **served** model version, settings, response hash, content reference |\n| `proposal` | Keelson Runtime | When a model output becomes an action object | Action id, action-object hash, action class, the model-call record that produced it |\n| `policy.decision` | Bulkhead | Every PEP evaluation | The decision record above |\n| `approval.requested` / `approval.decided` | Keelson approval service | Around each human decision | Action-object hash, approver, **card template version and evidence references with versions and hashes** (so what was shown is reproducible), policy version, time on card, decision, reasons, expiry ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)) |\n| `intent` | Toolyard | Before dispatch, synchronously | Action id, idempotency key, action-object hash, decision id |\n| `receipt` / `unknown` / `reconciled` | Toolyard | After dispatch, lookup or repair | Receiver's identifier, status, amounts and ids |\n| `output.released` | Runtime | Before a reply or document leaves | Output hash, content reference, PEP 4 decision id |\n| `override` | Named human | When a machine check is overridden | The original verdict's record id, the reason, the authority; the original stays |\n| `run.end` | Runtime | Run end | Outcome, budget consumption, open `unknown` actions |\n\nThree things are deliberately absent. **Raw model reasoning**, where a provider returns it, goes to a separate store with named-investigator access and 7-day retention ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html)), and is never treated as an explanation: reasoning models given hints in their prompts often mentioned the hint in fewer than 20% of the cases where they used it ([Chen et al., 2025, preprint](https://arxiv.org/abs/2505.05410)). **Full content** stays in its system of record or Wake's content store, referenced by hash and version. **Secrets** are never written.\n\nThe approval fields exist because of the Rubber Stamp. The second-quarter 2027 analysis (**4,812 approvals, 99.3% approved, median review time 6 seconds**, **3.1%** of approved credits unjustified on a sample audit) was a Logbook query. A record that says only \"approved by Y\" cannot show that Y looked for six seconds at a card without the policy clause.\n\n### The write path\n\n![Diagram: One Closewise entry](assets/images/30-policy-enforcement-and-audit/fig02-one-closewise-entry-every-decision-way.jpeg)\n**Figure 4:** *One Closewise entry: every decision on the way from proposal to posting is a typed Logbook record, the intent precedes dispatch, and the receipt closes it. The auditor's dossier is these records joined by action id.*\n\nThe ordering is the book's rule for exactly-once effects: **intent record, then execution with the idempotency key, then receipt**, with reconciliation for the unknown state ([Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html)). Evidence cannot share a transaction with a posting in an ERP Ostrell does not control. The author's agentic-platform-foundations interview design claims it can for its `action_evidence` record, and makes that record immutable yet pending-then-final (design example, `agentic-platform-foundations/interview.json`, `dataModel[action_evidence]`); this book departs from both, appending one record per state change instead.\n\nThe failure rule is the asymmetry from [Observability: Traces, Metrics and Investigating Failures](agent-observability.html): **telemetry may be dropped, evidence may not**. If an intent write fails, Toolyard does not dispatch. Records for read-only steps go through a local durable spool and ship asynchronously; customer-facing outputs are spooled before release. The price: Logbook's availability bounds every side effect on the platform, so it runs replicated across zones with its own service-level objective. An outage stops actions; it does not lose evidence.\n\n### Tamper evidence and storage\n\n![Diagram: Logbook streams are the source of truth](assets/images/30-policy-enforcement-and-audit/fig03-logbook-streams-are-source-truth-chain.jpeg)\n**Figure 5:** *Logbook streams are the source of truth; chain heads are anchored to write-once storage; the queryable store is a rebuildable projection; a verifier checks continuity.*\n\nEach record carries the hash of its predecessor in the run's stream. Every hour Logbook writes a Merkle root over the stream heads to write-once-read-many (WORM) object storage with a retention lock, the construction Certificate Transparency uses to make a public log auditable ([RFC 6962, 2013](https://www.rfc-editor.org/rfc/rfc6962); [RFC 9162, 2021](https://www.rfc-editor.org/rfc/rfc9162)). A daily verifier re-walks the chains and pages security on any gap. Chaining is cheap, so Keelson chains everything; WORM anchoring and multi-year retention apply where the book's baseline requires tamper evidence: back office and anything touching employment.\n\n**The observed cannot reach the observer.** No agent identity can write to, read from or delete in Logbook; writers are platform components with write-only identities per record family, and the query interface renders model-produced text as inert text. METR's argument that systems recording agent behavior are security-critical infrastructure applies with more force to an evidence log than to a trace viewer ([METR, 2026-10-06](https://metr.org/blog/2026-10-06-ai-systems-could-cover-up-misbehavior/)). Auditors query a rebuildable projection; only the projector and the verifier read the streams.\n\n### Audit queries\n\nThe auditors' entry dossier is one query over the projection:\n\n```sql\n-- Dossier for one posted entry: everything joined by action id\nSELECT r.kind, r.recorded_at, r.actor, r.policy_version, r.manifest_sha256,\n       r.served_model, r.object_hash, r.card_template, r.time_on_card_s,\n       r.receiver_id, r.content_ref\nFROM logbook_records r\nWHERE r.action_id = (SELECT action_id FROM logbook_records\n                     WHERE kind = 'receipt' AND receiver_id = :erp_journal_id)\nORDER BY r.recorded_at;   -- context manifests are reached through the proposal's model call\n```\n\nThe questions Ostrell's risk owners and security team ask most often have the same shape:\n\n| Question | Records joined | Who asks |\n| --- | --- | --- |\n| Was the posted amount the approved amount? | `approval.decided.object_hash` = `intent.object_hash`, receipt amount | Auditors, Joost Vermeer |\n| Which actions ran under manifest X, policy version P or served model M? | `run.start`, `model.call`, `policy.decision` | Mei Lin Zhou, incident review |\n| Which runs read document D and then proposed an egress call? | `context.manifest` content hash, `policy.decision` at email sinks | Farah Haddad |\n| Which approvers approve faster than 10 seconds, and how do their approvals fare in sample audits? | `approval.decided`, audit outcomes | Lena Brandt |\n| Which overrides of machine checks happened, by whom and why? | `override` with the original verdict | Risk owners |\n\nA query that cannot be answered is a schema defect, and Ostrell treats it as an incident finding, as with the served model version in August.\n\n## Retention, Privacy and Regulatory Duties\n\nAn evidence log is personal data at scale. The General Data Protection Regulation (GDPR) requires data to be kept \"no longer than is necessary\" (Art. 5(1)(e)) and grants erasure (Art. 17), except where processing is necessary \"for compliance with a legal obligation\" or for legal claims (Art. 17(3)(b) and (e)) ([Regulation (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj)). Three choices let an evidence log meet both duties.\n\n1. **Retention per record class, not per log.** Closewise evidence follows Group Finance's seven-year retention period for accounting records; Answerdesk action records follow the support complaint-and-dispute period; Wake's 30-day content store is not evidence.\n2. **Curate, then reference.** Logbook keeps what the decision relied on (amounts, ids, versions, hashes). The customer's email stays in the ticketing system under its retention; after it is deleted, the hash still proves which version was seen.\n3. **Crypto-shredding for personal fields.** Personal data inside Logbook records is encrypted with a per-data-subject key; erasure deletes the key, and the chain stays verifiable because hashes cover the ciphertext. Requests that meet a retention duty are recorded and honored when it ends. This is the author's judgement; it assumes audited key management and fails if the projection holds the same data in clear.\n\n**The EU AI Act.** For high-risk systems, Article 12 requires that systems \"technically allow for the automatic recording of events (logs) over the lifetime of the system\" for traceability, risk identification and monitoring; providers keep logs under their control for at least six months (Art. 19), deployers likewise (Art. 26(6)); and Article 86 gives affected persons a right to \"clear and meaningful explanations of the role of the AI system in the decision-making procedure\" ([Regulation (EU) 2024/1689](http://publications.europa.eu/resource/celex/32024R1689)). Article 12(3) lists minimum fields only for remote biometric identification; elsewhere the Act sets purposes, not fields. Regulation (EU) 2026/1744, the Digital Omnibus, moved the high-risk requirements to **2 December 2027** for Annex III systems and **2 August 2028** for Annex I systems ([published 2026-07-24](http://publications.europa.eu/resource/celex/32026R1744)); as of October 2026 they have not yet applied.\n\nFor Ostrell the Act bites narrowly. On the author's reading, an organization that builds an agent for its own use is both its provider and its deployer. No Ostrell agent does recruitment, credit scoring or benefits eligibility. Peoplepoint is nearest Annex III point 4, and refuses and routes anything about performance, pay or termination. Ostrell's documented Article 6(3) assessment (narrow procedural task, no material influence on decisions about workers) is a versioned artifact in the Agent Registry tied to Peoplepoint's tool list; a tool that ranks or decides about employees reopens it. Logbook was built for audit, not for the regulation, and that ordering matters: a log designed to a regulator's minimum would not have answered the auditors.\n\n## Worked Example at Ostrell: Answering the Sixth Question\n\nThe auditors' sixth question, which posted entries came from an ungated model version, had an answer in October because of three things Logbook had and one it lacked.\n\n**What it had.** Every Closewise classification since April carried a `model.call` record with the *requested* model name, a `proposal` record linking the call to the action object, and approval, intent and receipt records for every entry. The alias move had happened over the weekend before Monday 2 August (working day 1 of the July close), and the pin to the previous exact version took effect on Thursday 5 August (working day 4). Every classification call in that window had gone through the alias, and the provider's release notes dated the move to that weekend.\n\n**What it lacked.** The served version. The window had to be bounded by time and by the provider's notice rather than read from records.\n\nThe query took one afternoon. At about **380 proposals per working day**, the window held **1,498** Closewise proposals from the drifted model. Controllers had rejected **165** (11%) and approved **1,333**, some after editing. In August, after the pin, Mei Lin Zhou's team had re-run the classification of all 1,333 approved entries on the previous exact version: **1,281** agreed, and controllers re-examined the **52** that differed and found no misstatement. The auditors received the list of 1,333 entries with their dossiers, the re-run results and the 52 re-examinations, and closed the question without a finding. Approval had held, and Logbook could show it had.\n\nSince September 2027, the Gateway records requested and served model versions on every call, and every run records its manifest hash ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)). The same question is now a three-line query:\n\n```sql\nSELECT p.action_id FROM logbook_records m\nJOIN logbook_records p ON p.kind = 'proposal' AND p.model_call_id = m.record_id\nJOIN logbook_records r ON r.kind = 'receipt' AND r.action_id = p.action_id\nWHERE m.kind = 'model.call' AND m.served_model NOT IN (SELECT model_id FROM gated_models(m.manifest_sha256));\n```\n\nThe review after the audit made three changes. **Field-coverage reviews:** each quarter, every risk owner lists the questions they expect, and the Agent Platform team shows the query for each; a question without a query is a schema change. **Signed dossiers:** the entry dossier is a standard export signed with the chain head it was read from. **Guardrails pinned:** the review found Answerdesk's intake injection classifier had been updated in August without a manifest change; it is now pinned like any model.\n\n## Failure Modes and Recovery\n\n| Scenario | Detection | Containment | Recovery |\n| --- | --- | --- | --- |\n| **PEP bypass**: a team adds a direct HTTP client in agent code to reach an internal API | Egress proxy denies destinations not behind Toolyard; span-shape check against the decision-point map; tool call with no `policy.decision` record | Agent identities have no network route except through Toolyard; release check fails | Remove the path; Logbook and egress logs show what was reached; review affected actions ([Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)) |\n| **Policy regression**: a refactor widens `issue_credit` to unverified accounts | Static analysis and decision replay in the release pipeline; in production, PEP 2 denial rate drops for the class | Toolyard's independent hard limits and the billing system's uniqueness key | Move the manifest pointer back to the previous policy version; query all decisions under the bad version and review or compensate |\n| **Stale policy bundle** on a decision node after a demotion | Every decision records its policy version; Wake alerts on version skew across nodes | Nodes with bundles older than 5 minutes fail closed; tier lookups fail to the lowest configured tier | Re-evaluate actions decided under the stale version against the current one; compensate any that would now be denied |\n| **Logbook write outage** | Intent-write error rate in Wake | Side effects stop; agents continue read-only work and draft actions for later | Spooled records drain; no evidence gap; queued actions resume through PEP 3 re-checks |\n| **Evidence gap or tampering** | Chain verifier finds a missing or altered record against the WORM anchor | Anchors make silent rewriting detectable; writers have no delete permission | Security incident; restore from replicas; record the gap itself as an event; reassess what the gap could hide |\n| **Over-collection**: a team writes full tool arguments with personal data into Logbook | Schema validation per record family rejects unknown fields; PII detector on writes | Write rejected, so the side effect waits | Fix the record mapping; crypto-shred any personal data written before the check existed |\n| **Unanswerable audit question** | A risk owner's question has no query (the served model in August) | Bound the answer by other records, and say so | Add the field; backfill nothing that would be invented; record the limitation in the answer |\n\nWhen the evidence log lacks a field, the honest answer states how it was bounded. Backfilling from memory or inference turns an evidence log into an argument.\n\n## Trade-offs\n\n| Decision | Option | When it is right | What it costs |\n| --- | --- | --- | --- |\n| Where policy lives | In the system prompt | Never as a control; only as guidance that makes good proposals likely | Zero enforcement |\n| | In agent code | Single agent, single team, low consequence | Every team reimplements it; bypass is a code path away |\n| | Central policy engine at platform PEPs | Several agents, shared rules, consequential actions | A decision service on every path; policy-review process |\n| | In the downstream system of record | Rules the system owns (period locks, uniqueness, quote supersession) | Not agent-aware: cannot see what the run has read |\n| Policy language | Cedar | Authorization with analysis of permission changes; default deny | Allow/deny only; obligations need a separate routing layer |\n| | OPA and Rego | Structured decisions in one place; wide ecosystem; decision logs with masking | Less analyzable; Rego's learning curve |\n| | Typed general-purpose code | Rules needing complex computation | Hard to review, test exhaustively or analyze |\n| Guardrail role | Gate (a verdict blocks or allows) | Content safety where false negatives are cheap | Adaptive attackers; a false negative becomes a permission |\n| | Signal that only tightens | Anything consequential | Extra human workload when it over-fires |\n| Evidence store | Trace store | Operations only | Sampled, short retention; not evidence |\n| | Append-only database with hash chain | Most agents | Integrity checks and anchoring are yours to build |\n| | Plus WORM anchoring | Back office, employment, high stakes | Storage cost; erasure needs crypto-shredding |\n| | Ledger database service | Very high integrity demands with modest volume | Harder to query and operate at high event volumes, as the author's sales design notes |\n| Evidence write timing | Synchronous before every side effect | Default | Logbook availability bounds side-effect availability |\n| | Asynchronous with a local durable spool | Read-only steps, denials, outputs | A spool that can be lost with the node unless fsynced and replicated |\n\nOPA's own decision logs are uploaded in asynchronous batches, retried and optionally masked ([OPA decision logs, accessed 2026-10](https://www.openpolicyagent.org/docs/latest/management-decision-logs/)): right for telemetry, not enough as evidence for a side effect, which is why Keelson puts the decision id in the synchronous intent record. Amazon Bedrock AgentCore, generally available since 3 March 2026, ships the central-engine option, evaluating agent traffic at its gateway against Cedar policies \"before allowing tool access\" ([AWS documentation, accessed 2026-10](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html); [AWS, 2026-03-03](https://aws.amazon.com/about-aws/whats-new/2026/03/policy-amazon-bedrock-agentcore-generally-available/)). That documents a design, not its effect, and its natural-language policy authoring is model output that needs review.\n\n## Across Domains: How the Stakes Change the Design\n\n| Concern | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| PEPs that carry the most weight | Sandbox egress, protected paths, merge (humans only at Ostrell) | PEP 4 on what the reply promises; sinks for email and attachments; suppression and consent by purpose | PEP 3 re-check before posting; segregation of duties between proposer and approver | Rule layer authoritative; PEP 3 revalidates the record snapshot before any write |\n| Who writes policy | Developer Productivity and security; local coding CLI permission rules in a managed configuration | Product owner with legal for representations; security for sinks | Risk owner (controller, general counsel, HR) with internal audit | Clinical or legal rule owners through a release workflow; the model may not override a rule |\n| Guardrail role | Review lenses advisory until their precision is proven | Groundedness, commitment and PII checks on every reply | Injection screening of inbound documents | Calibrated abstention; never a substitute for a human adverse decision |\n| Evidence content | Change plan, diffs, test results, PR, reviewer | Action objects, approvals, receipts; message by reference | Decision record with versions, evidence, calculations, approvals, receipts | Two layers: data-access audit and decision audit; human rationale; materialized appeal packet |\n| Tamper evidence and retention | Append-only; weeks to months | Hash-chained; months to years by tenant contract (1–7 years in the support design) | Hash-chained plus WORM; years | Hash-chained plus WORM; statute and case lifetime; Art. 12, 19 and 26(6) from 2 December 2027 for Annex III systems |\n| Typical audit question | Who merged this agent change, and did tests shrink? | Did we promise this customer anything we did not do? | Was the posted amount the approved amount, approved by someone independent? | Can a reviewer re-decide this case from the record alone? |\n\nOne coding gap is worth naming. The author's ai-coding-cli interview design keeps permission decisions in the local session transcript, so its audit trail is not centrally auditable for interactive sessions (design example, `ai-coding-cli/interview.json`, step `safety`). Forge runs headless on Keelson and Logbook covers it; local CLI work by Ostrell's 870 engineers is treated as low-consequence because merge stays human.\n\nThe author's agentic-finance-platform design sets the evidence baseline: an immutable decision record, \"not a chain-of-thought dump\", hash-chained on WORM storage, with raw reasoning kept apart (step `decision-record`); its legal and HR siblings are weaker, and this book takes the finance design. The agentic-healthcare-platform design separates data-access audit from decision audit, so access is recorded \"even when no recommendation is authorized\" (step `privacy`). The agentic-public-benefits-platform design materializes an appeal packet and warns that replay logic \"must be versioned so an old case reconstructs under the rules it actually used\" (step `audit-appeal`). In both, a human override is a new record that never overwrites the machine verdict. All are design examples, not deployed systems ([Back Office: Finance, Legal and HR Agents](domain-back-office.html), [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html)).\n\n**What the platform keeps common:** the four PEPs and their fail-closed behavior, the decision record, the policy release pipeline with analysis and decision replay, the guardrail asymmetry, Logbook's record families, write ordering, hash chaining and the query projection. **What is domain policy:** the rules themselves, who writes and signs them, which guardrails run where, retention classes, WORM anchoring, who may query what, and the extra deterministic components a domain requires (a rule engine, a match engine, a maker–checker gate).\n\n## The Chief Architect's View\n\n**Decide where the enforcement points are before deciding what the policies say.** Rules change monthly; PEP positions are architecture. I would take a weak policy at a complete set of PEPs over a sophisticated one with a bypass: the first is fixed by a release, the second is found only when something uses it.\n\n**Make the policy release pipeline the governance.** A decision diff over 90 days of real requests, signed by the risk owner, shows what a change does rather than what its author meant. At Ostrell, agent owners sign agent sets, security signs the platform set, and risk owners sign anything that changes a tier or a hard limit.\n\n**Ask risk owners for their questions, not their logging requirements.** \"Log everything\" produces terabytes and still misses the served model version; twelve questions an auditor, regulator or customer will ask produce a schema.\n\n**Keep guardrails honest in the risk register.** A classifier's catch rate belongs in the evaluation report, not in the argument for why an agent may run at a tier. Read a vendor's near-zero attack success rate as \"against this test set, today\".\n\n**What will change:** injection resistance, policy languages and gateway products, the AI Act's harmonized log fields, OpenTelemetry's agent conventions. **What will not:** a model that proposes cannot be the authority that permits; evidence that can be sampled is not evidence; and a decision record describes what the system saw and did, not what the model said about itself. I expect to replace Bulkhead's policy language within five years and to keep its four enforcement points.\n\n## Questions to Ask\n\n1. For each tool that changes an external system, what is the single path to it, and which enforcement point on that path cannot be skipped by agent code?\n2. Where does the system re-check an approval, the policy version and the source facts immediately before dispatch, and what happens if any changed?\n3. Which rules live only in prompts, and which of those would cost money or data if a model ignored them?\n4. How is a policy change tested: is there a static analysis of permission changes, and a replay of recent real decisions with a diff the risk owner signs?\n5. Which guardrail verdicts can loosen a decision, raise a limit or clear a run? Can any?\n6. If the evidence log is unavailable, what stops, and what continues?\n7. Can you show, by query, that a posted amount equals the approved amount, and what the approver saw and for how long?\n8. Which audit questions can your evidence log not answer today, and who decided that was acceptable?\n9. How do you honor an erasure request against a tamper-evident log with a retention duty, and is the projection covered too?\n\nPolicy decides what an agent may do and the evidence log records what it did; neither says whether the agent does its job well, or how much autonomy that evidence should earn it. That is the subject of Part VIII: [Part VIII — EVIDENCE: Evaluation and Observability](part-8.html).\n\n## Sources and Evidence\n\n### Research papers\n\n- [Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations](https://arxiv.org/abs/2312.06674) — Inan et al., Meta, **2023** (preprint); guardrail classifier and its benchmark scope.\n- [Constitutional Classifiers: Defending against Universal Jailbreaks across Thousands of Hours of Red Teaming](https://arxiv.org/abs/2501.18837) — Sharma et al., Anthropic, **2025** (preprint); red-teaming hours, refusal and overhead costs.\n- [AgentDojo](https://arxiv.org/abs/2406.13352) — Debenedetti et al., ETH Zurich and Invariant Labs, **2024** (preprint, v3); detector vs tool-filter results and utility cost.\n- [The Attacker Moves Second](https://arxiv.org/abs/2510.09023) — Nasr, Carlini et al., **2025** (preprint); adaptive attacks against 12 defenses.\n- [Reasoning Models Don't Always Say What They Think](https://arxiv.org/abs/2505.05410) — Chen et al., Anthropic, **2025** (preprint); chain-of-thought faithfulness, basis for not treating reasoning as explanation.\n- [Cedar: A New Language for Expressive, Fast, Safe, and Analyzable Authorization](https://arxiv.org/abs/2403.04651) — Cutler et al., AWS, **2024** (extended version); policy analysis and verification.\n\n### Specifications, standards and regulation\n\n- [Regulation (EU) 2024/1689 (AI Act)](http://publications.europa.eu/resource/celex/32024R1689) — European Parliament and Council, **2024**; Articles 12, 19, 26(6) and 86.\n- [Regulation (EU) 2026/1744 (Digital Omnibus on AI)](http://publications.europa.eu/resource/celex/32026R1744) — European Parliament and Council, **2026**; application dates 2 December 2027 (Annex III) and 2 August 2028 (Annex I).\n- [Regulation (EU) 2016/679 (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj) — **2016**; storage limitation, erasure and its exceptions.\n- [OWASP Top 10 for LLM Applications 2025: LLM06 Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/) — OWASP GenAI Security Project, n.d., accessed 2026-10; complete mediation.\n- [Cedar authorization semantics](https://docs.cedarpolicy.com/auth/authorization.html) — Cedar project, n.d., accessed 2026-10; default deny, forbid overrides permit.\n- [Open Policy Agent documentation](https://www.openpolicyagent.org/docs/latest/) and [decision logs](https://www.openpolicyagent.org/docs/latest/management-decision-logs/) — OPA project, n.d., accessed 2026-10; structured decisions, asynchronous decision logs with masking.\n- [RFC 6962 Certificate Transparency](https://www.rfc-editor.org/rfc/rfc6962) — Laurie, Langley, Kasper, IETF, **2013**; and [RFC 9162](https://www.rfc-editor.org/rfc/rfc9162), **2021**; Merkle-tree append-only logs.\n\n### Vendor documentation and engineering reports\n\n- [Policy in Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) — AWS, n.d., accessed 2026-10; and [GA announcement](https://aws.amazon.com/about-aws/whats-new/2026/03/policy-amazon-bedrock-agentcore-generally-available/), **2026**; a shipped gateway policy design.\n- [Claude Code auto mode](https://www.anthropic.com/engineering/claude-code-auto-mode) — Anthropic, **2026**; classifier false-positive and false-negative rates as a vendor measurement.\n- [AI systems could cover up misbehavior](https://metr.org/blog/2026-10-06-ai-systems-could-cover-up-misbehavior/) — METR (David Rein), **2026**; recording systems as security-critical infrastructure.\n\n### Incidents, cases and decisions\n\n- No public incident report describes an agent evidence log failing an audit; the Ostrell audit is illustrative.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, **2026** — steps `security`, `control-flow`; `dataModel[action_evidence]` (same-transaction claim not adopted).\n- Obrenović, Ž., \"Agentic Finance Platform\", `system-design-interviews/data/book/agentic-finance-platform/interview.json`, **2026** — step `decision-record`; evidence baseline.\n- Obrenović, Ž., \"Agentic Healthcare Platform\", `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`, **2026** — step `privacy`; two-layer audit.\n- Obrenović, Ž., \"Agentic Public Benefits Platform\", `system-design-interviews/data/book/agentic-public-benefits-platform/interview.json`, **2026** — step `audit-appeal`; appeal packet and versioned replay.\n- Obrenović, Ž., \"Agentic Support Platform\", `system-design-interviews/data/book/agentic-support-platform/interview.json`, **2026** — step `compliance-eval`; hash-chained, correlated audit records and tenant retention.\n- Obrenović, Ž., \"Agentic Sales Platform\", `system-design-interviews/data/book/agentic-sales-platform/interview.json`, **2026** — `technologyChoices`, Audit; ledger-database trade-off.\n- Obrenović, Ž., \"AI Coding CLI\", `system-design-interviews/data/book/ai-coding-cli/interview.json`, **2026** — step `safety`; local transcript audit gap.\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Source Coverage: The Interview Designs Behind This Book</title>
+    <meta name="description" content="Which of the author's twelve system-design interview designs stand behind which chapters, at which step, and where does the book disagree with them? This reference page maps every interview source to the parts and chapters that cite it, lists the patterns adopted and the departures made, records each source's known weaknesses, and names what the sources did not cover and where external research filled the gap.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Source Coverage: The Interview Designs Behind This Book">
+    <meta property="og:description" content="Which of the author's twelve system-design interview designs stand behind which chapters, at which step, and where does the book disagree with them? This reference page maps every interview source to the parts and chapters that cite it, lists the patterns adopted and the departures made, records each source's known weaknesses, and names what the sources did not cover and where external research filled the gap.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/source-coverage.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/source-coverage/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="domain-high-stakes-decisions.html" title="High-Stakes Decisions: Clinical and Public-Benefits Agents">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="toolkit.html" title="Toolkit: Templates for Agentic Architecture Decisions">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference</p>
+        <h1>Source Coverage: The Interview Designs Behind This Book</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  30 min read · <a class="spec-link" href="source-coverage.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/source-coverage/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/source-coverage/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="domain-high-stakes-decisions.html" title="High-Stakes Decisions: Clinical and Public-Benefits Agents">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="toolkit.html" title="Toolkit: Templates for Agentic Architecture Decisions">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Source Coverage: The Interview Designs Behind This Book", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "Which of the author's twelve system-design interview designs stand behind which chapters, at which step, and where does the book disagree with them? This reference page maps every interview source to the parts and chapters that cite it, lists the patterns adopted and the departures made, records each source's known weaknesses, and names what the sources did not cover and where external research filled the gap.", "permalink": "source-coverage", "timetoread": "30 min read", "icon": "assets/icons/source-coverage.png", "logo": "assets/images/source-coverage/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Trace every design example in this book back to the interview design it came from: which of the twelve sources, which step, which chapters use it, what the book adopted from it, where the book departs from it and why, and what each source gets wrong. You will also see which topics no interview source covers, and which external research the book used for them instead.\n\n> **KEY POINTS:**\n>\n> * **All twelve sources are used, unevenly.** Every interview design is cited by at least five chapters. The healthcare (36 chapters), public-benefits (35), coding CLI (31), support (30) and platform-foundations (29) designs carry most of the weight. The marketing design (5 chapters) and the research design (9) are used mostly for contrast.\n> * **They are design exercises, not deployed systems.** Each source evolves a naive architecture one failure at a time. The book cites them by path and step, labels them as design examples, treats their numbers as illustrative assumptions, and never presents them as evidence of how a production system behaves.\n> * **Where the sources disagree, the book rules once.** Twenty-four consistency rulings settle the conflicts between sources and the internal flaws of single sources: approval semantics, exactly-once effects, sandbox strength, credential brokering, delegation-token claims and more. Each source section below names the rulings that apply to it.\n\n> **[FAILURE PATTERNS THIS SECTION ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **The Agent Committee** — no interview source designs a working multi-agent decomposition, and one labels a single worker \"hierarchical multi-agent\"; this page shows where the book had to rely on published research instead.\n> * **Ambient Authority** — three sources let an identity broker execute side effects and one lets a local agent act with the user's full identity; the page records where the book separates deciding from executing.\n> * **The Fire-and-Forget Action** — two sources write evidence \"in the same transaction\" as an external effect or leave the irreversible filing step unmodeled; the page names the chapters that replace these with intent, execution and receipt records.\n\n<br>\nThis book draws on **the author's system-design interview project**, a separate body of work that designs systems step by step, from a naive baseline to an evolved architecture. Twelve of its designs are about agentic systems. They gave the book its first vocabulary, most of its contrast designs and many of the mechanisms the chapters build on Ostrell's Keelson platform.\n\nMaterial borrowed from a design exercise can easily read as if it described a real system. This page keeps the borrowing traceable. For each source it answers four questions: **\"What does it design?\"**, **\"What did the book take, and where?\"**, **\"Where did the book disagree?\"** and **\"What is wrong with it?\"** The full source list is in [Bibliography](bibliography.html).\n\n## What the Interview Project Is\n\nThe interview project is a collection of system-design exercises, each kept as one JSON file, `interview.json`, under `system-design-interviews/data/book/<directory>/`. A file holds requirements, an illustrative capacity estimate, an architecture, an API sketch, a data model, technology choices and an ordered list of **steps**. Each step names the failure of the previous design, adds one mechanism to fix it and records the new risk the fix exposes, with options, deep dives, flows and failure drills.\n\nThat structure is why the sources were useful to this book. **A design that grows one failure at a time explains why each mechanism exists**, which is the argument a chapter needs to make. The finance design does not start with a staging store; it starts with \"an agent that posts to the ledger\", shows why that fails, and adds the staging store as the fix.\n\nEleven directories also hold a `REVIEW.md`, the author's critique, dated June 2026; the coding harness has none. **The reviews predate the current JSON**, which has since fixed most of their issues, so the book cites the JSON as the design and a review only as critique (ruling 13). The weaknesses below were checked against the current JSON.\n\n### The provenance rule\n\nEvery use of an interview design in this book follows one rule, set in the style guide as evidence kind 7, *design example from the interview project*:\n\n- **It is labeled inline** where it first matters in a chapter: \"The author's agentic-support-platform interview design (step `action-gate`) gates each proposed action by reversibility.\"\n- **It is cited in Sources and Evidence** under *Design examples from the author's interview project*: *Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, 2026*, plus the step or field used.\n- **It is never presented as a deployed system** or as evidence of production behavior. A design exercise shows that a mechanism is coherent, not that it works at scale.\n- **Its numbers are illustrative assumptions**, the exercise's sizing, not measurements.\n- **Third-party claims inside a source** (the harness design's Stripe and OpenAI figures) are cited at the original publisher, never at the interview file.\n- **Steps are cited by id** (`cloud`, `citation-gate`), because title numbers such as \"3a\" or \"4a\" do not match positions.\n\nThe design examples are kept apart from **Ostrell, the fictional field-service software group the book follows** (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)). Several Ostrell agents borrow mechanisms from an interview design; the clinical and public-benefits designs are not Ostrell at all, and appear as labeled contrast designs, mostly in [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html).\n\n### How this map was built\n\nA chapter **cites** a source when its text or Sources section names the source directory (search of the 44 chapters, 28 October 2026). Steps come from the chapters' Sources entries, checked against each `interview.json`. Part introductions cite none; [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html) cites healthcare and benefits, [Toolkit: Templates for Agentic Architecture Decisions](toolkit.html) platform, support and finance, and [Bibliography](bibliography.html) all twelve; these are not in the matrix.\n\n## Coverage Matrix\n\nThe matrix lists, for each source, the chapters in each part that cite it. The chapter numbers link to the chapters. Parts: **I** Foundations, **II** Architecture, **III** Orchestration, **IV** Context, **V** Tools, **VI** Reliability, **VII** Control, **VIII** Evidence, **IX** Economics, **X** Evolution, **XI** Domains.\n\n| Source | I | II | III | IV | V | VI | VII | VIII | IX | X | XI | Chapters |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---: |\n| `agentic-platform-foundations` | [01](what-makes-a-system-agentic.html) [04](workflows-loops-and-autonomous-agents.html) | [05](agentic-reference-architecture.html) [06](models-and-the-model-gateway.html) [07](agent-runtime.html) | [11](routing-and-delegation.html) [12](single-and-multi-agent-designs.html) | [14](context-engineering.html) [16](agent-memory.html) [17](task-state-and-checkpoints.html) | [19](tool-contracts.html) [20](tool-ecosystems-and-mcp.html) [21](sandboxes-and-execution-environments.html) | [23](durable-agent-execution.html) [24](retries-idempotency-and-concurrency.html) | [26](agent-threat-model.html) [27](prompt-injection-defense.html) [28](agent-identity-and-least-privilege.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) [33](agent-observability.html) [34](evidence-for-autonomy.html) | [35](agent-latency-and-throughput.html) [36](agent-cost-and-model-routing.html) [37](caching-and-context-budgets.html) | [38](versioning-agent-systems.html) [39](staged-rollout-and-rollback.html) [40](owning-agentic-systems.html) | — | 29 |\n| `ai-coding-cli` | [01](what-makes-a-system-agentic.html) [03](autonomy-and-consequence.html) [04](workflows-loops-and-autonomous-agents.html) | [06](models-and-the-model-gateway.html) [07](agent-runtime.html) [09](agent-interaction-design.html) | [10](planning-and-decomposition.html) [11](routing-and-delegation.html) [12](single-and-multi-agent-designs.html) | [14](context-engineering.html) [15](retrieval-and-grounding.html) [16](agent-memory.html) [17](task-state-and-checkpoints.html) [18](provenance-and-freshness.html) | [19](tool-contracts.html) [20](tool-ecosystems-and-mcp.html) [21](sandboxes-and-execution-environments.html) | [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [26](agent-threat-model.html) [27](prompt-injection-defense.html) [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) | [35](agent-latency-and-throughput.html) [36](agent-cost-and-model-routing.html) [37](caching-and-context-budgets.html) | [38](versioning-agent-systems.html) [39](staged-rollout-and-rollback.html) | [41](domain-coding-agents.html) | 31 |\n| `ai-coding-harness` | — | [07](agent-runtime.html) | [10](planning-and-decomposition.html) | [16](agent-memory.html) | [21](sandboxes-and-execution-environments.html) | [23](durable-agent-execution.html) [25](partial-failure-and-compensation.html) | [26](agent-threat-model.html) [27](prompt-injection-defense.html) | [32](building-agent-eval-suites.html) [34](evidence-for-autonomy.html) | [36](agent-cost-and-model-routing.html) | [38](versioning-agent-systems.html) [40](owning-agentic-systems.html) | [41](domain-coding-agents.html) | 14 |\n| `agentic-support-platform` | [01](what-makes-a-system-agentic.html) [02](when-agents-are-justified.html) [03](autonomy-and-consequence.html) | [05](agentic-reference-architecture.html) [08](agents-in-the-enterprise.html) [09](agent-interaction-design.html) | [11](routing-and-delegation.html) [13](coordination-and-handoffs.html) | [14](context-engineering.html) [15](retrieval-and-grounding.html) [16](agent-memory.html) [17](task-state-and-checkpoints.html) [18](provenance-and-freshness.html) | [19](tool-contracts.html) [21](sandboxes-and-execution-environments.html) [22](side-effects-and-external-actions.html) | [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [27](prompt-injection-defense.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) [33](agent-observability.html) | [35](agent-latency-and-throughput.html) [36](agent-cost-and-model-routing.html) | [39](staged-rollout-and-rollback.html) [40](owning-agentic-systems.html) | [42](domain-customer-operations.html) | 30 |\n| `agentic-sales-platform` | — | [08](agents-in-the-enterprise.html) | [11](routing-and-delegation.html) [12](single-and-multi-agent-designs.html) [13](coordination-and-handoffs.html) | [16](agent-memory.html) [18](provenance-and-freshness.html) | [22](side-effects-and-external-actions.html) | [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) [33](agent-observability.html) | [35](agent-latency-and-throughput.html) | [40](owning-agentic-systems.html) | [42](domain-customer-operations.html) | 17 |\n| `agentic-marketing-platform` | — | — | — | [15](retrieval-and-grounding.html) [16](agent-memory.html) | — | — | [29](human-oversight-and-bounded-autonomy.html) | [32](building-agent-eval-suites.html) | — | — | [42](domain-customer-operations.html) | 5 |\n| `agentic-finance-platform` | [01](what-makes-a-system-agentic.html) [02](when-agents-are-justified.html) [03](autonomy-and-consequence.html) [04](workflows-loops-and-autonomous-agents.html) | [05](agentic-reference-architecture.html) [06](models-and-the-model-gateway.html) [08](agents-in-the-enterprise.html) | [10](planning-and-decomposition.html) [11](routing-and-delegation.html) | [17](task-state-and-checkpoints.html) | [19](tool-contracts.html) [21](sandboxes-and-execution-environments.html) [22](side-effects-and-external-actions.html) | [23](durable-agent-execution.html) [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [27](prompt-injection-defense.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) | — | [38](versioning-agent-systems.html) [39](staged-rollout-and-rollback.html) | [43](domain-back-office.html) | 25 |\n| `agentic-legal-platform` | — | [06](models-and-the-model-gateway.html) | [13](coordination-and-handoffs.html) | [15](retrieval-and-grounding.html) [16](agent-memory.html) [18](provenance-and-freshness.html) | [22](side-effects-and-external-actions.html) | [25](partial-failure-and-compensation.html) | [26](agent-threat-model.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) | [32](building-agent-eval-suites.html) | [35](agent-latency-and-throughput.html) [37](caching-and-context-budgets.html) | [39](staged-rollout-and-rollback.html) | [43](domain-back-office.html) | 15 |\n| `agentic-hr-platform` | — | [08](agents-in-the-enterprise.html) | [11](routing-and-delegation.html) [13](coordination-and-handoffs.html) | — | — | [25](partial-failure-and-compensation.html) | [26](agent-threat-model.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) | [31](evaluating-agentic-systems.html) | [37](caching-and-context-budgets.html) | — | [43](domain-back-office.html) | 10 |\n| `agentic-healthcare-platform` | [01](what-makes-a-system-agentic.html) [03](autonomy-and-consequence.html) [04](workflows-loops-and-autonomous-agents.html) | [05](agentic-reference-architecture.html) [06](models-and-the-model-gateway.html) [08](agents-in-the-enterprise.html) [09](agent-interaction-design.html) | [11](routing-and-delegation.html) [12](single-and-multi-agent-designs.html) [13](coordination-and-handoffs.html) | [14](context-engineering.html) [15](retrieval-and-grounding.html) [16](agent-memory.html) [17](task-state-and-checkpoints.html) [18](provenance-and-freshness.html) | [19](tool-contracts.html) [20](tool-ecosystems-and-mcp.html) [21](sandboxes-and-execution-environments.html) [22](side-effects-and-external-actions.html) | [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [26](agent-threat-model.html) [27](prompt-injection-defense.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) [33](agent-observability.html) [34](evidence-for-autonomy.html) | [35](agent-latency-and-throughput.html) [36](agent-cost-and-model-routing.html) [37](caching-and-context-budgets.html) | [38](versioning-agent-systems.html) [39](staged-rollout-and-rollback.html) | [44](domain-high-stakes-decisions.html) | 36 |\n| `agentic-public-benefits-platform` | [01](what-makes-a-system-agentic.html) [02](when-agents-are-justified.html) [03](autonomy-and-consequence.html) [04](workflows-loops-and-autonomous-agents.html) | [05](agentic-reference-architecture.html) [06](models-and-the-model-gateway.html) [07](agent-runtime.html) [09](agent-interaction-design.html) | [10](planning-and-decomposition.html) [11](routing-and-delegation.html) [12](single-and-multi-agent-designs.html) [13](coordination-and-handoffs.html) | [14](context-engineering.html) [15](retrieval-and-grounding.html) [16](agent-memory.html) [17](task-state-and-checkpoints.html) [18](provenance-and-freshness.html) | [22](side-effects-and-external-actions.html) | [23](durable-agent-execution.html) [24](retries-idempotency-and-concurrency.html) [25](partial-failure-and-compensation.html) | [27](prompt-injection-defense.html) [28](agent-identity-and-least-privilege.html) [29](human-oversight-and-bounded-autonomy.html) [30](policy-enforcement-and-audit.html) | [31](evaluating-agentic-systems.html) [32](building-agent-eval-suites.html) [33](agent-observability.html) [34](evidence-for-autonomy.html) | [35](agent-latency-and-throughput.html) [37](caching-and-context-budgets.html) | [38](versioning-agent-systems.html) [39](staged-rollout-and-rollback.html) [40](owning-agentic-systems.html) | [44](domain-high-stakes-decisions.html) | 35 |\n| `agentic-research-platform` | [04](workflows-loops-and-autonomous-agents.html) | — | [10](planning-and-decomposition.html) [12](single-and-multi-agent-designs.html) | [15](retrieval-and-grounding.html) [18](provenance-and-freshness.html) | [22](side-effects-and-external-actions.html) | — | [29](human-oversight-and-bounded-autonomy.html) | — | [36](agent-cost-and-model-routing.html) | — | [44](domain-high-stakes-decisions.html) | 9 |\n\nThree things stand out in the matrix.\n\n- **No source is uncited.** The thinnest is marketing (5 chapters), used mainly for the approval that expires when its evidence changes and for consent by purpose; then research (9) and HR (10).\n- **The high-stakes designs are cited almost everywhere** although Ostrell does not run them: they are the far end of the consequence range in nearly every \"Across Domains\" table.\n- **Part XI draws on each group separately**: coding designs in [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html), support, sales and marketing in [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html), finance, legal and HR in [Back Office: Finance, Legal and HR Agents](domain-back-office.html), healthcare and benefits in [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html). The platform design appears in no domain chapter, because it describes what all four share.\n\n### Summary by source\n\n| Source | Steps | Chapters | Mentions | REVIEW.md | Closest Ostrell counterpart |\n| --- | ---: | ---: | ---: | --- | --- |\n| `agentic-platform-foundations` | 8 | 29 | 80 | 2026-06-23 | The Keelson platform (Runtime, Gateway, Toolyard, Bulkhead, Logbook, Sounding) |\n| `ai-coding-cli` | 9 | 31 | 106 | 2026-06-12 | Forge's inner coding loop |\n| `ai-coding-harness` | 8 | 14 | 35 | none | Forge's outer harness and pipeline |\n| `agentic-support-platform` | 7 | 30 | 75 | 2026-06-24 | Answerdesk |\n| `agentic-sales-platform` | 5 | 17 | 31 | 2026-06-24 | Dealroom (which never sends to customers) |\n| `agentic-marketing-platform` | 6 | 5 | 9 | 2026-06-24 | None; marketing requests to Answerdesk in [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html) |\n| `agentic-finance-platform` | 7 | 25 | 64 | 2026-06-23 | Closewise |\n| `agentic-legal-platform` | 7 | 15 | 34 | 2026-06-23 | Clausewise |\n| `agentic-hr-platform` | 5 | 10 | 23 | 2026-06-24 | Peoplepoint (helpdesk only; Ostrell runs no hiring agent) |\n| `agentic-healthcare-platform` | 7 | 36 | 78 | 2026-06-25 | None; a labeled contrast design |\n| `agentic-public-benefits-platform` | 7 | 35 | 68 | 2026-06-24 | None; a labeled contrast design |\n| `agentic-research-platform` | 8 | 9 | 15 | 2026-06-24 | None; Scout does desk research, not lab work |\n\n*Chapters* counts chapters 01–44. *Mentions* counts every occurrence of the directory name on any page, so a text citation and a Sources entry count twice. The counterpart column is the author's mapping, not a claim that Ostrell implements the source.\n\n![Diagram: Five source groups feed the book's chapters and Ostrell's agents](assets/images/source-coverage/fig01-five-source-groups-feed-book-s.jpeg)\n**Figure 1:** *Five source groups feed the book's chapters and Ostrell's agents; the high-stakes designs stay outside Ostrell as labeled contrasts, and multi-agent decomposition comes from external research, not from any interview design.*\n\n## Platform and Coding Designs\n\n### Agentic Platform Foundations\n\n**What it designs.** A shared enterprise platform that hosts agents for many teams (runtime, sandbox, identity, memory, guardrails, capacity, evaluation, observability), so that a team \"registers config, not infrastructure\". It assumes **the model layer is compromisable** and bounds blast radius instead of trusting the model.\n\n**Evolution path.** 1 `naive` — a single hosted agent loop; 2 `runtime` — isolation and credential brokering; 3 `durable` — durable sessions, context and memory; 4 `identity` — tool boundary and identity delegation; 5 `security` — guardrails and data-flow partitioning; 6 `capacity` — inference economics and admission control; 7 `eval-obs` — evaluation and observability; 8 `control-flow` — workflow, agent or hybrid gate.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| The harness as deterministic runtime around the model; least-autonomous path; no path-specific bypass | `naive`, `control-flow` | [What Makes a System Agentic](what-makes-a-system-agentic.html), [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html), [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html), [The Agent Runtime: Running the Loop](agent-runtime.html) |\n| Per-session microVM; credential broker, so the agent uses credentials without reading them | `runtime` | [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html), [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html) |\n| Intent and result records with per-effect idempotency keys; execution stream separate from evidence | `durable` | [Durable Task State and Checkpoints](task-state-and-checkpoints.html), [Durable Execution for Long-Running Agents](durable-agent-execution.html), [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), [Observability: Traces, Metrics and Investigating Failures](agent-observability.html) |\n| Reversible compaction; memories with provenance, trust tier and TTL | `durable` | [Context Engineering: Building What the Model Sees](context-engineering.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Agent principal with delegated, audience-bound tokens; no token passthrough | `identity` | [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html) |\n| Lethal-trifecta removal; deterministic allowlists | `security` | [Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n| Terminating budgets; weighted fair admission; prefix caching | `capacity` | [The Agent Runtime: Running the Loop](agent-runtime.html), [Latency and Throughput](agent-latency-and-throughput.html), [Cost, Model Selection and Routing](agent-cost-and-model-routing.html), [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Golden sets from production failures; trajectory evaluation; promotion as a pointer flip gated on eval runs | `eval-obs` | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Observability: Traces, Metrics and Investigating Failures](agent-observability.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n| Orchestrator–workers with per-worker budget and scope | `control-flow` | [Routing and Delegation](routing-and-delegation.html), [One Agent or Many?](single-and-multi-agent-designs.html) |\n| Tool manifest hash and risk class; edge gateway separate from inference | `api`, architecture | [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html), [Models and the Model Gateway](models-and-the-model-gateway.html) |\n\n**Departures and reconciliations.**\n\n- **\"Exactly-once side effects\"** becomes \"exactly-once effect\": at-least-once execution, idempotency key, receipt lookup (ruling 4).\n- **Evidence \"in the same transaction\" as an external effect** is impossible; the book writes intent, executes, then writes a receipt and reconciles the unknown state (rulings 4–5; [Policy Enforcement and Audit](policy-enforcement-and-audit.html)).\n- **Reversed token claims** (`sub=agent, act=user`) follow RFC 8693 instead: `sub` is the principal served, `act` the agent run (ruling 22; [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html)).\n- **The model id is added to the agent version**, so a provider model change meets the evaluation gate (ruling 9; [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)).\n- **Two credential patterns** shown as one, a call proxy and a token mint, are named separately ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html)).\n\n**Weaknesses.** The data model cannot hold the approval states it describes (no pending, expired or expiry time). Promotion history is not recorded. Memory poisoning is only a follow-up question. Traces and eval datasets have no retention model. The EchoLeak example is uncited in the source, so the book cites it at a primary source.\n\n**Path:** `system-design-interviews/data/book/agentic-platform-foundations/interview.json`\n\n### AI Coding Agent CLI\n\n**What it designs.** A terminal coding agent that edits a repository, runs tests in a loop, verifies its work and grows into headless cloud agents that open pull requests. \"The model decides, the harness acts and enforces\": **policy for intent, an OS sandbox for impact**, and isolation that rises with autonomy.\n\n**Evolution path.** 1 `naive` — one-shot prompt to patch; 2 `agent-loop` — tool use; 3 `context` — context for large repositories; 3a `compaction` — surviving long sessions; 4 `safety` — permissions and sandboxed execution; 5 `extensibility` — commands, skills and MCP servers; 6 `inference` — streaming and the inference backend; 7 `verify` — tests, git and subagents; 8 `cloud` — background and cloud agents.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Turn, token and wall-clock caps; doom-loop detection; tool-call ids so a mutation never runs twice | `agent-loop` | [What Makes a System Agentic](what-makes-a-system-agentic.html), [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html), [The Agent Runtime: Running the Loop](agent-runtime.html), [Planning and Task Decomposition](planning-and-decomposition.html), [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) |\n| Orthogonal primitives; patch edits that fail loudly; denial as a tool result | `agent-loop`, `safety` | [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html) |\n| Agentic search before an index; project memory as guidance, not authority | `context` | [Context Engineering: Building What the Model Sees](context-engineering.html), [Retrieval and Grounding](retrieval-and-grounding.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Compaction that pins the task and keeps the transcript; re-read before editing | `compaction` | [Context Engineering: Building What the Model Sees](context-engineering.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Permission engine plus sandbox; reads free only while egress is closed; autonomy coupled to isolation | `safety` | [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html), [Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Extensions pinned by content hash, with review status and revocation | `extensibility` | [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) |\n| Append-only transcript for prefix caching; model tiering | `inference` | [Models and the Model Gateway](models-and-the-model-gateway.html), [Latency and Throughput](agent-latency-and-throughput.html), [Cost, Model Selection and Routing](agent-cost-and-model-routing.html), [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Verifier with a baseline before edits; subagents for context isolation | `verify` | [Routing and Delegation](routing-and-delegation.html), [One Agent or Many?](single-and-multi-agent-designs.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html) |\n| Leased cloud tasks; branch-per-task retries; PR review as the headless gate; evals gating model changes | `cloud` | [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html), [Durable Task State and Checkpoints](task-state-and-checkpoints.html), [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html) |\n\n**Departures and reconciliations.**\n\n- **Containers for unattended model-written code** are replaced by a microVM or gVisor-class boundary (ruling 2; [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html)).\n- **The clone token inside the sandbox** moves to a git proxy outside it; the sandbox holds only a run-scoped token (ruling 3).\n- **The whole loop in the sandbox** is split: the inner loop runs in the microVM as one leased activity, while task record, approvals and evidence stay in Keelson Runtime (ruling 20; [The Agent Runtime: Running the Loop](agent-runtime.html)).\n- **The local agent acting as the user** is named ambient authority, accepted only for local interactive use (ruling 3).\n- **\"Harness\"** keeps one meaning; the eval runner is the \"evaluation harness\" (ruling 1).\n\n**Weaknesses.** Whole-task retry is idempotent only for git output; a ticket created through an MCP tool would be created again. Interactive permission decisions are audited only in a local transcript ([Policy Enforcement and Audit](policy-enforcement-and-audit.html)). Eval gating has no eval data model. The \"~10x\" caching saving rests on a pricing assumption.\n\n**Path:** `system-design-interviews/data/book/ai-coding-cli/interview.json`\n\n### Coding Agent Harness\n\n**What it designs.** The outer harness an organization wraps around a coding agent it buys: \"the agent is bought, the trust is built\". Human review is the only sensor until reviewers rubber-stamp, so the design places **feedforward guides and feedback sensors** along the lifecycle and runs a steering loop that turns every escape into a new guide or sensor.\n\n**Evolution path.** 1 `naive` — human review as the only sensor; 2 `guides` — feedforward guides; 3 `sensors` — computational sensors and self-correction; 3a `review-agents` — LLM-as-judge; 4 `lifecycle` — sensors across the lifecycle; 5 `drift` — drift detection; 6 `behaviour` — specs and tests you can trust; 7 `scale` — templates, harnessability and the steering loop.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Inner versus outer harness | `naive` | [The Agent Runtime: Running the Loop](agent-runtime.html) |\n| Guides as agent memory | `guides` | [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Sensors under a time budget; assertion-weakening drill | `sensors` | [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html) |\n| Advisory-first judges; same-family blind spots; judges pinned per lens | `review-agents`, `scale` | [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) |\n| Spec fidelity scaled to blast radius | `behaviour` | [Planning and Task Decomposition](planning-and-decomposition.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html) |\n| The pipeline as the durable outer loop | `lifecycle`, `scale` | [Durable Execution for Long-Running Agents](durable-agent-execution.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html) |\n| Promotion by precision; harness health; escape analysis | `scale`, `drift` | [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n| Cost order of CPU, tokens and human attention | capacity | [Cost, Model Selection and Routing](agent-cost-and-model-routing.html) |\n\n**Departures and reconciliations.**\n\n- **No security model.** Hooks and CI run agent-written tests and judges read untrusted diffs, with no sandbox or injection model. The book runs sensors in the sandbox and treats diffs as untrusted ([Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html)).\n- **\"Positive prompt injection\"** is reconciled with \"repository content is data\" through channel provenance: reviewed harness config is guidance, and no channel grants permissions ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)).\n- **Auto-merge of \"proven no-risk classes\"** has no defined evidence or liability; [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html) defines the evidence, and Ostrell keeps merges human-only.\n\n**Weaknesses.** The coding agent's own model upgrades are not governed. Findings carry no sensor version, and there is no per-lens precision table. Guides lack provenance. Stripe and OpenAI figures appear as talking points from secondary analyses. There is no REVIEW.md; all critique is the digest's own.\n\n**Path:** `system-design-interviews/data/book/ai-coding-harness/interview.json`\n\n## Customer-Facing Designs\n\n### Agentic Support Platform\n\n**What it designs.** Support agents that answer questions and take account actions (refund, cancel, reschedule) during a live conversation, handing off to humans when needed. Its claim: **support gates inside a live loop under a turn-taking latency budget**, where other designs gate before an asynchronous action.\n\n**Evolution path.** 1 `naive` — a bot that answers but can't act; 2 `grounding` — policy and the customer's account; 3 `live-loop` — the real-time loop and latency budget; 4 `action-gate` — actions inside the loop, by reversibility; 5 `txn-safety` — idempotency and rollback; 6 `escalation` — deflect versus escalate; 7 `compliance-eval` — compliance, audit and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| The loop proposes, a deterministic gate decides, inside the conversation | description, `action-gate` | [What Makes a System Agentic](what-makes-a-system-agentic.html), [When Agents Are Worth It](when-agents-are-justified.html), [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html), [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html) |\n| Reversibility-tiered gate; a risk score may only lower autonomy; \"idempotency is not reversibility\" | `action-gate`, `txn-safety` | [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Routing and Delegation](routing-and-delegation.html), [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html), [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html) |\n| Two-sided grounding; \"the account state wins\"; scope before the first read; freshness by data class | `grounding` | [Connecting Agents to the Enterprise](agents-in-the-enterprise.html), [Context Engineering: Building What the Model Sees](context-engineering.html), [Retrieval and Grounding](retrieval-and-grounding.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Customer text as data, never authority | `grounding`, `txn-safety` | [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) |\n| Exchange deadline; parallel reads; fallback reply and model | `live-loop` | [Latency and Throughput](agent-latency-and-throughput.html), [Cost, Model Selection and Routing](agent-cost-and-model-routing.html) |\n| Provider-scoped idempotency; reconcile before retry; compensation as a forward action | `txn-safety` | [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html) |\n| Approval versus ownership; no write token while a handoff is open | `escalation` | [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Action correctness over satisfaction scores; hash-chained audit; kill switch per action class; contain by lowering autonomy | `compliance-eval` | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Observability: Traces, Metrics and Investigating Failures](agent-observability.html), [Policy Enforcement and Audit](policy-enforcement-and-audit.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html), [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html) |\n\n**Departures and reconciliations.**\n\n- **Approval cannot fit in a turn.** About 50 approvals a second at peak means roughly 1,500 concurrent approvers, which the source never computes. The book makes approval an asynchronous continuation on the same thread ([Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html)).\n- **Time-based expiry** becomes one instance of the single approval rule (ruling 6).\n- **A refund is not \"compensatable\"**: taking it back charges the customer again. Ostrell keeps card refunds at A0.\n- **Suppression and consent**, absent here, are both required (ruling 11). Answerdesk's credit limit is one per technician visit (ruling 21).\n\n**Weaknesses.** No cost per conversation ([Cost, Model Selection and Routing](agent-cost-and-model-routing.html) builds its own). A two-value `risk_tier` beside a three-outcome gate invites confusing tier with decision. Some flows suggest the identity service performs the account action itself.\n\n**Path:** `system-design-interviews/data/book/agentic-support-platform/interview.json`\n\n### Agentic Sales Platform\n\n**What it designs.** Sales-development agents for prospect research, email-first outbound sequences, CRM updates and handoff of replies to reps. Failure burns **sender reputation** and breaks consent law rather than moving money. The agent drafts, a **deterministic send gate** authorizes, and every send is re-checked against a global suppression list at send time.\n\n**Evolution path.** 1 `naive` — an agent that blasts outreach; 2 `enrichment` — the CRM and waterfall enrichment; 3 `send-gate` — suppression, compliance, approve-before-send; 4 `deliverability` — deliverability as infrastructure; 5 `handoff` — qualified handoff, audit and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Never clobber the CRM; version conflict check; per-field provenance with `fetched_at` | `enrichment` | [Connecting Agents to the Enterprise](agents-in-the-enterprise.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Immutable approval snapshot; send-time re-check | `send-gate` | [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Idempotent send attempts; callback deduplication | `send-gate` | [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) |\n| Identity-resolved suppression; inbox caps as the binding constraint | `send-gate`, `deliverability` | [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html) |\n| Classify replies before handoff; route to the record owner | `handoff` | [Routing and Delegation](routing-and-delegation.html), [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), [Connecting Agents to the Enterprise](agents-in-the-enterprise.html) |\n| Fleet pause that holds work | `api` | [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n| Trace ids across the action lifecycle; audit with policy version | `technologyChoices` | [Observability: Traces, Metrics and Investigating Failures](agent-observability.html), [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n\n**Departures and reconciliations.**\n\n- **Approvals that never expire** are not adopted (ruling 6).\n- **Approving every sequence**, about 1,500 approvals per tenant per day, becomes approval at template or policy level with spot checks.\n- **\"Hierarchical multi-agent\" over one worker** is a counter-example in [One Agent or Many?](single-and-multi-agent-designs.html).\n- **Opt-out recall**, missing from the source's evaluation, is added in [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html) and [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html). Consent by purpose is added beside suppression (ruling 11).\n\n**Weaknesses.** Model tokens are missing from the cost model. Phone-call rules (TCPA) appear although phone and SMS are deferred. The fleet of about 67,000 warmed inboxes goes undiscussed.\n\n**Path:** `system-design-interviews/data/book/agentic-sales-platform/interview.json`\n\n### Agentic Marketing Platform\n\n**What it designs.** Agents that turn a campaign brief into channel assets and optimize them live with a bandit loop. Failure is public brand damage. The core is a **brand and claim gate** (deterministic claim checks plus model-judged brand voice), C2PA provenance on synthetic media and risk-tiered approval, around a bandit whose every regenerated variant goes back through the gate.\n\n**Evolution path.** 1 `naive` — generate and publish; 2 `grounding` — the brand kit and asset library; 3 `brand-gate` — brand and claim review, C2PA; 4 `optimize` — bandits over variants; 5 `compliance` — channel compliance and personalization; 6 `eval` — brand-safety and performance evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Approval that expires when the claim library changes | `grounding`, `brand-gate` | [Retrieval and Grounding](retrieval-and-grounding.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| System-of-record grounding instead of cross-conversation memory | `grounding` | [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| Split brand and claim gate; C2PA; bandit that freezes on stale feeds; consent by purpose | `brand-gate`, `optimize`, `compliance` | [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html) |\n| Numeric release-gate thresholds | `eval` | [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html) |\n\n**Departures and reconciliations.** Claim-library expiry becomes one instance of the single approval rule (ruling 6). Consent keyed per tenant cannot express a platform-wide block, so the book adds a global suppression list (ruling 11).\n\n**Weaknesses.** Media is signed before the review it is meant to attest. The audit record has no actor, policy version or hash chain despite seven-year retention. Two components claim the final pre-submit check. Email goes out without the deliverability controls the sales design calls binding.\n\n**Path:** `system-design-interviews/data/book/agentic-marketing-platform/interview.json`\n\n## Back-Office Designs\n\n### Agentic Finance Platform\n\n**What it designs.** Agents for payables, receivables, reconciliation and close, where \"money moves and journals post\". The central idea is **propose, don't mutate**: bounded model nodes in a deterministic pipeline write a proposed journal to a staging store, a checker who is not the maker approves it, and only then does an idempotent post change the ledger, with payments through an outbox.\n\n**Evolution path.** 1 `naive` — an agent that posts to the ledger; 2 `ledger` — propose, don't mutate; 3 `pipeline` — a deterministic pipeline, not a loop; 4 `maker-checker` — segregation of duties; 5 `idempotency` — idempotent posting and payment; 6 `decision-record` — an immutable decision record; 7 `exceptions` — thresholds, fraud and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Propose, don't mutate; invariants on proposals; corrections as reversal proposals | `ledger` | [What Makes a System Agentic](what-makes-a-system-agentic.html), [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Connecting Agents to the Enterprise](agents-in-the-enterprise.html), [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html), [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html) |\n| Bounded model nodes with typed contracts; a workflow as a harness configuration | `pipeline` | [When Agents Are Worth It](when-agents-are-justified.html), [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html), [Planning and Task Decomposition](planning-and-decomposition.html), [Durable Execution for Long-Running Agents](durable-agent-execution.html) |\n| Intake screening and quarantine | `pipeline` | [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), [Back Office: Finance, Legal and HR Agents](domain-back-office.html) |\n| Segregation of duties in the authorization path; batch approval; never auto-post to clear a backlog | `maker-checker` | [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html), [Connecting Agents to the Enterprise](agents-in-the-enterprise.html) |\n| Idempotent posting; payment outbox; query before retry; submitted versus settled | `idempotency` | [Durable Task State and Checkpoints](task-state-and-checkpoints.html), [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Durable Execution for Long-Running Agents](durable-agent-execution.html) |\n| A decision record, not a chain-of-thought dump | `decision-record` | [Policy Enforcement and Audit](policy-enforcement-and-audit.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) |\n| \"Auto-routed, never auto-authorized\"; evaluation against ground-truth bookings | `exceptions` | [Routing and Delegation](routing-and-delegation.html), [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html) |\n| Gateway with no posting authority | `technologyChoices` | [Models and the Model Gateway](models-and-the-model-gateway.html) |\n\n**Departures and reconciliations.**\n\n- **The identity broker that executes** is split: Bulkhead (the policy enforcement point) decides, Toolyard (the tool broker) executes (ruling 15).\n- **The staging store** becomes the book-wide rule for agent proposals (ruling 14); raw reasoning is stored apart from the decision record (ruling 16).\n- **Hash-chaining** becomes the default for back-office and high-stakes domains only (ruling 18).\n- **Batch approval** is kept with limits on batch size and sampling ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)).\n\n**Weaknesses.** One step still pays straight from ledger to rail, contradicting the outbox. Whether the analyst who started a task may check it is unclear. The payment-event enum lacks `reversed` and `unknown`. A settled wrong payment has no compensation beyond a reversal proposal.\n\n**Path:** `system-design-interviews/data/book/agentic-finance-platform/interview.json`\n\n### Agentic Legal Platform\n\n**What it designs.** Agents for contract review, due diligence and cited research memos, where failure means malpractice or lost privilege. A **two-stage gate** sits on a retrieve, draft, verify pipeline: a machine gate checks every citation for existence, currency and relevance (\"a real-but-overruled citation is worse than a fabricated one\"), then a licensed attorney approves; \"nothing auto-files\".\n\n**Evolution path.** 1 `naive` — drafting from model knowledge; 2 `grounding` — authoritative law, not model memory; 3 `pipeline` — retrieve, draft, verify; 4 `citation-gate` — verify every citation; 5 `attorney` — attorney in the loop; 6 `confidentiality` — confidentiality and provenance; 7 `workflows-eval` — workflows at scale and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Access policy on the retrieval path: \"a walled document is never retrieved\" | `grounding` | [Retrieval and Grounding](retrieval-and-grounding.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html), [Back Office: Finance, Legal and HR Agents](domain-back-office.html) |\n| Existence, currency, relevance; the uncertain band as a flag; freshness SLA | `citation-gate` | [Retrieval and Grounding](retrieval-and-grounding.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Back Office: Finance, Legal and HR Agents](domain-back-office.html) |\n| A stale cache entry may never gate an approval | `citation-gate` | [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Approval bound to a licensed attorney principal | `attorney` | [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Zero retention, no training, ethical walls | `confidentiality` | [Models and the Model Gateway](models-and-the-model-gateway.html), [Trust Boundaries and the Agent Threat Model](agent-threat-model.html) |\n| Adjudicated set, shadow eval, baseline-relative gate; canary with pinned prior versions | `workflows-eval` | [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html) |\n| Draft-only work product until approval | `pipeline`, `attorney` | [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html) |\n\n**Departures and reconciliations.**\n\n- **Filing is unmodeled** in the source; [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html) names it the external effect that needs intent, idempotency and receipt (rulings 4–5).\n- **An attorney override overwrites the machine verdict** in the source's single enum; the book records it as a new linked record (ruling 17).\n- **The requester may approve**: kept, but named as a contrast with maker–checker. The identity broker is split as in finance (ruling 15).\n- **Corpus grounding labeled \"memory\"** is called retrieval ([Memory: What an Agent Should Remember, and for How Long](agent-memory.html)).\n\n**Weaknesses.** The review endpoint has no idempotency key. The \"deterministic\" verifier has a model-judged relevance axis. `approved` and `finalized` are never distinguished. Provenance allows one span per finding, and audit has no hash chain.\n\n**Path:** `system-design-interviews/data/book/agentic-legal-platform/interview.json`\n\n### Agentic HR Platform\n\n**What it designs.** Agents for candidate screening, the employee helpdesk and onboarding against the HR system. **Agents recommend, humans decide every adverse outcome**, with four-fifths-rule adverse-impact monitoring; personal data is scoped by tokens, not prompts; policy is effective-dated and jurisdiction-tagged; HR-system workflows are durable and compensable.\n\n**Evolution path.** 1 `naive` — an agent that screens and rejects; 2 `grounding` — effective-dated, jurisdiction-tagged policy; 3 `privacy` — PII-scoped retrieval and identity; 4 `hiring-gate` — humans decide, adverse impact monitored; 5 `service-eval` — service delivery, compliance and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| Meaningful review versus a rubber-stamp click; rationale, override, recusal | `naive`, `hiring-gate` | [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Token-scoped service boundary over filters and prompts | `privacy` | [Connecting Agents to the Enterprise](agents-in-the-enterprise.html), [Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html) |\n| Abstain to an HR case; the gate as a queue | `grounding`, `hiring-gate` | [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) |\n| Adverse outcomes routed to a human | requirements | [Routing and Delegation](routing-and-delegation.html) |\n| Durable workflow with compensated and manual tasks; fairness as its own eval family | `service-eval` | [Connecting Agents to the Enterprise](agents-in-the-enterprise.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html) |\n| Policy answers cached per jurisdiction and effective date | `grounding` | [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Feature allowlist; protected attributes kept apart; four-fifths monitoring | `hiring-gate` | [Back Office: Finance, Legal and HR Agents](domain-back-office.html) |\n\n**Departures and reconciliations.** The source says humans decide every adverse outcome, yet sizes for only about 30% of screenings reaching a human; [Back Office: Finance, Legal and HR Agents](domain-back-office.html) uses the contradiction to show that a gate must state what happens to the other 70%. The identity broker is split as in finance (ruling 15). Ostrell runs no hiring agent; Peoplepoint refuses pay, performance and termination questions.\n\n**Weaknesses.** Hiring decisions bypass the throttled workflow queue. Protected attributes may be `inferred`, which the source never discusses. There is no appeal API, no intake quarantine for resumes and no segregation of duties. Regulatory dates are re-verified at primary sources.\n\n**Path:** `system-design-interviews/data/book/agentic-hr-platform/interview.json`\n\n## High-Stakes and Research Designs\n\n### Agentic Healthcare Platform\n\n**What it designs.** Clinical decision support (differentials, dosing, guideline lookup, chart summaries) for licensed clinicians, \"at the top of the irreversibility gradient\". **Recommend, never act, and abstain rather than guess**: one bounded model node, then a calibrator and a deterministic safety layer the model cannot override; \"nothing acts on a patient autonomously\".\n\n**Evolution path.** 1 `naive` — answering clinical questions; 2 `grounding` — guidelines and the patient record; 3 `calibration` — knowing when not to answer; 4 `safety` — the deterministic safety layer; 5 `gate` — clinician sign-off; 6 `privacy` — PHI scoping and the safety case; 7 `eval` — workflows and safety evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| One bounded model node; rules bound the model, humans own adverse decisions | description, `safety` | [What Makes a System Agentic](what-makes-a-system-agentic.html), [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html), [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html), [One Agent or Many?](single-and-multi-agent-designs.html) |\n| Three-signal calibration, not a self-score; abstention as success | `calibration` | [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Routing and Delegation](routing-and-delegation.html), [Retrieval and Grounding](retrieval-and-grounding.html), [Cost, Model Selection and Routing](agent-cost-and-model-routing.html) |\n| Snapshot timestamp; a stale snapshot as a reason to abstain; versions in evidence bundles | `grounding`, `safety` | [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Memory: What an Agent Should Remember, and for How Long](agent-memory.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) |\n| `case_version` concurrency; sign-off idempotency and expiry; `ehr_write_failed`; read-back reconciliation | `gate` | [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html), [Durable Task State and Checkpoints](task-state-and-checkpoints.html), [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) |\n| Minimum-necessary context; notes partitioned from write authority; two-layer audit | `privacy` | [Context Engineering: Building What the Model Sees](context-engineering.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Policy Enforcement and Audit](policy-enforcement-and-audit.html), [Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html) |\n| Managed inference only under BAA, no training, no retention | `technologyChoices` | [Models and the Model Gateway](models-and-the-model-gateway.html), [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html) |\n| Harm-weighted, sliced evaluation; measuring the human gate; staged rollout | `eval` | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html) |\n| Queue-age target; queue flooding as alert fatigue | capacity | [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n\n**Departures and reconciliations.** Healthcare's \"veto\", benefits' \"decide\" and research's \"screen\" become one pattern (ruling 7), and abstention becomes first-class in every domain (ruling 8). [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html) treats the \"deterministic\" calibrator's fitted curve as a versioned artifact, runs safety and calibration on every draft, splits the two status vocabularies, and records a `warn` acknowledgement beside the unchanged machine verdict (ruling 17).\n\n**Weaknesses.** CaMeL, Dual-LLM and Plan-then-Execute are named as injection defenses, but the architecture shows none of them. The source marks its own accuracy figures \"verify before publishing\", and the book quotes none.\n\n**Path:** `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`\n\n### Agentic Public Benefits Platform\n\n**What it designs.** Benefits intake, evidence, eligibility and renewals, where a wrongful denial is a due-process failure. **Contestability by construction**: the model extracts evidence and drafts explanations, a rule engine on effective-dated rule packages decides, a caseworker decides every adverse outcome, and the record is built for appeal.\n\n**Evolution path.** 1 `naive` — an agent that decides eligibility; 2 `grounding` — effective-dated, jurisdiction-tagged rules; 3 `rules` — the model doesn't decide; 4 `gate` — caseworker decides, decision contestable; 5 `audit-appeal` — audit for appeal; 6 `fairness` — consistency across the population; 7 `compliance-eval` — due-process compliance and evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| The model assists, the rule engine decides | `rules` | [When Agents Are Worth It](when-agents-are-justified.html), [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html), [The Agent Runtime: Running the Loop](agent-runtime.html), [Planning and Task Decomposition](planning-and-decomposition.html) |\n| Rule packages pinned per determination; rollback and bounded re-determination | `grounding`, `rules` | [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html), [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html), [Staged Rollout and Rollback](staged-rollout-and-rollback.html) |\n| Applicant text untrusted; document-injection tests | `grounding`, `compliance-eval` | [Context Engineering: Building What the Model Sees](context-engineering.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) |\n| Gate by outcome direction; SLA aging; override with supervisor review | `gate` | [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Appeal clock from notice delivery; appeal packet; versioned replay | `audit-appeal` | [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html), [Durable Task State and Checkpoints](task-state-and-checkpoints.html), [Durable Execution for Long-Running Agents](durable-agent-execution.html), [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n| Adverse decisions bound to an accountable caseworker | `naive`, `audit-appeal` | [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n| Golden determinations and reviewer replay on every change | `compliance-eval` | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html) |\n| Search indexes as views of a governed registry | `technologyChoices` | [Retrieval and Grounding](retrieval-and-grounding.html) |\n\n**Departures and reconciliations.** [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html) makes six changes: `confirm_adverse | override_to_eligible | request_more_evidence` replaces the ambiguous `approve | deny`; decisions get an idempotency key, a case version and the hash of the package the caseworker saw (ruling 6); low-confidence extractions route to review (ruling 8); a validator checks explanations against the rule trace; a PII-access audit layer is added from healthcare; and the unreviewed favorable path is named as a risk and sampled. It also gives `remanded` a next state. [Models and the Model Gateway](models-and-the-model-gateway.html) does not adopt prompt templates in the gateway.\n\n**Weaknesses.** The API's status list omits states the data model has; retention and multi-jurisdiction tenancy are thin; and policy-as-code sits awkwardly in a domain whose rules must be legible to applicants.\n\n**Path:** `system-design-interviews/data/book/agentic-public-benefits-platform/interview.json`\n\n### Agentic Research Platform\n\n**What it designs.** Agents for literature review, hypotheses, experimental design and lab automation, where failure is physical (reagents, equipment, biosafety) or scientific (unreproducible claims). **\"The agent proposes; a human authorizes anything physical\"**: a structured protocol, a deterministic validator, an expirable authorization bound to the protocol's content hash, and an execution controller that is \"the only component allowed to submit lab jobs\".\n\n**Evolution path.** 1 `naive` — running experiments autonomously; 2 `grounding` — primary literature and prior data; 3 `validation` — deterministic protocol validation; 4 `gate` — human authorization for any physical run; 4a `execution` — durable lab execution; 5 `reproducibility` — provenance; 6 `biosafety` — dual-use screening; 7 `eval` — scientific-reliability evaluation.\n\n| Pattern adopted | Step | Chapters |\n| --- | --- | --- |\n| A deterministic pipeline with one bounded model node | architecture | [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html), [One Agent or Many?](single-and-multi-agent-designs.html) |\n| Structured protocol instead of prose; fail-closed validation; authorization bound to a content hash | `validation`, `gate` | [Planning and Task Decomposition](planning-and-decomposition.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Dry-run versus physical-run tiers; side-effect class as the gating predicate | `gate` | [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html) |\n| Versioned corpus snapshots; claim-level citation spans; write-time lineage | `grounding`, `reproducibility` | [Retrieval and Grounding](retrieval-and-grounding.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html) |\n| Physical and human capacity as the binding constraint | capacity | [Cost, Model Selection and Routing](agent-cost-and-model-routing.html) |\n\n**Departures and reconciliations.** The validator's \"screen\" joins one pattern with veto and decide (ruling 7). The source has no abstention outcome; the book's rule applies (ruling 8). The design is **not multi-agent** (one agent node does all the reasoning), so the book does not use it as evidence for multi-agent research (ruling 12).\n\n**Weaknesses.** Whether one authorization covers one run or several is contradictory; the book reads it as per-run. \"Free\" dry-runs are free of approval, not of compute. The robot writes results beside the controller's run record, an ordering ambiguity.\n\n**Path:** `system-design-interviews/data/book/agentic-research-platform/interview.json`\n\n## What the Interview Sources Did Not Cover\n\nThe twelve designs are strong on **single agents inside deterministic machinery**: gates, staging stores, idempotent execution, approval records, evaluation as a release gate. They say little about several agents working together, about money, or about real deployments. There the chapters used published research, specifications and engineering reports, dated in their own Sources and Evidence sections.\n\n| Gap | What the sources offer | What the book used instead |\n| --- | --- | --- |\n| **Multi-agent research decomposition** (planner, parallel searchers, critic) | Nothing. The research design has one agent node; its group's files contain no \"multi-agent\", \"subagent\", \"planner\" or \"orchestrator-worker\". The platform and CLI subagents are about isolation and scope. | [Planning and Task Decomposition](planning-and-decomposition.html) and [One Agent or Many?](single-and-multi-agent-designs.html) use Anthropic's 2025 multi-agent research report, Cognition's posts, OpenAI's practical guide, Kim et al. on scaling agent systems, the MAST failure taxonomy and the debate literature. Scout's fan-out is the book's own example (ruling 12). |\n| **Cost per conversation or outcome** | Token budgets per turn; enrichment and per-PR costs | [Cost, Model Selection and Routing](agent-cost-and-model-routing.html) builds a labeled illustrative cost model. |\n| **Human approver capacity** | Approval rates that imply staffing, never computed | [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) and [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html) compute it. |\n| **Memory across conversations** | Grounding in a system of record instead | [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) draws write policy, expiry and poisoning from research and vendor documentation. |\n| **Agent-to-agent protocols** | MCP tools only | [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) uses the A2A specification. |\n| **Evaluating routing decisions** | Missed-escalation rate, named only | [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html) adds opt-out recall and routing sets. |\n| **Real incidents and rulings** | None; the sources are exercises | Primary sources, such as the 2024 Air Canada tribunal decision ([Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html)) and EchoLeak, CVE-2025-32711 ([Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)). |\n| **Specifications and regulation** | Named, with mid-2026 dates | OpenTelemetry generative-AI conventions ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html)), the Model Context Protocol ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html)), RFC 8693 ([Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html)), the EU AI Act and GDPR, cited at the source with access dates. |\n\nThe division is consistent: **the interview designs supplied mechanisms; external sources supplied evidence.** Nothing in the book claims a mechanism works because an interview design includes it.\n\n## How to Use This Map\n\n- **To check a claim**, find the chapter in the matrix and the step in the source's pattern table, then open the `interview.json` at that step id.\n- **To see why the book differs**, read the departures; ruling numbers point to the consistency log, which wins over sources and chapters alike.\n- **To review a similar system**, use a source's weaknesses as questions. They recur in real designs: approvals without expiry, evidence said to share a transaction with an external effect, an identity service that also executes, a gate whose coverage nobody computed.\n\nThe templates built from these patterns are in [Toolkit: Templates for Agentic Architecture Decisions](toolkit.html).\n\n## Sources and Evidence\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026: steps `naive` to `control-flow`.\n- Obrenović, Ž., \"AI Coding Agent CLI\", system-design interview design, `system-design-interviews/data/book/ai-coding-cli/interview.json`, 2026: steps `naive` to `cloud`.\n- Obrenović, Ž., \"Coding Agent Harness\", system-design interview design, `system-design-interviews/data/book/ai-coding-harness/interview.json`, 2026: steps `naive` to `scale`.\n- Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, 2026: steps `naive` to `compliance-eval`.\n- Obrenović, Ž., \"Agentic Sales Platform\", system-design interview design, `system-design-interviews/data/book/agentic-sales-platform/interview.json`, 2026: steps `naive` to `handoff`.\n- Obrenović, Ž., \"Agentic Marketing Platform\", system-design interview design, `system-design-interviews/data/book/agentic-marketing-platform/interview.json`, 2026: steps `naive` to `eval`.\n- Obrenović, Ž., \"Agentic Finance Platform\", system-design interview design, `system-design-interviews/data/book/agentic-finance-platform/interview.json`, 2026: steps `naive` to `exceptions`.\n- Obrenović, Ž., \"Agentic Legal Platform\", system-design interview design, `system-design-interviews/data/book/agentic-legal-platform/interview.json`, 2026: steps `naive` to `workflows-eval`.\n- Obrenović, Ž., \"Agentic HR Platform\", system-design interview design, `system-design-interviews/data/book/agentic-hr-platform/interview.json`, 2026: steps `naive` to `service-eval`.\n- Obrenović, Ž., \"Agentic Healthcare Platform\", system-design interview design, `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`, 2026: steps `naive` to `eval`.\n- Obrenović, Ž., \"Agentic Public Benefits Platform\", system-design interview design, `system-design-interviews/data/book/agentic-public-benefits-platform/interview.json`, 2026: steps `naive` to `compliance-eval`.\n- Obrenović, Ž., \"Agentic Research Platform\", system-design interview design, `system-design-interviews/data/book/agentic-research-platform/interview.json`, 2026: steps `naive` to `eval`.\n- The author's `REVIEW.md` critiques in eleven of the twelve directories (dated 12–25 June 2026), used only as the author's critique, since they predate the current JSON.\n\n### Book-internal sources\n\n- The book's research digests of the four source groups and its consistency log of 24 rulings, 2026-10-28.\n- External sources in the gaps table are cited in full in the chapters that use them and in [Bibliography](bibliography.html).\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement. The interview designs are design exercises, not deployed systems, and their numbers are illustrative assumptions.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

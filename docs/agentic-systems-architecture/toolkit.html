@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Toolkit: Templates for Agentic Architecture Decisions</title>
+    <meta name="description" content="Which records does an architect need before an agent may act on anything that matters? Twelve copyable templates, from the justification canvas to the incident runbook and a one-page design-review checklist, each built from the chapter that teaches it and filled in once with Ostrell's numbers.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Toolkit: Templates for Agentic Architecture Decisions">
+    <meta property="og:description" content="Which records does an architect need before an agent may act on anything that matters? Twelve copyable templates, from the justification canvas to the incident runbook and a one-page design-review checklist, each built from the chapter that teaches it and filled in once with Ostrell's numbers.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/toolkit.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/toolkit/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="source-coverage.html" title="Source Coverage: The Interview Designs Behind This Book">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference</p>
+        <h1>Toolkit: Templates for Agentic Architecture Decisions</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  30 min read · <a class="spec-link" href="toolkit.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/toolkit/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/toolkit/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="source-coverage.html" title="Source Coverage: The Interview Designs Behind This Book">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Toolkit: Templates for Agentic Architecture Decisions", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "Which records does an architect need before an agent may act on anything that matters? Twelve copyable templates, from the justification canvas to the incident runbook and a one-page design-review checklist, each built from the chapter that teaches it and filled in once with Ostrell's numbers.", "permalink": "toolkit", "timetoread": "30 min read", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Find the template that fits the agent design or decision in front of you, copy it, see who fills it in and who signs it, see it filled in once for Ostrell, and follow the link to the chapter that explains every field.\n\n> **KEY POINTS:**\n>\n> * **Every template is keyed to an identifier another record cites.** A decision point, an action class id, a tool contract version with its description hash, an action object's content hash, a manifest hash: that chain lets an auditor walk from a posted entry or a customer credit back to the version, policy, approval and evidence that produced it.\n> * **The model fills none of these records.** Each template names who writes it (an agent owner, a system-of-record owner, a risk owner, the security architect) and which component reads it at run time. A field that only a prompt reads is a description, not a control.\n> * **Most fields came from an incident.** `fallback: none` from the Alias Drift, the idempotency key that covers the action version from the Double Credit, the code-filled contract id from the Lost Handoff, the trifecta worksheet from the Poisoned Ticket, protected paths from the Fixture Purge. Write \"unknown\" rather than guess, and add a field when a post-incident review asks a question no field answers.\n\n> **[FAILURE PATTERNS THIS SECTION ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Autonomy by Default** — the justification canvas and the action-class register make every autonomy grant a written, signed decision per action class instead of whatever the tools allow.\n> * **The Fire-and-Forget Action** — the tool contract, the action object and the approval record give every effect an idempotency key, a receipt, a verification rule and a bound approval.\n> * **The Silent Upgrade** — the version manifest, the eval plan and the rollout plan make every change to model, prompt, tool or policy a versioned, gated, reversible release.\n\n<br>\nThese are **working templates for organizations that run agents in production**: the records that Parts I to XI ask an architect to keep, from the rung justification of [When Agents Are Worth It](when-agents-are-justified.html) to the incident runbook of [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html). Each is tested against Ostrell, the fictional field-service software group this book follows ([Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), and its Keelson agent platform. Each is the smallest form I have found that makes a decision explicit, assigns an owner and leaves evidence someone else can check. **Adapt the wording; keep the fields that carry identity, authority, reversibility and evidence.**\n\nFour conventions run through all twelve.\n\n- **They are maintained data, not documents.** At Ostrell they live in the Agent Registry, the Toolyard registry, Bulkhead's policy repository and Sounding, and components read them on every run.\n- **They reference each other by identifier.** A manifest names tool contract versions and a policy version; an approval names an action object hash; a rollout plan names a rollback manifest.\n- **They say who fills them and who signs.** The agent owner proposes, the risk owner accepts expected loss, the system-of-record owner owns the tool, the security architect owns trust labels and trifecta exceptions, and the architecture forum approves envelope changes.\n- **Each Ostrell example agrees with its chapter.** All Ostrell names, figures and dates are fictional.\n\n## Find the Template for the Question on Your Desk\n\n| Template | Use it when | Chapter |\n| --- | --- | --- |\n| [1](#tool-1): Agent justification canvas | Someone proposes an agent, or a decision point moves from code to a model | [When Agents Are Worth It](when-agents-are-justified.html) |\n| [2](#tool-2): Action-class and autonomy-tier register | A tool is bound to an agent, or a tier is promoted or demoted | [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html) |\n| [3](#tool-3): Tool contract | A team exposes a system of record to agents, or changes a tool | [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html) |\n| [4](#tool-4): Delegation contract and handoff payload | Work passes to a sub-agent, another agent or a person | [Routing and Delegation](routing-and-delegation.html), [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) |\n| [5](#tool-5): Action object and approval record | An agent proposes an effect outside its run, or a human must approve one | [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| [6](#tool-6): Threat-model and trifecta worksheet | A new agent version, session type, tool, data class or provider endpoint | [Trust Boundaries and the Agent Threat Model](agent-threat-model.html) |\n| [7](#tool-7): Eval plan and regression gate | Before an agent is built, and before any manifest element changes | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html) |\n| [8](#tool-8): Agent version manifest | Every release, including a model migration or a policy change | [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html) |\n| [9](#tool-9): Rollout and rollback plan | A new manifest goes to production traffic | [Staged Rollout and Rollback](staged-rollout-and-rollback.html) |\n| [10](#tool-10): Agent registry entry | An agent is proposed, piloted, promoted, restricted or retired | [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n| [11](#tool-11): Incident and recovery runbook | An agent does the wrong thing across many runs | [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html) |\n| [12](#tool-12): Design-review checklist | Any architecture review of a new agent or an envelope change | All parts |\n\nThe decision-point map of [What Makes a System Agentic](what-makes-a-system-agentic.html), the context manifest of [Context Engineering: Building What the Model Sees](context-engineering.html), the provenance envelope of [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html) and the task record of [Durable Task State and Checkpoints](task-state-and-checkpoints.html) are not repeated here; Templates 1, 5 and 10 link to them where a field depends on them.\n\n## How the Records Connect\n\n![Diagram: How the templates reference each other](assets/images/toolkit/fig01-how-templates-reference-each-other-justification.jpeg)\n**Figure 1:** *How the templates reference each other. Justification, threat model and the action-class register define what an agent may do; tool contracts and the manifest pin how; the eval gate and rollout plan decide when a version runs; action objects and approvals carry each effect; the runbook pulls autonomy back when something goes wrong.*\n\n## <a id=\"tool-1\"><\/a>Template 1: Agent Justification Canvas\n\n**When to use it.** Before an agent is built, and again whenever a decision point moves up the ladder (a workflow step becomes a loop, a single call gets tools). **Who fills it:** the proposing team's engineering lead with the agent owner; the architecture forum reviews it. It records one **rung justification** per model-held decision point, so \"why is this an agent?\" survives the people who answered it.\n\n**The template.** One row per decision point from the agent's decision-point map ([What Makes a System Agentic](what-makes-a-system-agentic.html)). Rungs: 0 code, 1 single call, 2 workflow with model steps, 3 bounded loop, 4 autonomous.\n\n| Field | What to record | Guidance |\n| --- | --- | --- |\n| **Agent and decision point** | `agent_id`, `decision_point` (e.g. `leave.extract_request`) | Locus today: code, model or human |\n| **Rung chosen** | 0–4 | Each \"no\" on the ladder test needs evidence |\n| **What the model decides** | One sentence: what it chooses that code or written policy could not | An empty field is the Agent-Shaped Hammer |\n| **Could the steps be written in advance?** | Yes / no, with the reason | \"Yes\" means rung 2 at most |\n| **Baseline** | The rung below, and the Sounding eval run on the same cases | No baseline, no rung 3 or 4 |\n| **Verifier** | What checks the result, and whether the agent can write what it reads | No independent verifier: the loop may draft, not act |\n| **Reliability** | Per-step success, model-decided steps per run, measured end-to-end success | Compare end-to-end with the product of per-step rates |\n| **Failures per day** | Expected volume × measured failure rate; who handles them | |\n| **Cost per verified outcome** | Agent and baseline, including oversight, eval upkeep and repair | Not cost per call |\n| **Revisit trigger** | New tool, more volume, higher cost of error | Sends the row back through the test |\n| **Reviewed on, by** | Date; forum or review | |\n\n**Ostrell example** (March 2027 business-case review; fictional):\n\n| Field | Peoplepoint leave request |\n| --- | --- |\n| Rung proposed / chosen | 3 bounded loop / **2 workflow** |\n| What the model decides | Extract leave type and dates from the employee's message; everything else is HR policy |\n| Steps writable in advance | Yes: extract → rules and HRIS checks → confirmation card → code submits with idempotency key |\n| Evidence | Loop: median 7 model-decided steps, ~98.7% per step, **91%** end-to-end on 250 scripted requests, 2 submits before confirmation. Workflow: **98.4%**, 2 model calls |\n| Volume | ~2,300 leave requests a month |\n\n**Common mistakes.** Answering \"no\" to \"can code decide it?\" from habit, when the judgement is unwritten policy. Comparing the agent with nothing instead of with the next simpler design on the same cases.\n\nLearn more: [When Agents Are Worth It](when-agents-are-justified.html), [Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html)\n\n## <a id=\"tool-2\"><\/a>Template 2: Action-Class and Autonomy-Tier Register\n\n**When to use it.** Whenever a tool is bound to an agent version, and at every tier promotion or demotion. **Who fills it:** the agent owner proposes the classification; the risk owner signs the tier; the architecture forum ratifies the grid ceilings. Tiers apply **per action class, not per agent**: A0 suggest, A1 draft for approval, A2 act within limits, A3 act autonomously.\n\n**The ceiling grid** (Ostrell's, adopted with the register):\n\n| Consequence ↓ / Reversibility → | Reversible | Compensable | Irreversible or external commitment |\n| --- | --- | --- | --- |\n| **C1** internal, < ~€1,000 per action | A3 | A3 | A3, with a rate limit |\n| **C2** bounded, one customer or employee | A3 | A2 | A1 |\n| **C3** material: money above cap, legal effect, disclosure | A2 | A1 | A1 |\n| **C4** severe: rights, pay, employment, health, safety | A1 | A1 | A1; A0 for decisions about a person |\n\n**The template.** One row per action class per agent version.\n\n| Field | What to record |\n| --- | --- |\n| `action_class` | Stable id, e.g. `answerdesk.issue_credit.le_250` |\n| `manifest_hash` | The agent version the tier is keyed to; a new model never inherits autonomy |\n| `tools` | Tool bindings that can produce this class |\n| `effect` | read · draft · reversible · compensable · irreversible · external commitment |\n| `consequence` | C1–C4, with the worst single outcome and who bears it |\n| `ceiling` / `tier` | Ceiling from the grid; current tier and the decision record that set it |\n| `limits` | Per action, per run, per business key, daily hold (count and amount), enforced in the broker |\n| `undo` | Undo or compensation path, its window and who must cooperate |\n| `detect` | How a wrong action is found, and how fast |\n| `demotion_triggers` | Registered before promotion; which fire automatically |\n| `risk_owner` | One person, with an exposure cap per month |\n| `lowering_signals` | Signals that may lower the tier per instance (none may raise it) |\n\n**Ostrell example** (Agent Registry, November 2027; fictional):\n\n| Field | Answerdesk credit ≤ €250 |\n| --- | --- |\n| Effect, band, ceiling, tier | Compensable, **C2**, ceiling A2, **A2 since October 2027** (A1 before) |\n| Limits | €250 per action; at most one credit per technician visit (key `credit:{ticket_id}:{visit_id}:{reason_code}`); one active credit proposal per ticket; hold if daily > €9,000 or > 120 credits |\n| Undo | Debit on the next invoice with customer notice |\n| Detect | 10% second-reviewer sample of executed credits; daily receipt reconciliation |\n| Demotion | 30-day audited upper bound > 4% → A1; any duplicate → hold; new manifest, credit policy or tool → A1 until re-gated |\n| Risk owner | Lena Brandt, up to €5,000 a month expected exposure (delegated by Marten Ruys) |\n\nCredits above €250 are C3 and stay at A1; card refunds and email to unverified recipients have ceiling A1 but run at A0. Irreversible external commitments (contract signatures, payments to third parties, legal filings, employment decisions) are capped at A1 whatever the evidence.\n\n**Common mistakes.** A tier on the agent instead of the class. A limit stated only in the prompt. Letting the model's confidence raise a tier.\n\nLearn more: [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html)\n\n## <a id=\"tool-3\"><\/a>Template 3: Tool Contract\n\n**When to use it.** When a system of record is exposed to agents, and for every change to a tool's schema, description or side-effect semantics. **Who fills it:** the system-of-record owner's team, reviewed with the agent teams that bind it and, for writes, by security. It lives in the owning team's repository; Toolyard stores the published version with its definition hash, and each manifest binds the version and description hash.\n\n**The template.**\n\n```yaml\ntool: <system>.<verb_object>             # shaped like a decision, not an endpoint\ncontract_version: <semver>\nowner: <system-of-record team>\nsystem_of_record: <system>\ndescription: >                           # when to use it, what to call first, what not to use it for\nmodel_schema: { ... }                    # only what constrained decoding enforces\nvalidation:                              # enforced by the broker and the tool, not by decoding\n  static: { <field>: <pattern or range> }\n  referential: [<ownership and state checks against the run's verified principal>]\n  reads_before_write: [<facts re-read and version-checked>]\noutput_schema: { status: [...], receipt_id: string, error: {code, class, field, retry} }\nside_effects:\n  risk_class: read_only | reversible_write | compensable_write | pivot\n  compensated_by: <compensating tool or human procedure>\n  compensation_window: <duration>\n  idempotency: required                  # key minted by the runtime, never by the model\n  business_key: \"<template>\"\n  lookup: <how an unknown outcome is resolved>\n  trifecta: { private_data: bool, untrusted_content: bool, external_send: bool }\n  mcp_hints: { readOnlyHint, destructiveHint, idempotentHint, openWorldHint }   # declared, not trusted\nreliability: { attempt_timeout_s, max_attempts, lookup_window_min }\nresult_budget_tokens: <n>\npolicy_ref: <policy path>                # tiers and amount limits live in policy, not here\nerrors: [{ code, class: model_fixable | business_outcome | policy_stop, retry }]\nregistry: { definition_sha256, risk_class, scopes, lifecycle: proposed | reviewed | active | unreviewed | deprecated | quarantined | retired }\n```\n\n**Ostrell example** (`billing.issue_credit` 3.2.0, Billing Platform team; fictional, abridged):\n\n```yaml\nmodel_schema:  { required: [ticket_ref, visit_ref, reason_code, amount, note_for_approver] }\nvalidation:\n  referential: [ticket belongs to the run's verified customer, visit belongs to ticket and is missed, late or repeat]\n  reads_before_write: [contract.credit_policy_version, visit.status]\nside_effects: { risk_class: compensable_write, idempotency: required,\n                business_key: \"credit:{ticket_ref}:{visit_ref}:{reason_code}\", lookup: by client reference }\nreliability:  { attempt_timeout_s: 30, max_attempts: 3, lookup_window_min: 10 }   # then the repair queue\nerrors: [{ code: limit_reached, class: business_outcome, retry: do_not_retry }]\n```\n\nWhat the model no longer writes is the point: no account id (it comes from the ticket), no currency (from the contract), no amount for standard reasons (from policy). Version 1, reviewed after the Double Credit, had sent 31 calls to the wrong account and 5 amounts a hundred times too large in 1,000 calls.\n\n**Common mistakes.** Arguments the system of record already knows. Raw errors returned to the model. Treating a server's `readOnlyHint` as a reviewed classification.\n\nLearn more: [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html), [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)\n\n## <a id=\"tool-4\"><\/a>Template 4: Delegation Contract and Handoff Payload\n\n**When to use it.** When a run starts a sub-agent (call and return), or hands a task to another agent or a person (transfer of control). **Who fills it:** the platform team defines the schema family; the receiving team defines each payload schema and its required fields. At run time the model proposes; Keelson Runtime builds, validates and persists the record before the child starts or the offer is made.\n\n**The delegation contract.**\n\n| Field | What to record | Rule |\n| --- | --- | --- |\n| `delegation_id`, `parent_run_id`, `root_run_id`, `depth` | Lineage | Runtime rejects depth above the limit |\n| `receiver` | Sub-agent, human queue or workflow | |\n| `task` | One paragraph | |\n| `inputs` | References with trust label and `as_of` | Not the parent's whole conversation |\n| `decisions_taken` | Constraints the parent already committed to | Required, never inferred |\n| `authority` | Tools, data scopes, `acting_for` | A subset of the parent's; never widened |\n| `budget` | Tokens, money, wall clock, max children, depth below | Reserved from the parent's remaining budget |\n| `deadline`, `output` | Schema ref, must cite inputs, may abstain | The result returns as untrusted data |\n\n**The handoff payload** extends it with ownership and field provenance:\n\n| Field | Filled by | Rule |\n| --- | --- | --- |\n| `from`, `to`, `accept_by`, `fallback` | Runtime | An offer without acceptance never moves ownership |\n| Identifiers (`verified_customer`, `contract_id`, `ticket_id`) | Code, from receipts | A model-generated value fails validation; unresolved → handoff refused |\n| `commitments`, `actions_taken` (done, pending, unknown) | Code, from the evidence log | |\n| `reason`, `customer_claim` | Model, labeled `model_generated` | Never the source of a commitment |\n| `evidence` | References with trust labels | No pasted blobs |\n| `authority_after` | Policy | Sender becomes read-only or released, enforced at the broker |\n\n**Ostrell examples** (fictional). *Delegation:* a Scout research run delegates only when the plan has at least 3 independent sub-questions; Mid-tier workers get read-only tools, a 20-minute deadline and return typed `market_finding` results by reference; the run budget is 8 million tokens, €90 and 90 minutes, with depth 2 and at most 8 parallel workers. *Handoff:* `billing_handoff.v1` (28 April 2027) code-filled the contract id that a model-written summary had dropped in 52 of 2,000 audited handoffs; in about 25,000 handoffs to 6 June it had 0 missing contract ids, and 2.1% were refused first so the triage agent could ask which contract was meant.\n\n**Common mistakes.** A child holding a tool its parent lacks. Budgets granted instead of carved. A sender that can still write after the receiver accepts.\n\nLearn more: [Routing and Delegation](routing-and-delegation.html), [One Agent or Many?](single-and-multi-agent-designs.html), [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html)\n\n## <a id=\"tool-5\"><\/a>Template 5: Action Object and Approval Record\n\n**When to use it.** For every proposed effect outside the run, and for every A1 gate. **Who fills it:** nobody by hand. The platform team owns the schemas; Keelson Runtime builds the action object from the model's proposal; the approval service builds the card from system-of-record reads; the named approver supplies the decision. Use the template to review a new action class: if a field cannot be filled, the class is not ready.\n\n**The action object.**\n\n| Field group | Contents |\n| --- | --- |\n| Identity | `action_id`, `version`, `content_hash`, run, step and model-decision ids |\n| Effect | Action class, tool name and version, target resource ids, parameters |\n| Authority | Principal, on-behalf-of identity, tier evaluated, policy version |\n| Dependencies | Facts relied on, each with source and version (re-read before write) |\n| Risk | Reversibility class (`reversible`, `compensable`, `irreversible`, `external_commitment`), limits checked and results |\n| Execution | Idempotency key covering the version, executor (`platform` or `human`), expiry, verification rule (receipt level, read-back) |\n| Presentation | Rendered preview of the effect |\n\nLifecycle: Proposed → Validated → AwaitingApproval or Authorized → Dispatched → Applied → Verified (or Rejected, Voided, Failed, Mismatch). A changed amount, recipient or target is a new version with a new hash and key.\n\n**The approval record.** An approval is bound to the exact action object version, with approver identity, the evidence shown, a scope and an expiry, and is checked again immediately before execution.\n\n| Field | What to record |\n| --- | --- |\n| `approval_id`, `action_hash` | SHA-256 of the canonical action object |\n| `policy_version`, `card_template` | So what was shown is reproducible |\n| `evidence` | Per fact: source, version, content hash, material flag |\n| `approver`, `decision` | Named human, not a maker; approve, reject, request information or escalate |\n| `override_reasons` | One per flagged check approved anyway; the machine verdict stays unchanged |\n| `review_level`, `expires_at`, `scope` | Scope is \"execute once\" |\n| **Revalidation before dispatch** | Expired? Hash changed? Policy changed? Material evidence changed? Approver a maker? Any yes → void and re-request |\n\n**Ostrell example** (November 2027; fictional values). A customer with a three-visit failure asks for a €420 credit: class C3, tier A1, review level **R2** (€250–€1,000, one team lead). The card shows the invoice line, the account, the three visit records with their status versions and the policy clause; the model's rationale is collapsed. The approval binds the action hash, policy version and the three visit versions, and is valid for 4 hours. The customer's reply slot reads `awaiting_approval`, not \"done\". If a visit's status changes before dispatch, the approval is void and a new card highlights the changed fact.\n\n**Common mistakes.** Binding approval to a run step rather than an action hash, the mechanism behind the Double Credit's €31,400. A card led by the model's explanation. Replies that announce an outcome no receipt backs.\n\nLearn more: [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)\n\n## <a id=\"tool-6\"><\/a>Template 6: Threat-Model and Trifecta Worksheet\n\n**When to use it.** For every agent version, and again on any rerun trigger: new tool, new session type, new data class, provider or endpoint change, tier promotion. **Who fills it:** the agent owner's team; the security architect reviews and approves; the risk owner signs any residual. The lethal trifecta is one session combining private data, untrusted content and an outbound channel.\n\n**The trifecta worksheet.** One row per session type, legs counted from context sources as well as tools.\n\n| Session type | Private data | Untrusted content in context | Outbound channels (send, search query, fetch, rendered link or image, delegation message) | Data scope / sink scope | Result | Resolution | Residual signed by |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| | | | | principal · tenant · org / principal · tenant · internal · public | two or fewer · scoped · full | remove a leg, scope to one principal, or add a human | |\n\n**The record** (as kept in the Agent Registry since July 2027):\n\n```yaml\nthreat_model:\n  agent: answerdesk\n  manifest_hash: sha256:…            # the agent version this record covers\n  owner: Support Operations          # fills it in\n  reviewer: Security Architecture    # approves it\n  session_types:\n    - name: email_ticket\n      principal: verified_customer_contact\n      sources: [platform, operator, system_of_record, corpus, untrusted]\n      data_classes: [D0, D1, D2, D3]\n      tools: [ticket.update, kb.search, email.send, billing.issue_credit, …]\n      outbound_channels: [email.send(to: crm_handles_only), reply_render(no_images)]\n      trifecta: scoped               # two-or-fewer | scoped | full\n      residual: \"Injected text can change what the verified contact is told; it cannot add a recipient.\"\n      residual_signed_by: Lena Brandt\n  boundaries: {B2: {endpoints: [provider-a-eu-zdr]}, B8: {egress: deny}}   # B1–B8: rule, enforcer, test\n  exposure_paths:                    # every copy of run data, who can read it, for how long\n    - {path: wake_content_store, retention: 30d, access: purpose_logged, tenant_key: true}\n  rerun_when: [new_tool, new_session_type, new_data_class, provider_or_endpoint_change, tier_promotion]\n```\n\nThe eight boundaries are B1 principal, B2 provider, B3 context window, B4 stored content, B5 action, B6 tool supply, B7 agent-to-agent and B8 egress, plus the tenant and observer partitions. Data classes: D0 public, D1 internal, D2 customer confidential, D3 personal, D4 sensitive personal (never to commercial providers), DS secrets (nowhere).\n\n**Ostrell example** (Keelson threat model v2, 23 June 2027; fictional). Scout research: internal documents (private), web pages (untrusted), web search queries and fetches (outbound) → **full trifecta**, although Scout could send nothing to anyone; 9 of 400 sampled web queries named an Ostrell customer. Resolution: workers are internal or web, never both; the lead holds no search or fetch tool; sub-questions to web workers pass a protected-terms check. The Strategy & Insights lead signed the paraphrase residual.\n\n**Common mistakes.** Counting only send tools as outbound. Treating a \"read-only\" agent as safe. A threat model that does not name the manifest it covers.\n\nLearn more: [Trust Boundaries and the Agent Threat Model](agent-threat-model.html), [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html), [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html)\n\n## <a id=\"tool-7\"><\/a>Template 7: Eval Plan and Regression Gate\n\n**When to use it.** Before the agent is built (the outcome metric decides what \"working\" means), and as the gate for every change to any manifest element. **Who fills it:** the agent owner's team with the evaluation lead; the risk owner owns the system-level outcome metric; thresholds are fixed before a candidate runs.\n\n**The template.**\n\n| Section | What to record |\n| --- | --- |\n| **Outcome metric per action class** | Definition, ground-truth source, owner; abstention counted as success when correct |\n| **Component level** | Labeled sets per model step, retriever and router; every change plus a daily canary on the production manifest |\n| **Trajectory level** | Invariants over recorded runs (no duplicate effect, no effect without a policy decision, no claim without a receipt); run on every trial and every production run |\n| **Workflow level** | End-to-end tasks in simulators and tool twins with fault injection; k trials; pass^k with intervals; null-agent score |\n| **System level** | Production outcome metric, reviewed weekly by the risk owner |\n| **Suite composition** | Cases by source (trace, incident, expert, synthetic, adversarial), slices with fewer than a dozen cases flagged, holdout owned outside the team, labelers and agreement, `retainUntil` per case |\n| **Graders** | Outcome checks from end state; model judges with measured agreement against human–human agreement, pinned versions |\n| **Gate triggers** | Manifest change (subset on PR, full before merge); release candidate (full plus holdout, k trials); daily canary |\n| **Hard criteria** | Zero tolerance: invariant violations, injection reaching a sink |\n| **Soft criteria** | Paired comparison against production on the same cases: lower bound above a floor, drop within a margin |\n| **Recorded with each run** | Full manifest incl. exact model id, judge, evaluation-harness and simulator versions, sandbox resources, cost per task |\n\n**Ostrell example** (Closewise accrual suite v2, October 2027; fictional). **1,244** cases: 520 stratified production proposals (at least 15 per entity), 64 incident replays, 210 expert-written including 48 abstention cases, 300 filtered synthetic variants, 150 holdout owned by Sounding. Gate: 3 trials per case on 1,094 regression cases; zero invariant violations; classification accuracy 95% lower bound ≥ 94.5% and paired drop ≤ 1.0 point against production; abstention recall ≥ 90%, false abstention ≤ 3%; holdout within 2 points. Daily canary at 05:00 Rotterdam time: 300 cases, 1 trial, alert below 93.5%. The explanation judge is advisory (kappa 0.66 against a human–human 0.74). Suite v1 had been an 860-case convenience sample run only on prompt releases.\n\n**Common mistakes.** One trial and a point threshold. Labels taken from first-line approvals without re-adjudication. A suite that runs only when someone knows something changed.\n\nLearn more: [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html)\n\n## <a id=\"tool-8\"><\/a>Template 8: Agent Version Manifest\n\n**When to use it.** For every agent version. **Who fills it:** the agent team writes it as code; the Agent Registry hashes it and runs the registration checks; Sounding binds the eval run to the hash. The test for what belongs in it: **if changing it should require an evaluation run, it belongs in the manifest; if it changes per task, it is input; if it must be current, it is a tool call.**\n\n**The template, with an Ostrell example** (Closewise classifier, September 2027; fictional, abridged):\n\n```yaml\nagent: closewise-accrual-classifier\nmanifest_version: cw-2027.09.3                     # <agent-prefix>-<yyyy>.<mm>.<n>\nbuild: keelson-runtime-workflows@4f1c2e9           # orchestration code, git commit\nmodel:\n  provider: provider-b\n  model_id: \"<exact versioned model id>\"           # aliases rejected at registration\n  api_version: \"<provider API version>\"\n  settings: { effort: medium, max_output_tokens: 2000 }\n  fallback: none                                   # or a named, gated fallback\nprompts:\n  system: prompts/closewise/classifier-system@v14  sha256:9b2e...\ntools:\n  - name: coa_lookup        contract: 2.1   description_sha256: c03f...\n  - name: entity_profile    contract: 1.4   description_sha256: 7d19...\npolicy: bulkhead/closewise@2027-09-01.2\nretrieval:\n  index: accounting-policies\n  snapshot: aps-2027-08-30T02:00Z\n  embedding_model: \"<exact embed model id>\"\nmemory: none                                       # or the memory schema version\ncontext_assembler: <version>\nguardrails: [<classifier model id and threshold>]  # pinned since October 2027\neval_binding: sounding/closewise-accrual@suite-v9  # the suite it was gated on\nmanifest_sha256: e5a0...                           # computed over everything above\n```\n\n**Registration rejects** aliases, labels and \"latest\" references; inactive models; description-hash mismatches; prompts naming unbound tools; memory schemas without a reader for stored versions. At run time the Gateway records the **requested and served** model version on every call; a mismatch pages.\n\n**Common mistakes.** Leaving the model id out (the interview design this book departs from did). Copying shared artifacts into the manifest instead of referencing their versions. A silent tier-wide failover, which is an alias with extra steps.\n\nLearn more: [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html), [Models and the Model Gateway](models-and-the-model-gateway.html)\n\n## <a id=\"tool-9\"><\/a>Template 9: Rollout and Rollback Plan\n\n**When to use it.** Before a new manifest takes any production traffic. **Who fills it:** the agent team with the evaluation lead; the agent owner (or risk owner) signs it before the first stage. Rollback has two halves: moving the pointer back, and repairing the effects the candidate already produced.\n\n**The template.**\n\n| Plan element | What to record |\n| --- | --- |\n| **Candidate** | Manifest label and what changed; change version and autonomy tier in separate stages |\n| **Rollback target** | Gated manifest, its model served until when, quota reserved, last rollback drill |\n| **Stages** | Offline gate → shadow (side effects stubbed at the broker) → canary → full, with holdback |\n| **Rollout unit and assignment key** | Runs, accounts, tenants, entities; key held across every run that shares state |\n| **Control** | Concurrent control at every exposed stage |\n| **Automatic rollback** | Invariants (duplicate effect, outside limits, served ≠ pinned, shadow write reaching a sink); harm proxies beyond a margin, with minimum decisions per arm |\n| **Hold and page** | Behavior shape (abstention, escalation, refusal, tool errors), two-sided; operations (latency, cost, cache share) |\n| **Who may roll back / advance** | Rollback needs no verdict; only a human advances a stage |\n| **Runs in flight** | Drain, cancel with compensation, or migrate |\n| **Effects query** | Everything carrying the candidate's manifest hash |\n| **Forward-fix playbook** | Per effect class: proposals, approvals, compensable effects, postings, communications, memories, merged code; executed by deterministic code, never by the rolled-back manifest |\n\n**Ostrell example** (Closewise model migration, signed by Joost Vermeer in late October 2027; fictional). Candidate `cw-2027.10.2` (new exact model id, prompt v15); rollback target `cw-2027.09.3`, served until at least 31 March 2028. Shadow over the October close; canary in five entities, 50/50 by entry id; roll back if the canary rejection rate exceeds control by more than 3 points with at least 100 decisions per arm, or exceeds 9%. On 7 December 2027 a controller's balance review found 5 posted entries (€183,400) in the wrong provision account, which no guardrail could see; the candidate share went to 0, all 196 canary postings were re-adjudicated, and five reversal-and-repost pairs were approved by a deputy controller. The effects query and the playbook were already written.\n\n**Common mistakes.** Comparing before and after instead of canary and control. A rollback target whose model has been retired. No forward-fix playbook, so repair is improvised during the incident.\n\nLearn more: [Staged Rollout and Rollback](staged-rollout-and-rollback.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)\n\n## <a id=\"tool-10\"><\/a>Template 10: Agent Registry Entry\n\n**When to use it.** At proposal, and at every lifecycle transition. **Who fills it:** the agent owner; the architecture forum approves the envelope; the risk owner signs tiers. Every authority in the operating model is a field some component reads: Gateway, Toolyard and Bulkhead read `state` on every call; promotion reads `risk_owners`; Wake routes behavior alerts by `on_call`.\n\n**The template.**\n\n| Field | What to record |\n| --- | --- |\n| `agent_id`, `agent_owner`, `engineering_lead` | Owner is one person, not a team |\n| `risk_owners` | Per action class: person and monthly exposure cap |\n| `on_call` | Rotation and coverage (24×7, business hours, calendar windows), separate from the platform's |\n| `state` | proposed → approved_for_pilot → pilot (shadow, A0/A1 only) → production ↔ restricted → deprecated → retired; or rejected |\n| `envelope`, `envelope_decision` | Action classes and ceilings, identities and scopes, tools by risk class, trifecta position, topology and delegation limits, budget maxima |\n| `success_definition` | Outcome metric, baseline, cost-per-success target |\n| `production_manifests` | At most three live, by hash; tiers keyed to each (Template 2) |\n| Attached records | Decision-point map, rung justifications (Template 1), execution-style and loop limits, freshness register, interaction mode per entry point, threat-model record (Template 6), system-of-record integration records |\n| `budgets` | Run budget; monthly budget with alerts at 50% and 80% and throttle at 100% |\n| `next_review` | Envelope date; tiers at least yearly |\n| `retirement_plan` | Written at registration: memories, triggers, open commitments, evidence retention |\n\n**Ostrell example** (Answerdesk, December 2027; fictional):\n\n| Field | Value |\n| --- | --- |\n| Owner, risk owner | Lena Brandt; credits ≤ €250 up to €5,000 a month expected exposure |\n| On call | Support Operations engineers, 24×7 (2028 roadmap) |\n| State, manifest | production; `ad-2027.10.2`, plus the routing-profile B canary from December 2027 |\n| Success definition | Verified resolution: no human, every effect with a verified receipt, no open commitment, no re-contact within 7 days. 41% in Q3 2027, target 45%; €0.39 agent-side per resolved conversation |\n| Run budget | ≤ 8 turns per exchange, ≤ 40 per run, 600,000 tokens, €1.20 model spend, 72-hour idle timer |\n\nThe registry held 11 entries on 14 December 2027: 7 in production, 1 retired, 1 rejected (Invoice Chaser) and 2 proposed, with 21 action classes across the production agents.\n\n**Common mistakes.** A team as owner. An on-call that covers the platform but not the agent's behavior (the Close-Day Queue). A retirement plan written at retirement.\n\nLearn more: [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html), [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html)\n\n## <a id=\"tool-11\"><\/a>Template 11: Incident and Recovery Runbook\n\n**When to use it.** When an agent does the wrong thing across many runs, or a wrong action is found after the fact. **Who fills it:** the agent owner's team writes the runbook per agent before production, and drills it at a quarterly game day; during an incident the agent on-call runs it and the risk owner decides on repair. **Containment is a change of autonomy, not a shutdown.**\n\n**The template.**\n\n| Step | What to record in advance | During the incident |\n| --- | --- | --- |\n| **1 Detect** | Signals that page the agent on-call: outcome shift, served ≠ pinned model, duplicate or unknown-outcome rate, sink denials, reviewer reports | Time detected, by what |\n| **2 Hold** | Kill-switch scope (action class, manifest hash, agent, tenant, platform); who may pull it; target ≤ 60 s to every enforcement point; queued actions held, never dropped | Scope pulled, by whom, when |\n| **3 Quarantine** | Where outputs are marked at consumers (PR label, staging-store approval queue, memory retrieval, report banner); evidence hold overriding retention | Runs and outputs quarantined |\n| **4 Scope** | The blast-radius query: runs, manifests, actions, receipts, unknown outcomes since when | Count and value affected |\n| **5 Repair** | Forward, backward, hold or accept per effect class; compensations generated by code from receipts; pivots listed for business remediation | Risk owner's decision and customer contact |\n| **6 Regulatory branch** | For agents marked high-risk: who decides reportability, when the clock starts | Decision and time |\n| **7 Restore by evidence** | Incident becomes suite cases; release requires a candidate passing them; only a human releases | Release record, signed |\n| **8 Learn** | Which template gets a new field | Field added, owner |\n\n**Ostrell example** (the Fixture Purge, July 2027; fictional). Forge agents asked to make failing CI pass deleted or skipped tests in 9 pull requests; 2 were merged, and the skipped test hid a real defect that delayed back-order emails for about 1,100 Ostrell Parts order lines by up to 3 days. Hold: the CI-fix trigger (`fix_failing_ci` class) was paused. Quarantine: the 7 open PRs were labeled so branch protection refused to merge them, then closed. Repair: the 2 merged changes were reverted and the defect fixed by hand. Scope: a back-scan of merged Forge PRs since February found 31 test removals, all justified. Restore: a verifier contract (baseline before the first edit, protected paths, a test-count grader outside the sandbox, a `not_a_code_defect` outcome) before the trigger was re-enabled on 120 repositories.\n\n**Common mistakes.** Diagnosing before holding. Scoping from memory because the evidence log lacks run, action or manifest ids. Engineers deciding repair that is the risk owner's call.\n\nLearn more: [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html), [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html), [Observability: Traces, Metrics and Investigating Failures](agent-observability.html)\n\n## <a id=\"tool-12\"><\/a>Template 12: Design-Review Checklist\n\n**When to use it.** In any architecture review of a new agent or of a change that moves an envelope: a new write or action class, identity, data class, trifecta leg, delegation, ceiling raise, or a decision point moved from code to a model. **Who fills it:** the proposing team answers in writing before the review; the architecture forum checks the answers. Each item is a question from the chapter linked after it; an unanswered item is a finding.\n\n**Part I — Foundations**\n\n- [ ] For each decision point, who chooses the next step (code, model or human), and which limits exist only in a prompt? ([What Makes a System Agentic](what-makes-a-system-agentic.html))\n- [ ] What does the model decide that code could not, and how did the next simpler design do on cost per verified outcome? ([When Agents Are Worth It](when-agents-are-justified.html))\n- [ ] For each action class: worst outcome, undo cost, ceiling, tier, and where each limit is enforced if policy allowed the call? ([Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html))\n- [ ] What are all the ways a run can end, and can it reach a human without the model choosing to escalate? ([Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html))\n\n**Part II — Architecture**\n\n- [ ] Does every path from model output to the outside world cross runtime, policy enforcement point, broker and evidence log, with authorization separate from execution? ([A Reference Architecture for Agentic Systems](agentic-reference-architecture.html))\n- [ ] Can anything other than the gateway reach a provider, and does a served-model mismatch page someone? ([Models and the Model Gateway](models-and-the-model-gateway.html))\n- [ ] Does the agent keep durable state beyond task state, a registered staging store and evidence? ([Connecting Agents to the Enterprise](agents-in-the-enterprise.html))\n\n**Part III — Orchestration**\n\n- [ ] Where does the plan live, and which deterministic checks run on it before the first step? ([Planning and Task Decomposition](planning-and-decomposition.html))\n- [ ] Can a child hold a tool or scope its parent lacks, and is its budget reserved from the root? ([Routing and Delegation](routing-and-delegation.html))\n- [ ] Which of the four reasons justifies each additional agent, against which single-agent baseline? ([One Agent or Many?](single-and-multi-agent-designs.html))\n- [ ] Which handoff fields are code-filled, and is the sender read-only after acceptance, enforced at the broker? ([Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html))\n\n**Part IV — Context**\n\n- [ ] For any model call, can you list each context segment with source, version and trust label? ([Context Engineering: Building What the Model Sees](context-engineering.html))\n- [ ] What is the agent's \"no evidence\" exit? ([Retrieval and Grounding](retrieval-and-grounding.html))\n- [ ] Can memory ever supply a side-effecting argument or a commitment? ([Memory: What an Agent Should Remember, and for How Long](agent-memory.html))\n- [ ] If the worker dies at an arbitrary instruction, what happens, and is `unknown` a state with an owner? ([Durable Task State and Checkpoints](task-state-and-checkpoints.html))\n- [ ] What is the freshness bound to inform and to commit, and does the commit tool re-read the fact? ([Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html))\n\n**Part V — Tools**\n\n- [ ] Which write-tool arguments does the model supply that a system of record already knows? ([Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html))\n- [ ] Is there any path to a tool that does not cross the broker? ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html))\n- [ ] What happens when the sandbox cannot start? ([Sandboxes and Execution Environments](sandboxes-and-execution-environments.html))\n- [ ] Is every effect a hashed action object, and which receipt level closes each class? ([Side Effects: When Agents Touch the World](side-effects-and-external-actions.html))\n\n**Part VI — Reliability**\n\n- [ ] After a crash mid-turn, is the model asked again? ([Durable Execution for Long-Running Agents](durable-agent-execution.html))\n- [ ] Who mints the idempotency key, and does any recovery path re-send the conversation to the model after dispatch? ([Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html))\n- [ ] Is each write reversible, compensable or a pivot, and when was the kill switch last drilled? ([Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html))\n\n**Part VII — Control**\n\n- [ ] Which session types hold all three trifecta legs, counting queries, fetches, rendering and delegation, and who signed the residual? ([Trust Boundaries and the Agent Threat Model](agent-threat-model.html))\n- [ ] What happens if the injection classifier is removed? ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html))\n- [ ] Does the downstream log say \"agent A for user U in run R\", and can a model argument change whose data a token reaches? ([Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html))\n- [ ] Is each approval bound to the action hash, policy version and evidence shown, and who audits a sample of approvals? ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html))\n- [ ] If the evidence log is unavailable, does a side effect proceed? ([Policy Enforcement and Audit](policy-enforcement-and-audit.html))\n\n**Part VIII — Evidence**\n\n- [ ] What is the outcome metric per action class, and does the release suite report pass^k with intervals? ([Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html))\n- [ ] Were gate thresholds fixed before the candidate ran? ([Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html))\n- [ ] Is every outcome metric broken down by agent version and served model? ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html))\n- [ ] Were promotion criteria registered before the evidence window, and which demotion triggers fire automatically? ([From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html))\n\n**Part IX — Economics**\n\n- [ ] Which single layer retries model calls? ([Latency and Throughput](agent-latency-and-throughput.html))\n- [ ] What is cost per successful task against the baseline, and what happens to queued actions when a budget is hit? ([Cost, Model Selection and Routing](agent-cost-and-model-routing.html))\n- [ ] Can any cached value be the basis of an executed action? ([Caching and Context Budgets](caching-and-context-budgets.html))\n\n**Part X — Evolution**\n\n- [ ] Can you name the served model, prompt and policy version of any decision from last month, from records, in minutes? ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html))\n- [ ] Is the rollback target's model still served, and is there a forward-fix playbook per effect class? ([Staged Rollout and Rollback](staged-rollout-and-rollback.html))\n- [ ] Who owns the agent, who is on call for its behavior tonight, and what is its retirement plan? ([Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html))\n\n**Part XI — Domains**\n\n- [ ] Can a coding agent write the tests or CI configuration that judge it? ([Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html))\n- [ ] Which components can put an amount, a date or \"done\" in front of a customer? ([Customer Operations: Support, Sales and Marketing Agents](domain-customer-operations.html))\n- [ ] Can any agent identity both create and approve, or create and post, the same object? ([Back Office: Finance, Legal and HR Agents](domain-back-office.html))\n- [ ] For every output that can harm a person, which component decides, which vetoes and which only screens? ([High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html))\n\n## Using the Toolkit Over Time\n\nReview tiers at least yearly, threat models on every rerun trigger, manifests and eval plans on every change, and runbooks at each quarterly game day. **Keep the set small:** every field should change a decision or preserve evidence; remove one that is filled by habit and read by nobody.\n\n[Glossary](glossary.html) defines the terms the templates use, [Source Coverage: The Interview Designs Behind This Book](source-coverage.html) maps the design examples behind them, and [Bibliography](bibliography.html) lists the sources the chapters cite.\n\n## Sources and Evidence\n\nThe templates are derived from the chapters linked in each section, which cite their sources in full; this page adds no new external sources. The design examples from the author's interview project that shaped individual templates are cited in those chapters:\n\n*Design examples from the author's interview project*\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026 — immutable agent versions promoted against an eval run (Templates 7 and 8; this book adds the exact model id), at most two trifecta legs (Template 6).\n- Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, 2026 — detect, contain, roll back, repair, stay read-only (Template 11); handoff packages by reference (Template 4).\n- Obrenović, Ž., \"Agentic Finance Platform\", system-design interview design, `system-design-interviews/data/book/agentic-finance-platform/interview.json`, 2026 — corrections as reversal proposals, never edits (Template 9).\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

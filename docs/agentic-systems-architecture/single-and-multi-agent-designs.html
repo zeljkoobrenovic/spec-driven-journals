@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>One Agent or Many?</title>
+    <meta name="description" content="When do additional agents add value, and what do they cost in tokens, latency, shared state and accountability? Start with one agent and split only on evidence: for context isolation, parallel read-only breadth, separated authority or independent verification, with one writer per artifact and budgets enforced on the whole task tree.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="One Agent or Many?">
+    <meta property="og:description" content="When do additional agents add value, and what do they cost in tokens, latency, shared state and accountability? Start with one agent and split only on evidence: for context isolation, parallel read-only breadth, separated authority or independent verification, with one writer per artifact and budgets enforced on the whole task tree.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/single-and-multi-agent-designs.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/12-single-and-multi-agent-designs/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="routing-and-delegation.html" title="Routing and Delegation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="coordination-and-handoffs.html" title="Coordination, Handoffs and Agent-to-Agent Protocols">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — ORCHESTRATION: Planning, Delegation and Coordination</p>
+        <h1>One Agent or Many?</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  32 min read · <a class="spec-link" href="single-and-multi-agent-designs.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/12-single-and-multi-agent-designs/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/12-single-and-multi-agent-designs/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="routing-and-delegation.html" title="Routing and Delegation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="coordination-and-handoffs.html" title="Coordination, Handoffs and Agent-to-Agent Protocols">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "One Agent or Many?", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "When do additional agents add value, and what do they cost in tokens, latency, shared state and accountability? Start with one agent and split only on evidence: for context isolation, parallel read-only breadth, separated authority or independent verification, with one writer per artifact and budgets enforced on the whole task tree.", "permalink": "single-and-multi-agent-designs", "timetoread": "32 min read", "icon": "assets/icons/12-single-and-multi-agent-designs.png", "logo": "assets/images/12-single-and-multi-agent-designs/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn the five multi-agent topologies and what each one decides about control, context, write authority and accountability; what the published evidence says about when more agents help and when they hurt; and how to test, price and bound a proposed split before it ships.\n\n> **WHY THE BUSINESS CARES:** Every extra agent multiplies model spend and adds a place where work can be lost, duplicated or attributed to nobody. A split that pays for itself on research can double the cost and halve the reliability of a support or finance flow. A risk owner needs to know which agent took each action and under whose authority.\n\n> **WHY ARCHITECTS SHOULD CARE:** The choice of topology fixes who owns the next step, what context crosses each boundary, who may write to shared state and how failure spreads. Frameworks hide these choices in defaults that differ between products. Getting them wrong produces systems that cost several times more and fail in ways no single agent would.\n\n> **KEY POINTS:**\n>\n> * **One agent first; split only on evidence and only for one of four reasons.** An additional agent earns its place by isolating context, running independent read-only work in parallel, separating authority (such as untrusted content from private data), or verifying with a clean context. \"Separation of concerns\", tool count and personas are not reasons by themselves; fix the tools and the prompt first.\n> * **Many readers, one writer.** Parallel agents are safe for gathering, searching and reviewing. They are dangerous when they write to a shared artifact, because every write carries decisions the other agents cannot see. In a controlled 2026 preprint study across six benchmarks, multi-agent designs did up to 70% worse than a single agent on sequential planning.\n> * **Price and bound the task tree, not the agent.** Fan-out multiplies tokens and exposes the slowest worker. The runtime, not the prompt, enforces depth, fan-out, tokens, money and wall-clock time for the whole tree. A verifier sits between workers and any side effect, and every action carries the lineage of the agent that took it.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **The Agent Committee** — several agents pass work among themselves where one agent with the right tools would do, and nobody can say which agent decided.\n> * **The Token Bonfire** — recursive delegation without tree-level budgets turns one research question into thousands of sub-agent runs and an invoice.\n> * **The Lost Handoff** — every boundary between agents is a place where identifiers, constraints and decisions fall out of a free-text summary.\n\n<br>\nMost agentic systems that work in production are one model in a loop with well-designed tools, and that is also what the vendors who sell multi-agent frameworks recommend first. OpenAI's 2025 practical guide says its \"general recommendation is to maximize a single agent's capabilities first\" ([OpenAI, 2025](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)). Anthropic's 2024 guidance says to add multi-step agentic systems \"only when simpler solutions fall short\" ([Anthropic, 2024](https://www.anthropic.com/engineering/building-effective-agents)). Yet multi-agent designs keep reaching architecture reviews, often because the org chart has several teams.\n\nThe evidence supports a narrower position than either the enthusiasts or the sceptics take. **Additional agents pay when sub-tasks are independent and mostly read-only, and fail when sub-tasks share decisions.** Anthropic's research system and Cognition's coding agents, often read as opposing camps, agree on exactly this split once you look at their domains. The controlled study by Kim and colleagues finds the same boundary across six benchmarks: the gain depends on whether the task decomposes, not on how many agents you add.\n\nThis chapter owns four terms: **multi-agent system**, **topology** (agent), **orchestrator–worker** and **context isolation**. It builds on [Routing and Delegation](routing-and-delegation.html), which defines the sub-agent and the delegation contract, and on [Planning and Task Decomposition](planning-and-decomposition.html), which decides how a task is split. It hands the mechanics of passing work and responsibility between agents to [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), and the cost model to [Cost, Model Selection and Routing](agent-cost-and-model-routing.html).\n\n## Setting the Scene at Ostrell: Three Proposals in One Forum\n\nOstrell, the fictional field-service software group this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), runs seven agents on its Keelson platform. In **May 2027** Tomas Verhoef, the Chief Architect, put three proposals on one architecture forum agenda, because each asked the same question from a different side.\n\nThe first came from Scout, the internal research agent. In February, a Scout run on \"competitor pricing across 14 markets\" had spawned sub-agents recursively with no depth or cost limit. It ran for **41 hours**, made **1,900 sub-agent runs**, consumed about **310 million tokens** and cost **€8,700** in model spend before a quota alert stopped it on Monday morning. The report was unusable, with duplicated sections. That was the Weekend Fan-out. The emergency fix had added run budgets, a **maximum delegation depth of 2** and **at most 8 parallel sub-agents**. Strategy & Insights now wanted to know whether Scout should stay multi-agent at all.\n\nThe second came from Lena Brandt's Support Operations team. In April, Answerdesk's triage agent had handed billing conversations to a billing specialist agent as free-text summaries. The contract id dropped out in about **1 in 40** handoffs, and **3 wrong-contract credits** were proposed before A1 approval caught them. The team had already fixed the payload with typed fields. Now it proposed folding the specialist back into Answerdesk as a tool set.\n\nThe third came from Sales Operations. Priya Natarajan's team wanted to rebuild Dealroom, the CRM copilot, as three agents: an account researcher, a pricing agent and a proposal writer, each with its own prompt and owner.\n\nTomas framed one question for all three: **what does each additional agent buy that we can measure, and who is accountable for what it does?**\n\n## Concepts: Agents, Topologies and What Crosses a Boundary\n\n### What counts as a multi-agent system\n\nA **multi-agent system**, in this book, is a system in which more than one model-driven loop holds its own context and its own decision about the next step, and at least one loop's output becomes another's input. Two conditions matter. Each agent has a **separate context** (it does not see everything the other sees), and each has **some control** over its own next step. A fixed chain of model calls in code is a workflow with model steps ([Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html)), however many prompts it has. One agent calling a classifier model is still one agent.\n\nThe definition excludes much of what is marketed as multi-agent. The author's agentic-sales-platform interview design labels its orchestrator \"Hierarchical multi-agent\", but only one worker node exists and no sub-agent boundary or delegation contract is modeled (`highLevelArchitecture`). It is a single agent with a supervisor's name.\n\n### Five topologies\n\nA **topology** is the graph of agents and the semantics of its edges: who may start whom, whether control returns, and what context travels. Five shapes cover nearly every design I have reviewed.\n\n| Topology | Shape | Edge semantics | Who owns the next step | Typical framework names (as of October 2026) |\n| --- | --- | --- | --- | --- |\n| **Single agent with tools** | One loop; tools, possibly many | Tool call and result | The agent, inside its budget | Any agent SDK |\n| **Orchestrator–worker** | A lead agent delegates bounded sub-tasks to workers and synthesizes their results | **Call and return**: the worker gets a task, returns a result, ends | The lead | Subagents, agents-as-tools, ADK `task`/`single_turn` |\n| **Supervisor** | A manager routes turns of one ongoing conversation among specialists, reviews their output and decides when to stop | Call and return, with a shared conversation | The supervisor | Supervisor pattern, hierarchical process, Magentic |\n| **Peer handoff (swarm)** | Agents transfer control of a conversation to one another | **Transfer of control**: the receiver owns the conversation | Whichever agent currently holds it | Handoffs, swarm, ADK `chat` |\n| **Pipeline** | A fixed sequence of agents, each consuming the previous one's artifact | Code-controlled stage transitions | Code, between stages; each agent inside its stage | Sequential process, sequential workflow |\n\nTwo variants recur on top of these. An **ensemble** runs several independent instances on the same question and aggregates by rule (a vote, or a check against ground truth). A **clean-context reviewer** is a worker whose only job is to judge another agent's output without seeing its reasoning; it is an orchestrator–worker edge used for verification rather than gathering.\n\nThe column that matters most is the edge semantics. The 2025 OpenAI guide puts it precisely: \"in the manager pattern, edges represent tool calls whereas in the decentralized pattern, edges represent handoffs that transfer execution between agents\" ([OpenAI, 2025](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)). Call and return keeps one accountable decision-maker per task. Transfer of control moves accountability with the conversation, so the system must record who held control when each action ran. [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) owns the handoff; this chapter decides when you want one at all.\n\n### Context isolation\n\n**Context isolation** is the property that an agent's context window contains only what its delegation contract passes in, and that what happens inside it (verbose tool output, dead ends, untrusted content, errors) does not flow back except through a defined result. It is the most reliable benefit a second agent provides, and it works in three directions:\n\n- **Upward isolation protects the parent's context.** A worker can spend tens of thousands of tokens exploring and return a summary of 1,000–2,000 tokens, according to Anthropic's September 2025 context-engineering guidance ([Anthropic, 2025](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)). The parent keeps its window for decisions. The author's ai-coding-cli interview design frames subagents as \"context isolation first, parallelism second\" (step `verify`, interviewer signals).\n- **Downward isolation protects the worker from the parent's noise and from data it should not see.** A worker that never receives the customer's invoices cannot leak them.\n- **Lateral isolation contains failure.** A worker that loops, is injected or produces nonsense fails inside its own budget and returns an error instead of corrupting a shared transcript.\n\nIsolation has a price, and it is the same price seen from the other side: **the worker does not know what the parent decided.** Cognition's June 2025 post puts the principle as \"Share context, and share full agent traces, not just individual messages\", because \"Actions carry implicit decisions, and conflicting decisions carry bad results\" ([Yan, Cognition, 2025](https://cognition.com/blog/dont-build-multi-agents)). Its example: a game split into \"background\" and \"bird\" sub-tasks came back as a background in one visual style and a bird in another, which the final agent then had to reconcile. Isolation is therefore a contract design problem. You decide which decisions, identifiers and constraints cross the boundary, in typed fields, and you accept that everything else does not.\n\n### Four reasons to add an agent\n\nThe rule I use in reviews: **a second agent is justified only by one of four reasons, and the proposal must name which one and show the evidence.**\n\n| Reason | What the extra agent buys | Evidence that should exist before approval | Not the same as |\n| --- | --- | --- | --- |\n| **Context isolation** | Verbose exploration stays out of the parent's window | The single agent's context overflows, or quality falls as history grows, on the eval suite | A prompt that is merely long |\n| **Parallel breadth** | Wall-clock time on independent, read-only sub-tasks; more total search effort | Sub-tasks are independent; latency matters; task value covers the token multiple | Splitting sequential steps into stages |\n| **Separated authority** | One context holds untrusted content, another holds private data or side-effecting tools | A threat model shows the combination in one context ([Trust Boundaries and the Agent Threat Model](agent-threat-model.html)) | Different team ownership |\n| **Independent verification** | A judge that has not seen the producer's reasoning | Self-checks miss errors that a clean context catches, measured on labeled failures | Debate between copies of one model |\n\nThree common arguments are missing from this table on purpose. **Tool count** is not a reason until better names, descriptions and on-demand tool loading have failed: OpenAI's guide notes that \"some implementations successfully manage more than 15 well-defined, distinct tools while others struggle with fewer than 10 overlapping tools\" ([OpenAI, 2025](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)). **Organizational ownership** is a reason for separate tool sets, prompts and evaluation suites, not for separate loops. **Personas** (\"a critic\", \"a strategist\") are prompts, and the debate evidence below says arguing copies of one model add cost without a reliable gain.\n\nSeparated authority deserves one more sentence. Splitting untrusted content from private data needs a second *context*, which is often a quarantined model call with no tools rather than a second agent loop. [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) owns that mechanism; the topology question is only whether the split also needs autonomy on both sides.\n\n## Architecture: Bounding a Task Tree\n\nOnce a design has more than one agent, the unit of control is no longer the agent run but the **task tree**: the root run plus every run it delegates to, transitively. Keelson Runtime, Ostrell's agent runtime ([The Agent Runtime: Running the Loop](agent-runtime.html)), models the tree explicitly. Every delegated run carries a `root_run_id`, a `parent_run_id`, a depth and a slice of the root's budget.\n\n![Diagram: A bounded task tree](assets/images/12-single-and-multi-agent-designs/fig01-bounded-task-tree-lead-plans-runtime.jpeg)\n**Figure 1:** *A bounded task tree: the lead plans, the runtime enforces the tree's budget at every spawn, workers only read, a verifier sits between workers and the lead, and exactly one agent writes the artifact.*\n\n### Components and responsibilities\n\n| Component | Owns | Must never |\n| --- | --- | --- |\n| **Lead agent** | The plan, the decision to delegate, the synthesis, the single write to the output artifact | Spawn outside the runtime; pass raw untrusted content to a worker that has side-effecting tools |\n| **Runtime** (Keelson Runtime) | Spawning, the tree's budget ledger, depth and fan-out caps, deadlines, cancellation of the whole tree | Trust a prompt instruction as a limit |\n| **Worker** | One bounded sub-task with its own context, tools and budget slice; a typed result | Write to the shared artifact; delegate beyond its granted depth; return results without references |\n| **Verifier** | Checking worker results against sources, tests or rules before they reach the lead or a side effect | Share the producer's reasoning context |\n| **Tool broker** (Toolyard) | Per-worker tool scopes and credentials ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html)) | Grant a worker the lead's full scope by default |\n| **Evidence log** (Logbook) | The tree's lineage: which run, agent version and identity took each action | Record a tree as one flat run |\n\n### The delegation spec\n\nDelegation in a multi-agent design is a typed object the runtime validates, not a sentence the lead writes. [Routing and Delegation](routing-and-delegation.html) defines the **delegation contract** in general. In a task tree it carries the budget slice and the write rights as well:\n\n```python\nfrom dataclasses import dataclass\nfrom typing import Literal\n\n@dataclass(frozen=True)\nclass Budget:\n    tokens: int\n    cost_eur: float\n    wall_clock_s: int\n\n@dataclass(frozen=True)\nclass DelegationSpec:\n    root_run_id: str\n    parent_run_id: str\n    depth: int                       # parent depth + 1\n    goal: str                        # one sub-question, stated by the lead\n    decisions_in_force: dict         # constraints already taken: scope, markets, date range\n    inputs: list[str]                # references, not pasted content\n    tools: list[str]                 # subset of the parent's scope\n    write_rights: Literal[\"none\", \"own_scratch\"]   # never the shared artifact\n    result_schema: str               # e.g. \"market_finding.v3\"\n    budget: Budget\n    deadline_s: int\n\ndef admit(spec: DelegationSpec, ledger, caps) -> None:\n    if spec.depth > caps.max_depth:\n        raise Rejected(\"depth\")\n    if ledger.active_children(spec.parent_run_id) >= caps.max_parallel:\n        raise Rejected(\"fan_out\")\n    if not ledger.reserve(spec.root_run_id, spec.budget):   # atomic, tree-wide\n        raise Rejected(\"tree_budget\")\n```\n\nThree details carry the design. `decisions_in_force` is Cognition's \"share context\" made into a field: the scope, constraints and choices the lead has already made travel explicitly, rather than being hoped for. `reserve` is atomic on the **root's** budget, so ten workers cannot each believe they have the whole budget. And a rejection is returned to the lead as a tool result, not raised as a crash, so the lead can replan within what remains. Vendor SDKs now ship similar caps, and their defaults show why you must set your own: as of October 2026, the Claude Agent SDK documents a default spawn depth of 3 and 20 concurrent subagents, and **no default spend limit** ([Anthropic, n.d., accessed 2026-10](https://code.claude.com/docs/en/agent-sdk/subagents)). The same page says prompt instructions \"only steer\" delegation, \"so set the limits as well\".\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Lead → runtime: spawn | Budget reservation atomic on the root | Milliseconds; not on the critical path of user output | Spawn recorded before the worker starts | Lead only, within granted depth |\n| Worker → tools | Read-only by default; per-worker scope | Per-tool deadline; worker deadline bounds all | Tool calls recorded as activities | Worker, with its own scoped identity |\n| Worker → verifier → lead | Typed result validated against schema; references resolvable | Bounded by the slowest worker the lead waits for | Results persisted by reference so a lead crash does not lose them | Verifier decides acceptance |\n| Lead → artifact or side effect | Single writer per artifact; action object with idempotency key | Not latency-critical | Intent and receipt in the evidence log | Lead only, under its autonomy tier |\n| Cancel tree | All descendants stop new effects; queued actions held | Seconds | Cancellation recorded per run | Runtime, requester or kill switch |\n\n### Shared state: one writer per artifact\n\nWhen agents share state, the distributed-systems rules apply unchanged: concurrent writers need either coordination or partitioning. Agents add a twist. Each write carries implicit decisions, so even writes to *different* parts of an artifact can conflict in meaning (the background and the bird). The book's default is **many readers, one writer**. Workers write only to their own scratch space or return results by reference; the lead, alone, writes the shared artifact. When parallel edits are unavoidable, partition the artifact physically. The author's ai-coding-cli design gives each editing subagent its own git worktree and makes the parent own merge order, so two subagents editing one file is \"impossible by construction\" and conflicts \"surface at merge, visibly\" (step `verify`, failure drill 3).\n\n![Four worker modules read with magnifiers and drop reference cards in a tray; one lead component holds the only pen on the shared report.](assets/images/12-single-and-multi-agent-designs/12-many-readers-one-writer.jpeg)\n**Figure 2:** *Many readers, one writer: workers gather and return results by reference, and only the lead writes the shared artifact.*\n\nAnthropic's research system shows the read side. Subagents \"call tools to store their work in external systems\" and pass lightweight references back, to avoid a \"game of telephone\", and the lead saves its plan to memory because a context beyond 200,000 tokens would be truncated ([Anthropic, 2025](https://www.anthropic.com/engineering/multi-agent-research-system)). Results by reference keep the lead's context small and make worker output durable, which [Durable Task State and Checkpoints](task-state-and-checkpoints.html) needs anyway.\n\n### Accountability: one accountable agent per task tree\n\nWho is responsible for an outcome is not a philosophical question; it decides whose eval suite must catch a regression and whose pager rings. My rule: **every task tree has one accountable agent, and that agent has one owning team.** In orchestrator–worker and supervisor designs it is the lead. Workers are components of the lead's agent version, listed in its manifest and evaluated with it, even if another team maintains their prompts. In peer-handoff designs, accountability moves with control, and the evidence log must show which agent held control at each action. That is a reason to prefer call-and-return inside one system and to reserve transfer of control for boundaries where responsibility genuinely changes hands, such as an escalation to a human team ([Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html)).\n\nLineage is the mechanism. Every action in Logbook records the run, its parent, the root, the agent version and the identity under which it ran. Claude Agent SDK messages from subagents, for example, carry a `parent_tool_use_id` ([Anthropic, n.d., accessed 2026-10](https://code.claude.com/docs/en/agent-sdk/subagents)); OpenTelemetry's generative-AI conventions nest sub-agent spans under the parent's trace ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html)). Without lineage, a multi-agent incident review cannot answer the first question it will be asked.\n\n## Evidence: When More Agents Help and When They Hurt\n\n### Breadth-first research: large gains, mostly bought with tokens\n\nAnthropic's June 2025 engineering post describes an orchestrator–worker research system: a lead agent plans, spawns subagents that search in parallel, synthesizes, and hands to a citation agent ([Anthropic, 2025](https://www.anthropic.com/engineering/multi-agent-research-system)). It reports that the multi-agent configuration \"outperformed single-agent\" by **90.2%** on Anthropic's internal research eval. Three caveats travel with that number. The eval is internal and started from about 20 queries; nobody outside can reproduce it. The multi-agent system spent far more compute: Anthropic reports agents use about **4×** the tokens of chat and multi-agent systems about **15×**. And on BrowseComp, \"token usage by itself explains 80% of the variance\" in performance, with tool calls and model choice bringing it to 95%. Anthropic's own summary is that multi-agent systems \"work mainly because they help spend enough tokens to solve the problem.\"\n\nThat is still useful evidence. Parallel workers with isolated contexts are a way to spend more search effort, faster, without overflowing one window: the post reports that parallelism cut research time \"by up to 90%\" for complex queries. The same post names where the design fits poorly: tasks where agents must share context or have many dependencies, and \"most coding tasks\". It also lists the failures the team saw: spawning 50 subagents for simple queries, endless searching for nonexistent sources, duplicated work from vague task descriptions. Those are exactly the failures a tree budget and a typed delegation spec address.\n\n### Coding: one writer, scoped helpers\n\nCognition argued in June 2025 for single-threaded agents in coding ([Yan, Cognition, 2025](https://cognition.com/blog/dont-build-multi-agents)). Its April 2026 follow-up reports what has since worked in its own products: clean-context review loops, manager-and-child delegation with scoped children, read-only search subagents and escalation to a stronger model when both models are strong. What still does not work: parallel writers (\"conflicting implicit decisions\"), weaker models that do not know when to escalate, and children that assume shared state they lack ([Yan, Cognition, 2026](https://cognition.com/blog/multi-agents-working)). This is documented experience about Cognition's own systems; its product numbers are vendor-reported and I do not use them.\n\nRead side by side, the two camps agree more than the headlines suggest. **Both say multi-agent pays when sub-tasks are independent and read-mostly, and fails when sub-tasks share decisions.** The disagreement is about domain: research decomposes; most code does not.\n\n### Controlled evidence: task structure, not agent count\n\nThe best controlled evidence is the preprint by Kim and 18 co-authors at Google and MIT, *Towards a Science of Scaling Agent Systems* ([Kim et al., 2025, v3 2026](https://arxiv.org/abs/2512.08296)). Version 3 (8 April 2026) compares five architectures (one single-agent, four multi-agent) across 260 configurations, six agentic benchmarks and three model families. Relative to a single agent, results range from **+80.8%** on decomposable financial reasoning to **−70.0%** on sequential planning. Coordination gives diminishing returns once the single-agent baseline is strong, multi-agent overhead hurts tool-heavy tasks, and architectures without centralized verification propagate more errors. An earlier version, summarized on Google's research blog in January 2026, reported that independent agents amplified errors **17.2×** while centralized coordination contained amplification to **4.4×** ([Kim and Liu, Google Research, 2026](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/)); those figures come from the 180-configuration version and should be cited as such. Limits: it is a preprint, the benchmarks are short compared with enterprise tasks, and none of them involves side effects.\n\nThe architectural reading is direct. A decomposable task with a validating orchestrator is where gains appear; sequential, coupled tasks get worse; and the orchestrator's value is partly that it acts as a checkpoint.\n\n### Failure taxonomy: mostly specification and verification\n\nCemri and colleagues annotated more than 1,600 traces from seven multi-agent frameworks (MetaGPT, ChatDev, Magentic-One and others) and derived 14 failure modes in three categories, with human inter-annotator agreement of κ = 0.88 ([Cemri et al., 2025](https://arxiv.org/abs/2503.13657); NeurIPS 2025 Datasets and Benchmarks track). The largest single modes were repeating completed steps (15.7% of failures), a mismatch between stated reasoning and the action taken (13.2%) and not recognizing that the task was complete (12.4%). The three task-verification modes (premature termination, no or incomplete verification, incorrect verification) together account for about 23.5%. Interventions on role specification and an added verification step improved task success by 9.4% and 15.6% on ChatDev-based tasks, and the authors say interventions gave inconsistent results. The traces come from 2024–25 models and open frameworks; closed production systems are not included.\n\nThe useful conclusion for architects: **many multi-agent failures are things deterministic code can catch.** Step-level idempotency stops repeated work from repeating effects; completion criteria checked by code stop endless loops; an explicit verifier stage addresses a quarter of the failures by construction.\n\n### Debate: voting does most of the work\n\nMulti-agent debate (copies of a model arguing toward an answer) reported gains on every task in Du et al.'s 2023 preprint with 2023-era models ([Du et al., 2023](https://arxiv.org/abs/2305.14325)). Later work shrinks the claim. Smit et al. found that debate does not reliably beat self-consistency and ensembling and is sensitive to hyperparameters ([Smit et al., 2023](https://arxiv.org/abs/2311.17371), preprint). Wang et al. found a single agent with strong prompts reaches almost the same performance ([Wang et al., 2024](https://arxiv.org/abs/2402.18272), preprint). Choi, Zhu and Li showed that majority voting \"accounts for most of the performance gains typically attributed to\" debate and proved that debate alone does not improve expected correctness ([Choi et al., 2025](https://arxiv.org/abs/2508.17536); NeurIPS 2025). Huang et al. found models \"struggle to self-correct their responses without external feedback\" ([Huang et al., 2023](https://arxiv.org/abs/2310.01798); ICLR 2024). The design consequence: where a proposal says \"agents that debate\", build N independent samples and a deterministic aggregator, or a verifier with external ground truth (tests, a database, the source document). Do not count self-critique as a control in a risk assessment.\n\n### Two smaller signals\n\nLangChain's documentation counts calls on its own example tasks: on a three-domain request, subagents used 5 model calls and about 9,000 tokens, peer handoffs 7 or more calls and 14,000 or more tokens ([LangChain, n.d., accessed 2026-10](https://docs.langchain.com/oss/python/langchain/multi-agent)). These are vendor examples, not a benchmark, but topology changes cost even at fixed quality. In a March 2026 post, Anthropic reported that multi-agent BrowseComp runs found and used leaked benchmark answers at **0.87%** of problems against **0.24%** for single-agent runs ([Anthropic, 2026](https://www.anthropic.com/engineering/eval-awareness-browsecomp)): more search effort also means more ways to reach things the agent should not use, which is an evaluation-integrity concern for [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html).\n\n**No published incident report** attributes a production outage or harm specifically to multi-agent coordination, as far as the research for this book could find. The evidence base is benchmarks, taxonomies and vendor experience; the failure scenarios later in this chapter are the author's analysis plus Ostrell's fictional incidents. The interview designs do not cover multi-agent research decomposition either: the author's research, healthcare and benefits designs each keep the model in a single bounded node inside a deterministic pipeline, so the research topology here relies on the published reports above.\n\n## The Cost and Latency Arithmetic\n\nFan-out changes three numbers, and each needs its own estimate before a design is approved.\n\n**Tokens.** Each worker pays its own context setup (instructions, tool definitions, the delegation spec) and its own exploration. A tree with N workers costs roughly lead planning + N × (setup + exploration) + verification + synthesis. Fan-out buys breadth and wall-clock time, not efficiency. Model tiering can offset part of it: workers often run well on a cheaper tier than the lead, which is why the right comparison is **cost per successful task** against the single-agent baseline, measured on the same suite ([Cost, Model Selection and Routing](agent-cost-and-model-routing.html)).\n\n**Latency.** The tree's latency is planning + the slowest worker the lead waits for + verification + synthesis. Parallelism removes the sum of worker times but exposes the maximum, and the maximum is a tail statistic. If each worker independently has a 5% chance of exceeding its p95 time, the chance that at least one of six does is 1 − 0.95⁶ ≈ **26%**; for eight workers, about **34%**. This is the fan-out version of Dean and Barroso's tail-at-scale argument ([Dean and Barroso, 2013](https://research.google/pubs/the-tail-at-scale/)). Every worker therefore needs a deadline, and the lead needs a decided policy for a late worker: wait, proceed and mark the gap, or re-issue.\n\n![Six parallel worker lanes; five finish together and one runs late past a dashed deadline line, with a 26% badge.](assets/images/12-single-and-multi-agent-designs/12-slowest-worker-sets-the-pace.jpeg)\n**Figure 3:** *Fan-out exposes the slowest worker: if each of six workers has a 5% chance of running late, about 26% of runs wait on at least one, so every worker needs a deadline.*\n\n**Errors.** Workers' errors combine at synthesis. If each of six findings independently has a 5% chance of a material error, the report contains at least one with a probability of about 26%, the same arithmetic as above. [When Agents Are Worth It](when-agents-are-justified.html) owns error compounding; the topology consequence is that a verifier between workers and synthesis is not optional once fan-out exceeds two or three.\n\n![Diagram: The review test for a proposed split](assets/images/12-single-and-multi-agent-designs/fig02-review-test-proposed-split-no-evidence.jpeg)\n**Figure 4:** *The review test for a proposed split: no evidence that one agent failed means no split, and each legitimate reason leads to a specific, bounded shape rather than to \"more agents\".*\n\n## Worked Example at Ostrell: Scout, Answerdesk and Dealroom\n\n### Scout: earning the fan-out with evidence\n\nMei Lin Zhou's evaluation team built a Sounding suite of **160 Scout tasks** drawn from real 2026–27 requests, half \"breadth\" tasks (comparisons across markets, vendors or regulations) and half \"depth\" tasks (one technical question pursued to the source). They ran two configurations: a single Large-tier agent with history compaction, and an orchestrator–worker design with a Large-tier lead and Mid-tier workers. Graders scored factual accuracy and citation accuracy against references written by analysts (all figures are Ostrell's, fictional):\n\n| Task type | Single agent: score | Orchestrator–worker: score | Tokens, orchestrator–worker ÷ single | Median time, single → orchestrator–worker |\n| --- | --- | --- | --- | --- |\n| Breadth (80 tasks) | 0.64 | **0.81** | 2.4× | 31 → 16 min |\n| Depth (80 tasks) | **0.80** | 0.78 | 2.9× | 12 → 13 min |\n\nThe result matched the published evidence. On breadth tasks, workers in parallel scored higher and finished faster. On depth tasks, the fan-out spent nearly three times the tokens for no gain, because the sub-questions depended on each other. The forum's decision was **conditional fan-out**: Scout's plan ([Planning and Task Decomposition](planning-and-decomposition.html)) is data, and Keelson Runtime grants the delegation tool only when the plan contains at least three independent sub-questions. Depth tasks run as a single agent.\n\nThe 2027 Scout manifest sets these tree limits, enforced by the runtime: **maximum depth 2** and **at most 8 parallel workers** (from the Weekend Fan-out fix), plus a default per-run budget of **8 million tokens, €90 and 90 minutes of wall-clock time**. A requester can raise the budget up to 3× with approval from the Strategy & Insights lead. Workers get read-only search through Toolyard (web or internal sources, never both in one worker since July 2027; see [Trust Boundaries and the Agent Threat Model](agent-threat-model.html)), no write rights, a 20-minute deadline, and a `market_finding` result schema with references to stored sources. A Mid-tier citation verifier checks every claim against the stored source passage before the lead synthesizes. Only the lead writes the report to the document space.\n\nA typical breadth run, \"service-contract pricing for heat-pump installers in the Netherlands, Germany, Belgium, the UK and the US\", plans six workers (five markets and one on regulation). Assume blended rates of **€20 per million tokens for the Large tier and €4 for the Mid tier** *(assumption; the providers' actual prices are not part of the ledger)*:\n\n| Step | Tier | Tokens | Cost *(at assumed rates)* | Time |\n| --- | --- | --- | --- | --- |\n| Lead: plan and spawn | Large | 0.15 M | €3.00 | 2 min |\n| 6 workers in parallel | Mid | 6 × 0.55 M = 3.3 M | €13.20 | slowest 12 min |\n| Citation verifier | Mid | 0.25 M | €1.00 | 2 min |\n| Lead: synthesis and write | Large | 0.20 M | €4.00 | 2 min |\n| **Total** | | **3.9 M** | **€21.20** | **18 min** |\n\nThe tree used 2.4 times the single agent's tokens, but most of them on the cheaper tier, so it cost less than the single Large-tier agent's roughly 1.6 million tokens (about €32 at the same assumed rate) and finished in about half the time. That is the trade a fan-out should show before it is approved: better results at a known multiple, with the tiering effect measured rather than assumed. Scout's budget of €90 leaves room for replanning but would stop a repeat of February at about 1% of its cost. Across Scout's **~350 runs a month**, with about 40% classed as breadth *(assumption)*, model spend is in the order of €5,500 a month *(estimate at the assumed rates)*: less than the single Weekend Fan-out run.\n\n![Diagram: One Scout breadth run](assets/images/12-single-and-multi-agent-designs/fig03-one-scout-breadth-run-runtime-reserves.jpeg)\n**Figure 5:** *One Scout breadth run: the runtime reserves the tree's budget before spawning, a late worker becomes a marked gap rather than an open-ended wait, and only verified claims reach the single writer.*\n\n### Answerdesk: folding the specialist back\n\nThe billing specialist existed for an organizational reason (the billing team owned its prompt) and a weak technical one (Answerdesk's prompt was getting long). Neither is one of the four reasons. The Lost Handoff showed the cost: a boundary where a contract id could fall out of a summary 1 time in 40. Lena Brandt's team folded the specialist back into Answerdesk as a **billing tool set** that Keelson loads only when the conversation's intent is billing, with the billing team owning those tools' descriptions and their part of the Sounding suite. Answerdesk stays one agent with one owner, one autonomy register and one trace per conversation. The typed handoff payload survives where responsibility really changes hands: the escalation to human support staff ([Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html)).\n\nOne split did remain, for the third reason. After the Poisoned Ticket in **May 2027**, the part of Answerdesk that reads inbound email content can no longer send to new recipients. That is separated authority, and it is implemented as a quarantined context with a typed output rather than as a second conversational agent ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)).\n\n### Dealroom: a committee rejected\n\nSales Operations' three-agent proposal failed the test in the forum. Research, pricing and proposal writing are sequential, and each step depends on decisions in the previous one (which products, which discount band, which contract term). It is the shape on which, in the earlier version of Kim et al.'s study, every multi-agent variant degraded the sequential-planning benchmark by 39–70%. No eval showed the single agent failing. The forum kept Dealroom as one agent and gave each sub-team its own Sounding suite (research, quotes) so it could see its own regressions. The Stale Price Book a month later came from a stale retrieval index, not from the topology; three agents would have passed the old prices on just as faithfully.\n\n## Failure Modes and Recovery\n\n| Scenario | What happens | Detection | Containment | Recovery |\n| --- | --- | --- | --- | --- |\n| **Recursive fan-out** (Weekend Fan-out) | Workers spawn workers; tokens and cost grow with the tree | Tree budget burn rate in Wake; spawn-rate alert per root run | Runtime rejects spawns beyond depth, fan-out and the root budget | Cancel the tree; keep stored findings; rerun with a revised plan |\n| **Conflicting writers** | Two workers edit one artifact; each consistent, together inconsistent | Merge conflicts; verifier checks for consistency across sections | No write rights for workers; partitioned workspaces | Lead re-synthesizes from findings; discard worker edits |\n| **Telephone loss** | A worker's summary drops an identifier, constraint or caveat | Schema validation on results; missing required fields | Results by reference to stored sources; required fields | Re-request the missing field from the worker's stored output, not a new run |\n| **Injected worker output** | A worker read a hostile page; its result carries instructions to the lead | Injection test suite; instruction-shaped content in results | Treat worker results as untrusted data; lead holds no tools that send data out while reading them | Quarantine the finding; rerun the sub-task with the source blocked |\n| **Straggler** | One worker is slow; the whole run waits | Worker deadline exceeded | Per-worker deadline; partial-result policy | Report marks the gap; optional re-issue within the remaining budget |\n| **Unverified completion** | A worker claims success; the lead accepts it | Verifier rejection rate; sampled human review | Verifier between workers and synthesis or any side effect | Reject and re-issue, or report as unverified |\n| **Circular handoffs** | Peers pass a conversation back and forth | Handoff count per conversation; repeated agent pairs | Handoff cap; route to a human after N transfers | Escalate with the full typed payload ([Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html)) |\n| **Orphaned children** | The lead crashes; workers keep running and spending | Runs whose root is terminal | Tree-scoped cancellation; children heartbeat to the root | Durable resume of the lead from stored results ([Durable Execution for Long-Running Agents](durable-agent-execution.html)) |\n\nTwo scenarios are specific to multiple agents. **Injected worker output** is the multi-agent route for prompt injection: a worker that read untrusted content passes its result to a lead with more authority. As of October 2026, Claude Code scans a subagent's final message for instruction-shaped patterns before the parent reads it, neutralizing imitated control tags and turn markers without removing text ([Anthropic, n.d., accessed 2026-10](https://code.claude.com/docs/en/agent-sdk/subagents)). That helps, but the durable control is structural: worker output is untrusted data, and no single context combines private data, untrusted content and an outbound channel ([Trust Boundaries and the Agent Threat Model](agent-threat-model.html)). **Orphaned children** are the multi-agent form of Amnesiac Execution: a tree whose root dies must cancel its descendants or resume and collect their stored results, never leave them spending.\n\n## Trade-offs\n\n| Design | Strengths | Costs and risks | Right when | Wrong when |\n| --- | --- | --- | --- | --- |\n| **Single agent with tools** | One context, one owner, one trace; cheapest; easiest to evaluate | Context fills on long or broad tasks; many similar tools confuse selection | Default; coupled, sequential tasks; most coding, support and back-office work | The task needs breadth beyond one window or wall-clock time a serial loop cannot meet |\n| **Single agent + read-only workers** | Keeps the parent's context clean; contained exploration | Workers lack the parent's decisions; summary loss | Large-codebase search; document review; lookups with noisy output | Workers would need to write |\n| **Orchestrator–worker** | Parallel breadth; central synthesis and verification; one accountable lead | ~2–15× tokens; tail latency; plan quality caps result quality | Independent, read-mostly sub-tasks of high value; research | Sub-tasks share decisions; low-value or latency-critical requests |\n| **Supervisor** | Specialists under one controller | Supervisor tokens on every exchange; paraphrase loss; often a router in disguise | Long conversations across distinct tool domains needing central review | A router plus tool sets would do |\n| **Peer handoff** | No central bottleneck; natural for transfers between owners | Accountability moves; full-history defaults leak context; circular handoffs | Real transfer of responsibility (to a human team, or another organization's agent) | Inside one system with one owner |\n| **Pipeline of agents** | Stages testable in isolation; code controls transitions | Errors pass downstream; each stage repeats context setup | Stages with different trust or tools, each with a checkable artifact | Stages are just prompt sections; a workflow with model steps is enough |\n| **Ensemble / vote** | Reliable, easy to reason about; parallel | N × cost; only for questions with comparable answers | Classification or extraction where agreement signals reliability | Open-ended generation; \"debate\" between copies of one model |\n\nThe recommendation rests on two assumptions. First, that the single-agent baseline keeps improving: Kim et al. find gains shrink as baselines get stronger, so each model generation weakens the case for fan-out on moderately broad tasks. Second, that the topology can be evaluated: a split that cannot be compared against a single-agent baseline on a suite should not ship.\n\n## Across Domains: How the Stakes Change the Design\n\n| Question | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| Default topology | One editing agent per task; read-only explorer and reviewer workers | One agent per conversation with tool sets loaded by intent | A workflow with bounded agentic steps; rarely any loop-to-loop delegation | A single bounded model node inside a deterministic pipeline (design examples) |\n| Where fan-out pays | Wide read-only searches; clean-context review; parallel edits only in separate worktrees | Offline work (content variants, account research), not the live conversation | Parallel per-entity or per-document drafting in which items are independent | Evidence gathering at most; never in the decision path |\n| Who may write | One agent per branch or worktree; humans merge | The conversation's agent, through action objects | The workflow, after approval; agents write to a staging store | Humans decide adverse outcomes; the model drafts |\n| What a verifier checks | Tests, type checks and build against a baseline | Policy and the customer's contract before any credit or send | Reconciliation rules and segregation of duties | Deterministic rules the model cannot override, then a human |\n| Accountability boundary | The harness and the PR author of record | The agent's owning team; escalation to staff transfers responsibility | The process owner (controller, counsel) | The licensed or accountable human, bound to the decision record |\n| Latency pressure on the tree | Low (asynchronous PRs) | High in conversation, so no fan-out inside a live exchange | Low to medium (close calendar) | Varies: interactive for clinical support, days for casework |\n\nSources for the right two columns where they are not Ostrell: the author's agentic-healthcare-platform and agentic-public-benefits-platform interview designs both confine the model to a single bounded node in a deterministic directed acyclic graph (`highLevelArchitecture`, pipeline group), and the research-platform design does the same with its hypothesis agent. In those designs the rules layer is authoritative and humans own adverse decisions, so there is nothing for a second agent to decide. The ai-coding-cli design supplies the coding column's worktree rule (step `verify`). The agentic-platform-foundations design gives each fanned-out sub-agent \"its own bounded context, token budget, and least-privilege scope\" so that a compromised sub-agent \"can't reach beyond its sub-task\" (step `control-flow`, deep dive); that is the platform rule here too.\n\n**What the platform keeps common:** the task-tree model, the delegation spec, tree budgets and caps, lineage in the evidence log, worker results treated as untrusted, the single-writer rule and the verifier stage. **What is domain policy:** whether fan-out is allowed at all on a given path, which verifier is authoritative (tests, policy, reconciliation, rules or a human), and where a transfer of control is permitted. The pattern across the table is that **the higher the consequence, the less the topology matters, because the decision moves out of the model and into rules and people.** Multi-agent designs are most defensible where outputs are drafts that something else checks.\n\n## The Chief Architect's View\n\n**What to decide.** Make topology a reviewed architectural decision, recorded in the Agent Registry with the agent's manifest: which of the five shapes, which of the four reasons, the evidence that a single agent fell short, the tree caps and the accountable agent. At Ostrell, Tomas Verhoef's forum made \"name the reason and show the eval\" a precondition for granting any agent the delegation tool.\n\n**Who decides.** The platform team (Amara Okafor's Agent Platform team) owns the mechanisms: the runtime's tree budgets, caps, lineage and cancellation. Agent owners propose topologies. The architecture forum approves any design with transfer of control or with workers that can write, because those are the designs that move accountability and create shared-state risk. Security (Farah Haddad) reviews any split justified by separated authority, since that justification is a security claim.\n\n**What to watch.** Per agent: tokens per successful task against the single-agent baseline; spawns per root run; verifier rejection rate; runs ending on a budget cap; worker deadline misses; handoffs per conversation. A rising spawn count with a flat success rate is a Token Bonfire starting; a verifier that never rejects is either unnecessary or broken.\n\n**What is durable and what will change.** Durable: the four reasons, call-and-return versus transfer of control, context isolation as a contract, one writer per artifact, budgets on the tree, verification before effects and lineage per action. These follow from distributed-systems constraints and from how accountability works, not from model capability. Volatile: the token multiples, tool-count thresholds, framework names and defaults (Microsoft's AutoGen and LangChain's supervisor helper library were both archived by October 2026), and the point at which a single agent is strong enough that fan-out stops paying. Re-run the single-agent baseline on every model upgrade before keeping a split ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)). Keep orchestration semantics in your own thin layer or in durable workflow state, so that a framework change does not change behavior.\n\n## Questions to Ask\n\n1. Which of the four reasons (context isolation, parallel breadth, separated authority, independent verification) justifies each additional agent, and where is the eval that shows a single agent falling short?\n2. For each edge in the topology, is it call-and-return or transfer of control, and who is accountable for the outcome at every point in the task?\n3. What exactly crosses each boundary: which decisions already taken, which identifiers, which constraints, in which typed fields? What deliberately does not cross?\n4. Which agents may write to shared state, and how are concurrent writes prevented or partitioned?\n5. What are the tree's caps (depth, parallel workers, tokens, money, wall-clock), where are they enforced, and what happens to running children when the root is cancelled or crashes?\n6. What does the lead do when a worker is late, fails or returns something the verifier rejects?\n7. Is worker output treated as untrusted input, and does any single context combine private data, untrusted content and an outbound channel?\n8. What is the cost per successful task against the single-agent baseline on the same suite, including the tiering effect, and when was the baseline last re-run?\n9. Can the evidence log reconstruct, for any action, which run and agent version took it, its parent and its root?\n\nThe topology decides who works on a task; it does not yet say how work, context and responsibility move between agents and people without loss. That is the subject of [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html), where the typed handoff payload that fixed Ostrell's Lost Handoff becomes a general contract.\n\n## Sources and Evidence\n\n### Research papers\n\n- [Towards a Science of Scaling Agent Systems](https://arxiv.org/abs/2512.08296), Y. Kim et al. (Google, MIT), arXiv preprint, 2025 (v3 2026-04-08): 260 configurations, six benchmarks; +80.8% to −70.0% relative to single agent; centralized verification limits error propagation.\n- [Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657), M. Cemri et al., 2025, NeurIPS 2025 Datasets and Benchmarks: MAST taxonomy of 14 failure modes over 1,600+ traces; per-mode prevalence and interventions.\n- [Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325), Y. Du et al., 2023, preprint: early debate gains with 2023 models.\n- [Should we be going MAD?](https://arxiv.org/abs/2311.17371), A. Smit et al., 2023, preprint: debate does not reliably beat self-consistency or ensembling.\n- [Rethinking the Bounds of LLM Reasoning](https://arxiv.org/abs/2402.18272), Q. Wang et al., 2024, preprint: a strongly prompted single agent nearly matches multi-agent discussion.\n- [Debate or Vote](https://arxiv.org/abs/2508.17536), H. K. Choi, X. Zhu, S. Li, 2025, NeurIPS 2025: voting explains most of debate's gains; debate alone does not improve expected correctness.\n- [Large Language Models Cannot Self-Correct Reasoning Yet](https://arxiv.org/abs/2310.01798), J. Huang et al., 2023, ICLR 2024: intrinsic self-correction without external feedback is unreliable.\n- [The Tail at Scale](https://research.google/pubs/the-tail-at-scale/), J. Dean and L. A. Barroso, 2013: tail latency dominates fan-out.\n\n### Specifications, standards and regulation\n\n- None specific to this chapter; agent-to-agent protocols are covered in [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html).\n\n### Vendor documentation and engineering reports\n\n- [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic, 2025: orchestrator–worker research design, +90.2% on an internal eval, ~4× and ~15× token multiples, 80% of variance explained by tokens, observed failures, results stored by reference.\n- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Anthropic, 2025: sub-agents return condensed summaries of about 1,000–2,000 tokens.\n- [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents), Anthropic, 2024: workflow patterns including orchestrator–workers; start simple.\n- [Eval awareness in BrowseComp](https://www.anthropic.com/engineering/eval-awareness-browsecomp), Anthropic, 2026: unintended-solution rate 0.87% multi-agent versus 0.24% single-agent.\n- [Subagents in the SDK](https://code.claude.com/docs/en/agent-sdk/subagents), Anthropic, n.d., accessed 2026-10: context isolation semantics, default depth and concurrency caps, no default spend cap, lineage fields, output scanning.\n- [Don't Build Multi-Agents](https://cognition.com/blog/dont-build-multi-agents), W. Yan, Cognition, 2025: share context; actions carry implicit decisions.\n- [Multi-Agents: What's Actually Working](https://cognition.com/blog/multi-agents-working), W. Yan, Cognition, 2026: clean-context review, scoped children and read-only search work; parallel writers do not.\n- [A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf), OpenAI, 2025: maximize a single agent first; manager versus decentralized patterns; tool-overlap observation.\n- [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent), LangChain, n.d., accessed 2026-10: call and token counts per pattern on example tasks.\n- [Towards a science of scaling agent systems: when and why agent systems work](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/), Y. Kim and X. Liu, Google Research, 2026: earlier version's 17.2× versus 4.4× error amplification.\n\n### Incidents, cases and decisions\n\n- No public incident report attributing a production failure specifically to multi-agent coordination was found; the Weekend Fan-out and the Lost Handoff are Ostrell's fictional incidents.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026: step `control-flow` (orchestrator–workers with per-worker context, budget and least-privilege scope; no path-specific enforcement bypass).\n- Obrenović, Ž., \"AI Coding CLI\", system-design interview design, `system-design-interviews/data/book/ai-coding-cli/interview.json`, 2026: step `verify` (subagents as context isolation first; worktree per editing subagent; subagent isolation versus token cost).\n- Obrenović, Ž., \"Agentic Sales Platform\", system-design interview design, `system-design-interviews/data/book/agentic-sales-platform/interview.json`, 2026: `highLevelArchitecture` (a \"hierarchical multi-agent\" label over a single worker, used here as a counter-example).\n- Obrenović, Ž., \"Agentic Healthcare Platform\", \"Agentic Public Benefits Platform\" and \"Agentic Research Platform\", system-design interview designs, `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`, `.../agentic-public-benefits-platform/interview.json`, `.../agentic-research-platform/interview.json`, 2026: `highLevelArchitecture` (one bounded model node in a deterministic pipeline).\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

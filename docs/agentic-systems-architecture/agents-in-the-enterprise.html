@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connecting Agents to the Enterprise</title>
+    <meta name="description" content="How do agents connect to existing applications, data platforms and organizational processes without becoming a parallel shadow system? Leave every system of record authoritative, make agents clients of its APIs and governed views under an identity it can see, and put the agent's work into the queues, approvals and records the organization already runs.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Connecting Agents to the Enterprise">
+    <meta property="og:description" content="How do agents connect to existing applications, data platforms and organizational processes without becoming a parallel shadow system? Leave every system of record authoritative, make agents clients of its APIs and governed views under an identity it can see, and put the agent's work into the queues, approvals and records the organization already runs.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/agents-in-the-enterprise.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/08-agents-in-the-enterprise/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="agent-runtime.html" title="The Agent Runtime: Running the Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="agent-interaction-design.html" title="Interaction Design for Agents: Chat, Delegation and Handoff to Humans">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — ARCHITECTURE: The Reference Architecture</p>
+        <h1>Connecting Agents to the Enterprise</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  31 min read · <a class="spec-link" href="agents-in-the-enterprise.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/08-agents-in-the-enterprise/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/08-agents-in-the-enterprise/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="agent-runtime.html" title="The Agent Runtime: Running the Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="agent-interaction-design.html" title="Interaction Design for Agents: Chat, Delegation and Handoff to Humans">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Connecting Agents to the Enterprise", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "How do agents connect to existing applications, data platforms and organizational processes without becoming a parallel shadow system? Leave every system of record authoritative, make agents clients of its APIs and governed views under an identity it can see, and put the agent's work into the queues, approvals and records the organization already runs.", "permalink": "agents-in-the-enterprise", "timetoread": "31 min read", "icon": "assets/icons/08-agents-in-the-enterprise.png", "logo": "assets/images/08-agents-in-the-enterprise/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn the four patterns by which an agent attaches to an existing system of record, how to give agents governed read access to applications and the data platform, how agent writes reach a system of record through a staging store and an executor, how identity and accountability travel into the systems the agent touches, and how agent work fits the organization's tickets, queues and approval processes.\n\n> **WHY THE BUSINESS CARES:** An agent that keeps its own copy of customers, entries or promises creates a second version of the truth that auditors, support staff and regulators cannot see. When something goes wrong, the question \"who did this, on whose authority, and where is the record?\" has to be answerable in the enterprise resource planning (ERP) system, the customer relationship management (CRM) system and the ticketing system the business already trusts, not in a prototype's database.\n\n> **WHY ARCHITECTS SHOULD CARE:** Most of an enterprise agent is integration. The decisions in this chapter (which systems the agent may call and how, where its drafts live, which identity appears in the target system's audit trail, which queue its work lands in) decide whether the agent strengthens the existing architecture or quietly forks it.\n\n> **KEY POINTS:**\n>\n> * **The system of record stays authoritative; the agent owns only its drafts and its evidence.** An agent reads through the owning application's API or a governed view, writes only through an approved action object executed by deterministic code, and keeps no durable copy of business state that someone else could start to rely on. A staging store for proposals is allowed; a shadow ledger, ticket list or customer table is not.\n> * **Reads need governance as much as writes.** Free SQL over a warehouse fails often on realistic enterprise schemas, and agents show little native respect for confidentiality, so the permission boundary has to sit below the prompt: typed lookups for facts that drive actions, governed views and a semantic layer for analysis, the target system's own row-level authorization through a token that names the agent and the human.\n> * **Integrate into the organization, not only into its systems.** Agent work must arrive in the queues people already work (tickets, workbench approvals, CRM tasks), every agent-generated artifact must have a named accountable human, and the target system's audit trail must show \"agent A for person P\". A service account that posts entries or closes tickets \"as itself\" fails the audit, whatever the agent's accuracy.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Ambient Authority** — agents connected to the ERP, CRM or ticketing system through shared integration users hold far more rights than any task needs, and the target system's audit trail cannot say who approved what.\n> * **The Fire-and-Forget Action** — writes into systems of record without receipts, version checks or reconciliation leave the agent's view and the system's view diverging, with humans editing the same records in between.\n> * **The Lost Handoff** — work the agent cannot finish lands in its own store or a free-text message instead of the organization's queues, so promises to customers and pending approvals become invisible to the people who own them.\n\n<br>\nEnterprise agents do not work in a vacuum. Answerdesk answers customers whose contracts live in a service-contract system and whose cases live in a ticketing system. Closewise proposes entries for a ledger that belongs to the ERP system, auditors and the controller. The agent is a new kind of client of systems that already have owners, data models, authorization rules, audit trails and the people who use them every day.\n\nThe easiest way to build an agent ignores all of that. It reads the database directly, copies what it needs into its own store, writes back with a service account and tracks its own work in its own tables. The prototype works, and **the agent becomes a parallel shadow system**: a second place where customers, entries, promises and approvals live, which nobody outside the agent team can see or audit. The rest of this chapter is about the opposite design, in which **the existing systems remain authoritative and the agent integrates the way any well-behaved application would**, plus the few things that are different because the client proposes its next action.\n\nThis chapter owns three terms: the **system of record** in its agent context, the **agent integration pattern** and **governed data access**. It builds on [A Reference Architecture for Agentic Systems](agentic-reference-architecture.html), which places the tool broker and policy enforcement point, and on [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html), which explains how tools are brokered. It hands delegated identity in depth to [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html), the design of side-effecting actions to [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), and freshness of what agents read to [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html).\n\n## Setting the Scene at Ostrell: The Agent That Kept Its Own Books\n\nOstrell, the fictional field-service software group this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), entered 2027 with seven agent prototypes built by seven teams. In **February 2027**, during fieldwork for the 2026 year-end audit, the external auditors sampled journal entries from Ostrell Field Deutschland GmbH. **40** of the sampled accrual entries had been posted by an ERP user called `svc_close_auto`, the integration account of the Closewise prototype. The ERP showed that this account had created and posted each entry. It could not show who had approved them.\n\nThe approvals existed, mostly. Closewise's prototype kept its proposals and approval flags in its own database, fed by a nightly copy of ERP tables from a reporting replica. Controllers approved in a spreadsheet export or by replying in a chat channel; a script then posted the approved rows. For **9** of the 40 entries the only approval evidence was a chat message; for **2** the team could not find any. The auditors recorded a control deficiency in the management letter (not material): the posting identity could both create and post, and approval evidence sat outside the system of record (Ostrell figures, fictional). A month earlier, the Half-Posted Accrual had shown what happens when that script crashes mid-batch ([Durable Task State and Checkpoints](task-state-and-checkpoints.html)).\n\nSupport had the same shape of problem with a different system. The Answerdesk prototype stored each conversation and its outcome in its own conversation store. When it told a customer \"a colleague will call you back about the invoice\", it wrote a follow-up record there, not a task in the ticketing system. In January 2027 Lena Brandt's team found about **2,300** open follow-ups in Answerdesk's store that no support agent could see, some of them three weeks old.\n\nAmara Okafor's inventory of how the prototypes reached the business systems read like this (Ostrell figures, fictional):\n\n| Prototype | System of record | How it read | How it wrote | Identity in the target system | Agent-owned business state |\n| --- | --- | --- | --- | --- | --- |\n| Closewise | ERP | Nightly copy from the ERP reporting replica | ERP posting API via a script | `svc_close_auto`, create and post rights | Proposals, approvals, entity status |\n| Answerdesk | Ticketing system; service-contract system | Ticketing API; contract database view | Ticketing API | One shared integration user for all writes | Conversation outcomes, follow-ups |\n| Dealroom | CRM; price book | CRM API; price index built from an export | CRM notes and draft quotes | A CRM admin integration user | Account briefs |\n| Peoplepoint | HR information system (HRIS) | Nightly extract of employee records | None (leave requests by email to HR) | Extract job's database user | Copy of employee records |\n| Clausewise | Contract-lifecycle-management (CLM) tool | Plugin API | Redlines in the CLM | The lawyer's own session | None |\n| Scout | Data warehouse; web | Warehouse user with access to raw schemas | Reports in a document space | One shared warehouse user | Report drafts |\n| Forge | Code hosting and CI | Repository clone | Pull requests | A bot token | None |\n\nOnly Clausewise and Forge were integrated the way the owning teams would have wanted. Tomas Verhoef, Chief Architect, took one question to the architecture forum: **how should agents connect to Ostrell's applications, data platform and processes so that each system of record stays the single truth, its owners keep control of access, and an auditor can follow any agent action from the record back to a person?**\n\n## Concepts: Systems of Record and the Shadow System\n\nA **system of record** is the application that holds the authoritative version of an entity and is accountable for it: the ERP for journal entries and periods, the ticketing system for support cases, the CRM for accounts and quotes, the HRIS for employment data. In the agent context the definition adds one test: **if the agent and the system of record disagree, the system of record wins, and the agent's design must make that disagreement visible rather than resolve it silently.** The author's agentic-support-platform interview design states the rule for its own case: when policy and account data disagree, \"the account state wins\" (*design example*, `agentic-support-platform/interview.json`, step `grounding`).\n\nA **shadow system** is any durable agent-owned store of business state that people or other systems start to rely on: Closewise's approval flags, Answerdesk's follow-ups, Peoplepoint's copy of employee records. It grows because the agent needs somewhere to keep things between steps. The cure is a sharp line between three kinds of state the agent may keep ([Durable Task State and Checkpoints](task-state-and-checkpoints.html) owns the first) and the business state it may not.\n\n| State | Where it lives | Who may rely on it | Example at Ostrell |\n| --- | --- | --- | --- |\n| **Task state** | Keelson Runtime's durable task record | The runtime, for resume and audit | Plan, step records, action intents with receipts |\n| **Staging store** | A store owned by the agent's product team, separate from the system of record | The approvers, until approval; nobody afterwards | Closewise's proposed entries awaiting a controller |\n| **Evidence** | Logbook, the append-only evidence log | Auditors, investigators, evaluation | Context references, tool calls, approvals, receipts |\n| **Business state** | The system of record only | Everybody | Posted entries, tickets, tasks, quotes, employee records |\n\nAn **agent integration pattern** is the way an agent run attaches to a system of record: who starts the run, who owns the state while it runs, how the result reaches the system and under which identity. **Governed data access** is read access that goes through an interface the data owner controls (an application API, a governed view, a semantic layer) with authorization evaluated for the principal the agent acts for, rather than through a broad database or warehouse account.\n\nFive invariants follow, and Ostrell adopted them in **March 2027** as the Keelson system-of-record rule:\n\n![Before: an agent keeps its own copy of the ledger next to the ERP. After: the agent only drafts into a staging tray, and approved entries go into the single system of record.](assets/images/08-agents-in-the-enterprise/08-shadow-system-vs-system-of-record.jpeg)\n**Figure 1:** *A shadow system is agent-owned business state that people start to rely on; in the redesign the agent keeps only drafts in a staging store, and approved results live only in the system of record.*\n\n1. **Agents are clients of APIs and governed views, never of operational databases or replicas.** The owning team's interface is where its invariants, authorization and audit live.\n2. **Agents write business state only through an approved action object executed by deterministic code** (an executor in Keelson Runtime or Toolyard), with an idempotency key and a receipt ([Side Effects: When Agents Touch the World](side-effects-and-external-actions.html)).\n3. **Agent drafts live in a staging store until approved; approved results live only in the system of record.** After approval, the staging record is evidence, not truth.\n4. **The target system's audit trail names the agent and the human principal.** No shared integration users.\n5. **Work the agent hands to people lands in the queue those people already work.** A follow-up is a ticket task; an approval is a workbench item; a quote is a CRM draft.\n\n## Four Ways an Agent Attaches to a System of Record\n\nThe four integration patterns differ in who holds control. Most enterprise agents use more than one: Answerdesk is triggered by events, uses tools over existing APIs and hands work back through the ticketing system.\n\n![Diagram: Four agent integration patterns](assets/images/08-agents-in-the-enterprise/fig01-four-agent-integration-patterns-every-one.jpeg)\n**Figure 2:** *Four agent integration patterns. In every one the system of record keeps its API and its authorization; what changes is who starts the run and who carries the result back.*\n\n**Pattern 1: tool over an existing API.** The system's owning team exposes typed operations as a Model Context Protocol (MCP) server behind Toolyard (`get_ticket`, `add_ticket_task`, `get_contract_terms`); the broker authorizes, injects credentials and records the receipt. This is why [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html) organizes servers **per system of record**: the team that understands the ticketing system's invariants writes its tools once, for every agent.\n\n**Pattern 2: event-triggered agent.** The system of record emits a domain event (ticket created, period lock set) and a subscriber starts or signals a run. Events arrive at least once, so the run is keyed by the event id and a redelivery finds the existing run. Events are notifications, not truth: the run re-reads the entity before acting, because a human may have changed it since.\n\n**Pattern 3: agent step inside a workflow.** A durable, deterministic workflow owns the process and its state; the model runs inside bounded steps that return typed results, and the workflow writes to the system of record after the required approvals. Closewise is this pattern ([Deterministic Workflows, Bounded Loops and Autonomous Agents](workflows-loops-and-autonomous-agents.html)). The author's agentic-finance-platform design calls it \"the agent harness … pinned to workflow mode\", with proposals in a staging store whose invariants are checked before any approval (*design example*, `agentic-finance-platform/interview.json`, steps `ledger` and `pipeline`). A business-process-management engine can play the workflow's role.\n\n**Pattern 4: agent as a service inside an application.** The application owns the interface, the record and the save; the agent returns a draft and the application stores it under the user's action. A Clausewise redline is accepted by a lawyer in the CLM; a Dealroom quote is sent by an account executive from the CRM. Accountability is clear, but the agent's own evidence (context, tool calls, model version) lives outside the application unless the platform records it.\n\n| | Tool over API | Event-triggered | Step inside a workflow | Service inside an application |\n| --- | --- | --- | --- | --- |\n| **Who starts the run** | A user or another run | The system of record's event | The workflow's schedule or state | A user in the application |\n| **Who owns state during the run** | Keelson task record | Keelson task record keyed by event id | The workflow | The application, plus the task record |\n| **Who writes business state** | Executor via Toolyard, after policy and approval | Executor via Toolyard | Workflow code after approval | The application, on the user's action |\n| **Identity in the target system** | Agent on behalf of the requesting user | Agent on behalf of the record's owner or a named queue | Agent identity for the duty, with approver recorded | The user's session, with agent assistance recorded |\n| **Typical failure** | Over-broad tools, blind retries | Duplicate runs, acting on a stale event | Model step blocks the process | Agent evidence missing from the record |\n| **Right when** | Interactive tasks with a few typed actions | Work that starts from a record change | Calendar- or rule-driven processes with fixed approvals | The human who owns the outcome already works in that application |\n| **Ostrell** | Answerdesk's ticket and contract tools | Answerdesk on inbound email tickets | Closewise and the month-end close | Clausewise, Dealroom |\n\nWhen the process is defined by a calendar, a control framework or a sequence of approvals, put the agent inside the workflow; when it is defined by a person's judgement in a tool they already use, put the agent inside that tool. A third interface, a separate \"agent app\" where controllers or lawyers must go to see what the agent did, is the most common way a shadow system starts.\n\n### The system-of-record integration record\n\nEach system of record that agents may touch gets one record in the Agent Registry, maintained by the owning team and reviewed by the Agent Platform team. It is the contract the four patterns rely on:\n\n```typescript\n// One per system of record; reviewed by its owning team and Agent Platform.\ninterface SystemOfRecordIntegration {\n  system: \"erp\" | \"ticketing\" | \"crm\" | \"hris\" | \"clm\" | \"warehouse\" | string;\n  owner: TeamRef;                      // accountable for tools, scopes and data classes\n  entities: EntityContract[];          // which entities agents may read or write\n  readInterfaces: (\"api\" | \"governed_view\" | \"semantic_layer\")[];\n  writeOperations: {\n    tool: string;                      // e.g. \"erp.post_journal_entry\"\n    requiresActionObject: true;        // never a free-form write\n    idempotencySupport: \"native_key\" | \"business_key\" | \"none\";\n    receiptLookup: string | null;      // how an unknown outcome is resolved\n    versionCheck: \"if_match\" | \"compare_fields\" | \"none\";\n  }[];\n  identityMode: \"delegated_token\" | \"named_agent_user\" | \"user_session\";\n  auditFields: string[];               // where agent id, approver and run id land in the target\n  events?: { name: string; deliveryGuarantee: \"at_least_once\"; dedupeKey: string }[];\n  rateLimits: { perTenant?: number; global?: number };\n  humanQueues: string[];               // queues where agent hand-offs land\n}\n```\n\nThe fields that teams most often leave blank are `idempotencySupport`, `receiptLookup` and `auditFields`. A write operation without idempotency support or a receipt lookup cannot be retried safely after a timeout, so Toolyard refuses to register it as an agent tool until one exists, even a business key such as the ERP's external document reference ([Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html)).\n\n## Reading: Governed Data Access\n\nReads are where shadow systems start, because copying data is the easiest way to make it fast and queryable. They are also where confidentiality fails quietly. The agent needs three kinds of read, and each needs a different interface.\n\n**Facts that drive an action** (\"which contract does this ticket belong to?\", \"what is this entity's accrual balance?\") go through typed lookups on the owning application's API, scoped to the principal, with a version or `as_of` in the result. [Retrieval and Grounding](retrieval-and-grounding.html) makes the case for structured lookup over search; [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html) adds that a fact used to commit must be re-read from the system of record, not from an index or cache.\n\n**Analysis** (\"parts order lines per market over the last eight quarters\", \"how many credits above €250 did we issue in Q3?\") goes through **governed views** (warehouse views whose columns, joins and row filters the data owner defines) and a **semantic layer**, a governed definition of metrics and dimensions that tools query by name rather than by SQL. A semantic-layer tool looks like `query_metric(metric, dimensions, filters, as_of)`: the agent chooses a metric and a breakdown; the layer compiles the SQL, applies row-level policy and returns the definition version with the numbers.\n\n**Free SQL** against the warehouse is the widest read interface there is. It belongs with analyst copilots whose output a person reads before it informs anything, not with agents whose output feeds an action.\n\nThe evidence supports the caution, with limits. On Spider 2.0, 632 text-to-SQL workflows from real enterprise databases, a code-agent framework built on a 2024 reasoning model solved **21.3%** of tasks, against **91.2%** on Spider 1.0 and **73.0%** on BIRD ([Lei et al., 2024](https://arxiv.org/abs/2411.07763), ICLR 2025); the absolute numbers will move with newer models, the gap between toy and enterprise schemas is the durable lesson. Sequeda, Allemang and Jacob asked a 2023 frontier model enterprise questions over one insurance schema: about **16%** accuracy zero-shot against the SQL schema, about **54%** against a knowledge-graph layer with an ontology and mappings ([Sequeda et al., 2023](https://arxiv.org/abs/2311.07509), preprint by a vendor of such tooling). The narrower lesson: **a governed layer that encodes business meaning does more for correctness than a better prompt over raw tables.**\n\nConfidentiality is a separate problem. CRMArena-Pro, a benchmark of business tasks in simulated CRM organizations, found \"near-zero inherent confidentiality awareness\" in leading 2025 agents, and the best model it tested fell from about 58% single-turn to about 35% multi-turn success ([Huang et al., 2025](https://arxiv.org/abs/2505.18878), preprint from a CRM vendor's lab). OWASP's matching control is to run extensions \"in the user's context\" with minimum privileges ([OWASP LLM06:2025](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)). The author's agentic-hr-platform design compares three ways to keep an employee's question from reaching another employee's record (prompt instruction, retrieval filter, token-scoped service boundary) and recommends the last, because \"the token simply can't fetch another record\", while a filter bug \"is a silent cross-record leak\" (*design example*, `agentic-hr-platform/interview.json`, step `privacy`).\n\n![Diagram: Choosing the read interface](assets/images/08-agents-in-the-enterprise/fig02-choosing-read-interface-more-agent-s.jpeg)\n**Figure 3:** *Choosing the read interface. The more an agent's read drives what happens next, the narrower and more governed the interface must be.*\n\n| Read interface | Who defines meaning | Where authorization is enforced | Freshness | Main risk | Right for |\n| --- | --- | --- | --- | --- | --- |\n| **Typed lookup on the application API** | The owning team | The application, for the delegated principal | Live | Too many narrow tools ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html)) | Facts that drive actions |\n| **Governed view** | The data owner | Warehouse row and column policy | Pipeline lag, minutes to a day | Stale data used to act | Analysis over many records |\n| **Semantic layer** | Metric owners | The layer's policy plus the warehouse | Pipeline lag | Metric missing, so the agent improvises | Business questions with defined answers |\n| **Free SQL, read-only** | Nobody; the model | Warehouse grants only | Pipeline lag | Wrong joins, confident wrong numbers, over-broad reads | Analyst copilots with human review |\n| **Copy into the agent's own store** | The agent team | The agent's code | Whatever the copy job achieves | A shadow system | Never, except caches with a source version and TTL ([Caching and Context Budgets](caching-and-context-budgets.html)) |\n\n## Writing: Staging Store, Executor and Reconciliation\n\nAn agent's write differs from an ordinary integration's in three ways: the payload came from a component whose proposals vary, the approval may come hours later, and humans keep editing the same records in between. The author's back-office interview designs converge on one spine for all three: **staging store → gate → executor → system of record → reconciler → evidence** (*design example*, `agentic-finance-platform/interview.json`, steps `ledger`, `maker-checker` and `idempotency`; the legal and HR designs share it).\n\nThe **staging store** holds proposals as versioned records with their evidence by reference and the manifest hash of the agent version that produced them. It checks the target's invariants early (balanced lines, valid accounts, open period), so approvers never see a proposal the ERP would reject. A correction is a new version and voids any approval of the old one. That is the book's approval model, developed in [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html): an approval binds the exact content hash of the action and expires when the action, the policy or the evidence changes.\n\nThe **executor** is deterministic code that takes an approved action object and calls the system of record with the agent's delegated identity, an idempotency key and a version precondition. It is never the model, and never the identity broker or the policy engine: Bulkhead decides, Toolyard executes. The finance interview design draws its identity broker as the component that posts; the book does not adopt that shortcut, because it puts the authority to decide and the means to act in one component.\n\nThe **reconciler** closes the loop with a system that others also write. It handles three cases: a timeout with no receipt (look up by idempotency key; if still unknown, a repair queue, never a blind retry), an asynchronous outcome (a callback deduplicated by event id), and drift (a human edited or reversed the record after the agent wrote it). Drift is not an error; it is the system of record doing its job. The agent's task record marks the action as superseded and the evidence keeps both versions.\n\n![Diagram: Closewise's write path into the ERP](assets/images/08-agents-in-the-enterprise/fig03-closewise-s-write-path-into-erp.jpeg)\n**Figure 4:** *Closewise's write path into the ERP. The model's output stops at the staging store; the posting is a deterministic call under a named agent identity, keyed for retry and carrying the approver into the ERP's own record.*\n\nTwo rules about the system of record's data model belong here, because teams get them wrong in both directions.\n\n**Do not clobber what people curate.** When an agent enriches or updates a record that humans also maintain (a CRM account's industry, a ticket's priority), write only fields the integration record marks as agent-writable, only when the record has not changed since the agent read it (an `If-Match` version or a compare of the fields read), and never over a field a person set recently. The author's agentic-sales-platform design gives the rule for enrichment: \"write only on confidence + freshness thresholds, and resolve conflicts against the CRM's external version\" (*design example*, `agentic-sales-platform/interview.json`, step `enrichment`).\n\n**Do not keep in the agent's store what the system lacks a field for.** If the ERP has no place for \"approved by\", use its extension or reference field, or ask its owners for one. An approval that lives only outside the system of record is the auditors' February finding.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency target | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Fact lookup that drives an action | Live read from the system of record; version or `as_of` returned | p95 under 300 ms *(assumption)* | Context manifest records source and version | Model proposes; Toolyard enforces scope for the delegated principal |\n| Analytical read through the semantic layer | Snapshot as of the pipeline's last load, stated in the result | Seconds | Metric definition version in Logbook | Model proposes; row policy for the principal |\n| Write proposal to staging store | Serializable per proposal; versions only move forward | Under 1 s | Durable before the approver sees it | Agent run |\n| Execute an approved write | Exactly-once effect: idempotency key plus receipt; version precondition | Dominated by the target; async for batch postings | Intent before the call, receipt after | Executor under the agent identity; approval bound to content hash |\n| Hand-off to a human queue | Task created in the target system before the agent tells anyone it exists | Before the agent's reply is sent | The queue item is the record | Agent via tool; human owner thereafter |\n\n## Identity in the Target System\n\nAuditors, support leads and regulators read the system of record's own audit trail first, and it will say whatever identity the agent called it with. [Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html) owns the mechanics; this section covers the integration decision.\n\n| Option | What the target's audit trail shows | Problem | When acceptable |\n| --- | --- | --- | --- |\n| **Shared integration user** | \"integration user did X\" | Ambient authority: every agent and task holds the union of rights; no human; segregation of duties impossible | Never for agents that write |\n| **Impersonation with the user's token** | \"user U did X\" | The agent's involvement is invisible; the agent can do anything U can | Pattern 4 drafts saved by U's explicit action |\n| **Delegated token** | \"agent A did X for user U\" | The target must understand delegation | The default where the target validates tokens |\n| **Named agent user per agent and duty** | \"agent-closewise-post did X\", approver in a reference field | Licence and role management; human recorded by convention, not by protocol | Legacy systems that only understand user accounts |\n\nDelegation is the standard shape: OAuth 2.0 Token Exchange distinguishes impersonation, where A receives \"all the rights that B has\", from delegation, where A \"still has its own identity separate from B\", and records the acting party in an `act` claim ([RFC 8693](https://www.rfc-editor.org/rfc/rfc8693.html), 2020). The 2026-07-28 revision of MCP requires servers to accept only tokens issued for them as audience and forbids passing other tokens through ([MCP Authorization, 2026](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)); its security guidance names token passthrough because downstream logs then show the wrong identity ([MCP Security Best Practices, accessed 2026-10](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)). Identity vendors have started to ship agent identities as a distinct type; Microsoft's Entra Agent ID documentation describes delegated access and an optional one-to-one \"agent user account\" for systems that require a user identity ([Microsoft, updated 2026-06-15](https://learn.microsoft.com/en-us/entra/agent-id/what-are-agent-identities)). Product details are volatile; the shape is not.\n\nMost ERPs and many HR systems will not validate a delegated token in 2027, so the fourth row is the realistic one for Closewise. Two disciplines make it acceptable. **One named agent user per duty, with non-overlapping roles**: a user that can create entries must not be able to post or approve them. US law does not name segregation of duties; section 404 of the Sarbanes-Oxley Act (SOX) requires management to assess \"an adequate internal control structure\" ([15 U.S.C. 7262](https://www.law.cornell.edu/uscode/text/15/7262)), and the duty split comes from the control frameworks auditors use to assess it. An agent that can both propose and post collapses two duties into one identity whatever the prompt says. **The human travels with the call**: the executor writes the approver's identity and the Keelson run id into the target's reference fields, and Logbook holds the full delegation chain. The finance interview design states the requirement: the agent \"acts as an automated maker that proposes\" and \"the maker can never also be the checker\", enforced in identity \"not by policy hope\" (*design example*, `agentic-finance-platform/interview.json`, step `maker-checker`).\n\n## Process Integration: Queues, Approvals and Ownership\n\nAn agent changes who does a piece of work, not the organization's need to know who owns it, where it waits and when it is late. That knowledge lives in ticket queues with service levels, workbench approvals, CRM tasks and HR cases. **Make the agent a participant in those processes, not a replacement for them.** Three consequences follow.\n\n**Hand-offs are records in the target's queue.** Answerdesk's escalation is a ticket assignment to a support queue with a structured escalation package (verified customer, contract, what was tried, what was promised), not a message in a chat channel ([Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html) designs the package; [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) the payload). Its follow-up promise is a ticket task with a due date. The order matters: the task exists in the ticketing system **before** the agent tells the customer someone will call. While a human owns the ticket, Toolyard refuses Answerdesk's write tools; the agent may read and draft, not act. The author's support design reaches the same rule: \"Identity won't mint a scoped token while a handoff is open\" (*design example*, `agentic-support-platform/interview.json`, step `escalation`).\n\n**Approvals happen where approvers already work and in the volume they can sustain.** Closewise's proposals appear in the accountants' workbench, next to the ERP data they check against. The approval queue is a capacity constraint: about 1,900 proposals a month across 23 entities is a sizeable share of the controllers' close work. The finance interview design's rule applies: backlog is handled by queueing and temporary reviewers and \"never auto-posts to clear backlog\" (*design example*, `agentic-finance-platform/interview.json`, `capacity`). [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) owns the design of the gate itself.\n\n**Every agent-generated artifact has a named accountable human.** The organization owns what its agent says and does. In Moffatt v. Air Canada (February 2024), a British Columbia tribunal held the airline liable for a chatbot's wrong statement of its bereavement-fare policy and rejected the argument that the chatbot was responsible for its own actions ([MLT Aikins summary, 2024](https://www.mltaikins.com/insights/that-wasnt-me-that-was-my-chatbot); a small-claims decision, and it is not public whether the chatbot used a language model). In Mata v. Avianca (June 2023), the court sanctioned lawyers who filed fabricated citations and reminded them that existing rules \"impose a gatekeeping role on attorneys to ensure the accuracy of their filings\" ([S.D.N.Y. opinion, 2023](https://storage.courtlistener.com/recap/gov.uscourts.nysd.575368/gov.uscourts.nysd.575368.54.0.pdf)). Both point to one design rule: the system of record must name, for each agent artifact, the person or role accountable for it (the approving controller, the sending account executive, the accepting lawyer, the queue that owns the ticket).\n\nA responsibility matrix for Closewise after the redesign makes the split explicit:\n\n| Activity | Closewise agent | Workflow and executor | Accountant | Controller (Joost Vermeer's team) | Agent Platform | ERP owner (Finance Systems) |\n| --- | --- | --- | --- | --- | --- | --- |\n| Draft reconciliations and proposed entries | Responsible | | Consulted | Accountable | | |\n| Approve an entry | | | | Responsible and accountable | | |\n| Post to the ERP | | Responsible | | Accountable | Consulted | Consulted |\n| ERP roles of the agent users | | | | Consulted | Responsible | Accountable |\n| Reconcile `unknown` postings | | Responsible | Informed | Accountable | Consulted | |\n| Answer an auditor's sample request | | | | Accountable | Responsible (Logbook query) | Consulted |\n\nOrganizational fit also has formal steps. Under Article 26(7) of the EU AI Act, employers deploying a high-risk system at the workplace must inform workers' representatives and affected workers before use ([Regulation (EU) 2024/1689](http://publications.europa.eu/resource/celex/32024R1689)); after the Digital Omnibus, Annex III obligations apply from **2 December 2027** ([Regulation (EU) 2026/1744](http://publications.europa.eu/resource/celex/32026R1744)). Ostrell's documented assessment treats Peoplepoint's helpdesk as not high-risk ([Policy Enforcement and Audit](policy-enforcement-and-audit.html)); anything that ranks or evaluates employees would be an Annex III use. I treat works-council consultation as a launch gate for any agent that changes what employees do or how they are assessed.\n\n**Where the evidence stops.** The read-interface studies measure text-to-SQL and simulated CRM tasks, not agents acting on results in production. No published study measures whether delegated agent identities reduce incidents or audit findings, and I found no evaluation that compares the four integration patterns on reliability, cost or audit outcomes. The pattern recommendations are the author's judgement, drawn from ordinary enterprise-integration practice and the interview designs.\n\n## Worked Example at Ostrell: Closewise and the ERP, Answerdesk and the Ticketing System\n\n### Closewise after April 2027\n\nWhen Closewise moved onto Keelson Runtime in **April 2027**, the integration changed with it:\n\n| Before (2026 prototype) | After (from April 2027) |\n| --- | --- |\n| Nightly copy of ERP tables from the reporting replica | Typed ERP tools for balances, open items and periods; governed warehouse views for history, both via Toolyard |\n| Proposals and approval flags in the agent's own database | Proposals in a staging store owned by Finance Systems; approvals in the accountants' workbench, bound to content hashes |\n| Script posts with `svc_close_auto` (create and post rights) | Workflow executor posts as `agent-closewise-post`, which can post only entries carrying an approval reference and cannot create vendors, change periods or approve |\n| Approver visible only in chat or spreadsheets | Approver id and Keelson run id in the ERP entry's reference fields; full chain in Logbook |\n| No idempotency on postings | Idempotency key = task id + entry id + entry version, held in the ERP's external reference field |\n\nA second named user, `agent-closewise-read`, holds read-only ERP roles for the drafting steps. Agent Platform owns both users' role assignments; Finance Systems approves every change to them, and the quarterly entitlement review covers them like any other privileged account.\n\nThe September 2027 close, described in [Durable Execution for Long-Running Agents](durable-agent-execution.html), produced **1,912** proposed entries, of which **164** were for Ostrell Field Deutschland GmbH. In **November 2027** internal audit repeated the external auditors' February test on that entity: **60** sampled entries posted by `agent-closewise-post`, each with an approval record bound to the content hash of the version posted, the approver's identity, the evidence the approver was shown and the agent version manifest. Finding them took one Logbook query joined on the ERP's external reference, about **20 minutes** of work instead of the **two weeks** of chat archaeology in February (Ostrell figures, fictional). No exceptions were found.\n\n![Before: an auditor follows a tangled thread through chat messages and spreadsheets to find an approver. After: one straight thread from the entry through a stamped approval card to the controller.](assets/images/08-agents-in-the-enterprise/08-auditor-trace-two-weeks-vs-20-minutes.jpeg)\n**Figure 5:** *With the approver and run id carried into the ERP entry, internal audit traced 60 sampled postings with one Logbook query in about 20 minutes, against two weeks of chat archaeology in February.*\n\nOne integration gap surfaced on the way. The ERP's reference field holds 40 characters, too short for both the idempotency key and the approver id. Finance Systems added a custom field rather than truncating either; the Closewise team had first proposed keeping the approver only in Logbook, and the architecture forum rejected that as the February finding in a new form.\n\n### Answerdesk and the ticketing system\n\nAnswerdesk handles about **7,100** conversations a day. Its end-to-end resolution rate was **41%** in Q3 2027, and **33%** of conversations escalate to human support staff, about **2,300** a day. Each escalation is a ticket assignment in the ticketing system, not a record in Keelson:\n\n1. The intake router selects a route ([Routing and Delegation](routing-and-delegation.html)); inbound email arrives as a ticket-created event, keyed by ticket id, so a redelivered event joins the existing run.\n2. Answerdesk reads the ticket, the verified customer and the contract through typed tools owned by the Support Systems and Assure teams. It holds no copy of either beyond its task record and the context manifest ([Context Engineering: Building What the Model Sees](context-engineering.html)).\n3. If it promises a callback, it first calls `add_ticket_task(ticket_id, kind, due_at)`; only after the receipt does it tell the customer.\n4. On escalation it writes the escalation package to the ticket and reassigns it to the queue chosen by the route. From that moment Toolyard refuses Answerdesk's write tools on that ticket.\n5. Every write carries the agent identity with the conversation's verified customer as subject; the ticket's history shows \"Answerdesk (agent) for customer C\" rather than a shared integration user.\n\nThe 2,300 orphaned follow-ups were migrated into the ticketing system as tasks and triaged by Lena Brandt's team leads within a week; the prototype's table was deleted. Toolyard's registry review now fails any agent manifest that writes to a store other than a system of record, a registered staging store, or Keelson's task and evidence stores.\n\n## Failure Modes and Recovery\n\n| Scenario | What happens | Detection | Containment | Recovery |\n| --- | --- | --- | --- | --- |\n| **Human edits after the agent read** | A controller manually adjusts an entry the agent is about to supersede | Version precondition fails at the executor | Write refused; approval void | Agent re-reads and proposes a new version, or the item goes to the accountant |\n| **System of record unavailable** | The ERP is down during the posting window | Executor errors and circuit breaker | Approved actions held in the workflow, not dropped; no \"post later from cache\" | Resume when the ERP returns; reconcile any `unknown` by external reference |\n| **API change by the owning team** | The CRM team renames a field in its API | Contract tests in Toolyard's server release; Sounding tool suites | Old server version stays pinned for running agent versions | Owning team ships a new tool version; agent versions migrate through evaluation ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)) |\n| **Over-granted agent user** | An ERP role change gives `agent-closewise-post` vendor-maintenance rights | Quarterly entitlement review; segregation-of-duties rule check in the ERP's access tool | Bulkhead still limits the executor to posting tools; the ERP role is the second line | Role reverted; Logbook query confirms no other operation was used |\n| **Stale governed view used to act** | A warehouse view behind by a failed load feeds a quote | Stale-at-use rate and index lag in Wake ([Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html)) | Commit path re-reads from the system of record | Repair the load; list affected drafts from provenance envelopes |\n| **Shadow store regrows** | A team adds a \"temporary\" cache of customer records to speed up its agent | Registry review of manifests; data-catalog scan for agent-owned tables | Release check fails for unregistered stores | Replace with a TTL cache keyed by source version, or a governed view |\n| **Orphaned hand-off** | An escalation is assigned to a queue that was retired in a support reorganization | Queue-age service-level agreement (SLA) alerts in the ticketing system | Integration record's `humanQueues` validated against the ticketing system daily | Reassign; the route table is updated by Support Operations, not the agent team |\n\nThe pattern across the table is that **the system of record's own mechanisms do most of the recovery**: its version checks, its queues and SLAs, its entitlement reviews. An agent integrated as a well-behaved client inherits them; a shadow system has to rebuild each one, and usually does not.\n\n## Trade-offs\n\nTwo decisions recur in every enterprise agent: where the agent's work lives, and whose agent it is.\n\n| Option | Strength | Cost | When it is right |\n| --- | --- | --- | --- |\n| **Agent on the platform, system of record via tools** (Ostrell's default) | One identity model, evidence log, evaluation and policy across all systems; the system of record stays authoritative | Integration work per system; the owning team must expose and maintain tools | The agent spans several systems, or acts with consequence |\n| **Vendor's embedded agent inside the SaaS system** | Native access to the data model, UI and permissions; little integration | Evidence, evaluation and policy live in the vendor's product; cross-system tasks need a second agent; vendor terms on data use | The task stays inside one application and its consequences are covered by the vendor's controls |\n| **Agent with its own store and synchronization** | Fast to build; queryable; independent of the system's API limits | A shadow system: divergence, invisible state, audit gaps, a second set of access rules | A throwaway prototype on test data |\n| **Agent writes directly to the database** | No API needed | Bypasses the application's invariants, authorization and audit trail | Never in production |\n\nAn agent that spans the CRM, the contract system and the ticketing system (Answerdesk) needs the platform; an agent that helps one professional inside one application (Clausewise) could be a vendor's embedded feature, provided its evidence reaches Logbook. My recommendation assumes more than a handful of agents, systems of record that carry financial, contractual or personal data, and an audit function that will ask. A single team with one agent over one SaaS application, low consequence and no regulated data, can sensibly start with the vendor's embedded agent and skip most of this chapter, as long as it writes nothing anyone else will rely on.\n\n## Across Domains: How the Stakes Change the Design\n\n| Dimension | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| **System of record** | Repository and CI; the merged branch | CRM, ticketing, billing, consent and suppression lists | ERP and ledger, CLM and document management, HRIS | Electronic health record; case-management and benefit-payment systems |\n| **Dominant integration pattern** | Agent as service inside the developer loop; headless runs ending in a pull request | Tool over API plus event triggers, under a per-exchange latency budget | Agent step inside a workflow, writing to a staging store | Workflow with a rules engine; the agent drafts into a case record |\n| **Where agent output waits** | A branch and an open pull request | Draft quote, pending credit, ticket task | Staging store of proposals, redlines, recommendations | Recommendation case awaiting a clinician or caseworker |\n| **Identity in the target** | Bot or agent identity with repository-scoped token; humans merge | Agent for the verified customer; sends as the account executive only after approval | Named agent user per duty; approver recorded in the target | Write only under the licensed clinician's or caseworker's sign-off |\n| **Read governance** | Repository scope per run | Scope resolved from the verified customer before the first read (support design, step `grounding`) | Ethical walls, personal-data (PII) scope by token, governed finance views | Care-team or case scope, minimum-necessary access, break-glass audited |\n| **Hand-off to people** | Pull-request review queue | Support queues with SLA; CRM owner, not campaign owner (sales design, step `handoff`) | Workbench approval queues sized to reviewer capacity | Worklists with SLA; every adverse outcome to a human |\n| **What the target's audit must show** | Agent run that authored each commit | Who promised what to which customer | Maker, checker and the version approved | The professional who decided, and the AI system's role in it |\n\nThe author's healthcare design is the back-office spine with a stricter gate: the electronic health record is both grounding source and action surface, and a write happens only after clinician sign-off, with a case-version check and an explicit `ehr_write_failed` state (*design example*, `agentic-healthcare-platform/interview.json`, steps `gate` and `privacy`).\n\nThe platform can keep common the integration record, the read-interface ladder, the staging store, executor and reconciler, agent identities in target audit trails, hand-offs into the target's queues, and the evidence log. Domain policy decides which agent identity holds which roles, which fields are agent-writable, who the accountable human is, and which writes need which approver.\n\n## The Chief Architect's View\n\nThe decisions I would insist on making explicitly, and early:\n\n- **A written system-of-record rule**, adopted before the second agent ships: agents read through APIs and governed views, write through approved action objects, keep no business state, and appear in target audit trails as themselves. It costs nothing to adopt early and a great deal to retrofit.\n- **The owning team owns the agent tools for its system.** The ERP team decides what agents may do to the ERP, writes and maintains those tools and approves the agent users' roles. The agent platform provides the broker, identity and evidence. If the owning team will not take this on, the agent should not write to that system yet.\n- **A named accountable human for every agent artifact**, recorded in the system of record, not in a slide.\n- **Process owners sign off integration into their queues.** Support Operations owns the escalation routes; Finance owns the approval workbench. An agent team that adds a queue, or bypasses one, has changed someone else's process.\n\nWhat to watch: agent-owned tables that are not registered; integration users with more than one duty; queue age for agent hand-offs; the share of agent writes refused by version checks (a rising rate means agents act on stale reads); and audit requests that need anything other than a Logbook query to answer.\n\nWhat will change: target systems will learn to accept delegated agent tokens and SaaS vendors will ship more embedded agents, so the named-agent-user workaround and some integration code will be thrown away; better models will narrow, not close, the gap between governed and free reads. What will not change with model capability: the system of record is authoritative, its owners control access, and the organization answers \"who did this, for whom, approved by whom\" from its own records. Build so that a better model makes the agent more useful without giving it a different place to keep the truth.\n\n## Questions to Ask\n\n1. For each system this agent touches, who owns it, and has that team reviewed and taken ownership of the agent's tools?\n2. Does the agent keep any durable state other than task state, a registered staging store and evidence? If so, who else relies on it?\n3. Which reads drive actions, and do those come from a live read of the system of record or from an index, view or copy?\n4. Does the agent use free SQL anywhere? Is a person reading the result before it influences an action?\n5. What does the target system's audit trail show for an agent write: the agent, the human, the approver, the run?\n6. Can any agent identity both create and approve, or create and post, the same kind of object?\n7. When a human edits a record between the agent's read and its write, what happens?\n8. Where does a hand-off land, which queue owns it, what is its SLA, and does it exist before the agent tells anyone it does?\n9. Who is the named accountable human for each kind of artifact the agent produces?\n10. Which formal steps (works council, worker notice, process-owner sign-off) apply before launch?\n\nThe integration decides what the agent may touch; the next question is how people meet the agent at all: in a chat, inside an application, as a delegated task or as a hand-off to a person, and what each of those interaction modes demands of the architecture. That is [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html).\n\n## Sources and Evidence\n\n### Research papers\n\n- [Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows](https://arxiv.org/abs/2411.07763), Lei et al., ICLR 2025, 2024 — 21.3% on 632 enterprise workflows vs 91.2% on Spider 1.0 and 73.0% on BIRD for the same agent framework.\n- [A Benchmark to Understand the Role of Knowledge Graphs on Large Language Model's Accuracy for Question Answering on Enterprise SQL Databases](https://arxiv.org/abs/2311.07509), Sequeda, Allemang and Jacob, arXiv preprint, 2023 — about 16% zero-shot vs 54% with a knowledge-graph contextual layer on one insurance schema.\n- [CRMArena-Pro: Holistic Assessment of LLM Agents Across Diverse Business Scenarios and Interactions](https://arxiv.org/abs/2505.18878), Huang et al., arXiv preprint (vendor research lab), 2025 — near-zero inherent confidentiality awareness; about 58% single-turn and 35% multi-turn success for the best tested model.\n\n### Specifications, standards and regulation\n\n- [RFC 8693: OAuth 2.0 Token Exchange](https://www.rfc-editor.org/rfc/rfc8693.html), IETF, 2020 — impersonation vs delegation; the `act` claim.\n- [MCP Authorization (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), MCP project, 2026 — audience-bound tokens; no passthrough.\n- [MCP Security Best Practices](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices), MCP project, n.d., accessed 2026-10 — token passthrough and the audit damage it causes.\n- [OWASP LLM06:2025 Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/), OWASP, 2025 — run extensions in the user's context with minimum privileges.\n- [Regulation (EU) 2024/1689 (AI Act)](http://publications.europa.eu/resource/celex/32024R1689), European Union, 2024 — Article 26(7) worker information; deployer duties.\n- [Regulation (EU) 2026/1744 (Digital Omnibus on AI)](http://publications.europa.eu/resource/celex/32026R1744), European Union, 2026 — Annex III obligations from 2 December 2027.\n- [15 U.S.C. 7262 (SOX §404)](https://www.law.cornell.edu/uscode/text/15/7262), Legal Information Institute, n.d., accessed 2026-10 — management assessment of internal control; SoD comes from the control frameworks, not the statute.\n\n### Vendor documentation and engineering reports\n\n- [What are agent identities? (Microsoft Entra Agent ID)](https://learn.microsoft.com/en-us/entra/agent-id/what-are-agent-identities), Microsoft, 2025 (updated 2026-06-15) — agent identities as a distinct type; delegated access; agent user accounts for systems that need a user.\n\n### Incidents, cases and decisions\n\n- [Moffatt v. Air Canada, 2024 BCCRT 149, summarized as \"That wasn't me, that was my chatbot\"](https://www.mltaikins.com/insights/that-wasnt-me-that-was-my-chatbot), MLT Aikins, 2024 — the organization owns its chatbot's statements.\n- [Mata v. Avianca, Opinion and Order on Sanctions](https://storage.courtlistener.com/recap/gov.uscourts.nysd.575368/gov.uscourts.nysd.575368.54.0.pdf), U.S. District Court S.D.N.Y., 2023 — the professional's gatekeeping duty for AI-assisted filings.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Finance Platform\", system-design interview design, `system-design-interviews/data/book/agentic-finance-platform/interview.json`, 2026 — steps `ledger` (propose, don't mutate), `pipeline` (harness in workflow mode), `maker-checker` (agent as maker, never checker), `idempotency`, and `capacity` (never auto-post to clear backlog).\n- Obrenović, Ž., \"Agentic HR Platform\", system-design interview design, `system-design-interviews/data/book/agentic-hr-platform/interview.json`, 2026 — step `privacy` (token-scoped PII boundary vs filter vs prompt) and step `service-eval` (HRIS stays the system of record via reconciliation).\n- Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, 2026 — step `grounding` (account state wins; scope before first read) and step `escalation` (no token while a handoff is open).\n- Obrenović, Ž., \"Agentic Sales Platform\", system-design interview design, `system-design-interviews/data/book/agentic-sales-platform/interview.json`, 2026 — step `enrichment` (never clobber the CRM; external-version conflict check) and step `handoff` (route to the record owner).\n- Obrenović, Ž., \"Agentic Healthcare Platform\", system-design interview design, `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`, 2026 — steps `gate` and `privacy`: EHR writes only after sign-off, stale-version check, explicit write-failure state.\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Durable Execution for Long-Running Agents</title>
+    <meta name="description" content="How do you run agent work that lasts minutes, hours or weeks through crashes, deploys and waits for humans? Run the agent loop as deterministic workflow code over a recorded history, make every model call and tool call a recorded activity, wait for people and events with durable timers and signals, and pin each run to the code, model and prompt versions it started on.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Durable Execution for Long-Running Agents">
+    <meta property="og:description" content="How do you run agent work that lasts minutes, hours or weeks through crashes, deploys and waits for humans? Run the agent loop as deterministic workflow code over a recorded history, make every model call and tool call a recorded activity, wait for people and events with durable timers and signals, and pin each run to the code, model and prompt versions it started on.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/durable-agent-execution.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/23-durable-agent-execution/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="part-6.html" title="Part VI — RELIABILITY: Long-Running Work and Recovery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="retries-idempotency-and-concurrency.html" title="Retries, Idempotency and Concurrency">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — RELIABILITY: Long-Running Work and Recovery</p>
+        <h1>Durable Execution for Long-Running Agents</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  33 min read · <a class="spec-link" href="durable-agent-execution.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/23-durable-agent-execution/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/23-durable-agent-execution/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="part-6.html" title="Part VI — RELIABILITY: Long-Running Work and Recovery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="retries-idempotency-and-concurrency.html" title="Retries, Idempotency and Concurrency">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Durable Execution for Long-Running Agents", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "How do you run agent work that lasts minutes, hours or weeks through crashes, deploys and waits for humans? Run the agent loop as deterministic workflow code over a recorded history, make every model call and tool call a recorded activity, wait for people and events with durable timers and signals, and pin each run to the code, model and prompt versions it started on.", "permalink": "durable-agent-execution", "timetoread": "33 min read", "icon": "assets/icons/23-durable-agent-execution.png", "logo": "assets/images/23-durable-agent-execution/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn how durable execution engines keep long-running work alive through crashes, deploys and multi-day waits, how to map an agent loop onto them (the loop as workflow code, model and tool calls as activities), and how to set timeouts, heartbeats, cancellation and versioning for runs that outlive the code that started them.\n\n> **WHY THE BUSINESS CARES:** A month-end close, a contract negotiation or a benefits case runs for days and waits on people. If a deploy or a crashed worker restarts that work from the beginning, the business pays twice: once in duplicated postings, credits or emails, and again in the days spent finding and reversing them.\n\n> **WHY ARCHITECTS SHOULD CARE:** The agent loop is the one place where a crash can do more than lose work. Restarting a step that contains a model call asks a variable component the same question again, and it may answer differently after half of its first answer has already been executed. Where you record the model's output, and what you replay, decides whether recovery is safe.\n\n> **KEY POINTS:**\n>\n> * **Record the decision, replay the record.** Run the agent loop as deterministic workflow code. Make each model call and each tool call a separate activity whose result is written to durable history before anything acts on it. After a crash the engine returns the recorded model output instead of asking the model again.\n> * **Durable execution moves the problem to the tool boundary; it does not remove it.** Every engine runs a side-effecting step at least once, so a crash between a successful tool call and its recorded result still repeats the call. Idempotency keys minted by the workflow, and receipt lookup on retry, are what turn at-least-once execution into an exactly-once effect.\n> * **A run that lasts a week outlives your code, your model and your approvers.** Pin each run to the code, model and prompt versions it started on, and drain old versions instead of upgrading runs in place. Give every wait a timer, an escalation and an expiry, and make cancellation a request that reports what already happened, not a rollback.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Amnesiac Execution** — a crash, deploy or timeout restarts a multi-day run from scratch and repeats the side effects it already caused.\n> * **The Different Second Answer** — a recovered step that contains a model call re-samples the model after part of the first answer has been executed.\n> * **The Silent Upgrade** — a deploy changes the loop code, prompt or model under runs that are already in flight, so recorded history no longer matches the code replaying it.\n\n<br>\nMost agent runs finish in seconds; if one fails, the user asks again. The architecture changes when a run must **outlive the process that started it**: a research task that takes forty minutes, a coding task that waits for CI, an accrual proposal that waits two days for a controller, a casework file that waits three weeks for a document from the applicant. Somewhere in that time a worker will crash, a cluster will be upgraded, the runtime will be deployed, and a person will go on leave.\n\nThe ordinary distributed-systems answer is **durable execution**: a programming model in which the progress of a long-running function is recorded step by step, so that after any failure the function continues from its last recorded step on any machine. The answer fits agents well, with one twist. In an agent loop, the most important thing to record is not the tool result but **the model's decision**, because the model is the one component that will not give the same answer twice.\n\nThis chapter owns four terms: **durable execution**, **activity**, **heartbeat** and **cancellation** of an agent run. It builds on [The Agent Runtime: Running the Loop](agent-runtime.html), which defines the agent run and its lifecycle, and on [Durable Task State and Checkpoints](task-state-and-checkpoints.html), which decides what task state must survive and defines resume versus replay. It hands the retry and idempotency rules to [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html), and compensation, the kill switch and quarantine to [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html).\n\n## Setting the Scene at Ostrell: Five Days, Twenty-Three Entities, One Weekend\n\nOstrell, the fictional field-service software group this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), closes its books for **23 legal entities** every month. Closewise, the finance agent owned by group controller Joost Vermeer, drafts reconciliations and proposes about **1,900 accrual journal entries a month**. A controller approves each proposed entry; only then does a deterministic workflow post it to the ERP. The 2027 target is to close by **working day 5**, down from day 7 in 2026.\n\nIn January 2027, before Closewise moved onto the Keelson platform, the close ran as a set of scripts and a cron schedule. That month produced the **Half-Posted Accrual**: a script posting **52** approved entries for Ostrell Field Deutschland GmbH crashed after **37**, an accountant re-ran it, and the ERP received all 52 again. The **37 duplicates** overstated accruals by **€2.84 million**. The controller's balance review caught them the next day; reversing them took **2 days** and delayed that entity's close by one day. The full analysis is in [Durable Task State and Checkpoints](task-state-and-checkpoints.html). The cause was not the crash. It was that nothing remembered which entries had been posted.\n\nIn March 2027 Jonas Lindqvist, principal engineer for Keelson Runtime, brought the migration plan for Closewise to Tomas Verhoef's architecture review. Keelson Runtime already ran agent loops on a self-hosted, open-source durable workflow engine, but Answerdesk's runs last seconds and Scout's a median of 14 minutes. A close run lasts five working days, spans a weekend, waits on controllers, subledger cut-offs, ERP posting windows and the period lock, and would see at least one Keelson Runtime release. Tomas put four questions to the review:\n\n1. When a worker dies in the middle of a turn, what runs again, and does the model get asked again?\n2. When an approval takes two days, what holds the run's place, and what happens if it never comes?\n3. When we deploy new loop code on day 3, what happens to the 23 runs that started on day 1?\n4. When a controller says \"stop this entity\", what stops, and what has already happened?\n\nThe rest of this chapter answers them. Closewise moved onto Keelson Runtime in April 2027.\n\n## Concepts: Durable Execution in Agent Terms\n\n### Durable execution\n\n**Durable execution** is an execution model in which a long-running function (a *workflow*) records every step it completes in a durable, append-only **history**, and recovers from any failure by **re-running its code against that history**: completed steps return their recorded results, and execution continues live from the first step that has no record. The engines that implement it differ in packaging but share the design. Temporal restarts workflow code from the beginning and replays recorded history, which it calls \"the source of truth for everything that happens in the Workflow\" ([Temporal, n.d.](https://docs.temporal.io/workflows)). Azure Durable Functions orchestrators \"use event sourcing\" and \"must be *deterministic*: an orchestrator function replays multiple times, and it must produce the same result each time\" ([Microsoft, 2026-10-12](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints)). DBOS ([n.d.](https://docs.dbos.dev/architecture)) and Restate ([n.d.](https://docs.restate.dev/concepts/durable_execution)) checkpoint or journal each step and skip completed steps on recovery.\n\nReplay imposes one rule: **workflow code must be deterministic**. Given the same history it must make the same decisions in the same order. Anything that could differ between the first execution and a replay (the clock, random numbers, network calls, database reads and, above all, model calls) must happen inside a recorded step. Temporal's documentation lists \"LLM invocations\" among the interactions that belong outside workflow code ([Temporal, n.d.](https://docs.temporal.io/workflows)).\n\n### Activity\n\nAn **activity** is a recorded step of a workflow that may do nondeterministic or side-effecting work: call a model, call a tool, query a database, send a message. The engine schedules it, runs it on a worker, retries it under a policy, and writes its result to history. On replay the recorded result is returned without running the activity again. Engines use different names for the same idea (Temporal *activity*, DBOS *step*, Restate `ctx.run`, Inngest `step.run`); this book uses **activity**.\n\nThe guarantee that matters is the one engines give for activities themselves, and it is **at least once**. Temporal states that an activity \"may be executed multiple times and may even partially complete more than once\", because a worker can finish the work and crash before reporting completion ([Temporal, n.d.](https://docs.temporal.io/activity-definition)). Inngest tells developers to make a refund step idempotent for the same reason ([Inngest, n.d.](https://www.inngest.com/docs/learn/how-functions-are-executed)). This is why [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) exists.\n\n### Heartbeat\n\nA **heartbeat** is a periodic signal from a running activity to the engine saying \"I am alive\", optionally carrying **progress details** that a retry can read. It lets the engine detect a dead worker in seconds instead of waiting for the activity's full timeout, lets a retried activity resume from saved progress, and delivers cancellation: in Temporal, an activity \"cannot receive a cancellation request\" unless it heartbeats ([Temporal, n.d.](https://docs.temporal.io/develop/python/cancellation)). AWS Step Functions applies the same idea to callback tasks waiting for an external system: `HeartbeatSeconds` fails the task with `States.Timeout` if no heartbeat or result arrives in time ([AWS, n.d.](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html)).\n\n### Cancellation of an agent run\n\n**Cancellation** of an agent run is a recorded request to stop a run gracefully: the workflow receives the request, stops starting new model calls and side effects, asks its running activities and child runs to stop, finishes or abandons in-flight work according to each activity's declared cancellation behavior, and ends in a terminal `cancelled` state with a report of what it did. It is distinct from **termination**, which kills the run without giving its code a chance to clean up. Temporal draws exactly this line: cancel lets workflow code \"handle the cancelation and execute any cleanup logic\"; terminate is \"like killing a process\", and canceling is \"preferable\" in most cases ([Temporal, n.d.](https://docs.temporal.io/develop/python/cancellation)). Cancellation is **not compensation**: it stops what has not happened; it does not undo what has. Undoing is [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html).\n\n### Neighbouring terms, briefly\n\n| Term | Meaning here | Owned by |\n| --- | --- | --- |\n| Agent run | One execution of an agent on one task, with a lifecycle | [The Agent Runtime: Running the Loop](agent-runtime.html) |\n| Task state, checkpoint | The goal, plan, steps, receipts and approvals that must survive; a saved point of it | [Durable Task State and Checkpoints](task-state-and-checkpoints.html) |\n| Resume vs replay | Continue from saved state vs re-run code against a recorded history | [Durable Task State and Checkpoints](task-state-and-checkpoints.html) |\n| Idempotency key, retry budget, lease | The tool-boundary mechanisms that make at-least-once safe | [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) |\n| Approval record | A record bound to the exact action object version, with expiry | [Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html) |\n| Timer, signal, update | A durable wait; an asynchronous message into a running workflow; a validated, acknowledged message | This chapter (engine vocabulary) |\n\n## The Architecture: Mapping an Agent Run onto a Durable Workflow\n\n### One run, one workflow; one decision, one activity\n\nThe mapping I recommend has four rules.\n\n1. **One agent run is one workflow execution**, identified by the run id. Sub-agents are **child workflows** with their own budgets ([Routing and Delegation](routing-and-delegation.html)).\n2. **The loop is workflow code.** Turn counting, budget arithmetic, schema validation of the model's proposed action, routing on the result and the decision to stop are deterministic and run in the workflow.\n3. **Every model call is its own activity.** Its recorded result includes the model's raw output, the exact model id, the prompt version and token counts.\n4. **Every tool call is a separate activity from the model call that proposed it.** It runs through the tool broker with an idempotency key the workflow derived deterministically from the run id and the step number, never from the model's text.\n\nRule 4 is the one teams break. If one activity both asks the model and executes the tool it chose, a crash between the two re-runs the whole activity: the model is sampled again, may propose a different action, and the first action may already have happened. That is the Different Second Answer, produced by recovery rather than by a retry policy: replay protects the decision only if the decision and the action are separate recorded steps.\n\n![Diagram: The loop is deterministic workflow code](assets/images/23-durable-agent-execution/fig01-loop-deterministic-workflow-code-everything-that.jpeg)\n**Figure 1:** *The loop is deterministic workflow code; everything that can differ on a second execution (context reads, model calls, policy checks, tool calls) is an activity whose result lands in durable history before the loop acts on it.*\n\nIn Ostrell's Keelson platform the activities call the platform's own components: context assembly reads Tidemark (memory) and the retrieval indexes; model activities go through Keelson Gateway; policy activities call Bulkhead; tool activities go through Toolyard, which holds credentials and enforces idempotency keys. Logbook, the evidence log, receives the curated decision record. The engine's history is **not** the evidence log: it is the engine's private recovery record, retained for as long as the engine needs it, while Logbook holds what auditors and risk owners need for years ([Policy Enforcement and Audit](policy-enforcement-and-audit.html)).\n\n### The loop in code\n\nThe sketch below shows the shape in Python-style pseudocode. `wf.*` stands for the engine's replay-safe API; the names are illustrative, not any SDK's.\n\n```python\n@workflow\ndef agent_run(task: Task, manifest: VersionManifest) -> RunResult:\n    budget = Budget.from_manifest(manifest)          # tokens, cost, wall clock, turns\n    state = TaskState.start(task)\n    for turn in range(budget.max_turns):\n        if wf.cancel_requested():\n            return wf.finish_cancelled(state)        # report effects, do not undo\n        ctx = wf.activity(assemble_context, state, manifest.context_version,\n                          timeout=s(30))\n        decision = wf.activity(call_model, ctx, manifest.model_id,\n                               manifest.prompt_version,\n                               start_to_close=min(10), heartbeat=s(45),\n                               retry=Retry(max_attempts=2))   # one retrying layer\n        budget.charge(decision.usage)                 # deterministic arithmetic\n        action = validate(decision.proposed_action)   # schema check, in code\n        if action.kind == \"finish\":\n            return wf.finish(state, decision)\n        verdict = wf.activity(check_policy, action, manifest.policy_version)\n        if verdict.requires_approval:\n            approval = wf.wait_for(signal=\"approval\", key=action.content_hash,\n                                   timeout=verdict.approval_ttl)\n            if approval is None or not approval.matches(action):\n                state = state.record_expired(action); continue\n        key = f\"{wf.run_id}:{turn}:{action.tool}\"     # minted by the workflow\n        receipt = wf.activity(call_tool, action, idempotency_key=key,\n                              start_to_close=action.tool_timeout,\n                              retry=Retry(non_retryable=[\"business\", \"unknown\"]))\n        state = state.record(action, receipt)\n        if budget.exhausted():\n            return wf.finish_budget_exceeded(state)\n    return wf.finish_turn_limit(state)\n```\n\nThree details carry weight. The idempotency key depends on the run id, the turn and the tool, so a replay or an activity retry reproduces the same key; [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) refines it by binding it to the action object's content. Model calls retry at **one** layer: an SDK retry inside a framework retry inside an engine retry with unlimited attempts (Temporal's activity default) multiplies paid model calls, the agent form of the retry amplification Google's SRE book warns about ([Google, 2016](https://sre.google/sre-book/addressing-cascading-failures/)). And the approval wait is keyed by the action's content hash, so an approval for a different version of the action does not release the run, as the book's approval rule requires.\n\n### Requirements per interaction\n\n| Interaction | Consistency | Latency budget | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Model call | Result recorded before any use; never re-sampled on replay | Seconds to minutes; long tail | Response in history (or by hash in a payload store) | Workflow, through the gateway |\n| Tool call with side effect | Exactly-once effect: at-least-once execution, idempotency key, receipt | Per tool contract | Intent before, receipt after, both recorded | Workflow, through the broker; never the model directly |\n| Approval wait | Bound to action content hash and policy version; void on change | Hours to days | Durable timer and signal | Named approver; never the maker |\n| External event (ERP callback, CI result) | Deduplicated by event id; out-of-order events rejected | Minutes to days | Signal recorded in history | Authenticated external system |\n| Cancellation | Recorded request; stops new effects first | Seconds for new effects; in-flight work per activity | Request and outcome in history | Run owner, risk owner, platform on-call |\n| Deploy of new loop code | Running runs keep their version | None for runs; minutes for rollout | Version recorded per run | Platform team through the release pipeline |\n\n## Timeouts, Heartbeats and the Long Tail of Model Calls\n\nA durable engine gives every activity several clocks, and each catches a different failure. Temporal's set is the clearest: **schedule-to-start** (time waiting in the queue), **start-to-close** (one attempt; \"should always be set\"), **schedule-to-close** (all attempts together) and the **heartbeat timeout**, the maximum gap between heartbeats ([Temporal, n.d.](https://docs.temporal.io/encyclopedia/detecting-activity-failures)). Above them sits a deadline the engine does not know about: the **run deadline**, the wall-clock and cost budget of the whole run. Google's SRE guidance asks servers to propagate deadlines so downstream calls inherit the remaining time of the original one ([Google, 2016](https://sre.google/sre-book/addressing-cascading-failures/)); in an agent, the run budget is that deadline, and child runs inherit what remains of it.\n\nModel calls make timeout setting harder than for ordinary services. Their latency has a long tail: a reasoning-heavy call with a long output can take minutes, and Anthropic's API documentation suggests streaming for long requests that would otherwise hit a `504 timeout_error` ([Anthropic, n.d.](https://platform.claude.com/docs/en/api/errors)). Anthropic's February 2026 usage study found that the 99.9th-percentile Claude Code turn (many calls, not one) \"nearly doubled, from under 25 minutes to over 45 minutes\" between October 2025 and January 2026 ([Anthropic, 2026](https://www.anthropic.com/research/measuring-agent-autonomy)). AWS's rule of picking a timeout at the latency percentile that matches an acceptable false-timeout rate ([Brooker, 2019](https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter)) then yields a start-to-close of many minutes, which detects a dead call far too late.\n\nThe fix is to **stream and heartbeat**. A model activity that streams the response heartbeats on every chunk (or every few seconds), so a short heartbeat timeout (Ostrell uses 45 seconds) catches a hung connection or a dead worker quickly while a generous start-to-close (10 minutes) tolerates a legitimately long answer. The same applies to long tool activities: a Forge test run in a sandbox, a batch ERP posting, a large export.\n\nHeartbeat **progress details** deserve one warning. Closewise's posting activity heartbeats the index of the last entry it posted, so a retry can skip ahead. But a heartbeat is not atomic with the post: the worker can post entry 45 and die before heartbeating \"45\". Progress details are an optimization for speed, never the guard against duplicates. The guard is the idempotency key on every entry and a receipt lookup before re-posting, which is precisely what the January script lacked.\n\n| Clock | Catches | Agent-specific setting | Ostrell default *(Keelson design)* |\n| --- | --- | --- | --- |\n| Schedule-to-start | No worker available; queue backlog | Alert, do not fail: a backlog is a capacity problem | Alert at 5 min |\n| Start-to-close (model) | A single call that will never finish | Set from the tier's tail latency, not p50 | 10 min Large tier, 2 min Small |\n| Heartbeat (model, streaming) | Hung connection, dead worker | Seconds; one heartbeat per chunk batch | 45 s |\n| Start-to-close (tool) | A tool attempt that hangs | From the tool contract ([Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html)) | Per tool, 30 s default |\n| Schedule-to-close | A step that keeps failing | Caps total attempts and spend | 3 attempts or 15 min |\n| Run deadline | A run that never converges | Wall clock plus token and cost budget | Per agent manifest |\n\n## Waiting: Humans, Events and Deadlines\n\nThe strongest reason to put an agent on a durable engine is not crash recovery. It is **waiting**. An agent run that needs a controller's approval, a customer's reply, a CI result or a document from an applicant should not hold a thread, a container or a context window for two days. Durable engines turn a wait into a record.\n\n- **Durable timers.** Temporal's timers \"are persisted\", so a workflow resumes after a timer fires even if workers were down at that moment, and \"Workers consume no additional resources while waiting for a Timer\"; timers can run for years ([Temporal, n.d.](https://docs.temporal.io/workflow-execution/timers-delays)).\n- **Signals and updates.** A *signal* is an asynchronous message into a running workflow; an *update* is a \"synchronous, tracked write request\" that can be validated before it is accepted into history, so the sender learns whether it was accepted ([Temporal, n.d.](https://docs.temporal.io/encyclopedia/workflow-message-passing)). Approvals should be updates (or signals with a validated acknowledgment): the approver's client must learn that the approval was rejected because the action changed.\n- **Callback tokens.** Step Functions Standard pauses a task until an external party returns its task token with `SendTaskSuccess` or `SendTaskFailure`, for up to the one-year execution quota, and recommends a heartbeat timeout \"to avoid stuck executions\" ([AWS, n.d.](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html)).\n\nEvery wait needs three things the engine will not decide for you. **A timer**: no wait without a timeout, because an approval that never arrives otherwise holds a run open forever. **An escalation**: what happens when the timer fires (a reminder, a second approver, a different queue). **A revalidation**: when the wait ends, re-check that the world the approval was given for still exists. The book's approval rule (an approval binds to the action object's content hash and policy version, has an expiry, and is void if the action, the policy or the evidence changed) is enforced exactly here, in the workflow code that runs after the wait returns ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)).\n\n![A worker chained to a pending approval compared with a wait stored as a record card with a timer while the worker stays free.](assets/images/23-durable-agent-execution/23-wait-holds-no-worker.jpeg)\n**Figure 2:** *A durable wait is a record with a timer, an escalation and an expiry, not a held worker: over the close weekend no worker, container or context window was held for the 23 entity runs.*\n\nThe author's agentic-finance-platform design records that batch schedulers \"are weaker for human approval pauses, callback reconciliation, and exactly-once side effects\", and that a proposal whose accounting period locked before posting must re-validate and route \"as a next-period entry or a controlled reopen\" (step `idempotency`). The agentic-public-benefits-platform design uses a durable workflow engine to make \"evidence waits, retries, appeal-clock deadlines, and escalation timers explicit\" (technology choices, steps `gate` and `audit-appeal`). Both are design examples, not deployed systems.\n\n![Diagram: Every wait in a durable run has a timer, an escalation and an expiry](assets/images/23-durable-agent-execution/fig02-every-wait-durable-run-has-timer.jpeg)\n**Figure 3:** *Every wait in a durable run has a timer, an escalation and an expiry; cancellation is a state the run passes through while in-flight work settles, not an instant stop.*\n\n## Cancellation: Stop New Effects, Report Old Ones\n\nWhen someone cancels an agent run, three things are in different states: work the run has not started, work in flight, and work already done. A sound cancellation design treats them differently.\n\n1. **Not started: never start it.** The workflow checks for a cancel request before every model call and every side effect. Child runs receive the cancellation; DBOS documents that a workflow timeout cancels \"the workflow and all its children\" at the next step ([DBOS, n.d.](https://docs.dbos.dev/python/tutorials/workflow-tutorial)).\n2. **In flight: follow each activity's declared behavior.** A model call can simply be abandoned: its output has not been acted on. A sandboxed test run should be killed. An ERP batch post or a payment instruction should usually be **allowed to finish** and record its receipt, because cancelling halfway leaves an unknown state that someone must reconcile. Declare per tool, in its contract, whether an attempt is abandonable, interruptible or must complete; and remember that an activity that does not heartbeat cannot hear the request at all ([Temporal, n.d.](https://docs.temporal.io/develop/python/cancellation)). Step Functions likewise makes only a \"best-effort attempt\" to cancel an external job when a `.sync` task is aborted ([AWS, n.d.](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html)).\n3. **Done: report it, do not pretend it did not happen.** The run ends `cancelled` with a list of effects completed, effects in an unknown state, and approvals left open (which are then voided). Whether to compensate those effects is a separate, explicit decision ([Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)).\n\nTermination, the hard kill, is for a run whose cancellation logic is broken; its report must then be rebuilt from history and the evidence log. The platform kill switch is not mass cancellation: it stops new side effects across every run in its scope and **holds** queued actions for review rather than discarding them ([Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)).\n\n## Versioning Runs That Outlive Their Code\n\nA run that lasts five days will see a deploy. Replay engines make this a correctness problem: if the new workflow code takes a different path through the same history, replay fails or, worse, silently diverges. Microsoft states that \"code changes that affect running orchestrations can break replay behavior\", and that the framework's nondeterminism detection \"won't catch all violations\" ([Microsoft, 2026-10-12](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints)). DBOS raises `DBOSStepNondeterminismError` when replay does not match recorded steps ([DBOS, n.d.](https://docs.dbos.dev/python/tutorials/workflow-tutorial)).\n\nEngines offer two remedies, and Temporal documents both explicitly ([Temporal, n.d.](https://docs.temporal.io/worker-versioning); [Temporal, n.d.](https://docs.temporal.io/patching)):\n\n- **Pinning.** \"A Pinned Workflow is guaranteed to complete on a single Worker Deployment Version.\" Old versions keep polling until their pinned workflows close: the version is *draining*, then *drained*.\n- **Patching.** A patch \"defines a logical branch in a Workflow for a specific change, similar to a feature flag\": new executions take the new branch and record a marker, replaying executions take the old branch. A misplaced patch throws \"a non-deterministic exception\".\n\nFor agents, **the code is only one of the versions a run depends on**. The run's history records decisions made by a specific model with a specific prompt, against specific tool schemas and a specific policy. Swapping any of them mid-run does not break replay (the engine replays recorded results), but it makes the rest of the run a different agent from the one whose first half is in the record: the plan was made by one model and is being executed by another. Anthropic described the operational form of this in its June 2025 engineering post on its multi-agent research system: it used \"rainbow deployments to avoid disrupting running agents\", shifting traffic gradually while old and new versions run side by side ([Anthropic, 2025](https://www.anthropic.com/engineering/multi-agent-research-system)).\n\nMy rule: **a run is pinned to its whole version manifest** (loop code, model id, prompt, tool schemas, policy bundle), recorded at run start. Loop-code changes reach in-flight runs only through patch branches that keep their recorded path; model, prompt and tool changes reach them not at all, because workers for every manifest with live runs stay deployed until those runs finish ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)). The exception is a change that must reach running runs, typically a security or correctness fix: deliver it as an explicit, recorded **update** into the run, so history shows when its rules changed, and void its pending approvals, as [Durable Task State and Checkpoints](task-state-and-checkpoints.html) requires. Very long runs (casework, multi-week research) should reach natural **continue-as-new** points at which they hand their task state to a fresh execution that starts on the current versions. Temporal describes continue-as-new as a way to \"checkpoint your Workflow's state and start a fresh Workflow\" with the same workflow id and a new history, and notes it also helps avoid running long-lived workflows on stale code ([Temporal, n.d.](https://docs.temporal.io/workflow-execution/continue-as-new)). How manifests are versioned and promoted is [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html); how they are rolled out is [Staged Rollout and Rollback](staged-rollout-and-rollback.html).\n\n![A long run ribbon pinned to its original manifest continues past a day-3 release while new runs start on the new version and the old version drains.](assets/images/23-durable-agent-execution/23-run-pinned-to-manifest.jpeg)\n**Figure 4:** *A run is pinned to its whole version manifest: a release on working day 3 reaches new runs, while workers for the old manifest stay deployed until its runs finish.*\n\n### History size: the limit agent loops hit first\n\nDurable histories are not unbounded. Temporal warns at **10,240 events or 10 MB** and enforces a hard limit of **51,200 events or 50 MB** per workflow execution ([Temporal, n.d.](https://docs.temporal.io/workflow-execution/limits)). Agent loops approach it faster than business workflows, because every turn records several activities and each model result carries output that can be tens of kilobytes. Assume 40 KB of recorded payload per turn: a 1,000-turn coding or research run reaches the 50 MB limit while still far below the event limit. The remedies: store large payloads in a content-addressed store and record only the hash; continue-as-new at turn or size thresholds; record references to what context assembly read rather than the assembled context.\n\n## What the Evidence Says\n\n**The engines agree on the model; vendor tables disagree on the words.** Every replay engine reviewed (Temporal, Azure Durable Functions, DBOS, Restate, Inngest) returns recorded step results on recovery and runs side-effecting steps at least once. AWS Step Functions is a declarative state machine rather than a replay engine; its Standard workflows advertise \"exactly-once workflow execution\" and fitness for \"non-idempotent actions, such as … processing payments\" ([AWS, n.d.](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html)), while its Express workflows are at-least-once or at-most-once and limited to five minutes. These are different scopes, not a contradiction: \"exactly once\" in an engine's documentation means the engine will not *schedule* a step twice. Whether the bank charges twice still depends on the called service's idempotency, which AWS's own Builders' Library article on idempotent APIs makes the caller's concern ([Featonby, n.d.](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/)).\n\n**Checkpointing frameworks are not replay engines.** LangGraph checkpoints graph state at every super-step and also persists the writes of nodes that succeeded, so they are not re-run ([LangChain, n.d.](https://docs.langchain.com/oss/python/langgraph/checkpointers)). But its resume granularity is the node: after an interrupt \"the runtime restarts the entire node from the beginning\", so \"side effects called before `interrupt` must be idempotent\" ([LangChain, n.d.](https://docs.langchain.com/oss/python/langgraph/interrupts)). Its time-travel replay from an earlier checkpoint re-executes later nodes, \"including any LLM calls\". Its `\"exit\"` durability mode cannot recover from a mid-run crash. Both models are coherent; the point is that \"checkpointing\" is not one thing. A node that both calls the model and executes a tool will re-sample the model on resume.\n\n**\"Durable agent\" integrations often record model calls and leave tools to you.** As of October 2026, Temporal's integration with the OpenAI Agents SDK routes model invocations through activities automatically, but ordinary `@function_tool` tools \"execute in the workflow unless explicitly backed by a Temporal activity\" ([Temporal, n.d.](https://github.com/temporalio/ai-integrations/tree/main/python/openai_agents)). A developer who writes an email-sending tool the obvious way has put I/O inside deterministic workflow code, where replay can repeat it. Restate's agent documentation says \"every LLM call and tool execution is durably persisted\" when wrapped in its step API ([Restate, n.d.](https://docs.restate.dev/ai)). The lesson is to check, per framework and version, which calls are recorded by default.\n\n**Model output does vary on identical input, so re-sampling is a real risk.** Anthropic's documentation states that even at temperature 0, \"identical inputs might produce different outputs across API calls\" ([Anthropic, n.d.](https://platform.claude.com/docs/en/about-claude/glossary)). In a September 2025 research post, Thinking Machines Lab sampled one prompt 1,000 times at temperature 0 on an open-weight model served by vLLM and got 80 distinct completions, attributing the variance mainly to batch-size effects on server kernels; batch-invariant kernels made all 1,000 identical at a throughput cost ([He, 2025](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/)). That measures one open-weight setup, not commercial APIs, and it measures token-level variance, not different tool choices. τ-bench's pass^k metric shows the trajectory-level consequence: on its retail tasks the best 2024 agent's pass^8 fell below 25% ([Yao et al., 2024](https://arxiv.org/abs/2406.12045)), a simulated-user benchmark on a superseded model, so treat it as evidence that repeated runs diverge, not as a current rate.\n\n**Long-running coding agents externalize progress into artifacts.** Anthropic's November 2025 engineering post on harnesses for long-running agents describes runs that span many context windows: an initializer session writes a progress file, a JSON feature list and an initial git commit; each later session reads them, works on one feature, tests it end to end and commits, so a bad change can be reverted ([Young, 2025](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)). This is durable execution by other means: the history is git plus a progress file. The failure modes it reports (declaring the project done too early, marking features complete without end-to-end tests) are ones no execution engine would prevent.\n\n**What the evidence does not show.** No published study measures how often production agents duplicate or diverge side effects on crash recovery or deploy, and no published evaluation compares durable-engine-based agent runtimes with checkpointing frameworks on recovery correctness. The vendor material is documentation of semantics, not evidence of outcomes. The recommendations in this chapter rest on those documented semantics and on the author's judgement.\n\n![Diagram: After a crash, replay returns the recorded model proposal instead of asking the model again](assets/images/23-durable-agent-execution/fig03-after-crash-replay-returns-recorded-model.jpeg)\n**Figure 5:** *After a crash, replay returns the recorded model proposal instead of asking the model again; the tool retry reuses the workflow-minted key, and the receipt lookup turns a second execution into one effect.*\n\n## Worked Example at Ostrell: The September 2027 Close\n\nKeelson Runtime ran its first five-day Closewise close in May 2027. The close of September 2027 is a useful one to walk through because it hit every question in Tomas's list.\n\n**The shape.** Closewise starts one parent close workflow per month and **23 child workflows**, one per legal entity. Each child is mostly a workflow with agentic steps, the point [What Makes a System Agentic](what-makes-a-system-agentic.html) makes about Closewise: deterministic stages (subledger cut-off, extraction, invariant checks, posting) with bounded model steps for reconciliation drafting and accrual proposals. Each model step is an activity on the Mid tier, with a fallback only where the manifest names and gates one ([Models and the Model Gateway](models-and-the-model-gateway.html)); each posting is a tool activity through Toolyard keyed by task id, entry id and entry version. Every run's manifest pins exact model ids, as Keelson has required since September 2027 after the Alias Drift.\n\n**Working day 1, Friday 1 October.** All 23 entity runs start, each pinned to its manifest. The close produced **1,912 proposed entries** that month, of which **164** for Ostrell Field Deutschland GmbH.\n\n**The weekend.** The runs do nothing on Saturday and Sunday. They hold durable timers for the subledger cut-off on Monday 06:00 and waits for approvals already requested on Friday. No worker, container or context window is held for them.\n\n**Working day 2, Monday 4 October, 02:10.** A routine node-pool upgrade replaces the worker hosts serving six entity runs mid-turn. The 45-second heartbeat timeout fires on the in-flight model activities; they are retried on other workers. Two model calls are sent again, a fresh sample, but neither had been acted on, so this is a cost (about €0.40 *(assumption)*), not a divergence. Completed turns are returned from history; no proposal is regenerated. That morning, Ostrell Field Deutschland's posting activity is posting **61** approved entries when its worker is evicted after **44**. The retry reads the heartbeat (last confirmed index 43), looks up receipts by idempotency key for entries 44 to 61, finds entry 44 already posted, and posts 45 to 61. The ERP holds **61 entries, once each**. In January the same entity, the same kind of crash and a manual re-run produced 37 duplicates.\n\n**Working day 3, Tuesday 5 October.** The Agent Platform team ships a Keelson Runtime release that adds a Bulkhead check before every staging-store write. As with the June release described in [Durable Task State and Checkpoints](task-state-and-checkpoints.html), the change ships as a patch branch: the 23 entity runs replay and continue on their recorded path, and an intercompany reconciliation child workflow started that afternoon takes the new branch. No run hits a nondeterminism error. The patch's old branch is deleted only after the last run that recorded it has closed, on working day 6.\n\n**Approvals.** Controllers' teams approve most proposals within hours. Keelson's approval timer is **48 working hours**, after which the request escalates to the entity's deputy controller *(Keelson design)*. Nine proposals for Ostrell Assure's UK entity hit the timer while the controller was on leave and were approved by the deputy the next morning. Three approved proposals for another entity never posted: between approval and posting, a late supplier invoice changed the subledger balance the accrual was based on. The workflow's post-wait revalidation found that the evidence hash no longer matched, voided the approvals, and Closewise drafted new proposals, which were approved within the day.\n\n**Cancellation.** On working day 4 a controller cancels the Ostrell Parts Benelux entity run: the subledger had been reopened for a correction and she wanted a clean restart rather than a run that had already proposed against old balances. The run stops starting model calls at once. Its one in-flight activity, a posting of 12 approved entries, is declared *must complete* and finishes; the run ends `cancelled` with a report: 31 entries posted with receipts, 0 in unknown state, 17 open proposals voided, 4 drafted reconciliations kept as drafts. A new run starts against the corrected subledger.\n\n**Working day 5, Thursday 7 October.** The ERP's period lock arrives as a signal at 17:00. Two proposals still awaiting approval are re-routed as next-period entries, as the finance design in the interview project recommends. All 23 entities close on working day 5.\n\n## Failure Modes and Recovery\n\n| Scenario | What happens | Detection | Containment | Recovery |\n| --- | --- | --- | --- | --- |\n| Worker dies mid model call | Call lost before its result is recorded | Heartbeat timeout (seconds) | Output never acted on | Retry on another worker; fresh sample is acceptable because nothing used the first |\n| Worker dies after a tool succeeds, before the result is recorded | Activity retried; side effect could repeat | Activity retry counter; duplicate-key hits at the broker | Workflow-minted idempotency key; broker dedups | Receipt lookup returns the first result ([Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html)) |\n| Model call and tool call in one activity | Crash between them re-samples the model and may execute a different action | Two different actions under one step in the evidence log; reviewer finds a mismatch | None at runtime: this is a design fault | Split into two activities; reconcile effects of affected runs ([Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html)) |\n| Deploy breaks replay | Nondeterminism error on replay; runs stuck | Engine error metric; stuck-run alert | Pinned versions keep old code serving old runs | Roll back the release or add a patch branch; never edit history |\n| History limit approached | Run slows; at the hard limit the engine fails it | Engine warning at 10,240 events or 10 MB | Payloads by hash; continue-as-new thresholds | Continue-as-new from task state; split very long runs |\n| Approval never arrives | Run waits forever, close slips | Timer fires; approval-age dashboard | Escalation to a second approver | Expire the approval, record it, re-plan or stop |\n| Approval valid but world changed | Approved action executes against stale facts | Post-wait revalidation (content, policy, evidence hashes) | Approval void on mismatch | New proposal and approval |\n| Activity ignores cancellation | Cancelled run keeps doing work | Run in `cancelling` longer than its budget | Heartbeat requirement for long activities | Terminate, then rebuild the outcome report from history and the evidence log |\n| Replay faithfully repeats a bad decision | A recorded bad proposal is re-executed on every recovery | Same failure on every retry; grader or reviewer flags it | Business-terminal errors are non-retryable | Reset the run to the step before the decision and make a **new** decision with a new idempotency scope |\n\nThe second-to-last row is easy to miss. Durable execution guarantees that a decision, once made, is never made again. That is the property you want for recovery and the property you do not want when the decision was wrong. Recovery from a bad model output is therefore never a retry: it is an explicit reset that discards the recorded decision, asks again, and treats the answer as a new action with its own key, after confirming that the old action's effects did not happen or are compensated.\n\n## Trade-offs: Which Execution Substrate\n\n| Option | What it gives | What it costs | Right when |\n| --- | --- | --- | --- |\n| **Request-scoped run, no durability** | Simplest; no extra infrastructure | A crash loses the run; user retries | Runs finish in seconds to a minute, have no side effects or one idempotent one, and a fresh start is cheap |\n| **Job queue + state table** | Familiar; retries, visibility timeouts, dead-letter queues | You hand-build checkpoints, waits, timers, cancellation and versioning; the queue tempts teams to make it the ledger | Short, single-effect jobs; read-only research runs like Scout's (report written at the end) |\n| **Checkpointing agent framework** (LangGraph-style) | Graph state persisted per step; interrupts for humans; time travel for debugging | Node-level resume re-runs model calls inside a node; durability depends on mode and store; side effects need care | Loops where nodes are small and side-effecting nodes are isolated and idempotent; teams already on the framework |\n| **Replay-based durable workflow engine** | Recorded history; model output never re-sampled; durable timers, signals, child runs, versioning | Determinism discipline; a new engine to operate; history size limits; developer learning curve | Runs of minutes to weeks with side effects, human waits and deploys during runs: Closewise, Answerdesk's actions, casework |\n| **Declarative state-machine service** (Step Functions-style) | Managed; no replay hazard; callbacks with tokens; long executions | Loop logic in a state language; awkward for dynamic tool choice; provider lock-in | Fixed workflows with a few model steps and long waits, in one cloud |\n\nTwo judgements follow. First, **a simple job queue is enough more often than platform teams admit.** If a run is short, read-only or has one idempotent effect at its end, a queue with a run budget is the right tool; Scout's read-only research runs would be well served by one (assume a failed run costs a few euros to start again *(assumption)*), and the Weekend Fan-out was fixed with budgets, not durability. The test is: *what does a restart cost, in money, in time and in repeated side effects?* Second, **the engine is a means, not the design.** The author's agentic-platform-foundations design says it well: a durable workflow engine \"gives replay, timers, retries, and child workflow structure, but the side-effect idempotency contract is still application-owned\", and queues \"should carry work references rather than becoming the authoritative session ledger\" (technology choices, step `durable`). Whatever substrate you choose, the four mapping rules above still apply.\n\n## Across Domains: How the Stakes Change the Design\n\n| Dimension | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| Typical run length | Minutes to an hour; CI waits | Seconds per turn; days when waiting for customer or approval | Hours to days; close cycles, negotiation rounds | Days to months; evidence requests, statutory clocks |\n| Where resume state lives | Git branch, progress file, test results; the authoritative CI pipeline is the durable outer loop (harness design, step `lifecycle`) | Workflow history plus ticket or CRM record | Workflow history plus staging store of proposals | Workflow history plus case record built for appeal |\n| What a restart costs | Tokens and time; sandbox is disposable | Duplicate credits or messages (the Double Credit) | Duplicate postings (the Half-Posted Accrual) | Missed deadlines, inconsistent determinations |\n| Waits and their timers | CI result, reviewer; hours | Customer reply, A1 approval; time-boxed | Approver with escalation; period lock, posting window | Applicant evidence; appeal clock that starts on notice delivery (benefits design, step `audit-appeal`) |\n| Cancellation | Kill the sandbox; branch remains | Stop outbound actions; hand conversation to a human | Let in-flight postings finish; void open approvals | Hold, never drop: a case cannot vanish; a human disposes of it |\n| Versioning running work | Usually restart on new version (cheap) | Pin per conversation | Pin per close or per contract | Pin rules and models per case; replay must reconstruct \"under the rules it actually used\" (benefits design, step `audit-appeal`) |\n| Durable engine needed? | For the outer PR lifecycle, rarely for the inner loop | For actions and approvals, not for chat turns | Yes, the strongest case | Yes, with timers treated as legal deadlines |\n\nWhat the platform keeps common: the mapping rules (loop in code, model and tool calls as separate activities, workflow-minted keys), the clocks and heartbeats, the cancellation states, version pinning and the history-size discipline. What stays domain policy: **how long a wait may last and who escalates**, **which in-flight activities must complete when cancelled**, **whether a running case may switch to new rules**, and **what restarting costs**. For coding agents the honest answer is often that durable execution belongs to the PR workflow around the agent, while the inner loop's resume state is the repository itself. In public benefits and healthcare the timers are not engineering defaults but legal or clinical deadlines, so they belong in versioned, effective-dated policy, not in workflow code constants.\n\n## The Chief Architect's View\n\nThe decisions I would take, and who takes them:\n\n- **One execution substrate per class of run, chosen by the platform team, with a written rule for when a job queue is enough.** Teams that hand-build checkpoint tables and retry loops for multi-day work re-implement a durable engine badly. Teams that put a one-minute read-only run on a durable engine pay complexity for nothing.\n- **The four mapping rules are platform policy, enforced in review and in the runtime SDK.** The rule most worth automating is the split between model activities and tool activities: a lint or SDK check that refuses a tool call inside the model activity is cheap and prevents the costliest recovery bug.\n- **Version pinning of the whole manifest per run, owned by the platform team; exceptions (security fixes into running runs) decided by the security architect and recorded as updates.**\n- **Wait timers and escalations are owned by the risk owner of each agent**, not by engineers: Joost Vermeer, not Jonas Lindqvist, decides that a Closewise approval escalates after 48 working hours.\n- **Cancellation behavior per tool is part of the tool contract**, reviewed when the tool is registered.\n\nWhat to watch: stuck runs (runs waiting longer than their longest timer), history size per agent, nondeterminism errors after releases, the age of the oldest draining deployment, duplicate-key hits at the tool broker (each one is a recovery that worked), and the count of runs ending with effects in an unknown state.\n\nWhat is durable and what will change: replay-based recovery, recorded decisions, at-least-once activities and idempotent tools are old distributed-systems ideas and will outlast every agent framework. Engine APIs, framework integrations and their defaults will change within a year. Better models will run longer, which makes durable waits and versioning more important, not less; nothing in the evidence suggests that re-sampling on recovery will become safe.\n\n## Questions to Ask\n\n1. For each agent, what does restarting a run from scratch cost in tokens, time and repeated side effects? Is the execution substrate sized to that answer?\n2. After a crash in the middle of a turn, is the model asked again? Show where its output is recorded before anything acts on it.\n3. Is any model call in the same recorded step as the tool call it proposed?\n4. Who mints the idempotency key for each tool call: workflow code, or something derived from the model's output?\n5. How many layers retry a model call, and what is the total attempt count and cost in the worst case?\n6. For every wait, what is the timer, who is escalated to, and what is revalidated when the wait ends?\n7. When a run is cancelled, which in-flight tools must complete, which can be abandoned, and where is the report of completed effects?\n8. Which versions (code, model, prompt, tools, policy) is a running run pinned to, and how does a security fix reach it?\n9. How large does the history of your longest runs get, and what happens at the engine's limit?\n10. How would you recover a run whose recorded decision was wrong, without replaying that decision again?\n\nDurable execution guarantees that a recorded step is not executed twice by the engine. It cannot stop a tool call from reaching an external system twice, or two runs from acting on the same customer at once. That is the job of idempotency keys, receipts, retry budgets and leases, the subject of [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html).\n\n## Sources and Evidence\n\n### Research papers\n\n- [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) — S. Yao et al., 2024 (preprint). Definition of pass^k; evidence that repeated runs of the same task diverge.\n\n### Specifications, standards and regulation\n\n- [Workflows (determinism and replay)](https://docs.temporal.io/workflows) — Temporal, n.d., accessed 2026-10. Replay of recorded history; LLM invocations belong in activities.\n- [Activity definition](https://docs.temporal.io/activity-definition) — Temporal, n.d., accessed 2026-10. Activities may run more than once.\n- [Detecting activity failures](https://docs.temporal.io/encyclopedia/detecting-activity-failures) — Temporal, n.d., accessed 2026-10. The four activity timeouts and heartbeats.\n- [Cancellation (Python SDK)](https://docs.temporal.io/develop/python/cancellation) — Temporal, n.d., accessed 2026-10. Cancel versus terminate; activities must heartbeat to receive cancellation.\n- [Timers](https://docs.temporal.io/workflow-execution/timers-delays) — Temporal, n.d., accessed 2026-10. Durable timers that hold no worker resources.\n- [Workflow message passing](https://docs.temporal.io/encyclopedia/workflow-message-passing) — Temporal, n.d., accessed 2026-10. Signals, queries and validated updates.\n- [Worker versioning](https://docs.temporal.io/worker-versioning) and [Patching](https://docs.temporal.io/patching) — Temporal, n.d., accessed 2026-10. Pinned versions, draining, patch branches and nondeterminism errors.\n- [Continue-As-New](https://docs.temporal.io/workflow-execution/continue-as-new) and [Workflow execution limits](https://docs.temporal.io/workflow-execution/limits) — Temporal, n.d., accessed 2026-10. Fresh histories; the 10,240-event warning and 51,200-event or 50 MB limit.\n- [Durable orchestrator code constraints](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints) — Microsoft, 2026. Determinism requirement; code changes break replay; detection is incomplete.\n- [Choosing workflow type in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html) and [Service integration patterns](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html) — AWS, n.d., accessed 2026-10. Scoped exactly-once; callback tokens; heartbeat timeouts; best-effort cancellation.\n- [DBOS architecture](https://docs.dbos.dev/architecture) and [workflow tutorial](https://docs.dbos.dev/python/tutorials/workflow-tutorial) — DBOS, n.d., accessed 2026-10. Step checkpointing; nondeterminism errors; timeouts cancel children.\n- [Durable execution](https://docs.restate.dev/concepts/durable_execution) and [Restate for AI agents](https://docs.restate.dev/ai) — Restate, n.d., accessed 2026-10. Journal replay; persisted model and tool steps.\n- [How functions are executed](https://www.inngest.com/docs/learn/how-functions-are-executed) — Inngest, n.d., accessed 2026-10. Replay with saved step results; idempotent side effects.\n- [Checkpointers](https://docs.langchain.com/oss/python/langgraph/checkpointers) and [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) — LangChain, n.d., accessed 2026-10. Durability modes; node restart; replay re-executes model calls.\n- [Errors](https://platform.claude.com/docs/en/api/errors) and [Glossary](https://platform.claude.com/docs/en/about-claude/glossary) — Anthropic, n.d., accessed 2026-10. Streaming for long requests; nondeterminism at temperature 0.\n\n### Vendor documentation and engineering reports\n\n- [OpenAI Agents SDK integration README](https://github.com/temporalio/ai-integrations/tree/main/python/openai_agents) — Temporal, n.d., accessed 2026-10. Model calls recorded automatically, tools not.\n- [Defeating Nondeterminism in LLM Inference](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/) — H. He, Thinking Machines Lab, 2025. 80 distinct completions of 1,000 at temperature 0 on one open-weight setup.\n- [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) — Anthropic, 2025. Rainbow deployments for long-running agents.\n- [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — J. Young, Anthropic, 2025. Progress files and git as resume state; observed failure modes.\n- [Measuring AI agent autonomy in practice](https://www.anthropic.com/research/measuring-agent-autonomy) — Anthropic, 2026. Growth of the 99.9th-percentile turn duration.\n- [Timeouts, retries, and backoff with jitter](https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter) — M. Brooker, AWS Builders' Library, 2019. Timeouts from latency percentiles.\n- [Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) — M. Featonby, AWS Builders' Library, n.d., accessed 2026-10. Idempotency as the caller-visible guarantee.\n- [Addressing Cascading Failures](https://sre.google/sre-book/addressing-cascading-failures/) — Google, *Site Reliability Engineering*, 2016. Deadline and cancellation propagation.\n\n### Incidents, cases and decisions\n\n- The research for this chapter found no public incident report, as of October 2026, that attributes a duplicated side effect to an agent's crash recovery or replay; the documented agent incidents discussed in [Partial Failure, Recovery and Compensating Actions](partial-failure-and-compensation.html) concern destructive actions. Ostrell's Half-Posted Accrual is fictional.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026. Step `durable`: intent/result event log with idempotency keys; durable-engine and queue trade-offs.\n- Obrenović, Ž., \"Agentic Finance Platform\", system-design interview design, `system-design-interviews/data/book/agentic-finance-platform/interview.json`, 2026. Steps `pipeline` and `idempotency`: harness in workflow mode; batch schedulers versus durable engines for approval pauses; period-lock revalidation.\n- Obrenović, Ž., \"Agentic Public Benefits Platform\", system-design interview design, `system-design-interviews/data/book/agentic-public-benefits-platform/interview.json`, 2026. Steps `gate` and `audit-appeal`: evidence waits, appeal clocks and escalation timers; versioned replay of old cases.\n- Obrenović, Ž., \"Coding Agent Harness\", system-design interview design, `system-design-interviews/data/book/ai-coding-harness/interview.json`, 2026. Steps `lifecycle` and `scale`: the authoritative pipeline around a coding agent as the durable outer loop.\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

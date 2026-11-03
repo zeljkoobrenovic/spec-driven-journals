@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A Reference Architecture for Agentic Systems</title>
+    <meta name="description" content="Which components does an agentic system need, what is each responsible for, and how do they relate? A small set of components exists only because the model's proposals vary: a runtime that records them, a policy enforcement point that decides, a tool broker that executes, an evidence log that proves. A control plane decides what may run, and a data plane runs every call on pinned versions.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="A Reference Architecture for Agentic Systems">
+    <meta property="og:description" content="Which components does an agentic system need, what is each responsible for, and how do they relate? A small set of components exists only because the model's proposals vary: a runtime that records them, a policy enforcement point that decides, a tool broker that executes, an evidence log that proves. A control plane decides what may run, and a data plane runs every call on pinned versions.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/agentic-reference-architecture.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/05-agentic-reference-architecture/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="part-2.html" title="Part II — ARCHITECTURE: The Reference Architecture">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="models-and-the-model-gateway.html" title="Models and the Model Gateway">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — ARCHITECTURE: The Reference Architecture</p>
+        <h1>A Reference Architecture for Agentic Systems</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  30 min read · <a class="spec-link" href="agentic-reference-architecture.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/05-agentic-reference-architecture/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/05-agentic-reference-architecture/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="part-2.html" title="Part II — ARCHITECTURE: The Reference Architecture">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="models-and-the-model-gateway.html" title="Models and the Model Gateway">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "A Reference Architecture for Agentic Systems", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "Which components does an agentic system need, what is each responsible for, and how do they relate? A small set of components exists only because the model's proposals vary: a runtime that records them, a policy enforcement point that decides, a tool broker that executes, an evidence log that proves. A control plane decides what may run, and a data plane runs every call on pinned versions.", "permalink": "agentic-reference-architecture", "timetoread": "30 min read", "icon": "assets/icons/05-agentic-reference-architecture.png", "logo": "assets/images/05-agentic-reference-architecture/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Get the map of the whole book: every component of an agentic system, what each one owns and must never do, how they connect, which plane each belongs to, and which chapter covers each in depth.\n\n> **WHY THE BUSINESS CARES:** Without a shared architecture, every team that builds an agent also builds its own model client, tool access, logging and approval flow, and gets most of them wrong in a different way. A reference architecture is how a company pays for the hard parts once, and how a risk owner can ask one question of every agent and get comparable answers.\n\n> **WHY ARCHITECTS SHOULD CARE:** The architecture decides whether the controls in later chapters are enforced or only hoped for. A policy check that one path can skip, a credential the agent can read, or a model version nobody pinned turns every other control into documentation.\n\n> **KEY POINTS:**\n>\n> * **Most of an agentic system is ordinary machinery; the agent-specific part is narrow and should stay narrow.** In every final design this book draws on, the model sits in one or two nodes. Around it are a workflow engine, idempotent APIs, identity, queues and an audit log. The components this chapter adds exist because the model's proposals vary. Each one is justified by a failure it contains.\n> * **Every path from model output to the world crosses the same four components.** The runtime records the proposal, the policy enforcement point decides, the tool broker executes with credentials the model never sees, and the evidence log records intent and receipt. A path that skips one of them, even for a \"low-risk\" tool, is where the next incident starts.\n> * **Separate the control plane from the data plane, and degrade autonomy, not availability.** The control plane decides what may run: agent versions, tools, policies, tiers, gates. The data plane runs every call on pinned versions it cached. When the control plane is down, agents keep running on what was last approved, but nothing is promoted and every uncertain autonomy grant falls back to the lowest tier.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **Autonomy by Default** — without a policy enforcement point on every path, an agent's autonomy is whatever its tool list and credentials happen to allow.\n> * **Ambient Authority** — when agents reach systems of record directly with their own service accounts, no component sits where least privilege could be enforced.\n> * **The Silent Upgrade** — without a control plane that pins and gates versions, models, prompts, tools and policies change underneath running agents with no record of when.\n\n<br>\nEvery agentic system has the same unusual component: a model whose output **proposes the next action** and whose proposals vary from run to run. Everything else is software architects already know how to build: services, queues, workflow engines, identity, databases, logs. The architectural question is **which components must sit around the model, and what each must own**, so that a variable proposal can never become an unchecked effect.\n\nThis chapter is the hub of the book. It introduces each component briefly, assigns it its responsibilities and its prohibitions, and links to the chapter that owns it in depth. It does not teach any component in full. Read it first to get the map, and return to it when a later chapter's component needs placing.\n\nThe chapter owns five terms: **reference architecture (agentic)**, **control plane (agent)** and **data plane (agent)**, plus brief definitions of the **policy enforcement point** and the **evidence log**, which [Policy Enforcement and Audit](policy-enforcement-and-audit.html) treats in depth. It builds on Part I: [What Makes a System Agentic](what-makes-a-system-agentic.html) defined the agent loop and the harness, and [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html) defined the autonomy tiers that the architecture must enforce. The rest of Part II zooms in: [Models and the Model Gateway](models-and-the-model-gateway.html), [The Agent Runtime: Running the Loop](agent-runtime.html), [Connecting Agents to the Enterprise](agents-in-the-enterprise.html) and [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html).\n\n## Setting the Scene at Ostrell: Seven Platforms in Disguise\n\nOstrell, the fictional field-service software group this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), spent 2026 building seven agent prototypes in seven teams. Each prototype was, in effect, a small private platform. Each had its own loop, its own client for a model provider, its own tools and its own logs. When **Keelson**, the internal agent platform, approached internal general availability in **January 2027**, Tomas Verhoef, the Chief Architect, asked each team one question before onboarding: **show me every path by which your model's output can change something outside the process.**\n\nThe answers were what the platform team had feared. The tool inventory alone counted **212 agent tools**, 118 of them in-process functions using service-account keys in environment variables; four agents had their own `get_customer` tool with three different service accounts, and two agents could send email to any recipient ([Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html) tells that story). The paths to the world were just as varied:\n\n| Concern | What the seven prototypes did | Consequence |\n| --- | --- | --- |\n| Model access | Each called a provider directly with its own key; nobody could list which model versions were in use | Cost, data handling and version changes invisible to anyone outside the team |\n| Tool access and credentials | Tools called systems of record with the prototype's own service account | The agent could reach anything that account could reach |\n| Policy | Limits written into prompts (\"never credit more than €250\") and, in two prototypes, into tool code | Limits were requests to the model, not checks |\n| State | Conversation history in memory or in a cache; Closewise's posting script kept no record of what it had posted | A crash restarted work from scratch |\n| Evidence | Application logs, different per team, some with full prompts and customer data | No answer to \"what did the agent do and why\" |\n| Evaluation | Demos and spot checks | No way to tell whether a change made things better |\n\nThe cost of the \"State\" row arrived in the same month. In the **Half-Posted Accrual**, Closewise's pre-Keelson script crashed after posting **37 of 52** accrual entries for Ostrell Field Deutschland GmbH; an accountant re-ran it, and it re-posted all 52, overstating accruals by **€2.84 million** until the controller's balance review caught it the next day ([Durable Task State and Checkpoints](task-state-and-checkpoints.html)).\n\nAmara Okafor, Head of Agent Platform, did not need seven better prototypes. She needed one set of components that every agent would use, with responsibilities fixed so that no team could quietly skip one. Tomas's question to the architecture forum was this chapter's question: **which components does an agentic system need, what is each responsible for, and how do they relate?**\n\n![Seven separate agent prototypes, each with its own keys, tools and logs, become seven agents sharing one platform.](assets/images/05-agentic-reference-architecture/05-seven-platforms-become-one.jpeg)\n**Figure 1:** *Seven prototypes were seven private platforms; a reference architecture lets Ostrell build the hard parts once and gives every agent the same components.*\n\n## Concepts\n\n### Reference architecture (agentic)\n\nA **reference architecture** for agentic systems is a named set of components, each with a defined responsibility, a defined set of things it must never do, defined interfaces to its neighbors and a defined owner, that any agent in the organization is built on. It is not a product and not a framework. It is the contract that lets a security architect, an auditor or an on-call engineer reason about any agent without reading its code.\n\nTwo words in that definition do most of the work. **Responsibility** is what the component guarantees (Toolyard guarantees that a side-effecting call carries an idempotency key). **Prohibition** is what it must never do even when it would be convenient (Toolyard never decides policy itself). The prohibitions matter more than the responsibilities, because a component that does too much is the usual way a control ends up in the wrong place.\n\nThe book uses \"harness\" in one sense only: the deterministic code around a model that runs the loop, exposes tools, enforces budgets and permissions and records the run ([What Makes a System Agentic](what-makes-a-system-agentic.html)). In the reference architecture, the **agent runtime** is the component that hosts harnesses at scale.\n\n### Control plane and data plane\n\nThe terms come from networking and cloud infrastructure. AWS's resilience guidance describes control planes as \"the machinery involved in making changes to a system\" and data planes as \"the primary function of those resources\", and notes that control planes \"tend to have more moving parts and dependencies than data planes\" ([AWS, *Advanced Multi-AZ Resilience Patterns*, n.d., accessed 2026-10](https://docs.aws.amazon.com/whitepapers/latest/advanced-multi-az-resilience-patterns/control-planes-and-data-planes.html)). Applied to agents:\n\n- The **control plane (agent)** is the set of components that decide what may run: which agent versions exist and which is in production, which tools exist and who owns them, which policies and autonomy tiers apply, which evaluation gates a change has passed. It changes when people decide something. It runs at human speed.\n- The **data plane (agent)** is the set of components on the path of every run: the runtime, the model gateway, context assembly, the policy decision point, the tool broker, the stores they write. It runs at machine speed, on every model call and tool call, using versions the control plane approved.\n\nThe rule that connects them: **the control plane publishes versioned, immutable artifacts; the data plane reads them by version and never edits them.** A promotion moves a pointer; a run pins what it resolved at start ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)).\n\n### Policy enforcement point and evidence log (brief)\n\nA **policy enforcement point** (PEP) is a place in the call path where a deterministic decision (allow, deny, require approval, downgrade to suggestion) is made outside the model and enforced before anything proceeds. An agentic system needs several: before a model call, before a tool call, before a side effect and on output. The policy engine that computes the decision and the broker that enforces it are separate components. [Policy Enforcement and Audit](policy-enforcement-and-audit.html) owns the term.\n\nThe **evidence log** is the append-only, curated record of what each run did: inputs by reference, the context manifest, proposed and executed actions with receipts, policy decisions, approvals, outputs and the agent version manifest. It is written by platform components, never by agent code or the model, and it is distinct from both the runtime's recovery history and the traces ([Durable Task State and Checkpoints](task-state-and-checkpoints.html) compares the three).\n\n## What Published Decompositions Agree On\n\nThere is no standard reference architecture for agentic systems, and no study that compares architectures by incident rates. What exists is a set of decompositions from research, vendors and design exercises. They agree on more than their vocabulary suggests.\n\n| Source | Kind | Components it names | What it leaves out |\n| --- | --- | --- | --- |\n| Anthropic, [\"Building effective agents\"](https://www.anthropic.com/engineering/building-effective-agents) (2024-12-19) | Vendor engineering post | \"The basic building block of agentic systems is an LLM enhanced with augmentations such as retrieval, tools, and memory\"; workflows and agents built from it | Policy, identity, durable state, evidence; it is a pattern guide, not a platform |\n| Sumers, Yao, Narasimhan, Griffiths, [CoALA](https://arxiv.org/abs/2309.02427) (TMLR, v3 2024-03) | Research framework | \"Modular memory components, a structured action space\" and a decision procedure | Operations: it is a conceptual framework for organizing agents, not a deployment architecture |\n| Lu, Zhu, Xu et al., [reference architecture for foundation-model-based agents](https://arxiv.org/abs/2311.13148) (preprint, v3 2024-04) | Research preprint | A pattern-oriented reference architecture with responsible-AI components | Its evaluation maps the architecture onto two real-world agents; that tests coverage, not whether it prevents failures |\n| AWS, [Amazon Bedrock AgentCore overview](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) (n.d., accessed 2026-10) | Vendor documentation | \"Modular services\" usable \"together or independently\": Harness, Runtime, Memory, Gateway, Identity, Code Interpreter, Browser, Observability, Payments, Evaluations, Optimization, Policy, Registry | Durable task state and an evidence log as distinct components; how the services must be composed to be safe |\n| Author's interview designs, final architectures (design examples, 2026) | Design exercises | Harness/control plane, sandbox, guardrail or policy engine, identity broker, durable log, memory, eval harness, observability; domain designs add staging stores, rule engines, outboxes | Deployed evidence; some designs merge authorization and execution |\n\nThree points of agreement are worth taking as durable. First, **the model is wrapped, never exposed**: every source puts deterministic code between the model and its tools. Second, **tools are reached through a gateway or broker** rather than directly. AWS's Policy service, for example, integrates with its Gateway \"to intercept every tool call before execution\" (same page). Third, **evaluation and observability are named components**, not activities outside the architecture.\n\nThe author's interview designs add a fourth point, and I consider it the most useful. In the agentic-finance-platform design, almost everything downstream of the agent's proposals is classic financial-systems machinery: outbox, idempotency keys, webhook dedupe, write-once storage, maker–checker. The agent-specific parts are a bounded extraction node, a staging store for proposals, an identity model in which the agent can be a maker but never a checker, injection screening at intake and evaluation against ground truth (design example, `agentic-finance-platform/interview.json`, `highLevelArchitecture`). The public-benefits design is narrower still: only the intake agent and the inference tier are agentic, and the rule engine is described with \"The model cannot override it\" (design example, `agentic-public-benefits-platform/interview.json`, step `rules`). Sculley and colleagues made the same observation about machine-learning systems in 2015: most of the risk sits in the configuration, data dependencies and system around the model, not in the model code ([Sculley et al., NIPS 2015](https://papers.nips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html)). That paper predates language models; the observation transfers.\n\nThe sources disagree in two places that affect the design. One is **where authorization lives**. Several interview designs have an \"identity broker\" that both decides and executes side effects. This book separates the two, following OWASP's guidance for LLM06 Excessive Agency to \"implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not\" ([OWASP Top 10 for LLM Applications 2025, LLM06](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)). The other is **whether durable task state and an evidence log are separate components**. The agentic-platform-foundations design calls its execution stream and its evidence record \"distinct readers of one source of truth\" (design example, `agentic-platform-foundations/interview.json`, `finalDesign`), while vendor service lists show neither as a component of its own. This book keeps them separate, for the reasons in [Durable Task State and Checkpoints](task-state-and-checkpoints.html).\n\nWhere the evidence stops: **no published evaluation shows that any particular decomposition reduces incidents.** The case for the architecture below rests on documented failures that each component would have contained, on established distributed-systems practice, and on the author's judgement.\n\n## The Reference Architecture\n\n### The components and the one path\n\n![Diagram: The reference architecture](assets/images/05-agentic-reference-architecture/fig01-reference-architecture-every-path-model-proposal.jpeg)\n**Figure 2:** *The reference architecture. Every path from a model proposal to a change in the world runs runtime, policy enforcement point, tool broker, evidence log; the control plane feeds the data plane only versioned artifacts.*\n\nFigure 2 has one property that matters more than any box: **there is exactly one path from the model's output to the world.** The model gateway returns a proposal to the runtime. The runtime records it, turns it into a typed action, and sends it to the policy enforcement point. The tool broker executes only what the policy enforcement point allowed, with credentials the model never sees. The evidence log records the intent before the effect and the receipt after it. The author's agentic-platform-foundations design states the same invariant: \"there is no direct orchestrator-to-tool bypass for egress or high-risk actions\" (design example, `finalDesign`). I would drop the qualifier. A bypass \"for low-risk reads only\" becomes the path a new tool takes because it is quicker, and reads are what the [Trust Boundaries and the Agent Threat Model](agent-threat-model.html) calls one leg of the lethal trifecta.\n\n### Responsibilities and prohibitions\n\nThe table is the core of this chapter. Each row names the component, its Keelson name, what it owns, what it must never do, and the chapter that develops it.\n\n| Component | Keelson name | Owns | Must never | In depth |\n| --- | --- | --- | --- | --- |\n| **Interaction surfaces** | Channels, workbenches, CRM copilot, pull requests | Presenting proposals, plans and evidence; collecting approvals and interruptions; AI disclosure | Hold task state or approvals only in the user interface; let a client-side button execute an effect | [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html) |\n| **Agent runtime** | Keelson Runtime | Running the loop and workflows; run lifecycle; budgets; delegation limits; deriving idempotency keys; recording every model and tool result before acting on it | Execute a tool itself; re-ask the model on a tool retry; let the model write task state | [The Agent Runtime: Running the Loop](agent-runtime.html), [Durable Execution for Long-Running Agents](durable-agent-execution.html) |\n| **Context assembly** | Library inside Keelson Runtime | Selecting, shaping, ordering, labeling and budgeting what the model sees; writing a context manifest per call | Decide what the agent may do; take facts that must survive from the model's own output | [Context Engineering: Building What the Model Sees](context-engineering.html) |\n| **Retrieval** | Indexes reached through Toolyard read tools | Finding evidence with provenance; permission-aware results | Serve a document the principal could not read directly; drop the `as_of` | [Retrieval and Grounding](retrieval-and-grounding.html), [Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html) |\n| **Model gateway** | Keelson Gateway | Provider abstraction; credentials; quotas; tier routing; exact version pinning; redaction; recording requested and served model | Accept an alias in production; hide provider semantic differences behind a fake common interface | [Models and the Model Gateway](models-and-the-model-gateway.html) |\n| **Policy enforcement points** | Bulkhead | Deterministic decisions before model calls, tool calls and side effects and on output; resolving the effective autonomy tier per action | Execute anything; depend on the model recognizing an attack; fail open | [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n| **Tool broker** | Toolyard (broker) | Authorized tool set per run; argument validation; brokered credentials; idempotency keys and receipt lookup; `unknown` on timeout; result shaping; revocation | Decide policy; put a credential into context; retry a non-idempotent call blindly | [Tool Ecosystems, MCP and the Tool Broker](tool-ecosystems-and-mcp.html), [Tool Contracts: Inputs, Outputs and Validation](tool-contracts.html) |\n| **Execution environments** | Forge runners and other sandboxes | Isolating model-written code; filesystem and egress limits; short-lived scoped tokens | Hold production credentials; share a dirty environment between tenants | [Sandboxes and Execution Environments](sandboxes-and-execution-environments.html) |\n| **Durable task state** | Keelson task record on the durable workflow engine | Goal, plan, step records, action intents and receipts, approvals bound to content hashes, waits, budget counters | Accept a write from the model; start a side effect whose intent is not recorded | [Durable Task State and Checkpoints](task-state-and-checkpoints.html) |\n| **Long-term memory** | Tidemark | Memories with provenance, trust level, scope and expiry; write policies | Treat a recalled instruction as a grant of authority; keep a memory without expiry | [Memory: What an Agent Should Remember, and for How Long](agent-memory.html) |\n| **Evidence log** | Logbook | Append-only decision record per run, including the manifest hash | Accept writes from an agent's own credentials; be sampled | [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n| **Observability** | Wake | Spans from the components that act; metrics before sampling; alerts | Block a run when telemetry fails; let an agent read or write traces | [Observability: Traces, Metrics and Investigating Failures](agent-observability.html) |\n| **Evaluation** | Sounding | Suites, graders, simulators, regression gates, canaries, demotion triggers | Let the team under evaluation change criteria during a window; raise a tier on its own | [Evaluating Agentic Systems: Components, Trajectories, Workflows, Systems](evaluating-agentic-systems.html), [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html) |\n| **Registries** | Agent Registry; Toolyard registry | Agents, owners, version manifests, autonomy tiers, freshness register; tools, owners, definition hashes, risk classes | Allow an edit to a published manifest; change a tier without a decision record | [Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html), [Ownership, Operations and Evolving the Architecture](owning-agentic-systems.html) |\n\nThree rows deserve a sentence each because teams get them wrong most often.\n\n**The runtime records; it does not execute.** If one step both asks the model and runs the tool it chose, a crash between the two replays the step, the model is sampled again and may propose something different. That is how the Double Credit happened. [Durable Execution for Long-Running Agents](durable-agent-execution.html) makes the model call and the tool call separate recorded activities for that reason.\n\n**The policy engine decides; the broker executes.** Keeping them apart means a bug in one does not silently disable the other: Toolyard enforces hard limits a second time at the tool boundary even when Bulkhead allowed the call ([Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html)). It also means the policy can be reviewed as code by people who do not maintain the broker.\n\n**Identity is not a box; it is a property of every arrow.** Each run carries a principal and an on-behalf-of identity in its task record. Toolyard either makes the downstream call itself or mints a short-lived, audience-bound token from that identity. The model never sees either ([Agent Identity, Delegation and Least Privilege](agent-identity-and-least-privilege.html)). Keelson does not run its own identity provider; it uses Ostrell's existing one.\n\n### Making the one path true, not just drawn\n\nA diagram with one path is a claim. The way to make it true is to make the other paths impossible. Keelson does this with network policy on the workers that run agent code, plus a check at onboarding. A sketch of the check, run against each agent's deployment before the Agent Registry accepts it:\n\n```python\nALLOWED_EGRESS = {\"keelson-gateway\", \"toolyard-broker\", \"tidemark\", \"workflow-engine\", \"wake-collector\"}\n\ndef conformance(agent: AgentDeployment, registry: Registry) -> list[str]:\n    problems = []\n    if extra := agent.network_policy.egress_targets() - ALLOWED_EGRESS:\n        problems.append(f\"direct egress to {sorted(extra)}\")      # provider APIs, systems of record\n    if agent.secrets_mounted():\n        problems.append(\"credentials mounted in agent workload\")  # Toolyard holds them\n    if not agent.manifest.is_pinned():\n        problems.append(\"manifest has floating references\")       # aliases, 'latest'\n    for cls in agent.manifest.action_classes():\n        if registry.tier(agent.id, cls) is None:\n            problems.append(f\"no autonomy tier recorded for {cls}\")  # Bulkhead would deny\n    return problems                                               # empty list or no onboarding\n```\n\nThe check is deliberately boring. It does not inspect prompts or behavior. It verifies that the agent's workload cannot reach a model provider or a system of record except through the Gateway and Toolyard, holds no secrets, and has a tier for every action class it declares. Logbook is written by the platform components, so it is not on the agent's egress list at all.\n\n### Where existing systems attach\n\nAgents do not replace the enterprise; they become clients of it. The rules are short, and [Connecting Agents to the Enterprise](agents-in-the-enterprise.html) develops them:\n\n- **Systems of record stay authoritative.** The ERP, billing, CRM, HRIS and contract-lifecycle tool own their data and enforce their own rules. Agents reach them only through Toolyard tools built on the systems' existing APIs, never through their databases. The Stale Price Book ended with the CRM itself refusing to send a quote whose price-book version was superseded ([Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html)): the system of record is the last enforcement point.\n- **Agent output goes to a staging store first.** Closewise's proposed journal entries, Clausewise's redlines and Dealroom's draft quotes live outside the system of record until an approved action object crosses into it, executed by deterministic code.\n- **The data platform is reached through governed views** exposed as read tools, with the principal's permissions applied at query time.\n- **Existing processes keep their shape.** Approvals land in the queues and tools where approvers already work; escalations become tickets.\n\n### Requirements per interaction\n\nEach arrow in Figure 2 has its own requirements. The values below are those the owning chapters set for Keelson; latency figures are illustrative targets.\n\n| Interaction | Consistency | Latency | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Run start: resolve manifest and tool set | Pointer read once; fixed for the run | Milliseconds *(assumption)*; tool set p95 under 50 ms *(assumption)* | Manifest hash and tool snapshot id in task record | Runtime |\n| Model call through the Gateway | Served model must equal the pinned version | Dominates turn latency | Requested and served model on the span; result recorded before use | Model proposes; Gateway enforces |\n| Policy decision before an action | Must see a demotion or hold within 60 s | p99 ≤ 5 ms from a cached bundle *(assumption)* | Decision with policy version in Logbook | Bulkhead only |\n| Side-effecting tool call | Exactly-once effect: idempotency key, receipt lookup, `unknown` on timeout | Bound by the system of record | Intent before, receipt after, in task record and Logbook | Toolyard, after Bulkhead allows |\n| Human approval | Bound to the action object's content hash; void if action, policy or evidence changes | Minutes to days | Approval record with approver, evidence shown and expiry | Named approver role |\n| Evidence write | Ordered per action | Synchronous around side effects | Append-only; tamper-evident for back-office agents | Platform components only |\n| Span emission | None | Asynchronous; never on the critical path | Best effort | Platform components only |\n| Promotion of a version or tier | Strong, single writer | Hours to days | Signed decision record | Gate pipeline; risk owner for tiers |\n\n## Control Plane and Data Plane\n\n### What sits where\n\n![Diagram: The control plane publishes versioned artifacts that the data plane caches and enforces](assets/images/05-agentic-reference-architecture/fig02-control-plane-publishes-versioned-artifacts-that.jpeg)\n**Figure 3:** *The control plane publishes versioned artifacts that the data plane caches and enforces; evidence flows back from the data plane into evaluation, which is how the control plane learns.*\n\nTwo components straddle the line, and they are split deliberately. **Toolyard** is a registry (control plane: tools, owners, hashes, change review) and a broker (data plane: every call). **Bulkhead** is a policy repository (control plane: policies as code, reviewed and versioned) and a set of decision points (data plane: evaluated on every action from cached bundles). Splitting each into two deployable parts lets the data-plane half be small, fast and highly available, while the control-plane half carries the review workflow.\n\n**Evaluation belongs to the control plane.** Sounding does not sit on any call path, but its verdicts decide which manifest the pointer names and which tier an action class holds. That is the sense in which \"evaluation is part of the architecture, not a phase\": the gate is a control-plane component with write access to the registry, and the data plane cannot run a version that did not pass it.\n\n### Static stability, with one exception\n\nMike Furr's AWS Builders' Library article defines the goal: \"In a statically stable design, the overall system keeps working even when a dependency becomes impaired\", and notes that the data plane \"might not get updates during the period of impairment\" ([Furr, AWS, 2019](https://builder.aws.com/content/3K9SiqiJ369TGkkGzqPM95BuYWI/static-stability-using-availability-zones)). The agent data plane should behave the same way: manifests, tool snapshots and policy bundles are cached by hash, so new runs start and running runs continue while the registry is down.\n\nThe exception is **autonomy**. A cached tier may be stale in the dangerous direction, because demotions and holds must take effect within a minute ([From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html)). So Keelson applies static stability to *availability* and fail-closed behavior to *authority*:\n\n| Component unavailable | What keeps working | What stops or degrades | Why |\n| --- | --- | --- | --- |\n| Agent Registry | New and running runs on cached manifests | Promotions, new agents; tier reads that miss the cache fall back to the lowest tier configured for the class | A stale \"A2\" is worse than an extra approval |\n| Toolyard registry | Calls with the pinned snapshot | Tool changes; revocations already pushed still apply | Revocation must not depend on the registry being up |\n| Sounding | Everything at run time | Gates, canaries, promotions | No version ships without a verdict |\n| Bulkhead decision point | Nothing that has a side effect | All side effects denied; read-only steps continue only if their policy is cached | Policy is never skipped |\n| Logbook | Read-only steps | Side effects blocked | Evidence that can be lost turns an incident into a dispute |\n| Wake | Everything | Spans dropped and counted | Telemetry must never become an outage ([Observability: Traces, Metrics and Investigating Failures](agent-observability.html)) |\n| Toolyard broker | Answers from context | Every tool call; agents escalate to humans | No alternative path exists, by design |\n\n![With the registry unplugged, agent workers keep running on cached versions while the autonomy dial drops to the lowest tier.](assets/images/05-agentic-reference-architecture/05-degrade-autonomy-not-availability.jpeg)\n**Figure 4:** *Keelson degrades autonomy, not availability: agents keep running on cached versions when the control plane is down, but uncertain autonomy falls back to the lowest tier.*\n\nThe last row is the price of the one-path rule: the broker is a single dependency of every agent that acts. That is acceptable only if it is run like the most critical service in the company: replicated, capacity-planned, with its own rollout discipline (see Failure Modes below).\n\n## Worked Example at Ostrell\n\n### One credit, end to end\n\nIn November 2027 an Answerdesk customer reports that a technician visit under a service contract was missed. The resolution the agent will propose is a service credit of **€180**. Since October 2027, credits **up to €250** are tier **A2** (act within limits, sampled review after the fact); larger credits are **A1** and need a support team lead's approval. Figure 5 follows the credit through every component.\n\n![Diagram: A €180 credit crosses every data-plane component once](assets/images/05-agentic-reference-architecture/fig03-180-credit-crosses-every-data-plane.jpeg)\n**Figure 5:** *A €180 credit crosses every data-plane component once. The model's only contribution is the proposal; the key, the tier, the credential and the receipt are all produced by code.*\n\nWhat each component contributed:\n\n1. **Context assembly** read the contract and visit history through Toolyard read tools, so the facts arrived with provenance envelopes and the customer's verified identity, not from the chat text.\n2. **Keelson Gateway** routed the action-proposal step to the Large tier, as the routing profile requires, at the exact pinned version, and recorded the served version on the span.\n3. **Keelson Runtime** recorded the proposal before acting, built a typed action object (`issue_credit`, contract id, €180, reason code) and minted the idempotency key from the agent id, run id and action object id, not from the model's text.\n4. **Bulkhead** resolved the action class to A2, checked the amount against the €250 limit and the per-customer rate limit, and allowed it. A €280 proposal would have produced \"approval required\" and an approval card for a team lead.\n5. **Toolyard** re-validated the arguments, minted a short-lived token scoped to the billing server and the tenant, and called billing with the key. Had billing timed out, Toolyard would have marked the action `unknown` and looked up the receipt by key before anything else happened.\n6. **Logbook** recorded intent and receipt with the manifest hash and policy version; **Wake** recorded spans from every component; the credit joined the pool from which A2 actions are sampled for after-the-fact review.\n\nNone of this is novel machinery. It is what made the March 2027 Double Credit, in which **212 customers** received duplicate credits worth **€31,400**, impossible to repeat in the same form: the retry now looks up a receipt by key and never re-asks the model.\n\n### Nine incidents, one map\n\nThe strongest argument for the reference architecture at Ostrell is that each of the 2027 incidents maps to a component that was missing, bypassed or under-specified, and each fix landed in a named component. The table is also a reading guide: each row points to the chapter that tells the story.\n\n| Incident (2027) | What failed | Where the fix landed | Plane |\n| --- | --- | --- | --- |\n| Half-Posted Accrual (Jan): 37 duplicate postings, €2.84 million | No durable task state; no idempotency keys on ERP postings | Task record on the durable engine; Toolyard posting key = task id + entry id + entry version | Data |\n| Weekend Fan-out (Feb): 41 hours, €8,700 | No run budget or delegation depth limit; only a quota alert stopped it | Runtime budget ledger; depth 2, at most 8 parallel sub-agents; Gateway tenant quotas | Data, with budgets set in the Registry |\n| Double Credit (Mar): 212 customers, €31,400 | Tool retry re-asked the model | Runtime never re-asks on retry; Toolyard receipt lookup by key | Data |\n| Lost Handoff (Apr): contract id lost in about 1 in 40 handoffs | Free-text handoff between agents | Typed handoff payload; specialist folded back as a tool set | Data |\n| Poisoned Ticket (May): exfiltration attempt, blocked | One agent held all three trifecta legs; found 6 days later in trace review | Toolyard recipient restriction (it held); quarantined reader in context assembly; Bulkhead egress policy; Sounding injection suite; Wake security alerts | Both |\n| Stale Price Book (Jun): 14 quotes, €46,000 | Index refresh failed silently for 23 days | Provenance envelopes; freshness register in Agent Registry; re-read before finalizing; CRM refuses superseded prices | Both, plus the system of record |\n| Fixture Purge (Jul): 9 PRs, 2 merged | Agents could delete or skip failing tests | Protected paths in the execution environment; Sounding grader on test count; reviewer checklist | Both |\n| Alias Drift (Aug): accuracy 96.1% to 89.4% | A provider alias moved; nothing pinned it | Alias ban and exact pinning (Registry, Gateway); daily canary (Sounding); served-not-pinned alert (Wake) | Both |\n| Rubber Stamp (Q2): 99.3% approved, median 6 seconds | Approval surface showed too little; approvers never measured | Approval cards with evidence and policy clause; second-reviewer sample; per-approver metrics | Interaction surface, Wake |\n\nTwo observations come out of the table. **Four of the nine fixes span both planes, and two more needed a control-plane setting or a new metric**: the data plane enforces, but the control plane had to learn something first (a freshness bound, a pinning rule, an injection suite). A platform team that owns only the data plane cannot close these. And **the Poisoned Ticket is the one incident the architecture contained before anyone noticed**, because the broker enforced a recipient rule the model could not argue with. That is what the one-path rule buys.\n\n## Failure Modes and Recovery\n\nThe reference architecture introduces failure modes of its own: a shared platform concentrates risk as well as controls.\n\n| Scenario | Detection | Containment | Recovery |\n| --- | --- | --- | --- |\n| **A team adds a direct path** (provider SDK or system-of-record client in agent code) | Onboarding conformance check; Gateway spend reconciled monthly against provider invoices; denied egress counted by network policy | Network policy blocks the call at run time | Remove the path; route through Gateway or Toolyard; re-run conformance |\n| **Platform bug in Toolyard or Bulkhead** affects every agent at once | Wake per-agent error and denial rates; Sounding canaries on production manifests | Platform components roll out per agent cohort, lowest-consequence agents first; previous version kept warm | Roll back the component; replay affected `unknown` actions through receipt lookup |\n| **Control plane unavailable** | Registry health checks; promotion pipeline failures | Data plane on cached artifacts; tier cache misses fall back to the lowest tier | Restore registry; pending promotions resume; no data-plane restart needed |\n| **Version skew**: manifest names a tool contract the broker no longer serves | Toolyard rejects at run start; registration check refuses the manifest | Run does not start; the agent stays on its last valid manifest | Publish a compatible manifest through the gate ([Versioning Prompts, Models, Tools, Policies and Memory](versioning-agent-systems.html)) |\n| **Policy decision point overloaded** | Bulkhead latency and timeout rate | Fail closed: side effects deny, runs escalate; no model calls in the policy hot path | Scale decision points; investigate the load source, often a loop |\n| **Component boundary erodes**: the runtime starts making policy decisions \"for performance\" | Architecture review of runtime changes; Bulkhead decision counts per action fall | Ownership rules: policy code lives only in the Bulkhead repository | Move the logic back; add a test that every side-effecting path has a Bulkhead decision in Logbook |\n\nThe last row is slow and invisible, so it needs a mechanical check. Keelson's is a daily Logbook query: every executed side effect must have a Bulkhead decision record with a policy version. A side effect without one is treated as an incident, whatever its outcome.\n\n## Trade-offs\n\n### Build, adopt or let each team choose\n\n| Option | What you get | What you still own | When it is right |\n| --- | --- | --- | --- |\n| **Each team builds its own** | Speed for the first agent; full freedom | Every component, seven times; no common evidence | One or two low-consequence agents; exploration |\n| **Adopt a framework per agent** | Loop, tool calling and some state handled | Policy, identity, evidence, evaluation gates, cross-agent governance | Teams with strong platform support who need loop mechanics only |\n| **Adopt a managed agent platform** (e.g. a cloud provider's agent services) | Runtime, isolation, gateway, identity, observability, policy as services | Composition, task state and evidence design, domain policy, provider lock-in | Organizations on one cloud that prefer services to staff |\n| **Build a thin internal platform on existing infrastructure** (Ostrell's choice) | Components that match the company's identity, systems of record and audit needs | Staffing a platform team; keeping up with protocols and providers | Several agents with real side effects; regulated back-office work; multiple model providers |\n\nAnthropic's December 2024 guidance points in the same direction from the other end: \"We suggest that developers start by using LLM APIs directly\", warning that frameworks \"often create extra layers of abstraction that can obscure the underlying prompts and responses\" ([Anthropic, 2024](https://www.anthropic.com/engineering/building-effective-agents)). That is advice about the loop. It does not cover policy, identity or evidence, which no team should build alone.\n\nManaged services do not change the responsibilities table; they change who implements each row. AWS states its services can be used \"together or independently\" (AgentCore overview, accessed 2026-10). That flexibility means the composition, including whether every tool call crosses the policy service, remains the customer's design decision. A list of managed services is not an architecture until someone has drawn the one path through it.\n\n### How thick the platform should be\n\nThe other trade-off is how much the platform does for teams. A thick platform (shared prompts, shared agent templates, a central team writing agents) moves domain knowledge into the wrong team. A thin platform that only offers libraries cannot enforce anything. The line I use: **the platform owns every component whose failure an attacker or a crash could exploit across agents** (gateway, broker, policy decisions, task state, evidence, traces, gates). **Product teams own everything that requires domain knowledge**: the agent's instructions, its tools' business semantics, its evaluation datasets and, with the risk owner, its tiers. The author's agentic-support-platform design takes the same line: it \"adds the latency budget and in-loop action gate on top of that harness rather than rebuilding the loop\" (design example, step `live-loop`). Ostrell's Agent Platform team grew from **14 engineers in January 2027 to 19 by December 2027** on that line; it did not write any of the seven agents.\n\n## Across Domains: How the Stakes Change the Design\n\nThe components are the same in every domain. What changes is how strict each one is and which components a domain adds.\n\n| Component | Coding agents | Customer operations (support, sales, marketing) | Back office (finance, legal, HR) | High-stakes decisions (healthcare, public benefits) |\n| --- | --- | --- | --- | --- |\n| Interaction surface | Pull request; local CLI prompts | Chat, email, CRM copilot; AI disclosure | Workbench and approval queue in the system of record's process | Clinician or caseworker worklist; notices and appeal path |\n| Runtime style | Bounded loop in a sandbox; long sessions | Bounded loop under a turn deadline | Workflow with agentic steps; multi-day waits | Deterministic pipeline with bounded model nodes |\n| Execution environment | MicroVM or gVisor-class sandbox; no production credentials | Mostly API tools; no code execution | API tools into staging stores | Read paths scoped to the case; no write path from the model |\n| Policy enforcement | Protected paths; merge stays human | Amount and rate limits; recipient allowlists; suppression and consent | Segregation of duties; maker never checker | **Rule engine added as a component**; adverse outcomes need a human decision |\n| Evidence log | Git history plus Logbook | Append-only | Append-only and tamper-evident; record-keeping retention | Tamper-evident; explanation and appeal records |\n| Evaluation ground truth | Strong and cheap: tests, builds | Weak: judges, simulators, sampled audit | Ground-truth bookings and lawyer acceptance | Expert review; golden cases on every rule change |\n\nThe design examples behind the last column come from the author's interview project: in the clinical design, the only write path to the health record runs through the identity service after a clinician acts, with no link from the agent or the pipeline to a record write (design example, `agentic-healthcare-platform/interview.json`, `highLevelArchitecture`), and the benefits design's rule engine is authoritative over the model (`agentic-public-benefits-platform/interview.json`, step `rules`).\n\nMy judgement: **the platform keeps every component common, and the domain sets three things**: the policies and tiers Bulkhead enforces, the retention and tamper evidence of the evidence log, and any **added deterministic component** the domain's rules require (a rule engine, a match engine, a maker–checker gate). A domain that asks for a different runtime or a different broker is usually asking for a policy that has not been written yet.\n\n## The Chief Architect's View\n\nThe decisions this chapter asks you to make, and who makes them:\n\n- **The component list and the one-path rule.** The architecture forum decides, and the decision is written down as an architecture principle with a conformance check. Without the check, the rule decays.\n- **Platform versus product boundary.** The Chief Architect and the head of the agent platform decide which rows the platform owns. Revisit it once a year, or when a team asks for a bypass.\n- **Who owns each control-plane artifact.** Manifests belong to the agent owner, tools to the system-of-record owner, policies to security and the risk owner, tiers to the risk owner, gates to the evaluation lead. Write it in the registry, not on a slide.\n- **Failure behavior per component**, as in the static-stability table. Decide it before the first outage, because the default in most code is to fail open.\n\nWhat is durable and what will change. The **responsibilities and prohibitions** are durable. They follow from the model's variability and from distributed-systems practice, and they will hold as models improve. The **implementations** are volatile: protocol revisions (MCP 2026-07-28, A2A 1.0), managed service lists, the OpenTelemetry generative-AI conventions still in Development status as of October 2026. Build the components so that the protocol and the provider sit behind them. When model capabilities improve, expect to widen tiers and remove some workflow scaffolding. Do not expect to remove the broker, the policy point or the evidence log; better proposals do not make an unchecked path safe.\n\nWhat to watch: the rate of conformance failures at onboarding, the count of side effects without a policy decision (it must be zero), Gateway spend against provider invoices, and how many incident fixes needed both planes. The last one tells you whether the platform team and the evaluation team are actually working as one system.\n\n## Questions to Ask\n\n1. Draw every path by which this agent's model output can change something outside its process. How many are there, and which of the four components does each skip?\n2. Where is the authorization decision made, and is it a different component from the one that executes?\n3. Can the agent's workload reach a model provider, a system of record or a secret store directly? What enforces that it cannot?\n4. Which artifacts does the run pin at start (model version, prompts, tool contracts, policy version), and where is the hash recorded?\n5. If the control plane is down for an hour, what keeps running, and which autonomy grants degrade?\n6. If the policy decision point or the evidence log is unavailable, does a side effect proceed?\n7. Which component would have contained each of your last three incidents, and did the fix land in the data plane, the control plane or both?\n8. Which rows of the responsibilities table does the platform own, and which does the product team own? Is that written down?\n9. If you adopt a managed agent platform, who has drawn the one path through its services?\n\nThe components are now on the map. The next chapter zooms into the first one every run touches on its way to a proposal: [Models and the Model Gateway](models-and-the-model-gateway.html).\n\n## Sources and Evidence\n\n### Research papers\n\n- [Cognitive Architectures for Language Agents](https://arxiv.org/abs/2309.02427) — Sumers, Yao, Narasimhan, Griffiths, TMLR, 2024 (arXiv v1 2023). Conceptual decomposition into memory, structured action space and decision procedure.\n- [Towards Responsible Generative AI: A Reference Architecture for Designing Foundation Model based Agents](https://arxiv.org/abs/2311.13148) — Lu, Zhu, Xu, Xing, Harrer, Whittle, preprint, 2023 (v3 2024). A pattern-oriented reference architecture; evaluated by mapping onto two agents.\n- [Hidden Technical Debt in Machine Learning Systems](https://papers.nips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html) — Sculley et al., NIPS, 2015. System-level risk sits around the model, not in it.\n\n### Specifications, standards and regulation\n\n- [OWASP Top 10 for LLM Applications 2025: LLM06 Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/) — OWASP GenAI Security Project, n.d., accessed 2026-10. Authorization in downstream systems, not in the model.\n- [Model Context Protocol specification, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) — MCP project, 2026. Current protocol revision referenced as a volatile implementation detail.\n\n### Vendor documentation and engineering reports\n\n- [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) — Anthropic, 2024. The augmented LLM as building block; start with LLM APIs directly.\n- [What is Amazon Bedrock AgentCore?](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) — AWS, n.d., accessed 2026-10. A managed platform's list of modular agent services, including Policy intercepting tool calls at the Gateway.\n- [Control planes and data planes](https://docs.aws.amazon.com/whitepapers/latest/advanced-multi-az-resilience-patterns/control-planes-and-data-planes.html) — AWS, *Advanced Multi-AZ Resilience Patterns*, n.d., accessed 2026-10. Definitions of control and data plane.\n- [Static stability using Availability Zones](https://builder.aws.com/content/3K9SiqiJ369TGkkGzqPM95BuYWI/static-stability-using-availability-zones) — Mike Furr, AWS Builders' Library, 2019. Data planes keep working when control planes are impaired.\n\n### Incidents, cases and decisions\n\n- No public incident is cited in this chapter; the incidents in the worked example are Ostrell's and fictional. Documented real incidents are cited in the chapters each row links to.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Platform Foundations\", system-design interview design, `system-design-interviews/data/book/agentic-platform-foundations/interview.json`, 2026 — final architecture, the no-bypass invariant, execution stream versus evidence record.\n- Obrenović, Ž., \"Agentic Finance Platform\", system-design interview design, `system-design-interviews/data/book/agentic-finance-platform/interview.json`, 2026 — the narrow agent-specific part of a back-office design; staging store; maker–checker.\n- Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, 2026 — in-loop action gate on top of a shared harness.\n- Obrenović, Ž., \"Agentic Healthcare Platform\", system-design interview design, `system-design-interviews/data/book/agentic-healthcare-platform/interview.json`, 2026 — write path only through a clinician's identity.\n- Obrenović, Ž., \"Agentic Public Benefits Platform\", system-design interview design, `system-design-interviews/data/book/agentic-public-benefits-platform/interview.json`, 2026 — authoritative rule engine; model assists, engine decides.\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

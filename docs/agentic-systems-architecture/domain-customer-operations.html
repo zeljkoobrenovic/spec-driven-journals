@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Operations: Support, Sales and Marketing Agents</title>
+    <meta name="description" content="What does customer operations demand beyond the platform's general mechanisms? Treat every statement as the organization's own, render commitments from records, gate outbound contact on suppression and consent by purpose, and measure verified resolution rather than deflection.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Architecting Agentic Systems">
+    <meta property="og:title" content="Customer Operations: Support, Sales and Marketing Agents">
+    <meta property="og:description" content="What does customer operations demand beyond the platform's general mechanisms? Treat every statement as the organization's own, render commitments from records, gate outbound contact on suppression and consent by purpose, and measure verified resolution rather than deflection.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/domain-customer-operations.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/agentic-systems-architecture/assets/images/42-domain-customer-operations/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="domain-coding-agents.html" title="Coding Agents: CLIs, Harnesses and the Developer Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="domain-back-office.html" title="Back Office: Finance, Legal and HR Agents">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part XI — DOMAINS: How Requirements Change Across Domains</p>
+        <h1>Customer Operations: Support, Sales and Marketing Agents</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-28  ·  33 min read · <a class="spec-link" href="domain-customer-operations.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/42-domain-customer-operations/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/42-domain-customer-operations/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Architecting Agentic Systems</a><span class="nav-right"><a class="nav-prev" href="domain-coding-agents.html" title="Coding Agents: CLIs, Harnesses and the Developer Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="domain-back-office.html" title="Back Office: Finance, Legal and HR Agents">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Customer Operations: Support, Sales and Marketing Agents", "date": "2026-10-28", "author": "Željko Obrenović", "excerpt": "What does customer operations demand beyond the platform's general mechanisms? Treat every statement as the organization's own, render commitments from records, gate outbound contact on suppression and consent by purpose, and measure verified resolution rather than deflection.", "permalink": "domain-customer-operations", "timetoread": "33 min read", "icon": "assets/icons/42-domain-customer-operations.png", "logo": "assets/images/42-domain-customer-operations/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn the consequence profile of support, sales and marketing agents, and follow one Answerdesk conversation end to end through routing, grounding, actions, words and audit. You will also see the controls this domain needs per action class, what courts, companies and research have documented about customer-facing agents, and which parts of the design carry over to other domains.\n\n> **WHY THE BUSINESS CARES:** A customer-facing agent speaks for the company thousands of times a day. A tribunal has held an airline to what its chatbot said. A company that measured its assistant mostly by cost later said that quality had suffered. The business case depends on resolved customers, not on conversations kept away from staff.\n\n> **WHY ARCHITECTS SHOULD CARE:** Failures here repeat at volume, happen in front of the customer and become commitments the moment they are typed. The controls that matter (status rendered from records, contact policy at send time, a verified outcome metric) sit outside the model and cannot be added later with a prompt.\n\n> **KEY POINTS:**\n>\n> * **Every sentence is a representation, and every promise is an action.** The organization owns what its agent says (*Moffatt v. Air Canada*, 2024). So amounts, dates, eligibility and \"done\" are rendered from receipts and policy records, and the model writes only the prose around them.\n> * **Outbound contact is gated twice, by suppression and by consent for the purpose.** A global, identity-resolved do-not-contact list and consent recorded per purpose are checked at send time by the executor, not at drafting time by the agent. Either one blocks. A service answer and a sales offer in the same chat are different purposes.\n> * **Measure verified resolution, not deflection.** \"Handled without a human\" counts abandoned customers as successes. Define resolution with a re-contact window and verified effects, track it next to escalation correctness and commitment accuracy, and do not let a containment figure into the business case.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-agentic-systems-go-wrong.html):**\n>\n> * **The Fire-and-Forget Action** — in a live conversation the agent's words are part of the action, and a reply that says \"done\" before a receipt exists is an effect nobody verified.\n> * **The Lethal Trifecta** — a support agent reads text from anyone, sees customer data and can send messages and money, so the domain sits on all three legs by default.\n> * **Vibe Evals** — deflection and satisfaction scores look like evaluation, but a high score can hide wrong credits, abandoned customers and invented policy.\n\n<br>\nCustomer operations is where most organizations first put an agent in front of the public, and where most public embarrassments come from. Support, sales and marketing agents run at **high volume**, so a rare failure becomes a daily one. They act **in the customer's presence**, so every error is witnessed. And they **speak for the company**, so a fluent sentence that is wrong is, legally and commercially, the company's sentence.\n\nEarlier chapters built the parts on Ostrell's Answerdesk and Dealroom. Here they run as one system, and the question is what the domain adds. My answer has three parts: **representation** (the words), **contact** (who may be addressed, and for what), and **outcome** (what counts as success).\n\nThe chapter owns four terms: the **consequence profile**, the set of consequence properties that drive a domain's controls; **verified resolution**, together with its two impostors, **deflection** and **containment**; and the **contact policy**, the combined suppression and consent check on outbound contact. It builds on [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html), [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html), [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html) and [From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html). Part XI continues with the back office in [Back Office: Finance, Legal and HR Agents](domain-back-office.html).\n\n## Setting the Scene at Ostrell: The Two-Thirds Slide\n\nOstrell, the fictional field-service software group this book follows (see [Meet Ostrell: Seven Agents, One Platform](meet-ostrell.html)), runs **Answerdesk**, its customer-support agent for Ostrell Field, at about **2.6 million conversations a year**, roughly **7,100 a day**. In Q3 2027 it resolved **41%** of conversations end to end against a 2028 target of 45%. It escalated **33%** to human support staff. Its action classes run at Ostrell's autonomy tiers, from A0 (suggest only) through A1 (draft for approval) and A2 (act within limits, sampled afterwards) to A3 (act autonomously); see [Autonomy, Reversibility and the Cost of Being Wrong](autonomy-and-consequence.html). The remaining **26%** were abandoned or resolved by the customer without help.\n\nIn late November 2027 a finance analyst preparing the 2028 budget showed Marten Ruys, the CFO, a slide: **\"Answerdesk handles two-thirds of customer conversations without a human.\"** The arithmetic was right (41% plus 26%), and the slide proposed cutting the support staffing plan to match. Marten asked Lena Brandt, Director of Support Operations and Answerdesk's owner, why her dashboard said 41%.\n\nThe same week brought two more requests from the business. Ostrell Assure product marketing asked for Answerdesk to **end resolved conversations with a renewal offer** when the customer's service contract expired within 60 days. And Priya Natarajan, VP Sales Operations, asked for **Dealroom**, the sales agent in the customer relationship management (CRM) system, to draft follow-up emails after each quote. Account executives would send them, as they send quotes.\n\nTomas Verhoef, Ostrell's Chief Architect, put all three on one architecture forum agenda. The slide was about **what counts as success**; the renewal offer about **who may be contacted, and for what purpose**; the follow-up emails about **who executes an outbound message the agent drafts**. The forum's question was: **what does customer operations demand that Keelson's general mechanisms do not already give, and where must those demands be enforced?**\n\n## The Consequence Profile of Customer Operations\n\n### Five properties, weighted for this domain\n\nA **consequence profile** is the set of consequence properties that decides which controls a domain needs. The domains research brief behind this book uses five: legal or similarly significant effect on a person, irreversibility, asymmetry of power, professional duty of the human in the loop, and representation to the public. Customer operations scores high on two, medium on two and low on one:\n\n| Property | Customer operations | Why it scores that way | Control it forces |\n| --- | --- | --- | --- |\n| **Representation to the public** | **High** | The agent speaks for the company in every reply. Its statements about price, policy and eligibility are attributed to the organization. | Ground policy statements in versioned records; render commitments from receipts; disclose the agent |\n| **Volume and repetition** *(added for this domain)* | **High** | Thousands of near-identical tasks a day turn a 1% failure into a daily count | pass^k-style evaluation; rate and total limits; sampling at volume |\n| **Irreversibility** | Medium, varies per action | A knowledge-base (KB) answer can be corrected. A sent email or a refund that has settled cannot be undone. A credit can be offset only by a debit the customer sees. | Per-action-class tiers; approval or human execution for the irreversible tail |\n| **Asymmetry of power** | Medium | The customer usually knows less than the company about policy, but can complain, leave or go to a tribunal | Escalation that is always available; honest status; no \"deflect by default\" |\n| **Legal effect on a person** | Low to medium | Support decisions rarely decide a person's rights. Contact without consent and invented policy terms do have legal weight. | Contact policy; policy statements checked against the authoritative source |\n\nThe added row is my judgement, not part of the brief's frame. In customer operations **the same task runs thousands of times a day**, so the model's variance shows up as a rate rather than as an anecdote.\n\n### The three sub-domains differ in where the gate sits\n\nSupport, sales and marketing share the profile but differ in mechanics. The author's three interview designs for these sub-domains show the differences clearly. They are design examples, not deployed systems, and their numbers are illustrative:\n\n| Dimension | Support | Sales | Marketing |\n| --- | --- | --- | --- |\n| Where the gate sits | **Inside a live exchange**, under a latency budget | Before an asynchronous send, re-checked at send time | Before publish, re-checked at activation and for every regenerated variant |\n| Typical effect | Money or account change for one customer | An email that cannot be unsent; sender reputation for the whole fleet | Public brand exposure to many people at once |\n| Untrusted input | The customer, sometimes adversarial (fraud, social engineering) | Enriched and scraped web text | The brief and scraped competitor content |\n| Binding constraint | Turn latency and approver throughput | Warmed-inbox caps and reputation | Generation spend and the approval queue |\n| Human role | Approver of the risky tail; owner after handoff | Sender of approved drafts; closer of deals | Brand owner approving high-risk claims |\n\nThe support design puts it in one sentence: other verticals gate before an asynchronous action, but \"support gates INSIDE a live loop under a turn-taking latency budget\" (agentic-support-platform design, description).\n\n## Resolution, Deflection and Containment\n\nThe slide's error is common enough to need precise terms. They are defined here for the whole book:\n\n- **Deflection** is a conversation that did not reach a human. It measures cost avoided, and it says nothing about the customer.\n- **Containment** is deflection measured by the bot's own logs: the conversation ended in the agent channel. It counts customers who gave up as successes.\n- **Verified resolution** is a conversation in which the customer's issue was resolved without a human. Three conditions must hold: every effect the agent committed to has a verified receipt, no commitment is still open, and the customer does not re-contact Ostrell about the same issue on any channel within **7 days**.\n\nAt Ostrell, \"end-to-end resolution rate\" has meant verified resolution since Answerdesk's GA. The **41%** figure meets all three conditions. The 26% the slide added contains customers who solved the problem themselves, customers who gave up, and customers who called or emailed instead.\n\nTomas asked Lena's quality team to sample **400** of the Q3 conversations in the 26% band, using the same method as their escalation reviews (Ostrell figures, one team's sample, no control group). **44%** of those customers had re-contacted Ostrell about the same issue within 7 days, most by phone. **31%** appeared resolved by the customer, for example by finding the article and following it. In **25%** the outcome could not be determined. Counting the 26% band as success would have added re-contacts to the cost model as savings.\n\n![A bar of conversations split into 41% verified, 33% escalated and a 26% band; a magnifier shows 44% of the band called back, and a two-thirds pie chart on an easel is crossed out.](assets/images/42-domain-customer-operations/42-two-thirds-slide.jpeg)\n**Figure 1:** *The two-thirds slide added the 26% band to the 41% verified resolution; in a sample of 400 from that band, 44% of customers had re-contacted Ostrell about the same issue within 7 days.*\n\nThe forum's ruling: **verified resolution is the only headline figure.** Containment appears only next to its re-contact rate, and staffing changes rest on resolution and escalation handling time. The two figures answer different questions, and only one of them is about customers.\n\nBeside resolution, the support design puts action correctness ahead of satisfaction, because \"high CSAT [customer satisfaction] hides a wrong refund\" (agentic-support-platform design, step `compliance-eval`). Ostrell's Answerdesk scorecard, reviewed weekly by Lena Brandt as risk owner, has six measures (Q3 2027 figures):\n\n| Measure | Definition | Value |\n| --- | --- | --- |\n| **Verified resolution** | As defined above | 41% |\n| **Escalation correctness** | Sampled escalations that needed a human, plus sampled non-escalations that should have escalated (missed escalations) | Tracked per route since the router audit; see [Routing and Delegation](routing-and-delegation.html) |\n| **Commitment accuracy** | Replies whose stated amounts, dates and statuses match records | 2 of 500 sampled credit conversations stated a pending credit as done (September 2027) |\n| **Grounding** | Answers with a claim unsupported by the cited source | 2.4% (Q3 2027 audit); see [Retrieval and Grounding](retrieval-and-grounding.html) |\n| **Policy-violating credit proposals** | Credit proposals outside the credit policy, from the Sounding suite | 1.2% |\n| **Cost per resolved conversation** | Agent-side cost divided by verified resolutions | €0.39; a human-handled escalation costs €5.50 ([Cost, Model Selection and Routing](agent-cost-and-model-routing.html)) |\n\n## The Reference Design\n\n### From three interview designs to one support-centred architecture\n\nThe reference design adapts the author's support, sales and marketing interview designs to Ostrell's Keelson platform. It is a design example, not a description of a deployed system. Where the designs disagree, the book reconciles them as follows:\n\n1. **One approval model.** Support approvals expire by time, sales approvals never expire, marketing approvals expire when the claim library changes. The book's rule covers all three: an approval binds the exact action object version (content hash), expires by time, and is void if the action, the policy version or the evidence changed.\n2. **Approval does not fit inside an exchange.** The support design gates \"inside the loop\", but its own sizing implies about 50 approvals a second at peak, roughly 1,500 concurrent approvers. The book treats an A1 action as an **asynchronous continuation of the conversation**: the reply renders `awaiting_approval` with a time, and the outcome follows on the same thread.\n3. **Money returned to a customer is not \"compensatable\".** Taking back a refund means charging the customer again. The book treats a settled card refund as irreversible from the platform's side; Ostrell keeps card refunds at A0.\n4. **Suppression and consent are both modeled.** The sales design has suppression without purposes, the marketing design consent by purpose without a platform-wide scope, the support design neither. The book requires both, and either one blocks.\n\n![Diagram: The customer-operations reference design on Keelson](assets/images/42-domain-customer-operations/fig01-customer-operations-reference-design-keelson-model.jpeg)\n**Figure 2:** *The customer-operations reference design on Keelson. The model proposes and writes prose; deterministic components resolve identity, decide tier and contact policy, execute with keys and receipts, and render every commitment the customer reads.*\n\n### Components and who owns what\n\n| Component | Responsibility in this domain | Owned by | Chapter that owns the mechanism |\n| --- | --- | --- | --- |\n| Channel gateway | Authenticates the session; resolves verified customer scope **before** any account read; marks the speaker on every message | Support Operations with Platform | [Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html) |\n| Intake router | 11 routes; selects skill, tool set and model tier; never grants authority | Support Operations | [Routing and Delegation](routing-and-delegation.html) |\n| Context assembler | Keelson prefix layout; pinned facts (ticket, contract, verified customer, open commitments) written by code | Agent Platform | [Context Engineering: Building What the Model Sees](context-engineering.html), [Caching and Context Budgets](caching-and-context-budgets.html) |\n| Quarantined reader | Extracts typed `TicketFacts` from inbound email; the planner never reads raw third-party text | Agent Platform | [Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html) |\n| Read tools | Hybrid KB search with tenant filter; contract terms; visits; ticket | System-of-record owners | [Retrieval and Grounding](retrieval-and-grounding.html) |\n| Bulkhead | Tier per action class, amount and rate limits, contact policy, egress rules | Security and risk owners | [Policy Enforcement and Audit](policy-enforcement-and-audit.html) |\n| Toolyard executor | Idempotency keys, receipt lookup on timeout, read-back verification, business uniqueness keys | Agent Platform | [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) |\n| Reply renderer | Status slots for every action mentioned; blocks replies that state an unapplied outcome | Agent Platform | [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html) |\n| Handoff service | Escalation package from records; ownership transfer makes the agent read-only | Support Operations | [Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html) |\n| Sounding, Wake, Logbook | Suites and simulators; traces and outcome metrics; evidence of each run | Evaluation lead; Platform | [Building Eval Suites: Datasets, Graders and Regression Gates](building-agent-eval-suites.html), [Observability: Traces, Metrics and Investigating Failures](agent-observability.html) |\n\nTwo of these exist because of this domain: the **reply renderer**, because the domain's signature failure is words that do not match state, and the **contact policy** inside Bulkhead, because its signature obligation is to people who do not want to be contacted.\n\n### Requirements per interaction\n\n| Interaction | Latency | Consistency | Durability | Who may act |\n| --- | --- | --- | --- | --- |\n| Chat answer from KB or contract | First visible ≤ 2 s p95; complete ≤ 6 s p95 | Policy cached by article version; account state read live | Turn record in task state | Agent at A3, with groundedness check |\n| A2 action (credit ≤ €250, revisit) | Outcome ≤ 30 s p95; at most 8 s waiting for a receipt within the exchange | Dependencies re-read before dispatch | Intent recorded before dispatch; receipt after | Agent, within limits enforced by Toolyard |\n| A1 action (credit > €250) | Asynchronous: hours, with approval expiry | Approval void on any change of action, policy or evidence | Approval record bound to content hash | Team lead approves; platform executes |\n| Escalation to a person | Package built in seconds; queue service-level agreement (SLA) by route | Ownership is a field written by the runtime | Package by reference, with versions | Specialist; agent read-only |\n| Outbound contact (reminder, follow-up) | None in the exchange | Contact policy checked **at send time** | Send attempt with idempotency key | Executor only; never the model directly |\n| Email reply | No exchange latency budget (deferred class) | Same as chat | Same as chat | Same as chat |\n\nThe latency numbers are the chat budget agreed in October 2027 ([Latency and Throughput](agent-latency-and-throughput.html)).\n\n## The Contact Policy: Suppression and Consent by Purpose\n\n### Two different records, one check\n\nThe **contact policy** is the check an executor applies before any outbound message an agent prepared reaches a person. It reads two records, and either one can block:\n\n- **The suppression list** is a global do-not-contact record keyed by a **resolved contact identity**, not by an address. Each entry has a scope (all marketing, or all proactive contact), a reason (opt-out, complaint, bounce, legal hold, abuse, deletion request) and its provenance. The sales design's two rules carry over directly. A platform-scope row blocks in every tenant. A data-subject deletion erases the profile \"but preserves a minimal suppression row (identity_key + reason)\" (agentic-sales-platform design, step `send-gate`). Without that row, deleting a person's data would make them contactable again.\n- **Consent by purpose** records, per contact, which purposes the organization may use them for and on what basis. The marketing design's `consent` record (channel, purpose, legal basis, state) is the shape: \"Compliance is not one boolean\" (agentic-marketing-platform design, step `compliance`). At Ostrell the purposes are `service` (answering and resolving the customer's own case; contract basis), `service_proactive` (outage notices, visit reminders), and `marketing` (offers, renewals, upgrades).\n\nIn the EU, an objection to direct marketing ends processing \"for such purposes\" ([General Data Protection Regulation (GDPR), Art. 21(3)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), and unsolicited marketing email to individuals generally needs prior consent, with a narrow existing-customer exception ([ePrivacy Directive 2002/58/EC, Art. 13](https://eur-lex.europa.eu/eli/dir/2002/58/oj)). Rules for business contacts vary by member state and for US recipients. **Ostrell applies the stricter rule to every contact in every market**, a policy choice that makes one check possible.\n\n### Purpose is decided by code, from the action class\n\nA customer who asks \"when does our Assure contract renew?\" has asked a service question, answered from the contract record. A sentence adding \"and you can upgrade to Assure Plus\" is marketing, even in the same reply. If the model wrote both, each sentence's purpose would be whatever the model produced.\n\nThe forum's ruling separated them:\n\n1. **The model has no marketing action.** Answerdesk's tools and prompts contain no offers or renewal language.\n2. **A renewal reminder is a separate action object**, class `marketing_reminder`, created by code after a conversation is marked resolved. Its text is a template approved by Assure marketing and Legal; its prices come from a live, version-checked price-book read, because model-derived facts may never source a commitment ([Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html)).\n3. **The executor checks the contact policy at send time**: suppression for scope `marketing`, consent for purpose `marketing` on the channel, and no open complaint or escalation in the last 30 days. Any one blocks. A block is logged with its reason; it is not an error.\n\n![Diagram: The renewal reminder is created by code after resolution and gated at send time](assets/images/42-domain-customer-operations/fig02-renewal-reminder-created-code-after-resolution.jpeg)\n**Figure 3:** *The renewal reminder is created by code after resolution and gated at send time. Suppression and consent are separate checks, and either one blocks; the model never decides to sell.*\n\n## End to End: One Answerdesk Conversation\n\nOne conversation shows the whole design: a composite with illustrative identifiers, but canonical mechanisms and limits.\n\n**Monday 6 December 2027, 09:12.** Ruben Smit (fictional), operations planner at Van Dijk Installatietechniek in Eindhoven (fictional), opens chat from the Ostrell Field web app. His session is authenticated, so the channel gateway resolves the **verified customer scope**, the Field account and Ruben's contact identity, before any read. The first message carries a disclosure and a speaker label. He writes: *\"Your technician didn't turn up on Friday for the heat-pump service at our client's site in Veldhoven. We lost half a day with the client waiting. Also, when does our Assure contract renew?\"*\n\n![Diagram: One Answerdesk conversation end to end](assets/images/42-domain-customer-operations/fig03-one-answerdesk-conversation-end-end-model.jpeg)\n**Figure 4:** *One Answerdesk conversation end to end. The model routes nothing and executes nothing: it reads through Toolyard, proposes action objects, and writes prose around status slots that the runtime fills from receipts.*\n\nThe flow, step by step:\n\n1. **Route.** No rule matches; the v2 router's calibrated classifier assigns `revisit_scheduling` and flags a secondary contract question. The route selects skill, tool set and model tier, and grants no authority ([Routing and Delegation](routing-and-delegation.html)).\n2. **Assemble context.** The context assembler builds the call in the prefix layout, with the verified customer and a contract summary carrying its `as_of` in the preamble ([Caching and Context Budgets](caching-and-context-budgets.html)). The context manifest goes to Logbook before the call; pinned facts are written by code.\n3. **Read.** Answerdesk calls the visit lookup: visit booked for Friday 3 December, status `not_attended`, technician no-show code. It calls `get_contract_terms`: Assure contract active, end date 31 January 2028. It calls `kb_search`, which returns the missed-visit credit policy article at its current version. Every result carries a provenance envelope ([Provenance, Freshness and Consistency of What Agents Know](provenance-and-freshness.html)).\n4. **Offer choices.** A deterministic progress line arrives within the 2-second budget. Answerdesk then offers two revisit slots from the scheduling system; it does not choose one. **The customer acts on shared state here**, where τ²-bench found agents weakest: in its telecom domain, dual control cut pass^1 by 18 and 25 points for the two models compared ([Barres et al., 2025](https://arxiv.org/abs/2506.07982), preprint, simulated users). So the slot choice is a confirmation card, and confirmation is not approval ([Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html)).\n5. **Propose actions.** Ruben confirms Wednesday 08:00. Answerdesk proposes two action objects: a revisit for that slot, and a service credit of **€120** with reason `TECH_NO_SHOW` under the policy clause it retrieved. Keelson Runtime freezes each into an action object with a content hash and an idempotency key minted from the agent, run and action ids ([Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html)).\n6. **Decide.** Bulkhead reads the tier register by manifest hash and action class. Revisits are A2, at most one per ticket. Credits up to €250 are A2. The checks pass: the amount is within the limit, the business key `credit:{ticket}:{visit}:TECH_NO_SHOW` is unclaimed, the daily counters are below the hold thresholds of €9,000 and 120 credits, and the target is the verified customer's account. Allow both.\n7. **Execute and verify.** Toolyard dispatches both with their keys. Scheduling returns a booking reference. Billing returns a credit note in 3.1 seconds, inside the 8-second receipt wait. Toolyard reads both back and finds them as intended. Receipts and verifications go to Logbook.\n8. **Reply.** The reply renderer fills the status slots: the revisit date and booking reference, and *\"I've applied a €120.00 credit (credit note …) for Friday's missed visit; it will appear on your next invoice.\"* The renewal answer is a slot too: *\"Your Assure contract runs until 31 January 2028.\"* The model writes the apology and the connecting prose. A deterministic scan blocks any reply that states an amount, date or completion verb without a matching status ([Side Effects: When Agents Touch the World](side-effects-and-external-actions.html)).\n9. **After the conversation.** No marketing appears in the chat. Code creates a `marketing_reminder` once the conversation is resolved (the contract ends within 60 days); the contact policy finds no marketing consent for Ruben and blocks it, with the reason logged. Wake keeps the trace under tail sampling (10% of ordinary Answerdesk runs; 100% of runs with denials, approvals or escalations). One in ten executed A2 credits goes to a second reviewer ([Human Oversight and Bounded Autonomy](human-oversight-and-bounded-autonomy.html)).\n10. **Resolution, a week later.** The technician attends on Wednesday. The revisit's completion status reaches the task record, Ruben does not re-contact Ostrell within 7 days, and the conversation counts toward verified resolution on **13 December**, not on the day of the chat.\n\nThree variations complete the picture. **A credit above €250** would be A1: the reply renders `awaiting_approval` with a time, and the outcome follows on the same thread. **An email ticket** would pass through the quarantined reader first ([Prompt Injection: Designing for an Unsolved Problem](prompt-injection-defense.html)). **An escalation** would build escalation package v2 from records and make Answerdesk read-only on the ticket ([Coordination, Handoffs and Agent-to-Agent Protocols](coordination-and-handoffs.html)).\n\n## Dealroom: The Same Domain, a Different Gate\n\nDealroom shows what changes when the counterpart is a prospect rather than a customer in a live chat. Its **4,000 quotes a month** are **external commitments**, capped at A1 whatever the evidence; the account executive sends them, and the CRM refuses a quote whose price-book version was superseded ([From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html)).\n\nPriya's follow-up email request was approved with the same shape as quotes, as a new Dealroom action class registered in January 2028. Dealroom drafts a `follow_up_email` action object with executor `account_executive`. The CRM's send path applies the contact policy **at send time**: suppression by resolved identity, consent for the purpose (a quote follow-up to a prospect's named contact is `marketing` unless it answers that contact's own question), and the price-book version of any price the email mentions. The sales design names the reason for re-checking at send time rather than at draft time: \"A late opt-out blocks the queued send — suppression is authoritative at send time\" (agentic-sales-platform design, step `send-gate`). An approval at draft time is a check of the past.\n\nThe sales interview design's binding constraint, **sender reputation** (about 67,000 warmed inboxes, auto-pause above 2% bounces or 0.1% complaints, all design assumptions), does not bind at Ostrell: Dealroom works only on accounts already in the CRM, and humans send every message. The forum recorded that automated prospecting would change this. The design's rep approval of every sequence, about 1,500 a tenant a day, is not adopted: approval belongs at the template or sequence-policy level, with sampling, or it becomes the Rubber Stamp.\n\n**Ostrell runs no marketing agent in 2027**; the renewal reminder is a template, deliberately. The marketing interview design shows what a marketing agent would need: a gate split into \"deterministic claim/regulatory checks … plus model-judged brand-voice conformance\", approvals that expire when the claim library changes, and a bandit that allocates only among cleared variants (agentic-marketing-platform design, steps `brand-gate` and `optimize`). Once an optimizer asks an agent for new variants, generation is continuous, so the gate must be continuous too.\n\n## Controls by Action Class\n\nThe controls table is the domain's contract. It collects what earlier chapters built, per action class, with the tier from Ostrell's register as of December 2027:\n\n| Agent | Action class | Tier | Hard limits (enforced by) | Oversight | Evaluation | Audit |\n| --- | --- | --- | --- | --- | --- | --- |\n| Answerdesk | Answer from KB or contract record | A3 | Tenant filter in the index query; claim-level groundedness check; abstention path | QA sampling | Grounding audit; retrieval set | Context manifest; cited versions |\n| Answerdesk | Create or update ticket | A3 | Refused while a human owns the ticket (Toolyard) | None per action | Trajectory invariants | Logbook |\n| Answerdesk | Schedule technician revisit | A2 | One per ticket; customer confirms the slot (Toolyard) | Sampled review | Long-conversation suite | Intent, receipt, read-back |\n| Answerdesk | Service credit ≤ €250 | A2 | €250; one per visit; daily hold > €9,000 or > 120 credits (Toolyard, Bulkhead) | 10% second-reviewer sample of executed credits | Credit-policy suite, 420 cases, pass^4; 200-case injection gate sample (of the 1,200-variant suite) | Intent, key, receipt, read-back |\n| Answerdesk | Service credit > €250 | A1 | Approval bound to content hash, with expiry; void on change | Team lead with evidence and policy clause | Same suites | Approval record |\n| Answerdesk | Refund to card | A0 | Billing staff perform it | Billing desk | — | Ticket |\n| Answerdesk | Email to an unverified recipient | A0 | Recipients only from CRM and the verified account | A person sends | Injection suite | Bulkhead denial alerts |\n| Platform code | Renewal reminder | Not a model action | Contact policy at send; approved template; live price read | Assure marketing owns the template | Contact-policy test set | Send attempt with block reasons |\n| Dealroom | Account brief (internal) | A2 | Price-book `as_of` within 24 h | 10% weekly sample | Brief suite | Provenance envelopes |\n| Dealroom | Quote to prospect | A1 (cap) | CRM refuses superseded price-book versions | Account executive sends | Quote suite | CRM send event as receipt |\n| Dealroom | Follow-up email (from January 2028) | A1 | Contact policy at CRM send time | Account executive sends | Contact-policy test set | CRM send event |\n\nThree readings follow. **The words are controlled as tightly as the money**: the A3 answer class carries the most controls, because representation is the domain's highest-scoring property. **No customer-facing class above C1 runs at A3**, and the A2 limits sit in Toolyard, not in a prompt. **The contact policy sits at every outbound sink and never inside the model.**\n\n## What the Documented Evidence Says\n\n### Courts and public cases: the organization owns the words\n\n***Moffatt v. Air Canada*, 2024 BCCRT 149 (14 February 2024).** An Air Canada website chatbot told a customer he could apply for a bereavement fare retroactively. The airline's policy said otherwise. British Columbia's Civil Resolution Tribunal held the airline liable for negligent misrepresentation: the airline is responsible for information on its website whether it comes from a static page or a chatbot, there was \"no reason why the customer should know that one section of the website is accurate\" and another not, and the airline did not take reasonable care that the chatbot was accurate. Damages were CA$650.88 ([ML Taikins, 2024](https://www.mltaikins.com/insights/that-wasnt-me-that-was-my-chatbot)). The tribunal called the argument that the chatbot was responsible for its own actions \"a remarkable submission\" ([Law360 Canada, 2024](https://www.law360.ca/ca/articles/1804075)). It is a small-claims decision, not precedent; these accounts are secondary because the tribunal's site refused automated access; and the sources do not say whether the chatbot used a language model. The architectural reading does not depend on any of that: **policy statements must come from, or be checked against, the authoritative policy source, and an agent that cannot ground one should hand off.**\n\n**Cursor's support bot (April 2025).** Users of the Cursor code editor were logged out when switching machines. An AI support bot answered their emails that this was expected under a one-device policy. No such policy existed. A co-founder apologized publicly (\"We have no such policy\"), called it \"an incorrect response from a front-line AI support bot\", and said AI-generated email support responses would be clearly labeled from then on ([The Register, 18 April 2025](https://www.theregister.com/2025/04/18/cursor_ai_support_bot_lies/)). It adds two points to *Moffatt*: the bot invented a policy to **explain an unrelated technical fault**, and the undisclosed email channel made the answer read as the company's position.\n\n**New York City's MyCity chatbot (March 2024).** The Markup reported that the city's business-advice chatbot told users that landlords need not accept housing vouchers and that businesses could go cash-free, contrary to city law, and that it answered the voucher question differently for different reporters ([The Markup, 29 March 2024](https://themarkup.org/news/2024/03/29/nycs-ai-chatbot-tells-businesses-to-break-the-law)). The city kept the pilot behind a disclaimer that it \"may occasionally produce incorrect, harmful or biased content.\" **A disclaimer is not a control.**\n\nThese are reported cases, not a sample: they show what the failure looks like and who answers for it, not how often it happens.\n\n### Deployment claims and walk-backs: date them, and read the metric\n\n**Klarna, February 2024.** Klarna's press release said its assistant had handled \"2.3 million conversations, two-thirds of Klarna's customer service chats\" in its first month, doing \"the equivalent work of 700 full-time agents\", with customer satisfaction \"on par with human agents\", a \"25% drop in repeat inquiries\", resolution \"in less than 2 mins compared to 11 mins previously\", and an estimated \"$40 million USD in profit improvement\" for 2024 ([Klarna, 27 February 2024](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/)). These are company-reported, unaudited first-month figures; the satisfaction method was not described.\n\n**Klarna, May 2025.** Fortune reported the CEO, Sebastian Siemiatkowski, saying that \"cost unfortunately seems to have been a too predominant evaluation factor\", that \"what you end up having is lower quality\", and that \"really investing in the quality of the human support is the way of the future for us\". A spokesperson said the company was \"very much still AI-first\", and two new agents were working as freelance customer support ([Fortune, 9 May 2025](https://fortune.com/2025/05/09/klarna-ai-humans-return-on-investment/)). Headlines that Klarna \"replaced AI with humans\" overstate a correction of evaluation and staffing strategy; the assistant was not withdrawn. I found no primary-source figure for the assistant's current share of chats, so the public evidence stops there.\n\nThe lesson concerns the metric, not Klarna. **\"Two-thirds of chats\" is a containment figure.** The repeat-inquiry figure was the release's only outcome measure, and the walk-back named quality as what cost-led evaluation missed.\n\n### Research: inconsistency at volume, and benchmarks that flatter\n\nτ-bench's retail and airline domains are the closest public analogue to support work: a simulated customer, domain tools, a written policy, and grading on the final database state ([Yao et al., 2024](https://arxiv.org/abs/2406.12045), preprint, 2024 models). The best function-calling agent solved 61.2% of retail tasks in one trial but fewer than 25% in all eight, which is **inconsistency at volume**. And **removing the domain policy from the prompt barely hurt retail (61.2 → 56.8) but collapsed airline (33.2 → 10.8)**, because airline rules are ad hoc. Company-specific policy is what support agents apply and what the models followed least reliably, which argues for policy as checks in the tool layer.\n\nBenchmark scores in this domain can also flatter. An agent that returns empty responses passes 38% of τ-bench airline tasks, because some tasks are deliberately impossible and doing nothing matches the goal state ([Zhu et al., 2025](https://arxiv.org/abs/2507.02825), preprint). **A benchmark that rewards inaction has the same flaw as a containment metric**: it scores the customer who was not helped. Use these results to choose what to evaluate (pass^k, dual control, policy adherence by trajectory), not to forecast a resolution rate.\n\n### Regulation: disclosure applies now\n\nArticle 50(1) of the EU AI Act requires systems \"intended to interact directly with natural persons\" to inform people that they are interacting with an AI system unless that is obvious. It has applied since 2 August 2026, and the Digital Omnibus on AI did not move it ([Regulation (EU) 2024/1689](http://publications.europa.eu/resource/celex/32024R1689); [Regulation (EU) 2026/1744](http://publications.europa.eu/resource/celex/32026R1744)). Disclosure is a **state of the conversation**, a speaker label on every message kept through handoffs and across channels ([Interaction Design for Agents: Chat, Delegation and Handoff to Humans](agent-interaction-design.html)). Support agents are not, as such, in the Act's Annex III high-risk list; one that also decided creditworthiness would bring in those obligations, which apply from 2 December 2027.\n\n### Where the evidence stops\n\nNo company has published an audited resolution rate for a customer-service agent with a stated definition, a re-contact window and a comparison with human handling. No public study measures how often customer-facing agents make commitments that are not backed by a record. The vendor numbers available in this field are claims about one's own system, usually in first-month or best-segment form. **The design in this chapter therefore rests on documented failures, regulatory text, simulated benchmarks and the author's judgement.** It does not rest on measured production outcomes from other companies.\n\n## Failure Modes and Recovery\n\nMost of the domain's failure scenarios are the book's recurring incidents, because Ostrell learned most lessons here first. The table collects them; two get a closer look below.\n\n| Scenario | What happens | Detection | Containment | Recovery |\n| --- | --- | --- | --- | --- |\n| **The Promised Credit** (May 2027) | Replies say a credit is applied while it awaits approval | Customer complaint; quality sample (38% of 500 credit conversations) | Rendered status slots; text scan blocks unbacked outcomes | 20 customers honored, €2,310; see [Side Effects: When Agents Touch the World](side-effects-and-external-actions.html) |\n| **The Double Credit** (March 2027) | A timed-out credit is retried by re-asking the model | Billing reconciliation | Keys minted before dispatch; receipt lookup; no re-sampling | 212 customers with duplicate credits, €31,400; see [Retries, Idempotency and Concurrency](retries-idempotency-and-concurrency.html) |\n| **The Poisoned Ticket** (May 2027) | Hidden text in an email asks for contract PDFs to go to an outsider | Trace review, 6 days later | Recipient allowlist from verified identity blocked the send | Quarantined reader; egress policy; injection suite |\n| **The Stale Price Book** (June 2027) | Dealroom drafts quotes from a 23-day-stale index | Deal-desk analyst's manual comparison | None at the time; account executives sent 14 quotes | €46,000 honored; freshness SLO; CRM refuses superseded versions |\n| **The Shadow Reminder Gap** (November 2027) | Opt-outs recorded under another address would not have blocked reminders | Shadow-mode contact-policy audit | Shadow mode: nothing sent | Suppression keyed by resolved identity; see below |\n| **The Sync Outage Misroute** (July 2027) | A surge about an outage lands on self-service routes | Re-contact by route; manual escalation | Rules on external signals; strict path for critical classes | Router v2; `service_incident` recall 71% → 97% |\n| **Credit farming** *(assumption)* | A customer claims missed visits repeatedly to collect credits | Per-account credit frequency in Wake | One credit per visit; visit status from the scheduling system, not the customer | Fraud queue; account-level A1 override |\n\n### The Promised Credit: words ahead of state\n\nThe Promised Credit is the domain's signature failure, and an evaluation that grades only the final state would never see it: the model wrote the reply and proposed the credit in the same turn, and nothing tied the sentence to the action's state. **Detection** came from a customer, then a 500-conversation sample. **Containment** is structural: since June 2027 a reply may mention an action only through a status slot filled from the action's record, and in a September 2027 re-audit 2 of 500 replies still stated a pending credit prematurely, and no customer was told of a credit that did not happen ([Side Effects: When Agents Touch the World](side-effects-and-external-actions.html)). **Recovery** was commercial: Lena honored all 20 customers, €2,310, on the principle *Moffatt* states.\n\n![A reply bubble whose prose is written by a model chip while a stamp fed by a receipt prints the amount of €120.00 into a slot; a second bubble without a receipt shows awaiting approval.](assets/images/42-domain-customer-operations/42-commitments-from-receipts.jpeg)\n**Figure 5:** *The model writes the apology and the connecting prose, but the amount, the date and the word that says it is done are stamped in from the action's receipt; without a receipt, the reply can only say the credit is awaiting approval.*\n\n### The Shadow Reminder Gap: suppression keyed by the wrong thing\n\nThe renewal reminder ran in **shadow mode** from **8 to 21 November 2027**: the action objects were created and the contact policy evaluated, but nothing was sent. **3,610** resolved conversations involved an Assure contract ending within 60 days. The contact policy blocked **2,050** for lack of marketing consent, **118** as suppressed and **52** for an open complaint or a recent escalation. That left **1,390** eligible (Ostrell figures).\n\nFarah Haddad's team compared the eligible set with the marketing email tool's own unsubscribe records. **31** of the 1,390 had unsubscribed there under a different email address than the one in the CRM. The suppression check was keyed by email address, so it missed them: 31 people who had said no would have been contacted.\n\n**Detection** worked only because the rollout started in shadow and someone audited the eligible set against a second source. **Containment** was the shadow mode. **Recovery** changed the data model, not the agent: suppression entries are keyed by the resolved contact identity with all known addresses and channels; opt-outs from the marketing tool, the CRM, support conversations and data-subject requests reach the one list within 15 minutes; deletion leaves a minimal suppression row. The re-run moved the 31 to suppressed, and the reminder went live in December 2027 with a contact-policy test set (every suppression source × channel × purpose) in Sounding.\n\n## Trade-offs\n\n### Measuring the agent\n\n| Metric as headline | What it rewards | What it hides | When it is right |\n| --- | --- | --- | --- |\n| Deflection or containment | Keeping customers away from staff | Abandonment, re-contact, wrong actions | Never as a headline; only as a capacity input next to re-contact |\n| Customer satisfaction | Pleasant conversations | Wrong credits that pleased the customer; non-respondents | As a secondary signal with response-rate reporting |\n| **Verified resolution** | Effects done and the issue not reopened | Slow to compute (7-day window); misses customers who never return | Headline figure, with escalation correctness and commitment accuracy beside it |\n| Cost per resolved conversation | Efficiency per real outcome | Quality, unless paired with the above | Business case and model-routing decisions |\n\nMy recommendation follows from the consequence profile. **Spend the domain's design budget on representation and contact, because that is where the profile scores high.** Spend it on per-action reversibility next, because that is where volume multiplies harm. These choices assume a customer-facing agent at high volume that speaks for the company. In a low-volume internal helpdesk the same rigor on words may cost more than it saves.\n\n## What Transfers to Other Domains\n\nMost of this machinery is not specific to customer operations; the weight given to it is:\n\n| Mechanism | Transfers as is | What changes elsewhere |\n| --- | --- | --- |\n| Action objects, keys, receipts, read-back | Everywhere | Back office adds segregation of duties and staging stores; coding uses the sandbox and the pull request instead ([Back Office: Finance, Legal and HR Agents](domain-back-office.html), [Coding Agents: CLIs, Harnesses and the Developer Loop](domain-coding-agents.html)) |\n| Status slots rendered from records | Any agent that tells a person something happened | Coding: test counts and diff stats in the PR from CI, not from model prose |\n| Contact policy (suppression + consent by purpose) | Any agent that sends to people: HR notices, collections, patient outreach | High-stakes domains add statutory notice duties that **require** contact, so \"blocked\" needs an escalation path, not just a log line ([High-Stakes Decisions: Clinical and Public-Benefits Agents](domain-high-stakes-decisions.html)) |\n| Verified resolution with a re-contact window | Any service desk, internal or external | Back office: rejected or reversed entries are the re-contact; high stakes: appeals and overturns |\n| Ownership transfer makes the agent read-only | Every human handoff | Unchanged |\n| Routing on external signals during surges | Any high-volume intake | Low-volume domains rarely need it |\n| Volume-driven controls (daily holds, sampling at a fixed rate) | High-volume classes anywhere | Back office reviews every item at lower volume; sampling replaces review only where volume forces it |\n\nWhat does **not** transfer is the default tier. Customer operations can run A2 actions because the per-action consequence is capped (a €250 credit, one revisit) and repeat counts are limited. A back-office posting or a benefits determination has no equivalent small cap, which is why those domains stay at A1 or below for their consequential classes. The pattern travels; the limits that justify autonomy do not.\n\n## The Chief Architect's View\n\n**Decide the headline metric before the first pilot.** The two-thirds slide was the figure the system produced most easily. If verified resolution is not defined, instrumented and owned by the risk owner from the start, containment fills the gap.\n\n**Put the domain's two signature controls in the platform, not in the agent.** The reply renderer and the contact policy belong in Keelson. Lena Brandt owns the policy content: the credit clauses, the reminder template, the exclusions. Farah Haddad owns the enforcement points. Assure marketing owns templates and purposes but not the check. No product team should be able to send to a person without passing the contact policy.\n\n**Fund identity resolution for contacts.** The Shadow Reminder Gap was a data problem that looked like an agent problem. Suppression is only as good as the identity it is keyed by, and every new channel (voice, messaging apps) adds addresses the list must know.\n\n**Watch the pressure in both directions.** Teams will push to add selling to service conversations and to raise tiers because benchmarks improved. The rule I use: the model may explain and resolve; offers come from templates and price records; a tier rises only on Ostrell's own audited evidence ([From Evidence to Autonomy: Deployment Gates and Autonomy Decisions](evidence-for-autonomy.html)). The opposite risk is an agent that escalates everything. Escalation correctness catches both.\n\n**What is durable and what will change.** Durable: the organization owns the words; commitments are rendered from records; contact needs both a suppression check and consent for the purpose; outcome metrics beat activity metrics; per-action caps make autonomy affordable. Volatile: model tiers per turn, latency budgets, the regulatory dates in Article 50 and Annex III, and every vendor's deployment numbers. Better models will raise first-try resolution. They will not change who answers for a wrong promise.\n\n## Questions to Ask\n\n1. What is the written definition of \"resolved\", which effects must be verified, and how long is the re-contact window?\n2. Where does containment appear, and is it ever reported without its re-contact rate?\n3. Which components can put an amount, a date or \"done\" in front of a customer, and is any of them the model?\n4. Which policy statements can the agent make without a cited, versioned source, and what happens when it has none?\n5. Is suppression keyed by a resolved person identity across all channels and addresses, and does deletion leave a suppression row?\n6. Which outbound action classes exist, what purpose is each one, and who decided that: code or the model?\n7. Where is the contact policy checked: at draft, at approval, or at send? Which component holds the send attempt?\n8. How does an A1 approval reach a customer who has left the chat, and what does the customer see before then?\n9. What happens to routing when the status page declares an incident?\n10. Which per-action caps and daily holds make each A2 class affordable, and are they enforced in the tool broker or in a prompt?\n\nCustomer operations bounds the model with records, caps and contact rules, because its errors are frequent, public and cheap one at a time. The back office has the opposite profile: fewer actions, each one posted to a system of record, under segregation of duties and a close calendar. Continue with [Back Office: Finance, Legal and HR Agents](domain-back-office.html).\n\n## Sources and Evidence\n\n### Research papers\n\n- [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045), Yao, Shinn, Razavi & Narasimhan, **2024** (preprint) — simulated customer-service tasks; pass^k; retail pass^1 61.2% vs pass^8 below 25%; policy-removal ablation (airline 33.2 → 10.8); reward does not check every policy requirement.\n- [τ²-Bench: Evaluating Conversational Agents in a Dual-Control Environment](https://arxiv.org/abs/2506.07982), Barres, Dong, Ray, Si & Narasimhan, **2025** (preprint) — performance drops of about 18–25 points when the user also acts on shared state.\n- [Establishing Best Practices for Building Rigorous Agentic Benchmarks](https://arxiv.org/abs/2507.02825), Zhu et al., **2025** (preprint) — empty-response agent passing 38% of τ-bench airline tasks.\n\n### Specifications, standards and regulation\n\n- [Regulation (EU) 2024/1689 (AI Act)](http://publications.europa.eu/resource/celex/32024R1689), European Union, **2024** — Art. 50 disclosure for systems interacting with natural persons.\n- [Regulation (EU) 2026/1744 (Digital Omnibus on AI)](http://publications.europa.eu/resource/celex/32026R1744), European Union, **2026** — Annex III application moved to 2 December 2027; Art. 50(1) unchanged.\n- [Regulation (EU) 2016/679 (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj), European Union, **2016** — Art. 21(3): objection to direct marketing ends processing for that purpose.\n- [Directive 2002/58/EC (ePrivacy Directive)](https://eur-lex.europa.eu/eli/dir/2002/58/oj), European Union, **2002** — Art. 13: consent for unsolicited electronic marketing, existing-customer exception.\n\n### Vendor documentation and engineering reports\n\n- [Klarna AI assistant handles two-thirds of customer service chats in its first month](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/), Klarna, **2024** — the February 2024 claims (2.3 million conversations, 700 FTE equivalent, $40 million estimate); company-reported, unaudited.\n- [Klarna and the return on investment of AI versus humans](https://fortune.com/2025/05/09/klarna-ai-humans-return-on-investment/), Fortune, **2025** — the CEO's May 2025 statements on cost-led evaluation and quality; \"still AI-first\"; two freelance agents.\n\n### Incidents, cases and decisions\n\n- [That wasn't me, that was my chatbot](https://www.mltaikins.com/insights/that-wasnt-me-that-was-my-chatbot), ML Taikins, **2024** — summary of *Moffatt v. Air Canada*, 2024 BCCRT 149: liability for chatbot statements, reasonable care, CA$650.88.\n- [Court rejects Air Canada's 'remarkable' denial of liability](https://www.law360.ca/ca/articles/1804075), Law360 Canada, **2024** — the tribunal's \"remarkable submission\" wording.\n- [Cursor AI's own support bot hallucinated its usage policy](https://www.theregister.com/2025/04/18/cursor_ai_support_bot_lies/), The Register, **2025** — invented one-device policy; co-founder's apology; AI email replies to be labeled.\n- [NYC's AI chatbot tells businesses to break the law](https://themarkup.org/news/2024/03/29/nycs-ai-chatbot-tells-businesses-to-break-the-law), The Markup, **2024** — unlawful advice, inconsistent answers, disclaimer instead of control.\n\n### Design examples from the author's interview project\n\n- Obrenović, Ž., \"Agentic Support Platform\", system-design interview design, `system-design-interviews/data/book/agentic-support-platform/interview.json`, **2026** — gate inside the live loop (description); reversibility matrix (step `action-gate`); idempotency and reconciliation (step `txn-safety`); read-only agent after handoff (step `escalation`); action correctness over CSAT (step `compliance-eval`).\n- Obrenović, Ž., \"Agentic Sales Platform\", system-design interview design, `system-design-interviews/data/book/agentic-sales-platform/interview.json`, **2026** — identity-resolved suppression with tombstone, send-time re-check (step `send-gate`); inbox caps as the binding constraint (capacity, step `deliverability`).\n- Obrenović, Ž., \"Agentic Marketing Platform\", system-design interview design, `system-design-interviews/data/book/agentic-marketing-platform/interview.json`, **2026** — split brand/claim gate and C2PA (step `brand-gate`); policy-constrained bandit that freezes when its feeds go stale (step `optimize`); consent by purpose (step `compliance`).\n\nOstrell is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>
