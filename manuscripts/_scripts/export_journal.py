@@ -16,6 +16,7 @@ from urllib.parse import quote, unquote, urlsplit
 
 from markua import ExportError, Link, links, map_prose, rewrite_links, within
 from image_assets import ImageOptimizer
+from mermaid_assets import MermaidRenderer, caption_text
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "_wiring"))
@@ -72,13 +73,18 @@ class Article:
 class JournalExporter:
     def __init__(self, journal: Path, *, frontmatter_posts: list[str] | None = None,
                  backmatter_sections: list[str] | None = None, site_url: str = "",
-                 authors: list[str] | None = None, jpeg_quality: int | None = 85):
+                 authors: list[str] | None = None, jpeg_quality: int | None = 85,
+                 mermaid: MermaidRenderer | None = None):
         self.journal = journal.resolve()
         self.frontmatter = set(frontmatter_posts or [])
         self.backmatter = set(backmatter_sections or [])
         self.site_url = site_url.rstrip("/")
         self.authors = authors
         self.images = ImageOptimizer(jpeg_quality)
+        # Without a renderer, diagrams stay native Mermaid fences for Leanpub to render.
+        self.mermaid = mermaid
+        self.diagram_sources: dict[str, str] = {}
+        self.diagram_images: dict[str, dict] = {}
         if self.site_url and urlsplit(self.site_url).scheme not in ("http", "https"):
             raise ExportError("--site-url must be an absolute HTTP(S) URL")
         config_path = self.journal / "config.yaml"
@@ -182,7 +188,13 @@ class JournalExporter:
             if kind != "mermaid":
                 raise ExportError(f"Render the {kind} block to an image before exporting {article.relative}")
             self.diagrams += 1
-            return "```mermaid\n" + body.rstrip() + "\n```\n"
+            if not self.mermaid:
+                return "```mermaid\n" + body.rstrip() + "\n```\n"
+            # Leanpub's own Mermaid rendering fails on books with many diagrams; ship images instead.
+            destination = f"{self.journal.name}/diagrams/{self.mermaid.key(body)[:16]}.png"
+            self.diagram_sources[destination] = body
+            alt = caption_text(match.string[match.end():]) or "Diagram"
+            return f"![{label(alt)}]({destination})\n"
 
         # Custom fences are prose until translated; examples inside ordinary code stay literal.
         article.body = map_prose(article.body, lambda text: re.sub(
@@ -311,6 +323,8 @@ class JournalExporter:
             def link(item: Link) -> str:
                 original = text[item.start:item.end]
                 if item.image:
+                    if item.destination in self.diagram_sources:
+                        return original
                     return item.render(self.resource(item.destination, article.source))
                 parsed = urlsplit(html.unescape(item.destination))
                 if parsed.scheme or parsed.netloc:
@@ -337,6 +351,15 @@ class JournalExporter:
 
         return map_prose(article.body, transform)
 
+    def render_diagrams(self) -> None:
+        if not self.diagram_sources:
+            return
+        destinations = list(self.diagram_sources)
+        images = self.mermaid.render([self.diagram_sources[name] for name in destinations])
+        for destination, data in zip(destinations, images):
+            self.files["resources/" + destination] = data
+            self.diagram_images[destination] = {"sha256": digest(data), "bytes": len(data)}
+
     def add(self, name: str, text: str) -> None:
         if name in self.files:
             raise ExportError(f"Duplicate output filename: {name}")
@@ -353,6 +376,7 @@ class JournalExporter:
         self.load()
         for article in self.articles:
             self.prepare_body(article)
+        self.render_diagrams()
         title = self.config.get("title") or self.journal.name
         authors = self.authors or list(dict.fromkeys(
             a.meta["author"] for a in self.articles if a.meta.get("author")))
@@ -431,6 +455,7 @@ class JournalExporter:
             "articles": [{"source": "posts/" + a.relative, "file": a.slug + ".md",
                           "id": a.anchor, "title": a.title, "kind": a.kind} for a in self.articles],
             "book_files": self.order, "resources": self.resources,
+            "mermaid_rendering": "png" if self.mermaid else "native", "diagram_images": self.diagram_images,
             "counts": {"articles": len(self.articles), "chapters": main_count,
                        "parts": sum(a.kind == "part" for a in self.articles),
                        "resources": len(self.resources), "crosslinks": self.crosslinks,
@@ -485,6 +510,10 @@ def main() -> int:
     parser.add_argument("--original-images", action="store_true", help="Copy original image bytes for print exports")
     parser.add_argument("--max-manuscript-mb", type=float,
                         help="Stop before writing if manuscript files/resources exceed this many decimal MB")
+    parser.add_argument("--native-mermaid", action="store_true",
+                        help="Keep Mermaid fences for Leanpub to render, instead of PNG images")
+    parser.add_argument("--mermaid-scale", type=int, default=2, metavar="N",
+                        help="Pixel scale of rendered Mermaid images (default: 2)")
     args = parser.parse_args()
     journal = Path(args.journal)
     if not journal.is_dir():
@@ -496,7 +525,9 @@ def main() -> int:
             raise ExportError("Source and output directories must not overlap")
         exporter = JournalExporter(journal, frontmatter_posts=args.frontmatter_post,
                                    backmatter_sections=args.backmatter_section, site_url=args.site_url,
-                                   authors=args.author, jpeg_quality=None if args.original_images else args.jpeg_quality)
+                                   authors=args.author, jpeg_quality=None if args.original_images else args.jpeg_quality,
+                                   mermaid=None if args.native_mermaid else MermaidRenderer(
+                                       ROOT / "_temp" / "mermaid-cache", scale=args.mermaid_scale))
         manifest = exporter.generate()
         # Validate the complete in-memory result before touching an existing export.
         from validate_manuscript import validate_files

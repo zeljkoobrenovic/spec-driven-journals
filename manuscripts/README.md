@@ -71,15 +71,32 @@ to `resources/`, following [Leanpub's resource layout](https://help.leanpub.com/
   wiki links, supply `--site-url https://example.com/journals`; the target must
   exist unambiguously in a configured journal.
 - Preserve tables, emphasis, lists, captions and code. Translate HTML line breaks
-  and simple formatting, remove layout wrappers and comments, and translate
-  custom Mermaid fences to native Mermaid resources. Unsupported HTML, custom
+  and simple formatting, remove layout wrappers and comments, and render
+  custom Mermaid fences to PNG images (see below). Unsupported HTML, custom
   diagram types, reference-style link definitions and unresolved links stop the
   export with a specific error. Remote images must first be saved in the journal.
 
 The exporter targets the [current Markua specification](https://markua.com/),
-using part attributes, book anchors, matter directives, GFM-style tables, and
-native Mermaid fences. `alt-title: none` preserves image descriptions as alt
+using part attributes, book anchors, matter directives and GFM-style tables.
+`alt-title: none` preserves image descriptions as alt
 text; existing article captions and figure numbers remain in the prose.
+
+## Mermaid diagrams
+
+Leanpub's own Mermaid rendering fails on books with many diagrams: RECONCILED,
+with 162, stopped at "Reading your manuscript" with a generic PDF error, while
+every subset of up to about 40 diagrams built. The exporter therefore renders
+each diagram to `resources/<journal>/diagrams/<hash>.png` with a pinned
+mermaid-cli (through `npx`, so Node.js is required), in one browser session.
+A figure caption directly after a diagram becomes its alt text. PNGs are cached
+in `_temp/mermaid-cache` by source and scale, so unchanged diagrams are not
+rendered again; the first RECONCILED export takes about two minutes.
+
+`--mermaid-scale 2` (the default) gives images about 1,600 px wide, sharp in
+print; each step up adds roughly half again to the diagram bytes. Set
+`MERMAID_CLI` to use another mermaid-cli command, such as a global `mmdc`.
+`--native-mermaid` keeps Mermaid fences for Leanpub to render, which is fine
+for books with only a few diagrams.
 
 ## Keeping ebook downloads small
 

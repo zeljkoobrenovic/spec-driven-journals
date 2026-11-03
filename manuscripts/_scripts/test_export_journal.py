@@ -14,6 +14,7 @@ from unittest.mock import patch
 from export_journal import JournalExporter, main, write_export
 from image_assets import ImageOptimizer
 from markua import ExportError, links, map_prose, within
+from mermaid_assets import MermaidRenderer
 from validate_manuscript import validate_directory, validate_files
 
 
@@ -164,6 +165,37 @@ flowchart LR
         self.assertIn("```mermaid\nflowchart LR\n  A[One] --> B[Two]\n```", result)
         self.assertEqual(1, manifest["counts"]["mermaid_diagrams"])
         self.assertIn(b"{id: second--same-heading-1}", exporter.files["second.md"])
+
+    def test_mermaid_rendered_to_cached_png_resources(self):
+        diagram = "flowchart LR\n  A --> B\n"
+        body = (f"---begin mermaid---\n{diagram}---end mermaid---\n\n"
+                "**Figure 1:** *Two [linked] steps.*\n\n"
+                f"---begin mermaid---\n{diagram}---end mermaid---\n")
+        self.post("one", body)
+        self.config([("", ["one/index.md"])])
+        cache = self.root / "cache"
+        renderer = MermaidRenderer(cache, command="mmdc-stub")
+        calls = []
+
+        def render_uncached(diagrams):
+            calls.append(list(diagrams.values()))
+            cache.mkdir(exist_ok=True)
+            for key in diagrams:
+                (cache / f"{key}.png").write_bytes(b"png " + key.encode())
+
+        with patch.object(renderer, "render_uncached", render_uncached):
+            exporter, manifest, _ = self.export(mermaid=renderer)
+            self.export(mermaid=renderer)
+        result = exporter.files["one.md"].decode()
+        path = f"example/diagrams/{renderer.key(diagram)[:16]}.png"
+        self.assertIn(rf"![Two \[linked\] steps.]({path})", result)
+        self.assertIn(f"![Diagram]({path})", result)
+        self.assertNotIn("```mermaid", result)
+        self.assertIn("resources/" + path, exporter.files)
+        self.assertEqual("png", manifest["mermaid_rendering"])
+        self.assertEqual(2, manifest["counts"]["mermaid_diagrams"])
+        # Identical diagrams render once, and the second export comes from the cache.
+        self.assertEqual([[diagram]], calls)
 
     def test_image_paths_with_spaces_parentheses_and_html(self):
         post = self.post("one", '![Description](<assets/images/a picture (1).png>)\n**Figure 1:** Caption.\n\n'
