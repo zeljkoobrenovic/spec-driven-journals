@@ -1,0 +1,16 @@
+[
+ {
+  "post": "08-promotions-and-loyalty",
+  "figure": 1,
+  "id": "fig01-product-page-shows-estimate-promotion-engine",
+  "asset": "assets/images/08-promotions-and-loyalty/fig01-product-page-shows-estimate-promotion-engine.jpeg",
+  "mermaid": "flowchart LR\n    PDP[\"Product page shows an estimate\"] --> CART[\"Cart and checkout\"]\n    PRICE[\"Pricing service base price and prior price\"] --> ENGINE[\"Promotion engine rules, codes, eligibility, order of evaluation\"]\n    CUST[\"Customer identity and code usage ledger\"] --> ENGINE\n    CART -->|\"ask for the final discount\"| ENGINE\n    ENGINE -->|\"discount per line, allocated\"| ORDER[\"Order record\"]\n    ORDER --> INV[\"Invoice and credit note\"]\n    ORDER --> RET[\"Returns and refunds\"]\n    ORDER --> ANA[\"Analytics offered and redeemed\"]"
+ },
+ {
+  "post": "08-promotions-and-loyalty",
+  "figure": 2,
+  "id": "fig02-stored-value-ledger-every-issuance-redemption",
+  "asset": "assets/images/08-promotions-and-loyalty/fig02-stored-value-ledger-every-issuance-redemption.jpeg",
+  "mermaid": "flowchart LR\n    ISSUE[\"Issue a card, a credit or points\"] --> BAL[\"Balance per instrument in the commerce platform\"]\n    BAL -->|\"redeem at checkout or at the till\"| RED[\"Redemption reduces the balance\"]\n    BAL -->|\"expiry date set per issuance\"| EXP[\"Expired value\"]\n    BAL -->|\"estimated unredeemed share\"| BRK[\"Breakage recognized in proportion to redemptions\"]\n    BAL -->|\"monthly reconciliation\"| LIAB[\"Liability account in the finance system\"]"
+ }
+]

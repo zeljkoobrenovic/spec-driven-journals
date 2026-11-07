@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Whose Data Is It? Privacy, Consent and Retention</title>
+    <meta name="description" content="What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in? Map every system that holds a person with its legal role, record consent with its evidence on the customer master, split the person from the transaction so invoices can stay while profiles go, and run a deletion request as a fan-out with a record of what each system did, because the law gives you one month and the data is in nine places.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="Whose Data Is It? Privacy, Consent and Retention">
+    <meta property="og:description" content="What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in? Map every system that holds a person with its legal role, record consent with its evidence on the customer master, split the person from the transaction so invoices can stay while profiles go, and run a deletion request as a fan-out with a record of what each system did, because the law gives you one month and the data is in nine places.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/privacy-and-customer-data.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/35-privacy-and-customer-data/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="commerce-security.html" title="Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-regulation.html" title="Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VIII — TRUST: Security, Privacy and Regulation</p>
+        <h1>Whose Data Is It? Privacy, Consent and Retention</h1>
+        <p class="byline">Željko Obrenović  ·  2026-11-07  ·  28 min read · <a class="spec-link" href="privacy-and-customer-data.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: researched and written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/35-privacy-and-customer-data/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/35-privacy-and-customer-data/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="commerce-security.html" title="Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-regulation.html" title="Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Whose Data Is It? Privacy, Consent and Retention", "date": "2026-11-07", "author": "Željko Obrenović", "excerpt": "What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in? Map every system that holds a person with its legal role, record consent with its evidence on the customer master, split the person from the transaction so invoices can stay while profiles go, and run a deletion request as a fan-out with a record of what each system did, because the law gives you one month and the data is in nine places.", "permalink": "privacy-and-customer-data", "timetoread": "28 min read", "icon": "assets/icons/35-privacy-and-customer-data.png", "logo": "assets/images/35-privacy-and-customer-data/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn where personal data lives in a commerce estate, which rules govern each use of it, and how to design consent, retention and deletion across many systems.\n\n> **KEY POINTS:**\n>\n> * **Every integration is also a data flow with a legal role.** The merchant decides why and how customer data is used, so it is the controller; the platform, the warehouse system and most apps act on its instructions as processors; carriers, marketplaces and payment providers usually decide for themselves. The system-of-record map needs that column.\n> * **The order and the marketing profile are two different things in law, even when they describe one person.** The order rests on the contract and on tax law and must be kept for years; the profile rests on consent and must go when the person says so. Design them to separate: pseudonymize the transaction, erase the person.\n> * **A deletion request is a fan-out with a deadline.** One month, every system that holds the person, a different right answer in each, and a record of what was done. Without an identity index and an orchestrator it is a seventeen-day hunt through nine systems; with them it is a job.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**\n>\n> * **The Familiar Stranger** — a person the systems cannot recognize as one cannot be deleted, told the truth about, or respected when they opt out.\n> * **The Secret Agent** — an app, script or export that copies customer data without a named owner or a contract is a processor nobody appointed.\n> * **The Long Fuse** — a data subject request has a legal clock of one month, and a cookie or transfer rule can change with a court decision; both are discovered late by merchants with no map.\n\n<br>\nA commerce platform is, among other things, a machine for collecting personal data: a name, an address, an e-mail, what someone bought, what they returned and why, which pages they looked at. Every one of those is needed by someone, and every one is, in European law, personal data about a person who has rights over it.\n\nThe trouble is not that a merchant holds personal data but that it holds it in a dozen systems from a dozen vendors, copied by integrations nobody mapped for this purpose, under rules that differ by system and by country. **Privacy in commerce is less a question of policy than of architecture: where is the person, who may hold them, for how long, and how do you reach every copy when they ask?** This chapter is not legal advice; it is an architect's reading of the rules.\n\nThis chapter owns four terms: **controller and processor**, **consent**, **retention** and the **data subject request**. It builds on [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html), which decided which system knows who a customer is, and hands the wider regulatory calendar to [Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation](commerce-regulation.html).\n\n**Where we are in the order's journey.** When Eva Janssen orders her jacket on 13 April 2027 (the recurring order; see [Meet Kestrel & Pine](meet-kestrel-and-pine.html)), her name and address go to the platform, the warehouse management system (WMS), the carrier and the payment service provider (PSP), her invoice to the ERP (the enterprise resource planning system that keeps the books), and her e-mail to the notification service and, if she ticked the box, the newsletter tool. When she exchanges the jacket on 19 April, the returns portal joins the list. Each system received the data for a reason, and each reason has its own rule for how long it may stay.\n\n## Setting the Scene at Kestrel & Pine: The Request From Ghent\n\nKestrel & Pine, the fictional outdoor brand this book follows, received a message through the Belgian storefront's contact form on **Monday 10 May 2027**. A customer in Ghent, call her Lotte Claes, wrote in Dutch: please delete all my data and stop e-mailing me. The details are illustrative.\n\nLotte was a modest customer: two orders on the Belgian storefront (October 2025 and November 2026), one bol order (March 2026), one return, a newsletter subscription since 2025 and a loyalty sign-up at the Antwerp store's till, the POS (point-of-sale system), in December 2026. The request reached Noor Visser, who asked the question this chapter is about: **which systems hold Lotte, and what should each of them do?**\n\nRuben Alves and the application support team took seventeen working days to find out. She was in nine of the thirteen systems:\n\n| System | What it held | What they did | What they could not do |\n| --- | --- | --- | --- |\n| The platform | Account, addresses, two orders, consent flag, the apps' copies | Deleted the account; the platform anonymized the orders and notified its apps | Confirm that every installed app complied |\n| The marketplace connector | A copy of the bol order with name and address | Anonymized the copy | Touch bol's own record; bol is a separate controller |\n| The ERP | Two consumer invoices and a credit note | Nothing: invoices are tax records | Erase; retention rules apply |\n| The WMS | Three shipments with name and address | Deleted addresses from shipments older than a year | Erase recent shipments while a claim is possible |\n| The shipping service | Labels and tracking for three parcels | Deleted after the claims window | Reach bpost's own delivery record |\n| The PSP | Payment records for two orders | Removed shopper details from the console view | Erase the PSP's own records |\n| The POS | A loyalty entry with phone number and five purchases | Deleted the entry; receipts kept as fiscal records | Unlink receipts already exported to the ERP |\n| The returns portal | A contact and one return | Deleted the contact; anonymized the return | Nothing further |\n| The data warehouse | Rows keyed by e-mail in four tables and a BI extract | Replaced identifiers with a hash | Reach a spreadsheet export made in 2026 |\n\nThe newsletter tool, one of the platform's apps, unsubscribed her through the platform's notification; the iPaaS (the integration platform) held her in three days of logs that expired on their own; nobody checked the backups. The reply went out on **4 June 2027**, inside the one-month limit with six days to spare. It had taken three people and a shared spreadsheet. **The request was answered. The next one would arrive before anyone had written down how.**\n\n![Thirteen filing drawers, nine open with the same person's card inside, and three workers with a spreadsheet and a calendar marked 17 working days.](assets/images/35-privacy-and-customer-data/35-lotte-in-nine-of-thirteen-systems.jpeg)\n**Figure 1:** *One customer's deletion request found her in nine of the thirteen systems and took seventeen working days, three people and a shared spreadsheet to answer.*\n\n## What Personal Data a Commerce Platform Holds, and Under Which Rules\n\nThe vocabulary, because the words carry the design. **Personal data** is any information relating to an identified or identifiable person: a name, an e-mail, an order with an address, a cookie id tied to a browser. The **General Data Protection Regulation (GDPR)**, Regulation (EU) 2016/679, has applied across the European Union since 25 May 2018; it gives the person rights (access, rectification, erasure, objection, portability) and the organizations that handle the data duties.\n\nA **controller** is the organization that decides why and how personal data is used; a **processor** handles data only on the controller's instructions (Article 4(7) and 4(8)). A **data processing agreement (DPA)** is the contract Article 28 requires between them. A **lawful basis** is the legal reason a controller may use the data at all; Article 6 lists six, of which four matter here: consent, performance of a contract, a legal obligation and the controller's legitimate interests. A **data subject request (DSR)** is a person exercising a right: send me my data, correct it, delete it. **Retention** is how long data is kept, and the law pulls two ways: no longer than the purpose needs, and at least as long as tax law demands.\n\nThe fine ceiling for the core infringements is €20 million or 4% of worldwide annual turnover (Article 83(5)). For Kestrel & Pine, with €48.0 million of 2026 revenue, 4% would be €1.9 million; commoner sanctions are orders to stop processing and the public finding.\n\nWhat a merchant like Kestrel & Pine holds, by purpose:\n\n| Data | Where it lives | Purpose | Usual lawful basis | How long it is needed |\n| --- | --- | --- | --- | --- |\n| Name, delivery and billing address | Platform, OMS (order management system), WMS, shipping service, ERP, carriers | Deliver and invoice | Contract; legal obligation for the invoice | Order: the fiscal period; shipment: the claims window |\n| E-mail and phone | Platform, notification service, returns portal, POS, newsletter tool | Order messages; service; marketing | Contract for order messages; consent or the soft opt-in for marketing | Service: while the account exists; marketing: until withdrawn |\n| Order history, returns, refunds | Platform, OMS, ERP, returns portal, PSP, data warehouse | Fulfill, account, support, warranty | Contract; legal obligation; legitimate interests for fraud | Fiscal period; then pseudonymized |\n| Browsing and behavior | Analytics, advertising tags, CDP (customer data platform), personalization | Measurement; marketing | Consent (the ePrivacy Directive for the device; GDPR for the profile) | Until withdrawn or aggregated |\n\nThe right-hand columns are the design. The same person appears in every row, but each row has its own basis and its own clock. **The order record and the marketing profile need separate lawful bases, separate retention clocks and separate deletion behavior, even though they refer to the same person.**\n\n## Controller, Processor and the Commerce Supply Chain\n\nWho is the controller for Eva's data? The merchant: Kestrel & Pine decides that orders are taken, delivered and invoiced, that a newsletter exists, that a warehouse system is used. The guidelines of the European Data Protection Board (EDPB) on the two roles (version 2.0, July 2021) draw the line: decisions on the purpose of processing \"are clearly always for the controller to make\"; the \"essential means\" (which data, for how long, who receives it, whose data) are the controller's; the \"non-essential means\" (the choice of hardware or software, the detailed security measures) may be left to the processor.\n\nApplied to the commerce supply chain, the usual outcome of that test, as the author reads it and not as a rule:\n\n| System | Role for the merchant's customer data | Why |\n| --- | --- | --- |\n| The hosted platform, the WMS, the OMS, the iPaaS, the returns portal, the data warehouse | Processor | Tools the merchant chose, used for the merchant's purposes under its instructions and a DPA |\n| Most apps | Processor | Installed by the merchant to act on its data; each needs a DPA |\n| The PSP | Processor for the merchant's order data; usually an independent controller for the payment itself | Payment providers have their own legal duties (anti-money-laundering, fraud) that they decide on |\n| The carrier; the marketplace | Independent controllers | The carrier decides how it delivers and keeps its own records; the shopper is the marketplace's customer |\n| Advertising platforms | Often joint or independent controllers | They use the data for their own purposes too |\n\nPlatforms encode this in their app rules. Shopify requires every App Store app to subscribe to three compliance webhooks: `customers/data_request`, `customers/redact` (sent \"10 days after the deletion request\") and `shop/redact` (48 hours after a store owner uninstalls the app); apps must complete the action within 30 days and may decline redaction where the law requires them to retain data (developer documentation, n.d., accessed November 2026). Its protected-customer-data program gates name, address, phone and e-mail behind approval and requires minimum data, stated purposes, respect for consent, retention periods and encryption. That is a platform acting as the merchant's processor and policing the sub-processors on its behalf.\n\n![Diagram: The merchant is the controller](assets/images/35-privacy-and-customer-data/fig01-merchant-controller-most-systems-are-processors.jpeg)\n**Figure 2:** *The merchant is the controller; most of its systems are processors it must instruct and contract; carriers, payment providers and marketplaces decide for themselves.*\n\nThe consequence: **the system-of-record map from [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](boundaries-and-systems-of-record.html) needs a column for each system's legal role, and the integration inventory from [APIs, Events, Files and Middleware: How Commerce Systems Talk](integration-styles.html) is also the inventory of data flows.** The thirteen integrations with no named owner in the integration inventory as of January 2027 were thirteen data flows with nobody accountable for them; five were still unowned in April 2027, after the ownership map.\n\n## Lawful Bases: The Order Versus the Marketing\n\nIn commerce terms, the four bases divide the work like this:\n\n| Use | Basis | In practice |\n| --- | --- | --- |\n| Taking, delivering, invoicing and supporting the order; warranty; returns | **Contract** | Needed to do what the customer asked; no consent needed; cannot be withdrawn while the contract runs |\n| Keeping invoices, accounting records, VAT evidence | **Legal obligation** | Kept for the statutory period even if the customer objects |\n| Fraud screening; security; basic analytics; defending claims | **Legitimate interests** | Allowed where the merchant's interest is not overridden by the person's; documented; can be objected to |\n| Newsletters; profiling for personalized marketing; cross-site tracking | **Consent**, or for e-mail to existing customers about similar products, the ePrivacy **soft opt-in** | Freely given, specific, informed, recorded, and as easy to withdraw as to give |\n\nThe soft opt-in deserves a sentence because every merchant asks about it. The ePrivacy Directive (Article 13(2), 2002 text consolidated in 2009) lets a business that obtained a customer's e-mail \"in the context of the sale of a product or a service\" use it \"for direct marketing of its own similar products or services\", provided the customer can object, free of charge, at collection and in every message. National transpositions differ; the lawyer confirms the local reading. The architectural point holds either way: **the order's e-mail address and the marketing permission are two facts, and the second must be recorded with its basis.**\n\n## Consent, Cookies and Tracking\n\nConsent lives in two laws. The GDPR defines it (Article 4(11)) as a freely given, specific, informed and unambiguous indication of the person's wishes by a statement or a clear affirmative action, and requires the controller to be able to demonstrate it (Article 7(1)). The ePrivacy Directive (Article 5(3), as amended in 2009) adds a rule about the device: storing information on, or reading information from, a user's device is allowed only with consent after clear information, except for what is strictly necessary to transmit a communication or to provide a service the user explicitly asked for.\n\nIn plain words: the cart cookie and the language choice need no consent; the analytics tag, the advertising pixel and the personalization script do, before they fire. The regulators Kestrel & Pine answers to agree on the substance:\n\n- The **EDPB's consent guidelines** (May 2020) forbid cookie walls and say scrolling or swiping \"will not under any circumstances\" count as consent; its technical-scope guidelines (version 2.0, October 2024) bring tracking pixels, URL tracking and IP-only tracking within the device rule.\n- The **Dutch regulator** (Autoriteit Persoonsgegevens, n.d., accessed November 2026) exempts functional cookies and \"limited analytical cookies\" with little privacy impact, requires consent for tracking cookies, and calls cookie walls prohibited.\n- The **Belgian regulator** (Gegevensbeschermingsautoriteit, November 2023) exempts only strictly necessary functional and technical cookies (naming the language choice, cookie preferences and the shopping basket), rejects pre-ticked boxes and continued browsing, and requires cookies to be grouped by purpose, with own and third-party advertising as separate purposes.\n\nA **consent management platform (CMP)** is the banner and the record behind it: it stores each visitor's choices per purpose and tells each tag whether it may run. **Server-side tagging**, in which the merchant's own server receives the browser's events and forwards them to vendors, changes who receives the data first, not whether consent is needed: the browser is still told to emit identifiers, so the device rule still applies. Present it as a governance improvement, never as a consent bypass; that reading follows the EDPB's technical-scope guidelines and is the author's.\n\nTwo moving parts. The Commission's **Digital Omnibus** proposal of November 2025 would move the device rule into the GDPR with four no-consent purposes (transmission, requested service, audience measurement, security), require a one-click refusal and oblige controllers to honor machine-readable browser signals; one law firm's reading (Osborne Clarke, December 2025) is that the end of cookie banners \"is not yet in sight\". It is a proposal, not law, as of November 2026. In the United States the model is opt-out: California's law lets consumers opt out of the \"sale or sharing\" of their data, including through the Global Privacy Control browser signal, and the 2025 chart of the IAPP (International Association of Privacy Professionals) lists nineteen state laws of that family.\n\nThe design consequence joins this chapter to the previous one. **Consent is state that must travel**: from the CMP to the tag layer, to the newsletter tool and the CDP, to the POS where staff ask for a loyalty sign-up, and to every app that sends a message. [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html) put it on the customer master with its time, place, wording and source; here is why: the merchant must demonstrate it per person and per purpose, and withdraw it everywhere at once.\n\n![A consent ticket on a customer record fanning out to the banner, tags, newsletter tool, store till and apps, each holding a copy.](assets/images/35-privacy-and-customer-data/35-consent-travels.jpeg)\n**Figure 3:** *Consent is state that must travel: recorded once with its evidence on the customer master, it must reach every tag, tool, till and app, and a withdrawal must reach them all at once.*\n\n### Requirements per flow\n\n| Flow | How fresh | How consistent | How fast | How available |\n| --- | --- | --- | --- | --- |\n| Consent capture (banner, checkout box, store sign-up) | Immediate for the device; hours to reach every outbound tool | One record per person per purpose, with evidence | Must not slow the page or the till | Degrade to \"no consent\" when the CMP is down, never to \"consent\" |\n| Consent withdrawal | Immediate for the channel used; same day everywhere | Strictest state wins across tools | Minutes | Works even if the master is unreachable; reconcile later |\n| Data subject request | One month, extendable by two | Every system that holds the person answers; answers recorded | Days | Batch; the orchestrator can queue |\n| Retention purge | Daily or weekly | Pseudonymize transactions; erase profiles; log what ran | Hours | Batch; a failed run must be visible |\n\n\n## Data Subject Requests Across Many Systems\n\nThe GDPR requires the controller to act on a request \"without undue delay and in any event within one month\", extendable by two months for complex or numerous requests (Article 12(3)). What makes it hard is not the law but the fan-out: one person, many systems, a different right answer in each. Three parts make it a job.\n\n**An identity index**: which systems hold this person, under which identifiers. This is the cross-reference [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html) built for another reason; a deletion request is its second customer. Without it, every request starts with a search of every system by e-mail, phone and name, which is where Lotte's seventeen days went.\n\n**A request orchestrator**: a small workflow that verifies the requester (asking for \"all my data\" with someone else's e-mail is a way to steal it), fans the request out, records each answer and produces the reply. Shopify's compliance webhooks are the platform-side half of one; for the systems outside the platform, the merchant builds or buys the other half.\n\n**A per-system action table**, decided in advance:\n\n| Answer | When | Example at Kestrel & Pine |\n| --- | --- | --- |\n| **Erase** | The purpose has ended and no law requires the data | The platform account, the loyalty entry, the newsletter subscription, the returns contact, old shipment addresses |\n| **Pseudonymize** | The record must stay for accounting, statistics or evidence, but the person need not be identifiable from it | Orders in the platform and the OMS, warehouse rows, data-warehouse rows: name and address replaced by a token the merchant cannot reverse |\n| **Retain** | A legal obligation applies or a claim is still possible | Invoices and credit notes in the ERP; recent shipments during the carrier's claims window; fraud evidence |\n\nTwo answers lie outside the merchant's reach: **refer** (the carrier, the marketplace and the PSP are told, and the person must ask them too, because they are controllers in their own right) and **except** (backups, under a documented, bounded exception: erased data is not restored, and if a backup is restored the deletion is replayed).\n\n![Diagram: A deletion request is verified once, resolved against the identity index, fanned out with a predetermined action per system, and answered with a record of what each system did](assets/images/35-privacy-and-customer-data/fig02-deletion-request-verified-once-resolved-against.jpeg)\n**Figure 4:** *A deletion request is verified once, resolved against the identity index, fanned out with a predetermined action per system, and answered with a record of what each system did.*\n\nThe reply should say, in plain words, what was erased, what was kept and why, and whom else to ask; the record behind it is what a regulator asks for.\n\n## Retention: The Person Versus the Transaction\n\nTax law makes the merchant keep what privacy law makes it release. One design move reconciles them: **split the person from the transaction.** The retention facts, with their status:\n\n- **Netherlands.** The government's business portal states that businesses \"must keep your business records for at least 7 years\", naming the general ledger, stock records, purchase and sales records and debtor and creditor accounts, with at least 10 years for data on immovable property, and requires digital files to remain accessible for inspection (business.gov.nl, n.d., accessed November 2026).\n- **Germany.** §147 of the Abgabenordnung requires books, records, inventories and annual accounts to be kept for ten years, accounting vouchers for eight, and other records including commercial letters for six, from the end of the calendar year of the record (gesetze-im-internet.de, current text, accessed November 2026).\n- **Belgium.** Ten years for accounting records and invoices is widely cited; the official text was not verified for this chapter, and Sanne de Wit treats ten years as the Belgian rule pending confirmation.\n\nSo Lotte's invoice from November 2026 stays until at least the end of 2036 under the Belgian reading, whatever she asks; \"legal obligation\" is a lawful basis. The conflict arises only when the invoice *is* the customer record, as it is in many ERPs and platforms: the order carries name, address and e-mail, and the customer master is the list of people with orders. Deleting the person then means deleting the order, which tax law forbids, so nothing is deleted.\n\n![Diagram: Profiles are erasable](assets/images/35-privacy-and-customer-data/fig03-profiles-are-erasable-transactions-are-kept.jpeg)\n**Figure 5:** *Profiles are erasable; transactions are kept with a reference that no longer points to a person once the profile is gone.*\n\nIn practice: the order and the invoice carry a customer reference and the delivery address (part of the transaction, kept for the fiscal period); the profile (e-mail, phone, preferences, consent, browsing, loyalty) is a separate, erasable record; and the analytics tables carry a hash of the customer reference, not the e-mail. **Retention periods become a property of each record type, not of the person**, and a nightly job purges what has expired without anyone deciding per customer.\n\nBackups need a sentence. A deletion cannot reach into last month's backup; the accepted practice is a bounded, documented exception: backups are kept for a stated period, never used to resurrect erased data, and if one is restored the deletion log is replayed against it.\n\n## Sharing, Transfers and the Store\n\n**Sharing with partners.** Every order sends personal data to a carrier, the PSP, sometimes a marketplace, and to apps and connectors. The rules are minimization (the warehouse does not need the e-mail, the carrier does not need the order history), a recorded role per recipient, and a DPA or terms that cover the transfer. Kestrel & Pine's marketplace connector copied everything the marketplace sent; after Lotte's request it copies what the warehouse needs.\n\n**International transfers.** Most commerce stacks send data to the United States somewhere: analytics, e-mail delivery, support tooling, hosting. The lawful routes are an adequacy decision, standard contractual clauses (SCCs) or binding corporate rules. The EU-US Data Privacy Framework (DPF), Commission Implementing Decision (EU) 2023/1795 of 10 July 2023, is the adequacy decision for certified US companies; the modern SCCs are Decision (EU) 2021/914. The General Court dismissed Philippe Latombe's challenge to the DPF on 3 September 2025; an appeal (Case C-703/25 P) is pending as of November 2026; law firms advise keeping SCCs as a fallback. The architectural asset is a **transfer inventory** keyed to the integration map: per vendor, where the data goes and under which mechanism, so that a court decision becomes a filter on a list rather than a discovery project.\n\n**The store.** The POS holds a loyalty list and receipts; a store may also run cameras, Wi-Fi analytics and tablet sign-ups. Consent asked at a till by a member of staff is easy to ask badly and leaves no evidence. Kestrel & Pine's rule from mid-2027: the POS loyalty sign-up shows the same purposes and wording as the web, records the time and the store, and carries the master's consent once matched ([One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html)).\n\n**The vendor's side.** For a commerce software vendor, the obligations are a processor's: a DPA you can sign, sub-processors listed and announced, data kept in the regions you promise, the ability to export and erase one customer of one merchant, security you can evidence, and breach notification to the merchant without undue delay (Article 33(2)) so that it can meet its own 72-hour deadline.\n\n## The Choices\n\nFor the data subject request, four realistic designs:\n\n**By hand, with a runbook**: a written list of systems, the action per system and the person responsible. Fits a Starting or Growing merchant with few systems and few requests; Lotte's seventeen days were this, without the runbook. **Platform-centered**: the platform's own erasure plus its app fan-out handles the storefront side; a runbook covers the rest. Fits a merchant whose customer data mostly lives in the platform and its apps. **An orchestrator on the integration platform, with the identity index**: the request becomes a flow (verify, resolve, fan out, record, reply). Fits the Omnichannel stage, where a dozen systems hold the person and requests arrive weekly; it is Kestrel & Pine's design from autumn 2027. **A privacy management product**: software that automates intake, verification, discovery across connected systems, consent records and the records of processing. Fits the Group stage; my judgement is that below it the product is bought to avoid a map that still has to be made.\n\n| Option | Fits when | Strengths | Costs and limits | Warning sign |\n| --- | --- | --- | --- | --- |\n| Runbook by hand | Few systems, few requests | No build; forces the map to be written | Slow; no record unless disciplined | The runbook is a person's memory |\n| Platform-centered | Most data in the platform and its apps | Erasure and app fan-out come with the platform | ERP, WMS, POS and warehouse are outside it | \"The platform handles GDPR\" |\n| Orchestrator plus identity index | A dozen systems; weekly requests | Repeatable; a record per request; reuses the identity index | A flow to own; per-system steps; a human verification step | Requests queued behind other integration work |\n| Privacy management product | Several brands, countries, entities | Intake, verification, discovery, consent and records in one place | License and configuration; connectors still map to your systems | Bought before the map exists |\n\nFor consent the ladder is shorter: the platform's built-in banner and checkout box (Starting), a CMP with per-purpose consent synchronized to the customer record (Growing), and consent as an attribute of the master with evidence, synchronized to every outbound tool (Omnichannel onward).\n\n## Across Scale Stages: When It Fits and When It Limits\n\nThe four stages are the book's (see [What Changes at Each Scale: From First Store to Group](commerce-scaling-stages.html)).\n\n| Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |\n| --- | --- | --- | --- |\n| **1 — Starting** | The platform's standard DPA, cookie banner, checkout consent box and app vetting; requests handled in the platform admin | A privacy notice that matches the stack; a DPA for the 3PL and the e-mail tool; one person who answers requests | An app with no DPA; a newsletter list built from every order without a soft opt-in notice |\n| **2 — Growing** | The first store, ERP and marketplace bring data outside the platform; a CMP with per-purpose consent | A DPA register and the rule that nothing goes in without one; a runbook for requests; consent on the customer record; a retention rule per record type | A request that takes two weeks; POS consent that never reaches the newsletter tool; tags firing before the banner answers |\n| **3 — Omnichannel** | A dozen systems, 20–40 flows, requests weekly; a data warehouse keyed by e-mail | A data-flow map kept with the integration inventory; an identity index and a request orchestrator; the person split from the transaction; a transfer inventory; a bounded backup exception | A request that touches nine systems by hand; an erased customer resurrected by a backup; a court decision that forces a vendor-by-vendor investigation |\n| **4 — Group** | Several brands, countries and legal entities, each a controller; a privacy function | One consent model with national differences as configuration; a privacy management product; a data protection officer where required; group-wide records of processing | One brand's consent used by another; two brands answering the same person differently |\n\nThe judgement: the duties do not change with scale; a Starting-stage merchant is as much a controller as a Group. What changes is where the data is. Below the Omnichannel stage the platform holds most of it and its DPA, banner and app rules do most of the work; from the Omnichannel stage the person is in a dozen systems and the merchant must own the map, the index and the orchestrator itself. Kestrel & Pine learned the stage-3 lesson from one request from Ghent.\n\n## In Practice\n\n**Shopify's compliance webhooks and protected customer data (accessed November 2026)** are the clearest public example of a platform acting as the merchant's processor and policing its sub-processors: three mandatory webhooks, a 30-day completion window, and a gated program for the four identifying fields.\n\n**Sephora, California, August 2022.** A case more than three years old, but still the reference example: the Attorney General's settlement (US$1.2 million) found that third-party trackers on Sephora's site and app amounted to a sale of personal information without notice, and that Global Privacy Control signals were not honored. The tag layer is a legal surface, and a browser signal must be read as well as a banner.\n\n**The DPF and its appeal (2023–2026).** A merchant whose transfer inventory names each US vendor's mechanism can respond to the outcome in an afternoon.\n\n### Kestrel & Pine's deletion design (autumn 2027, illustrative)\n\nAfter Lotte's request, two changes. In **June 2027** the identity rule linked every system's record to the customer master ([One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html)), and the July matching run produced the index. In **October 2027** Ruben Alves built the request orchestrator as an iPaaS flow with a human verification step: the request is logged, the requester verified through the platform's account or a signed e-mail reply, the index queried and the action table applied. The platform deletes the account, anonymizes the orders and notifies its apps; the OMS (live for marketplace orders from 15 September) pseudonymizes its order copies; the WMS and the shipping service purge addresses older than their claims window of **twelve months** *(assumption)*; the ERP keeps invoices and credit notes and marks the customer reference as erased; the POS deletes the loyalty entry; the returns portal deletes the contact; the data warehouse replaces e-mail and name with a hash. The carrier, the marketplace and the PSP are notified and the customer told to ask them directly. Backups are kept for **35 days** *(assumption)* and the deletion log is replayed after any restore.\n\nThe second request through the flow, in November 2027, took **two working days** *(illustrative)*. The map that made it possible, one row per system with its legal role, data, action and retention clock, is now a column of Noor's ownership map, reviewed quarterly.\n\n## When It Goes Wrong\n\n| Failure | How it shows | Detection | Recovery |\n| --- | --- | --- | --- |\n| **The missed copy** | An erased customer receives a newsletter because nobody reached the newsletter tool | A complaint; a reconciliation of erased master ids against each tool's list | Erase; add the tool to the index and the action table; ask who else was missed |\n| **The resurrected customer** | A restore from backup brings back erased records | The deletion log replayed after a restore | Replay the log; document the backup exception |\n| **The impostor** | Someone requests \"all my data\" with another person's e-mail | A verification step that fails | Never answer an unverified request with data; verify through the account or a signed reply |\n| **The over-deletion** | An invoice or a fraud record is erased with the profile | The ERP's retention check; a tax audit | Restore from the retained copy; fix the action table: transactions retained, the person erased |\n| **Consent without evidence** | Marketing cannot show when or how a person consented | A consent audit sampling records | Treat unevidenced consent as absent; re-ask where the soft opt-in does not apply |\n| **The invalidated transfer** | A court or a decision removes a transfer mechanism | A transfer inventory naming the mechanism per vendor | Switch to SCCs or an EU region, vendor by vendor from the list |\n\nThe missed copy is the one that recurs, and its cause is a system added after the map was made; that is why the privacy map lives with the integration inventory and is reviewed when a row is added.\n\n## What to Take Away\n\n**Established.**\n\n- The merchant is the controller of its customers' data; its platform, warehouse system, integration platform and most apps are processors that need a contract; carriers, payment providers for the payment itself, and marketplaces usually decide for themselves (GDPR Articles 4 and 28; EDPB Guidelines 07/2020).\n- Orders rest on the contract and on tax law; marketing rests on consent or the soft opt-in; consent must be demonstrable, and cookie walls, scrolling and pre-ticked boxes do not produce it (GDPR Articles 6 and 7; EDPB Guidelines 05/2020; the Dutch and Belgian regulators).\n- Requests must be answered within one month, extendable by two (Article 12(3)); business records must be kept at least seven years in the Netherlands and ten, eight or six years in Germany depending on the record (business.gov.nl; §147 AO).\n- Platforms have operationalized the fan-out: Shopify's three compliance webhooks and 30-day window are a documented, dated example.\n\n**Depends on context.**\n\n- Below the Omnichannel stage the platform's DPA, banner, consent box and app rules do most of the work; from the Omnichannel stage the merchant must own a data-flow map, an identity index and an orchestrator, because the platform's reach ends at its apps.\n- The soft opt-in depends on national transposition and on the \"similar products\" test; take the lawyer's reading per country.\n- The retention period per record type is a legal and finance decision per country; the architecture needs only that it be a property of the record type, not of the person.\n\n**The author's synthesis.**\n\n- Privacy in a commerce estate is an integration problem wearing a legal coat: the map, inventory and identity index that fix the Phantom Stock and the Familiar Stranger make a deletion request a job rather than a hunt.\n- Split the person from the transaction in the data model before the first request, because every system that stores the name on the order otherwise forces a choice between the tax law and the person.\n\n## Questions to Ask\n\n1. Which systems hold personal data, and does the system-of-record map say, per system, whether it is a processor or a controller?\n2. Is there a signed DPA for every processor, including every app, and who keeps the register?\n3. Where is consent recorded, with what evidence, and how long does a withdrawal take to reach every outbound tool?\n4. Do tags fire before the banner is answered, and what happens when the CMP is down?\n5. How would you find every record of one person today, and how long did the last request take?\n6. Can an order outlive its customer in your data model, or does deleting the person delete the invoice?\n7. Which vendors receive data outside the EU, under which mechanism, and is that a list or a memory?\n8. What happens to an erased person when a backup is restored?\n\nA deletion request is one legal clock among many. [Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation](commerce-regulation.html) lays out the others, from the right of withdrawal and the Omnibus price rules to e-invoicing, accessibility, product safety and the platform rules for marketplaces, and shows how Kestrel & Pine turned them into a regulatory calendar for 2027 so that no deadline is discovered only months before it applies.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Privacy law compliance](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance), Shopify developer documentation, n.d., accessed 2026-11 — the three compliance webhooks, the 10-day and 48-hour delays, the 30-day completion window.\n- [Protected customer data](https://shopify.dev/docs/apps/launch/protected-customer-data), Shopify developer documentation, n.d., accessed 2026-11 — minimum data, purpose limitation, consent, retention, encryption and level-2 controls for apps.\n- [Attorney General Bonta announces settlement with Sephora](https://oag.ca.gov/news/press-releases/attorney-general-bonta-announces-settlement-sephora-part-ongoing-enforcement), California Department of Justice, 2022-08-24 — trackers as a sale, Global Privacy Control, the US$1.2 million settlement.\n- [Latombe's challenge to EU-US data transfers fails](https://www.lewissilkin.com/insights/2025/09/03/transatlantic-trouble-not-this-time-latombes-challenge-to-eu-us-data-transfers-fails), Lewis Silkin, 2025-09-03 — the General Court judgment and the advice to keep SCCs as a fallback.\n- [Digital Omnibus reshapes EU cookie rules, leaves banner fatigue largely intact](https://www.osborneclarke.com/insights/digital-omnibus-reshapes-eu-cookie-rules-leaves-banner-fatigue-largely-intact), Osborne Clarke, 2025-12-10 — a reading of the November 2025 proposal.\n\n*Standards, regulation and official documentation*\n\n- [Regulation (EU) 2016/679 (GDPR)](https://publications.europa.eu/resource/celex/32016R0679), Official Journal text, 2016 — Articles 4, 6, 7, 12(3), 28, 33 and 83(5); application from 25 May 2018.\n- [Directive 2009/136/EC](https://publications.europa.eu/resource/celex/32009L0136), Official Journal text, 2009 — the amended Article 5(3) device rule of the ePrivacy Directive.\n- [Directive 2002/58/EC (ePrivacy), consolidated 2009](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02002L0058-20091219), EUR-Lex — Article 13(2), the soft opt-in; text more than three years old, national transpositions differ.\n- [Guidelines 07/2020 on the concepts of controller and processor](https://www.edpb.europa.eu/system/files/2023-10/EDPB_guidelines_202007_controllerprocessor_final_en.pdf), European Data Protection Board, version 2.0, 2021-07-07 — purposes, essential and non-essential means.\n- [Guidelines 05/2020 on consent](https://www.edpb.europa.eu/system/files/documents/files/file1/edpb_guidelines_202005_consent_en.pdf), European Data Protection Board, 2020-05-04 — cookie walls, scrolling.\n- [Guidelines 2/2023 on the technical scope of Art. 5(3) of the ePrivacy Directive](https://www.edpb.europa.eu/system/files/documents/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf), European Data Protection Board, version 2.0, 2024-10-07 — pixels, URL tracking, IP-only tracking.\n- [Cookies](https://www.autoriteitpersoonsgegevens.nl/themas/internet-slimme-apparaten/cookies), Autoriteit Persoonsgegevens (Dutch), n.d., accessed 2026-11 — functional and limited analytical cookies, tracking cookies, cookie walls.\n- [Cookies en andere traceringsmiddelen](https://www.gegevensbeschermingsautoriteit.be/burger/thema-s/internet/cookies), Gegevensbeschermingsautoriteit (Belgium, Dutch), 2023-11-17 — exempt categories, pre-ticked boxes, purpose grouping.\n- [Keeping business records](https://business.gov.nl/regulation/keeping-business-records/), business.gov.nl (Netherlands Enterprise Agency), n.d., accessed 2026-11 — at least seven years; ten for immovable property; digital files accessible.\n- [§147 Abgabenordnung](https://www.gesetze-im-internet.de/ao_1977/__147.html), gesetze-im-internet.de, current text, accessed 2026-11 — ten, eight and six years.\n- [Commission Implementing Decision (EU) 2023/1795 (EU-US Data Privacy Framework)](https://publications.europa.eu/resource/celex/32023D1795), Official Journal text, 2023 — the adequacy decision.\n- [Commission Implementing Decision (EU) 2021/914 (standard contractual clauses)](https://publications.europa.eu/resource/celex/32021D0914), Official Journal text, 2021.\n- [Case C-703/25 P, Latombe v Commission](https://publications.europa.eu/resource/celex/62025CN0703), Official Journal C/2025/6610, 2025-12-22 — the pending appeal.\n- [California Consumer Privacy Act](https://oag.ca.gov/privacy/ccpa), California Department of Justice, n.d., accessed 2026-11 — thresholds, rights, Global Privacy Control; [US State Privacy Legislation Tracker](https://iapp.org/resources/article/us-state-privacy-legislation-tracker/), IAPP, updated 2026-09-08, and its [2025 chart](https://prod.iapp.org/media/pdf/resource_center/State_Comp_Privacy_Law_Chart.pdf) — nineteen state laws.\n\n*Research and practitioner sources*\n\n- [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html) — the identity index this chapter's orchestrator depends on; [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](../listing-systems-architecture/fraud-prevention.html) in the sibling book LISTED for the legitimate-interest side of risk screening.\n\nKestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

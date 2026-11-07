@@ -1,0 +1,16 @@
+[
+ {
+  "post": "21-b2b-commerce",
+  "figure": 1,
+  "id": "fig01-b2b-object-model-every-platform-shares",
+  "asset": "assets/images/21-b2b-commerce/fig01-b2b-object-model-every-platform-shares.jpeg",
+  "mermaid": "flowchart TB\n    CO[\"Company account\"] --> LOC1[\"Location Groningen shop\"]\n    CO --> LOC2[\"Location Assen shop\"]\n    CO --> CT1[\"Contact owner, approver\"]\n    CO --> CT2[\"Contact buyer, orders only\"]\n    CO --> PL[\"Price agreement and assortment\"]\n    CO --> TERMS[\"Payment terms net 30 and credit limit\"]\n    LOC1 --> ORD[\"Order placed for a location\"]\n    CT2 --> ORD\n    PL --> ORD\n    TERMS -->|\"credit check\"| ORD"
+ },
+ {
+  "post": "21-b2b-commerce",
+  "figure": 2,
+  "id": "fig02-portal-order-omnichannel-stage-prices-come",
+  "asset": "assets/images/21-b2b-commerce/fig02-portal-order-omnichannel-stage-prices-come.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as Buyer at the shop\n    participant P as B2B portal\n    participant PR as Pricing source\n    participant ERP as ERP receivables\n    participant OMS as Order record\n    B->>P: Add 60 jackets and 120 pairs of socks\n    P->>PR: Prices for this company, today\n    PR-->>P: Contract prices, effective dates\n    B->>P: Place order on net 30 terms\n    P->>ERP: Credit check, order value against open balance\n    ERP-->>P: Over limit by 1,184 euro, hold for approval\n    P->>OMS: Create order, status awaiting seller approval\n    OMS-->>B: Order received, pending approval\n    ERP-->>OMS: Approved by Head of Wholesale\n    OMS->>OMS: Release to fulfillment"
+ }
+]

@@ -1,0 +1,16 @@
+[
+ {
+  "post": "part-6-intro",
+  "figure": 1,
+  "id": "fig01-joins-eva-s-order-crosses-april",
+  "asset": "assets/images/part-6-intro/fig01-joins-eva-s-order-crosses-april.jpeg",
+  "mermaid": "flowchart LR\n    PL[\"The platform\"] -->|\"order webhook\"| IP[\"The iPaaS\"]\n    IP -->|\"creates the order\"| WMS[\"The WMS\"]\n    PSP[\"The PSP\"] -->|\"payment webhook\"| PL\n    WMS -->|\"stock every 15 minutes\"| ERP[\"The ERP\"]\n    ERP -->|\"stock hourly\"| PL\n    PL -->|\"stock hourly\"| MC[\"The marketplace connector\"]\n    RP[\"The returns portal\"] -->|\"refund by API\"| PL\n    PL -->|\"refund request\"| PSP\n    ERP -->|\"nightly extract\"| DW[\"The data warehouse\"]"
+ },
+ {
+  "post": "part-6-intro",
+  "figure": 2,
+  "id": "fig02-five-questions-part-vi-answer-each",
+  "asset": "assets/images/part-6-intro/fig02-five-questions-part-vi-answer-each.jpeg",
+  "mermaid": "flowchart TB\n    C1[\"Talk: a style and an owner per flow\"] --> R[\"Separate systems that behave like one\"]\n    C2[\"Recover: a key, an outbox, a compensation and a reconciliation job\"] --> R\n    C3[\"Promise: a contract with a pinned version and a sunset date\"] --> R\n    C4[\"Mean: one master per entity and a cross-reference\"] --> R\n    C5[\"Count: one definition per metric and a published bridge\"] --> R"
+ }
+]

@@ -1,0 +1,9 @@
+[
+ {
+  "post": "part-3-intro",
+  "figure": 1,
+  "id": "fig01-shape-part-iii-recommends-checkout-creates",
+  "asset": "assets/images/part-3-intro/fig01-shape-part-iii-recommends-checkout-creates.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Cart, a draft\"] --> CO[\"Checkout orchestration\"]\n    CO -->|\"create exactly once, payment pending\"| OR[\"Order record, the hub\"]\n    PSP[\"The PSP\"] -->|\"webhook, late and sometimes twice\"| OR\n    OR -->|\"fulfillment order per parcel\"| WMS[\"The warehouse system\"]\n    WMS -->|\"shipped, delivered\"| OR\n    OR -->|\"invoice at dispatch, credit note on return\"| ERP[\"The ERP and its ledger\"]\n    PSP -->|\"payout report per sales day\"| ERP\n    BK[\"Bank statement\"] --> ERP\n    REC[\"Daily and monthly reconciliation\"] -.->|\"compares every copy to its source\"| OR"
+ }
+]

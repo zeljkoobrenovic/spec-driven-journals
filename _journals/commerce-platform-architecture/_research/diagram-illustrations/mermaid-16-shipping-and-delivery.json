@@ -1,0 +1,16 @@
+[
+ {
+  "post": "16-shipping-and-delivery",
+  "figure": 1,
+  "id": "fig01-three-moments-one-shipping-layer-promise",
+  "asset": "assets/images/16-shipping-and-delivery/fig01-three-moments-one-shipping-layer-promise.jpeg",
+  "mermaid": "flowchart LR\n    CK[\"Checkout\"] -->|\"ask options and date\"| PR[\"Promise service\"]\n    PR -->|\"reads\"| CO[\"Cut-off and capacity from the WMS\"]\n    PR -->|\"reads\"| LN[\"Lane transit table\"]\n    PR -->|\"reads\"| PU[\"Pickup point lookup\"]\n    WMS[\"WMS at pack time\"] -->|\"create shipment\"| SS[\"Shipping service\"]\n    SS -->|\"label and manifest\"| CAR[\"Carriers PostNL bpost DHL DPD\"]\n    CAR -->|\"scans\"| SS\n    SS -->|\"normalized tracking events\"| OMS[\"Order record\"]\n    OMS -->|\"status\"| NT[\"Notifications and status page\"]\n    SS -->|\"scan history per lane\"| LN"
+ },
+ {
+  "post": "16-shipping-and-delivery",
+  "figure": 2,
+  "id": "fig02-computed-promise-ship-date-comes-order",
+  "asset": "assets/images/16-shipping-and-delivery/fig02-computed-promise-ship-date-comes-order.jpeg",
+  "mermaid": "flowchart TB\n    OT[\"Order time and destination\"] --> SD[\"Ship date\"]\n    CO[\"Cut-off from the last wave\"] --> SD\n    BL[\"Backlog age in the order feed\"] --> SD\n    ST[\"Stock location\"] --> SD\n    SD --> DD[\"Delivery date\"]\n    LT[\"Lane transit by carrier and service\"] --> DD\n    CP[\"Carrier performance on this lane\"] --> MG[\"Margin for the tail\"]\n    MG --> DD\n    DD --> SHOW[\"Promise shown at checkout\"]"
+ }
+]

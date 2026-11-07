@@ -1,0 +1,16 @@
+[
+ {
+  "post": "31-extensibility-and-app-ecosystems",
+  "figure": 1,
+  "id": "fig01-where-extension-runs-decides-what-it",
+  "asset": "assets/images/31-extensibility-and-app-ecosystems/fig01-where-extension-runs-decides-what-it.jpeg",
+  "mermaid": "flowchart LR\n    DB[\"Platform database\"]\n    CORE[\"Platform core process\"]\n    PLUG[\"In-process plugin\"]\n    THEME[\"Theme code\"]\n    FUNC[\"Function at an extension point\"]\n    API[\"Versioned API and webhooks\"]\n    APP[\"App outside the process\"]\n    PLUG -->|\"reaches anything\"| DB\n    PLUG -->|\"replaces core logic\"| CORE\n    THEME -->|\"renders the page\"| CORE\n    CORE -->|\"fixed input, time budget\"| FUNC\n    FUNC -->|\"fixed output\"| CORE\n    CORE -->|\"scopes decide what\"| API\n    API <-->|\"read or write by scope\"| APP"
+ },
+ {
+  "post": "31-extensibility-and-app-ecosystems",
+  "figure": 2,
+  "id": "fig02-two-writers-one-fact-warehouse-feed",
+  "asset": "assets/images/31-extensibility-and-app-ecosystems/fig02-two-writers-one-fact-warehouse-feed.jpeg",
+  "mermaid": "sequenceDiagram\n    participant WMS as the WMS\n    participant IP as the iPaaS\n    participant PL as the platform\n    participant PO as the pre-order app\n    participant SF as the storefront\n    WMS->>IP: Counted stock, 120 units\n    IP->>PL: Set available to 120\n    PO->>PL: Pre-order received, adjust by minus 5\n    PL-->>SF: Shows 115\n    IP->>PL: Hourly set available to 120\n    PO->>PL: Another pre-order, adjust by minus 5\n    PL-->>SF: Shows 115, two pre-orders lost\n    PO->>PL: Re-sync all pre-orders, adjust by minus 10\n    PL-->>SF: Shows 110, then lower after each re-sync\n    Note over PL,SF: Two weeks later 600 variants show sold out while Duiven has stock"
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "post": "12-payments",
+  "figure": 1,
+  "id": "fig01-money-moves-four-stages-merchant-does",
+  "asset": "assets/images/12-payments/fig01-money-moves-four-stages-merchant-does.jpeg",
+  "mermaid": "flowchart LR\n    SH[\"Shopper's bank or card\"] -->|\"1 authorization\"| PSP[\"The PSP\"]\n    PSP -->|\"result by webhook\"| ORD[\"The order record\"]\n    ORD -->|\"2 capture on shipment\"| PSP\n    NET[\"Card scheme or bank network\"] -->|\"3 settlement\"| PSP\n    PSP -->|\"4 payout, net of fees\"| BANK[\"Merchant's bank account\"]\n    PSP -->|\"payout report\"| ERP[\"The ERP\"]\n    BANK -->|\"bank statement\"| ERP\n    RP[\"The returns portal\"] -->|\"refund request with return id\"| ORD\n    ORD -->|\"refund\"| PSP"
+ },
+ {
+  "post": "12-payments",
+  "figure": 2,
+  "id": "fig02-order-s-payment-vocabulary-few-states",
+  "asset": "assets/images/12-payments/fig02-order-s-payment-vocabulary-few-states.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Pending\n    Pending --> Authorized: card approved, money held\n    Pending --> Paid: iDEAL or other instant method approved\n    Pending --> Failed: declined, abandoned or session expired\n    Authorized --> Paid: captured on shipment\n    Authorized --> Canceled: released, or expired before capture\n    Paid --> PartlyRefunded: partial refund succeeded\n    Paid --> Refunded: full refund succeeded\n    PartlyRefunded --> Refunded: remaining amount refunded\n    Paid --> Disputed: chargeback opened\n    Disputed --> Paid: chargeback reversed\n    Disputed --> Refunded: chargeback lost"
+ },
+ {
+  "post": "12-payments",
+  "figure": 3,
+  "id": "fig03-double-refund-two-writers-two-paths",
+  "asset": "assets/images/12-payments/fig03-double-refund-two-writers-two-paths.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as Customer\n    participant SUP as Support console at the PSP\n    participant RP as The returns portal\n    participant PL as The platform\n    participant PSP as The PSP\n    participant ERP as The ERP\n    C->>SUP: Parcel delivered to Duiven, where is my refund\n    SUP->>PSP: Manual refund 199 euro for the order\n    PSP-->>ERP: Refund line in the daily report\n    RP->>RP: Inspection passed, grade resellable\n    RP->>PL: Refund 199 euro with the return id\n    PL->>PSP: Refund 199 euro for the order, no return key\n    PSP-->>PL: Refund webhook, success\n    PSP-->>ERP: Second refund line in the daily report\n    ERP->>ERP: Month end, two credits for one order"
+ }
+]

@@ -1,0 +1,16 @@
+[
+ {
+  "post": "33-peak-load-and-reliability",
+  "figure": 1,
+  "id": "fig01-kestrel-pine-s-chain-27-november",
+  "asset": "assets/images/33-peak-load-and-reliability/fig01-kestrel-pine-s-chain-27-november.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Shoppers 41x normal traffic\"] --> C[\"CDN and storefront, held\"]\n    C --> K[\"Checkout and PSP, held\"]\n    K --> P[\"Platform order record, held\"]\n    P -->|\"one order at a time, about 7 a minute\"| I[\"iPaaS order flow, four hours behind\"]\n    I --> W[\"WMS, orders arrived late\"]\n    W -->|\"stock every 15 min\"| E[\"ERP\"]\n    E -->|\"stock hourly\"| P\n    P -->|\"stock hourly\"| M[\"Marketplace connector\"]\n    M --> MP[\"bol, Amazon.de, Zalando, sold what was gone\"]"
+ },
+ {
+  "post": "33-peak-load-and-reliability",
+  "figure": 2,
+  "id": "fig02-degradation-ladder-hosted-platform-merchant-each",
+  "asset": "assets/images/33-peak-load-and-reliability/fig02-degradation-ladder-hosted-platform-merchant-each.jpeg",
+  "mermaid": "flowchart TB\n    A[\"1 Recommendations and personalization off\"] --> B[\"2 Search facets and sort options reduced\"]\n    B --> C[\"3 Stock badges served from a buffered copy\"]\n    C --> D[\"4 Marketplace listings of low stock SKUs paused\"]\n    D --> E[\"5 Delivery promise widened, tomorrow becomes three days\"]\n    E --> F[\"6 Non essential checkout options and payment methods off\"]\n    F --> G[\"7 Waiting room on at the CDN\"]\n    G --> H[\"8 New account sign up and pop ups off\"]\n    H --> N[\"Never switched off, checkout, payment, order record, order export\"]"
+ }
+]

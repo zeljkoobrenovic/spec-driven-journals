@@ -1,0 +1,16 @@
+[
+ {
+  "post": "15-warehouse-and-fulfillment",
+  "figure": 1,
+  "id": "fig01-warehouse-has-four-interfaces-instructions-fulfillment",
+  "asset": "assets/images/15-warehouse-and-fulfillment/fig01-warehouse-has-four-interfaces-instructions-fulfillment.jpeg",
+  "mermaid": "flowchart LR\n    PO[\"Purchase order and ASN from the ERP\"] -->|\"inbound\"| RCV[\"Receiving and put-away\"]\n    RCV --> OH[\"On-hand stock by location\"]\n    FO[\"Fulfillment order from the OMS\"] -->|\"instruction\"| WAVE[\"Wave release\"]\n    WAVE --> PICK[\"Pick\"]\n    PICK --> PACK[\"Pack, label, confirm\"]\n    PACK -->|\"shipment and tracking number\"| OMS[\"OMS and platform\"]\n    PACK -->|\"parcel\"| CAR[\"Carrier\"]\n    OH -->|\"stock events\"| AVL[\"Availability service\"]\n    PICK -->|\"short pick\"| OMS\n    RET[\"Returns received\"] --> OH"
+ },
+ {
+  "post": "15-warehouse-and-fulfillment",
+  "figure": 2,
+  "id": "fig02-fulfillment-order-handshake-warehouse-accepts-before",
+  "asset": "assets/images/15-warehouse-and-fulfillment/fig02-fulfillment-order-handshake-warehouse-accepts-before.jpeg",
+  "mermaid": "sequenceDiagram\n    participant OMS as the OMS\n    participant IP as the iPaaS\n    participant WMS as the WMS\n    participant SS as the shipping service\n    OMS->>IP: Fulfillment order 1072455-1, two lines, Duiven, PostNL standard\n    IP->>WMS: Create fulfillment order, idempotency key 1072455-1\n    WMS-->>IP: Accepted\n    IP-->>OMS: Accepted, edit window closed\n    WMS->>WMS: Released in the 06:30 wave, picked, packed\n    OMS->>WMS: Cancellation request\n    WMS-->>OMS: Rejected, picking already started\n    WMS->>SS: Create shipment, two items, 1.1 kg\n    SS-->>WMS: PostNL label and tracking number\n    WMS-->>OMS: Shipped, one parcel, tracking number\n    WMS-->>OMS: Stock event, jacket M moss minus 1, socks minus 2"
+ }
+]

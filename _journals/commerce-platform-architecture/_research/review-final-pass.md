@@ -1,0 +1,12 @@
+# Final consistency pass — 2026-11-07
+
+Scope: chapters 01–36, part intros 1–8, introduction. Pages under the other reviewer (37–49, parts 9–11, failure catalog, meet-kestrel-and-pine, domain-coverage, glossary, bibliography) were not touched.
+
+1. **Item 16 (unowned integrations).** Ch 34 (body, scale-stage cell, baseline table) and ch 35 now say 13 of 34 *as of January 2027* and 5 still unowned in April 2027. Ch 34/35 previously said "February 2027 inventory"; aligned to item 16's January date (ch 24 already says January).
+2. **Item 12/19 (Belgian Peppol customer).** Ch 22's unnamed "Belgian retailer" is now Ardennes Trail Co., Namur: 40 Ridgewalker jackets at €95 = €3,800, ordered 21 April 2027, bpost, Peppol BIS invoice at dispatch 23 April (0% intra-EU, reverse charge), due 23 May. The mandate hedge (items 5, 17) is kept and restated in the paragraph.
+3. **Stock writers before Waypoint.** Ruling recorded as consistency item 22 and an `[editor-review]` ledger line: six writers of Duiven stock in January 2027 (WMS feed via the ERP's hourly sync, hand edits in ERP, hand edits in the platform admin, three apps), four of them automated flows into the platform. Ch 10 ("ERP connector, WMS feed and three apps" — five, the chain counted twice) fixed; ch 24's table cell now ties four flows to six writers; ch 03, 04, 25 already agreed, unchanged.
+4. **Part intros.** Words before Sources (mermaid source excluded): part-4 1,284, part-7 1,344 (both already under the cap, unchanged); part-8 was 1,530 with mermaid, now about 1,480 (1,301 without) after trimming case details repeated from chapters 34–36.
+5. **"The ledger" as a document.** Rephrased in 01, 02, 04, 05, 06, 08, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25, 27, 33, 34, 35, introduction, part-2, part-3 (e.g. "the ledger's Three-Status Order" → "Kestrel & Pine's"; "The four stages are the ledger's" → "the book's"; "recorded in the ledger" dropped). Accounting uses (the ERP's ledger, order-to-ledger) left alone.
+6. **Checks.** No `> **WHY IT MATTERS:**` callout in any page (the phrase survives only in spec changelogs). No front-matter value contains `\"`.
+
+Spec changelog lines added to every edited page. Build: commerce journal built, no errors. `render_check.py`: all 27 edited pages OK (mermaid rendered, no unresolved cross-links); one transient file-not-found during the first run (concurrent build) passed on retry.

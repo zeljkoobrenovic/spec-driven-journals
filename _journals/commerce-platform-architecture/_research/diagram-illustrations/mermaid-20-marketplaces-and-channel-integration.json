@@ -1,0 +1,16 @@
+[
+ {
+  "post": "20-marketplaces-and-channel-integration",
+  "figure": 1,
+  "id": "fig01-connector-translates-five-flows-between-merchant",
+  "asset": "assets/images/20-marketplaces-and-channel-integration/fig01-connector-translates-five-flows-between-merchant.jpeg",
+  "mermaid": "flowchart LR\n    PIM[\"Product system of record\"] -->|\"content and GTINs\"| CON[\"Channel connector\"]\n    AV[\"Availability service\"] -->|\"stock per channel\"| CON\n    PR[\"Pricing source\"] -->|\"channel prices\"| CON\n    CON -->|\"listings, stock, prices\"| MP[\"bol, Amazon.de, Zalando\"]\n    MP -->|\"orders, cancellations, returns\"| CON\n    CON -->|\"marketplace orders\"| OMS[\"Order record\"]\n    OMS -->|\"fulfillment orders\"| WMS[\"Warehouse\"]\n    WMS -->|\"shipment and tracking\"| OMS\n    OMS -->|\"ship confirmation\"| CON\n    CON -->|\"tracking to marketplace\"| MP"
+ },
+ {
+  "post": "20-marketplaces-and-channel-integration",
+  "figure": 2,
+  "id": "fig02-seller-fulfilled-marketplace-order-order-created",
+  "asset": "assets/images/20-marketplaces-and-channel-integration/fig02-seller-fulfilled-marketplace-order-order-created.jpeg",
+  "mermaid": "sequenceDiagram\n    participant MP as Amazon.de\n    participant CON as Connector\n    participant OMS as Order record\n    participant WMS as Warehouse\n    participant SH as Shipping service\n    MP->>CON: New order notification or poll result\n    CON->>OMS: Create order with marketplace order id and ship-by date\n    OMS-->>CON: Internal order number\n    CON->>MP: Acknowledge, bind internal number to marketplace id\n    OMS->>WMS: Fulfillment order\n    WMS->>SH: Label and carrier booking\n    SH-->>WMS: Tracking number\n    WMS-->>OMS: Shipped with tracking\n    OMS->>CON: Ship confirmation\n    CON->>MP: Confirm shipment with carrier and tracking\n    MP-->>CON: Buyer cancellation or return announced, later\n    CON->>OMS: Cancellation or return event"
+ }
+]

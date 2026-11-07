@@ -1,0 +1,16 @@
+[
+ {
+  "post": "23-erp-and-back-office-integration",
+  "figure": 1,
+  "id": "fig01-finance-only-erp-orders-shipments-money",
+  "asset": "assets/images/23-erp-and-back-office-integration/fig01-finance-only-erp-orders-shipments-money.jpeg",
+  "mermaid": "flowchart LR\n    OMS[\"OMS order record\"] -->|\"orders daily batch\"| ERP[\"ERP ledger purchasing valuation master data\"]\n    WMS[\"WMS\"] -->|\"shipments and stock totals\"| ERP\n    PSP[\"PSP\"] -->|\"payments fees payouts\"| ERP\n    ERP -->|\"invoices and credit notes\"| DOC[\"EDI and Peppol gateway\"]\n    ERP -->|\"item identity and cost\"| PIM[\"PIM\"]\n    ERP -->|\"terms, credit and wholesale prices as events\"| PL[\"Platform B2B portal\"]\n    ERP -->|\"cost per SKU\"| DWH[\"Data warehouse\"]"
+ },
+ {
+  "post": "23-erp-and-back-office-integration",
+  "figure": 2,
+  "id": "fig02-kestrel-pine-s-target-shape-after",
+  "asset": "assets/images/23-erp-and-back-office-integration/fig02-kestrel-pine-s-target-shape-after.jpeg",
+  "mermaid": "flowchart TB\n    CH[\"Channels storefront marketplaces EDI stores\"] -->|\"orders\"| OMS[\"OMS order hub and availability\"]\n    OMS -->|\"fulfillment orders\"| WMS[\"WMS physical stock\"]\n    WMS -->|\"stock events\"| OMS\n    OMS -->|\"availability per channel\"| CH\n    OMS -->|\"orders daily batch\"| ERP[\"ERP finance only\"]\n    WMS -->|\"shipments daily batch\"| ERP\n    PIM[\"PIM product content\"] -->|\"published products\"| CH\n    ERP -->|\"item identity and cost\"| PIM"
+ }
+]

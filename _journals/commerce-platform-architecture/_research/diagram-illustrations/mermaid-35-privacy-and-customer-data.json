@@ -1,0 +1,23 @@
+[
+ {
+  "post": "35-privacy-and-customer-data",
+  "figure": 1,
+  "id": "fig01-merchant-controller-most-systems-are-processors",
+  "asset": "assets/images/35-privacy-and-customer-data/fig01-merchant-controller-most-systems-are-processors.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Kestrel and Pine, the controller\"] -->|\"instructions and DPA\"| P[\"Processors: platform, WMS, ERP, iPaaS, returns portal, apps\"]\n    M -->|\"order data under contract\"| C[\"Independent controllers: carriers, PSP for the payment, marketplaces\"]\n    P -->|\"sub-processors\"| S[\"Hosting, e-mail delivery, support tools\"]\n    M -->|\"records of processing, DPA register, transfer inventory\"| R[\"The privacy map\"]"
+ },
+ {
+  "post": "35-privacy-and-customer-data",
+  "figure": 2,
+  "id": "fig02-deletion-request-verified-once-resolved-against",
+  "asset": "assets/images/35-privacy-and-customer-data/fig02-deletion-request-verified-once-resolved-against.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as The customer\n    participant O as Request orchestrator\n    participant I as Identity index\n    participant P as The platform and its apps\n    participant E as ERP, WMS, POS, warehouse\n    participant X as Carriers, marketplace, PSP\n    C->>O: deletion request, verified\n    O->>I: which systems hold this person\n    I-->>O: nine systems and their ids\n    O->>P: delete account, redact orders, notify apps\n    O->>E: erase, pseudonymize or retain per table\n    O->>X: notify and refer the customer\n    P-->>O: done, app answers within 30 days\n    E-->>O: done, invoices retained\n    O->>C: reply with what was done and where to ask next"
+ },
+ {
+  "post": "35-privacy-and-customer-data",
+  "figure": 3,
+  "id": "fig03-profiles-are-erasable-transactions-are-kept",
+  "asset": "assets/images/35-privacy-and-customer-data/fig03-profiles-are-erasable-transactions-are-kept.jpeg",
+  "mermaid": "flowchart TB\n    PR[\"The person: profile, addresses, e-mail, consent, behavior\"] -->|\"erase on request or at end of own retention\"| GONE[\"Erased\"]\n    TX[\"The transaction: order, invoice, credit note, shipment\"] -->|\"keep for the fiscal period\"| KEEP[\"Retained with a pseudonymous customer reference\"]\n    PR -.->|\"customer reference, one way\"| TX"
+ }
+]

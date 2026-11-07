@@ -1,0 +1,16 @@
+[
+ {
+  "post": "42-replatforming-and-migration",
+  "figure": 1,
+  "id": "fig01-strangler-commerce-router-or-copied-flow",
+  "asset": "assets/images/42-replatforming-and-migration/fig01-strangler-commerce-router-or-copied-flow.jpeg",
+  "mermaid": "flowchart LR\n    SF[\"Storefronts and channels\"] --> R[\"Router or copy of the flow\"]\n    R -->|\"everything else\"| OLD[\"Old owner\"]\n    R -->|\"one seam at a time\"| NEW[\"New owner\"]\n    OLD --> REC[\"Reconciliation job\"]\n    NEW --> REC\n    REC -->|\"agree\"| NEXT[\"Route the next seam\"]\n    REC -->|\"disagree\"| BACK[\"Route back and fix\"]"
+ },
+ {
+  "post": "42-replatforming-and-migration",
+  "figure": 2,
+  "id": "fig02-one-seam-s-cutover-kestrel-pine",
+  "asset": "assets/images/42-replatforming-and-migration/fig02-one-seam-s-cutover-kestrel-pine.jpeg",
+  "mermaid": "sequenceDiagram\n    participant PL as the platform\n    participant IP as the iPaaS\n    participant OMS as the OMS\n    participant WMS as the WMS\n    participant REC as reconciliation\n    PL->>IP: Marketplace order created\n    IP->>OMS: Copy of the order, shadow phase\n    IP->>WMS: Order to pick, old path\n    REC->>OMS: Compare orders of the day\n    REC->>WMS: Compare orders of the day\n    REC-->>IP: Zero differences for 14 days, go\n    PL->>IP: Marketplace order created\n    IP->>OMS: Order, now the owner\n    OMS->>WMS: Order to pick, new path\n    REC-->>IP: Differences found, route the seam back"
+ }
+]

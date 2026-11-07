@@ -1,0 +1,16 @@
+[
+ {
+  "post": "18-returns-and-exchanges",
+  "figure": 1,
+  "id": "fig01-return-loops-through-six-systems-warehouse",
+  "asset": "assets/images/18-returns-and-exchanges/fig01-return-loops-through-six-systems-warehouse.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Customer\"] -->|\"request, reason\"| RP[\"Returns portal\"]\n    RP -->|\"eligibility check\"| OMS[\"Order record OMS\"]\n    RP -->|\"label\"| CAR[\"Carrier\"]\n    CAR -->|\"parcel and scans\"| WMS[\"Warehouse WMS\"]\n    WMS -->|\"received, inspected, disposition\"| OMS\n    WMS -->|\"restocked units\"| AVL[\"Availability service\"]\n    OMS -->|\"refund with return id, via the platform\"| PSP[\"The PSP\"]\n    OMS -->|\"exchange order\"| WMS\n    OMS -->|\"refund issued\"| ERP[\"The ERP, credit note\"]\n    OMS -->|\"status\"| C"
+ },
+ {
+  "post": "18-returns-and-exchanges",
+  "figure": 2,
+  "id": "fig02-return-s-lifecycle-request-label-are",
+  "asset": "assets/images/18-returns-and-exchanges/fig02-return-s-lifecycle-request-label-are.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Requested\n    Requested --> Open: approved, label issued\n    Requested --> Declined: not eligible\n    Open --> InTransit: carrier first scan\n    InTransit --> Received: warehouse opens parcel\n    Received --> Inspected: graded per item\n    Inspected --> Restocked: resellable\n    Inspected --> Processing: clean, repair, repack\n    Inspected --> NotRestocked: discard or return to supplier\n    Inspected --> Missing: expected item absent\n    Restocked --> Settled: refund or exchange released\n    Processing --> Settled: refund released, stock later\n    NotRestocked --> Settled: refund or partial refund decided\n    Missing --> Settled: refund withheld or partial\n    Settled --> [*]"
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "post": "13-order-management",
+  "figure": 1,
+  "id": "fig01-goods-state-machine-lives-each-fulfillment",
+  "asset": "assets/images/13-order-management/fig01-goods-state-machine-lives-each-fulfillment.jpeg",
+  "mermaid": "stateDiagram-v2\n    state \"Requested\" as S1\n    state \"Accepted by the location\" as S2\n    state \"In progress\" as S3\n    state \"Shipped\" as S4\n    state \"Delivered\" as S5\n    state \"Incomplete, short pick\" as S6\n    state \"Canceled\" as S7\n    S1 --> S2: location accepts\n    S1 --> S7: location rejects or merchant cancels\n    S2 --> S3: pick released\n    S3 --> S4: shipment confirmed\n    S4 --> S5: carrier delivery scan\n    S3 --> S6: short pick reported\n    S6 --> S1: re-routed as a new fulfillment order\n    S2 --> S7: cancellation request accepted"
+ },
+ {
+  "post": "13-order-management",
+  "figure": 2,
+  "id": "fig02-routing-turns-one-order-into-one",
+  "asset": "assets/images/13-order-management/fig02-routing-turns-one-order-into-one.jpeg",
+  "mermaid": "flowchart LR\n    O[\"Order with three lines\"] --> R[\"Routing rules\"]\n    AV[\"Available per location\"] --> R\n    CAP[\"Capacity and cut-off per location\"] --> R\n    COST[\"Carrier cost and split limits\"] --> R\n    R -->|\"lines 1 and 2\"| F1[\"Fulfillment order, Duiven\"]\n    R -->|\"line 3\"| F2[\"Fulfillment order, Utrecht store\"]\n    R -.->|\"or\"| HOLD[\"Wait for replenishment, one parcel\"]"
+ },
+ {
+  "post": "13-order-management",
+  "figure": 3,
+  "id": "fig03-eva-s-order-under-waypoint-platform",
+  "asset": "assets/images/13-order-management/fig03-eva-s-order-under-waypoint-platform.jpeg",
+  "mermaid": "sequenceDiagram\n    participant PL as the platform\n    participant OMS as the OMS\n    participant AV as Availability module\n    participant WMS as the WMS\n    participant PN as PostNL\n    participant ERP as the ERP\n    PL->>OMS: Order placed 1072455, jacket and socks, paid\n    OMS->>AV: Commit one jacket and two socks at Duiven\n    OMS->>WMS: Fulfillment order 1072455-1, request\n    WMS-->>OMS: Accepted\n    WMS-->>OMS: Shipped, tracking number\n    OMS-->>PL: Goods state shipped, one parcel of one\n    PN-->>OMS: Delivered\n    OMS-->>PL: Goods state delivered\n    OMS->>ERP: Shipment to invoice, idempotent on shipment id"
+ }
+]

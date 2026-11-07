@@ -1,0 +1,23 @@
+[
+ {
+  "post": "14-tax-invoicing-and-ledger",
+  "figure": 1,
+  "id": "fig01-three-facts-shop-owns-one-set",
+  "asset": "assets/images/14-tax-invoicing-and-ledger/fig01-three-facts-shop-owns-one-set.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Ship-to address\"] --> E[\"Tax determination\"]\n    B[\"Product tax category\"] --> E\n    C[\"Customer status and VAT number\"] --> E\n    D[\"Rates, thresholds and mandates\"] --> E\n    E --> F[\"Rate and amount per line at checkout\"]\n    E --> G[\"Final tax on the invoice at dispatch\"]"
+ },
+ {
+  "post": "14-tax-invoicing-and-ledger",
+  "figure": 2,
+  "id": "fig02-documents-not-events-feed-ledger-invoice",
+  "asset": "assets/images/14-tax-invoicing-and-ledger/fig02-documents-not-events-feed-ledger-invoice.jpeg",
+  "mermaid": "flowchart LR\n    O[\"Order from checkout\"] -->|\"at dispatch\"| I[\"Invoice, numbered by the ERP\"]\n    R[\"Return accepted\"] -->|\"references the invoice\"| CN[\"Credit note\"]\n    I --> GL[\"General ledger\"]\n    CN --> GL\n    P[\"PSP payout report\"] -->|\"gross, fees, refunds, chargebacks per batch\"| GL\n    B[\"Bank statement\"] -->|\"one line per payout\"| M[\"Three-way match\"]\n    P --> M\n    GL --> M"
+ },
+ {
+  "post": "14-tax-invoicing-and-ledger",
+  "figure": 3,
+  "id": "fig03-eva-s-order-reaches-ledger-invoice",
+  "asset": "assets/images/14-tax-invoicing-and-ledger/fig03-eva-s-order-reaches-ledger-invoice.jpeg",
+  "mermaid": "sequenceDiagram\n    participant PL as The platform\n    participant WMS as The WMS\n    participant ERP as The ERP\n    participant PSP as The PSP\n    participant BK as The bank\n    PL->>ERP: Order 1072455, 235 euro, VAT basis 40.79, paid by iDEAL\n    WMS->>ERP: Shipped 14 April\n    ERP->>ERP: Invoice 2027-041822 issued and posted, April revenue\n    PSP->>BK: Payout for sales day 13 April, net of fees, 15 April\n    PSP->>ERP: Payout report with order numbers and batch reference\n    BK->>ERP: Statement line with the same batch reference\n    ERP->>ERP: Three-way match, May close"
+ }
+]

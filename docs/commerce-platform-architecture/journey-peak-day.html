@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Journey 4: Black Friday, Hour by Hour</title>
+    <meta name="description" content="What did Kestrel &amp; Pine's systems and people do, hour by hour, on the Friday evening in November 2026 when 2,300 orders arrived in one hour and the warehouse ran out of the hero jacket at 19:40? The storefront held; the order flow to the warehouse crawled, the stock copies lagged by two hours, and nobody had a gauge or a switch. The 2027 plan gives the same evening a forecast, a rebuilt order path, an availability service, eight switches with owners and a runbook.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="Journey 4: Black Friday, Hour by Hour">
+    <meta property="og:description" content="What did Kestrel &amp; Pine's systems and people do, hour by hour, on the Friday evening in November 2026 when 2,300 orders arrived in one hour and the warehouse ran out of the hero jacket at 19:40? The storefront held; the order flow to the warehouse crawled, the stock copies lagged by two hours, and nobody had a gauge or a switch. The 2027 plan gives the same evening a forecast, a rebuilt order path, an availability service, eight switches with owners and a runbook.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/journey-peak-day.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/40-journey-peak-day/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="journey-wholesale-order.html" title="Journey 3: A Chain Reorders by EDI, From Order to Invoice">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-10.html" title="Part X — EVOLUTION: Decisions That Change With Scale">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IX — JOURNEYS: One Order, End to End</p>
+        <h1>Journey 4: Black Friday, Hour by Hour</h1>
+        <p class="byline">Željko Obrenović  ·  2026-11-07  ·  26 min read · <a class="spec-link" href="journey-peak-day.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: researched and written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/40-journey-peak-day/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/40-journey-peak-day/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="journey-wholesale-order.html" title="Journey 3: A Chain Reorders by EDI, From Order to Invoice">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-10.html" title="Part X — EVOLUTION: Decisions That Change With Scale">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Journey 4: Black Friday, Hour by Hour", "date": "2026-11-07", "author": "Željko Obrenović", "excerpt": "What did Kestrel & Pine's systems and people do, hour by hour, on the Friday evening in November 2026 when 2,300 orders arrived in one hour and the warehouse ran out of the hero jacket at 19:40? The storefront held; the order flow to the warehouse crawled, the stock copies lagged by two hours, and nobody had a gauge or a switch. The 2027 plan gives the same evening a forecast, a rebuilt order path, an availability service, eight switches with owners and a runbook.", "permalink": "journey-peak-day", "timetoread": "26 min read", "icon": "assets/icons/40-journey-peak-day.png", "logo": "assets/images/40-journey-peak-day/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow Kestrel & Pine's Black Friday week of 2026 hour by hour, see what each system and person did, and read the 2027 plan built from it.\n\n> **KEY POINTS:**\n>\n> * **The evening was lost in the afternoon.** The order flow to the warehouse fell behind at about 13:00, when nobody was watching, because it created orders one at a time under the WMS vendor's rate limit. By the peak hour it was four hours behind, and no gauge showed it.\n> * **The sell-out at 19:40 took two hours to reach the shelves that were still selling.** The warehouse knew at 19:40, the ERP at 19:45, the storefronts at about 20:30 and the marketplaces at about 21:35, because stock traveled by three scheduled copies. 1,340 units were sold that did not exist.\n> * **The 2027 plan changes the chain, not the platform.** A forecast of 60 orders a minute, an order path through the OMS tested at 120, stock events to an availability service within a minute, eight switches with owners and triggers, a freeze, a situation room and a reconciliation report at 08:00 on Saturday.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**\n>\n> * **The First Snowfall** — the order flow, the stock chain and the warehouse's evening shift met forty times their normal load for the first time on the day itself.\n> * **The Phantom Stock** — three channels sold the same last jacket for up to two hours, because each learned of the warehouse's zero by a scheduled copy.\n> * **The Message in a Bottle** — a queue with no gauge, no alarm and no owner turned a resilience feature into a four-hour delay nobody could explain.\n\n<br>\nThe three journeys before this one follow a single order: Eva's jacket, Eva's exchange, Bergzicht's pallets. This one follows **31,000 orders in a week**, and a Friday evening on which **2,300 of them arrived in one hour**. It is the same chain of systems the earlier journeys crossed, the platform, the iPaaS, the WMS, the ERP, the marketplace connector, running at a pace none of its handoffs was designed for.\n\nThe journey is told twice. First **as it happened** in November 2026, with what each system did and what each person saw, in the order they saw it, which is not the order the problems began. Then **as it is planned** for November 2027, with the forecast, the rebuilt order path, the switches, the runbook and the morning-after report. The figures that the book's ledger fixes (31,000 orders, 2,300 in the peak hour, the 19:40 sell-out, 1,340 units, 1,120 orders, €96,000, the four-hour backlog) are canonical; every hour-by-hour figure is an **illustrative** reconstruction consistent with those totals, and is marked so. [Black Friday Every Year: Peak Load, Resilience and Recovery](peak-load-and-reliability.html) explains the ideas this journey applies: orders per minute as the unit, backpressure, the degradation ladder, the situation room, reconciliation.\n\n**Where we are in the order's journey.** Every step of Eva's jacket happens here, from product page to confirmation to warehouse release to stock update, except that it happens 2,300 times an hour and the steps that took minutes in April took hours in November.\n\n## The Week Before the Evening\n\nKestrel & Pine, the fictional outdoor brand this book follows (see [Meet Kestrel & Pine](meet-kestrel-and-pine.html)), planned Black Friday week 2026 as a campaign. Milan Petrov, Ecommerce and Marketplaces Manager, configured an automatic **20% discount on all outerwear** for the week of 23–29 November, which put the Ridgewalker shell jacket, the hero product, at **€159.20** instead of €199 ([Discounts, Coupons and Loyalty: Promotions Without Chaos](commerce-promotions.html) tells what else the promotion settings did that week). The agency built the campaign pages. Daniel Okafor, Head of Operations, booked temporary pickers for Duiven and an extra PostNL collection on Friday night. Stock for the German marketplace fulfillment program had been sent in advance in October.\n\nNobody planned the systems. There was no forecast in orders per minute, no load test, no list of what to switch off, no one on call for the iPaaS, and no dashboard that showed orders against the warehouse's intake. The platform's status page was the only thing anyone intended to watch. That is not negligence; it is what a Growing-stage plan looks like when the business has become Omnichannel without noticing ([What Changes at Each Scale: From First Store to Group](commerce-scaling-stages.html)).\n\nThe week built as the table shows. The daily figures are illustrative; the weekly total is the ledger's.\n\n| Day | D2C orders *(illustrative)* | What happened |\n| --- | --- | --- |\n| Monday 23 Nov | 2,100 | Promotion live at 00:00; the storefront's busiest Monday of the year; nothing strained |\n| Tuesday 24 Nov | 2,300 | Marketplace listings carry the discount; the connector's hourly stock push is unchanged |\n| Wednesday 25 Nov | 2,700 | Duiven ships Monday's and Tuesday's orders on schedule; the first \"where is my order\" tickets arrive |\n| Thursday 26 Nov | 3,900 | Evening traffic double Wednesday's; the order flow to the WMS keeps up, with no slack left |\n| **Friday 27 Nov** | **11,500** | The day this chapter tells |\n| Saturday 28 Nov | 3,900 | The queue drains overnight; support finds the oversell; cancellations begin |\n| Sunday 29 Nov | 4,600 | Reconciliation by hand; the marketplace cancellations are filed; Cyber Monday is tomorrow |\n| **Week** | **31,000** | 10.6% of the year's D2C orders |\n\nThursday evening is the warning nobody read: the order flow kept up with Thursday's evening rate only because that rate was below its ceiling. Nobody knew what the ceiling was.\n\n## Friday 27 November 2026, Hour by Hour\n\nThe platform took **11,500 orders** on Friday *(illustrative)*. Three clocks matter in what follows: the **order flow** from the platform to the WMS, which ran on the iPaaS and created orders in the WMS one at a time, several API calls each; the **stock chain**, WMS to ERP every 15 minutes, ERP to platform hourly, platform to marketplace connector hourly; and the **warehouse's waves** (a wave is a batch of orders released to pickers together), the last of which is normally released at 21:00 for PostNL's 22:30 collection, an hour before the storefront's \"ordered before 22:00\" promise expires ([Pick, Pack, Ship: Warehouse Management and Fulfillment](warehouse-and-fulfillment.html)); for Black Friday Daniel had added a 23:00 collection. The capacity of the order flow, about **seven orders a minute**, is an illustrative reconstruction; it was never measured before the day.\n\n| Time | Orders *(illustrative)* | What the systems did | What the team saw and did |\n| --- | --- | --- | --- |\n| 00:00–12:00 | 900 | Everything on schedule; the order flow idles between orders | Nothing; a normal busy morning |\n| 12:00–15:00 | 1,400 (about 8 a minute) | At about 13:00 the arrival rate passes the flow's ceiling of about 7 a minute; the WMS vendor's rate limit throttles the calls; the queue on the iPaaS begins to grow and nothing shows it | Nothing. The platform admin shows orders arriving; the WMS shows orders arriving; nobody compares the two |\n| 15:00–17:00 | 1,200 (10 a minute) | The queue reaches about 500 orders by 17:00; the 15:00 and 16:00 waves at Duiven are thinner than the storefront's day suggests | The warehouse lead notices quiet pick lists on a day the radio says is Black Friday, and assumes the evening will bring the rush |\n| 17:00–18:00 | 900 (15 a minute) | Queue about 1,000; Ridgewalker stock at Duiven falling fast as the afternoon's orders reach the WMS | Milan watches the campaign dashboard: revenue ahead of plan |\n| 18:00–19:00 | 1,000 (17 a minute) | Queue about 1,600; the ERP's 18:45 stock snapshot still shows Ridgewalkers in most sizes | Daniel's evening shift starts; temporary pickers are briefed |\n| 19:00–20:00 | 1,400 (23 a minute) | **19:40: the WMS picks the last Ridgewalker units; physical stock zero.** 19:45: the WMS tells the ERP. Queue about 2,500 by 20:00 | 19:50: the warehouse lead sees the Ridgewalker pick location empty with orders for it still in the wave, and calls Daniel |\n| 20:00–21:00 | **2,300 (38 a minute)** | The peak hour. The storefronts and marketplaces still show the Ridgewalker in stock. About 20:30: the ERP's hourly push sets the platform's Ridgewalker quantities to zero; the storefronts stop selling it. Queue about 4,400 by 21:00; the oldest unprocessed order is four hours old | 20:20: Daniel calls Milan: \"we are out of Ridgewalker and the orders keep coming.\" 20:35: Milan calls Ruben Alves. 20:50: Ruben opens the iPaaS and sees the queue for the first time |\n| 21:00–22:00 | 1,500 (25 a minute) | About 21:15: the platform's hourly push sends zero to the marketplace connector; about 21:35 the marketplaces show sold out. The queue keeps growing | 21:05: Milan sets the Ridgewalker to zero by hand in the connector, minutes before the push would have. 21:30: Ruben raises an emergency ticket with the WMS vendor; nobody answers on a Friday night until 22:40 |\n| 22:00–24:00 | 900 | The storefront's 22:00 promise expires; a late wave releases for the extra 23:00 collection Daniel booked, with thousands of orders placed before 22:00 still on the iPaaS | Daniel decides the night shift will keep picking whatever arrives; Mara Lindqvist is told at 22:15 |\n| Saturday 00:00–03:00 | — | About 00:00: with the vendor's limit raised, Ruben switches the flow to the WMS's batch import; throughput about 40 a minute; the queue is empty by about 02:30 | Orders placed at 20:00 reach the WMS after midnight. Saturday's shift picks through the day; PostNL's Saturday collection carries them; most are delivered Monday |\n\nThree things in the table deserve a closer look, because they are the mechanisms the 2027 plan is built against.\n\n### The queue nobody could see\n\nThe order flow was a resilience feature. Because it queued orders rather than failing checkout, no shopper saw an error and no order was lost. The platform was right to say it held. But the queue had no gauge, no alarm and no owner, so it did what unwatched queues do: it absorbed the problem silently until the warehouse, the last system in the chain, noticed the absence of work. Ruben's 20:50 discovery was the first time anyone had looked at the queue on a peak day. The four-hour backlog at 21:00 and the midnight arrival of the 20:00 orders are the ledger's facts; the throughput of about seven a minute (four calls per order against a WMS limit of about 30 calls a minute) and the shape of the curve are illustrative, reconstructed in Ruben's June 2027 analysis ([Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation](multi-tenancy-and-isolation.html)), which also found that on the platform's side nine apps and connectors shared one API budget that evening and throttled the order flow about 1,900 times. The WMS itself had capacity to spare.\n\n![A pile of orders accumulating in a dark, unmonitored tunnel between a busy storefront and an idle warehouse.](assets/images/40-journey-peak-day/40-unwatched-queue.jpeg)\n**Figure 1:** *On Black Friday 2026 the queue did its job and hid the problem: orders piled up between the storefront and the warehouse with no gauge, no alarm and no owner, until the warehouse noticed it had too little work.*\n\n### The two-hour sell-out\n\nThe sequence diagram shows the two hours that cost €96,000. Each arrow is a scheduled copy, and each copy is late by design.\n\n![Diagram: The sell-out at 19:40 reached the ERP in five minutes, the storefronts in about fifty and the marketplaces in about two hours](assets/images/40-journey-peak-day/fig01-sell-out-19-40-reached-erp.jpeg)\n**Figure 2:** *The sell-out at 19:40 reached the ERP in five minutes, the storefronts in about fifty and the marketplaces in about two hours; in that window the channels sold 1,340 units the warehouse did not have, because stock traveled by three scheduled copies rather than by the event that emptied the shelf.*\n\nThe two-hour window was not a fault. It was the chain's design: 15 minutes plus up to an hour plus up to an hour. On every other day of the year the window was harmless, because nothing sold out inside it. [Is It in Stock? Inventory, Availability and the Promise You Can Keep](inventory-and-availability.html) explains why the number copied was also the wrong number (physical stock, not available-to-promise) and why the three apps that could write inventory made it worse; this journey only needs the clock.\n\nThree channels sold against the same zero. Of the 1,340 oversold units, about 790 were storefront orders and 550 marketplace orders *(illustrative split from [Is It in Stock? Inventory, Availability and the Promise You Can Keep](inventory-and-availability.html))*. The marketplace share was smaller and cost more, because a seller who cancels a confirmed marketplace order is measured for it: about 160 of the 1,120 affected orders were marketplace orders, 140 of them canceled by Kestrel & Pine, and bol issued a strike, its formal warning for a week below its cancellation standard *(illustrative, from [Selling on Someone Else's Platform: Marketplaces and Channel Integration](marketplaces-and-channel-integration.html))*.\n\n### What the team could and could not do\n\nBy 20:50 four people knew something was wrong, and the table of what they could reach is the most instructive part of the evening.\n\n| What someone wanted to do | Was it possible? | What happened |\n| --- | --- | --- |\n| Stop selling the Ridgewalker on the storefronts | Yes, by setting quantities to zero by hand in the platform, one variant at a time (24 variants) | Milan was preparing to when the 20:30 push did it |\n| Stop selling it on the marketplaces | Only by editing listings in the connector by hand; no \"pause SKU\" switch | Done at 21:05, minutes before the hourly push would have |\n| Speed up the order flow | Only with the WMS vendor's help (raise the limit) or a rewrite to batch calls | Ticket at 21:30; answered 22:40; limit raised and flow switched to batch import at about 00:00 |\n| Tell customers their delivery would be late | Only by a mass e-mail from the marketing tool, with no list of which orders were affected | Sent Saturday at 10:00 to everyone who ordered after 17:00 Friday |\n| Change \"delivered tomorrow\" on the Dutch storefront | Yes, by editing the theme text; it was a sentence, not a computed promise | Nobody thought of it until Saturday; the page promised next day until 23:30 |\n| Switch off recommendations, search facets, the newsletter pop-up | Not needed; the platform held | — |\n| See orders per minute against the warehouse's intake | No such view existed | Reconstructed on Monday from two exports |\n\nThe first and third rows say the most. The sell-out could have been stopped on the storefronts at 19:50 by hand, if anyone had known to; the order flow could not have been fixed by anyone at Kestrel & Pine before the vendor woke up. The 2027 plan is largely the table's \"No\" and \"Only\" cells turned into switches, gauges and contracts.\n\n## Saturday to Monday: Finding Out What Was Sold\n\nSaturday morning the queue was empty and the damage was still invisible. The platform showed 11,500 paid orders. The WMS showed 11,500 orders received, about 1,100 of them with at least one Ridgewalker line it could not allocate. Nothing connected the two lists to the shoppers waiting for a jacket. Support found the oversell the way support always finds it: from the first \"my order says processing\" tickets.\n\nThe clean-up took three people most of the weekend and finance the week after. Daniel's team produced the shortage list from the WMS. Milan matched it to orders in the platform and in the connector by hand, by SKU, because the two systems had no shared order identifier for marketplace orders. Sanne de Wit's team handled the money. The outcome, in the ledger's totals with an illustrative breakdown:\n\n| Outcome | Orders | Units | Treatment |\n| --- | --- | --- | --- |\n| **Canceled** | 760 | 900 | Refund by the original method; a €15 goodwill voucher; marketplace cancellations filed as seller cancellations |\n| **Delayed** | 360 | 440 | Held for a supplier delivery due Tuesday 1 December; shipped that week with the voucher |\n| **Total affected** | **1,120** | **1,340** | |\n\nThe **€96,000** the ledger records for the incident breaks down, illustratively, into lost gross margin on the canceled units (about €65,700: 900 units at roughly €73 of margin each at the promotion price), the goodwill vouchers (€16,800: 1,120 at €15), marketplace penalties and the cost of the strike (about €6,500), and support overtime and re-shipping (about €7,000). The roughly 8,000 orders that missed next-day delivery *(assumption, from [Pick, Pack, Ship: Warehouse Management and Fulfillment](warehouse-and-fulfillment.html))* are not in that figure; their cost was a week of tickets and an unmeasured amount of trust.\n\nThree reconciliations ran by hand that weekend that should have been jobs: platform orders against WMS orders (to find the stuck and the duplicated), WMS shortages against orders (to find the oversold), and refunds issued against cancellations (to make sure each canceled order was refunded once; the Double Refund of January 2027 shows what happens when that one is skipped, in [The Way Back: Returns, Exchanges, Refunds and Reverse Logistics](returns-and-exchanges.html)). [Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation](events-consistency-and-reconciliation.html) turns each into a reconciliation card.\n\nThe post-mortem, written in December, found five things: no forecast; no capacity figure for any link; a queue with no gauge; stock copied on a schedule rather than sent on change; and no one with the authority to flip anything. It also recorded Milan's first fix, in place by mid-December: the connector publishes the platform's figure minus ten units per variant to each marketplace, and zero below ten *(illustrative, from [Selling on Someone Else's Platform: Marketplaces and Channel Integration](marketplaces-and-channel-integration.html))*, a buffer that buys minutes on a Black Friday evening and costs a few unsold units on every other day. Noor Visser, who arrived in January 2027, built the Waypoint proposal on that post-mortem ([Meet Kestrel & Pine](meet-kestrel-and-pine.html)).\n\n## The 2027 Plan: The Same Evening, Rehearsed\n\nBlack Friday 2027 falls on **Friday 26 November**; the peak week is 22–28 November and Cyber Monday is the 29th. The plan below was approved with Waypoint in March 2027 and is owned by Noor as incident commander. Every figure is fictional; the dated public practices it borrows from are cited in [Black Friday Every Year: Peak Load, Resilience and Recovery](peak-load-and-reliability.html).\n\n### The forecast and the capacity table\n\nThe forecast is **60 orders a minute** in the peak hour, about one and a half times 2026, a convention Shopify's 2025 readiness program also used (roughly 150% of the previous year's load; Shopify Engineering, November 2025). Every link is tested at **80**, and the slowest link sets the number the waiting room and the promise are tuned to.\n\n| Link | 2026 capacity *(illustrative)* | 2027 target | Proof |\n| --- | --- | --- | --- |\n| Storefront and checkout (the platform) | Held at 38 a minute; buyer traffic is not rate-limited | Vendor's responsibility; status page watched | Vendor's own program; no merchant test |\n| Payment authorization (the PSP) | Held | 200 a minute confirmed with the PSP in August, with notice of the flash-sale evening as its documentation asks | PSP confirmation in writing |\n| Order into the OMS (platform webhook to OMS) | Not applicable in 2026 | 150 a minute measured | Load test, September |\n| OMS to WMS (fulfillment orders in batches within the WMS's limit) | About 7 a minute, one at a time | 120 a minute tested; alarm at 10 minutes of lag | Load test with marked orders, September and October |\n| WMS stock event to availability service to channels | 15 min plus hourly plus hourly | Under 1 minute end to end; 300 events a minute tested | Load test, October |\n| Marketplace stock push (connector to marketplaces) | Hourly | Within 5 minutes, per marketplace rate limit | Connector vendor's stated rate; observed in October |\n| Picking at Duiven (Friday evening and Saturday) | Never the limit in 2026 | 9,000 parcels a day with the peak roster *(illustrative)* | Daniel's staffing plan; the delivery promise is set from it |\n| ERP import and invoicing | Hourly | Daily batch, overnight, off the peak path (W5) | — |\n\nThe order path is new. Since 15 September 2027 marketplace orders, and since 13 October D2C orders, are created in the **OMS** (order management system, the one order record of Waypoint W2), which sends fulfillment orders to the WMS in batches sized to the WMS's rate limit, with the order number as the **idempotency key** (a repeated message has the same effect as the first) so that a retry can never create a second pick list. The queue between the OMS and the WMS has a gauge (the age of the oldest unsent order), an alarm at ten minutes, a dead-letter queue (where messages go after they have failed every retry) with Ruben as its owner, and a replay procedure that was exercised in October. Wholesale orders by EDI and by hand move to the OMS on 8 December, after the peak, and nothing else changes during the freeze from 15 November to 5 December ([Moving Without Burning the Bridge: Replatforming and Migration](replatforming-and-migration.html) gives the cutover sequence).\n\nThe stock loop is replaced for the channels that oversold. The WMS emits a **stock event** on every pick, receipt and adjustment; the **availability service** (a module of the OMS, Waypoint W1) recomputes **available-to-promise** per channel (physical stock minus what is already promised, minus a per-channel buffer of three units per SKU for marketplaces and one for the storefronts) and publishes the change to the platform and the connector within a minute. The go/no-go for using it in the peak was **15 October**. Had it failed, the fallback was the 2026 chain with the ten-unit marketplace buffer and a person pausing listings by hand; that fallback was rehearsed too.\n\n![Diagram: The 2027 chain](assets/images/40-journey-peak-day/fig02-2027-chain-orders-flow-through-oms.jpeg)\n**Figure 3:** *The 2027 chain: orders flow through the OMS to the WMS in batches with a gauged queue, stock returns as events through the availability service within a minute, and both feed one dashboard in orders per minute; the platform's checkout is the one link that is never switched off.*\n\n### The switches\n\nThe **degradation ladder** (switching off non-essential features in a planned order so the essential ones keep working) has eight rungs. Each is a feature switch that exists today, was flipped once in the October rehearsal, and has one owner who may flip it without a meeting. The triggers are the plan's; the thresholds are illustrative.\n\n| # | Switch | Owner | Trigger | What it does |\n| --- | --- | --- | --- | --- |\n| 1 | Recommendations and \"recently viewed\" off | Milan | Storefront p95 response over 2 s, or a platform status notice | Removes the personalized calls from every page |\n| 2 | Search facets reduced to size, color and price; two sort options | Milan | Same as 1 | Cuts the search service's load per query |\n| 3 | Stock badges from the buffered copy | Ruben | Availability event lag over 2 minutes | Shows \"low stock\" under 10 units; never \"in stock\" from a stale figure |\n| 4 | Marketplace buffer raised to 25 units for hero SKUs; listings paused below it | Milan | Lag over 2 minutes, or orders for a SKU exceeding its ATP | Protects the channel that is measured for cancellations |\n| 5 | Delivery promise widened: \"tomorrow\" becomes \"within three working days\" | Daniel | Oldest unsent order over 10 minutes, or the Friday pick plan over 80% consumed | The page tells the truth the warehouse can keep |\n| 6 | Non-essential checkout options off (gift wrap, gift message); a single payment method off if the PSP reports it degraded | Sanne's team with Milan | Checkout error rate over 1%, or a PSP notice | Shortens the checkout; removes a failing method |\n| 7 | Waiting room at the CDN | Ruben with the agency | Storefront error rate over 1% or the platform's notice; admission rate set to 75% of the slowest tested link | Converts the spike into a known inflow |\n| 8 | New-account creation and the newsletter pop-up off | Milan | Only on Noor's call | The last load removed before the money path is touched |\n| — | **Never**: checkout, payment authorization, order creation in the OMS, the order path to the WMS | — | — | Queues grow instead |\n\nRung 5 is the one 2026 lacked most. The Dutch storefront's \"ordered before 22:00, delivered tomorrow\" was a sentence in a theme file. Since May 2027 the first promise service of [Getting It There: Carriers, Labels, Tracking and the Delivery Promise](shipping-and-delivery.html) computes the promise from a transit table plus the WMS's cut-off and backlog, so a growing queue already widens it on its own; rung 5 is the override on top, with an owner and a trigger, and for peak week the service is set to \"within three working days\" from the start, because Daniel's pick plan, not the theme, decides what can be promised.\n\n![A ladder of eight switches standing on a locked checkout foundation that is never switched off.](assets/images/40-journey-peak-day/40-degradation-ladder.jpeg)\n**Figure 4:** *The 2027 plan's degradation ladder has eight rungs, each a rehearsed switch with one owner; checkout, payment and the order path sit below it and are never switched off.*\n\n### The runbook\n\nThe runbook is a document of four pages, written in September, rehearsed on 15 November and kept open on the situation-room screen. Its parts:\n\n**Roles.** Noor is incident commander and decides; nobody else flips rung 8. Ruben owns the OMS-to-WMS path, the availability service and the dead-letter queue. Milan owns the storefronts, the apps and the marketplace listings. Daniel's shift lead owns the warehouse and the delivery promise. Sanne's team owns payment methods and refunds. An agency engineer is on call for the theme and the CDN. The vendors' emergency contacts (platform, OMS, WMS, PSP, connector) are on the first page with ticket priority codes and the hours they are staffed; the WMS vendor's Friday-night gap of 2026 is closed by a contract clause agreed in June.\n\n**The dashboard.** One screen, refreshed every minute, in business units: orders per minute per channel against the same hour last week; the age of the oldest order not yet in the WMS; stock event lag; dead-letter depth; checkout error rate; PSP authorization rate and decline rate against normal; the WMS's and the PSP's rate-limit headroom. The missing-event alarm fires when orders per minute fall to zero while storefront sessions stay high.\n\n**Cadence.** The situation room runs on Friday from 16:00 to midnight, with a check-in every 30 minutes until 19:00 and every 15 minutes from 19:00 to 22:00. Each check-in reads the dashboard aloud against the thresholds in the switch table. Saturday and Cyber Monday run on call with the same dashboard.\n\n**Communication.** Three templates, written in advance: a customer e-mail for a delayed delivery with the order numbers filled from the OMS, not from \"everyone who ordered after 17:00\"; a note to each marketplace's seller support when listings are paused; and a one-line status to the company every hour. Mara is told at the first switch, not the last.\n\n**The morning after.** At 08:00 on Saturday the reconciliation report compares orders in the platform, the OMS and the WMS by order number (stuck, duplicated, missing); stock per SKU in the WMS against the availability service; payments captured in the PSP against orders in the OMS; and refunds issued against cancellations. Each difference has a named owner and a fix: replay, manual correction or write-off. Hanna Berg's team produces it from the data warehouse, under the one definition of an order that Waypoint W7 adopted.\n\n### The rehearsal\n\nTwo load tests and a game day preceded the freeze. In September the team placed marked test orders at 60 a minute through the whole path, platform to OMS to WMS, with the WMS configured to skip them and finance to exclude them, the practice Zalando described for its order-flow simulators in 2020. In October the test ran at 80, then 120 on the OMS-to-WMS link alone, and found the first real defect: the batch size that kept the WMS inside its rate limit at 80 orders a minute exceeded it at 120, and the retries that followed doubled the load, the thundering-herd effect that backoff with jitter exists to prevent. The fix was a smaller batch and a jittered retry, and the test was repeated.\n\nThe game day in October rehearsed three failures: the WMS unreachable for thirty minutes (the queue grew to about 1,800 orders, the gauge and the alarm worked, the delivery-promise switch was flipped at minute 11, and replay drained the queue in 22 minutes); the availability service stopped (the stock-badge switch and the marketplace-buffer switch were flipped, and the fallback chain ran for an hour); and the PSP declining one payment method (the method was switched off within eight minutes). Each exercise either proved a runbook page or rewrote it.\n\n## When It Goes Wrong in 2027\n\nThe plan does not promise a quiet evening. It promises that the failures it expects leave known traces and have known fixes.\n\n| If, on 26 November 2027 | The plan says |\n| --- | --- |\n| The OMS-to-WMS queue grows past ten minutes | The alarm fires; rung 5 widens the promise; the queue is allowed to grow; replay after the cause is found; no order is lost |\n| The availability service lags past two minutes | Rungs 3 and 4; listings of hero SKUs pause below the raised buffer; the fallback chain is one switch away |\n| The WMS vendor throttles again | The batch size is already inside the limit; the June contract names a Friday-night contact; the queue absorbs the rest |\n| A retry creates a duplicate fulfillment order | It cannot: the order number is the idempotency key; the Saturday report would show it if it did |\n| The PSP degrades | Rung 6 removes the failing method; every captured payment is matched to an order on Saturday |\n| The platform itself has an incident | The vendor's problem to fix and the merchant's to communicate; the waiting room and the status page are the levers; the queues behind the platform are empty, which is the one good thing about it |\n| The forecast was wrong by two | The chain was tested at 80 and the OMS-to-WMS link at 120; above that, the ladder runs from the top and the promise widens |\n\nWhat the plan deliberately leaves slow is the ERP: its daily batch absorbs the week's volume overnight, and if it falls behind, invoices are late, which is the one delay the chain can afford. The 2028 peak will be the first with the promise offered through an API and, if the 2028 evaluation says so, the platform's own POS in the stores.\n\n## What to Take Away\n\n**Established.**\n\n- A queue between a platform and its warehouse system is the right design under peak load, and it is only safe with a gauge, an alarm, an owner and a replay procedure (AWS Builders' Library 2019; Amazon SQS dead-letter documentation; Zalando's 2015 practice of pausing non-essential processing, reported 2020).\n- Stock copied on a schedule oversells in proportion to the sales rate and the copy interval; a fifteen-minute plus hourly plus hourly chain is harmless on an ordinary day and a two-hour blind spot at 38 orders a minute.\n- A load test of the merchant's own order path, with marked orders that fulfillment skips, is the only test that finds the merchant's bottleneck; the platform vendor's tests find the vendor's (Zalando 2019 and 2020, Shopify 2023 and 2025).\n\n**Depends on context.**\n\n- The switch-off ladder's order depends on what the business can afford to lose: a brand whose peak is one hero product pauses marketplace listings early; a marketplace-first seller, measured on cancellation rate, protects those listings and widens the storefront's promise first.\n- A static but honest peak-week delivery promise is the right interim for a merchant without a computed promise; a merchant with one should let the warehouse's plan set the page automatically and keep the switch as the override.\n- Running the OMS cutover before the peak was right for Kestrel & Pine because the parallel run finished in September and the link was load-tested in October; a merchant whose cutover slips into November should run the old path and keep the new one dark until December.\n\n**The author's synthesis.**\n\n- The lesson of the 2026 evening is not that the systems were too slow; it is that nobody could see them and nobody could touch them. Most of the 2027 plan is visibility and switches, which cost far less than the OMS and would have saved most of the €96,000 on their own.\n- A peak plan should be written as a journey, hour by hour, with a name in every row; a plan written as a list of systems leaves the 20:50 moment, when someone finally looks, to chance.\n\n## Questions to Ask\n\n1. At what time of day last year did our order flow first fall behind, and who would have seen it?\n2. How long does a sell-out at the warehouse take to reach each channel, by the clock, and who tested it?\n3. Which of our switches have been flipped in a rehearsal, and who may flip each one without a meeting?\n4. Can we change the delivery promise on the page in one minute, and who decides?\n5. What are the vendors' Friday-night contacts, and what does the contract say about response time?\n6. Which marked test orders have we sent through the whole path at this year's forecast, and what did the warehouse do with them?\n7. Which three reconciliations run on Saturday morning, by which key, and who owns each difference?\n8. Who is in the room on the evening, and what does the first row of the runbook say?\n\nThe journeys end here. Part X asks the questions Kestrel & Pine's 2027 answered in one particular way (buy or build, stay or replatform, how to organize fourteen people around a dozen systems) as questions every merchant faces, and when each answer changes. Continue with [Part X — EVOLUTION: Decisions That Change With Scale](part-10.html).\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [How we prepare Shopify for BFCM](https://shopify.engineering/bfcm-readiness-2025), Shopify Engineering, 2025 — forecasting at roughly 150% of the previous year's load, scale tests from April to October, Game Days on the money paths.\n- [Scale and performance testing at Shopify](https://shopify.engineering/scale-performance-testing), Shopify Engineering, 2023 — testing with cache bypass so that origins are measured.\n- [Faster checkout for customers during flash sales](https://changelog.shopify.com/posts/faster-checkout-for-customers-during-flash-sales), Shopify Changelog, 2018 — payment processing separated from order creation under high volume (eight years old).\n- [Webhooks](https://shopify.dev/docs/apps/build/webhooks), Shopify developer documentation, n.d., accessed 2026-11 — delivery not guaranteed; reconciliation jobs recommended.\n- [How Zalando prepares for Cyber Week](https://engineering.zalando.com/posts/2020/10/how-zalando-prepares-for-cyber-week.html), Zalando Engineering, 2020 — order-flow simulators that fulfillment skips, pausing non-essential asynchronous processing, the Situation Room (six years old).\n- [End-to-end load testing Zalando's production website](https://engineering.zalando.com/posts/2019/04/end-to-end-load-testing-zalandos-production-website.html), Zalando Engineering, 2019 — production load tests of recorded shopper journeys (seven years old).\n- [Rate limits](https://docs.stripe.com/rate-limits), Stripe documentation, n.d., accessed 2026-11 — the advice to tell the PSP about a flash sale in advance, and backoff with jitter.\n- [Cloudflare Waiting Room](https://blog.cloudflare.com/cloudflare-waiting-room/), Cloudflare, 2021 — what a waiting room is and how its admission rate is set.\n\n*Standards, regulation and official documentation*\n\n- [Using load shedding to avoid overload](https://builder.aws.com/content/3Eun1EEyX6p2e3VYNyRLSJzLuMV/using-load-shedding-to-avoid-overload), AWS Builders' Library, 2019 — overload, goodput and prioritizing the requests that matter.\n- [Exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/), AWS Architecture Blog, 2015 — why synchronized retries double the load and jitter spreads them.\n- [Amazon SQS dead-letter queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html), AWS documentation, n.d., accessed 2026-11 — dead-letter queues and redrive.\n- [Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/), Google SRE book, 2017 — the four golden signals behind the situation-room dashboard.\n\n*Research and practitioner sources*\n\n- [Feature Toggles (aka Feature Flags)](https://martinfowler.com/articles/feature-toggles.html), Pete Hodgson, martinfowler.com, 2017 — ops toggles as the mechanism of the switch-off ladder.\n\nKestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

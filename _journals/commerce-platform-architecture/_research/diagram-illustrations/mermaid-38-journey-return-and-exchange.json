@@ -1,0 +1,16 @@
+[
+ {
+  "post": "38-journey-return-and-exchange",
+  "figure": 1,
+  "id": "fig01-way-back-late-2027-architecture-returns",
+  "asset": "assets/images/38-journey-return-and-exchange/fig01-way-back-late-2027-architecture-returns.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva Janssen\n    participant RP as the returns portal\n    participant OMS as the OMS\n    participant AV as the availability service\n    participant PN as PostNL\n    participant WMS as the WMS\n    participant PL as the platform\n    participant PSP as the PSP\n    participant ERP as the ERP\n    Eva->>RP: Exchange jacket M for L, too small, 19 April\n    RP->>OMS: Read order 1072455 and eligibility\n    OMS->>AV: Is L moss available for NL\n    AV-->>OMS: Yes, one unit committed\n    RP->>OMS: Create return R-20270419-1 and held order 1072455-X1\n    RP-->>Eva: Return label and instructions\n    OMS->>WMS: Expected return with reference\n    Eva->>PN: Drop-off at parcel point, 20 April\n    PN-->>OMS: Accepted, in transit, delivered to Duiven\n    WMS->>WMS: Receive, inspect, grade resellable, 22 April\n    WMS->>AV: Stock event on-hand plus one M moss\n    WMS->>OMS: Return received, disposition restock\n    OMS->>WMS: Release held order 1072455-X1, fulfillment order\n    WMS->>PN: Label and parcel, 22 April\n    OMS-->>Eva: Exchange shipped with tracking\n    OMS->>ERP: Return settled, exchange shipped\n    ERP->>ERP: Credit note and new invoice, net zero\n    Note over OMS,PSP: Refund variant instead of the exchange\n    OMS->>PL: Refund 199 euro keyed on R-20270419-1\n    PL->>PSP: Refund request\n    PSP-->>PL: Refund received, then refunded or failed days later\n    PL-->>OMS: Refund state"
+ },
+ {
+  "post": "38-journey-return-and-exchange",
+  "figure": 2,
+  "id": "fig02-one-writer-one-key-disposition-event",
+  "asset": "assets/images/38-journey-return-and-exchange/fig02-one-writer-one-key-disposition-event.jpeg",
+  "mermaid": "flowchart LR\n    DISP[\"WMS disposition event\"] -->|\"releases\"| OMS[\"OMS return R-20270419-1\"]\n    OMS -->|\"one request, key R-20270419-1\"| PL[\"the platform refund API\"]\n    PL -->|\"refund\"| PSP[\"the PSP\"]\n    PSP -->|\"webhook, then fetch\"| OMS\n    OMS -->|\"return settled\"| ERP[\"ERP credit note\"]\n    PSP -->|\"refund lines in payout report\"| ERP\n    SUP[\"Support in the PSP console\"] -.->|\"read-only since February 2027\"| PSP"
+ }
+]

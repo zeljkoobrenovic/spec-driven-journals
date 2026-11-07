@@ -1,0 +1,16 @@
+[
+ {
+  "post": "17-stores-and-omnichannel",
+  "figure": 1,
+  "id": "fig01-kestrel-pine-s-stores-january-2027",
+  "asset": "assets/images/17-stores-and-omnichannel/fig01-kestrel-pine-s-stores-january-2027.jpeg",
+  "mermaid": "flowchart LR\n    SH[\"Shopper in Utrecht\"] -->|\"buys at the till\"| POS[\"the POS\"]\n    POS -->|\"card amount\"| TP[\"terminal provider\"]\n    POS -->|\"store stock nightly\"| ERP[\"the ERP\"]\n    ERP -->|\"stock hourly\"| PL[\"the platform\"]\n    WEB[\"Shopper online\"] -->|\"collect in Utrecht\"| PL\n    PL -->|\"e-mail\"| STAFF[\"store staff\"]\n    STAFF -->|\"phone or e-mail\"| WEB\n    STAFF -.->|\"no link\"| POS"
+ },
+ {
+  "post": "17-stores-and-omnichannel",
+  "figure": 2,
+  "id": "fig02-click-collect-done-joins-place-till",
+  "asset": "assets/images/17-stores-and-omnichannel/fig02-click-collect-done-joins-place-till.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Shopper\n    participant PL as the platform\n    participant AV as availability service\n    participant OMS as the OMS\n    participant APP as store app\n    participant POS as the POS\n    POS->>AV: Sale at the till, stock event, minus one\n    Eva->>PL: Collect at Utrecht\n    PL->>AV: May Utrecht promise one unit\n    AV-->>PL: Yes, two above the buffer\n    PL->>OMS: Order with collection at Utrecht\n    OMS->>APP: Fulfillment order for the store\n    APP-->>OMS: Picked and confirmed\n    OMS-->>Eva: Ready for collection\n    POS->>OMS: Handed over at the counter"
+ }
+]

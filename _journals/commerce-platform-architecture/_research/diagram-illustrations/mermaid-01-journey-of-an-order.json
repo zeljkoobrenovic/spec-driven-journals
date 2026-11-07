@@ -1,0 +1,23 @@
+[
+ {
+  "post": "01-journey-of-an-order",
+  "figure": 1,
+  "id": "fig01-order-s-journey-handoffs-every-arrow",
+  "asset": "assets/images/01-journey-of-an-order/fig01-order-s-journey-handoffs-every-arrow.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Shopper\"] -->|\"browses and buys\"| PL[\"Storefront and checkout\"]\n    PL -->|\"charge the amount\"| PSP[\"Payment provider\"]\n    PSP -->|\"paid or failed\"| PL\n    PL -->|\"order to pick\"| WMS[\"Warehouse\"]\n    WMS -->|\"parcel and label\"| CR[\"Carrier\"]\n    CR -->|\"tracking events\"| PL\n    CR -->|\"parcel\"| S\n    S -->|\"return request\"| RP[\"Returns portal\"]\n    RP -->|\"expected return\"| WMS\n    RP -->|\"refund or exchange\"| PL\n    PL -->|\"orders and refunds\"| ERP[\"Finance system\"]\n    PSP -->|\"payouts\"| ERP"
+ },
+ {
+  "post": "01-journey-of-an-order",
+  "figure": 2,
+  "id": "fig02-goods-line-simple-consumer-order-money",
+  "asset": "assets/images/01-journey-of-an-order/fig02-goods-line-simple-consumer-order-money.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Placed\n    Placed --> Paid\n    Paid --> SentToWarehouse\n    SentToWarehouse --> Picking\n    Picking --> Shipped\n    Shipped --> Delivered\n    Delivered --> ReturnRequested\n    ReturnRequested --> ReturnReceived\n    ReturnReceived --> Refunded\n    ReturnReceived --> Exchanged\n    Paid --> Canceled\n    Refunded --> [*]\n    Exchanged --> [*]\n    Delivered --> [*]"
+ },
+ {
+  "post": "01-journey-of-an-order",
+  "figure": 3,
+  "id": "fig03-eva-s-jacket-crosses-seven-systems",
+  "asset": "assets/images/01-journey-of-an-order/fig03-eva-s-jacket-crosses-seven-systems.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva Janssen\n    participant PL as The platform\n    participant PSP as The PSP\n    participant IP as The iPaaS\n    participant WMS as The WMS\n    participant PN as PostNL\n    participant ERP as The ERP\n    participant RP as The returns portal\n    Eva->>PL: Jacket size M moss and two pairs of socks, 13 April 21h14\n    PL->>PSP: Pay 235 euro by iDEAL\n    PSP-->>PL: Paid, with a payment reference\n    PL-->>Eva: Order 1072455 confirmed, delivery tomorrow\n    PL->>IP: New order event\n    IP->>WMS: Fulfillment order, three lines\n    WMS->>PN: Label and parcel, 14 April\n    WMS-->>PL: Shipped, tracking number\n    PL-->>Eva: Shipping confirmation\n    PN-->>Eva: Delivered 15 April\n    WMS->>ERP: Shipment and stock movement\n    ERP->>PL: Stock levels, hourly\n    Eva->>RP: Exchange jacket for size L, 19 April\n    RP->>PL: Return and exchange order\n    PL->>IP: Return expected and new order\n    IP->>WMS: Receive and inspect, ship size L, 22 April"
+ }
+]

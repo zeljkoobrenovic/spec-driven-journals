@@ -1,0 +1,23 @@
+[
+ {
+  "post": "10-inventory-and-availability",
+  "figure": 1,
+  "id": "fig01-hand-one-counted-fact-committed-reserved",
+  "asset": "assets/images/10-inventory-and-availability/fig01-hand-one-counted-fact-committed-reserved.jpeg",
+  "mermaid": "flowchart LR\n    OH[\"On hand, counted by the warehouse\"] --> C[\"Committed to placed orders\"]\n    OH --> R[\"Reserved in carts and drafts\"]\n    OH --> H[\"Held back: safety stock, damaged, set aside\"]\n    OH --> A[\"Available to promise\"]\n    IN[\"Incoming from suppliers\"] -.->|\"only if promised against\"| A\n    A -->|\"published per channel\"| CH[\"Storefront, marketplaces, stores, wholesale portal\"]"
+ },
+ {
+  "post": "10-inventory-and-availability",
+  "figure": 2,
+  "id": "fig02-unit-s-life-merchant-s-point",
+  "asset": "assets/images/10-inventory-and-availability/fig02-unit-s-life-merchant-s-point.jpeg",
+  "mermaid": "stateDiagram-v2\n    state \"Incoming\" as S0\n    state \"On hand and available\" as S1\n    state \"Reserved in a cart\" as S2\n    state \"Committed to an order\" as S3\n    state \"Picked and shipped\" as S4\n    S0 --> S1: received\n    S1 --> S2: add to cart with reservation\n    S2 --> S1: cart expires or line removed\n    S1 --> S3: order placed\n    S2 --> S3: order placed\n    S3 --> S1: order canceled or edited\n    S3 --> S4: fulfilled"
+ },
+ {
+  "post": "10-inventory-and-availability",
+  "figure": 3,
+  "id": "fig03-waypoint-target-counting-systems-send-stock",
+  "asset": "assets/images/10-inventory-and-availability/fig03-waypoint-target-counting-systems-send-stock.jpeg",
+  "mermaid": "flowchart LR\n    WMS[\"the WMS at Duiven\"] -->|\"stock events\"| AV[\"Availability service\"]\n    POS[\"the POS, six stores\"] -->|\"stock events\"| AV\n    MF[\"Marketplace fulfillment stock\"] -->|\"reported counts\"| AV\n    PL[\"the platform\"] -->|\"order events: commit, release\"| AV\n    MC[\"the marketplace connector\"] -->|\"order events\"| AV\n    AV -->|\"available per channel\"| PL\n    AV -->|\"available per channel, with buffer\"| MC\n    AV -->|\"available for click and collect\"| ST[\"Store tills and B2B portal\"]\n    REC[\"Weekly reconciliation\"] -.->|\"variance report\"| AV"
+ }
+]

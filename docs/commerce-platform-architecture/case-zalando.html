@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case: Zalando, Microservices, Platform Strategy and the Return to Discipline</title>
+    <meta name="description" content="What happened after Zalando split its shop into microservices owned by autonomous teams in 2015, and what does a retailer that became a logistics and software platform teach a merchant? The public record shows a split made for team autonomy, then ten years of narrowing choices: a written API standard, fewer languages, one developer portal, and in 2025 a read API replacing an event stream that could not keep up at peak; and a platform built through logistics, not storefront features.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="Case: Zalando, Microservices, Platform Strategy and the Return to Discipline">
+    <meta property="og:description" content="What happened after Zalando split its shop into microservices owned by autonomous teams in 2015, and what does a retailer that became a logistics and software platform teach a merchant? The public record shows a split made for team autonomy, then ten years of narrowing choices: a written API standard, fewer languages, one developer portal, and in 2025 a read API replacing an event stream that could not keep up at peak; and a platform built through logistics, not storefront features.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/case-zalando.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/48-case-zalando/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="case-amazon.html" title="Case: Amazon, From Monolith to Services to the Everything Store">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-composable-movement.html" title="Case: commercetools, Shopware and the Composable Movement">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part XI — PRACTICE: How Others Built It</p>
+        <h1>Case: Zalando, Microservices, Platform Strategy and the Return to Discipline</h1>
+        <p class="byline">Željko Obrenović  ·  2026-11-07  ·  27 min read · <a class="spec-link" href="case-zalando.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: researched and written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/48-case-zalando/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/48-case-zalando/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="case-amazon.html" title="Case: Amazon, From Monolith to Services to the Everything Store">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="case-composable-movement.html" title="Case: commercetools, Shopware and the Composable Movement">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Case: Zalando, Microservices, Platform Strategy and the Return to Discipline", "date": "2026-11-07", "author": "Željko Obrenović", "excerpt": "What happened after Zalando split its shop into microservices owned by autonomous teams in 2015, and what does a retailer that became a logistics and software platform teach a merchant? The public record shows a split made for team autonomy, then ten years of narrowing choices: a written API standard, fewer languages, one developer portal, and in 2025 a read API replacing an event stream that could not keep up at peak; and a platform built through logistics, not storefront features.", "permalink": "case-zalando", "timetoread": "27 min read", "icon": "assets/icons/48-case-zalando.png", "logo": "assets/images/48-case-zalando/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow Zalando's own dated accounts from the 2015 microservices move through the corrections that followed, and take from them what a merchant can use about modularity, API contracts and becoming a platform.\n\n> **KEY POINTS:**\n>\n> * **Zalando split its shop for team autonomy, not for load, and said so.** In 2015 a shared codebase and slow deployments blocked 85-plus teams; the fix was organizational first (small teams, an AWS account each, a paved road called STUPS) and architectural second. The service count followed the team count.\n> * **The durable export is a written API standard, not the service count.** Zalando's guidelines, open since 2016 and still maintained in 2026, say what a merchant should demand of every vendor: extend compatibly instead of versioning, never break consumers, and sunset an API only with client consent, a date, headers and usage monitoring.\n> * **Autonomy was followed by a decade of discipline.** Alignment over raw autonomy (2018), fewer languages (2020), one developer portal (2023) and, in 2025, a synchronous read API replacing a price-and-stock event stream that fell 30 minutes behind at Cyber Week and bred divergent copies of product data. Events propagate change; they are not the system of record.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**\n>\n> * **The Giant's Boots** — Zalando's microservices move is copied for its shape; the record shows it was made for 85-plus teams and corrected for a decade afterward.\n> * **The Pulled Rug** — Zalando's deprecation rules (consent, a sunset date, headers, usage monitoring) are the written cure for the vendor API change that breaks an integration before anyone is told.\n> * **The Message in a Bottle** — Zalando's 2025 post documents what happens when consumers rebuild their own copy of price and stock from a stream they cannot keep up with: delays and divergent copies.\n\n<br>\nZalando is a fashion platform headquartered in Berlin: in 2025 it reported **€17.6 billion** in gross merchandise volume, **62 million** active customers and **278.6 million** orders (FY2025 fact sheet, March 2026). Kestrel & Pine, the fictional outdoor brand this book follows, sells on it in Germany and the Netherlands through its marketplace connector. To a merchant, Zalando is a channel, a possible fulfillment provider, and a company that publishes its API rules.\n\nThe reason Zalando is a case in this book is that last point. From 2015 its engineering blog described, in its own words and in near-real time, the rebuilding of its shop as **microservices** owned by **autonomous teams**, the platform tooling it built and open-sourced, the API standard it wrote, and then, over ten years, the corrections: alignment, fewer technologies, one developer portal, and in 2025 a reversal of one integration from events to an API. It is the fullest public record of a European retailer's architecture, including the parts that did not work.\n\n**Read the ages of the evidence.** The 2015 to 2017 posts are history; the systems they describe have been replaced. The business figures are from 2025 and 2026 filings. The AI material is from 2023 to 2026 and moves quickly. As in [Case: Amazon, From Monolith to Services to the Everything Store](case-amazon.html), every claim is dated in the sentence, inferences about Zalando's internals are labeled, and a section near the end says where the evidence stops. Zalando never announced the end of \"Radical Agility\"; what this chapter calls the return to discipline is a sequence of its own posts, not a program it declared.\n\n**Where we are in the order's journey.** This case sits beside the order's path. It bears on three steps of Eva's jacket: the marketplace order that enters Kestrel & Pine's systems from a platform like this one ([Selling on Someone Else's Platform: Marketplaces and Channel Integration](marketplaces-and-channel-integration.html)), the price and stock that must be correct on the listing when Eva's neighbor buys the same jacket there ([Is It in Stock? Inventory, Availability and the Promise You Can Keep](inventory-and-availability.html)), and the API contract the connector depends on ([Promises Between Systems: API Contracts, Webhooks and Versioning](api-contracts-and-versioning.html)).\n\n## 2015: Jimmy, Radical Agility and the Split\n\nVocabulary first. A **monolith** is one deployable application holding all of the shop's logic with one shared codebase and usually one database. **Microservices** are the opposite: many small, separately deployed services, each owned by one team and talking to the others over the network. An **autonomous team** chooses its own tools and process and owns its services in production. In plain words: one big program everyone edits, versus many small programs each with an owner.\n\nZalando's monolith was called **Jimmy**. The October 2015 post \"From Jimmy to Microservices\" says that \"all of the Shop teams shared the same code base\" and that teams \"couldn't move quickly because of Jimmy's slow startup time and our overly complicated deployment processes\". Note the stated reason: not load, but **teams blocked by a shared codebase and slow deployments**. In May 2015 a task force called Spearheads, seven engineers and a designer, began rebuilding the Fashion Store, then 15 country sites serving over 16 million active customers, as microservices owned by teams responsible for \"programming, quality assurance, deployment, and operations\". The team chose to put a router in front of the shop, a Go program called **Skipper**, which it open-sourced.\n\nThe organizational side was called **Radical Agility**, introduced in March 2015 and built, by trade accounts of 2016, on autonomy, mastery and purpose, with teams of three to seven people owning a topic end to end. Zalando's own July 2015 post has Eric Bowman, then VP Engineering, at the AWS Summit in Berlin: \"We think of teams as a unit of trust\"; \"we've tried to create the context where people can make mistakes and it's not fatal\". By February 2016 a Zalando talk at the MicroXchange conference covered microservices across \"our 85+ engineering teams\"; by December 2016 InfoQ reported \"about 110 teams\", more than 1,400 people in Tech across six hubs, and \"each team has its own AWS account\".\n\nThat last fact needed a platform. **STUPS** was Zalando's answer: an **internal platform-as-a-service**, meaning one supported way for every team to deploy to the cloud. Development began in late 2014 and it was available for production to every team in May 2015. InfoQ's April 2016 account describes it as \"a convenient and audit-compliant Platform-as-a-Service\" on AWS: \"Our employees get nearly administrative access to their AWS accounts with almost no restrictions\", with near-real-time audit reporting because \"Auditors need to know that we're complying with the regulations\" (card-industry, financial-reporting and German rules). In plain words: Zalando gave every team its own cloud account and built the tooling that made that auditable.\n\nThe shop itself was rebuilt as **fragments**, pieces of a page owned by different teams and deployed separately, assembled behind the router. One year in, in October 2016, the effort was renamed Project Mosaic: header and footer fragments were live, product-page and wish-list fragments were going live, and the author described a shift \"from prototyping to performance optimization\" and toward \"stable components that other teams can depend on\".\n\n![Diagram: The 2015–2016 shape as Zalando described it](assets/images/48-case-zalando/fig01-2015-2016-shape-zalando-described-it.jpeg)\n**Figure 1:** *The 2015–2016 shape as Zalando described it: a router in front, a page assembled from fragments each owned and deployed by one team, and each team on its own cloud account behind a shared, audited platform.*\n\nA smaller post from April 2016 is the most honest about the first months: a team in Dortmund cut its domain into two services, then into eight after modeling the boundaries properly (\"Define your Microservices properly and know your boundaries\"), and replaced a failed upfront plan with weekly goals.\n\n> **INFERENCE, NOT DOCUMENTED:** Zalando's documented sequence mirrors Amazon's with a thirteen-year lag and a different stated motive. Amazon's 2006 account names a scaling wall; Zalando's 2015 posts name team autonomy. The fix was organizational first (teams, accounts, a paved road) and architectural second, which is why the service count tracked the team count: 85-plus teams in early 2016, about 110 by December, and by 2020 \"4,000+ applications\" for \"1,200+ developers\". A merchant with fourteen people in technology, like Kestrel & Pine, is below the team count at which any of this applies. What transfers is the *order of operations*: decide who owns what before deciding how to split what, which is the argument of [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](boundaries-and-systems-of-record.html) and [Who Builds and Who Owns: Teams, Vendors, Agencies and Governance](organizing-commerce-engineering.html).\n\n## The Cost of Distributed Data, Stated Early\n\nThe clearest early statement of what the split would cost came not from the shop teams but from business intelligence. In September 2015 a Zalando post observed that the monolith's \"consolidation of data in a single place makes business intelligence fairly simple\", whereas \"with each service owning its data, data is spread over a significantly larger number of cloud-based microservices\"; article and order data alone were spread across eight PostgreSQL databases. Zalando's response was to deploy Kafka, a message log, on AWS \"to make our event data available for downstream systems\", and to plan a data lake.\n\nTwo terms. An **event** is a message sent the moment something happens (an order placed, a price changed) so other systems can react. An **event bus** is the shared channel on which services publish events and others subscribe. Zalando's event bus was **Nakadi**, started in October 2015: in its own README, \"a distributed event bus that implements a RESTful API abstraction on top of Kafka-like queues\", with a schema registry so that producers register an event type with a **schema** (the agreed shape of the message) before publishing, and every event is validated against it. By May 2017 a Zalando post on \"third-generation microservices\" described the intended style: services \"process incoming events and data from other services\", and data streaming becomes \"a central part of the service fabric\".\n\n> **INFERENCE, NOT DOCUMENTED:** This is the earliest honest statement in the record of the rule [Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation](events-consistency-and-reconciliation.html) is built on: once each system owns its own data, there is no single place to query, so analytics and reconciliation need a stream of what happened. Kestrel & Pine meets this problem without a single microservice: its thirteen systems hold orders in four places and product data in four, and its data warehouse has three definitions of an order (Waypoint decision W7 picks one). An Omnichannel merchant meets the *data* problem of distribution long before the *team* problem, and should take the event-stream lesson without the service count.\n\n## The API Guild and the Guidelines\n\nThe piece of Zalando's 2015 work that is still alive, still public and still maintained in 2026 is its API standard. It began as the **API Guild** in March 2015: an informal group of about 20 people who set standards and review APIs as \"a sounding board and review resource, not an approval board, to avoid bottlenecks\", spending about 10% of their week on it. The September 2015 post explains why it mattered to the business: Zalando's \"open platform strategy relies on public APIs used by external partners\", so \"We cannot afford to break our APIs\", and \"Ideally, all Zalando APIs should look like the same author created them\".\n\nThe principle is **API First**: the interface is designed and reviewed, as an OpenAPI document (a machine-readable description of an API), before any code is written. By December 2016 the guidelines were open-sourced; Zalando described API definitions as \"a source truth, part of a contract between a service provider and consumers\". The current guidelines (undated page, accessed November 2026) use the MUST, SHOULD and MAY of internet standards and say teams \"must define APIs first, before coding its implementation, using OpenAPI as specification language\" and should \"Treat your API as product and act like a product owner\".\n\nThe rules that matter most to a merchant are the ones about change. In plain words, a **compatible extension** adds to an API without breaking anyone who already uses it; **versioning** publishes a second, different API beside the first; **deprecation** announces that an API will stop; a **sunset** is the date it does.\n\n| Rule (Zalando guideline number) | What it says, in plain words | What Kestrel & Pine should demand of a vendor |\n| --- | --- | --- |\n| #106 MUST not break backward compatibility | \"Change APIs, but keep all consumers running\" | Additive changes only inside a version |\n| #107 SHOULD prefer compatible extensions; #113 SHOULD avoid versioning | Add fields rather than publishing a new version | A changelog of additions, not surprise versions |\n| #108 MUST prepare clients to accept compatible extensions | Clients ignore fields they do not know (the **tolerant reader**) | Its own integrations must not fail on a new field |\n| #114 MUST use media type versioning; #115 MUST not use URL versioning | When a version is unavoidable, put it in the content type, not the address | A stated versioning scheme, whichever it is |\n| #185 MUST obtain approval of clients before API shut down; #186 MUST collect external partner consent on deprecation time span | No sunset until \"all clients have given their consent on a sunset date\" | A deprecation notice with a date agreed in advance |\n| #187 MUST reflect deprecation in API specifications; #189 SHOULD add Deprecation and Sunset headers | `deprecated: true`, the sunset date and migration guidance in the spec; headers on every response | Machine-readable deprecation, so a script can warn before it breaks |\n| #188 MUST monitor usage of deprecated API scheduled for sunset | The provider watches who is still calling | A warning to the merchant while it is still calling |\n| #191 MUST not start using deprecated APIs | A client never builds on something already marked for removal | The agency checks before building |\n\nThe companion to the guidelines is the **Tech Radar**, created in 2016 \"to inspire and support teams to pick the best technologies for new projects\". A Technologist Guild of about 25 senior people assigns technologies to rings by vote: ADOPT (\"high confidence in to serve our purpose, also in large scale\"), TRIAL, ASSESS and HOLD (\"not recommended to be used for new projects\"). In 2016 \"Teams must use the Tech Radar as one input source for their technology decisions\"; that wording changes in 2020.\n\n![Diagram: Deprecation as Zalando's guidelines prescribe it](assets/images/48-case-zalando/fig02-deprecation-zalando-s-guidelines-prescribe-it.jpeg)\n**Figure 2:** *Deprecation as Zalando's guidelines prescribe it: announce in the specification, obtain consent on a date, signal in headers, monitor who still calls, and only then sunset; every step is a chance to avoid the Pulled Rug.*\n\nKestrel & Pine learned the value of these rules the expensive way. In February 2027 its marketplace connector retired an API version on a published date; the agency script that read it had not been updated, and stock to bol was stale for two days (the ledger's Deprecated Endpoint). Every row in the table above describes a step that would have caught it: a machine-readable deprecation, a header the script could have logged, usage monitoring that would have shown the script still calling. [Promises Between Systems: API Contracts, Webhooks and Versioning](api-contracts-and-versioning.html) turns the guidelines into the book's contract rules.\n\n## The Return to Discipline, 2018 to 2026\n\nNo single Zalando post declares that the autonomy era ended. The posts that follow narrow a choice each time, and read in order they tell one story.\n\n| Year | What Zalando published | What narrowed |\n| --- | --- | --- |\n| 2018 | Bowman, by then leading a 500-person group, told InfoQ in September: \"Our biggest challenge was that we treated autonomy like an input to teams\"; unaligned teams were like \"air molecules in a balloon: moving fast but not running together as a group\"; autonomy became \"an aspiration and a reward, not a gift\"; \"a set of principles and systems scales better than a set of prescriptions\". Teams were embedded across the company with shared objectives and company-wide \"Global Projects\". | Autonomy without alignment |\n| 2018 | The agile coaches: \"we value principles more than frameworks\"; six principles replace a single prescribed method (August). | One mandated process, replaced by principles |\n| 2020 | With \"1,200+ developers\" and \"4,000+ applications\", Zalando \"redefined the ring semantics\" of the radar, wrote Technology Selection Principles, gave a Principal Engineering community the decision, required a sponsoring Engineering Head for TRIAL technologies, and stopped new applications in Clojure, Haskell and Rust in favor of Kotlin and TypeScript, because \"A broad freedom of choice leads to increased difficulties in supporting software long-term\" (July). | Free choice of language |\n| 2023 | **Sunrise**, an internal developer portal built on Backstage since 2021, replaced \"more than 100 disconnected interfaces\" with one portal holding \"over 40k registered entities (applications, teams, and users)\" and 27 integrated tools; old tools were shut down (August). | Many tools, replaced by one paved road |\n| 2023 | On 21 February the co-CEOs announced the removal of \"several hundred overhead roles\", about 5% of roughly 17,000 employees, sparing logistics, customer care and outlets (Retail Gazette). | Overhead |\n| 2025 | The event-driven price and stock pipeline \"became a bottleneck, introducing delays and scaling challenges\"; it was replaced by a synchronous Product Read API (March). | A stream as the only source of current state |\n| 2026 | Connected Retail, the ship-from-store program launched in 2018, is folded into the standard partner program; its technology \"will be discontinued by June 30, 2027\" (FashionUnited, April). | A separate channel technology |\n\nThree terms. A **paved road**, or internal developer platform, is one supported way to build, deploy and find services so teams do not each solve the same problem. A **technology radar with teeth** is a list of allowed technologies teams must follow rather than consult. A **synchronous read API** is one that answers \"what is the price now\" when asked, instead of making the caller rebuild its own copy from a stream of changes.\n\nThe evidence does not support \"microservices failed at Zalando\". It supports something more specific: **autonomy produced too many technologies, too many tools and, on one critical path, an integration that could not keep up**, and each was fixed by narrowing a choice. Zalando today reports more than 17,000 employees, around 3,000 in technology and more than 7,000 in fulfillment centers (annual report 2025, March 2026).\n\n![Many scattered paths leaving a balloon of arrows labeled Autonomy and merging past signposts 2018, 2020, 2023 and 2025 into one paved road.](assets/images/48-case-zalando/48-autonomy-narrowed-to-a-paved-road.jpeg)\n**Figure 3:** *Zalando's return to discipline narrowed one choice at a time: alignment in 2018, fewer languages in 2020, one developer portal in 2023 and a read API in 2025.*\n\n## 2025: When the Event Stream Fell Behind\n\nThe 2025 post deserves its own section because it is the most useful single document in the case for a merchant, and because it is the Black Friday Oversell told by a platform.\n\nZalando's price and stock updates were published as events. Consumers, the systems that needed current prices and stock, subscribed to the stream and maintained their own copies. The March 2025 post \"From Event-Driven to API\" reports what happened at scale: \"over 90% of each payload unchanged\" was being reprocessed, because an event carried the whole record even when one field had changed; during Cyber Week events \"could be delayed by up to 30 minutes\"; and teams that could not consume the streams fast enough used other sources, producing \"divergent versions of product data\". The pipeline was replaced by a synchronous, low-latency **Product Read API** (PRAPI): callers ask for the current price and stock and get an answer now.\n\n![Diagram: Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load](assets/images/48-case-zalando/fig03-before-2025-every-consumer-rebuilt-own.jpeg)\n**Figure 4:** *Before 2025, every consumer rebuilt its own copy of price and stock from a stream of full records and the copies diverged under load; after, consumers ask the owner for the current value, and the stream is no longer the only way to know the truth.*\n\nIn plain words: an event is the right way to tell everyone that something changed. It is the wrong way to be the only place the current value can be learned, because then every consumer is a copy, every copy can lag, and on the busiest day the lag is largest. Kestrel & Pine's stock sync chain, WMS to ERP every 15 minutes, ERP to platform hourly, platform to marketplace connector hourly, is a slower version of the same design: a chain of copies, each one stale by the time it is read, which is how the Ridgewalker kept selling for two hours after it sold out at 19:40 on 27 November 2026.\n\n![Stock notes passed from WMS to ERP to Platform to Connector, with clocks reading 15 min and hourly, while the empty shelf at the start contrasts with a jacket still for sale at the end.](assets/images/48-case-zalando/48-kestrel-pine-chain-of-copies.jpeg)\n**Figure 5:** *Kestrel & Pine's stock sync is a chain of copies, WMS to ERP every 15 minutes, then hourly to the platform and hourly to the connector, which is how the Ridgewalker kept selling for two hours after it sold out.*\n\n> **INFERENCE, NOT DOCUMENTED:** Zalando does not describe PRAPI's internals, its caching or how events and the API now coexist, so the diagram shows the documented before and after, not the implementation. The rule I draw is the one Waypoint decision W1 encodes: keep a **system of record** for stock and price, an **availability service** that answers \"can I promise this unit on this channel now\" through an API, and use events to propagate change and to feed reconciliation, not as the only source of truth. Events for \"what happened\"; a read API for \"what is it now\"; a reconciliation job for \"do the copies still agree\" ([Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation](events-consistency-and-reconciliation.html)). The 30-minute figure is Zalando's; the two-hour figure is Kestrel & Pine's; the shape of the failure is the same.\n\n## The Platform Pieces: What Survived\n\nZalando open-sourced much of what it built in 2015, and the status of those projects in November 2026 is itself evidence.\n\n| Project | What it is, in Zalando's words | Status on 7 November 2026 |\n| --- | --- | --- |\n| STUPS (for example Senza) | audit-compliant platform-as-a-service on AWS for autonomous teams | Senza archived; last change March 2023 |\n| Skipper | \"An HTTP router and reverse proxy for service composition\"; used \"as shop frontend http router with 350000 routes\" and as the ingress controller \"in more than 100 production clusters\" | Active; changed the day before the check |\n| Patroni | \"a Python template for building PostgreSQL high availability (HA) clusters\", introduced on Zalando's blog in February 2016, now under its own organization | Active |\n| Nakadi | the event bus described above | Archived June 2024: \"no longer developed in the open as we've not seen usage outside of Zalando for many years\" |\n| RESTful API and Event Guidelines | \"A model set of guidelines for RESTful APIs and Events, created by Zalando\" | Active; changed September 2026 |\n| Tech Radar | the radar page and its generator | Active; changed October 2026 |\n| Zalenium | container-based test grid | Archived September 2021: \"no new maintainers were found\" |\n\n> **INFERENCE, NOT DOCUMENTED:** The pieces that survived are the ones with a life outside Zalando: a router, a database failover template and a written standard. The pieces tied to the 2015 account-per-team model (STUPS) or used only internally (Nakadi) were archived. Read the table as a warning against building platform tooling only one company needs. Archiving Nakadi says nothing about whether Zalando still uses an event bus internally; the README says only that nobody outside did.\n\n## A Retailer Becoming a Platform\n\nZalando's business story runs parallel to its architecture story, and the two meet at the warehouse.\n\nThree terms. In the **partner program**, a brand sells on Zalando as the seller of record (the legal seller who issues the invoice and owes the consumer rights) and Zalando takes a commission, as opposed to Zalando's **wholesale** model in which it buys the stock and sells it itself. **Ship-from-store** sells a physical store's shelf stock online and ships it from the store. **Logistics as a service** offers a retailer's warehouses, carriers and software to other sellers, for orders on and off its own platform.\n\n| Year | Move | Documented figures |\n| --- | --- | --- |\n| 2011 | **Partner Program** launches: brands sell as seller of record through the zDirect portal | June 2021: \"more than 600 partners, representing over 2,000 brands\"; about a quarter of GMV; a target of 40% by 2023 and half in the long term (targets now dated) |\n| 2018 | **Connected Retail** launches: stores' stock sold on Zalando, collected by carriers (DHL in Germany, PostNL in the Netherlands), returns back to the store | March 2020: \"more than 1,500\" stores in Germany and the Netherlands, commissions waived for April–May 2020; January 2021: \"more than 2,600\"; February 2021: \"over 3,000 active stores\" in nine markets |\n| 2010s–2021 | **Zalando Fulfillment Solutions** (ZFS) and Shipping Solutions: Zalando's warehouses and carriers for partners | June 2021: access to 16 European markets, \"more than 2,300 market expansions\" in 18 months |\n| 2022–2023 | Multi-channel fulfillment pilot (2022), rebranded **ZEOS** Fulfillment in October 2023: one stock pool for Zalando, own-shop and other-platform orders, open to sellers \"whether or not they sell through Zalando\" | End of 2025: 25 markets, \"over 600 partners selling across 18 sales channels (including Zalando), covering around 85% of the European marketplace volume\" (annual report) |\n| 2025 | **ABOUT YOU** acquired: intention announced 11 December 2024, completed 11 July 2025 at 91.45%, squeeze-out registered 6 November 2025 at €6.50 a share; B2C runs two brands on shared logistics and payment infrastructure | Targeted group synergies \"around €100 million per year\" |\n| 2025 | B2B segment defined as ZEOS Fulfillment (including ZFS and multi-channel fulfillment), the commerce platform **SCAYLE** and the integration product **Tradebyte** | FY2025 B2B revenue €1,091.3 million (+14.6%), adjusted EBIT €53.9 million; 330 online shops on SCAYLE; a ZEOS app for Shopify's European merchants |\n| 2026 | Connected Retail folded into the partner program; same standard fees for all partners from September 2026; technology discontinued by 30 June 2027 | \"We are not saying goodbye to brick and mortar stores; we are simply updating the technology they use to connect with us\" |\n\nThe FY2025 fact sheet (12 March 2026) gives the scale around this: GMV €17,560.2 million (+14.7%), revenue €12,346.1 million (+16.8%), adjusted EBIT €590.7 million, 278.6 million orders at 4.8 orders per customer and an average basket of €62.8. Reported growth includes ABOUT YOU; Zalando's guidance for 2026 is pro-forma growth of 5 to 10%, the honest measure of the core business. The partner share of group GMV fell to 32.1% from 34.2% because ABOUT YOU \"currently operates with a lower partner business share\". Zalando's December 2025 strategy note counts \"over 60\" live merchants on its fulfillment service; the annual report's 600 partners span all B2B services.\n\n> **INFERENCE, NOT DOCUMENTED:** Zalando's platform story is Amazon's in European form and on a European timetable: marketplace (2011), then ship-from-store (2018), then fulfillment for partners, then fulfillment for anyone on any channel (2023), then the shop software itself (SCAYLE, in the group from 2025). The architectural consequence is the one [Case: Amazon, From Monolith to Services to the Everything Store](case-amazon.html) drew: **one stock pool serving several seller-of-record models and several demand channels**, which is the Omnichannel-stage problem (own site, stores, wholesale, marketplaces) at a much larger scale. Two cautions are in the record. Connected Retail shows that a channel built on its own technology gets consolidated once the general program can do the job. And the partner share falling after the ABOUT YOU merger shows that an acquisition imports the acquired company's model mix, not only its revenue ([What Changes at Each Scale: From First Store to Group](commerce-scaling-stages.html)).\n\n## AI at Zalando: Discovery First, Then Identity\n\nOn 19 April 2023 Zalando announced a beta \"fashion assistant powered by ChatGPT\" for selected customers in four countries, letting them describe what they want in their own words and refine the results in conversation. The annual report for 2025 says the Zalando Assistant \"was used by over 6 million customers\" that year, and that Zalando sees \"the emerging channel of agentic commerce as a great opportunity\" while noting \"the rise of AI agents as digital gatekeepers\".\n\nThe engineering side came in September 2026. Zalando described an internal agentic platform on Kubernetes and open-sourced an **Agentic Identity Broker** that \"lets agents act on behalf of users without ever holding provider tokens\". Two terms: **delegated access** means a user allows an agent to act with a subset of the user's permissions (\"Delegated access is the intersection of both the user and agent permissions\"), and **token exchange** means the broker swaps the agent's identity for a short-lived credential scoped to one action, so the agent never holds the user's real credentials. The post adds that consent \"should name a business capability ... instead of presenting a raw scope string\", and that stronger approval is planned for high-risk transactions because users rubber-stamp approvals.\n\n> **INFERENCE, NOT DOCUMENTED:** The 2023 assistant is a search feature: finding products in natural language. The 2026 broker is the infrastructure answer to the question Amazon answered with a policy and a lawsuit: who is this agent, for whom does it act, and what may it do. Read the two cases together. Amazon states the rule for *external* agents; Zalando publishes the identity model for *internal* ones. For Kestrel & Pine the broker is a preview of what Waypoint decision W8 will require before any agent may place or change an order: an identity for the agent, a named person it acts for, and a scope a human can read. [Assistants and Agents: AI in Commerce and What Is Real in 2026](ai-and-agentic-commerce.html) owns the subject; the identity model is also treated in the sibling book at [Agent Identity, Delegation and Least Privilege](../agentic-systems-architecture/agent-identity-and-least-privilege.html).\n\n## What Zalando Teaches\n\nThe table is the author's synthesis; each row names its evidence.\n\n| Lesson | Evidence | Transfers to a merchant? |\n| --- | --- | --- |\n| Decide ownership before decomposition; the service count follows the team count | 2015 posts; 110 teams (2016); 4,000+ applications (2020) | The order of operations, yes; the count, only at the Group stage |\n| A written API standard outlives the architecture it was written for | Guild (2015); guidelines active in 2026 | Yes, as what to demand of vendors first and what to write for internal APIs later |\n| Deprecate only with consent, a date, headers and monitoring | Guidelines #185–#191 | Yes; it is the cure for the Pulled Rug |\n| Distributed data needs an event stream for analytics and reconciliation | 2015 BI post; Nakadi | Yes, at the Omnichannel stage, without the service count |\n| An event stream must not be the only source of current state | 2025 Product Read API post | Yes; a read API on the system of record, events for propagation |\n| Autonomy needs alignment, a bounded technology set and one paved road | 2018, 2020, 2023 posts | At the Group stage; a small team gets this for free from one platform |\n| Build platform tooling only one company needs and it will be archived | STUPS, Nakadi, Zalenium status | Yes, at every stage |\n| A retailer becomes a platform through logistics, then software; consolidation follows | 2011–2026 timeline | The pool-serving-many-channels idea, yes; the business, only at scale |\n\n**What Kestrel & Pine takes from the case.** Two things, both already in Waypoint. From the guidelines: the integration standards of W5 should require of every vendor what Zalando requires of itself, a dated deprecation that a script can read, and the agency should check the Sunset header before it builds, so that the Deprecated Endpoint of February 2027 is the last of its kind. From the 2025 post: the availability service of W1 answers \"what is available now\" through an API, with stock events feeding it and a weekly reconciliation behind it, so that the two-hour stock lag of Black Friday 2026 is not rebuilt as a faster chain of copies. What Kestrel & Pine does not take is the shape: 110 teams and 4,000 applications are the Giant's Boots for a team of fourteen.\n\n## Where the Evidence Stops\n\n- **The current architecture.** Zalando has not published its service inventory, its order or pricing architecture, the internals of ZEOS or how PRAPI and its event streams coexist today. The 2015–2017 posts describe systems that have been replaced.\n- **\"Radical Agility\" ended** nowhere in the public record. No post announces it, and no source describes a 2019 reorganization under that name; the return to discipline is this chapter's reading of a sequence of posts and one leadership change (Bowman left in 2019, by professional-profile sources). The widely reported \"expanded too much\" wording from the February 2023 announcement was not in the page fetched. The 2016 trade accounts of team size (three to seven) are secondary; Zalando's own posts give \"85+\" teams.\n- **Open-source status** is as of 7 November 2026 and will change; the Tech Radar page shows no last-updated date.\n- **Business figures** for 2025 include ABOUT YOU for part of the year; the 2026 guidance of 5–10% pro-forma growth is the comparable number. The \"over 60\" fulfillment merchants and the \"over 600\" B2B partners are read here as different scopes; Zalando has not reconciled them in public.\n- **The Connected Retail wind-down** and the September 2026 fee change are reported by trade press from Zalando's partner communication; the primary page was not fetched.\n\n## What to Take Away\n\n**Established.**\n\n- Zalando rebuilt its shop as microservices owned by autonomous teams from 2015 because a shared codebase and slow deployments blocked its 85-plus teams, and it built an audited platform (STUPS) so each team could have its own cloud account (Zalando posts, 2015–2016; InfoQ, 2016).\n- Its API guidelines, open since 2016 and maintained in 2026, require API-first design in OpenAPI, forbid breaking consumers, prefer compatible extension to versioning, and require client consent, a sunset date, headers and usage monitoring before shutdown.\n- Zalando narrowed its choices over the following decade, each in its own posts: alignment over raw autonomy (2018), a bounded language set (2020), one developer portal (2023) and a read API replacing a price-and-stock event stream that lagged up to 30 minutes at Cyber Week (2025).\n- Zalando became a platform through logistics: partner program (2011), ship-from-store (2018), fulfillment for partners and then for any channel (ZEOS, 2023), commerce software (SCAYLE, 2025); 32.1% of its 2025 GMV came from partners (annual report, 2026).\n\n**Depends on context.**\n\n- Team-sized modularity is right when there are enough teams to need it, roughly the Group stage; below that, one platform with named owners for each capability gives the ownership without the operating cost.\n- An event bus is necessary once data is spread across systems that must be analyzed and reconciled, which for a merchant is the Omnichannel stage; it is sufficient as a source of current state only while consumers can keep up, which the 2025 post shows they cannot on the busiest week.\n- The compatibility and deprecation rules apply at every stage, but in different directions: a Starting or Growing merchant demands them of vendors; an Omnichannel merchant writes them into its own integration contracts; a Group-stage platform owes them to external partners.\n- Building a separate technology for one channel (as Connected Retail was) is right while the general program cannot serve it, and becomes a consolidation project once it can; plan the exit when you build it.\n\n**The author's synthesis.**\n\n- Zalando's most valuable export is not an architecture but a habit: writing down the rules for change, and publishing the corrections. I would adopt the compatibility and deprecation chapters of its guidelines as the baseline for every vendor contract a merchant signs.\n- The 2025 post is the book's thesis in a platform's own words: a copy is not a system of record, and the busiest day is when the copies drift furthest. Give every fact an owner with a read API, and let events carry the news.\n\n## Questions to Ask\n\n1. Which of our vendors publish a deprecation policy with a sunset date, consent and headers, and which retire versions on a date they choose alone?\n2. Do our own scripts and connectors log Deprecation and Sunset headers, and would anyone see the warning?\n3. For price and stock, which system can be asked \"what is it now\", and which systems only hold a copy rebuilt from events?\n4. How far behind are our copies on an ordinary day, and how far on the peak hour? Has anyone measured it?\n5. If we tolerate unknown fields in every payload we receive, would a vendor adding a field break anything of ours?\n6. Do we have an API standard our own team and our agency follow, even a short one, and who reviews against it?\n7. Which channel runs on technology built only for that channel, and what is the exit if the general program can serve it later?\n8. Before an agent may act on an order, can we name the agent, the person it acts for and the capability it was granted, in words a human can read?\n\nThe two cases so far are large companies that wrote their own commerce software. The next asks what happened when vendors tried to sell that shape to everyone else: the composable movement, its promise, its costs and its 2025–2026 turn toward working beside the systems merchants already have. Continue with [Case: commercetools, Shopware and the Composable Movement](case-composable-movement.html).\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Radical Agility on AWS (video post)](https://engineering.zalando.com/posts/2015/07/radical-agility-on-aws-video.html) — Zalando Engineering / Lauri Apple, 2015 (7 July); Bowman's \"unit of trust\" and STUPS as the platform for autonomous teams.\n- [On APIs and the Zalando API Guild](https://engineering.zalando.com/posts/2015/09/on-apis-and-the-zalando-api-guild.html) — Zalando Engineering / Frauenstein and Schmeisky, 2015 (3 September); the guild's role, API First, \"We cannot afford to break our APIs\".\n- [Data Integration in a World of Microservices](https://engineering.zalando.com/posts/2015/09/data-integration-in-a-world-of-microservices.html) — Zalando Engineering / Olaf Melchior, 2015 (21 September); the cost of distributed data and the Kafka deployment.\n- [From Jimmy to Microservices: Rebuilding Zalando's Fashion Store](https://engineering.zalando.com/posts/2015/10/from-jimmy-to-microservices-rebuilding-zalandos-fashion-store.html) — Zalando Engineering / Dan Persa, 2015 (16 October); the monolith's name, the stated reasons, Spearheads, Skipper.\n- [From Monolith to Microservices (video)](https://engineering.zalando.com/posts/2016/02/from-monolith-to-microservices-video.html) — Zalando Engineering, 2016 (10 February); \"85+ engineering teams\".\n- [Four Lessons with Microservices](https://engineering.zalando.com/posts/2016/04/four-lessons-with-microservices.html) — Zalando Engineering / Malte Pickhan, 2016 (27 April); two services became eight; weekly goals.\n- [Zalando Tech Radar](https://engineering.zalando.com/posts/2016/05/zalando-tech-radar.html) — Zalando Engineering / Thomas Frauenstein, 2016 (17 May); the radar's purpose and \"one input source\".\n- [Jimmy to Microservices: The Journey One Year Later](https://engineering.zalando.com/posts/2016/10/jimmy-to-microservices-the-journey-one-year-later.html) — Zalando Engineering / Dan Persa, 2016 (5 October); Project Mosaic, fragments live, the shift to stable components.\n- [Platform Engineering and Third Generation Microservices in Dublin](https://engineering.zalando.com/posts/2017/05/platform-engineering-and-third-generation-microservices-in-dublin.html) — Zalando Engineering / Bill de hÓra, 2017 (26 May); the event-driven intent.\n- [Agile: Principles over Frameworks](https://engineering.zalando.com/posts/2018/08/agile-principles-over-frameworks.html) — Zalando Engineering / Samir Keck, 2018 (2 August); principles replacing a prescribed method.\n- [Technology Choices at Zalando: Tech Radar Update](https://engineering.zalando.com/posts/2020/07/technology-choices-at-zalando-tech-radar-update.html) — Zalando Engineering / Bartosz Ocytko, 2020 (15 July); 1,200+ developers, 4,000+ applications, the narrowed language set.\n- [Sunrise: Zalando's developer platform based on Backstage](https://engineering.zalando.com/posts/2023/08/sunrise-zalandos-developer-platform-based-on-backstage.html) — Zalando Engineering / Nagel, Reis Puthin, Ocytko, 2023 (3 August); 100+ interfaces replaced, 40k entities.\n- [From Event-Driven to API](https://engineering.zalando.com/posts/2025/03/event-driven-to-api.html) — Zalando Engineering / Gallagher and Carta, 2025 (7 March); the 30-minute delays, 90% unchanged payloads, divergent copies, the Product Read API.\n- [Agentic Platform: Open-Sourcing the Agentic Identity Broker](https://engineering.zalando.com/posts/2026/09/agentic-platform-open-sourcing-agentic-identity-broker.html) — Zalando Engineering / Brennenstuhl and Jungsbluth, 2026 (25 September); delegated access and token exchange.\n- [Zalando RESTful API and Event Guidelines](https://opensource.zalando.com/restful-api-guidelines/) and the [compatibility](https://github.com/zalando/restful-api-guidelines) and deprecation chapters — Zalando, n.d., accessed 2026-11; rules #106–#115 and #185–#191.\n- [Zalando Tech Radar](https://opensource.zalando.com/tech-radar/) — Zalando, n.d., accessed 2026-11; ring definitions.\n- [STUPS](https://stups.io/), [Skipper](https://github.com/zalando/skipper), [Patroni](https://github.com/patroni/patroni), [Nakadi](https://github.com/zalando/nakadi), [Zalenium](https://github.com/zalando/zalenium) — Zalando and the Patroni project, GitHub, n.d., accessed 2026-11 (status from the GitHub API on 7 November 2026); project descriptions and archive notices.\n- [A Decade of Changing the Game for Partners](https://corporate.zalando.com/en/node/9401) — Zalando, 2021 (24 June); Partner Program figures and targets, ZFS reach.\n- [Zalando's Connected Retail Program Offers Support to Physical Stores](https://corporate.zalando.com/en/company/zalandos-connected-retail-program-offers-support-physical-stores) — Zalando, 2020 (31 March); 1,500 stores, carriers, commission waiver.\n- [Stronger Together: Connecting Online and Offline Retail](https://corporate.zalando.com/en/convenience/stronger-together-connecting-online-and-offline-retail) — Zalando, 2021 (25 January); 2,600 stores, 2018 launch year.\n- [Zalando Onboards C&A to Connected Retail and Expands Program to Austria](https://corporate.zalando.com/en/newsroom/news-stories/zalando-onboards-ca-connected-retail-and-expands-program-austria) — Zalando, 2021 (15 February); 3,000 stores in nine markets.\n- [Zalando to launch a fashion assistant powered by ChatGPT](https://corporate.zalando.com/en/node/10422) — Zalando, 2023 (19 April); the assistant beta.\n- [Zalando and ABOUT YOU successfully complete transaction](https://corporate.zalando.com/en/investor-relations/zalando-and-about-you-successfully-complete-transaction) — Zalando, 2025 (11 July); completion, 91.45%, shared infrastructure, synergies.\n- [ABOUT YOU and Zalando complete final step of their strategic combination](https://corporate.aboutyou.de/en/newsroom/press-releases/about-you-and-zalando-complete-final-step-of-their-strategic-combination) — ABOUT YOU, 2025 (6 November); the squeeze-out and delisting.\n- [Zalando's strategy in action: the evolution of our B2B growth engine](https://corporate.zalando.com/en/node/10922) — Zalando, 2025 (10 December); ZEOS components and \"over 60\" live merchants.\n- [Zalando SE FY/25 Fact Sheet](https://corporate.zalando.com/sites/default/files/media-download/zalando-se_fy-2025_fact-sheet.pdf) — Zalando, 2026 (12 March); GMV, revenue, customers, orders, B2B revenue, 2026 guidance.\n- [Zalando SE Annual Report 2025](https://corporate.zalando.com/sites/default/files/media-download/zalando-se_annual-report-2025_eng_261003_s.pdf) — Zalando, 2026 (March); ZEOS reach, SCAYLE shops, partner share, headcount, the assistant's users, agentic outlook.\n- [ZEOS](https://www.zeos.eu/) — Zalando, n.d., accessed 2026-11; the modular service positioning.\n\n*Standards, regulation and official documentation*\n\n- The guidelines' MUST/SHOULD/MAY follow [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) — IETF, 1997; the deprecation headers follow the Sunset header convention the guidelines cite. Contract rules as the book uses them are in [Promises Between Systems: API Contracts, Webhooks and Versioning](api-contracts-and-versioning.html).\n\n*Research and practitioner sources*\n\n- [Zalando's STUPS: an open-source PaaS on AWS](https://www.infoq.com/news/2016/04/zalando-stups-aws) — InfoQ / Daniel Bryant, 2016 (4 April); STUPS scope and audit model.\n- [Zalando: APIs, delivery and Radical Agility](https://www.infoq.com/articles/zalando-apis-delivery-radical-agility) — InfoQ / Jerome Louvel, 2016 (24 December); 110 teams, 1,400 people, an AWS account per team, API definitions as source of truth.\n- [Scaling Autonomy at Zalando](https://www.infoq.com/articles/scaled-autonomy-zalando/) — InfoQ / Ben Linders, 2018 (30 September); Bowman on autonomy and alignment.\n- [Zalando embraces radical agility in its bold platform play](https://diginomica.com/zalando-embraces-radical-agility-in-its-bold-platform-play) — Diginomica, 2016; team sizes of three to seven (secondary).\n- [ZEOS: Zalando Ecommerce Operating System](https://channelx.world/2023/10/zeos-zalando-ecommerce-operating-system/) — ChannelX, 2023 (26 October); the 2022 pilot and the October 2023 rebrand.\n- [Zalando to axe 'hundreds of jobs' amid economic slowdown](https://www.retailgazette.co.uk/blog/2023/02/zalando-to-axe-hundreds-of-jobs-amid-economic-slowdown/) — Retail Gazette, 2023 (21 February); the overhead reduction.\n- [Zalando consolidates partnership models: Connected Retail to be discontinued](https://fashionunited.com/news/business/zalando-consolidates-partnership-models-connected-retail-to-be-discontinued/2026042371971) — FashionUnited, 2026 (23 April); the wind-down date and fee change.\n\nKestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What Does It Cost? Price Lists, Contract Prices, Currencies and Tax</title>
+    <meta name="description" content="Where should a price be computed, and how do you keep it the same across storefronts, stores, marketplaces and wholesale? Keep one source per kind of price with a written selection rule, treat every copy as a dated promise with a reconciliation, and keep the history, because in Europe the price you charged last month decides what you may call a discount this month.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="What Does It Cost? Price Lists, Contract Prices, Currencies and Tax">
+    <meta property="og:description" content="Where should a price be computed, and how do you keep it the same across storefronts, stores, marketplaces and wholesale? Keep one source per kind of price with a written selection rule, treat every copy as a dated promise with a reconciliation, and keep the history, because in Europe the price you charged last month decides what you may call a discount this month.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/pricing-architecture.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/07-pricing-architecture/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="product-information.html" title="What Are We Selling? Products, Variants and the Catalog">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-promotions.html" title="Discounts, Coupons and Loyalty: Promotions Without Chaos">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — CATALOG: Products, Prices and Promises</p>
+        <h1>What Does It Cost? Price Lists, Contract Prices, Currencies and Tax</h1>
+        <p class="byline">Željko Obrenović  ·  2026-11-07  ·  28 min read · <a class="spec-link" href="pricing-architecture.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: researched and written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/07-pricing-architecture/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/07-pricing-architecture/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="product-information.html" title="What Are We Selling? Products, Variants and the Catalog">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-promotions.html" title="Discounts, Coupons and Loyalty: Promotions Without Chaos">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "What Does It Cost? Price Lists, Contract Prices, Currencies and Tax", "date": "2026-11-07", "author": "Željko Obrenović", "excerpt": "Where should a price be computed, and how do you keep it the same across storefronts, stores, marketplaces and wholesale? Keep one source per kind of price with a written selection rule, treat every copy as a dated promise with a reconciliation, and keep the history, because in Europe the price you charged last month decides what you may call a discount this month.", "permalink": "pricing-architecture", "timetoread": "28 min read", "icon": "assets/icons/07-pricing-architecture.png", "logo": "assets/images/07-pricing-architecture/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn what a price is made of, where it should be selected, how it reaches every channel, and what European price rules require of its history.\n\n> **KEY POINTS:**\n>\n> * **A price is a promise with a selection rule.** One SKU (one sellable variant) carries many prices (market, currency, customer group, channel, quantity, validity). What makes them one price is a deterministic, documented rule that picks one at a defined moment, and that moment must be the same for the storefront, the checkout and the invoice.\n> * **Separate the engine that selects a price from the copies that show it.** Channels that cannot call the engine (marketplaces, the point of sale, EDI orders from wholesale customers) receive copies, and every copy needs a source, an effective date and a reconciliation. Kestrel & Pine's Price Drift was a copy whose restore failed silently.\n> * **In the EU, price history is a legal record.** Consumer prices must be shown including tax, and any announced reduction must name the lowest price of the previous 30 days, so the pricing system must answer \"what did we charge, where, when\" for every SKU.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**\n>\n> * **The Price Nobody Can Explain** — the same product carries different prices in different channels and nobody can say which system set which price or why.\n> * **The Message in a Bottle** — a price change is sent to a channel once and trusted; the channel that missed it keeps selling at the old price.\n> * **The Secret Agent** — a repricing rule in a connector, an app or a spreadsheet import changes prices without a named owner, a floor or a person's approval.\n\n<br>\nThe price is the promise the shopper remembers. Ask what the Ridgewalker jacket costs at Kestrel & Pine, the fictional outdoor brand this book follows, and the honest answer is a table: **€199** to a Dutch, Belgian or German consumer, including that country's VAT; **€95** excluding VAT to an outdoor shop; a lower negotiated price to its largest wholesale customer; €199 on bol, Amazon.de and Zalando less the marketplace's commission; €199 at the till in Antwerp; and, for one week in November, a Black Friday price that must be announced against the lowest price of the previous 30 days.\n\n**These are not one price with exceptions. They are one product with a pricing rule,** whose inputs are who is buying, where, through which channel, how many, on which date. Most merchants never write the rule down; they type prices into each system that needs them, and each copy is right only on the day it is typed.\n\n**Where we are in the order's journey.** Eva's jacket (the recurring order of [Meet Kestrel & Pine](meet-kestrel-and-pine.html)) meets this chapter on the product page, where she reads €199, and again at checkout on 13 April 2027, where the platform selects the price it will charge and freezes it on order #1072455. The invoice, the ledger ([Tax, Invoices and the Books: From Order to Ledger](tax-invoicing-and-ledger.html)) and the refund of her exchange ([The Way Back: Returns, Exchanges, Refunds and Reverse Logistics](returns-and-exchanges.html)) all reuse that frozen price. [What Are We Selling? Products, Variants and the Catalog](product-information.html) described the jacket; this chapter prices it; [Discounts, Coupons and Loyalty: Promotions Without Chaos](commerce-promotions.html) discounts it.\n\n## Setting the Scene at Kestrel & Pine: The Price Drift\n\nIn October 2026 the German storefront sold the Ridgewalker at **€179** for **nine days** while the marketplace listings and the stores charged **€199**. A price-list sync had failed silently. **410 orders** went out at the low price, about **€8,200** of margin was lost, and one marketplace sent a price-parity warning. [Meet Kestrel & Pine](meet-kestrel-and-pine.html) records the incident; what follows is this chapter's reconstruction of the mechanism, with illustrative details.\n\nThe German autumn campaign ran from 25 September to 4 October at €179, ten percent off. Three systems had to know. In 2026 the German consumer price list lived in the ERP (the enterprise resource planning system that runs finance, purchasing and invoicing), and the connector the ERP partner had built pushed it to the platform's German market price list every hour; the campaign was entered there with a validity window ending 4 October. The marketplace connector had its own campaign calendar, typed in by Milan Petrov's team, with the same dates. The stores never ran the campaign at all; the point of sale (POS) gets a weekly price file, and Germany has no store.\n\nOn 5 October the hourly push that should have restored €199 failed on an error, logged it and reported the run as successful. The connector pushed only changes since its last run, so the next hour saw nothing to send. The marketplace connector restored €199 on schedule from its own calendar. From that morning, the German storefront was the only channel at €179. Nobody noticed, because nothing compared the channels. On 14 October a marketplace notified Milan that the listing was priced above the same product on Kestrel & Pine's own site, and Sanne de Wit's weekly margin report showed German online margin down. By then 410 orders had each given away €20.\n\n![Three channels selling the same jacket, the storefront at €179 behind a broken sync marked OK, the others at €199.](assets/images/07-pricing-architecture/07-price-drift-one-channel-left-behind.jpeg)\n**Figure 1:** *The Price Drift: one restore failed silently, so for nine days one copy kept the campaign price while every other channel had moved back to €199.*\n\nNoor Visser's April 2027 inventory of where the Ridgewalker's price lived made the pattern visible. The platform held three market price lists (NL, BE, DE) and four B2B price lists (wholesale NL, BE, DE and one for Bergzicht Outdoor). The ERP held the wholesale and contract prices again, for invoicing, and the consumer lists that fed the DE storefront and the POS file. The marketplace connector held a channel price per marketplace. The campaign spreadsheet held the dates. **One jacket, eleven prices, seven places, no rule saying which was the source of which.** That is the Price Nobody Can Explain.\n\n## What a Price Is Made Of\n\nA newcomer's first surprise is that a price is not a number on a product. It is a number selected from many by a rule. The dimensions below are the ones the major platforms document; the vocabulary in bold is the chapter's.\n\n| Dimension | Plain meaning | Kestrel & Pine example |\n| --- | --- | --- |\n| SKU | The variant being priced | Ridgewalker women's, M, moss |\n| **Market** (country, region) | Where the buyer is | NL, BE, DE |\n| Currency | What the price is denominated in | Euro throughout |\n| **Customer group** | Which kind of buyer | Consumer; wholesale; one named wholesale account |\n| **Channel** | Through which sales path | Storefront, store, bol, Amazon.de, Zalando, B2B portal, EDI |\n| Quantity tier | How many are bought | Wholesale price breaks per carton |\n| **Validity window** | From when until when | Autumn campaign 25 September to 4 October 2026 |\n| **Tax basis** | Whether the number includes tax, and which tax | €199 includes 21% Dutch VAT; €95 excludes VAT |\n\nA **price list** (Shopify calls it a catalog, SAP Commerce a set of price rows, commercetools a set of standalone prices) is a named set of prices for a group of customers or a market. A **base price** is the list price for the general public. A **customer-specific price** applies to a customer group, such as wholesale. A **contract price** is agreed with one named account and outranks the list; Bergzicht Outdoor, Kestrel & Pine's largest wholesale customer, buys on a contract price list negotiated by Lea Moreau each season. A **tiered price** (volume pricing) changes with quantity. A **quote** is an offer at a stated price with a validity date that the buyer can accept into an order; it is the one place a price becomes a promise with an expiry written on it ([Selling to Businesses: Accounts, Contract Prices, Quotes and Approvals](b2b-commerce.html) owns quotes).\n\n### The selection rule\n\nWith these dimensions, several prices can match one purchase, so the platform needs a **price selection rule**: the order in which it tries the dimensions and what it does when more than one price still matches. commercetools documents its rule in full: a price is defined per SKU and per scope (currency, country, customer group, channel), selection walks an eight-step fallback from the most specific combination to the least, time-bound prices beat open-ended ones, and when several still match \"the cheapest is selected\" (commercetools pricing overview, n.d., accessed November 2026). Adobe Commerce scopes quantity tiers per website and customer group (Adobe Experience League, n.d., accessed November 2026), and SAP Commerce's long-lived Europe1 model matches price rows by product, customer group, quantity, currency and date range (SAP Javadoc for release 1811, 2018; eight years old, but the model persists).\n\n![Diagram: A price is selected, not looked up](assets/images/07-pricing-architecture/fig01-price-selected-not-looked-up-rule.jpeg)\n**Figure 2:** *A price is selected, not looked up: the rule tries the most specific price first, falls back to the base price, and freezes the result on the order together with when and by which rule it was chosen.*\n\nThe rule must be **deterministic** (the same inputs give the same price in every system that selects) and **written down** where the people who type prices can read it, because \"cheapest wins\" and \"most specific wins\" give different answers when a campaign price and a contract price overlap.\n\n### The moment of selection\n\nA price is also selected at a **moment**, and the moment is part of the promise. A storefront shows a price when the page loads; a cart holds it; checkout selects the price it will charge; the order freezes it; the invoice copies it. If any two of these select at different moments with different rules, the shopper sees one price and pays another.\n\nSAP's support knowledge base records the generic bug: a campaign price that \"does NOT expire after the validity end date has passed\", because the validity is compared with the cart creation date, not the checkout date (SAP KBA 2267117, n.d., accessed November 2026). Adobe Commerce documents the opposite rule for purchase orders, keeping the original price if it changes after the order is created (Adobe Experience League, n.d., accessed November 2026): correct for a negotiated order, wrong for a cart.\n\n**The rule I use:** display prices are selected at page load and may change; the price that counts is selected once, at order placement, from the same rule and the same data the storefront used, and is frozen on the order with the rule version and the timestamp. Quotes and purchase orders freeze earlier, for a stated validity. The invoice never selects; it copies.\n\n## Tax, Markets and Currencies: Why €199 Is Three Different Prices\n\nIn Europe a consumer price includes tax by law. Directive 98/6/EC of 16 February 1998 (published 18 March 1998) defines the selling price as \"the final price for a unit of the product ... including VAT and all other taxes\" and requires that it \"shall be indicated for all products\" and be \"unambiguous, easily identifiable and clearly legible\". In the United States there is no federal equivalent, and sales tax depends on the delivery address, so it is added at checkout. Google's Merchant Center specification states the split operationally: for the US and Canada, prices \"shouldn't include tax\"; for all other countries, \"include value added tax (VAT) or Goods and Services Tax (GST) in the price\" (Google Merchant Center help, n.d., accessed November 2026).\n\n**Tax-inclusive** means the shown price is what the consumer pays; **tax-exclusive** means tax is added later. The design consequence is that a stored price must say which it is. Kestrel & Pine sells the Ridgewalker at **€199 including VAT in all three countries**, but VAT differs: 21% in the Netherlands and Belgium, 19% in Germany (standard rates as of November 2026). So the net revenue per jacket is €164.46 in Nijmegen and €167.23 in Munich, and the margin differs by country at the same shelf price. The alternative, one net price with the gross derived, would give the shopper €199.00 in Arnhem and €195.71 in Munich, and would break the one-price-everywhere story that marketplaces compare against. Either choice is defensible; a price stored without its tax basis is not, because then every consumer of the number guesses.\n\nWhich country's VAT applies is a tax question that [Tax, Invoices and the Books: From Order to Ledger](tax-invoicing-and-ledger.html) owns. The one fact a pricing design must carry is that since 1 July 2021 the EU's One Stop Shop (OSS) lets a merchant report the VAT of every EU country of delivery in one return at home, once its cross-border consumer sales pass €10,000 a year (European Commission OSS page, n.d., accessed November 2026). Kestrel & Pine passed that threshold years ago, so a €199 sale to Antwerp carries Belgian VAT inside the same €199. A wholesale sale to the same city with a valid VAT number carries none; the €95 is net and the invoice says why.\n\nCurrencies add a second axis. Kestrel & Pine prices in euros everywhere; a merchant selling in several currencies must choose between **converted prices** (base price times today's rate, rounded) and **fixed prices per market**; Shopify, for example, converts at the current exchange rate by default and rounds automatically, with fixed per-market prices as the alternative (Shopify Help Center, n.d., accessed November 2026). Converted prices move with the rate, which suits a storefront and not a marketplace that compares yesterday's price with today's. **Rounding is not cosmetic:** cents are what marketplace comparison and the 30-day reference rule see.\n\n## The Price Rules Europe Writes Into the System\n\nTwo European rules turn pricing from a merchandising choice into a record-keeping duty. Their dates matter, because \"we did not know\" is the Long Fuse.\n\n**The prior-price rule.** Directive (EU) 2019/2161 of 27 November 2019, known as the Omnibus directive, inserted Article 6a into the 1998 price directive: \"any announcement of a price reduction shall indicate the prior price\", meaning \"the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction\". It applies from **28 May 2022**; for widespread cross-border infringements the maximum fine must be at least 4% of annual turnover, or €2 million where turnover is unknown. Germany transposed it in § 11 of its 2022 price indication ordinance (PAngV). The Netherlands' consumer authority ACM supervised the rule from **1 January 2023**, with a worked example (6 December 2022): a price raised from €50 to €70 and cut by 35% after 25 days is really a 9% discount on the €50 reference. On 11 June 2024 ACM published fines against five web shops, among them Leen Bakker, JYSK and the Dutch Tommy Hilfiger store, because \"consumers were therefore shown a fake discount\" (ACM, 2024, translated).\n\nThe architectural reading is simple and demanding. **The pricing system must keep an effective-dated price history per SKU, per market and per channel, and must answer \"lowest price in the last 30 days\" at the moment a reduction is published.** The reference price is itself a syndicated field, because marketplaces and feeds show the strike-through price too. A merchant whose prices live in seven places cannot answer the question reliably, which is the strongest legal argument for one source per kind of price in Europe.\n\n**Marketplace price comparison.** Marketplaces compare a merchant's listing against its own web shop and against other sellers, continuously, and the legal boundary keeps moving. In November 2013 Amazon deleted its **price parity** clauses, which had forbidden sellers to sell cheaper elsewhere, after a German competition case (Bundeskartellamt, 2013; historical). On 5 February 2026 the Bundeskartellamt prohibited the opposite: Amazon's **price control mechanisms**, which removed or hid offers it judged too expensive; its case overview does not say whether the decision is final (accessed November 2026). Amazon's selling-partner API shows the mechanism from the seller's side: a `PRICING_HEALTH` notification says an offer is \"ineligible for the Featured Offer (Buy Box) because its price is uncompetitive\", the Buy Box being the default \"add to cart\" offer (Amazon SP-API documentation, n.d., accessed November 2026).\n\nFor the architecture, **channel price rules must be configuration, not code**, because the rules that bound them change on regulators' dates, and marketplace price-state events (Buy Box lost, offer suppressed, parity warning) are operational signals the pricing system should receive, not e-mails to the marketplace manager.\n\n## How the Pieces Fit Together\n\nFour components make a pricing architecture, even when two of them live inside one product.\n\n| Component | What it is | What it owns | Example at Kestrel & Pine (2027 design) |\n| --- | --- | --- | --- |\n| **Price data** (price lists) | The numbers, with their dimensions and validity windows | The prices themselves, per kind | Market price lists in the platform; wholesale and contract lists in the ERP |\n| **Pricing engine** | The code that applies the selection rule to a request | The rule, its version, the moment | The platform's checkout and B2B portal; the ERP's order entry for manual and EDI orders |\n| **Price history** | Every price, per SKU, market and channel, with effective dates | The 30-day reference, audit of who changed what | Kept with the price data; queried when a campaign is published |\n| **Channel price rules** | Derived prices for channels that cannot call the engine | Marketplace price = base price plus uplift, within a floor and a ceiling | Configured in the connector, with a floor per product group set from the ERP's landed costs |\n| **Copies** | What each channel actually shows | Nothing; they are promises made on the source's behalf | The POS price file, the marketplace listings, the EDI order confirmation |\n\nThe distinction that organizes everything is **the engine versus the copies**. A channel that can call the engine at the moment of sale (the storefront, the B2B portal) needs no copy. A channel that cannot (the POS, which must work offline; a marketplace, which holds its own listing; an EDI partner, which sends its own price in the order) receives a copy, and **every copy is a promise that can drift**. The design question per channel is whether it can call or must receive, and if it must receive, from which source, with what effective date, and who reconciles it. At Kestrel & Pine the copies travel through the iPaaS (integration platform as a service, the hosted tool that runs its integrations).\n\n![Diagram: Two sources, one per kind of price](assets/images/07-pricing-architecture/fig02-two-sources-one-per-kind-price.jpeg)\n**Figure 3:** *Two sources, one per kind of price: the platform owns consumer prices and the campaign calendar, the ERP owns wholesale and contract prices; every other system receives effective-dated price events and is compared back to its source every day.*\n\n### Requirements per flow\n\n| Flow | How fresh | How consistent | How fast | When it fails |\n| --- | --- | --- | --- | --- |\n| Storefront display | Seconds to minutes after a change | Must match what checkout will select | Page load | A campaign starts at midnight on the page and at 00:15 in checkout |\n| Checkout selection | Live | Authoritative; frozen on the order | Under the checkout's clock, with tax and availability | A cart keeps a price a campaign ended |\n| Marketplace listings | Minutes after a change *(assumption)* | Within channel rules and the floor | Asynchronous feeds, acknowledged | The Price Drift |\n| Point of sale | Daily file, effective-dated | Must work offline with the last valid file | Overnight | A store sells yesterday's price for a day, by design |\n| EDI orders | The partner's price arrives in ORDERS (the EDI order message) | Must match the contract list or be flagged | Per document | A mismatch discovered on the INVOIC (the EDI invoice), as a deduction |\n| Invoice | Copies the order | Immutable | Batch | An invoice recomputes and differs from the order |\n\nTwo rows carry the design. Marketplace copies are asynchronous and must be **acknowledged**: the channel confirms the price it now holds, and that confirmation, not the sending, closes the loop. The POS copy is deliberately a day old, acceptable because it is effective-dated and reconciled, and because a till that cannot sell offline is worse than one that sells at yesterday's price.\n\n### Who may change a price\n\nA **price change** should be an event with the SKU, the scope, the old and new values, the effective date, the author and the reason, published once by the source and consumed by every copy. Three kinds of author need rules.\n\nPeople: merchandising sets consumer and campaign prices; wholesale sets contract prices; finance approves anything below a cost floor. Their rights live in the source system; the copies are read-only. Imports: a spreadsheet import is a writer with no judgement, so it needs validation (no price below the floor, no gap in validity, no restore row missing) and a report that a person reads. Automations: a connector's repricer, an app that adjusts prices or an AI agent proposing changes is the **Secret Agent** unless it has its own identity, a floor and a ceiling, a log and an owner. Channel integration platforms sell repricing with \"margin guardrails\" (ChannelEngine, n.d., accessed November 2026), and the guardrails are the point: a repricer runs on the channel price, bounded by a floor computed from cost and fees, and never writes back to the base price. [Assistants and Agents: AI in Commerce and What Is Real in 2026](ai-and-agentic-commerce.html) extends the rule to agents.\n\n## The Choices\n\nFour arrangements cover what merchants actually do.\n\n**1. The platform is the price source.** Prices are typed into the commerce platform's market and customer-group price lists; the ERP receives the price on each order; marketplaces and the POS receive copies from the platform. Right for a merchant whose prices are consumer prices and whose wholesale is small. Its limit is wholesale: contract prices, quantity breaks and the invoice's need for a price per account live naturally in the ERP, and a platform-only source forces them into a shape built for consumers.\n\n**2. The ERP is the price source.** All price lists live in the ERP; the platform, the POS and the connector receive them. Common in ERP-first businesses, and the natural home of wholesale and contract prices. Its limit is the consumer side: campaigns with hourly start times, market-specific prices and promotion interplay need a cadence and a vocabulary ERPs do not have, and the copy to the platform becomes the slowest link at exactly the moments (a launch, Black Friday) when it matters most.\n\n**3. A pricing service beside the platform.** A dedicated engine, bought or built, holds all price lists and the rule, exposes an API every channel calls, and publishes events to channels that cannot call. The cleanest answer and the most expensive: it adds a system, a call in the checkout path and an owner. Right when prices are genuinely complex (many markets and currencies, many customer groups, dynamic rules) or when many storefronts and apps must agree. The Giant's Boots for a merchant with three markets and one currency.\n\n**4. Split by kind of price, with events.** Consumer prices and the campaign calendar in the platform; wholesale and contract prices in the ERP; each the system of record for its kind; everything else a consumer fed by effective-dated price events and compared daily. Two sources, but one rule and one history per kind. This is what Kestrel & Pine chose in 2027.\n\n**Per-channel pricing**, where each channel owns its price, is what merchants drift into rather than choose; as a design it survives only as derived channel prices under arrangement 4.\n\n## Trade-offs\n\n| | Platform as source | ERP as source | Pricing service | Split by kind, with events |\n| --- | --- | --- | --- | --- |\n| **Right when** | Consumer-led, wholesale small, one or two markets | Wholesale-led, few campaigns, ERP-first | Many markets, currencies, groups; many storefronts | Mixed consumer and wholesale; a hosted (SaaS) platform; Omnichannel stage |\n| **Consumer campaigns** | Native: scheduled prices, markets | Slow; cadence is batch | Native | Native, in the platform |\n| **Contract and tiered prices** | Possible (B2B catalogs), awkward at scale | Native | Native | Native, in the ERP |\n| **Price history for the 30-day rule** | If the platform keeps it; often only current prices | Usually kept, per list | Designed in | Must be kept in both sources |\n| **Copies to reconcile** | ERP, POS, connector | Platform, POS, connector | Only channels that cannot call | POS, connector, EDI |\n| **Cost** | Included | Included | A system plus an owner *(assumption: the costliest option)* | Integration work and a reconciliation job |\n| **Warning sign of outgrowing it** | Wholesale prices typed twice; invoices disagree with orders | Campaigns need a developer; the copy lags a launch | Rare; the risk is buying it early | The two sources start pricing the same thing (a consumer price in the ERP) |\n\n**My recommendation,** with its conditions, is arrangement 4 for a merchant like Kestrel & Pine, resting on three assumptions. The platform supports per-market and per-customer-group price lists with validity windows and keeps (or exports) a price history; without that, the 30-day rule has no data. The ERP invoices wholesale, so contract prices and invoices share a source. And every copy is fed by events with effective dates and compared daily, which is Waypoint's W5 applied to prices. Drop any of the three and arrangement 3 becomes the honest answer.\n\n## Across Scale Stages: When It Fits and When It Limits\n\nThe four stages are the ones this book uses throughout ([Meet Kestrel & Pine](meet-kestrel-and-pine.html); in depth, [What Changes at Each Scale: From First Store to Group](commerce-scaling-stages.html)).\n\n| Stage | What is typical | What becomes necessary | Warning signs you have outgrown it |\n| --- | --- | --- | --- |\n| **1 — Starting** (under about €2M; Kestrel & Pine 2016–2018) | One price list in the platform; one country; tax-inclusive prices; campaigns typed by hand | A tax basis on every price; a written rule for what counts as a discount, because the 30-day rule applies from the first sale | A second country or a first wholesale customer priced in a spreadsheet |\n| **2 — Growing** (about €2M–€20M; 2019–2022) | Market prices; the first wholesale list; a marketplace copy through a connector; the ERP arrives with its own lists | One source per kind of price; the first channel price rule (marketplace = base plus uplift); a reconciliation between platform and marketplace | The first marketplace shows how fast a copy drifts; the same price typed in the platform and the ERP; a campaign restore that someone has to remember |\n| **3 — Omnichannel** (about €20M–€200M; 2023 onward) | Several markets, wholesale with contract prices, stores, three marketplaces; seven places that hold a price | Price events with effective dates; price history per SKU, market and channel; channel price rules as configuration with a cost floor; daily reconciliation; the moment of selection fixed at checkout | The Price Drift; a parity warning nobody routes; a Black Friday reference price computed by hand; the invoice differing from the order |\n| **4 — Group** (over about €200M or several brands) | Several brands and currencies; per-country legal rules; group-wide marketplace accounts; a pricing team | A pricing service shared across brands with per-country rules as configuration; converted versus fixed prices per market as policy; price governance (who may change what, floors, approvals) | Two brands undercut each other on one marketplace; a currency move changes margins nobody sees; a regulator's rule implemented in three stacks |\n\nThe judgement: **the tax basis and the 30-day history do not change with scale; the number of sources and copies does.** The source decision changes once, at the Growing stage, when the ERP arrives and the merchant must say which prices it owns; after that the work is in the copies.\n\n## In Practice\n\n### What the platforms document\n\nShopify's B2B feature prices by **catalog**, with percentage adjustments, fixed prices and volume pricing, and below the Plus plan allows \"up to 3 active catalog assignments across active B2B markets\" (Shopify Help Center, n.d., accessed November 2026; plan rules change). commercetools allows up to 100 embedded prices per variant or 50,000 standalone prices (commercetools documentation, n.d., accessed November 2026).\n\nThe pattern: **the number of prices grows multiplicatively** (SKUs times markets times groups times windows), so every platform moves prices out of the product into a separate store, and documents a selection rule because the growth makes one necessary.\n\n### Kestrel & Pine: the price of one jacket on 13 April 2027\n\nIn April 2027 Noor, Milan, Lea and Sanne wrote the price ownership decision on one page. The platform's market price lists are the system of record for consumer prices in NL, BE and DE and for the campaign calendar; consumer prices no longer pass through the ERP, whose role shrinks to finance ([The Back Office: ERP Integration and Who Is the Hub](erp-and-back-office-integration.html)). The ERP's price lists are the system of record for wholesale list prices and contract prices. The ERP feeds no channel directly, meaning there is no ERP-to-storefront link: it publishes those prices as events to the platform's B2B catalogs and, once the OMS (order management system) is live in Q4 2027, to the OMS. The POS, the marketplace connector and the B2B catalogs are consumers, fed by price events with effective dates through the iPaaS (W5); the connector's price rules carry a floor per product group set from the ERP's landed costs. A daily price reconciliation across all copies starts in May 2027, and the partner-built connector's price flow is retired.\n\nOn the day of Eva's order, the Ridgewalker women's, size M, moss, is priced like this:\n\n| Where | Price | Basis | Source | How it got there |\n| --- | --- | --- | --- | --- |\n| NL storefront, checkout | €199 | Incl. 21% VAT; net €164.46 | Platform, NL market list | Selected live at 21:14, frozen on #1072455 |\n| DE storefront | €199 | Incl. 19% VAT; net €167.23 | Platform, DE market list | Selected live |\n| bol, Amazon.de, Zalando | €199 | Incl. VAT of the marketplace's country | Connector rule: the market price of the marketplace's country, uplift 0%, floor €95 *(illustrative, from the €58 landed cost plus fees)* | Price event, acknowledged by the connector |\n| Six stores | €199 | Incl. VAT of the store's country | Platform NL and BE market lists | Effective-dated daily file via the iPaaS |\n| B2B portal, an independent shop | €95 | Excl. VAT | ERP wholesale list NL | Price event to the platform's B2B catalog |\n| Bergzicht Outdoor, by EDI | Contract price | Excl. VAT | ERP contract list | The ORDERS price is checked against the list on receipt |\n| Eva's invoice | €199 | Incl. 21% VAT | Copied from #1072455 | Never recomputed |\n\nThe last row makes Eva's exchange on 19 April work ([Journey 2: The Jacket Comes Back](journey-return-and-exchange.html)): it reuses the frozen €199, whatever the list price is that day.\n\n**The Black Friday test.** Suppose the NL autumn campaign of 2027 runs 20 October to 3 November at €179 (illustrative). A Black Friday reduction announced on 26 November must show the prior price as the lowest price of the previous 30 days, 27 October to 26 November, which includes a week at €179. The \"was\" price is **€179, not €199**, and a Black Friday price of €159 is an 11% reduction, not 20%. Before the 2027 design that answer required someone to remember the campaign; after it, the platform's price history answers it when the reduction is scheduled.\n\n![A price timeline where the 30-day window before the Black Friday price catches the €179 campaign, so €179 is the was-price.](assets/images/07-pricing-architecture/07-thirty-day-lowest-price-window.jpeg)\n**Figure 4:** *The 30-day rule reads history, not memory: a campaign inside the window makes the was-price €179, not €199, so €159 is an 11% reduction, not 20%.*\n\n**What changed about the Price Drift.** Under the 2027 design the German campaign is one row in the platform with a start and an end, so no hourly push has to carry the restore, and the daily reconciliation would have shown any channel still at €179 against the DE market list at €199 on the morning of 5 October. The margin at risk falls from nine days to one.\n\n## When It Goes Wrong\n\n**The silent restore.** A campaign's end price never arrives, or arrives and is dropped. *Detection:* a daily reconciliation of every copy against its source; an expected-price check at campaign end; acknowledgement from each channel. *Recovery:* republish the current price as a new event; the copies are idempotent, so a repeat does no harm.\n\n**The repricer that undercuts the storefront.** A connector rule chases a competitor's price below the merchant's own site, and the margin disappears. *Detection:* a floor from cost and fees; an alert when a channel price falls below the base price. *Recovery:* channel rules bounded by configuration, never writing to the base price.\n\n**Two moments of selection.** The cart holds a campaign price that checkout no longer offers, or the reverse; the SAP cart-creation-date bug is the documented case. *Detection:* a test that opens a cart before a campaign boundary and checks out after it. *Recovery:* one rule, one moment, at order placement.\n\n**The reference price nobody kept.** A reduction is announced against last week's list price when a cheaper campaign ran within 30 days. *Detection:* the pricing system computes the reference from history when the reduction is scheduled and blocks a higher one. *Recovery:* correct the strike-through price in every channel, which is itself a syndicated field, and record why.\n\n**The EDI price that differs.** Bergzicht's ORDERS carries the price it believes; the invoice carries the contract list's price; the difference becomes a deduction on payment. *Detection:* price validation on ORDERS receipt against the contract list; a mismatch is a task before shipment, not a discovery on the INVOIC ([Documents Between Companies: EDI, Punchout and E-Invoicing](edi-and-e-invoicing.html)).\n\nEvery one of these ends in the same component: a reconciliation that compares copies to their source on a schedule and gives a person a list. [Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation](events-consistency-and-reconciliation.html) builds that component for every kind of copy in the landscape.\n\n## What to Take Away\n\n**Established.**\n\n- A price is selected by a rule from several candidates that differ by market, customer group, channel, quantity and validity; commercetools, Adobe Commerce and SAP Commerce each document such a rule, and every platform separates price data from the product as the count grows.\n- In the EU, consumer prices must be shown including VAT and all other taxes (Directive 98/6/EC, 1998), and any announced reduction must name the lowest price of the previous 30 days (Directive 2019/2161, applied from 28 May 2022; enforced in the Netherlands from 1 January 2023 with fines published in June 2024).\n- Marketplaces compare prices continuously and act on the result; Amazon dropped its price parity clauses in 2013 after a German competition case, its price-control mechanisms were prohibited in Germany in February 2026 (finality not stated as of November 2026), and the Buy Box is decided partly on price.\n\n**Depends on context.**\n\n- Whether the platform or the ERP is the source of a given kind of price depends on who prices it and who invoices it: consumer prices and campaigns belong with the storefront; wholesale and contract prices with the system that invoices wholesale. A merchant with no wholesale needs one source; a merchant with no consumer campaigns may need only the ERP.\n- A dedicated pricing service is right for many markets, currencies and storefronts, and the Giant's Boots for a merchant with three euro markets.\n- One gross price in every market (Kestrel & Pine's choice) simplifies marketplace comparison and costs margin where VAT is higher; one net price with derived gross does the reverse. The choice is a policy; the requirement is that the tax basis is stored with the price.\n\n**The author's synthesis.**\n\n- Treat every copy of a price as a promise made on the source's behalf: it gets a source, an effective date, an acknowledgement and a daily comparison, or it does not get made.\n- Fix the moment of selection at order placement, freeze the price on the order with the rule version, and let the invoice copy; everything else about pricing can be reorganized later, but a price that differs between order and invoice cannot be explained to a customer or an auditor.\n\n## Questions to Ask\n\n1. For one product, how many systems hold a price, and which one is the source for each kind of price (consumer, wholesale, contract, channel)?\n2. Is the selection rule written down? When a campaign price and a contract price both apply, which wins, and does every system agree?\n3. At which moment is the price that will be charged selected, and can a cart keep a price that checkout would no longer give?\n4. Does every stored price say whether it includes tax, and which tax?\n5. Can the system answer \"the lowest price we charged for this SKU in this country in the last 30 days\" at the moment a reduction is scheduled?\n6. When a campaign ends, how does each channel learn, how do you know it learned, and what compares the channels the next morning?\n7. Which automations change prices (repricers, apps, imports), who owns each, and what floor bounds them?\n8. When a marketplace warns about a price, where does the warning land?\n\nThe price on the product page is only the start of what the shopper will pay. Coupons, bundles, free-shipping thresholds and loyalty points change it at checkout and must still respect the floor, the 30-day reference and the books. [Discounts, Coupons and Loyalty: Promotions Without Chaos](commerce-promotions.html) takes the frozen price from this chapter and shows what may be subtracted from it, in which order, and how the discount reaches the invoice.\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [B2B catalogs](https://help.shopify.com/en/manual/b2b/catalogs), Shopify Help Center, n.d., accessed 2026-11 — catalogs as price lists, volume pricing, the three-assignment limit below Plus.\n- [Markets: pricing](https://help.shopify.com/en/manual/markets/pricing) and [Rounding prices](https://help.shopify.com/en/manual/international/pricing/rounding), Shopify Help Center, n.d., accessed 2026-11 — converted versus fixed market prices and automatic rounding.\n- [Pricing and discounts overview](https://docs.commercetools.com/api/pricing-and-discounts-overview) and [Standalone Prices](https://docs.commercetools.com/api/projects/standalone-prices), commercetools documentation, n.d., accessed 2026-11 — price scopes, the eight-step selection fallback, \"the cheapest is selected\", 100 embedded and 50,000 standalone prices.\n- [Quotes](https://docs.commercetools.com/api/projects/quotes), commercetools documentation, n.d., accessed 2026-11 — quotes as \"legally binding custom offers\".\n- [Tier pricing](https://experienceleague.adobe.com/en/docs/commerce-admin/catalog/products/pricing/product-price-tier), [Shared catalogs](https://experienceleague.adobe.com/en/docs/commerce-admin/b2b/shared-catalogs/catalog-shared) and [Purchase order flow](https://experienceleague.adobe.com/en/docs/commerce-admin/b2b/purchase-orders/purchase-order-flow), Adobe Experience League, 2026 and n.d., accessed 2026-11 — tier precedence, one public shared catalog, \"the original price is used\".\n- [Europe1PriceFactory](https://help.sap.com/doc/a4265d5ea8314eb2929e6cf6fb8e35a5/1811/en-US/de/hybris/platform/europe1/jalo/Europe1PriceFactory.html) and [PriceRowModel](https://help.sap.com/doc/a4265d5ea8314eb2929e6cf6fb8e35a5/1811/en-US/de/hybris/platform/europe1/model/PriceRowModel.html), SAP Commerce Javadoc, release 1811, 2018 (evidence age: eight years) — price-row matching and the dimensions of a price row.\n- [KBA 2267117: price does not expire after validity end](https://userapps.support.sap.com/sap/support/knowledge/en/2267117), SAP Support, n.d., accessed 2026-11 — validity compared with the cart creation date.\n- [Notification type values](https://developer-docs.amazon/sp-api/docs/notification-type-values), Amazon Selling Partner API documentation, n.d., accessed 2026-11 — `PRICING_HEALTH` and `ANY_OFFER_CHANGED`.\n- [ChannelEngine](https://www.channelengine.com/), ChannelEngine, n.d., accessed 2026-11 — repricing with \"margin guardrails\" as a connector feature.\n\n*Standards, regulation and official documentation*\n\n- [Directive 98/6/EC on consumer protection in the indication of the prices of products](http://publications.europa.eu/resource/celex/31998L0006), European Parliament and Council, 1998-02-16 (OJ 1998-03-18) — the selling price \"including VAT and all other taxes\".\n- [Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161), European Parliament and Council, 2019-11-27 (OJ 2019-12-18) — Article 6a, the 30-day prior price, application from 2022-05-28, minimum fines.\n- [§ 11 PAngV](https://www.gesetze-im-internet.de/pangv_2022/__11.html), German price indication ordinance, 2022, accessed 2026-11 — the German transposition.\n- [ACM wil einde aan nepkortingen](https://www.acm.nl/nl/publicaties/acm-wil-einde-aan-nepkortingen-na-komst-strengere-regels), ACM, 2022-12-06 — supervision from 2023-01-01 and the €50 to €70 example.\n- [ACM publiceert boetebesluiten webwinkels voor nepkortingen](https://www.acm.nl/nl/publicaties/acm-publiceert-boetebesluiten-webwinkels-voor-nepkortingen), ACM, 2024-06-11 — the five fines.\n- [One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/one-stop-shop_en), European Commission, n.d., accessed 2026-11 — OSS from 2021-07-01 and the €10,000 threshold.\n- [Product data specification](https://support.google.com/merchants/answer/7052112), Google Merchant Center help, n.d., accessed 2026-11 — tax-exclusive prices for the US and Canada, tax-inclusive elsewhere.\n- [Proceedings against Amazon terminated](https://www.bundeskartellamt.de/SharedDocs/Meldung/EN/Pressemitteilungen/2013/26_11_2013_Amazon-Verfahrenseinstellung.html), Bundeskartellamt, 2013-11-26 (historical) — the end of price parity clauses in the EU.\n- [Proceedings against Amazon (overview)](https://www.bundeskartellamt.de/EN/Digital_economy/proceedings_against_large_digital_companies/Amazon/Amazon.html), Bundeskartellamt, accessed 2026-11 — the 2026-02-05 prohibition of price control mechanisms and the initial €59 million disgorgement; the page does not state whether the decision is final.\n\n*Research and practitioner sources*\n\n- None beyond the documentation above; the reconstruction of the Price Drift's mechanism and the 2027 ownership decision are the author's illustration.\n\nKestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

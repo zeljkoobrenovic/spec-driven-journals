@@ -1,0 +1,16 @@
+[
+ {
+  "post": "37-journey-consumer-order",
+  "figure": 1,
+  "id": "fig01-eva-s-jacket-late-2027-architecture",
+  "asset": "assets/images/37-journey-consumer-order/fig01-eva-s-jacket-late-2027-architecture.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva Janssen\n    participant PL as the platform\n    participant AV as the availability service\n    participant PSP as the PSP\n    participant OMS as the OMS\n    participant WMS as the WMS\n    participant PN as PostNL\n    participant ERP as the ERP\n    Eva->>PL: Search, product page, add to cart\n    PL->>AV: Can NL sell one jacket M moss\n    AV-->>PL: Yes, 23 available for NL\n    Eva->>PL: Checkout, address, delivery Thursday\n    PL->>PSP: Pay 235 euro by iDEAL\n    PSP-->>Eva: Redirect to bank app\n    Eva-->>PSP: Approved in bank app\n    PSP-->>PL: Paid, webhook with payment reference\n    PL-->>Eva: Order 1072455 confirmed\n    PL->>OMS: Order placed event\n    OMS->>AV: Commit 1 jacket and 2 socks\n    OMS->>WMS: Fulfillment order, ship by Wednesday\n    WMS-->>OMS: Accepted\n    WMS->>PN: Label and manifest, 14 April\n    WMS-->>OMS: Shipped with tracking number\n    OMS-->>Eva: Shipping confirmation\n    OMS->>ERP: Order shipped, invoice basis\n    PN-->>OMS: Delivered, 15 April\n    OMS-->>Eva: Delivered\n    PSP-->>ERP: Payout report, days later"
+ },
+ {
+  "post": "37-journey-consumer-order",
+  "figure": 2,
+  "id": "fig02-one-order-three-financial-records-checkout",
+  "asset": "assets/images/37-journey-consumer-order/fig02-one-order-three-financial-records-checkout.jpeg",
+  "mermaid": "flowchart LR\n    CO[\"Checkout promise 235 euro incl VAT\"] -->|\"order placed\"| OMS[\"OMS order 1072455\"]\n    OMS -->|\"shipped event\"| INV[\"ERP invoice net 194.21 VAT 40.79\"]\n    PSP[\"PSP payment reference\"] -->|\"payout batch days later\"| REC[\"ERP payout reconciliation\"]\n    INV --> REC\n    BANK[\"Bank statement one line per payout\"] --> REC\n    REC -->|\"three-way match\"| GL[\"General ledger revenue at delivery\"]"
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "post": "27-identity-and-master-data",
+  "figure": 1,
+  "id": "fig01-four-systems-keep-their-own-records",
+  "asset": "assets/images/27-identity-and-master-data/fig01-four-systems-keep-their-own-records.jpeg",
+  "mermaid": "flowchart TB\n    P[\"The platform account\"] -->|\"platform id\"| X[\"Cross-reference and merge log\"]\n    S[\"The POS loyalty entry\"] -->|\"loyalty number\"| X\n    N[\"The newsletter subscriber\"] -->|\"subscriber id\"| X\n    R[\"The returns-portal contact\"] -->|\"contact id\"| X\n    X -->|\"one master id\"| M[\"The customer master record\"]\n    M -->|\"consent and profile\"| C[\"CDP and marketing tools\"]\n    M -->|\"customer id on every order\"| O[\"OMS, support and analytics\"]"
+ },
+ {
+  "post": "27-identity-and-master-data",
+  "figure": 2,
+  "id": "fig02-store-purchase-matched-normalized-phone-number",
+  "asset": "assets/images/27-identity-and-master-data/fig02-store-purchase-matched-normalized-phone-number.jpeg",
+  "mermaid": "sequenceDiagram\n    participant POS as The POS\n    participant IDX as Matching and cross-reference\n    participant MST as Customer master\n    participant NL as Newsletter tool\n    POS->>IDX: loyalty purchase by phone number\n    IDX->>IDX: normalize phone and search the index\n    IDX->>MST: exact phone match found, link loyalty number to master id\n    MST-->>IDX: master id and consent state\n    IDX-->>POS: master id stored on the loyalty entry\n    MST->>NL: consent unchanged, no new subscriber created"
+ },
+ {
+  "post": "27-identity-and-master-data",
+  "figure": 3,
+  "id": "fig03-one-product-two-governed-identifiers-four",
+  "asset": "assets/images/27-identity-and-master-data/fig03-one-product-two-governed-identifiers-four.jpeg",
+  "mermaid": "flowchart LR\n    G[\"GTIN from GS1\"] --> X[\"Product cross-reference in the PIM\"]\n    K[\"SKU, the merchant's code\"] --> X\n    X -->|\"platform variant id\"| P[\"The platform\"]\n    X -->|\"item number and variant code\"| E[\"The ERP\"]\n    X -->|\"WMS item code\"| W[\"The WMS\"]\n    X -->|\"offer id and ASIN\"| M[\"The marketplace connector\"]"
+ }
+]

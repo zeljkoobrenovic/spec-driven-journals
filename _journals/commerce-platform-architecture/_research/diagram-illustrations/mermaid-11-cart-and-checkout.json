@@ -1,0 +1,23 @@
+[
+ {
+  "post": "11-cart-and-checkout",
+  "figure": 1,
+  "id": "fig01-checkout-owns-none-facts-it-writes",
+  "asset": "assets/images/11-cart-and-checkout/fig01-checkout-owns-none-facts-it-writes.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Cart as draft\"] --> CO[\"Checkout orchestration\"]\n    CO -->|\"final prices and discounts\"| PR[\"Pricing and promotions\"]\n    CO -->|\"rate for the ship-to address\"| TX[\"Tax\"]\n    CO -->|\"can we still promise it\"| AV[\"Availability\"]\n    CO -->|\"options, cost, date\"| SH[\"Shipping and delivery promise\"]\n    CO -->|\"authorize and authenticate\"| PSP[\"The PSP\"]\n    CO -->|\"create exactly once\"| OR[\"Order record\"]"
+ },
+ {
+  "post": "11-cart-and-checkout",
+  "figure": 2,
+  "id": "fig02-order-exists-before-payment-outcome-known",
+  "asset": "assets/images/11-cart-and-checkout/fig02-order-exists-before-payment-outcome-known.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Cart\n    Cart --> Checkout: begin checkout\n    Checkout --> Cart: shopper edits\n    Checkout --> PaymentPending: order created, payment requested\n    PaymentPending --> Paid: PSP webhook success\n    PaymentPending --> Failed: PSP webhook failure or session expired\n    PaymentPending --> PaymentPending: duplicate webhook, no change\n    Failed --> Cart: shopper retries\n    Paid --> [*]\n    Failed --> [*]"
+ },
+ {
+  "post": "11-cart-and-checkout",
+  "figure": 3,
+  "id": "fig03-eva-s-checkout-creates-order-once",
+  "asset": "assets/images/11-cart-and-checkout/fig03-eva-s-checkout-creates-order-once.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva Janssen\n    participant CO as Checkout\n    participant PR as Pricing and tax\n    participant AV as Availability\n    participant PSP as The PSP\n    participant OR as Order record\n    Eva->>CO: Begin checkout, 21:11\n    CO->>PR: Final prices and VAT for the cart and address\n    PR-->>CO: 194.21 net, 40.79 VAT, 235 total\n    CO->>AV: Can we still promise 1 jacket M moss and 2 socks\n    AV-->>CO: Yes\n    CO->>PSP: Create iDEAL payment for 235 euro\n    PSP-->>Eva: Redirect to the bank app\n    CO->>OR: Create order 1072455 with payment pending, 21:14\n    PSP-->>CO: Webhook payment succeeded\n    CO->>OR: Mark paid, commit stock, send confirmation\n    PSP-->>CO: Same webhook again\n    CO->>OR: No change"
+ }
+]

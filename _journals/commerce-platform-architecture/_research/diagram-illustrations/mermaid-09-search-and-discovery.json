@@ -1,0 +1,16 @@
+[
+ {
+  "post": "09-search-and-discovery",
+  "figure": 1,
+  "id": "fig01-search-index-copy-catalog-prices-availability",
+  "asset": "assets/images/09-search-and-discovery/fig01-search-index-copy-catalog-prices-availability.jpeg",
+  "mermaid": "flowchart LR\n    CAT[\"Catalog or PIM product text and attributes\"] -->|\"change events\"| IDX[\"Indexing pipeline\"]\n    PRC[\"Pricing service price and prior price\"] -->|\"change events\"| IDX\n    AVL[\"Availability service in stock per channel\"] -->|\"stock events or query time\"| IDX\n    REV[\"Review store ratings with provenance\"] -->|\"change events\"| IDX\n    IDX --> SRCH[\"Search index and engine\"]\n    MERCH[\"Merchandising rules and synonyms\"] --> SRCH\n    STORE[\"Storefront query\"] --> SRCH\n    SRCH -->|\"ranked ids and facets\"| STORE\n    BEH[\"Behavior events views and purchases\"] --> RANK[\"Ranking model\"]\n    RANK --> SRCH"
+ },
+ {
+  "post": "09-search-and-discovery",
+  "figure": 2,
+  "id": "fig02-review-enters-through-invitation-tied-delivered",
+  "asset": "assets/images/09-search-and-discovery/fig02-review-enters-through-invitation-tied-delivered.jpeg",
+  "mermaid": "flowchart LR\n    DEL[\"Delivery confirmed\"] -->|\"invitation with order reference\"| INV[\"Review invitation\"]\n    INV --> SUB[\"Review submitted\"]\n    SUB --> PROV[\"Provenance check linked to an order\"]\n    PROV --> MOD[\"Moderation queue\"]\n    MOD -->|\"published with verified flag\"| STORE[\"Review store\"]\n    STORE -->|\"rating and count\"| IDX[\"Search index\"]\n    STORE -->|\"aggregateRating\"| FEED[\"Structured data and feeds\"]"
+ }
+]

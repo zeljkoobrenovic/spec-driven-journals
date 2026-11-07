@@ -1,0 +1,16 @@
+[
+ {
+  "post": "26-api-contracts-and-versioning",
+  "figure": 1,
+  "id": "fig01-deprecation-two-timelines-that-must-meet",
+  "asset": "assets/images/26-api-contracts-and-versioning/fig01-deprecation-two-timelines-that-must-meet.jpeg",
+  "mermaid": "flowchart LR\n    P1[\"Provider announces the new version and the sunset date\"] --> P2[\"Old and new versions run side by side\"]\n    P2 --> P3[\"Provider monitors who still calls the old version\"]\n    P3 --> P4[\"Sunset date passes and the old version is removed\"]\n    P1 -->|\"notice reaches a role, not a person\"| C1[\"Consumer records the date in the integration inventory\"]\n    C1 --> C2[\"Consumer tests against the new version in a sandbox\"]\n    C2 --> C3[\"Consumer switches the pinned version before sunset\"]\n    C3 --> P4"
+ },
+ {
+  "post": "26-api-contracts-and-versioning",
+  "figure": 2,
+  "id": "fig02-safe-webhook-receiver-verifies-stores-answers",
+  "asset": "assets/images/26-api-contracts-and-versioning/fig02-safe-webhook-receiver-verifies-stores-answers.jpeg",
+  "mermaid": "sequenceDiagram\n    participant PL as the platform\n    participant WH as Webhook receiver\n    participant Q as Queue\n    participant W as Worker\n    participant OMS as the OMS\n    PL->>WH: POST order created, signed, delivery id 8812\n    WH->>WH: Verify signature and timestamp\n    WH->>Q: Store the raw delivery with id 8812\n    WH-->>PL: 200 OK well inside five seconds\n    Q->>W: Hand over delivery 8812\n    W->>W: Seen 8812 before? No\n    W->>OMS: Create order 1072455, idempotency key is the order number\n    PL->>WH: POST order created, delivery id 8812 again, a retry\n    WH-->>PL: 200 OK\n    Q->>W: Hand over 8812\n    W->>W: Seen 8812 before? Yes, skip\n    Note over W,OMS: Nightly sweep fetches orders updated since the last run"
+ }
+]

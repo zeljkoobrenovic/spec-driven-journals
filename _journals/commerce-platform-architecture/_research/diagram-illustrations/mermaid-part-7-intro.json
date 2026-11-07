@@ -1,0 +1,16 @@
+[
+ {
+  "post": "part-7-intro",
+  "figure": 1,
+  "id": "fig01-merchant-hosted-platform-rents-renderer-checkout",
+  "asset": "assets/images/part-7-intro/fig01-merchant-hosted-platform-rents-renderer-checkout.jpeg",
+  "mermaid": "flowchart TB\n    subgraph R [\"Rented, the vendor runs it on one version for every tenant\"]\n        SF[\"Storefront renderer and edge cache\"]\n        CO[\"Checkout, payment, order record\"]\n        TN[\"Shared tenancy, pods, API budget per app per store\"]\n    end\n    subgraph O [\"Owned, the merchant's own layer\"]\n        TH[\"Theme and app scripts\"]\n        AP[\"Installed apps, each with scopes\"]\n        IS[\"Integration service, one deployable\"]\n    end\n    TH -->|\"rendered by\"| SF\n    AP -->|\"spend\"| TN\n    IS -->|\"orders out, stock back\"| TN\n    IS -->|\"also rented, also metered\"| WMS[\"The WMS, the ERP, the connector\"]"
+ },
+ {
+  "post": "part-7-intro",
+  "figure": 2,
+  "id": "fig02-five-questions-part-vii-reading-order",
+  "asset": "assets/images/part-7-intro/fig02-five-questions-part-vii-reading-order.jpeg",
+  "mermaid": "flowchart LR\n    Q1[\"How is the platform structured inside\"] --> Q2[\"How is it shared among thousands of merchants\"]\n    Q2 --> Q3[\"How does other people's code change it\"]\n    Q3 --> Q4[\"How does the storefront reach the phone\"]\n    Q4 --> Q5[\"What happens at forty times the load\"]\n    Q5 --> R[\"One deployable, a governed budget, one writer per fact, cached pages, a measured chain\"]"
+ }
+]

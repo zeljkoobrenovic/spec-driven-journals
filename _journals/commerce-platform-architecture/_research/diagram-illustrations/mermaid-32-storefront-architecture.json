@@ -1,0 +1,23 @@
+[
+ {
+  "post": "32-storefront-architecture",
+  "figure": 1,
+  "id": "fig01-storefront-renders-facts-it-does-not",
+  "asset": "assets/images/32-storefront-architecture/fig01-storefront-renders-facts-it-does-not.jpeg",
+  "mermaid": "flowchart LR\n    B[\"Shopper's browser\"]\n    SF[\"Storefront renderer\"]\n    CAT[\"Catalog or PIM\"]\n    PR[\"Prices and promotions\"]\n    AV[\"Availability\"]\n    SR[\"Search index\"]\n    CMS[\"Content system\"]\n    CO[\"Cart and checkout on the platform\"]\n    B -->|\"page request\"| SF\n    SF -->|\"product data\"| CAT\n    SF -->|\"price for this market\"| PR\n    SF -->|\"in stock for this channel\"| AV\n    SF -->|\"results and facets\"| SR\n    SF -->|\"editorial content\"| CMS\n    B -->|\"buy\"| CO"
+ },
+ {
+  "post": "32-storefront-architecture",
+  "figure": 2,
+  "id": "fig02-three-rendering-models-differ-who-renders",
+  "asset": "assets/images/32-storefront-architecture/fig02-three-rendering-models-differ-who-renders.jpeg",
+  "mermaid": "flowchart TB\n    T[\"Model 1 Theme\"] -->|\"templates in the platform\"| TR[\"Platform renders, caches and delivers\"]\n    H1[\"Model 2 Headless on the vendor runtime\"] -->|\"own front end, vendor hosting\"| HR1[\"Merchant renders, vendor hosts, storefront API\"]\n    H2[\"Model 3 Headless anywhere\"] -->|\"own front end, own hosting\"| HR2[\"Merchant renders and hosts, storefront API, maybe several engines\"]\n    TR --> CO[\"Checkout stays on the platform\"]\n    HR1 --> CO\n    HR2 --> CO"
+ },
+ {
+  "post": "32-storefront-architecture",
+  "figure": 3,
+  "id": "fig03-eva-s-product-page-arrives-edge",
+  "asset": "assets/images/32-storefront-architecture/fig03-eva-s-product-page-arrives-edge.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva's phone\n    participant Edge as Edge cache\n    participant SF as Storefront renderer\n    participant AV as Availability\n    participant PR as Prices\n    Eva->>Edge: Ridgewalker jacket page, NL\n    Edge-->>Eva: Cached page shell, 13 April 21:14\n    Eva->>SF: Live facts for this page\n    SF->>AV: In stock for the NL storefront, size M moss\n    AV-->>SF: Yes\n    SF->>PR: Price for this market and shopper\n    PR-->>SF: 199 euro incl. VAT\n    SF-->>Eva: Badge, price and delivery promise filled in"
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "post": "30-multi-tenancy-and-isolation",
+  "figure": 1,
+  "id": "fig01-three-ways-arrange-tenants-pool-shares",
+  "asset": "assets/images/30-multi-tenancy-and-isolation/fig01-three-ways-arrange-tenants-pool-shares.jpeg",
+  "mermaid": "flowchart LR\n    subgraph POOL [\"Pool\"]\n        P1[\"Shared servers and one database with a tenant id on every row\"]\n    end\n    subgraph SILO [\"Silo\"]\n        S1[\"Tenant A stack\"]\n        S2[\"Tenant B stack\"]\n    end\n    subgraph BRIDGE [\"Bridge, for example pods\"]\n        B1[\"Shared app servers\"] --> B2[\"Pod 1 databases, shops A to M\"]\n        B1 --> B3[\"Pod 2 databases, shops N to Z\"]\n    end"
+ },
+ {
+  "post": "30-multi-tenancy-and-isolation",
+  "figure": 2,
+  "id": "fig02-request-pooled-platform-routed-one-group",
+  "asset": "assets/images/30-multi-tenancy-and-isolation/fig02-request-pooled-platform-routed-one-group.jpeg",
+  "mermaid": "sequenceDiagram\n    participant S as Shopper or app\n    participant LB as Load balancer and router\n    participant APP as Shared app server\n    participant POD as Pod holding this shop\n    participant RL as Rate limiter for this app and shop\n    S->>LB: Request for shop kestrelandpine\n    LB->>LB: Look up shop in the routing table\n    LB->>APP: Request with pod header\n    APP->>RL: Does this app still have budget on this shop\n    RL-->>APP: Yes, cost deducted, or no, throttled\n    APP->>POD: Read and write only this pod\n    POD-->>APP: Rows for this shop only\n    APP-->>S: Response, or throttled with retry advice"
+ },
+ {
+  "post": "30-multi-tenancy-and-isolation",
+  "figure": 3,
+  "id": "fig03-black-friday-2026-nine-consumers-spent",
+  "asset": "assets/images/30-multi-tenancy-and-isolation/fig03-black-friday-2026-nine-consumers-spent.jpeg",
+  "mermaid": "flowchart LR\n    B[\"Kestrel and Pine API budget on the platform, per app per store\"]\n    B --> O[\"iPaaS order flow to the WMS\"]\n    B --> M[\"Marketplace connector, hourly full sync\"]\n    B --> E[\"ERP connector\"]\n    B --> A[\"Three apps that wrote inventory\"]\n    B --> R[\"Returns portal\"]\n    B --> X[\"Reviews and e-mail apps\"]\n    O -->|\"orders, 20 percent of the budget\"| W[\"The WMS, its own per customer limit\"]\n    M -->|\"55 percent with the stock apps\"| MP[\"Marketplaces\"]"
+ }
+]

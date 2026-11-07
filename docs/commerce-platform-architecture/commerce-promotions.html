@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Discounts, Coupons and Loyalty: Promotions Without Chaos</title>
+    <meta name="description" content="How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books? Treat promotions as data with an explicit order of evaluation and a stop rule, compute the final discount in one place at cart time, allocate it to every line so invoices and refunds carry their share, and keep gift cards, store credit and points as ledgers of money you owe.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="Discounts, Coupons and Loyalty: Promotions Without Chaos">
+    <meta property="og:description" content="How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books? Treat promotions as data with an explicit order of evaluation and a stop rule, compute the final discount in one place at cart time, allocate it to every line so invoices and refunds carry their share, and keep gift cards, store credit and points as ledgers of money you owe.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/commerce-promotions.html">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/08-promotions-and-loyalty/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .ai-credit {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        header.post .ai-credit a {
+            color: inherit;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="pricing-architecture.html" title="What Does It Cost? Price Lists, Contract Prices, Currencies and Tax">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-search-and-discovery.html" title="Finding the Product: Search, Navigation and Merchandising">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — CATALOG: Products, Prices and Promises</p>
+        <h1>Discounts, Coupons and Loyalty: Promotions Without Chaos</h1>
+        <p class="byline">Željko Obrenović  ·  2026-11-07  ·  28 min read · <a class="spec-link" href="commerce-promotions.spec.html">View spec</a></p>
+        <p class="ai-credit">AI-assisted: researched and written with Claude Code, images generated with the Gemini API. <a href="https://zeljkoobrenovic.github.io/spec-driven-journals/foundations/ai-mediated-authoring.html">How this works</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/08-promotions-and-loyalty/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/08-promotions-and-loyalty/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORDERED: Architecting Commerce Platforms</a><span class="nav-right"><a class="nav-prev" href="pricing-architecture.html" title="What Does It Cost? Price Lists, Contract Prices, Currencies and Tax">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="commerce-search-and-discovery.html" title="Finding the Product: Search, Navigation and Merchandising">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Discounts, Coupons and Loyalty: Promotions Without Chaos", "date": "2026-11-07", "author": "Željko Obrenović", "excerpt": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books? Treat promotions as data with an explicit order of evaluation and a stop rule, compute the final discount in one place at cart time, allocate it to every line so invoices and refunds carry their share, and keep gift cards, store credit and points as ledgers of money you owe.", "permalink": "commerce-promotions", "timetoread": "28 min read", "icon": "assets/icons/08-promotions-and-loyalty.png", "logo": "assets/images/08-promotions-and-loyalty/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn how promotions, coupons, gift cards and loyalty points are modeled, where the final discount must be computed, and how a discount reaches the invoice, the refund and the books.\n\n> **KEY POINTS:**\n>\n> * **A promotion is a rule evaluated in one place, at cart time.** The product page shows an estimate; the cart engine computes the final discount from the rules, the codes and the customer's eligibility, in a declared order, with a rule that says when stacking stops. Every platform that takes promotions seriously has converged on this shape.\n> * **A discount is not finished until it is allocated to lines.** Returns, partial refunds, invoices and tax all work per line, so an order-level discount must be spread across the lines at order time. Skip that step and every return refunds too much.\n> * **Gift cards, store credit and points are money you owe, not marketing.** They are ledgers with balances that finance must reconcile to a liability account every month; the rules for when unredeemed value becomes revenue are accounting standards, not product decisions.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**\n>\n> * **The Price Nobody Can Explain** — a cart whose total nobody can reconstruct from the rules is a price with no owner.\n> * **The Boomerang** — refunds computed from the undiscounted line price give the discount back twice.\n> * **The First Snowfall** — Black Friday is the first time all the promotion rules meet all the customers at once.\n\n<br>\nEvery merchant discounts. A new-customer code in the newsletter, 20% off outerwear in November, free shipping over a threshold, a gift card for a birthday, points for coming back. Each looks like a marketing decision, and each is also a **change to the price that the rest of the platform must be able to explain**: to the customer who returns one item from a discounted order, to the accountant who posts the invoice, to the tax authority that wants the right VAT on the right net amount, and to the finance director who must know how much gift-card money the company holds for customers who have not spent it yet.\n\n**A promotion is a promise about a price, and promises interact.** Two promotions that are each sensible alone can combine into a price below cost; a promotion that is right on the product page can be wrong in the cart, because the cart knows something the page did not (a second item, a code, a shipping address); and a promotion that was right at order time can be wrong at refund time, because the refund looked at the line, not at the order. This chapter shows how a platform keeps all three moments consistent.\n\nThis chapter owns the **promotion engine**, **stacking**, the **store credit liability** and **discount allocation**. It builds on [What Does It Cost? Price Lists, Contract Prices, Currencies and Tax](pricing-architecture.html), hands the cart to [From Cart to Confirmation: Checkout Orchestration](cart-and-checkout.html), the invoice to [Tax, Invoices and the Books: From Order to Ledger](tax-invoicing-and-ledger.html), the refund to [The Way Back: Returns, Exchanges, Refunds and Reverse Logistics](returns-and-exchanges.html) and customer identity to [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html).\n\n**Where we are in the order's journey.** Eva's jacket, the recurring order this book follows, was bought at full price on 13 April 2027: €199 for the Ridgewalker and €18 for each pair of socks, €235 in all, with free shipping because the cart passed €75. That free shipping is the only promotion Eva used, and it is still a rule the cart evaluated. This chapter sits between the price (the previous chapter) and the cart (Part III): the step where the price the customer pays is finally decided, and the one that leaves a trace on every later step.\n\n## Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug\n\nKestrel & Pine, the fictional outdoor brand this book follows (see [Meet Kestrel & Pine](meet-kestrel-and-pine.html)), sells on a hosted SaaS commerce platform in three countries. For **Black Friday week 2026 (23–29 November)** Milan Petrov, the Ecommerce and Marketplaces Manager, configured three promotions:\n\n- an **automatic 20% discount on all outerwear** (jackets, fleeces, trail trousers), applied to every cart without a code, valid for the week;\n- the standing **welcome code**, 10% off a first order, sent to every new newsletter subscriber;\n- the standing rule of **free shipping on orders over €75**.\n\nThe campaign plan said the welcome code would *not* combine with the outerwear discount: a first-time customer would get whichever was better. Nobody checked the platform's **discount combination setting**, which says which classes of discount may apply to the same order. The agency had switched it in October for a short Trailhead fleece campaign that *was* meant to combine with a code, and never switched it back. The week's figures are illustrative, invented for this chapter and consistent with the rest of the book.\n\n| What happened in the week of 23–29 November 2026 | Figure *(illustrative)* |\n| --- | --- |\n| Online direct-to-consumer (D2C) orders in the week (see [Meet Kestrel & Pine](meet-kestrel-and-pine.html)) | 31,000 |\n| Orders that received both the 20% outerwear discount and the 10% welcome code | 2,860 |\n| Ridgewalker jacket price after both: €199 → €159.20 → €143.28 | €15.92 extra discount per jacket |\n| Margin given away beyond the plan (about €15 per affected order) | about €43,000 |\n| Orders whose discounted subtotal fell under €75 and were charged €4.95 shipping after the product page had promised it free | 1,140 |\n| Shipping refunded by hand after complaints | about €5,600 |\n| Returned Black Friday jackets refunded at €159.20 instead of €143.28, because the order-level 10% had not been allocated to the lines the returns portal reads | 190 returns, about €3,000 over-refunded |\n| Total cost | about €52,000 |\n\nThree things went wrong, and they are the three things this chapter is about. The **stacking** was not what the business intended, because the rule that decides it lived in a setting, not in the campaign. The **free-shipping threshold** was evaluated on the discounted subtotal in the cart while the product page promised it on the list price. And the **order-level discount was never allocated to the lines**, so the returns portal, which reads line prices, refunded the discount back. Noor Visser, Head of Engineering since January 2027, put the incident next to the Price Drift of October 2026 and drew the same conclusion: **a price that nobody can reconstruct from the rules is a price with no owner.**\n\n![A staircase where the jacket price falls from €199 to €159.20 to €143.28 because a combine switch was left on.](assets/images/08-promotions-and-loyalty/08-stacking-staircase.jpeg)\n**Figure 1:** *The stacking bug: a combination setting left on from October let the welcome code stack on the outerwear discount, taking the jacket from €199 to €143.28.*\n\n## What a Promotion Is, and What It Touches\n\nIn plain words, a **promotion** is a rule that lowers the price a customer pays under stated conditions. A **coupon code** is a promotion the customer unlocks by typing a string; an **automatic discount** applies when the conditions are met with no code. **Eligibility** is the set of conditions: which products, customers, period, channel, minimum cart. **Stacking** is applying more than one promotion to the same cart or line. **Discount allocation** is spreading an order-level discount over the lines so that each line, and later each invoice line and return, carries its share.\n\nThe table lists the shapes every platform supports and what each needs from the rest of the system.\n\n| Promotion type | Example | What it needs to compute | What it changes |\n| --- | --- | --- | --- |\n| Percentage off a product or set | 20% off outerwear | The product's current price and category | Line price |\n| Fixed amount off a product | €10 off the Trailhead fleece | The product's price | Line price |\n| Percentage or fixed amount off the order | 10% off a first order with a code | The subtotal after product discounts; the customer's order history | Order total, to be allocated to lines |\n| Buy X, get Y | Three pairs of socks for the price of two | Quantities per line; which unit is the free one | One line's price |\n| Tiered | 10% over €150, 15% over €250 | The subtotal | Order total, allocated |\n| Free or reduced shipping | Free shipping over €75 | The subtotal and the shipping method | Shipping line |\n| Bundle | Jacket plus fleece for €279 | The presence of both items | Two lines, with a fixed total allocated between them |\n\nEvery row touches three things the business cares about: the **price** the customer sees and pays, which in the EU must obey the prior-price rule described later; the **margin**, which disappears silently when promotions combine (the Ridgewalker at €143.28 still cleared its €58 landed cost, but gave up about a sixth of its planned Black Friday unit margin); and the **books**, because the invoice must show the net price per line with the VAT on it, and a refund must give back what was paid for that line, not what was listed.\n\nTwo things that look like promotions are not. **Gift cards**, **store credit** and **loyalty points** are value the merchant has been paid for or has promised and not yet delivered: money it owes. They are ledgers, not rules, and get their own section.\n\n## How the Pieces Fit Together\n\nA promotion system has five parts, whether it is a platform feature, an app or a service. The diagram shows them around the decision that matters: the final discount is computed once, in the cart, and written to the order with its allocation.\n\n![Diagram: The product page shows an estimate](assets/images/08-promotions-and-loyalty/fig01-product-page-shows-estimate-promotion-engine.jpeg)\n**Figure 2:** *The product page shows an estimate; the promotion engine computes the final discount once, at cart time, from the base price, the rules and the customer's eligibility, and writes it to the order allocated per line so that the invoice, the refund and the analytics all read the same number.*\n\n### The five parts\n\n**Promotion definitions.** Each promotion is a record: its type, conditions, validity window, channel, budget or usage cap, and its position in the **order of evaluation**. The platforms that document this best make the order explicit. Shopify evaluates product discounts first, then order discounts on the revised subtotal, then shipping discounts; its help center (accessed November 2026) notes that two combined percentage *order* discounts are both calculated on the original subtotal, so 10% plus 20% on €100 gives €70, not €72. commercetools gives every cart discount a unique `sortOrder`, a stacking mode that can stop further discounts after a given one, and discount groups in which only the best saving applies. Adobe Commerce applies the highest-priority rule first and has a \"Discard subsequent rules\" switch. One idea, three vendors: **promotions are data with a declared order and a stop rule.**\n\n**Eligibility and identity.** \"First order\", \"members only\" and \"once per customer\" all need to know who the customer is. On Kestrel & Pine's platform the welcome code's \"first order\" check looked at the e-mail address, so a customer with two addresses was a first-time customer twice. Promotions are one of the first places a merchant discovers it has no single customer identity: the Familiar Stranger pattern, owned by [One Customer, One Product: Identity and Master Data Across Systems](identity-and-master-data.html).\n\n**The code ledger.** Every code has a usage record: how many uses are allowed in total and per customer, and how many have happened. It must be strongly consistent at redemption: two checkouts redeeming the last use of a single-use code in the same second must not both succeed. It is the one part of a promotion engine that behaves like a bank account, and the reason bulk-generated single-use codes with usage caps (Adobe generates them in batches; Shopify allows 5 product or order codes and 1 shipping code per order) are the baseline defense against code sharing.\n\n**Evaluation in the cart.** The engine takes the cart's lines, prices, shipping method and customer, applies the promotions in order, stops where the stop rule says, and returns a discount per line and per shipping line. Some conditions can only be evaluated late: Adobe's documentation notes that conditions on the shipping or payment method \"are met only in checkout after the specific shipping/payment methods are selected\". That is why the product page can only show an **estimate**, and why the estimate and the final must come from the same rules.\n\n**Allocation and events.** The final step writes the discount to the order *per line*. commercetools makes the choice explicit: an absolute cart discount is distributed proportionately, evenly or individually across the lines. However it is distributed, each line then carries its net price, which the invoice and the refund read. The engine also emits events: promotion applied, code redeemed, promotion offered but not taken. The last is the one analytics needs most and platforms rarely record.\n\n### What each interaction needs\n\nPromotions are evaluated at several moments with different requirements.\n\n| Interaction | Freshness | Consistency | Latency | Availability |\n| --- | --- | --- | --- | --- |\n| Product page strike-through price | Start and end to the minute; prior price per the EU's 30-day rule | An estimate; may differ from the cart | Served from cache *(assumption)* | Must not block the page; show the list price if the engine is down |\n| Cart evaluation | Current rules and base prices | Final; the same result on every re-evaluation | Under about 300 ms, on every cart change *(assumption)* | Checkout must not fail because promotions fail; degrade to no discount with a message, or hold the checkout, by business decision |\n| Code redemption | Current usage count | Strongly consistent; one redemption per allowed use | As the cart | As the cart |\n| Gift card or store credit redemption | Current balance | Strongly consistent; idempotent per checkout attempt | As the cart | Decline the card if the balance service is down; never guess |\n| Promotion publication | Scheduled start; tested against active promotions | All channels see the same rule set | Minutes | Stores and marketplaces receive a copy |\n| Analytics | Daily | Offered and redeemed both recorded | Batch | — |\n\nThe two rows that behave like money (code redemption and stored value) cannot be eventually consistent; everything else can be a cached copy with a known delay. It is the distinction [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](boundaries-and-systems-of-record.html) draws for every fact: decide which system holds the truth, and let the copies be copies.\n\n### How a discount reaches the invoice and the books\n\nA discount leaves the order in three documents. The **invoice** shows each line at its net price after allocation, with VAT on that net amount; an order-level discount across lines with different VAT rates (a jacket at 21% and a book at 9%) must be allocated before the tax can be right, which makes allocation a tax problem as much as a promotions problem. The **credit note**, issued on a return, reverses the line at the same net price. The **ledger** records revenue net of the discount: a promotion is not an expense but revenue never earned. [Tax, Invoices and the Books: From Order to Ledger](tax-invoicing-and-ledger.html) walks the entries; RECONCILED's [Payments-to-Ledger: Draining the Suspense Swamp](../finance-systems-architecture/payments-to-ledger.html) goes deeper on reconciliation.\n\nHere is the allocation on Eva's order, had she used a 10% code (she did not; the prices are her order's, the code is hypothetical):\n\n| Line | List price | Share of €235 | Allocated discount | Net line price |\n| --- | --- | --- | --- | --- |\n| Ridgewalker jacket, women's M, moss | €199.00 | 84.7% | €19.90 | €179.10 |\n| Merino hiking socks × 2 | €36.00 | 15.3% | €3.60 | €32.40 |\n| **Total** | **€235.00** | | **€23.50** | **€211.50** |\n\nWhen Eva returns the jacket, the refund is **€179.10**, not €199. The 190 over-refunded Black Friday returns were this calculation skipped: the returns portal read the line price (€159.20 after the product discount) because the order-level 10% had never been written to the lines, and gave back €15.92 per jacket the customer had never paid. That is the Boomerang in one table row.\n\n![A returns counter where the refund boomerang brings back €159.20 for a jacket paid at €143.28, losing €15.92.](assets/images/08-promotions-and-loyalty/08-boomerang-refund.jpeg)\n**Figure 3:** *The Boomerang: because the order-level 10% was never allocated to the lines, each Black Friday jacket return gave back €15.92 the customer had never paid.*\n\n## Gift Cards, Store Credit and Points: Ledgers, Not Promotions\n\nA **gift card** is value the customer paid for in advance. **Store credit** is value the merchant granted, typically as a refund alternative or a goodwill gesture. **Loyalty points** are value the customer earned by buying. All three share a property that no promotion has: **they are a liability on the balance sheet**, money or value the merchant owes, until they are redeemed or expire.\n\n![Diagram: Stored value is a ledger](assets/images/08-promotions-and-loyalty/fig02-stored-value-ledger-every-issuance-redemption.jpeg)\n**Figure 4:** *Stored value is a ledger: every issuance, redemption, expiry and breakage estimate changes a balance per instrument in the commerce platform, and the sum of those balances must agree with the liability account in the finance system every month.*\n\nThe accounting is settled and drives the data model. Under IFRS 15, the international accounting standard for revenue (issued May 2014, effective from 1 January 2018, replacing IFRIC 13 on loyalty programs) and its US twin ASC 606, the sale of a gift card is a contract liability, not revenue; revenue is recognized on redemption. The part that will never be redeemed is **breakage**; the standard requires the merchant to *estimate* it and recognize it \"in proportion to the pattern of exercised rights\" rather than wait for cards to expire, and unclaimed value owed to a government is a liability, not revenue. Loyalty points that give the customer a **material right** (a benefit valuable enough to count as something they paid for) are a separate performance obligation, with revenue deferred until they are used.\n\nStarbucks' FY2025 annual report (fiscal year ended 28 September 2025) shows what this means at scale: amounts loaded onto stored value cards are recorded as deferred revenue; the stored value card and loyalty liability stood at **$1,751.7 million**; breakage recognized in company-operated stores was **$200.4 million** in the year; Stars are deferred at their estimated selling price \"as each Star is earned\" and \"generally expire after six to twelve months, depending on the market\". Starbucks is a coffee chain, but the obligation has the same shape for a merchant with €200,000 outstanding.\n\nFour design rules follow:\n\n- **Every instrument is a ledger.** Issuance, each redemption, each expiry and each breakage estimate is an immutable record per card, credit or points account; a balance is derived, never edited (RECONCILED's [Never Update, Only Append: Designing Custom Ledgers](../finance-systems-architecture/designing-financial-ledgers.html) gives the pattern).\n- **Expiry is an attribute of the issuance, not a global setting**, because rules differ by country and, in the US, by state. Shopify's store credit documentation (accessed November 2026) models it that way: \"Store credit expiration is set per issuance\".\n- **Redemption is idempotent:** a repeated request has the same effect as one. The idempotency key (a unique id that lets a retried request be recognized and applied once) that protects the payment ([Taking the Money: Payment Providers, Authorization, Capture and Refunds](commerce-payments.html)) must also cover the stored-value debit.\n- **The platform holds the balance, finance holds the liability, and they are reconciled monthly**; a difference is a bug or a fraud.\n\n**Paid membership programs** (Prime-style: a fee in exchange for delivery and other benefits) are a different thing again, often confused with loyalty. They are a subscription with its own revenue line and its own promises (free delivery, early access) that the promotion engine reads as eligibility conditions. Amazon's annual report for 2025 (filed February 2026) reports subscription services net sales of $49.6 billion and describes Prime benefits as \"effective worldwide marketing tools\" it intends \"to continue offering indefinitely\"; Target's FY2025 report describes its paid Target Circle 360 membership with \"unlimited same-day delivery on eligible orders over $35\". For a merchant of Kestrel & Pine's size the architectural point is modest: a membership is a customer attribute with a start and end date, and a liability for benefits paid for but not yet delivered.\n\n### Kestrel & Pine's stored value in 2027\n\nKestrel & Pine sells gift cards online through the platform and in the stores through the POS (point of sale, the till software). Because there is no link between the POS and the platform, **an online gift card cannot be redeemed in a store, nor a store card online** (illustrative). At 31 December 2026 the outstanding balances were about **€186,000** online and **€41,000** in the stores; Sanne de Wit, the Finance Director, reconciles both to the liability account monthly from two exports. There is no online loyalty program; the stores keep a loyalty list in the POS. Noor and Milan agreed in 2027 not to launch one until the customer record is unified, because points earned by a customer the platform cannot recognize across channels are a liability it cannot redeem correctly. One cross-channel balance is a goal for after Waypoint; it needs a central balance service, which the 2028 POS evaluation (decision W4) will weigh.\n\n## The Choices\n\nA merchant can run promotions in four ways. The fourth is listed because it is common, not because it is good.\n\n**The platform's built-in promotions.** Hosted platforms ship discounts, codes, automatic promotions, gift cards and, increasingly, store credit, with documented combination rules and limits. Shopify allows at most 25 active automatic discounts (apps included); commercetools allows 100 active code-less cart discounts per project plus 100 per store, and 10 codes per cart. The limits are design signals: promotion interaction is the most common source of margin bugs. It fits any merchant whose promotions fit the platform's vocabulary.\n\n**The platform plus a promotion or loyalty app.** When the business wants what the platform does not model (a tiered loyalty scheme, referral rewards, cross-channel vouchers), an app or a specialist SaaS adds it, usually by creating discounts in the platform on the customer's behalf. The app becomes a second writer of the price, with its own rules, its own view of the customer and its own failure modes. Kestrel & Pine's pre-order app wrote stock; a loyalty app is the same shape of risk, which is why [Apps, Plugins and Functions: Extensibility and Ecosystem Governance](extensibility-and-app-ecosystems.html) treats apps as integrations.\n\n**A dedicated promotion engine shared across channels.** A separate service (bought or, rarely, built) holds the definitions and evaluates them for the web storefront, the POS and the B2B portal through one API. It is the only option in which a store and the web shop run the same promotion from the same rule, and in which a wholesale contract price and a consumer promotion are kept apart by design. It costs an integration into every checkout and a team that owns the rules.\n\n**Rules hard-coded in the theme, a script or a marketplace listing.** The agency makes a banner compute \"20% off\" in the browser; a script adjusts marketplace prices for a sale; store staff key their own discount into the POS. Each copy drifts, nobody can say what the price was on a given day, and the Price Nobody Can Explain follows. It is not a design but the absence of one.\n\n| Criterion | Platform built-in | Platform plus app | Dedicated engine | Hard-coded rules |\n| --- | --- | --- | --- | --- |\n| Where the final discount is computed | Platform cart | Platform cart, rules written by the app | The engine, called by every channel | Several places |\n| Order of evaluation and stop rule | Documented by the vendor; set per shop | Partly inside the app | Yours to define | Undefined |\n| Same promotion in web, store and marketplace | Web only; stores and marketplaces get copies | Web and sometimes POS of the same vendor | Yes, by design | No |\n| Discount allocation to lines | Vendor-defined | As the platform does it | Yours to define, must be exported | Usually missing |\n| Stored value across channels | Within the platform's channels | App-dependent | A balance service | No |\n| Fits | Starting, Growing; most Omnichannel merchants | Growing merchants with one specific need | Omnichannel with stores and B2B on different systems; Group | Nobody |\n\nMy rule: **use the platform's promotions until a promotion must be the same rule in two systems the platform does not control.** For Kestrel & Pine that moment has arrived for the stores (a separate POS) and will arrive for the B2B portal if wholesale promotions start; it never arrives for marketplaces, whose promotions stay in the marketplace's own tools. Until then the cheapest improvement is governance, not software: one owner for the combination settings, one calendar, and a rollout test against the promotions already active, which Shopify offers as a feature and any merchant can do in a staging copy.\n\n## Across Scale Stages: When It Fits and When It Limits\n\n| Stage | What is typical | What becomes necessary | Warning signs of outgrowing the approach |\n| --- | --- | --- | --- |\n| **1 — Starting** | A few codes and a free-shipping threshold in the platform; platform gift cards reconciled by finance from an export | A naming convention for codes and a note of who created each promotion | A code from an old campaign still works; nobody knows which promotions are active |\n| **2 — Growing** | Automatic discounts plus codes; a welcome code; the first Black Friday with several promotions at once; store credit for refunds | An explicit combination decision per campaign; single-use bulk codes; a first breakage estimate with the accountant | The first stacking surprise; disputed refunds of discounted items; the \"first order\" check fooled by a second e-mail address |\n| **3 — Omnichannel** | Web, stores, marketplaces and B2B each run their own promotions; stored value split by channel; two loyalty lists | One promotion calendar across channels; allocation exported to the OMS (order management system), the returns tool and the ERP (enterprise resource planning system, which invoices); a central stored-value balance, or a decision not to cross channels yet; identity resolved before a loyalty program | Store staff keying discounts the web shop does not know; a marketplace promotion undercutting the web shop; gift cards that work in one channel only |\n| **4 — Group** | Several brands or countries with their own calendars; a shared loyalty platform; a liability ledger per legal entity | A promotion engine or shared service with per-brand rules; a group stored-value ledger reconciled per entity; holdouts as standard | Brands competing for one customer with conflicting offers; a group voucher no single system can honor; breakage estimated differently per country |\n\nThe judgement: the promotion *engine* changes little with scale; evaluating a thousand rules is the same problem as evaluating ten. What changes is **how many systems must agree on the result** and **how much money the stored-value ledger holds**. Kestrel & Pine at stage 3 has the first problem acutely (three channels with their own discounts, two gift-card pools) and the second mildly (about €227,000 outstanding), so its order is ownership and allocation first, a cross-channel balance second, a loyalty program last.\n\n## In Practice\n\n### Dated, sourced examples\n\n**The prior-price rule turns promotions into a data requirement.** Directive (EU) 2019/2161, the Omnibus Directive, applied by member states from 28 May 2022, requires any announced price reduction to show the **prior price**: the lowest price the trader applied in the 30 days before the reduction. The Dutch regulator ACM announced on 6 December 2022 that it would supervise the rule from 1 January 2023, with a worked example: a price raised from €50 to €70 and cut by 35% after 25 days is really a 9% discount on the €50 reference. On 11 June 2024 ACM published fines against Leen Bakker, G-Star Raw eStore, JYSK, PVH Brands Netherlands (Tommy Hilfiger) and Koopjedeal for discounts shown against a misleading reference price; Germany's § 11 PAngV transposes the same rule. For architecture this means an effective-dated price history per SKU per country that can answer \"lowest price in the last 30 days\" when a promotion is published, and a strike-through price that is itself a syndicated field. Had Kestrel & Pine's Price Drift run into November, the German strike-through price for the Ridgewalker would legally have been €179, not €199.\n\n**Stored value is a liability with accounting rules.** Starbucks' FY2025 10-K, above. PwC's revenue guide on unexercised rights (accessed November 2026) states the ASC 606 position that estimated breakage is recognized \"in proportion to the pattern of exercised rights\", that breakage not expected to occur is recognized only when the likelihood of redemption becomes remote, and that amounts due under unclaimed-property law are never breakage revenue. The IFRS Foundation's page confirms IFRS 15 replaced IFRIC 13 on customer loyalty programs; the matching IFRS 15 paragraphs B44–B47 are cited here from a secondary source, because the standard's own text was not checked for this chapter.\n\n**Promotion abuse is an identity problem.** Ravelin's 2020 article on promotion abuse (older than three years, but the taxonomy holds) names multi-accounting for sign-up offers, self-referral and guessable codes as the main forms; its figure that 53% of merchants saw more abuse in a year is a vendor survey without a published sample, so treat it as directional.\n\n**Incrementality needs a holdout.** Gubela, Lessmann and Jaroszewicz (EJOR, 2019) argue that coupon campaigns should be judged on revenue uplift, not conversions, because customers differ in spending and most exposed customers do not buy; Gubela and Lessmann (2021) report that of several coupon types tested, only a €15 coupon produced positive incremental revenue. Redemption rate is not incrementality, because many redeemers were already at checkout; the honest measure is the difference between an exposed group and a **holdout group** deliberately not given the offer. For the platform this means recording which promotions were *offered*, flagging holdout customers in the engine, and one customer identity to assign them with; [Counting the Same Thing Everywhere: Data Platforms, Definitions and Analytics](commerce-data-and-analytics.html) takes it from there.\n\n### Kestrel & Pine's Black Friday 2027 plan\n\nFor Black Friday 2027 Milan and Noor wrote the promotion plan as a table, each row with an owner, an order of evaluation and a stop rule, and tested it against every active promotion in a staging copy of the platform in early November (illustrative):\n\n| Promotion | Type | Order | Combines with | Stop | Owner |\n| --- | --- | --- | --- | --- | --- |\n| 20% off outerwear | Automatic product discount | 1 | Free shipping only | Yes | Milan |\n| Welcome code 10% | Order code | 2 | Free shipping only; never with row 1 (the better one applies) | — | Milan |\n| Free shipping over €75 | Shipping | 3 | Everything; threshold on the *discounted* subtotal, stated on the product page | — | Daniel Okafor |\n| Store promotion, same 20% | POS discount keyed by store managers from this table | — | — | — | Daniel |\n| Marketplace deals | Each marketplace's own tool, priced at the web price after discount plus fee uplift | — | — | — | Milan |\n\nTwo changes matter more. The order export to the WMS (warehouse management system), the returns portal and the ERP now carries the **allocated net price per line**, so a return refunds what was paid; Ruben Alves added it to the integration contract under decision W5. And every change to the platform's promotion settings, including the combination setting, needs a second person's approval. Neither cost software; both cost the week in which the bug was understood.\n\n## When It Goes Wrong\n\n**Unintended stacking.** Detection: a daily report of orders with more than one discount, with the discount depth (discount as a share of list price) per order, and a threshold alert in the peak week. Recovery: honor the orders already placed, fix the setting, and compute the margin given away from the order lines, which is only possible if the allocation was written.\n\n**Estimate and final disagree.** The page says free shipping, the cart charges €4.95; the page says \"20% off\", the cart shows 10% because the code replaced the automatic discount. Detection: log what the page rendered and what the cart computed per session, and watch abandonment at the shipping step ([From Cart to Confirmation: Checkout Orchestration](cart-and-checkout.html)). Recovery: state thresholds in the terms the cart uses, and let the page ask the engine for an estimate when the customer is logged in.\n\n**The discount comes back twice.** A return refunds the list price of a discounted item (the Boomerang), or a gift-card purchase is refunded to the card *and* to the payment method. Detection: a weekly reconciliation of refunds against the allocated net price of the returned lines. Recovery: a credit-note correction per case, and the allocation added to every order export.\n\n**Codes leak or are guessed.** A generic code on a coupon site, or a sequential format a script can enumerate. Detection: redemptions per code per hour against the expected rate, and per identity signal (device, payment instrument, address) rather than per e-mail (LISTED's [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](../listing-systems-architecture/fraud-prevention.html)). Recovery: disable the code, issue single-use replacements, and accept that placed orders are placed.\n\n**Stored value debited twice, or not at all.** A checkout retried after a timeout debits a gift card twice; a payment webhook (the message the payment provider sends when a payment completes) arrives late and the order is created without the debit. Detection: ledger entries per instrument that reference the checkout attempt, so a duplicate shows as two entries with one key. Recovery: one idempotency key per checkout attempt covering the payment and the stored-value debit, and a daily job matching debits to orders ([Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation](events-consistency-and-reconciliation.html)).\n\n**A promotion ends but a copy does not.** A cached page, a marketplace listing updated hourly, a price-comparison feed or a POS still showing last week's 20%. Detection: an end-of-promotion check that reads the price on every channel; a marketplace parity warning is the expensive version. Recovery: a scheduled end that every copy receives as an event, with its delivery promise in the integration contract.\n\n## What to Take Away\n\n**Established.**\n\n- Promotions are data with an explicit order of evaluation and a stop rule, computed once in the cart; the storefront shows an estimate. Shopify, commercetools and Adobe Commerce document this shape independently (accessed November 2026).\n- An order-level discount must be allocated to lines at order time, because invoices, VAT, returns and partial refunds work per line.\n- Gift cards, store credit and loyalty points are contract liabilities under IFRS 15 and ASC 606; breakage is estimated and recognized in proportion to redemptions (PwC's guide; Starbucks' FY2025 10-K as the worked example).\n- In the EU, an announced price reduction must show the lowest price of the preceding 30 days (Directive 2019/2161, applied from 28 May 2022; Dutch fines published June 2024).\n\n**Depends on context.**\n\n- Use the platform's built-in promotions until one promotion must be the same rule in two systems the platform does not control (a separate POS, a separate B2B portal); then a shared engine earns its integration cost. Marketplace promotions stay the marketplace's own in every case.\n- A central stored-value balance is worth building once customers expect to use a card in any channel and the outstanding balance makes two reconciliations a month a risk; below that, two pools and an honest sign at the till are acceptable.\n- Launch a loyalty program only after the customer identity is unified across channels; a single-channel business already meets that condition.\n- Measure incrementality with holdouts when the promotion budget is large enough that a 10% error in its effect costs more than withholding the offer from a few percent of customers.\n\n**The author's synthesis.**\n\n- The cheapest promotion architecture is governance: one owner for the combination settings, one calendar with an order of evaluation per campaign, and a rollout test against everything already active, because almost every promotion incident I have seen was a setting, not a system.\n- Treat the allocated net line price as the order's primary price and the list price as metadata; every downstream system that reads the list price will eventually refund it.\n\n## Questions to Ask\n\n1. Which system computes the final discount, and does the product page show that rule's estimate or its own?\n2. What is the order of evaluation, where does stacking stop, and who may change that setting?\n3. Does the order export carry the allocated net price per line to the warehouse, the returns tool and the ERP?\n4. How does \"first order\" identify the customer, and what happens with a second e-mail address?\n5. Can the pricing system answer \"lowest price in the last 30 days\" for any SKU and country when a promotion is published?\n6. Where do gift-card and store-credit balances live, and who reconciles them to the liability account, how often?\n7. Is a gift-card debit idempotent with the checkout attempt, or can a retry debit twice?\n8. Which promotions were *offered* last quarter, not only redeemed, and could we run a holdout?\n9. When a promotion ends, how does each copy (stores, marketplaces, feeds, cached pages) learn of it, and how do we check?\n10. What did last Black Friday's promotions cost beyond the plan, and can we compute that from the order lines alone?\n\nThe price is now decided. The next question is how the customer found the product in the first place, and what has to be true of the catalog for a search box to answer \"waterproof jacket\": [Finding the Product: Search, Navigation and Merchandising](commerce-search-and-discovery.html).\n\n## Sources and Evidence\n\n*Company, product and investor sources*\n\n- [Combining discounts](https://help.shopify.com/en/manual/discounts/discount-combinations) — Shopify Help Center, n.d., accessed 2026-11; discount classes, combination rules, order of application, the 25-automatic and 5 + 1 code limits.\n- [Discounts](https://help.shopify.com/en/manual/discounts) — Shopify Help Center, n.d., accessed 2026-11; discounts applied before tax, scheduled rollouts tested against existing discounts.\n- [Store credit](https://help.shopify.com/en/manual/customers/store-credit) — Shopify Help Center, n.d., accessed 2026-11; expiry set per issuance.\n- [Pricing and discounts overview](https://docs.commercetools.com/api/pricing-and-discounts-overview) — commercetools docs, n.d., accessed 2026-11; product vs cart discounts, sort order, stacking mode, discount groups, best-deal mode.\n- [Cart Discounts](https://docs.commercetools.com/api/projects/cartDiscounts) — commercetools docs, n.d., accessed 2026-11; value types and the proportionate, even and individual allocation modes.\n- [Limits](https://docs.commercetools.com/api/limits) — commercetools docs, n.d., accessed 2026-11; active cart discounts and codes per cart.\n- [Create a cart price rule](https://experienceleague.adobe.com/en/docs/commerce-admin/marketing/promotions/cart-rules/price-rules-cart-create) and [Cart price rules](https://experienceleague.adobe.com/en/docs/commerce-admin/marketing/promotions/cart-rules/price-rules-cart) — Adobe Experience League, n.d., accessed 2026-11; priority, discard subsequent rules, coupon usage caps, late-evaluated conditions.\n- [Starbucks Form 10-K, fiscal 2025](https://www.sec.gov/Archives/edgar/data/829224/000082922425000114/sbux-20250928.htm) — Starbucks Corp. via SEC EDGAR, 2025; stored value liability, breakage, Stars deferral and expiry.\n- [Amazon Form 10-K, fiscal 2025](https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm) — Amazon.com, Inc. via SEC EDGAR, 2026; subscription services net sales and the framing of Prime benefits.\n- [Target Form 10-K, fiscal 2025](https://www.sec.gov/Archives/edgar/data/27419/000002741926000016/tgt-20260131.htm) — Target Corp. via SEC EDGAR, 2026; the Target Circle 360 paid membership.\n\n*Standards, regulation and official documentation*\n\n- [Directive (EU) 2019/2161 (Omnibus)](http://publications.europa.eu/resource/celex/32019L2161) — Publications Office of the EU, 2019; Article 6a prior price, 30-day window, application from 28 May 2022.\n- [ACM wil einde aan nepkortingen](https://www.acm.nl/nl/publicaties/acm-wil-einde-aan-nepkortingen-na-komst-strengere-regels) — Autoriteit Consument & Markt, 2022; supervision from 1 January 2023 and the worked example.\n- [ACM publiceert boetebesluiten webwinkels voor nepkortingen](https://www.acm.nl/nl/publicaties/acm-publiceert-boetebesluiten-webwinkels-voor-nepkortingen) — Autoriteit Consument & Markt, 2024; the June 2024 fines.\n- [§ 11 PAngV](https://www.gesetze-im-internet.de/pangv_2022/__11.html) — Bundesministerium der Justiz, n.d., accessed 2026-11; the German transposition.\n- [IFRS 15 Revenue from Contracts with Customers](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/) — IFRS Foundation, n.d., accessed 2026-11; issue and effective dates, replacement of IFRIC 13.\n- [Unexercised rights (breakage), Revenue guide 7.4](https://viewpoint.pwc.com/dt/us/en/pwc/accounting_guides/revenue_from_contrac/revenue_from_contrac_US/chapter_7_options_to_US/74unexercised_rights_US.html) — PwC Viewpoint, n.d., accessed 2026-11; the ASC 606 breakage rules.\n- [Revenue from customers' unexercised rights](https://ifrscommunity.com/knowledge-base/revenue-from-customers-unexercised-rights-breakage/) — IFRScommunity.com, 2024; secondary summary of IFRS 15 B44–B47 and material rights.\n\n*Research and practitioner sources*\n\n- [Response Transformation and Profit Decomposition for Revenue Uplift Modeling](https://arxiv.org/abs/1911.08729) — Gubela, Lessmann and Jaroszewicz, 2019; revenue uplift as the objective for coupon targeting.\n- [Interpretable Multiple Treatment Revenue Uplift Modeling](https://arxiv.org/abs/2101.03336) — Gubela and Lessmann, 2021; several coupon types, one with positive incremental revenue.\n- [Promotion abuse in ecommerce](https://www.ravelin.com/blog/promotion-abuse-ecommerce) — Ravelin, 2020; abuse taxonomy and a vendor survey figure.\n- [What is incrementality](https://www.uniqodo.com/glossary/what-is-incrementality) — Uniqodo, 2024; holdout method, vendor content.\n\nKestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+[
+ {
+  "post": "22-edi-and-e-invoicing",
+  "figure": 1,
+  "id": "fig01-bergzicht-s-spring-reorder-document-cycle",
+  "asset": "assets/images/22-edi-and-e-invoicing/fig01-bergzicht-s-spring-reorder-document-cycle.jpeg",
+  "mermaid": "sequenceDiagram\n    participant BZ as Bergzicht purchasing\n    participant VAN as EDI provider\n    participant OMS as Order record\n    participant WMS as WMS at Duiven\n    participant ERP as ERP\n    BZ->>VAN: ORDERS 240 units 18 SKUs\n    VAN->>OMS: order created, channel EDI\n    OMS->>WMS: fulfillment order\n    WMS->>WMS: pick, pack, print SSCC per pallet\n    WMS->>VAN: DESADV from pack confirmation\n    VAN->>BZ: DESADV before the truck arrives\n    WMS->>ERP: shipment confirmed\n    ERP->>VAN: INVOIC from shipment and price list\n    VAN->>BZ: INVOIC, payment due in 30 days"
+ },
+ {
+  "post": "22-edi-and-e-invoicing",
+  "figure": 2,
+  "id": "fig02-peppol-s-four-corner-model-each",
+  "asset": "assets/images/22-edi-and-e-invoicing/fig02-peppol-s-four-corner-model-each.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Seller ERP issues invoice\"] -->|\"UBL invoice\"| AP1[\"Seller's access point\"]\n    AP1 -->|\"look up receiver\"| DIR[\"Peppol directory\"]\n    AP1 -->|\"deliver over the network\"| AP2[\"Buyer's access point\"]\n    AP2 -->|\"UBL invoice\"| B[\"Buyer accounts payable\"]\n    AP2 -->|\"delivery receipt\"| AP1\n    AP1 -->|\"transmission status\"| S"
+ }
+]

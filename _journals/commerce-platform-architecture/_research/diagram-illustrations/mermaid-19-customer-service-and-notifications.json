@@ -1,0 +1,23 @@
+[
+ {
+  "post": "19-customer-service-and-notifications",
+  "figure": 1,
+  "id": "fig01-one-order-record-fed-platform-warehouse",
+  "asset": "assets/images/19-customer-service-and-notifications/fig01-one-order-record-fed-platform-warehouse.jpeg",
+  "mermaid": "flowchart LR\n    PL[\"the platform\"] -->|\"placed, paid, canceled, refunded\"| OMS[\"the OMS order record\"]\n    WMS[\"the WMS\"] -->|\"shipped, split, tracking number\"| OMS\n    CAR[\"carrier via shipping service\"] -->|\"out for delivery, delivered\"| OMS\n    RP[\"the returns portal\"] -->|\"return received, refund issued\"| OMS\n    OMS -->|\"order events\"| NS[\"notification service\"]\n    NS -->|\"e-mail, SMS, WhatsApp, app\"| CUST[\"the customer\"]\n    OMS -->|\"one status\"| SP[\"order status page\"]\n    OMS -->|\"one status\"| SV[\"service view in the helpdesk\"]\n    CUST -->|\"cancel, change address, start a return\"| OMS"
+ },
+ {
+  "post": "19-customer-service-and-notifications",
+  "figure": 2,
+  "id": "fig02-three-status-order-shipment-confirmation-first",
+  "asset": "assets/images/19-customer-service-and-notifications/fig02-three-status-order-shipment-confirmation-first.jpeg",
+  "mermaid": "sequenceDiagram\n    participant C as the customer\n    participant PL as the platform\n    participant IP as the iPaaS flow\n    participant WMS as the WMS\n    participant PN as PostNL\n    participant ERP as the ERP\n    WMS->>IP: Shipment confirmed, fleece, tracking number, 7 Dec\n    IP->>PL: Order fulfilled, tracking attached\n    PN-->>PL: Delivered, 8 Dec\n    PL-->>C: Your order was delivered\n    C->>PL: Where are the socks, 11 tickets\n    Note over WMS: Order still In picking, socks on replenishment\n    Note over ERP: Not invoiced, waiting for order complete\n    WMS->>IP: Shipment confirmed, socks, 14 Dec\n    IP->>PL: Second tracking number\n    WMS->>ERP: Order complete, invoice"
+ },
+ {
+  "post": "19-customer-service-and-notifications",
+  "figure": 3,
+  "id": "fig03-which-self-service-actions-are-safe",
+  "asset": "assets/images/19-customer-service-and-notifications/fig03-which-self-service-actions-are-safe.jpeg",
+  "mermaid": "stateDiagram-v2\n    state \"Placed and paid\" as S1\n    state \"Sent to warehouse\" as S2\n    state \"Accepted by warehouse\" as S3\n    state \"Label printed\" as S4\n    state \"Handed to carrier\" as S5\n    S1 --> S2: fulfillment order created\n    S2 --> S3: warehouse accepts\n    S3 --> S4: picked and packed\n    S4 --> S5: carrier scan\n    note right of S1: cancel and address change by the customer\n    note right of S3: cancel becomes a request to the warehouse\n    note right of S5: only a return remains"
+ }
+]

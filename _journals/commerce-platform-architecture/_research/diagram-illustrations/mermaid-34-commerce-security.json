@@ -1,0 +1,16 @@
+[
+ {
+  "post": "34-commerce-security",
+  "figure": 1,
+  "id": "fig01-hosted-fields-card-number-travels-shopper",
+  "asset": "assets/images/34-commerce-security/fig01-hosted-fields-card-number-travels-shopper.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Shopper's browser\"] -->|\"card number typed into PSP iframe\"| PSP[\"the PSP\"]\n    S -->|\"page, scripts, order\"| M[\"the platform checkout page\"]\n    PSP -->|\"token and result\"| M\n    M -->|\"order with token, last four digits\"| O[\"Order record\"]\n    A[\"Attacker's script on the page\"] -.->|\"reads what the shopper types\"| S"
+ },
+ {
+  "post": "34-commerce-security",
+  "figure": 2,
+  "id": "fig02-card-testing-card-testing-night-every",
+  "asset": "assets/images/34-commerce-security/fig02-card-testing-card-testing-night-every.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as Attacker's script\n    participant C as Guest checkout\n    participant P as the PSP\n    participant I as Card issuers\n    B->>C: Attempt 1 with stolen card A, cheapest item\n    C->>P: Authorize small amount\n    P->>I: Authorization request\n    I-->>P: Declined\n    P-->>C: Declined, fee charged\n    B->>C: Attempt 2 with stolen card B\n    Note over B,C: Repeated 48,000 times between 23:40 and 04:10\n    P->>P: Rate and decline pattern exceeds threshold\n    P-->>C: Account paused for 40 minutes at 02:05"
+ }
+]

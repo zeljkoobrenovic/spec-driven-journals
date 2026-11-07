@@ -1,0 +1,16 @@
+[
+ {
+  "post": "part-5-intro",
+  "figure": 1,
+  "id": "fig01-outside-channels-part-v-three-kinds",
+  "asset": "assets/images/part-5-intro/fig01-outside-channels-part-v-three-kinds.jpeg",
+  "mermaid": "flowchart LR\n    MP[\"Marketplaces bol, Amazon.de, Zalando\"] -->|\"orders and a scorecard\"| CON[\"Marketplace connector\"]\n    SH[\"Wholesale shops, 1,100 accounts\"] -->|\"portal, e-mail, phone\"| B2B[\"B2B portal\"]\n    CH[\"Retail chain Bergzicht\"] -->|\"ORDERS by EDI\"| EDI[\"EDI provider\"]\n    CON -->|\"one order object per channel\"| OMS[\"Order record\"]\n    B2B --> OMS\n    EDI --> OMS\n    OMS -->|\"fulfillment orders\"| WMS[\"Warehouse\"]\n    WMS -->|\"despatch advice from the pack confirmation\"| EDI\n    OMS -->|\"orders, daily batch\"| ERP[\"ERP, finance only\"]\n    WMS -->|\"shipments, daily batch\"| ERP\n    ERP -->|\"invoices by EDI and Peppol\"| EDI\n    ERP -->|\"wholesale prices and credit as events\"| B2B"
+ },
+ {
+  "post": "part-5-intro",
+  "figure": 2,
+  "id": "fig02-four-promises-part-v-makes-outside",
+  "asset": "assets/images/part-5-intro/fig02-four-promises-part-v-makes-outside.jpeg",
+  "mermaid": "flowchart TB\n    Q1[\"How much stock a marketplace may sell\"] --> A1[\"One availability calculation per channel\"]\n    Q2[\"What price and credit a shop gets\"] --> A2[\"The pricing source and the ERP's receivables\"]\n    Q3[\"What is on each pallet\"] --> A3[\"The warehouse pack confirmation\"]\n    Q4[\"What is owed, as a legal invoice\"] --> A4[\"The ERP, numbered and transmitted\"]\n    A1 --> R[\"Every promise to an outside party has one honest source\"]\n    A2 --> R\n    A3 --> R\n    A4 --> R"
+ }
+]

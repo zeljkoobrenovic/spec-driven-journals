@@ -1,0 +1,23 @@
+[
+ {
+  "post": "04-boundaries-and-systems-of-record",
+  "figure": 1,
+  "id": "fig01-one-fact-one-writer-one-record",
+  "asset": "assets/images/04-boundaries-and-systems-of-record/fig01-one-fact-one-writer-one-record.jpeg",
+  "mermaid": "flowchart LR\n    W[\"One writer  the pick scan\"] -->|\"changes the fact\"| R[\"System of record  the WMS shelf count\"]\n    R -->|\"stock event\"| C1[\"Copy  availability per channel\"]\n    C1 -->|\"publish\"| C2[\"Copy  storefront\"]\n    C1 -->|\"publish\"| C3[\"Copy  marketplace listing\"]\n    R -->|\"every 15 min\"| C4[\"Copy  ERP valued quantity\"]\n    REC[\"Reconciliation job\"] -->|\"compares and reports\"| R\n    REC -->|\"compares and reports\"| C2"
+ },
+ {
+  "post": "04-boundaries-and-systems-of-record",
+  "figure": 2,
+  "id": "fig02-three-status-order-three-bounded-contexts",
+  "asset": "assets/images/04-boundaries-and-systems-of-record/fig02-three-status-order-three-bounded-contexts.jpeg",
+  "mermaid": "flowchart LR\n    N[\"Order number 1052877\"] --- A[\"Storefront context  Delivered\"]\n    N --- B[\"Warehouse context  In picking\"]\n    N --- C[\"ERP context  Not invoiced\"]\n    A -.->|\"no translation\"| B\n    B -.->|\"no translation\"| C\n    O[\"Order management  one state model\"] -->|\"owns the cross context view\"| N"
+ },
+ {
+  "post": "04-boundaries-and-systems-of-record",
+  "figure": 3,
+  "id": "fig03-kestrel-pine-s-warehouse-stock-before",
+  "asset": "assets/images/04-boundaries-and-systems-of-record/fig03-kestrel-pine-s-warehouse-stock-before.jpeg",
+  "mermaid": "flowchart LR\n    subgraph Before[\"January 2027  six writers\"]\n        W1[\"WMS feed\"] --> E[\"ERP stock\"]\n        H1[\"Manual ERP edits\"] --> E\n        E -->|\"hourly\"| P[\"Platform stock\"]\n        H2[\"Manual platform edits\"] --> P\n        A3[\"Three apps\"] --> P\n        P -->|\"hourly\"| M[\"Connector to marketplaces\"]\n    end\n    subgraph After[\"Q4 2027  one writer per location\"]\n        S[\"WMS scans\"] --> R[\"WMS record\"]\n        R -->|\"stock events\"| AV[\"Availability service\"]\n        POS[\"POS record\"] -->|\"stock events\"| AV\n        X[\"External location\"] -->|\"reports\"| AV\n        AV -->|\"per channel\"| CH[\"Storefronts and marketplaces\"]\n    end"
+ }
+]

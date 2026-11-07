@@ -1,0 +1,16 @@
+[
+ {
+  "post": "28-commerce-data-and-analytics",
+  "figure": 1,
+  "id": "fig01-every-operational-system-copied-into-one",
+  "asset": "assets/images/28-commerce-data-and-analytics/fig01-every-operational-system-copied-into-one.jpeg",
+  "mermaid": "flowchart LR\n    PL[\"the platform\"] -->|\"extract and load, every 15 minutes\"| RAW[\"Warehouse, raw copies\"]\n    OMS[\"the OMS from Q4 2027\"] -->|\"order events\"| RAW\n    WMS[\"the WMS\"] -->|\"shipment and stock events\"| RAW\n    ERP[\"the ERP\"] -->|\"daily batch\"| RAW\n    POS[\"the POS\"] -->|\"nightly export\"| RAW\n    MC[\"the marketplace connector\"] -->|\"daily export\"| RAW\n    RAW -->|\"modeled tables\"| MOD[\"Warehouse, modeled\"]\n    MOD -->|\"one definition per metric\"| ML[\"Metrics layer\"]\n    ML --> BI[\"Dashboards and reports\"]\n    ML --> PLAN[\"Merchandising and inventory planning\"]\n    ML --> PART[\"Data products for partners\"]"
+ },
+ {
+  "post": "28-commerce-data-and-analytics",
+  "figure": 2,
+  "id": "fig02-bridge-platform-s-february-count-w7",
+  "asset": "assets/images/28-commerce-data-and-analytics/fig02-bridge-platform-s-february-count-w7.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Platform count 21,050\"] -->|\"minus 1,540 exchange orders\"| B[\"19,510\"]\n    B -->|\"minus 40 test orders\"| C[\"19,470\"]\n    C -->|\"plus 3,310 marketplace orders\"| D[\"22,780\"]\n    D -->|\"plus 370 manual and EDI wholesale orders\"| E[\"W7 orders 23,150\"]\n    E -->|\"minus 290 canceled\"| F[\"Net of cancellations 22,860\"]\n    F -->|\"minus 150 month-end timing, invoice date\"| G[\"ERP count 22,710\"]\n    E -->|\"plus 640 second parcels and 1,540 exchange parcels, minus 790 program-fulfilled, 290 canceled and 110 timing\"| H[\"Warehouse report 24,140\"]"
+ }
+]

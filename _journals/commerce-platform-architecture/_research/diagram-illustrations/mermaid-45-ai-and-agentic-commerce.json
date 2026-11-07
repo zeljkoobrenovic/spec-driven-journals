@@ -1,0 +1,30 @@
+[
+ {
+  "post": "45-ai-and-agentic-commerce",
+  "figure": 1,
+  "id": "fig01-discovery-hand-off-needs-only-correct",
+  "asset": "assets/images/45-ai-and-agentic-commerce/fig01-discovery-hand-off-needs-only-correct.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Shopper in a chat product\"] --> A[\"Agent\"]\n    A -->|\"reads feed and catalog\"| F[\"Merchant product feed\"]\n    A -->|\"shape 1 hand off\"| C1[\"Merchant's own checkout\"]\n    A -->|\"shape 2 cart and pay\"| C2[\"Checkout inside the channel\"]\n    C2 -->|\"payment token\"| P[\"PSP and card network\"]\n    C1 --> O[\"Order record\"]\n    C2 --> O\n    A -->|\"where is my order\"| O"
+ },
+ {
+  "post": "45-ai-and-agentic-commerce",
+  "figure": 2,
+  "id": "fig02-mcp-carries-calls-ucp-or-acp",
+  "asset": "assets/images/45-ai-and-agentic-commerce/fig02-mcp-carries-calls-ucp-or-acp.jpeg",
+  "mermaid": "flowchart TB\n    I[\"Identity layer: Web Bot Auth signatures, agent profiles, Visa TAP, Mastercard Agent Pay\"] --> C[\"Commerce layer: UCP or ACP define feed, cart, checkout, order\"]\n    C --> T[\"Transport layer: MCP, REST, JSON-RPC, A2A\"]\n    C --> P[\"Payment layer: AP2 mandates, scoped payment tokens, network agent tokens\"]\n    P --> SCA[\"In the EU the shopper still authenticates the exact cart\"]"
+ },
+ {
+  "post": "45-ai-and-agentic-commerce",
+  "figure": 3,
+  "id": "fig03-european-agent-purchase-2026-pilots-shaped",
+  "asset": "assets/images/45-ai-and-agentic-commerce/fig03-european-agent-purchase-2026-pilots-shaped.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Sh as Shopper\n    participant Ag as Agent\n    participant Me as Merchant gateway\n    participant Av as Availability and promise\n    participant PSP as PSP and issuer\n    participant OMS as OMS\n    Sh->>Ag: Find a Ridgewalker women's M moss under 200 euro by Thursday\n    Ag->>Me: Search catalog and build cart\n    Me->>Av: Can this be promised for Thursday\n    Av-->>Me: Yes, one unit allocatable, delivery Thursday\n    Me-->>Ag: Final cart 199 euro, delivery Thursday, free returns 14 days\n    Ag->>Sh: Approve this exact cart\n    Sh->>PSP: Passkey authentication bound to 199 euro and the merchant\n    PSP-->>Me: Authorized\n    Me->>OMS: Create order, channel agent, agent id recorded\n    OMS-->>Ag: Order number and status endpoint"
+ },
+ {
+  "post": "45-ai-and-agentic-commerce",
+  "figure": 4,
+  "id": "fig04-low-regret-design-adapters-per-channel",
+  "asset": "assets/images/45-ai-and-agentic-commerce/fig04-low-regret-design-adapters-per-channel.jpeg",
+  "mermaid": "flowchart LR\n    CH1[\"Chat product A\"] --> AD1[\"UCP adapter\"]\n    CH2[\"Chat product B\"] --> AD2[\"ACP adapter\"]\n    CH3[\"Service bot and storefront\"] --> API[\"One internal commerce API\"]\n    AD1 --> API\n    AD2 --> API\n    API --> PIM[\"PIM: product and policy\"]\n    API --> AV[\"Availability and promise\"]\n    API --> OMS[\"OMS: cart, order, status\"]\n    ID[\"Agent identity at the edge\"] --> AD1\n    ID --> AD2"
+ }
+]

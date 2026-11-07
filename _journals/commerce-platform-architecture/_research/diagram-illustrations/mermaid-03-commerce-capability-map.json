@@ -1,0 +1,23 @@
+[
+ {
+  "post": "03-commerce-capability-map",
+  "figure": 1,
+  "id": "fig01-six-layers-commerce-platform-experience-layer",
+  "asset": "assets/images/03-commerce-capability-map/fig01-six-layers-commerce-platform-experience-layer.jpeg",
+  "mermaid": "flowchart TB\n    L1[\"EXPERIENCE  storefront, search, cart and checkout, B2B portal, POS, service and notifications\"]\n    L2[\"OFFER  product information, pricing, promotions and loyalty, inventory and availability\"]\n    L3[\"TRANSACTION  payments, order management, tax, invoicing and ledger\"]\n    L4[\"OPERATIONS  warehouse and fulfillment, shipping and delivery, returns, store operations\"]\n    L5[\"PARTNERS AND BACK OFFICE  marketplaces, EDI and e-invoicing, ERP\"]\n    L6[\"FOUNDATIONS  integration, identity and master data, data and analytics, platform services\"]\n    L1 -->|\"reads\"| L2\n    L1 -->|\"creates orders and payments\"| L3\n    L3 -->|\"fulfillment orders\"| L4\n    L4 -->|\"stock and shipments\"| L2\n    L5 -->|\"orders in, documents out\"| L3\n    L6 -->|\"carries every flow\"| L1"
+ },
+ {
+  "post": "03-commerce-capability-map",
+  "figure": 2,
+  "id": "fig02-flows-typical-merchant-product-price-availability",
+  "asset": "assets/images/03-commerce-capability-map/fig02-flows-typical-merchant-product-price-availability.jpeg",
+  "mermaid": "flowchart LR\n    PI[\"Product information\"] -->|\"content\"| SF[\"Storefront and channels\"]\n    PR[\"Pricing and promotions\"] -->|\"prices\"| SF\n    AV[\"Availability\"] -->|\"what each channel may sell\"| SF\n    SF -->|\"orders\"| OM[\"Order management\"]\n    OM -->|\"payment and refund\"| PSP[\"Payments\"]\n    OM -->|\"fulfillment orders\"| WH[\"Warehouse and shipping\"]\n    WH -->|\"stock on hand\"| AV\n    WH -->|\"shipments and tracking\"| OM\n    RT[\"Returns\"] -->|\"return received\"| OM\n    RT -->|\"restock\"| WH\n    OM -->|\"orders and invoices, daily\"| ERP[\"ERP and ledger\"]"
+ },
+ {
+  "post": "03-commerce-capability-map",
+  "figure": 3,
+  "id": "fig03-kestrel-pine-s-thirteen-systems-fill",
+  "asset": "assets/images/03-commerce-capability-map/fig03-kestrel-pine-s-thirteen-systems-fill.jpeg",
+  "mermaid": "flowchart LR\n    PL[\"the platform\"] --- B1[\"Storefront, cart, checkout, B2B portal, promotions\"]\n    POS[\"the POS\"] --- B2[\"Point of sale, store stock\"]\n    WMS[\"the WMS and shipping service\"] --- B3[\"Warehouse, shipping\"]\n    ERP[\"the ERP\"] --- B4[\"Ledger, purchasing, item master, manual orders\"]\n    MC[\"the marketplace connector\"] --- B5[\"Marketplaces\"]\n    RP[\"the returns portal\"] --- B6[\"Returns\"]\n    EMPTY[\"Empty boxes  product information, order management, availability, identity\"]"
+ }
+]

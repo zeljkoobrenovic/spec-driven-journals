@@ -1,0 +1,30 @@
+[
+ {
+  "post": "25-events-consistency-and-reconciliation",
+  "figure": 1,
+  "id": "fig01-same-order-event-delivered-twice-queue",
+  "asset": "assets/images/25-events-consistency-and-reconciliation/fig01-same-order-event-delivered-twice-queue.jpeg",
+  "mermaid": "sequenceDiagram\n    participant PL as the platform\n    participant Q as queue\n    participant WMS as the WMS\n    PL->>Q: order placed 1072455\n    Q->>WMS: deliver order 1072455\n    WMS->>WMS: first time seen, create pick order\n    Q->>WMS: deliver order 1072455 again after a timeout\n    WMS->>WMS: key 1072455 already processed, do nothing\n    WMS-->>Q: acknowledged"
+ },
+ {
+  "post": "25-events-consistency-and-reconciliation",
+  "figure": 2,
+  "id": "fig02-outbox-order-promise-announce-it-are",
+  "asset": "assets/images/25-events-consistency-and-reconciliation/fig02-outbox-order-promise-announce-it-are.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Order service\"] -->|\"one transaction\"| DB[\"Database: order row plus outbox row\"]\n    DB -->|\"relay reads outbox\"| R[\"Message relay\"]\n    R -->|\"publishes, possibly twice\"| Q[\"Queue\"]\n    Q -->|\"delivers\"| C[\"Consumer with idempotency key\"]\n    R -->|\"marks row sent\"| DB"
+ },
+ {
+  "post": "25-events-consistency-and-reconciliation",
+  "figure": 3,
+  "id": "fig03-place-order-saga-each-step-that",
+  "asset": "assets/images/25-events-consistency-and-reconciliation/fig03-place-order-saga-each-step-that.jpeg",
+  "mermaid": "flowchart LR\n    S1[\"Reserve stock\"] -->|\"reserved\"| S2[\"Authorize payment\"]\n    S2 -->|\"authorized\"| S3[\"Create order\"]\n    S3 -->|\"created\"| S4[\"Confirm to shopper\"]\n    S2 -->|\"declined\"| C1[\"Release reservation\"]\n    S3 -->|\"failed\"| C2[\"Void authorization and release reservation\"]"
+ },
+ {
+  "post": "25-events-consistency-and-reconciliation",
+  "figure": 4,
+  "id": "fig04-reconciliation-job-loop-recipient-copy-corrected",
+  "asset": "assets/images/25-events-consistency-and-reconciliation/fig04-reconciliation-job-loop-recipient-copy-corrected.jpeg",
+  "mermaid": "flowchart LR\n    SOR[\"System of record: the WMS\"] -->|\"read on schedule\"| J[\"Reconciliation job\"]\n    CP[\"Copy: the platform\"] -->|\"read on schedule\"| J\n    J -->|\"matched\"| OK[\"No action\"]\n    J -->|\"differences with key and amount\"| EX[\"Exception list to a named owner\"]\n    EX -->|\"repair\"| CP\n    EX -->|\"find the writer\"| W[\"Unowned writer removed\"]"
+ }
+]

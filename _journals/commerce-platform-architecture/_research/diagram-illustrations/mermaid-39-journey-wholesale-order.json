@@ -1,0 +1,23 @@
+[
+ {
+  "post": "39-journey-wholesale-order",
+  "figure": 1,
+  "id": "fig01-bergzicht-s-reorder-late-2027-architecture",
+  "asset": "assets/images/39-journey-wholesale-order/fig01-bergzicht-s-reorder-late-2027-architecture.jpeg",
+  "mermaid": "sequenceDiagram\n    participant BZ as Bergzicht Outdoor\n    participant VAN as the EDI provider\n    participant IP as the iPaaS\n    participant OMS as the OMS\n    participant AV as the availability service\n    participant ERP as the ERP\n    participant WMS as the WMS\n    BZ->>VAN: ORDERS, 240 units, 18 lines, 6 April\n    VAN-->>BZ: CONTRL acknowledgement\n    VAN->>IP: Interchange for Kestrel and Pine\n    IP->>OMS: Mapped order with PO reference\n    OMS->>ERP: Check contract prices and credit limit\n    ERP-->>OMS: Prices match, limit not exceeded\n    OMS->>AV: Allocate 240 units at Duiven\n    AV-->>OMS: Committed\n    OMS->>VAN: ORDRSP accepted, delivery 9 April\n    OMS->>WMS: Fulfillment order, pallet service level\n    WMS-->>OMS: Accepted\n    WMS->>WMS: Pick, pack to three pallets, print SSCC labels\n    WMS->>VAN: DESADV from pack confirmation, 8 April\n    VAN-->>BZ: DESADV with three SSCCs\n    WMS-->>OMS: Shipped, three pallets\n    BZ->>BZ: Scan SSCCs at Zwolle, 9 April\n    OMS->>ERP: Shipped lines and prices\n    ERP->>VAN: INVOIC, due 9 May\n    VAN-->>BZ: INVOIC\n    BZ-->>ERP: Bank transfer and remittance, by 9 May"
+ },
+ {
+  "post": "39-journey-wholesale-order",
+  "figure": 2,
+  "id": "fig02-each-wholesale-document-has-own-system",
+  "asset": "assets/images/39-journey-wholesale-order/fig02-each-wholesale-document-has-own-system.jpeg",
+  "mermaid": "flowchart LR\n    ORD[\"ORDERS from Bergzicht\"] -->|\"mapped and validated\"| OMS[\"OMS order record\"]\n    OMS -->|\"fulfillment order\"| WMS[\"WMS pack confirmation with SSCCs\"]\n    WMS -->|\"DESADV\"| REC[\"Receipt scan at Zwolle\"]\n    OMS -->|\"shipped lines and prices\"| ERP[\"ERP invoice INVOIC\"]\n    ERP -->|\"receivable due 9 May\"| PAY[\"Bank transfer and remittance\"]\n    PAY -->|\"cash application\"| ERP\n    REC -.->|\"four-way match on the buyer side\"| ERP"
+ },
+ {
+  "post": "39-journey-wholesale-order",
+  "figure": 3,
+  "id": "fig03-asn-chargeback-was-architecture-failure-not",
+  "asset": "assets/images/39-journey-wholesale-order/fig03-asn-chargeback-was-architecture-failure-not.jpeg",
+  "mermaid": "flowchart TB\n    subgraph JAN[\"January 2027\"]\n        O1[\"ORDERS into the ERP\"] --> E1[\"ERP sends order to WMS\"]\n        E1 --> W1[\"WMS packs and prints its own labels\"]\n        O1 --> D1[\"DESADV from the ERP at release\"]\n        W1 -.->|\"no link\"| D1\n        D1 --> X1[\"Scan mismatch at Zwolle, deduction\"]\n    end\n    subgraph LATE[\"Late 2027 after W6\"]\n        O2[\"ORDERS into the OMS\"] --> W2[\"WMS packs and prints SSCC at pack\"]\n        W2 --> D2[\"DESADV from pack confirmation\"]\n        D2 --> X2[\"Scan matches, no deduction\"]\n    end"
+ }
+]

@@ -1,0 +1,16 @@
+[
+ {
+  "post": "29-commerce-architecture-styles",
+  "figure": 1,
+  "id": "fig01-four-styles-differ-how-many-separately",
+  "asset": "assets/images/29-commerce-architecture-styles/fig01-four-styles-differ-how-many-separately.jpeg",
+  "mermaid": "flowchart LR\n    subgraph M [\"Monolith\"]\n        M1[\"Catalog, cart, orders, payments in one program and one database\"]\n    end\n    subgraph MM [\"Modular monolith\"]\n        MM1[\"Catalog module\"] --- MM2[\"Orders module\"]\n        MM2 --- MM3[\"Payments module\"]\n    end\n    subgraph MS [\"Microservices\"]\n        S1[\"Catalog service\"] -->|\"network\"| S2[\"Orders service\"]\n        S2 -->|\"network\"| S3[\"Payments service\"]\n    end\n    subgraph C [\"Composable\"]\n        C1[\"Commerce engine vendor\"] -->|\"merchant's integration layer\"| C2[\"OMS vendor\"]\n        C2 -->|\"merchant's integration layer\"| C3[\"PSP vendor\"]\n    end"
+ },
+ {
+  "post": "29-commerce-architecture-styles",
+  "figure": 2,
+  "id": "fig02-kestrel-pine-s-own-code-2027",
+  "asset": "assets/images/29-commerce-architecture-styles/fig02-kestrel-pine-s-own-code-2027.jpeg",
+  "mermaid": "flowchart TB\n    subgraph IS [\"Kestrel and Pine integration service, one deployable\"]\n        ST[\"Stock module\"] \n        OR[\"Orders module\"]\n        PR[\"Prices module\"]\n        PD[\"Products module\"]\n        RT[\"Returns module\"]\n    end\n    PL[\"The platform, SaaS\"] -->|\"orders, webhooks\"| OR\n    OR -->|\"fulfillment orders\"| WMS[\"The WMS, SaaS\"]\n    WMS -->|\"stock events\"| ST\n    ST -->|\"availability\"| OMS[\"The OMS with availability module, bought\"]\n    PIM[\"The PIM, bought\"] -->|\"published products\"| PD\n    PD -->|\"listings\"| MC[\"The marketplace connector, SaaS\"]"
+ }
+]

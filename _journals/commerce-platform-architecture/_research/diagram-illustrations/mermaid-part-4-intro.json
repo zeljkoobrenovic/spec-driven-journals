@@ -1,0 +1,16 @@
+[
+ {
+  "post": "part-4-intro",
+  "figure": 1,
+  "id": "fig01-systems-part-iv-order-record-instructs",
+  "asset": "assets/images/part-4-intro/fig01-systems-part-iv-order-record-instructs.jpeg",
+  "mermaid": "flowchart LR\n    OMS[\"Order record\"] -->|\"fulfillment order\"| WMS[\"Warehouse at Duiven\"]\n    WMS -->|\"label and parcel\"| CAR[\"Carriers PostNL bpost DHL DPD\"]\n    CAR -->|\"delivered\"| CUST[\"Customer in Nijmegen\"]\n    OMS -->|\"collect or ship from store\"| POS[\"Stores and the POS\"]\n    POS -->|\"handed over at the counter\"| CUST\n    CUST -->|\"return or exchange\"| RP[\"Returns portal\"]\n    RP -->|\"parcel back\"| WMS\n    WMS -->|\"shipped, stock and disposition events\"| OMS\n    CAR -->|\"scan events\"| OMS\n    OMS -->|\"one status\"| SVC[\"Notifications, status page, agent\"]"
+ },
+ {
+  "post": "part-4-intro",
+  "figure": 2,
+  "id": "fig02-four-promises-part-iv-inputs-each",
+  "asset": "assets/images/part-4-intro/fig02-four-promises-part-iv-inputs-each.jpeg",
+  "mermaid": "flowchart TB\n    P1[\"Delivered tomorrow\"] --> I1[\"Last wave, backlog age, lane transit\"]\n    P2[\"Ready for collection\"] --> I2[\"Store stock event, buffer, staff confirmation\"]\n    P3[\"Your order was delivered\"] --> I3[\"The carrier's scan, per parcel\"]\n    P4[\"Your refund is on its way\"] --> I4[\"The warehouse's disposition, one refund writer\"]\n    I1 --> R[\"Each promise is computed from the fact of the system that keeps it\"]\n    I2 --> R\n    I3 --> R\n    I4 --> R"
+ }
+]

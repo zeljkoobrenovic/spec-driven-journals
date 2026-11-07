@@ -1,0 +1,16 @@
+[
+ {
+  "post": "06-product-information",
+  "figure": 1,
+  "id": "fig01-one-product-grid-variants-each-two",
+  "asset": "assets/images/06-product-information/fig01-one-product-grid-variants-each-two.jpeg",
+  "mermaid": "flowchart TB\n    P[\"Product: Ridgewalker shell jacket, women's\"] --> O1[\"Option: size, 6 values\"]\n    P --> O2[\"Option: color, 4 values\"]\n    O1 --> V[\"Variant: size M, color moss\"]\n    O2 --> V\n    V --> S[\"SKU: the merchant's code, never changes\"]\n    V --> G[\"GTIN: the barcode number from GS1, never changes\"]\n    P --> A[\"Attributes: waterproof rating, fabric, weight\"]\n    P --> M[\"Media and copy in NL, FR, DE\"]\n    P --> C[\"Categories in each channel's taxonomy\"]"
+ },
+ {
+  "post": "06-product-information",
+  "figure": 2,
+  "id": "fig02-pim-erp-still-creates-item-keeps",
+  "asset": "assets/images/06-product-information/fig02-pim-erp-still-creates-item-keeps.jpeg",
+  "mermaid": "flowchart LR\n    ERP[\"the ERP: SKU, GTIN, cost, supplier\"] -->|\"new items\"| PIM[\"the PIM: content, attributes, media, translations\"]\n    SUP[\"Suppliers and the product team\"] -->|\"enrichment\"| PIM\n    PIM -->|\"scheduled publication\"| PL[\"the platform: storefronts NL BE DE\"]\n    PIM -->|\"channel mappings\"| MC[\"the marketplace connector: bol, Amazon.de, Zalando\"]\n    PIM -->|\"feed\"| GMC[\"Google Merchant Center\"]\n    PL -->|\"index\"| SRCH[\"Search\"]\n    MC -->|\"rejections\"| PIM\n    GMC -->|\"disapprovals\"| PIM\n    ERP -->|\"weight, dimensions\"| WMS[\"the WMS\"]"
+ }
+]

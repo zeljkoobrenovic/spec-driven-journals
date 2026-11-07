@@ -1,0 +1,16 @@
+[
+ {
+  "post": "07-pricing-architecture",
+  "figure": 1,
+  "id": "fig01-price-selected-not-looked-up-rule",
+  "asset": "assets/images/07-pricing-architecture/fig01-price-selected-not-looked-up-rule.jpeg",
+  "mermaid": "flowchart TB\n    Q[\"Who, where, which channel, how many, when\"] --> C1{\"Contract price for this account?\"}\n    C1 -->|\"yes\"| P1[\"Use the contract price\"]\n    C1 -->|\"no\"| C2{\"Customer group price for this market and channel?\"}\n    C2 -->|\"yes\"| P2[\"Use the group price, apply quantity tier\"]\n    C2 -->|\"no\"| C3{\"Market price valid today?\"}\n    C3 -->|\"yes\"| P3[\"Use the market price\"]\n    C3 -->|\"no\"| P4[\"Use the base price\"]\n    P1 --> F[\"Freeze on the order with the rule version and the moment\"]\n    P2 --> F\n    P3 --> F\n    P4 --> F"
+ },
+ {
+  "post": "07-pricing-architecture",
+  "figure": 2,
+  "id": "fig02-two-sources-one-per-kind-price",
+  "asset": "assets/images/07-pricing-architecture/fig02-two-sources-one-per-kind-price.jpeg",
+  "mermaid": "flowchart LR\n    PL[\"the platform: market price lists NL BE DE and campaign calendar\"] -->|\"price events with effective dates\"| MC[\"the marketplace connector: channel price rules with a cost floor\"]\n    PL -->|\"storefront and checkout select live\"| SF[\"Storefronts and B2B portal\"]\n    PL -->|\"effective-dated price file via the iPaaS\"| POS[\"the POS, offline capable\"]\n    ERP[\"the ERP: wholesale list and contract prices\"] -->|\"price events to the B2B catalogs\"| PL\n    MC -->|\"listing prices\"| MP[\"bol, Amazon.de, Zalando\"]\n    MP -->|\"parity and Buy Box signals\"| MC\n    REC[\"Daily price reconciliation\"] -.->|\"compares\"| PL\n    REC -.->|\"compares\"| POS\n    REC -.->|\"compares\"| MP"
+ }
+]

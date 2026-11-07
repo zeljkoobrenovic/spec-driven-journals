@@ -1,0 +1,16 @@
+[
+ {
+  "post": "46-case-shopify",
+  "figure": 1,
+  "id": "fig01-shop-sharding-key-pod-unit-isolation",
+  "asset": "assets/images/46-case-shopify/fig01-shop-sharding-key-pod-unit-isolation.jpeg",
+  "mermaid": "flowchart LR\n    R[\"Request for shop 4711\"] --> LB[\"Load balancer and routing table\"]\n    LB -->|\"shop 4711 lives in pod 12\"| P12[\"Pod 12: one MySQL shard plus caches\"]\n    LB -.->|\"other shops\"| P13[\"Pod 13\"]\n    P12 --> APP[\"Shared app servers and job workers, one pod at a time\"]\n    MV[\"Shop move: copy rows, replay changes, brief writer lock, update routing\"] --> P12\n    MV --> P13"
+ },
+ {
+  "post": "46-case-shopify",
+  "figure": 2,
+  "id": "fig02-shopify-s-documented-integration-contract-scoped",
+  "asset": "assets/images/46-case-shopify/fig02-shopify-s-documented-integration-contract-scoped.jpeg",
+  "mermaid": "flowchart LR\n    APP[\"App with scopes read_orders write_inventory\"] -->|\"GraphQL, cost-based rate limit per app per store\"| SH[\"Shopify\"]\n    SH -->|\"webhook, at least once, unordered, signed\"| APP\n    SH -->|\"8 retries over 4 hours then subscription deleted\"| APP\n    APP -->|\"reconciliation job fetches changed data\"| SH\n    V[\"API version 2026-10, 12 months support, fall forward\"] --- SH"
+ }
+]

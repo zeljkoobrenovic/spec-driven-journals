@@ -1,0 +1,16 @@
+[
+ {
+  "post": "40-journey-peak-day",
+  "figure": 1,
+  "id": "fig01-sell-out-19-40-reached-erp",
+  "asset": "assets/images/40-journey-peak-day/fig01-sell-out-19-40-reached-erp.jpeg",
+  "mermaid": "sequenceDiagram\n    participant SH as Shoppers\n    participant PL as Platform and storefronts\n    participant IP as iPaaS order flow\n    participant WMS as WMS at Duiven\n    participant ERP as ERP\n    participant MC as Marketplace connector\n    participant MP as bol, Amazon.de, Zalando\n    SH->>PL: Ridgewalker orders, up to 38 a minute\n    PL->>IP: New orders, one at a time\n    IP->>WMS: Create order, throttled to about 7 a minute\n    WMS->>WMS: 19:40 last Ridgewalker picked, stock zero\n    WMS->>ERP: 19:45 stock snapshot, Ridgewalker zero\n    SH->>PL: 19:45 to 20:30 jackets still sold\n    MP->>MC: 19:45 to 21:35 jackets still sold\n    ERP->>PL: about 20:30 hourly push, Ridgewalker zero\n    PL-->>SH: sold out from about 20:30\n    PL->>MC: about 21:15 hourly push, Ridgewalker zero\n    MC->>MP: about 21:35 listings at zero"
+ },
+ {
+  "post": "40-journey-peak-day",
+  "figure": 2,
+  "id": "fig02-2027-chain-orders-flow-through-oms",
+  "asset": "assets/images/40-journey-peak-day/fig02-2027-chain-orders-flow-through-oms.jpeg",
+  "mermaid": "flowchart LR\n    SH[\"Shoppers, 60 a minute forecast\"] --> PL[\"Platform checkout, never degraded\"]\n    PL -->|\"order webhook\"| OMS[\"OMS, one order record\"]\n    OMS -->|\"fulfillment orders in batches, 120 a minute tested\"| WMS[\"WMS at Duiven\"]\n    WMS -->|\"stock events\"| AV[\"Availability service, ATP per channel\"]\n    AV -->|\"within a minute\"| PL\n    AV -->|\"within a minute\"| MC[\"Marketplace connector\"]\n    OMS -->|\"gauge, alarm, dead letter\"| SR[\"Situation room dashboard\"]\n    PL -->|\"orders per minute\"| SR"
+ }
+]

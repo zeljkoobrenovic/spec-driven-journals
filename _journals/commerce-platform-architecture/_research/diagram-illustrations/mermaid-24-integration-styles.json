@@ -1,0 +1,16 @@
+[
+ {
+  "post": "24-integration-styles",
+  "figure": 1,
+  "id": "fig01-four-integration-styles-only-direct-call",
+  "asset": "assets/images/24-integration-styles/fig01-four-integration-styles-only-direct-call.jpeg",
+  "mermaid": "flowchart LR\n    A1[\"System A\"] -->|\"writes a file\"| F[\"Shared folder or file server\"] -->|\"reads the file later\"| B1[\"System B\"]\n    A2[\"System A\"] -->|\"writes rows\"| DB[\"Shared database tables\"] -->|\"reads the rows\"| B2[\"System B\"]\n    A3[\"System A\"] -->|\"calls and waits for the answer\"| B3[\"System B API\"]\n    A4[\"System A\"] -->|\"publishes a message\"| Q[\"Queue or broker\"] -->|\"delivers to each reader\"| B4[\"System B C D\"]"
+ },
+ {
+  "post": "24-integration-styles",
+  "figure": 2,
+  "id": "fig02-four-systems-need-six-point-point",
+  "asset": "assets/images/24-integration-styles/fig02-four-systems-need-six-point-point.jpeg",
+  "mermaid": "flowchart LR\n    subgraph P2P[\"Point to point\"]\n        A[\"Platform\"] --- B[\"WMS\"]\n        A --- C[\"ERP\"]\n        B --- C\n        A --- D[\"Connector\"]\n        C --- D\n        D --- B\n    end\n    subgraph HUB[\"Hub with ownership rules\"]\n        E[\"Platform\"] --> H[\"iPaaS: mapping, retries, monitoring, owner per flow\"]\n        F[\"WMS\"] --> H\n        G[\"ERP\"] --> H\n        H --> I[\"Connector\"]\n    end"
+ }
+]

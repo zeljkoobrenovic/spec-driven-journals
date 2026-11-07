@@ -1,0 +1,16 @@
+[
+ {
+  "post": "meet-kestrel-and-pine",
+  "figure": 1,
+  "id": "fig01-kestrel-pine-s-january-2027-landscape",
+  "asset": "assets/images/meet-kestrel-and-pine/fig01-kestrel-pine-s-january-2027-landscape.jpeg",
+  "mermaid": "flowchart LR\n    SF[\"Storefronts NL BE DE and B2B portal\"] -->|\"orders\"| PL[\"the platform\"]\n    MP[\"bol, Amazon.de, Zalando\"] -->|\"orders\"| MC[\"the marketplace connector\"]\n    ST[\"Six stores\"] -->|\"sales\"| POS[\"the POS\"]\n    BZ[\"Bergzicht Outdoor\"] -->|\"EDI orders\"| EDI[\"the EDI provider\"]\n    PL -->|\"payments\"| PSP[\"the PSP\"]\n    PL -->|\"orders via iPaaS\"| WMS[\"the WMS and shipping service\"]\n    MC -->|\"orders via iPaaS\"| WMS\n    EDI -->|\"orders\"| ERP[\"the ERP\"]\n    ERP -->|\"wholesale orders\"| WMS\n    WMS -->|\"stock every 15 min\"| ERP\n    ERP -->|\"stock hourly\"| PL\n    PL -->|\"stock hourly\"| MC\n    POS -->|\"store stock nightly\"| ERP\n    RP[\"the returns portal\"] -->|\"refunds by API\"| PL\n    NONE[\"No OMS and no PIM\"]"
+ },
+ {
+  "post": "meet-kestrel-and-pine",
+  "figure": 2,
+  "id": "fig02-eva-s-jacket-crosses-seven-systems",
+  "asset": "assets/images/meet-kestrel-and-pine/fig02-eva-s-jacket-crosses-seven-systems.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Eva as Eva Janssen\n    participant PL as the platform\n    participant PSP as the PSP\n    participant IP as the iPaaS\n    participant WMS as the WMS\n    participant PN as PostNL\n    participant ERP as the ERP\n    participant RP as the returns portal\n    Eva->>PL: Jacket size M moss and two pairs of socks, 13 April 21:14\n    PL->>PSP: Charge 235 euro by iDEAL\n    PSP-->>PL: Paid\n    PL-->>Eva: Order 1072455 confirmed, delivery tomorrow\n    PL->>IP: New order\n    IP->>WMS: Order to pick and pack\n    WMS->>PN: Label and parcel, 14 April\n    PN-->>Eva: Delivered 15 April\n    WMS->>ERP: Shipment and stock, every 15 minutes\n    ERP->>PL: Stock levels, hourly\n    Eva->>RP: Exchange jacket for size L, 19 April\n    RP->>PL: Exchange order by API\n    PL->>IP: Return expected and exchange order\n    IP->>WMS: Receive, inspect, ship size L, 22 April"
+ }
+]

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORDERED: Architecting Commerce Platforms</title>
+    <meta name="description" content="How commerce systems fit together, why the architectural decisions behind them matter, and how those decisions evolve as a business grows — from the catalog, the cart and the payment to the warehouse, the stores, the marketplaces and the back office, following one order from discovery to delivery and back. Written for readers new to commerce architecture, platform-neutral, with a fictional running example and dated public evidence. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:title" content="ORDERED: Architecting Commerce Platforms">
+    <meta property="og:description" content="How commerce systems fit together, why the architectural decisions behind them matter, and how those decisions evolve as a business grows — from the catalog, the cart and the payment to the warehouse, the stores, the marketplaces and the back office, following one order from discovery to delivery and back. Written for readers new to commerce architecture, platform-neutral, with a fictional running example and dated public evidence. This is a living journal and a work in progress: I revise it as I learn more through my work.">
+    <meta property="og:url" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/">
+    <meta property="og:image" content="https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/assets/images/konkapo-small-business-10207329.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/konkapo-small-business-10207329.jpg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/konkapo-small-business-10207329.jpg" alt=""></a>
+        <p class="logo-credit">Image by kazuharu kondo from Pixabay</p>
+        <div style="padding: 4px;">
+            <h1>ORDERED: Architecting Commerce Platforms</h1>
+            <p>How commerce systems fit together, why the architectural decisions behind them matter, and how those decisions evolve as a business grows — from the catalog, the cart and the payment to the warehouse, the stores, the marketplaces and the back office, following one order from discovery to delivery and back. Written for readers new to commerce architecture, platform-neutral, with a fictional running example and dated public evidence. This is a living journal and a work in progress: I revise it as I learn more through <a href="https://obren.io">my work</a>.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-label="Book edition" hidden></section>
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <div id="visual" hidden></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Preface", "description": "", "posts": [{"id": "", "status": "", "title": "Introduction: Why Commerce Architecture Matters", "excerpt": "What is this book about, who is it for, and how should you read it? It argues that a commerce platform is a promise-keeping machine, that most commerce failures are a promise one system made and another could not keep, and that architecture decides who may make which promise; it follows one order through eleven parts and routes you from the decision in front of you to the chapters that answer it.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Out of Stock, Out of Sync: Sixteen Ways Commerce Platforms Go Wrong", "excerpt": "Commerce platforms rarely fail through one bad decision; they sell the last unit twice, refund the same return twice and go down on the busiest day of the year through recurring patterns that each looked reasonable when chosen. This guide names sixteen of them, from The Phantom Stock to The Secret Agent, with the warning signs, the mechanism, the cost, a dated example, the remedy direction and the chapters that address each.", "url": "where-commerce-platforms-go-wrong.html", "icon": "assets/icons/where-commerce-platforms-go-wrong.png", "logo": "assets/images/where-commerce-platforms-go-wrong/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Meet Kestrel & Pine", "excerpt": "Every chapter in this book tests its argument against the same fictional merchant: Kestrel & Pine, an outdoor brand from Arnhem that sells online in three countries, through six stores, to 1,100 wholesale accounts and on three marketplaces, on thirteen systems with no order hub and no product hub. This page introduces its business lines, catalog, volumes, systems, people, the ten incidents the chapters reuse, the Waypoint program approved to fix them, and the recurring order the whole book follows.", "url": "meet-kestrel-and-pine.html", "icon": "assets/icons/meet-kestrel-and-pine.png", "logo": "assets/images/meet-kestrel-and-pine/logo.jpeg", "tags": []}]}, {"title": "Part I — COMMERCE: What a Commerce Platform Is", "description": "The business before the technology: what happens between 'buy' and 'delivered', who sells what to whom and why that shapes the systems, the map of commerce capabilities, who owns which fact, and the platform landscape a newcomer meets in 2026.", "posts": [{"id": "", "status": "", "title": "Part I — COMMERCE: What a Commerce Platform Is", "excerpt": "The business before the technology: what happens between 'buy' and 'delivered', who sells what to whom and why that shapes the systems, the map of commerce capabilities, who owns which fact, and the platform landscape a newcomer meets in 2026. Part I argues that a commerce platform is the whole set of systems that make and keep promises to a customer, and that nearly every failure is a promise one system made and another could not keep.", "url": "part-1.html", "icon": "assets/icons/part-1-intro.png", "logo": "assets/images/part-1-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Follow the Order: What Happens Between “Buy” and “Delivered”", "excerpt": "What has to happen, in which systems, for one online order to be found, bought, paid, shipped, delivered, returned and accounted for? Thirteen steps, seven or more systems, and a chain of promises that one system makes and another must keep; the handoffs between them are where commerce platforms break, and the vocabulary of this chapter is the vocabulary of the whole book.", "url": "journey-of-an-order.html", "icon": "assets/icons/01-journey-of-an-order.png", "logo": "assets/images/01-journey-of-an-order/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Sells What to Whom: Business Models and the Economics That Shape Architecture", "excerpt": "Why do a brand selling to consumers, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems? Because each model changes who captures the order, who sets the price, who is the legal seller and who ships, and because conversion, basket size, margin, returns, shipping, payment fees and the peak day each pull on a different part of the architecture; the four scale stages the book uses are defined by that shape, not by revenue.", "url": "commerce-business-models.html", "icon": "assets/icons/02-commerce-business-models.png", "logo": "assets/images/02-commerce-business-models/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Map of a Commerce Platform: Capabilities and Layers", "excerpt": "What are all the parts of a commerce platform, what does each one do, and how do they usually connect? This chapter draws the map: about two dozen capabilities in six layers, the business fact each one owns, the flows that join them, the three ways vendors cover the map, and how to read any product page against it.", "url": "commerce-capability-map.html", "icon": "assets/icons/03-commerce-capability-map.png", "logo": "assets/images/03-commerce-capability-map/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record", "excerpt": "When several systems hold the same fact, a price, a stock level, an order status, a customer, which one is right, and how do the others find out? Name one system of record per fact, treat every other value as a copy that learns from it, and write the decision down in an entity–owner table that changes as the business grows.", "url": "boundaries-and-systems-of-record.html", "icon": "assets/icons/04-boundaries-and-systems-of-record.png", "logo": "assets/images/04-boundaries-and-systems-of-record/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Suites, SaaS, Open Source and Composable: The Platform Landscape in 2026", "excerpt": "What kinds of commerce platforms exist, who sells them, how they are priced and how the market changed up to 2026? Seven categories, each deciding where the integration work and the cost land, priced mostly on your sales rather than on the software, and all converging on the same 2026 pitch: keep what you have and add layers beside it.", "url": "commerce-platform-landscape.html", "icon": "assets/icons/05-commerce-platform-landscape.png", "logo": "assets/images/05-commerce-platform-landscape/logo.jpeg", "tags": []}]}, {"title": "Part II — CATALOG: Products, Prices and Promises", "description": "What the shop offers and what it can promise: product information and variants, prices and tax, promotions and loyalty, search and merchandising, and the inventory figure behind every 'in stock'.", "posts": [{"id": "", "status": "", "title": "Part II — CATALOG: Products, Prices and Promises", "excerpt": "What the shop offers and what it can promise: the product, the price, the discount, the search result and the words “in stock”. Part II argues that these facts look alike but have different owners, different clocks and different legal weight, so each needs its own system of record and its own path to every channel, and that a copy nobody reconciles is a promise nobody can keep.", "url": "part-2.html", "icon": "assets/icons/part-2-intro.png", "logo": "assets/images/part-2-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Are We Selling? Products, Variants and the Catalog", "excerpt": "How should products be modeled so that every channel shows the right thing? Separate the product from its variants and its identifiers, decide which system owns each attribute, and publish from one place to every channel, because every extra copy of product data is a listing that will drift.", "url": "product-information.html", "icon": "assets/icons/06-product-information.png", "logo": "assets/images/06-product-information/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Does It Cost? Price Lists, Contract Prices, Currencies and Tax", "excerpt": "Where should a price be computed, and how do you keep it the same across storefronts, stores, marketplaces and wholesale? Keep one source per kind of price with a written selection rule, treat every copy as a dated promise with a reconciliation, and keep the history, because in Europe the price you charged last month decides what you may call a discount this month.", "url": "pricing-architecture.html", "icon": "assets/icons/07-pricing-architecture.png", "logo": "assets/images/07-pricing-architecture/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Discounts, Coupons and Loyalty: Promotions Without Chaos", "excerpt": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books? Treat promotions as data with an explicit order of evaluation and a stop rule, compute the final discount in one place at cart time, allocate it to every line so invoices and refunds carry their share, and keep gift cards, store credit and points as ledgers of money you owe.", "url": "commerce-promotions.html", "icon": "assets/icons/08-promotions-and-loyalty.png", "logo": "assets/images/08-promotions-and-loyalty/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Finding the Product: Search, Navigation and Merchandising", "excerpt": "How do shoppers find products, and what has to be true of the data for search to work? The search index is a copy of the catalog, the prices, the stock and the reviews, each changing at its own pace; search is only as good as the attributes, synonyms and freshness that feed it, and reviews are discovery data with legal provenance rules of their own.", "url": "commerce-search-and-discovery.html", "icon": "assets/icons/09-search-and-discovery.png", "logo": "assets/images/09-search-and-discovery/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Is It in Stock? Inventory, Availability and the Promise You Can Keep", "excerpt": "What does “in stock” mean when the same jacket is sold on three storefronts, three marketplaces, in six stores and to 1,100 wholesale accounts? It means five numbers, not one: physical stock counted by the warehouse, units already promised to orders, units held back on purpose, and the available-to-promise figure that one service should compute per channel from stock events, instead of four systems each copying a stale count from the next.", "url": "inventory-and-availability.html", "icon": "assets/icons/10-inventory-and-availability.png", "logo": "assets/images/10-inventory-and-availability/logo.jpeg", "tags": []}]}, {"title": "Part III — ORDER: Cart, Checkout, Payment and the Order Record", "description": "Turning intent into a commitment: the cart and the checkout, taking the money, the order record and its lifecycle, and the handoff from order to tax, invoice and ledger.", "posts": [{"id": "", "status": "", "title": "Part III — ORDER: Cart, Checkout, Payment and the Order Record", "excerpt": "Turning intent into a commitment: the minutes in which a cart becomes an order, the money that moves in stages the merchant does not control, the one record every system shares, and the tax, invoice and ledger entries it ends as. Part III argues that from the moment the shopper clicks pay, the truth about an order arrives as messages from other systems, so the order needs one home, separate honest states, a key on every message and one writer for every action that moves money.", "url": "part-3.html", "icon": "assets/icons/part-3-intro.png", "logo": "assets/images/part-3-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "From Cart to Confirmation: Checkout Orchestration", "excerpt": "What happens between 'add to cart' and 'order confirmed', and why is checkout the most protected part of a commerce platform? Checkout is a short, clocked orchestration that asks every promise-making system (prices, promotions, tax, availability, shipping, payment) for a final answer and turns the cart into an order exactly once; it owns none of those facts itself, which is why platforms guard it so closely and why most checkout failures are a stale answer or a duplicate order.", "url": "cart-and-checkout.html", "icon": "assets/icons/11-cart-and-checkout.png", "logo": "assets/images/11-cart-and-checkout/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Taking the Money: Payment Providers, Authorization, Capture and Refunds", "excerpt": "How does money move from the shopper to the merchant, and what can go wrong on the way? Through a payment service provider, in four stages the merchant does not control, with the result arriving as a message that can be late, unordered or repeated; the order must treat that message as the truth, and every action that moves money must have one owner and one key.", "url": "commerce-payments.html", "icon": "assets/icons/12-payments.png", "logo": "assets/images/12-payments/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Order Record: Lifecycle, State and the Order Management System", "excerpt": "Where does an order live once it is placed, what states does it pass through, and when does a merchant need an order management system? An order is one record with several state machines (money, goods per shipment, returns), and once several channels create orders and several locations fulfill them, one system must hold that record, route each line to a location and tell every other system what changed.", "url": "order-management.html", "icon": "assets/icons/13-order-management.png", "logo": "assets/images/13-order-management/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Tax, Invoices and the Books: From Order to Ledger", "excerpt": "How does an order become tax, an invoice and entries in the books, and what does the commerce system owe finance? Tax is decided by facts the shop owns (where it ships, what it is, who buys) and rules it should not own; the invoice is a numbered, immutable legal document issued by one system per legal entity; and the books agree with the shop only when orders, payouts and the bank are matched line by line, every month.", "url": "tax-invoicing-and-ledger.html", "icon": "assets/icons/14-tax-invoicing-and-ledger.png", "logo": "assets/images/14-tax-invoicing-and-ledger/logo.jpeg", "tags": []}]}, {"title": "Part IV — FULFILLMENT: From Warehouse to Doorstep and Back", "description": "Keeping the promise: the warehouse, carriers and the delivery promise, stores as systems, returns and refunds, and the notifications and service that answer 'where is my order'.", "posts": [{"id": "", "status": "", "title": "Part IV — FULFILLMENT: From Warehouse to Doorstep and Back", "excerpt": "Keeping the promise: the warehouse, carriers and the delivery promise, stores as systems, returns and refunds, and the notifications and service that answer 'where is my order'. Part IV argues that the physical world has its own systems of record, that every promise about it must be computed from their facts, and that the customer must be shown one status built from their events.", "url": "part-4.html", "icon": "assets/icons/part-4-intro.png", "logo": "assets/images/part-4-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Pick, Pack, Ship: Warehouse Management and Fulfillment", "excerpt": "What happens to an order inside the warehouse, and what does the warehouse system need from the rest of the platform? The warehouse is where a promise becomes a parcel: give it one clear instruction per shipment (the fulfillment order), let it own the count of what is physically on the shelf, and take its confirmations back as events the moment they happen.", "url": "warehouse-and-fulfillment.html", "icon": "assets/icons/15-warehouse-and-fulfillment.png", "logo": "assets/images/15-warehouse-and-fulfillment/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Getting It There: Carriers, Labels, Tracking and the Delivery Promise", "excerpt": "How are carriers chosen, labels produced and tracking shown, and how do you make a delivery promise you can keep? Put one normalizing layer between your systems and every carrier, treat tracking scans as events that drive the order's status, and compute the promise from the warehouse's cut-off, the carrier's lane performance and a margin for the tail, instead of writing it into the page.", "url": "shipping-and-delivery.html", "icon": "assets/icons/16-shipping-and-delivery.png", "logo": "assets/images/16-shipping-and-delivery/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Stores Are Systems Too: Point of Sale and Omnichannel Fulfillment", "excerpt": "What does a physical store add to a commerce architecture, and how do click-and-collect, ship-from-store and endless aisle actually work? A store is a second system that creates orders, holds stock, knows customers and takes money, often offline and under tax rules of its own; the architecture has to treat its stock as a location, its till as an order source and its customers as an identity source, and promise store stock only with a buffer, a confirmation or a count behind it.", "url": "stores-and-omnichannel.html", "icon": "assets/icons/17-stores-and-omnichannel.png", "logo": "assets/images/17-stores-and-omnichannel/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Way Back: Returns, Exchanges, Refunds and Reverse Logistics", "excerpt": "How does a return travel back through the systems, and how do you make sure the money, the stock and the books all agree? Model a return as two records, the request that owns the money and the reverse fulfillment that owns the work, let the warehouse's inspection be the event that releases the refund, the restock and the credit note, and give each of those three actions exactly one writer.", "url": "returns-and-exchanges.html", "icon": "assets/icons/18-returns-and-exchanges.png", "logo": "assets/images/18-returns-and-exchanges/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Where Is My Order? Notifications, Service and the Customer Record", "excerpt": "How does the customer learn what is happening to an order, and what does a service agent need to see? Both should read the same order status, built from events that the platform, the warehouse and the carrier emit, so that the status page, the notifications and the agent's screen never disagree; the volume of 'where is my order' contacts is then a direct measure of how well that layer works.", "url": "customer-service-and-notifications.html", "icon": "assets/icons/19-customer-service-and-notifications.png", "logo": "assets/images/19-customer-service-and-notifications/logo.jpeg", "tags": []}]}, {"title": "Part V — CHANNELS: Selling Everywhere", "description": "Orders that arrive from outside the shop: marketplaces and channel integration, business customers with contract prices and approvals, EDI and e-invoicing with trading partners, and the ERP that runs the back office.", "posts": [{"id": "", "status": "", "title": "Part V — CHANNELS: Selling Everywhere", "excerpt": "Orders that arrive from outside the shop: marketplaces and channel integration, business customers with contract prices and approvals, EDI and e-invoicing with trading partners, and the ERP that runs the back office. Part V argues that every outside channel is a way into the one order record, that the intermediaries in between must translate without owning, and that the outside parties keep score and set the calendar.", "url": "part-5.html", "icon": "assets/icons/part-5-intro.png", "logo": "assets/images/part-5-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Selling on Someone Else's Platform: Marketplaces and Channel Integration", "excerpt": "What does it take to list, sell and ship on bol, Amazon or Zalando, and where do those orders belong? Feed every marketplace from your own systems of record for product, stock and price, import its orders into the one order record, and send only the stock number you can keep, because the marketplace grades your account on every cancellation and late shipment.", "url": "marketplaces-and-channel-integration.html", "icon": "assets/icons/20-marketplaces-and-channel-integration.png", "logo": "assets/images/20-marketplaces-and-channel-integration/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Selling to Businesses: Accounts, Contract Prices, Quotes and Approvals", "excerpt": "What changes when the buyer is a company rather than a person? The customer becomes an organization with people, locations and roles; the price becomes a negotiated promise with a validity date; payment becomes a credit decision; and the ERP and the commerce platform both want to own the result. The chapter shows the B2B object model, who should own each fact, and why Kestrel & Pine still keys in 38% of its wholesale orders by hand.", "url": "b2b-commerce.html", "icon": "assets/icons/21-b2b-commerce.png", "logo": "assets/images/21-b2b-commerce/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Documents Between Companies: EDI, Punchout and E-Invoicing", "excerpt": "How do large trading partners exchange orders, shipping notices and invoices without a web shop, and what do the e-invoicing mandates require? Through standard documents that each have their own system of truth: the order creates the same order record as a web order, the despatch advice comes from what the warehouse actually packed, and the invoice is a legal document the ERP issues and, increasingly, transmits over Peppol by a date the law sets.", "url": "edi-and-e-invoicing.html", "icon": "assets/icons/22-edi-and-e-invoicing.png", "logo": "assets/images/22-edi-and-e-invoicing/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "The Back Office: ERP Integration and Who Is the Hub", "excerpt": "What does the ERP do in a commerce business, what should it own, and should everything connect through it? The ERP keeps the books, buys the stock, values it and holds the master records; it should be the system of record for finance and never the system the storefront waits on. Who is the hub is a decision that changes with scale, and the connector your ERP partner built is a contract you must own.", "url": "erp-and-back-office-integration.html", "icon": "assets/icons/23-erp-and-back-office-integration.png", "logo": "assets/images/23-erp-and-back-office-integration/logo.jpeg", "tags": []}]}, {"title": "Part VI — INTEGRATION: Making Separate Systems Behave Like One", "description": "The joins between systems, where most commerce failures live: integration styles, events and reconciliation, contracts and versioning, identity and master data, and the data platform that counts the same thing everywhere.", "posts": [{"id": "", "status": "", "title": "Part VI — INTEGRATION: Making Separate Systems Behave Like One", "excerpt": "The joins between systems, where most commerce failures live: how systems talk, how they recover when a message arrives twice or not at all, what they promise each other, whether they mean the same customer and product, and whether they count the same order. Part VI argues that integration is decided one flow at a time, that separate systems are built to disagree and must be designed to recover and to prove it, and that a flow without an owner is a loss waiting for a date.", "url": "part-6.html", "icon": "assets/icons/part-6-intro.png", "logo": "assets/images/part-6-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "APIs, Events, Files and Middleware: How Commerce Systems Talk", "excerpt": "Commerce systems exchange data in four basic ways, files, a shared database, direct calls and messages, triggered by a call, a webhook, a poll, a schedule or a database log; which way is right depends on the flow, not on the company. Stock and orders want events with a reconciliation safety net, products want scheduled publication, finance wants a daily batch, and every flow needs a named owner, which is why the integration inventory is the first management tool to build.", "url": "integration-styles.html", "icon": "assets/icons/24-integration-styles.png", "logo": "assets/images/24-integration-styles/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation", "excerpt": "If systems can only be eventually consistent, how do you keep them from drifting apart for good? Accept that every message can arrive late, twice or out of order, make each receiver idempotent so a repeat does nothing, publish events through an outbox so none is lost, undo partial work with compensation rather than rollback, and run a reconciliation job that compares the two ends on a schedule, because the question is never whether copies will disagree but whether anyone will notice.", "url": "events-consistency-and-reconciliation.html", "icon": "assets/icons/25-events-consistency-and-reconciliation.png", "logo": "assets/images/25-events-consistency-and-reconciliation/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Promises Between Systems: API Contracts, Webhooks and Versioning", "excerpt": "How do you change a system that other systems depend on without breaking them? Write the promise down as a contract, change it only by adding, retire old versions on a published date the consumers have tested against, and treat every webhook as a signed hint that must be deduplicated and reconciled.", "url": "api-contracts-and-versioning.html", "icon": "assets/icons/26-api-contracts-and-versioning.png", "logo": "assets/images/26-api-contracts-and-versioning/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "One Customer, One Product: Identity and Master Data Across Systems", "excerpt": "How do you know that two records in two systems are the same customer, product or order? Give every master entity one named owner and one stable identifier, keep a cross-reference of every other system's key for it, match the rest with explicit rules and a reversible merge, and let consent travel with the record, because a merchant that cannot say who its customers are cannot serve them, market to them or delete them.", "url": "identity-and-master-data.html", "icon": "assets/icons/27-identity-and-master-data.png", "logo": "assets/images/27-identity-and-master-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Counting the Same Thing Everywhere: Data Platforms, Definitions and Analytics", "excerpt": "Why do three reports show three different order counts, and how do you build analytics the business trusts? Separate operational data from analytical data, copy every system into one warehouse, define each metric once in a metrics layer with a named owner, and publish the reconciliation between the counts next to the number.", "url": "commerce-data-and-analytics.html", "icon": "assets/icons/28-commerce-data-and-analytics.png", "logo": "assets/images/28-commerce-data-and-analytics/logo.jpeg", "tags": []}]}, {"title": "Part VII — PLATFORM: How Commerce Platforms Are Built", "description": "Inside the platforms a merchant buys or builds: architecture styles and what the evidence says, multi-tenancy and isolation, extensibility and app ecosystems, storefront delivery and performance, and surviving the peak day.", "posts": [{"id": "", "status": "", "title": "Part VII — PLATFORM: How Commerce Platforms Are Built", "excerpt": "Inside the platforms a merchant buys or builds: architecture styles and what the evidence says, multi-tenancy and isolation, extensibility and app ecosystems, storefront delivery and performance, and surviving the peak day. Part VII argues that on a hosted platform the vendor's internals are the vendor's problem, and that the merchant's attention belongs on what is its own: the code around the platform, its share of the vendor's capacity, the apps it installs, the pages it caches and the chain it must protect in November.", "url": "part-7.html", "icon": "assets/icons/part-7-intro.png", "logo": "assets/images/part-7-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Monolith, Modular Monolith, Microservices, Composable: What the Evidence Says", "excerpt": "How should a commerce system be structured inside, and what do Amazon, Zalando and Shopify really show? The famous examples document reasons and costs that belong to companies with thousands of engineers. A merchant's own code should be split into exactly as many pieces as it has teams that must release independently, and for most merchants that number is one.", "url": "commerce-architecture-styles.html", "icon": "assets/icons/29-commerce-architecture-styles.png", "logo": "assets/images/29-commerce-architecture-styles/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation", "excerpt": "How does a SaaS commerce platform serve thousands of merchants on shared systems, and why should a merchant care? Because every shared system has a mechanism for keeping tenants apart, and the one a merchant meets is the rate limit: a budget of API calls per app per store that every connector and app spends from, busiest on the one day everyone else is busy too.", "url": "multi-tenancy-and-isolation.html", "icon": "assets/icons/30-multi-tenancy-and-isolation.png", "logo": "assets/images/30-multi-tenancy-and-isolation/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Apps, Plugins and Functions: Extensibility and Ecosystem Governance", "excerpt": "How do commerce platforms let merchants and partners change them without breaking them, and how should a merchant govern the apps it installs? Extension mechanisms differ by where the code runs and what it may touch, and the platform's own controls never tell you which installed app is writing your stock; that inventory, with one owner and one writer per fact, is the merchant's job.", "url": "extensibility-and-app-ecosystems.html", "icon": "assets/icons/31-extensibility-and-app-ecosystems.png", "logo": "assets/images/31-extensibility-and-app-ecosystems/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Delivering the Storefront: Themes, Headless, Rendering and Performance", "excerpt": "How does the storefront reach the shopper's browser, and when does a headless storefront make sense? A storefront is a rendering of facts other systems own; cache the pages that can be cached and fetch the promises (price, stock, cart) live; go headless only for a need the theme cannot meet, because speed alone is not one, and checkout stays on the platform either way.", "url": "storefront-architecture.html", "icon": "assets/icons/32-storefront-architecture.png", "logo": "assets/images/32-storefront-architecture/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Black Friday Every Year: Peak Load, Resilience and Recovery", "excerpt": "How do you prepare a commerce platform and its integrations for a day with forty times the normal traffic? Measure the whole chain in orders per minute, test the connectors rather than the storefront, queue everything behind the order instead of failing it, write down what to switch off first, and name who reconciles what the morning after.", "url": "peak-load-and-reliability.html", "icon": "assets/icons/33-peak-load-and-reliability.png", "logo": "assets/images/33-peak-load-and-reliability/logo.jpeg", "tags": []}]}, {"title": "Part VIII — TRUST: Security, Privacy and Regulation", "description": "What can go wrong on purpose and what the law requires: card data, account takeover, bots and skimmers; privacy and consent; and the consumer, payment, invoicing and platform rules that turn into requirements.", "posts": [{"id": "", "status": "", "title": "Part VIII — TRUST: Security, Privacy and Regulation", "excerpt": "What can go wrong on purpose, and what the law requires: card testing, skimmers and leaked keys; the personal data a shop holds and the person's rights over it; and the consumer, payment, invoicing and platform rules that arrive with a date. Part VIII argues that on a hosted platform trust is an inventory problem before it is a technology or a legal one: every identity with its key, every system with its legal role and retention clock, every rule with its owner and date, kept on the map the earlier parts built.", "url": "part-8.html", "icon": "assets/icons/part-8-intro.png", "logo": "assets/images/part-8-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers", "excerpt": "What do attackers want from a commerce platform, and which controls matter most? They want the payment form, the login and the admin, in that order; the controls that matter are keeping card numbers out of your systems, challenging and rate-limiting every endpoint that can trigger a payment or a login, owning every script on the checkout page, and giving every person, app and integration its own identity, with the hosted platform doing part of this and never all of it.", "url": "commerce-security.html", "icon": "assets/icons/34-commerce-security.png", "logo": "assets/images/34-commerce-security/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Whose Data Is It? Privacy, Consent and Retention", "excerpt": "What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in? Map every system that holds a person with its legal role, record consent with its evidence on the customer master, split the person from the transaction so invoices can stay while profiles go, and run a deletion request as a fan-out with a record of what each system did, because the law gives you one month and the data is in nine places.", "url": "privacy-and-customer-data.html", "icon": "assets/icons/35-privacy-and-customer-data.png", "logo": "assets/images/35-privacy-and-customer-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation", "excerpt": "Which laws change what a commerce platform must do, by when, and how do you read them as requirements? Nearly every rule that reaches a shop is a data requirement with a date: a 30-day price history, a 14-day refund clock, a manufacturer field on every listing, a structured invoice over a network. Read each one as a field, a system of record and a test, keep them in one calendar with an owner per row, and the Long Fuse stops burning.", "url": "commerce-regulation.html", "icon": "assets/icons/36-commerce-regulation.png", "logo": "assets/images/36-commerce-regulation/logo.jpeg", "tags": []}]}, {"title": "Part IX — JOURNEYS: One Order, End to End", "description": "The whole book in four stories: a consumer order from search to doorstep, the same jacket coming back, a retail chain reordering by EDI, and Black Friday hour by hour.", "posts": [{"id": "", "status": "", "title": "Part IX — JOURNEYS: One Order, End to End", "excerpt": "The whole book in four stories: a consumer order from the search box to the ledger, the same jacket coming back as an exchange, a retail chain reordering 240 units by EDI, and a Black Friday evening hour by hour. Each journey walks one order through every system of Kestrel & Pine's late-2027 architecture, names the promise each step makes and the one system that must keep it, and then runs the same order through the January 2027 landscape to show where it broke.", "url": "part-9.html", "icon": "assets/icons/part-9-intro.png", "logo": "assets/images/part-9-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Journey 1: Eva's Jacket, From Search to Doorstep", "excerpt": "What has to go right, in which system, for one ordinary online order to be found, paid, picked, delivered and booked? This chapter walks order #1072455 through every handoff of Kestrel & Pine's target architecture, names the promise each step makes and the system that must keep it, and shows where the same order would have gone wrong a year earlier.", "url": "journey-consumer-order.html", "icon": "assets/icons/37-journey-consumer-order.png", "logo": "assets/images/37-journey-consumer-order/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Journey 2: The Jacket Comes Back", "excerpt": "What has to go right, in which system, when a delivered order comes back as an exchange or a refund? This chapter walks Eva's jacket from the return request to the credit note through Kestrel & Pine's target architecture and shows where one return touches stock, money and the books at once, and how 212 returns were refunded twice.", "url": "journey-return-and-exchange.html", "icon": "assets/icons/38-journey-return-and-exchange.png", "logo": "assets/images/38-journey-return-and-exchange/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Journey 3: A Chain Reorders by EDI, From Order to Invoice", "excerpt": "What happens when the buyer is a 38-shop retail chain that orders by message, receives by pallet and pays thirty days later? This chapter walks Bergzicht Outdoor's spring reorder through Kestrel & Pine's target architecture, from the EDI order to the matched bank transfer, shows why the despatch advice is the document that costs money, and runs a Belgian customer's Peppol invoice as the variant.", "url": "journey-wholesale-order.html", "icon": "assets/icons/39-journey-wholesale-order.png", "logo": "assets/images/39-journey-wholesale-order/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Journey 4: Black Friday, Hour by Hour", "excerpt": "What did Kestrel & Pine's systems and people do, hour by hour, on the Friday evening in November 2026 when 2,300 orders arrived in one hour and the warehouse ran out of the hero jacket at 19:40? The storefront held; the order flow to the warehouse crawled, the stock copies lagged by two hours, and nobody had a gauge or a switch. The 2027 plan gives the same evening a forecast, a rebuilt order path, an availability service, eight switches with owners and a runbook.", "url": "journey-peak-day.html", "icon": "assets/icons/40-journey-peak-day.png", "logo": "assets/images/40-journey-peak-day/logo.jpeg", "tags": []}]}, {"title": "Part X — EVOLUTION: Decisions That Change With Scale", "description": "The decisions that look different at every size: build, buy or assemble; replatforming without burning the bridge; what changes at each scale stage; who builds and owns the systems; and AI assistants and agents as of 2026.", "posts": [{"id": "", "status": "", "title": "Part X — EVOLUTION: Decisions That Change With Scale", "excerpt": "The decisions that look different at every size: build, buy or assemble; moving a platform or a hub without a single cutover date; what changes at each scale stage; who builds and owns the systems; and what AI assistants and agents need from a merchant as of 2026. Part X argues that at a growing merchant these are decisions about ownership and timing, not about tools: what to own and what to rent, when and how to move a fact's owner, which leftovers to retire, who answers for each row, and which new actor may write.", "url": "part-10.html", "icon": "assets/icons/part-10-intro.png", "logo": "assets/images/part-10-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Build, Buy or Assemble: Choosing and Changing Platforms", "excerpt": "How do you choose between a suite, a hosted platform with apps, a composable assembly and custom build, and how do you compare what they really cost? Build only what customers choose you for, buy what every merchant needs, own the joins between systems yourself, and price every option over three years with the lines vendors leave out: the people who own integrations, and the cost of leaving.", "url": "build-buy-or-assemble.html", "icon": "assets/icons/41-build-buy-or-assemble.png", "logo": "assets/images/41-build-buy-or-assemble/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Moving Without Burning the Bridge: Replatforming and Migration", "excerpt": "When a platform or a hub must change, how do you move without a single cutover date and no way back? Move one seam at a time (a channel, a capability, a slice of traffic), run old and new side by side with a reconciliation that proves they agree, keep the old system operable until the new one has survived a peak, and treat products, orders, customers, gift cards and URLs as separate migrations with their own checks.", "url": "replatforming-and-migration.html", "icon": "assets/icons/42-replatforming-and-migration.png", "logo": "assets/images/42-replatforming-and-migration/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "What Changes at Each Scale: From First Store to Group", "excerpt": "Which architecture decisions change as a business grows, and how do you tell that a stage is ending? The four stages are shapes, not revenue bands: each adds channels and stock locations the previous stage's systems cannot keep in step, and the signals show up as fee cliffs, unowned connectors and incidents long before anyone calls them architecture.", "url": "commerce-scaling-stages.html", "icon": "assets/icons/43-commerce-scaling-stages.png", "logo": "assets/images/43-commerce-scaling-stages/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Who Builds and Who Owns: Teams, Vendors, Agencies and Governance", "excerpt": "Who should own each part of a commerce platform, and how does a small team work with an agency and a dozen vendors without losing control of what it sells? Write an ownership map that names an owner for every system, integration and app, shape teams around the order's journeys rather than around vendors, keep the accounts, contracts and decision records in the merchant's hands, and run governance light enough that fourteen people will actually do it.", "url": "organizing-commerce-engineering.html", "icon": "assets/icons/44-organizing-commerce-engineering.png", "logo": "assets/images/44-organizing-commerce-engineering/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Assistants and Agents: AI in Commerce and What Is Real in 2026", "excerpt": "What is AI actually doing in commerce systems, what is agentic commerce, and what must a platform have before an agent can buy from it? Established AI reads your data and proposes; an agent acts, and as of November 2026 no consumer agent can complete a checkout in Europe. The work that pays either way is readiness: product data from one owner, availability and a delivery promise by API, order status by API, and an identity for every agent that may act.", "url": "ai-and-agentic-commerce.html", "icon": "assets/icons/45-ai-and-agentic-commerce.png", "logo": "assets/images/45-ai-and-agentic-commerce/logo.jpeg", "tags": []}]}, {"title": "Part XI — PRACTICE: How Others Built It", "description": "The book's patterns tested against public evidence: Shopify, Amazon, Zalando, and the composable movement around commercetools and Shopware. What each built, why, what it teaches and where the evidence stops.", "posts": [{"id": "", "status": "", "title": "Part XI — PRACTICE: How Others Built It", "excerpt": "The book's patterns tested against public evidence: Shopify, Amazon, Zalando, and the composable movement around commercetools and Shopware. Part XI reads each case from dated public sources only, labels every inference, stops where the evidence stops, and separates the disciplines a growing merchant can copy from the machinery only a giant needs.", "url": "part-11.html", "icon": "assets/icons/part-11-intro.png", "logo": "assets/images/part-11-intro/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Case: Shopify, the Modular Monolith That Serves Millions of Merchants", "excerpt": "What does Shopify's public record show about running millions of shops on one codebase, and which of it applies to a merchant that rents one of them? The dated sources support a narrower story than the folklore: a payments-and-platform business that protects checkout first, a monolith that learned which boundaries were worth enforcing, a shop as the unit of isolation, extension points withdrawn on published dates, and an agent surface rebuilt within a year. The disciplines transfer; the machinery does not.", "url": "case-shopify.html", "icon": "assets/icons/46-case-shopify.png", "logo": "assets/images/46-case-shopify/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Case: Amazon, From Monolith to Services to the Everything Store", "excerpt": "What does Amazon's public record actually show about how a commerce platform grows, and which of it applies to a merchant a thousand times smaller? Four dated lessons transfer: the contract as the only door between systems, the cart as an availability problem, fulfillment opened to others as the way a retailer becomes a platform, and the delivery promise as the product; the network, the robots and the database lineage do not.", "url": "case-amazon.html", "icon": "assets/icons/47-case-amazon.png", "logo": "assets/images/47-case-amazon/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Case: Zalando, Microservices, Platform Strategy and the Return to Discipline", "excerpt": "What happened after Zalando split its shop into microservices owned by autonomous teams in 2015, and what does a retailer that became a logistics and software platform teach a merchant? The public record shows a split made for team autonomy, then ten years of narrowing choices: a written API standard, fewer languages, one developer portal, and in 2025 a read API replacing an event stream that could not keep up at peak; and a platform built through logistics, not storefront features.", "url": "case-zalando.html", "icon": "assets/icons/48-case-zalando.png", "logo": "assets/images/48-case-zalando/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Case: commercetools, Shopware and the Composable Movement", "excerpt": "What did the composable movement promise in 2020, and what did its own champions do between 2024 and 2026? commercetools now sells layers and modules for stacks it once urged merchants to replace, Shopware absorbed integration and payments into one platform, and the MACH Alliance dropped microservices and headless from its principles. The idea survives as a per-capability practice; the rebuild it once implied does not.", "url": "case-composable-movement.html", "icon": "assets/icons/49-case-composable-movement.png", "logo": "assets/images/49-case-composable-movement/logo.jpeg", "tags": []}]}, {"title": "Reference", "description": "The model-to-chapter coverage map, decision templates and cards, plain-language definitions, and every source the book cites.", "posts": [{"id": "", "status": "", "title": "Domain Coverage: From Three Model Families to Forty-Nine Chapters", "excerpt": "Which chapter covers which part of a commerce platform? This reference page maps the three research model families behind the book's planning, a merchant platform model, a retail marketplace model and nine specialist-product models, to the chapters that cover their capabilities, lists what the models lack and what the book added, and says what it leaves out on purpose.", "url": "domain-coverage.html", "icon": "assets/icons/domain-coverage.png", "logo": "assets/images/domain-coverage/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Toolkit: Cards and Templates for Commerce Architecture Decisions", "excerpt": "Which written records keep a commerce platform's promises honest once a dozen systems share them? Sixteen copyable cards, from the capability map to the architecture decision record, each taken from the chapter that teaches it and filled in once with Kestrel & Pine's fictional numbers.", "url": "toolkit.html", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Glossary: Plain-Language Definitions", "excerpt": "Plain-language definitions of the commerce and architecture terms the book uses, grouped by part, with a table of standards, protocols and regulations, Kestrel & Pine's fictional names in their own section, an alphabetical index and a link from every term to the chapter that owns it.", "url": "glossary.html", "icon": "assets/icons/glossary.png", "logo": "assets/images/glossary/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Bibliography: Every Source the Book Cites", "excerpt": "Where does the book's evidence come from? Every public source the chapters cite, listed once with its year, its evidence type and the pages that rely on it, findable by topic or by chapter. Nothing is added as further reading.", "url": "bibliography.html", "icon": "assets/icons/bibliography.png", "logo": "assets/images/bibliography/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'});
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
+                        }
+                    }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
+                        }
+                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
+                });
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

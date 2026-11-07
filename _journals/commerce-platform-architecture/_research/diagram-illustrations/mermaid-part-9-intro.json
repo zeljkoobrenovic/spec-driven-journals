@@ -1,0 +1,16 @@
+[
+ {
+  "post": "part-9-intro",
+  "figure": 1,
+  "id": "fig01-four-journeys-one-chain-consumer-return",
+  "asset": "assets/images/part-9-intro/fig01-four-journeys-one-chain-consumer-return.jpeg",
+  "mermaid": "flowchart LR\n    E[\"Eva at the storefront, Journey 1\"] --> PL[\"The platform: checkout and the payment handshake\"]\n    R[\"Eva's return request, Journey 2\"] --> OMS[\"The OMS: one order record, one return record\"]\n    B[\"Bergzicht's ORDERS message, Journey 3\"] --> OMS\n    P[\"2,300 orders in one hour, Journey 4\"] --> PL\n    PL --> OMS\n    OMS --> AV[\"The availability service: what each channel may promise\"]\n    OMS --> WMS[\"The WMS: stock, parcels, pallets, inspection\"]\n    WMS --> CAR[\"PostNL and the pallet carrier\"]\n    OMS --> ERP[\"The ERP: invoice, credit note, receivable, payout match\"]"
+ },
+ {
+  "post": "part-9-intro",
+  "figure": 2,
+  "id": "fig02-what-before-waypoint-comparison-each-journey",
+  "asset": "assets/images/part-9-intro/fig02-what-before-waypoint-comparison-each-journey.jpeg",
+  "mermaid": "flowchart TB\n    subgraph JAN[\"January 2027, before Waypoint\"]\n        A1[\"Platform order\"] -->|\"one at a time, about 7 a minute\"| A2[\"WMS\"]\n        A2 -->|\"stock every 15 minutes\"| A3[\"ERP\"]\n        A3 -->|\"hourly\"| A4[\"Platform, then the marketplaces an hour later\"]\n    end\n    subgraph LATE[\"Late 2027, after Waypoint\"]\n        B1[\"Platform order\"] -->|\"event, order number as key\"| B2[\"OMS\"]\n        B2 -->|\"batches, 120 a minute tested\"| B3[\"WMS\"]\n        B3 -->|\"stock event, within a minute\"| B4[\"Availability service to every channel\"]\n    end"
+ }
+]
