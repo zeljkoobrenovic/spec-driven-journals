@@ -53,6 +53,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"The site said we had twelve. The warehouse had none since seven o'clock."*
 
+![Storefront, phone and marketplace screens show a ghost jacket as in stock while the warehouse shelf beside them is empty.](assets/images/where-commerce-platforms-go-wrong/pattern-phantom-stock.jpeg)
+**Figure 1:** *The Phantom Stock: every channel sells from an aging copy of a stock number, so the shelf can be empty while the screens still say “in stock”.*
+
 **What it looks like.** The storefront's stock number is a copy of unknown age; click-and-collect promises what the store sold that afternoon.
 
 **Why it happens.** The system that knows stock is rarely the one that sells it, so every channel gets a copy through syncs nobody designed as a whole, and the copy grows writers (an app, an import). **A fact with two writers has no owner**.
@@ -70,6 +73,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### Schrödinger's Order
 
 *"The customer sees Delivered. The warehouse says In picking. Finance says it was never invoiced."*
+
+![One order parcel surrounded by three screens showing Delivered, In picking and Not invoiced, with a puzzled support agent.](assets/images/where-commerce-platforms-go-wrong/pattern-schrodingers-order.jpeg)
+**Figure 2:** *Schrödinger's Order: each system keeps its own status for the same order, and each is honest and wrong at once.*
 
 **What it looks like.** The platform's status is set by the first message it received; the ERP waits for one that never came; a split shipment has no status at all.
 
@@ -89,6 +95,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"Is the Eva who bought a jacket online the Eva on the store loyalty list? Probably."*
 
+![One shopper split into three separate customer cards held by online, store and loyalty systems, linked only by question marks.](assets/images/where-commerce-platforms-go-wrong/pattern-familiar-stranger.jpeg)
+**Figure 3:** *The Familiar Stranger: each channel keeps its own customer record, so one person becomes several strangers nobody can match.*
+
 **What it looks like.** A store cannot see an online order; a data-subject request becomes a search across nine systems.
 
 **Why it happens.** Each channel's system has its own customer table, keyed on what it collects. Matching them is a project nobody owns, because every system works without it.
@@ -106,6 +115,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Boomerang
 
 *"We refunded it. Then the portal refunded it. The customer kept both, and who can blame her."*
+
+![A returned parcel flies back to the warehouse while two separate systems each send the same shopper a euro refund.](assets/images/where-commerce-platforms-go-wrong/pattern-boomerang.jpeg)
+**Figure 4:** *The Boomerang: a return touches goods, money and books with three owners, so the refund can be paid twice and the credit note made by hand.*
 
 **What it looks like.** Two systems can issue a refund; stock rises at the dock scan; credit notes come from a spreadsheet.
 
@@ -125,6 +137,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"Germany is at 179. Everyone else is at 199. Which one did we mean?"*
 
+![One jacket wearing five different euro price tags from five systems, with a puzzled manager.](assets/images/where-commerce-platforms-go-wrong/pattern-price-nobody-can-explain.jpeg)
+**Figure 5:** *The Price Nobody Can Explain: prices live in several systems with their own calendars and imports, so the same product carries several prices and nobody can say why.*
+
 **What it looks like.** Prices live in five systems with five campaign calendars; discounts stack unconfigured; a refund uses a price nobody paid.
 
 **Why it happens.** Several roles set prices under several rules, each selling system keeps its own number, imports fail silently, and promotion settings outlive their campaign.
@@ -142,6 +157,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Spaghetti Junction
 
 *"Thirty-four integrations. Thirteen have no owner. Six of them write stock."*
+
+![Six system boxes in a ring tangled together by many crossing point-to-point connector lines, several tagged no owner.](assets/images/where-commerce-platforms-go-wrong/pattern-spaghetti-junction.jpeg)
+**Figure 6:** *The Spaghetti Junction: each connector was the fastest way to meet one need, until nobody can list them or say who owns them.*
 
 **What it looks like.** Flows on the integration platform, agency scripts and vendor plugins move the same fact along several paths. Nobody can produce the list.
 
@@ -161,6 +179,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"We sent the order to the warehouse. If it didn't arrive, that's on them."*
 
+![Order notes in bottles drift between a storefront island and a warehouse island; one arrives, one arrives twice and one sinks.](assets/images/where-commerce-platforms-go-wrong/pattern-message-in-a-bottle.jpeg)
+**Figure 7:** *The Message in a Bottle: messages between systems arrive once, twice, late or never, and a design that trusts them to arrive once finds the duplicates and gaps through customers.*
+
 **What it looks like.** A retry creates a second order or refund; a dropped message leaves an order paid and never picked.
 
 **Why it happens.** Delivery is at least once, sometimes twice, late or never, and vendors say so. Shopify's webhook documentation says an app "might receive the same webhook more than once", and retries an unanswered webhook 8 times over 4 hours before deleting the subscription; Stripe retries for up to three days; Mollie calls a webhook ten times over 26 hours and then stops (all n.d., accessed 2026-11). Integrations assume exactly once, because on a quiet day it holds.
@@ -178,6 +199,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Pulled Rug
 
 *"They announced it in November. The e-mail went to someone who left in 2025."*
+
+![A vendor pulls a rug from under an integration connector while the changelog emails sit unread in a mailbox.](assets/images/where-commerce-platforms-go-wrong/pattern-pulled-rug.jpeg)
+**Figure 8:** *The Pulled Rug: vendors announce their changes, but without a record of the dependency and someone reading the changelog, the integration breaks first and the news arrives later.*
 
 **What it looks like.** A script keeps calling a retired version; chargebacks arrive before the new mapping; changelogs reach a mailbox nobody reads.
 
@@ -197,6 +221,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"It worked fine all year. Then Friday happened."*
 
+![A storefront stands clear in a sudden snowfall while the stock-sync and order pipes behind it freeze under the snow.](assets/images/where-commerce-platforms-go-wrong/pattern-first-snowfall.jpeg)
+**Figure 9:** *The First Snowfall: the busiest day is the first time the system and its integrations meet real load, and it is usually the joins, not the storefront, that give way.*
+
 **What it looks like.** The storefront holds; the stock sync and the order queue do not.
 
 **Why it happens.** Peak is 20 to 40 times an ordinary hour, and every design decision was made against the ordinary hour. Load tests, when they exist, test the storefront and not the joins.
@@ -214,6 +241,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Giant's Boots
 
 *"Amazon does it with microservices. Zalando does it with 4,000 applications. So should we."*
+
+![A small team stumbling inside a giant's enormous boots, beside a tall stack of vendor boxes.](assets/images/where-commerce-platforms-go-wrong/pattern-giants-boots.jpeg)
+**Figure 10:** *The Giant's Boots: copying the architecture of a company a hundred times larger brings its costs without its reasons.*
 
 **What it looks like.** A 14-person team runs a dozen composable vendors; a €48 million merchant builds a headless storefront. The giant's reasons are absent; the costs are not.
 
@@ -233,6 +263,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"Go-live is 19 November. The old platform is switched off the same day."*
 
+![A crowd of parcels and people crosses to a new platform while the bridge back to the old one burns behind them.](assets/images/where-commerce-platforms-go-wrong/pattern-burned-bridge.jpeg)
+**Figure 11:** *The Burned Bridge: moving everything on one date with the old platform switched off leaves no way back when something goes wrong.*
+
 **What it looks like.** Everything moves at once; the old platform is switched off to save a month's subscription; a contract sets the date, weeks before peak.
 
 **Why it happens.** A big bang looks cheaper than running two systems, and each risk was fine in the demo.
@@ -250,6 +283,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Forked Platform
 
 *"We can't take the upgrade. The theme and the checkout changes would all have to be redone."*
+
+![A platform trunk patched with so many custom branches that a new upgrade box no longer fits onto it.](assets/images/where-commerce-platforms-go-wrong/pattern-forked-platform.jpeg)
+**Figure 12:** *The Forked Platform: customize the core deeply enough and every vendor upgrade becomes a project.*
 
 **What it looks like.** Agency edits to files the vendor has since replaced; scripts inside the checkout; apps nobody uses.
 
@@ -269,6 +305,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"All three brands go on the group platform next year. The business case is 'synergies'."*
 
+![Three different brand mannequins squeezed into one identical jacket that fits none of them, beside a synergies document.](assets/images/where-commerce-platforms-go-wrong/pattern-one-size-fits-none.jpeg)
+**Figure 13:** *One Size Fits None: forcing different brands onto one stack before anyone measures the benefit, or keeping them apart when they should share, decides on cost and misses the operational differences.*
+
 **What it looks like.** One tenant serves brands with different catalogs, rules and peaks, and every change is a negotiation; or two brands run two of everything because nobody measured what sharing would save.
 
 **Why it happens.** The decision is made on cost, and the operational differences are invisible in the business case.
@@ -286,6 +325,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Lynchpin
 
 *"Only the EDI consultant understands the mappings. He's on holiday."*
+
+![A loaded order cart whose wheel is held by one pin shaped like a consultant leaving on holiday.](assets/images/where-commerce-platforms-go-wrong/pattern-lynchpin.jpeg)
+**Figure 14:** *The Lynchpin: when a capability customers rely on runs through one vendor, connector, agency or person, the whole cart depends on one pin.*
 
 **What it looks like.** A connector documented nowhere; mappings in one consultant's head.
 
@@ -305,6 +347,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 *"Belgium wants structured invoices from January. It's October."*
 
+![A burning fuse runs across a calendar toward a mandate bundle while a finance professional notices it from a newsletter.](assets/images/where-commerce-platforms-go-wrong/pattern-long-fuse.jpeg)
+**Figure 15:** *The Long Fuse: a legal deadline found only months before it lands leaves too little time to meet it.*
+
 **What it looks like.** Finance learns of a mandate from a newsletter; the storefront has never had an accessibility audit.
 
 **Why it happens.** Rules land per topic and per country, nobody in a 14-person team reads the Official Journal, and each rule arrives without an owner.
@@ -322,6 +367,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ### The Secret Agent
 
 *"Something changed 600 stock levels on Tuesday night. We think it was the pre-order app."*
+
+![A shadowy app figure in a trench coat sneaks from a stock room at night with a shared admin key, having changed the stock board.](assets/images/where-commerce-platforms-go-wrong/pattern-secret-agent.jpeg)
+**Figure 16:** *The Secret Agent: a script, app or AI agent that writes orders, stock, prices or money with no owner, no identity of its own and no approval changes the business in the dark.*
 
 **What it looks like.** Scripts and apps share one admin's API key and write beside the official feeds.
 
@@ -363,7 +411,7 @@ Across the four scale stages of [[commerce-scaling-stages]], most patterns are b
 Kestrel & Pine's April 2027 stage map attributes eight of its ten incidents to Growing-stage designs still running in 2026. The remedy is rarely a new platform; it is ownership, contracts and reconciliation.
 
 ![Four steps labeled Starting, Growing, Omnichannel and Group: seeds planted on Growing grow into a thorny vine and a bill on Omnichannel.](assets/images/where-commerce-platforms-go-wrong/where-commerce-platforms-go-wrong-born-and-paid.jpeg)
-**Figure 1:** *Most failure patterns are born at the Growing stage and paid for at the Omnichannel stage, and the remedy is rarely a new platform; it is ownership, contracts and reconciliation.*
+**Figure 17:** *Most failure patterns are born at the Growing stage and paid for at the Omnichannel stage, and the remedy is rarely a new platform; it is ownership, contracts and reconciliation.*
 
 ## How the Patterns Reinforce Each Other
 
@@ -374,7 +422,7 @@ Kestrel & Pine's April 2027 stage map attributes eight of its ten incidents to G
 **The platform chain.** The Giant's Boots lead to the Forked Platform or the Burned Bridge. **The identity thread**, the Familiar Stranger, runs under all of them.
 
 ![Diagram: The patterns travel in chains](assets/images/where-commerce-platforms-go-wrong/fig01-patterns-travel-chains-integration-chain-runs.jpeg)
-**Figure 2:** *The patterns travel in chains: the integration chain runs from the Spaghetti Junction through the Message in a Bottle to phantom stock, undecidable orders and double refunds; the governance chain runs from the Lynchpin to the Pulled Rug and the Secret Agent; the platform chain runs from the Giant's Boots to the fork or the burned bridge; the First Snowfall amplifies whatever is already there.*
+**Figure 18:** *The patterns travel in chains: the integration chain runs from the Spaghetti Junction through the Message in a Bottle to phantom stock, undecidable orders and double refunds; the governance chain runs from the Lynchpin to the Pulled Rug and the Secret Agent; the platform chain runs from the Giant's Boots to the fork or the burned bridge; the First Snowfall amplifies whatever is already there.*
 
 Of Kestrel & Pine's ten incidents, eight are a fact with two writers; two are what the outside world does to a landscape nobody watches. So Waypoint decides ownership first, then adds the hubs, then makes the copies trustworthy, and keeps the platform.
 

@@ -285,6 +285,6 @@ With the parts mapped and their owners named, the next question is what the mark
 
 - Eric Evans, *Domain-Driven Design: Tackling Complexity in the Heart of Software*, Addison-Wesley, 2003 — the bounded context (older than three years; the concept is unchanged).
 - [BoundedContext](https://martinfowler.com/bliki/BoundedContext.html), Martin Fowler, 2014 — bounded context as DDD's central strategic pattern; unification of a large model is not feasible or cost-effective; "Customer" and "Product" as polysemes (older than three years; the concept is unchanged).
-- [Systems of Record: Ending the Doppelgänger Record](../finance-systems-architecture/systems-of-record.html), RECONCILED, 2026 — the finance-side treatment of records and copies, linked as [[systems-of-record]].
+- [[systems-of-record]], RECONCILED, 2026 — the finance-side treatment of records and copies.
 
 Kestrel & Pine is fictional; architectural recommendations, labeled inferences and labeled assumptions are the author's judgement.

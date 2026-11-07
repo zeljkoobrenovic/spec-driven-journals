@@ -71,3 +71,4 @@ Readers new to commerce architecture, especially those who will sit in design re
 - **2026-11-07** — Initial spec and article. *(AI-mediated session)*
 - **2026-11-07** — Editorial review pass: February 2027 pitches aligned with ruling 13a; trimmed toward 6,500 words. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 1 mermaid diagram as illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-11-07** — Added one illustration per failure pattern (16 figures, article-illustrator); existing figures renumbered 17–18. *(AI-mediated session)*

@@ -1,0 +1,53 @@
+{class: part, id: part-8}
+# Part VIII — TRUST: Security, Privacy and Regulation
+
+![Part VIII — TRUST: Security, Privacy and Regulation — logo](commerce-platform-architecture/posts/part-8-intro/assets/images/part-8-intro/logo.jpeg)
+
+> **IN THIS PART, YOU WILL:** Learn what attackers take from a shop and which controls stop them, where personal data lives and how to design consent, retention and deletion across many systems, and how to read a law as a dated data requirement with an owner.
+
+> **KEY POINTS:**
+>
+> * **Attackers do not break in; they use the shop as built.** Card testing, credential stuffing and skimming are the payment form, the login and the checkout page used at machine speed. The hosted platform secures the service and the card-data scope; the merchant secures every identity, key, app, script and endpoint it adds, and watches the decline rate as closely as the order rate.
+> * **The order and the person are two different things in law.** The merchant is the controller of its customers' data; its platform, warehouse system and apps are processors; carriers, marketplaces and the payment provider decide for themselves. The order rests on the contract and on tax law and stays for years; the profile rests on consent and goes when the person says so, so the data model must let the transaction outlive the person.
+> * **Most rules are data requirements with a date.** A 30-day price history, a 14-day refund clock, a manufacturer field on every listing, a structured invoice over a network: each belongs in a system of record, with a test and a calendar row that names an owner. The platform absorbs some of it, never all of it.
+
+> **[FAILURE PATTERNS THIS PART ADDRESSES](#where-commerce-platforms-go-wrong):**
+>
+> * **The Secret Agent** — an app, script or integration that acts without its own identity cannot be traced when its key leaks, and it copies customer data as a processor nobody appointed.
+> * **The Lynchpin** — one shared admin password, one payment account and one person who knows where the keys are is a security architecture that fails in a single step.
+> * **The Familiar Stranger** — a person the systems cannot recognize as one cannot be deleted, told the truth about or respected when they opt out.
+> * **The Long Fuse** — a deletion request has a one-month clock and every rule in this part was published years before it applied; both are discovered late by a merchant with no map.
+
+Every part so far has asked how a shop works when everyone means well. **This part asks what happens when someone does not, and what the law requires regardless.** A shop is three public forms: a payment form that takes money from anyone with a valid card number, a login that lets anyone with the right password act as a customer, and an admin that lets them act as the merchant. None of it has to be broken to be abused. The same shop holds a name, an address and a purchase history in a dozen systems from a dozen vendors, each copy made for a reason and each reason with its own rule for how long it may stay. And much of what the shop must show, record and refund is written in the Official Journal of the European Union, with a date.
+
+![A shop front with three intact doors labeled Payment form, Login and Admin, with a small robot walking in through them as built.](commerce-platform-architecture/posts/part-8-intro/assets/images/part-8-intro/part-8-three-public-forms.jpeg)
+
+**Figure 1:** *A shop is three public forms, a payment form, a login and an admin, and none of them has to be broken to be abused.*
+
+Part VIII sits at the checkout and payment steps of the order's journey, then alongside every step after them. Eva Janssen's jacket, the order this book follows, met the law four times without anyone noticing: the price she saw had to include VAT and sit in a price history that any later reduction is measured against, the checkout button carried prescribed words ("order with obligation to pay" or an equivalent), the product page carried a manufacturer's address, and her exchange request on 19 April 2027 started two 14-day clocks, one for sending the goods back and one for any refund. Her name went to the platform, the warehouse system, the carrier, the payment provider and the ERP (the enterprise resource planning system that keeps the books and issues invoices), each under its own retention rule. And the 48,000 requests that hit the same checkout one night in August 2026 looked like hers to every system except the one that counted them.
+
+Kestrel & Pine, the fictional outdoor brand this book follows, learned the three lessons of this part one incident at a time: the Card-Testing Night of 18–19 August 2026, the Request From Ghent in May 2027, and four rules that arrived through a marketplace's error log, an agency audit, a customer's refused PDF and an auditor's newsletter. **The claim of this part is that the three have one remedy: the ownership map built from Part I's system-of-record map and Part VI's integration inventory, one row per system, integration and app with its owner, gains three more columns.** Who holds the key to each integration. Which legal role and retention clock each system has. Which rule lands in which system of record, by when, and whose name is on the row.
+
+![Diagram: Three things reach a shop from outside, a script, a person with rights and a rule with a date, and each is answered by a list with owners](commerce-platform-architecture/posts/part-8-intro/assets/images/part-8-intro/fig01-three-things-reach-shop-outside-script.jpeg)
+
+**Figure 2:** *Three things reach a shop from outside, a script, a person with rights and a rule with a date, and each is answered by a list with owners; the three lists are columns of the same ownership map, not a separate discipline.*
+
+![Diagram: Where Part VIII meets Eva's jacket](commerce-platform-architecture/posts/part-8-intro/assets/images/part-8-intro/fig02-where-part-viii-meets-eva-s.jpeg)
+
+**Figure 3:** *Where Part VIII meets Eva's jacket: security at the checkout and the payment, regulation at the price, the button, the product page and the clocks, privacy in every system her name reaches and in the request that one day asks for it back.*
+
+{id: part-8--chapters-in-this-part}
+## Chapters in this part
+
+[Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers](#commerce-security) decides **what attackers want from a shop and which controls matter most**: keep the card number out of your systems with a hosted checkout or hosted fields (card boxes served by the payment provider inside your page), challenge and rate-limit every endpoint that can trigger a payment or a login, own every script on the checkout page, and give every person, app and integration its own identity and restricted key. The case is the Card-Testing Night: 48,000 attempts in one night, about 260 live cards and 21 disputes; then the April 2027 baseline, with a decline-rate alert at three times the 30-day median, a kill switch, multi-factor authentication (MFA) enforced and no shared accounts, one key per integration in a vault, a script inventory and three runbooks.
+
+[Whose Data Is It? Privacy, Consent and Retention](#privacy-and-customer-data) decides **where personal data lives, under which rules, and how to design consent, retention and deletion**: every integration is a data flow with a legal role, consent is recorded on the customer master with its evidence, and a deletion request is a fan-out with a one-month deadline that needs an identity index, an orchestrator and a decided action per system, erase, pseudonymize, retain or refer. The case is the Request From Ghent of Monday 10 May 2027: a customer found in nine of the thirteen systems and seventeen working days before the reply on 4 June; from October 2027 an orchestrator on the integration platform, and a second request answered in two working days.
+
+[Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation](#commerce-regulation) decides **which laws change what a platform must do, by when, and how to read them as requirements**: scope first, then the field, history, document or clock the article demands, the system of record that owns it, the channels that show it, a test in the release process and a calendar row with an owner. The case is four rules through four doors, product-safety listing fields rejected by a marketplace in December 2024, an accessibility audit of May 2025 with about 140 findings, Belgian e-invoicing through a refused PDF in December 2025 and the ban on destroying unsold apparel from 19 July 2026, and then the regulatory calendar Noor Visser and Sanne de Wit write in March 2027, where most rows are maintenance, the owners are mostly not engineers, and the few projects land in systems Waypoint builds anyway.
+
+Begin with [Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers](#commerce-security).
+
+{id: part-8--sources-and-evidence}
+## Sources and Evidence
+
+Every public claim in this part is sourced and dated in the chapter that makes it, under that chapter's Sources and Evidence. Kestrel & Pine is fictional; recommendations and labeled assumptions are the author's judgement.
