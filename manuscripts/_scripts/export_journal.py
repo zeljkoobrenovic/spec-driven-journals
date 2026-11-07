@@ -109,6 +109,7 @@ class JournalExporter:
     def load(self) -> None:
         for section in self.config.get("sections") or []:
             articles = []
+            left_out = []
             for relative in section.get("posts") or []:
                 # Selection follows config.yaml; a recursive scan would include drafts.
                 if Path(relative).name != "index.md":
@@ -124,6 +125,7 @@ class JournalExporter:
                 slug = (meta.get("permalink") or source.parent.name).strip("/")
                 if slug in self.excluded:
                     self.excluded_found[slug] = meta.get("title") or slug
+                    left_out.append(slug)
                     continue
                 if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", slug):
                     raise ExportError(f"Expected a simple permalink in {relative}: {slug}")
@@ -136,6 +138,9 @@ class JournalExporter:
                 articles.append(article)
                 self.sources[source.relative_to(self.journal).as_posix()] = digest(source.read_bytes())
             if articles:
+                if left_out:
+                    # The site's section description lists pages the book no longer has.
+                    section = dict(section, excluded=left_out)
                 self.sections.append((section, articles))
         if not self.articles:
             raise ExportError("No configured posts ending in index.md")
@@ -327,6 +332,12 @@ class JournalExporter:
         journal, title = choices[0]
         return f"[{label(title)}]({self.site_url}/{quote(journal)}/{quote(slug)}.html)"
 
+    def online_note(self, slugs: list[str]) -> str:
+        links = [f"[{label(self.excluded_found[slug])}]"
+                 f"({self.site_url}/{quote(self.journal.name)}/{quote(slug)}.html)" for slug in slugs]
+        listed = links[0] if len(links) == 1 else ", ".join(links[:-1]) + " and " + links[-1]
+        return f"The rest of this reference is online: {listed}."
+
     def convert_links(self, article: Article) -> str:
         def transform(text: str) -> str:
             def wiki(match: re.Match) -> str:
@@ -431,7 +442,9 @@ class JournalExporter:
             if section_title and not has_intro:
                 section_id = f"book-section-{section_index}-{slugify(section_title)}"
                 part = prefix + f"{{class: part, id: {section_id}}}\n# {section_title}\n\n"
-                if section.get("description"):
+                if section.get("excluded"):
+                    part += self.online_note(section["excluded"]) + "\n"
+                elif section.get("description"):
                     part += section["description"] + "\n"
                 self.add(f"section-{section_index:02d}.md", part)
                 prefix = ""
