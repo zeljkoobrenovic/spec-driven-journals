@@ -86,7 +86,7 @@ In plain words: start at the entity–owner table. A fact with no row, or a row 
 
 The whole map had about two dozen capabilities with thirteen systems placed on them and four empty boxes: product information, order management, availability and customer identity.
 
-**Used in:** [The Map of a Commerce Platform: Capabilities and Layers](#commerce-capability-map), [Build, Buy or Assemble: Choosing and Changing Platforms](#build-buy-or-assemble), [What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages), [Domain Coverage: From Three Model Families to Forty-Nine Chapters](#domain-coverage).
+**Used in:** [The Map of a Commerce Platform: Capabilities and Layers](#commerce-capability-map), [Build, Buy or Assemble: Choosing and Changing Platforms](#build-buy-or-assemble), [What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages), [Domain Coverage: From Three Model Families to Forty-Nine Chapters](https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/domain-coverage.html).
 
 {id: toolkit--tool-2}
 ## Tool 2: Entity–Owner Table
@@ -625,7 +625,7 @@ Cards decay unless three habits keep them current.
 - **Let incidents add fields.** When a review asks a question no card answers, add a field.
 - **Keep the set small.** A field filled by habit and read by nobody should go.
 
-The terms these cards use, from ATP and SSCC to idempotency and system of record, are defined in plain language in [Glossary: Plain-Language Definitions](#glossary), and [Bibliography: Every Source the Book Cites](#bibliography) lists the sources behind them.
+The terms these cards use, from ATP and SSCC to idempotency and system of record, are defined in plain language in [Glossary: Plain-Language Definitions](https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/glossary.html), and [Bibliography: Every Source the Book Cites](https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/bibliography.html) lists the sources behind them.
 
 {id: toolkit--sources-and-evidence}
 ## Sources and Evidence

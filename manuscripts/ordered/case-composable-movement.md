@@ -209,7 +209,7 @@ The composable rebuild an outside consultancy pitched to Noor Visser in February
 6. What does the vendor's own 2026 product line sell to merchants who keep their existing platform, and why would we not buy that instead?
 7. What unit, date and definition stand behind every GMV, customer and order figure in the deck, and are the figures in two releases consistent?
 
-The four cases of Part XI end here: a modular monolith that serves millions of merchants, a retailer that became a platform, a microservices pioneer that returned to discipline, and a movement that corrected itself. The reference pages begin with [Domain Coverage: From Three Model Families to Forty-Nine Chapters](#domain-coverage), which maps the research models behind this book to the chapters that cover them.
+The four cases of Part XI end here: a modular monolith that serves millions of merchants, a retailer that became a platform, a microservices pioneer that returned to discipline, and a movement that corrected itself. The reference pages begin with [Domain Coverage: From Three Model Families to Forty-Nine Chapters](https://zeljkoobrenovic.github.io/spec-driven-journals/commerce-platform-architecture/domain-coverage.html), which maps the research models behind this book to the chapters that cover them.
 
 {id: case-composable-movement--sources-and-evidence}
 ## Sources and Evidence

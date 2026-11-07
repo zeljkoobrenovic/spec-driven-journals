@@ -73,11 +73,14 @@ class Article:
 class JournalExporter:
     def __init__(self, journal: Path, *, frontmatter_posts: list[str] | None = None,
                  backmatter_sections: list[str] | None = None, site_url: str = "",
-                 authors: list[str] | None = None, jpeg_quality: int | None = 85,
+                 excluded_posts: list[str] | None = None, authors: list[str] | None = None, jpeg_quality: int | None = 85,
                  mermaid: MermaidRenderer | None = None):
         self.journal = journal.resolve()
         self.frontmatter = set(frontmatter_posts or [])
         self.backmatter = set(backmatter_sections or [])
+        # Excluded posts stay on the website; [[links]] to them become web links via --site-url.
+        self.excluded = set(excluded_posts or [])
+        self.excluded_found: dict[str, str] = {}
         self.site_url = site_url.rstrip("/")
         self.authors = authors
         self.images = ImageOptimizer(jpeg_quality)
@@ -119,6 +122,9 @@ class JournalExporter:
                 meta, body = parse_front_matter(source.read_text(encoding="utf-8"))
                 title = meta.get("title") or source.parent.name
                 slug = (meta.get("permalink") or source.parent.name).strip("/")
+                if slug in self.excluded:
+                    self.excluded_found[slug] = meta.get("title") or slug
+                    continue
                 if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", slug):
                     raise ExportError(f"Expected a simple permalink in {relative}: {slug}")
                 if slug in self.by_slug:
@@ -133,6 +139,11 @@ class JournalExporter:
                 self.sections.append((section, articles))
         if not self.articles:
             raise ExportError("No configured posts ending in index.md")
+        missing = self.excluded - self.excluded_found.keys()
+        if missing:
+            raise ExportError(f"Unknown --exclude-post: {', '.join(sorted(missing))}")
+        if self.excluded and not self.site_url:
+            raise ExportError("--exclude-post needs --site-url so links to excluded posts can point to the web")
         missing = self.frontmatter - self.by_slug.keys()
         if missing:
             raise ExportError(f"Unknown --frontmatter-post: {', '.join(sorted(missing))}")
@@ -292,6 +303,10 @@ class JournalExporter:
     def external_wiki(self, slug: str) -> str:
         if not self.site_url:
             raise ExportError(f"Cross-link [[{slug}]] is outside this book; supply --site-url for published targets")
+        if slug in self.excluded_found:
+            # An excluded post of this journal wins over same-named posts elsewhere.
+            title = self.excluded_found[slug]
+            return f"[{label(title)}]({self.site_url}/{quote(self.journal.name)}/{quote(slug)}.html)"
         if self.global_targets is None:
             self.global_targets = {}
             for journal in sorted(self.journal.parent.iterdir()):
@@ -450,6 +465,7 @@ class JournalExporter:
             "format": "leanpub-markua", "version": 1, "journal": self.journal.name,
             "title": title, "authors": authors, "frontmatter_posts": sorted(self.frontmatter),
             "backmatter_sections": sorted(self.backmatter), "site_url": self.site_url,
+            "excluded_posts": sorted(self.excluded),
             "image_optimization": {"jpeg_quality": self.images.quality, "backend": self.images.backend},
             "source_hashes": self.sources,
             "articles": [{"source": "posts/" + a.relative, "file": a.slug + ".md",
@@ -503,6 +519,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path, help="Manuscript folder containing Book.txt")
     parser.add_argument("--frontmatter-post", action="append", default=[], metavar="PERMALINK")
     parser.add_argument("--backmatter-section", action="append", default=[], metavar="TITLE")
+    parser.add_argument("--exclude-post", action="append", default=[], metavar="PERMALINK",
+                        help="Leave a post out of the book; links to it point to the website (needs --site-url)")
     parser.add_argument("--site-url", default="", help="Published site root for cross-journal wiki links")
     parser.add_argument("--author", action="append", help="Book title-page author; repeat for coauthors")
     parser.add_argument("--jpeg-quality", type=int, default=85, metavar="1-95",
@@ -525,6 +543,7 @@ def main() -> int:
             raise ExportError("Source and output directories must not overlap")
         exporter = JournalExporter(journal, frontmatter_posts=args.frontmatter_post,
                                    backmatter_sections=args.backmatter_section, site_url=args.site_url,
+                                   excluded_posts=args.exclude_post,
                                    authors=args.author, jpeg_quality=None if args.original_images else args.jpeg_quality,
                                    mermaid=None if args.native_mermaid else MermaidRenderer(
                                        ROOT / "_temp" / "mermaid-cache", scale=args.mermaid_scale))
