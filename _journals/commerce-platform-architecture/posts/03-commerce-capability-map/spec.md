@@ -70,3 +70,4 @@ Readers new to commerce architecture. The engineer, product manager or analyst w
 - **2026-11-07** — Editorial review pass: aligned the empty boxes with the ledger (four: product information, order management, availability, customer identity), linked the scale stages to their owning chapter, and defined theme, headless, Peppol and BI. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
 - **2026-11-08** — Added four figures: three ways to cover the map, the map filling with scale, reading a vendor page, and four ways the map fails (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Added the capability-map poster to "What each capability owns" (24 capabilities in six layers, copies dashed; article-illustrator). *(AI-mediated session)*

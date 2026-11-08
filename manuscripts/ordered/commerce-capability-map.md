@@ -98,6 +98,10 @@ This table is the chapter's main deliverable. For each capability it gives the j
 
 Two columns deserve a note. The "fact it is the natural home for" column is the hinge to the next chapter: when two systems both hold a fact, the capability map says which one *should* be its home, and [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](#boundaries-and-systems-of-record) says how to make that decision stick. And several entries say "a copy": the search index, the service view, the listing, the data warehouse. Those capabilities hold copies by design, which is fine as long as everyone knows they are copies and they are rebuilt from the home, never edited in place.
 
+![A capability map of six colored bands (Experience, Offer, Transaction, Operations, Partners and back office, Foundations) holding twenty-four labeled capability boxes; Search, Service, Marketplaces and Analytics have dashed outlines marking copies.](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/capability-map-poster.jpeg)
+
+**Figure 3:** *The capability map as a checklist: twenty-four capabilities in six layers, each the natural home of one business fact; the dashed boxes (search, the service view, marketplace listings and analytics) hold copies by design and are rebuilt from the home, never edited in place.*
+
 {id: commerce-capability-map--facts-that-are-derived-not-recorded}
 ### Facts that are derived, not recorded
 
@@ -105,7 +109,7 @@ A few capabilities own something that is computed rather than entered, and newco
 
 ![A visual equation: boxes on hand minus boxes already promised minus a held-back buffer equals what a channel may sell.](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/03-available-to-promise.jpeg)
 
-**Figure 3:** *Stock on hand is counted; what a channel may still sell is computed from on hand, what is already promised and the buffer, so its owner is the computation.*
+**Figure 4:** *Stock on hand is counted; what a channel may still sell is computed from on hand, what is already promised and the buffer, so its owner is the computation.*
 
 {id: commerce-capability-map--how-the-pieces-talk-the-typical-flows}
 ## How the Pieces Talk: The Typical Flows
@@ -127,7 +131,7 @@ Two patterns stand out. **Only three flows need exactness in near real time: pri
 
 ![Diagram: The flows of a typical merchant](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/fig02-flows-typical-merchant-product-price-availability.jpeg)
 
-**Figure 4:** *The flows of a typical merchant: product, price and availability flow outward to the channels; orders flow inward to order management and down to the warehouse; stock, shipments and returns flow back; finance receives a daily batch.*
+**Figure 5:** *The flows of a typical merchant: product, price and availability flow outward to the channels; orders flow inward to order management and down to the warehouse; stock, shipments and returns flow back; finance receives a daily batch.*
 
 Every arrow is a place where one system's fact becomes another system's copy, and a copy can be late, lost or duplicated, which is why the joins, not the boxes, are where commerce platforms fail. [Part VI — INTEGRATION: Making Separate Systems Behave Like One](#part-6) is about the arrows.
 
@@ -144,7 +148,7 @@ No merchant builds all of this, and no vendor sells all of it, whatever the broc
 
 ![The same grid of capability boxes three times: covered by one large suite block, by a platform block with many small app tiles, and by one differently colored product per box joined by many lines.](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/three-ways-to-cover-the-map.jpeg)
 
-**Figure 5:** *Three ways to cover the same map: a suite covers many boxes with one data model, a platform covers the center and rents the rest as apps, and best-of-breed picks one product per box and pays for the joins.*
+**Figure 6:** *Three ways to cover the same map: a suite covers many boxes with one data model, a platform covers the center and rents the rest as apps, and best-of-breed picks one product per box and pays for the joins.*
 
 Two variants are worth naming. **ERP-centered commerce** makes the ERP the center and the storefront a front end; Microsoft's documentation of 22 September 2026 says its Business Central Shopify Connector "is preinstalled for all new sign-ups and trials", which is the clearest public sign that ERP plus hosted storefront is a mainstream small-merchant shape. And a **specialist group** pre-integrates several best-of-breed products under one owner: Katapull, a Dutch group, announced on 31 March 2025 that five companies had joined forces and on 7 October 2026 added a WMS vendor as its eighth label, listing on its site an ERP-and-webshop product, a POS, a WMS, a marketplace integrator, an EDI provider, a returns product, a shipping product and an online-performance agency. On the map that is six operational and partner boxes from one group, with the storefront platform still bought elsewhere; the public pages give no figures beyond customer and user counts, and the book uses nothing else about it.
 
@@ -179,7 +183,7 @@ Kestrel & Pine is at stage 3 with four boxes still empty. The judgement: fill a 
 
 ![Four copies of the same capability map on rising steps labeled Starting, Growing, Omnichannel and Group, with more boxes filled by their own system at each step.](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/map-fills-with-scale.jpeg)
 
-**Figure 6:** *The map does not change with scale; the number of boxes with their own system does, from three or four at the Starting stage to twelve or more at Omnichannel, and shared boxes across brands at Group.*
+**Figure 7:** *The map does not change with scale; the number of boxes with their own system does, from three or four at the Starting stage to twelve or more at Omnichannel, and shared boxes across brands at Group.*
 
 {id: commerce-capability-map--reading-a-vendor-s-product-page-against-the-map}
 ## Reading a Vendor's Product Page Against the Map
@@ -194,7 +198,7 @@ The same three questions apply inside your own company, to the systems you alrea
 
 ![A professional reads a vendor brochure through a magnifying glass that leads to three question cards: Which boxes?, Own or copy?, What unit?](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/reading-a-vendor-page.jpeg)
 
-**Figure 7:** *Reading a vendor page against the map comes down to three questions: which boxes it claims, whether it owns each fact or copies it, and what unit sits behind its numbers.*
+**Figure 8:** *Reading a vendor page against the map comes down to three questions: which boxes it claims, whether it owns each fact or copies it, and what unit sits behind its numbers.*
 
 {id: commerce-capability-map--in-practice-kestrel-pine-s-systems-on-the-map}
 ## In Practice: Kestrel & Pine's Systems on the Map
@@ -219,7 +223,7 @@ This is Noor's February whiteboard as a table, reduced to the boxes that were no
 
 ![Diagram: Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/fig03-kestrel-pine-s-thirteen-systems-fill.jpeg)
 
-**Figure 8:** *Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system: product information, order management, availability and customer identity. Every 2026 incident sits on an empty box or on a box with several writers.*
+**Figure 9:** *Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system: product information, order management, availability and customer identity. Every 2026 incident sits on an empty box or on a box with several writers.*
 
 The Waypoint decisions read as a plan to fill the empty boxes and thin the overlaps: a PIM for product information (W3, Q3 2027), an OMS for order management with an availability service as one of its modules (W1 and W2, Q4 2027), the WMS as the single writer of physical stock (W1), and integration standards for the arrows (W5). Identity remains open; [One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data) takes it up.
 
@@ -230,7 +234,7 @@ The map fails in four ways, and each shows up on the map before it shows up in t
 
 ![Four small capability maps: two systems writing one box (Overlap), an empty box with spreadsheets (Gap), one system stretched over five boxes (Wrong box), and a tiny team before a huge map (Giant's map).](commerce-platform-architecture/posts/03-commerce-capability-map/assets/images/03-commerce-capability-map/four-ways-the-map-fails.jpeg)
 
-**Figure 9:** *The map fails in four ways, each visible on the map before it shows in the business: two writers for one fact, a fact with no home, a system holding boxes it was not bought for, and a map copied from a giant.*
+**Figure 10:** *The map fails in four ways, each visible on the map before it shows in the business: two writers for one fact, a fact with no home, a system holding boxes it was not bought for, and a map copied from a giant.*
 
 **An overlap: two systems own one fact.** The App That Wrote Stock is the textbook case. A pre-order app adjusted inventory in the platform while the WMS feed also wrote it; for two weeks 600 variants carried phantom reservations. Detection is a *write audit*: for each box, list every system, app, script and person that can change its fact. If the list has more than one entry for a recorded fact, that is an overlap. Recovery is to name the single writer and re-publish the fact from it, which is exactly what the first weekly reconciliation in May 2027 did when it found 2.3% of active variants with a different quantity between the WMS and the platform (an illustrative figure).
 
