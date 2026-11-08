@@ -9,20 +9,11 @@ icon: "assets/icons/part-4-intro.png"
 logo: "assets/images/part-4-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Follow the order out of the software and into the building, the van, the store counter and the returns bench, and learn which system owns each physical fact, how the others learn of it, and what the customer is told along the way.
-
 > **KEY POINTS:**
 >
-> * **The physical world has its own systems of record.** The warehouse system is the only one that counts shelves, the carrier's scan is the only proof of delivery, the till keeps selling when the network is down, and the returns bench is the first to know what actually came back. Everything upstream derives from their events; nothing upstream may overwrite them.
-> * **A promise about the physical world is a computation, not a sentence.** "Delivered tomorrow" needs the last pick wave, the backlog in the order feed and the carrier's transit on that lane; "ready for collection" needs a store stock event, a buffer and a person's confirmation; "your refund is on its way" needs the warehouse's inspection. Every incident in this part is a promise made without its inputs.
-> * **One writer per fact, one source per view.** The refund has one writer keyed by the return id; stock rises only when the warehouse's verdict on a returned item (its disposition) says "restocked"; the status page, the notifications and the agent's screen read the same order record. When they read different systems, the customer finds the difference and writes in.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Phantom Stock** — store stock copied nightly is promised online as if counted this minute, and a returned jacket is restocked before anyone has looked at it.
-> * **Schrödinger's Order** — the platform says Delivered, the warehouse says In picking, finance says Not invoiced, and the agent opens five tabs to find out which is true.
-> * **The Boomerang** — a returns portal and a support agent can each refund the same return, and finance finds the second refund at month-end.
-> * **The First Snowfall** — a static delivery promise stays on the page while the order feed to the warehouse backs up for four hours on the busiest evening of the year.
+> * **The physical world has its own systems of record.** The warehouse counts shelves, the carrier's scan proves delivery and the returns bench knows what came back; nothing upstream may overwrite them.
+> * **A promise about the physical world is a computation, not a sentence.** “Delivered tomorrow” needs the pick wave, the backlog and the carrier's transit time; every incident in this part is a promise made without its inputs.
+> * **One writer per fact, one source per view.** One refund writer keyed by the return, stock that rises only on the warehouse's verdict, and every customer-facing screen reading the same order record.
 
 <br>
 Parts II and III happened in software. A product was shown, a price promised, money taken, an order record written. None of it moved a jacket one centimeter. **Part IV is where the promise has to be kept by people, buildings and vans**: a picker walking to a shelf, a carrier's depot at midnight, a store assistant looking for a size, two people at a returns bench. Physical work takes time, runs in batches, has capacity, and cannot be undone by deleting a row. The systems that run it are different from the ones before, and the joins to them are where most of a merchant's broken promises live.

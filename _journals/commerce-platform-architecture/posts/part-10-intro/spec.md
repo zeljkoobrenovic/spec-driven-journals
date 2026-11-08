@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-11-07
+revised: 2026-11-08
 ---
 
 # Spec: Part X — EVOLUTION: Decisions That Change With Scale
@@ -18,7 +18,7 @@ Newcomers to commerce architecture; the technology lead or product leader facing
 
 ## Success criteria
 
-- [x] Openers present in order: IN THIS PART (one sentence), KEY POINTS (exactly three), WHY IT MATTERS (two sentences: the €96,000 loss and about €3.2 million proposals, then the decision), FAILURE PATTERNS THIS PART ADDRESSES (four, exact names: The Giant's Boots, The Burned Bridge, The Lynchpin, The Secret Agent), `<br>`.
+- [x] Opens with exactly three tight KEY POINTS (a bold claim plus one short sentence each), then `<br>`; no IN THIS PART or FAILURE PATTERNS block.
 - [x] Lead of three paragraphs, business first, says the part sits off the order's path while every system Eva's jacket crosses was bought at a different time, names Kestrel & Pine as fictional once.
 - [x] Two mermaid diagrams (six and seven nodes), each with a numbered caption.
 - [x] `## Chapters in this part` has one paragraph per chapter in config order, `[[permalink]]` first, the question in bold, the Kestrel & Pine case named, ending "Begin with [[build-buy-or-assemble]]."
@@ -65,3 +65,4 @@ Article only.
 - **2026-11-07** — Spec written after the part introduction (the earlier session was interrupted before writing it); openers checked against the intro brief. Status `accepted`. *(AI-mediated session)*
 - **2026-11-07** — Editorial review pass: trimmed toward 1,500 words, item 13 and item 16 aligned, three failure patterns. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). *(AI-mediated session)*

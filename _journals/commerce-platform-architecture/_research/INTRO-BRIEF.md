@@ -14,7 +14,7 @@ You are writing one part introduction of **ORDERED: Architecting Commerce Platfo
 
 Folder `ROOT/posts/part-N-intro/`, permalink `part-N`, title `"Part N — <WORD>: <subtitle>"` exactly as `config.yaml` names the section. Front matter per the style guide (date 2026-11-07; `timetoread` about 4–5 min).
 
-Openers, in this order: `> **IN THIS PART, YOU WILL:**` (one sentence), `> **KEY POINTS:**` (exactly three, the part's argument), `> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**` (two to four patterns with one-line reasons), `<br>`.
+Opener: only `> **KEY POINTS:**` (exactly three, the part's argument across its chapters; each a bold claim plus one short sentence, about 20–35 words in all), then `<br>`. Part intros have no IN THIS PART or FAILURE PATTERNS block (dropped 8 Nov 2026 by the author: the chapter list and each chapter's own patterns block already do that job).
 
 Then: a lead of 2–4 short paragraphs that frames the part for a newcomer (business first; say where in the order's journey the part sits; name Kestrel & Pine as fictional once); one or two mermaid diagrams that show the part's shape (the systems or flow the chapters cover, 5–9 nodes); `## Chapters in this part` with one paragraph per chapter in config order (`[[permalink]]` first, bold the question each decides, name its Kestrel & Pine case), ending with "Begin with [[first-chapter]]." Then a one-line `## Sources and Evidence` noting that sources are cited in each chapter. No "Across Scale Stages" section and no take-away tiers. Length up to about 1,500 words (raised by the author on 7 Nov 2026).
 

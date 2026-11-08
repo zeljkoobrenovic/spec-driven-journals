@@ -9,20 +9,11 @@ icon: "assets/icons/part-7-intro.png"
 logo: "assets/images/part-7-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Open the platform a merchant rents: how it is structured inside, how it is shared among thousands of merchants, what apps may touch, how a page reaches the shopper's phone, and how the chain behind it survives forty times the normal load.
-
 > **KEY POINTS:**
 >
-> * **The platform's internals are the vendor's; the code around it is yours.** Amazon split at a scaling wall in 2001, Zalando for team autonomy in 2015, and Shopify refused to split; every account describes thousands of engineers. A merchant's own code needs one deployment unit per team that must release independently, and for most merchants that is one.
-> * **Renting a shared system means governing your share of it.** A hosted platform keeps its tenants apart with identifiers, pods and rate limits; the limit is what the merchant meets, a budget of calls per app per store that every installed app spends from. Every app is an integration with an owner, a scope and at most one writer per fact.
-> * **The storefront renders facts it does not own, and the peak is where that shows.** Cache the page, fetch the price and the stock live, and go headless only for a need the theme cannot meet. The platform smooths its peak across tenants; the merchant's connectors see the full spike, so measure the chain in orders per minute, queue everything behind the order, and reconcile the morning after.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Giant's Boots** — a microservices rebuild or a headless storefront copied from a company with thousands of engineers, by a merchant with nine.
-> * **The Forked Platform** — a core or a theme customized so deeply that every vendor release is a project.
-> * **The Secret Agent** — an app that writes stock, prices or orders without a named owner, because app review protects the platform, not the merchant's facts.
-> * **The First Snowfall** — the API budget, the vendor's shared capacity and the hand-built order flow meet real load for the first time on the busiest evening of the year.
+> * **The platform's internals are the vendor's; the code around it is yours.** The giants' architectures describe thousands of engineers, and most merchants need one deployment unit.
+> * **Renting a shared system means governing your share of it.** Every installed app spends the same rate-limit budget, so every app needs an owner, a scope and at most one writer per fact.
+> * **The storefront renders facts it does not own, and the peak shows it.** Cache the page, fetch price and stock live, and measure the whole chain in orders per minute.
 
 <br>
 Every part so far has treated the platform as a box with a name on it. **This part opens the box.** A merchant paying €2,300 a month for an enterprise subscription rents a slice of a system that one vendor runs, on one version, for thousands or millions of shops at once. That is why the subscription is cheap and why the checkout holds on Black Friday. It is also why the merchant cannot change the platform's structure, cannot see which pod (isolated group of databases) its shop lives on, and gets a budget of API calls rather than a server. What the merchant owns is everything around the box: the integration code, the apps, the theme and its scripts, and the chain that carries each order to the warehouse and the stock back.

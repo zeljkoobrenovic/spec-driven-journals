@@ -9,19 +9,11 @@ icon: "assets/icons/part-5-intro.png"
 logo: "assets/images/part-5-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Follow the orders that never start on the merchant's own web page, from marketplaces, wholesale accounts and EDI (electronic data interchange) trading partners, into the one order record and on into the ERP (enterprise resource planning system, the finance back office) that posts them.
-
 > **KEY POINTS:**
 >
-> * **Every outside channel is a way into the same order record, not a second order system.** A marketplace order, a portal order, an order keyed in from an e-mail and an EDI order should create the same order object, flagged by channel. Kestrel & Pine's orders are born in four systems, and nobody can see one customer's orders in one place.
-> * **The intermediaries translate; they must not own.** The marketplace connector, the EDI provider and the ERP partner's connector carry facts between the systems that own them. Each fact has one honest source: the stock number from one availability calculation, the credit limit from the ERP, the pallet contents from the warehouse that packed them, the invoice from the ERP that numbers it.
-> * **Outside parties keep score and set the calendar.** Marketplaces grade cancellations and late shipments against published thresholds, retail chains charge for a despatch advice that does not match the pallets, API versions retire on published dates, and e-invoicing mandates come with legal dates. Finance can run daily and in batch; availability cannot, so the ERP must never sit in the path of a sale.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **Schrödinger's Order** — marketplace orders live in the connector, portal orders in the platform, keyed and EDI orders in the ERP, and support opens all three.
-> * **The Pulled Rug** — a marketplace retires an API version, a chain revises its message guideline, a country sets an e-invoicing date, and the merchant learns from a canceled order or a refused truck.
-> * **The Lynchpin** — the EDI mappings live in one consultant's head and the ERP connector in one partner's configuration export.
+> * **Every outside channel is a way into the same order record.** Marketplace, portal, e-mail and EDI orders should all create one kind of order, flagged by channel.
+> * **The intermediaries translate; they must not own.** Connectors and EDI providers carry facts between owners, and each fact keeps one honest source.
+> * **Outside parties keep score and set the calendar.** Marketplaces grade, retail chains charge back and mandates arrive with legal dates, so availability must never wait on a batch ERP.
 
 <br>
 Most of this book follows an order that starts on the merchant's own web page. A growing merchant takes a large share of its revenue from orders that do not. A shopper buys on bol's or Amazon's page and never notices whose parcel arrives. An outdoor shop orders sixty jackets on thirty-day terms at a price agreed for the season. A retail chain's purchasing system sends a purchase order as a standard document and expects a pallet-by-pallet notice and a machine-readable invoice back. **Each of these channels comes with an outside party that sets the rules**: a scorecard, purchasing conditions with penalties, a legal mandate with a date. And every one of these orders ends in the ERP, where finance posts it.

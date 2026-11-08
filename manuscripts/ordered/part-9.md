@@ -3,19 +3,11 @@
 
 ![Part IX — JOURNEYS: One Order, End to End — logo](commerce-platform-architecture/posts/part-9-intro/assets/images/part-9-intro/logo.jpeg)
 
-> **IN THIS PART, YOU WILL:** Follow four orders through every system of Kestrel & Pine's late-2027 architecture, a consumer order, its return, a chain's EDI reorder and a Black Friday evening, and see which system keeps each promise and where the same order broke a year earlier.
-
 > **KEY POINTS:**
 >
-> * **An order is a chain of promises, each with one owner.** Eva's jacket crosses fifteen handoffs on the way out and twelve on the way back; Bergzicht's pallets cross fifteen more. The joins between rows are where most failure patterns live: eight systems holding a piece of one order is normal; a fact with two writers is not.
-> * **The same four stories run on two architectures.** Each journey keeps the ledger's April 2027 dates and amounts exactly, runs them through the Waypoint architecture of late 2027, and then through the January 2027 landscape. The dates do not change; what changes is whether the promises held.
-> * **Operations by event, finance by batch, and every join with a key and a net.** Stock and order handoffs cannot wait an hour; invoices and payouts can wait a day. Every message may arrive twice or not at all, so each carries an idempotency key, and a daily reconciliation is the net under every webhook.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](#where-commerce-platforms-go-wrong):**
->
-> * **Schrödinger's Order** — an order or a return whose status lives in three systems has no status; the journeys show where one record replaces three.
-> * **The Phantom Stock** — the storefront's "in stock" is a copy of the warehouse's count, and the journeys show how old that copy may be on an ordinary Tuesday and on a Friday in November.
-> * **The First Snowfall** — the order flow, the stock chain and the evening shift met forty times their normal load for the first time on the day itself.
+> * **An order is a chain of promises, each with one owner.** Many systems holding a piece of one order is normal; a fact with two writers is not.
+> * **The same four stories run on two architectures.** The dates and amounts stay fixed; what changes between the January 2027 landscape and Waypoint is whether the promises hold.
+> * **Operations by event, finance by batch, and every join with a key and a net.** Each message carries an idempotency key, and a daily reconciliation catches what the webhooks miss.
 
 The eight parts before this one took the commerce platform apart, one capability at a time. **This part puts it back together.** Four stories each follow one order through every system it touches, so the chapters you have read become steps on one path. Kestrel & Pine, the fictional outdoor brand this book follows, is the setting throughout; its figures, dates and systems are invented for teaching.
 

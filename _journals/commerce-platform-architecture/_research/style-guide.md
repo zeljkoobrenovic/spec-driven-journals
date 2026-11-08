@@ -80,7 +80,7 @@ Then, in this order (exact labels):
 **Where we are in the order's journey.** <One short paragraph: which step of Eva's jacket (the recurring order in the ledger) this chapter covers, or, for chapters off the order's path, how it bears on it.>
 ```
 
-The opener "IN THIS CHAPTER, YOU WILL" is one sentence, KEY POINTS comes immediately after it, and there is no WHY IT MATTERS callout (dropped 7 Nov 2026 by the author; the lead paragraphs carry the stakes). Exactly three KEY POINTS. Two or three failure patterns, chosen by strength of connection. Part intros use "IN THIS PART, YOU WILL" and "FAILURE PATTERNS THIS PART ADDRESSES" and end with a `## Chapters in this part` list.
+The opener "IN THIS CHAPTER, YOU WILL" is one sentence, KEY POINTS comes immediately after it, and there is no WHY IT MATTERS callout (dropped 7 Nov 2026 by the author; the lead paragraphs carry the stakes). Exactly three KEY POINTS. Two or three failure patterns, chosen by strength of connection. Part intros open with KEY POINTS only (three tight bullets: a bold claim plus one short sentence), with no "IN THIS PART, YOU WILL" and no failure-patterns block (dropped 8 Nov 2026 by the author), and end with a `## Chapters in this part` list.
 
 Body (a guide, not a rigid template — **name sections by content**, not generic labels, but cover these in roughly this order):
 

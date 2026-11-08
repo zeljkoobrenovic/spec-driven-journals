@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-11-07
+revised: 2026-11-08
 ---
 
 # Spec: Part XI — PRACTICE: How Others Built It
@@ -18,7 +18,7 @@ Newcomers to commerce architecture; the engineer, architect or leader who hears 
 
 ## Success criteria
 
-- [ ] Openers present in order: IN THIS PART, KEY POINTS (exactly three), WHY IT MATTERS (two sentences), FAILURE PATTERNS THIS PART ADDRESSES (two to four, exact names), `<br>`.
+- [x] Opens with exactly three tight KEY POINTS (a bold claim plus one short sentence each), then `<br>`; no IN THIS PART or FAILURE PATTERNS block.
 - [ ] The lead states the reading rules: public evidence only, year in the sentence, old sources flagged, inferences labeled, each case ending with "Where the Evidence Stops".
 - [ ] The lead names The Giant's Boots and says the companies' answers depend on scale and business model; names Kestrel & Pine as fictional once; says the cases sit beside the order's journey.
 - [ ] One or two mermaid diagrams of 5–9 nodes, each with a numbered caption.
@@ -64,3 +64,4 @@ Article only.
 - **2026-11-07** — Initial spec and part introduction. Status `accepted`. *(AI-mediated session)*
 - **2026-11-07** — Editorial review pass: composable pitch attributed to the consultancy (item 13a). *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). *(AI-mediated session)*

@@ -9,19 +9,11 @@ icon: "assets/icons/part-3-intro.png"
 logo: "assets/images/part-3-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Follow one cart through checkout, payment, the order record and the books, and learn which system owns each step and how the others find out what it did.
-
 > **KEY POINTS:**
 >
-> * **Checkout is the moment the shop stops promising and starts owing.** The cart is a draft that reserves nothing; checkout asks pricing, promotions, tax, availability, shipping and payment for a final answer and creates the order exactly once, before the bank has replied. It owns none of the facts it writes.
-> * **From then on, the truth about the order arrives by message from systems the merchant does not control.** The payment provider's result, the warehouse's shipment confirmation and the carrier's scan come late, out of order and sometimes twice. So the order keeps separate states for money, goods per parcel and returns, every message carries a key, a repeat changes nothing, and a daily job compares the copies.
-> * **The order ends as documents with identifiers, each issued by one system.** One writer per action that moves money, one invoice sequence per legal entity, a credit note for every correction, and a monthly match of orders, payouts and the bank.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Message in a Bottle** — a payment result or a shipment confirmation sent once and trusted, so an order is paid twice, never paid, or "delivered" while half of it is still being picked.
-> * **Schrödinger's Order** — the platform, the warehouse and the finance system each held an honest status of a different object, and nobody held the order's.
-> * **The Boomerang** — two systems could refund the same return, neither sent a key the provider could recognize, and the two paths met only in the ledger, a month later.
+> * **Checkout is the moment the shop stops promising and starts owing.** It asks every owner for a final answer and creates the order exactly once, while owning none of the facts it writes.
+> * **After checkout, the truth arrives by message, late, out of order and sometimes twice.** So the order keeps separate states for money, parcels and returns, and every message carries a key.
+> * **The order ends as documents, each issued by one system.** One writer per money movement, one invoice sequence per legal entity, and a monthly match of orders, payouts and the bank.
 
 <br>
 Part II was everything the shopper sees before the cart, each item a promise. Part III is **the moment the promises become an obligation**. In a few minutes the shop asks every system that made a promise for a final answer, takes the shopper's money, and writes one record that the warehouse, the carrier, the service desk and the accountants will all read and change. From then on the merchant owes a parcel, owes the state its tax, and owes its own books an explanation of every euro.

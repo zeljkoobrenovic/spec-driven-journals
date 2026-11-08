@@ -3,19 +3,11 @@
 
 ![Part XI — PRACTICE: How Others Built It — logo](commerce-platform-architecture/posts/part-11-intro/assets/images/part-11-intro/logo.jpeg)
 
-> **IN THIS PART, YOU WILL:** Read four real companies' dated public records, separate what they document from the folklore told about them, and decide which of their lessons fit a merchant of your size.
-
 > **KEY POINTS:**
 >
-> * **The documented record is narrower than the folklore, and the narrow claims are the useful ones.** In the companies' own dated words, the slogans shrink to rules a small team can use: the contract is the only door, the shop is the unit of isolation, a copy is not a system of record.
-> * **Every answer was sized to its company.** Amazon split after a scaling wall, Zalando for 85-plus teams, and the composable vendors designed for global enterprises; in a fourteen-person team the same shapes are copies without their reasons.
-> * **What transfers is discipline, not machinery.** Dated API versions and deprecations, reconciled integrations, one owner per fact and a kept core with services beside it transfer; pods, a hundred services and a delivery network do not.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](#where-commerce-platforms-go-wrong):**
->
-> * **The Giant's Boots** — each case is an architecture copied by merchants a hundred times smaller; each chapter names what only the giant needs.
-> * **The Pulled Rug** — Shopify and Zalando publish how they withdraw APIs, which tells a merchant what to demand of every vendor.
-> * **The Spaghetti Junction** — Amazon's no-direct-reads rule and the composable movement's own survey both show what unowned joins cost.
+> * **The documented record is narrower than the folklore, and more useful.** In the companies' own dated words, the slogans shrink to rules a small team can use.
+> * **Every answer was sized to its company.** In a fourteen-person team, Amazon's, Zalando's and the composable vendors' shapes are copies without their reasons.
+> * **What transfers is discipline, not machinery.** Dated API versions, reconciled integrations and one owner per fact transfer; pods and a hundred services do not.
 
 Every part so far has used real companies as dated examples inside a chapter about one capability. **This part reads four whole companies against the book's argument.** Shopify is a growing merchant's most likely landlord; Amazon and Zalando are its marketplaces and competitors; the composable vendors sell it the next rebuild. Their stories are retold in design reviews, usually without dates.
 

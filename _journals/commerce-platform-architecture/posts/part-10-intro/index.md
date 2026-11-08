@@ -9,19 +9,11 @@ icon: "assets/icons/part-10-intro.png"
 logo: "assets/images/part-10-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Learn to choose and price a platform strategy, move systems without burning the bridge, read your scale stage and its signals, draw an ownership map that fourteen people will keep, and separate what AI does in commerce today from what agents will need tomorrow.
-
 > **KEY POINTS:**
 >
-> * **At a growing merchant the problems live in the joins, so the platform decision is mostly about what to leave where it is.** Build only what customers choose you for, buy what every merchant needs, own the joins yourself, and price every option over three years, including the lines the quote leaves out.
-> * **A stage is a shape, and a migration is how you cross from one to the next.** Most Omnichannel incidents are Growing-stage designs under Omnichannel load. The move is made one seam at a time, old and new side by side, with the old owner kept operable through one peak.
-> * **Ownership is what makes any of it hold.** One row per system, integration and app with a named owner inside the company; one writer per fact; teams shaped around the order's journeys rather than around vendors; and an AI agent treated as one more integration, with an identity, an owner and no write scope on stock, prices or orders.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Giant's Boots** — a composable rebuild, a microservices program or a shopping agent copied from a company a hundred times larger, into a fourteen-person team that cannot own it.
-> * **The Burned Bridge** — a platform or a hub switched over on one date, into or near a peak, with no rehearsed way back.
-> * **The Secret Agent** — a script, an app or an AI assistant that writes stock, prices or orders with no named owner, which the ownership map and the agent policy exist to prevent.
+> * **At a growing merchant the problems live in the joins.** Build what customers choose you for, buy what every merchant needs, own the joins, and price every option over three years.
+> * **A stage is a shape, and a migration crosses between stages one seam at a time.** Old and new run side by side, with the old owner kept operable through one peak.
+> * **Ownership is what makes any of it hold.** A named owner for every system, integration and app, one writer per fact, and AI agents treated as integrations with no write scope on stock, prices or orders.
 
 <br>
 Every part so far has described a commerce platform as it stands on one day. **This part is about the decisions a merchant has to make again each time the business changes shape.** A merchant does not grow smoothly. It grows in jumps: the first store, the first retail chain that orders by EDI, the first marketplace, the first warehouse of its own, one day a second brand. Each jump adds a place where stock sits or a channel where it sells, and the money is lost at those transitions, not between them.

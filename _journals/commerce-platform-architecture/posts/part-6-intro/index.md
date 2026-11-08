@@ -9,20 +9,11 @@ icon: "assets/icons/part-6-intro.png"
 logo: "assets/images/part-6-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Follow the facts that cross between Kestrel & Pine's thirteen systems and learn the five questions every join must answer: how the systems talk, how they recover, what they promise, whom they mean and what they count.
-
 > **KEY POINTS:**
 >
-> * **Integration is decided per flow, and every flow needs an owner.** Stock, orders and prices want events with a safety net, products want scheduled publication, finance wants a daily batch. Kestrel & Pine's inventory found 34 integrations, 13 with nobody to call in January 2027, and none that compared stock or orders between two systems.
-> * **Separate systems are built to disagree; design them to recover and to prove it.** Every delivery arrives at least once and in any order, so a receiver needs an idempotency key, a sender an outbox, a partial failure a compensating action, and every flow a reconciliation job that compares the two ends. Every contract has a version and a sunset date, and the consumer's job is to write that date down.
-> * **Moving the data is half the work; meaning the same thing by it is the other half.** One customer became four records and one month's orders became three counts because nobody had named the master record for a customer or the definition of an order. One owner per entity and per metric, with the links and the bridge published, is what makes joined systems behave like one.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Spaghetti Junction** — 34 connectors built one need at a time, the mapping between systems living inside each connector, and 13 flows with no owner in January 2027.
-> * **The Message in a Bottle** — a webhook or a scheduled sync sent once and trusted: the Double Refund, the Price Drift and 390 variants whose stock drifted while nothing compared the two ends.
-> * **The Pulled Rug** — the marketplace connector retired an API version on a published date, and the only person who had read the notice had left the agency.
-> * **The Familiar Stranger** — Eva Janssen is an account, a loyalty entry, a subscriber and a returns contact in four systems with no shared identifier.
+> * **Integration is decided per flow, and every flow needs an owner.** Events for stock and orders, scheduled publication for products, batch for finance; in January 2027, 13 of Kestrel & Pine's 34 integrations had nobody to call.
+> * **Separate systems are built to disagree, so design them to recover.** Idempotency keys, outboxes, compensations and reconciliation jobs, plus a version and sunset date on every contract.
+> * **Moving the data is half the work; meaning the same thing by it is the other half.** One owner per entity and per metric is what makes joined systems behave like one.
 
 <br>
 A growing merchant does not run one system. It runs a dozen or more, each bought because it was good at one thing: the platform sells, the warehouse system picks, the ERP keeps the books, the connector talks to the marketplaces. **The trouble is that an order, a stock level, a price or a customer has to pass between them, and every handoff is a place where it can arrive late, twice, in the wrong shape or not at all.** This part is about the joins that carry the facts between them, where most of the incidents this book opened with happened.

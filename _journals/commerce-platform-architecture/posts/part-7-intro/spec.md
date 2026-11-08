@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-11-07
+revised: 2026-11-08
 ---
 
 # Spec: Part VII — PLATFORM: How Commerce Platforms Are Built
@@ -18,7 +18,7 @@ Newcomers to commerce architecture; the engineer or leader who has just been han
 
 ## Success criteria
 
-- [ ] Openers present in order: IN THIS PART, KEY POINTS (exactly three), WHY IT MATTERS (two sentences), FAILURE PATTERNS THIS PART ADDRESSES (two to four, exact names), `<br>`.
+- [x] Opens with exactly three tight KEY POINTS (a bold claim plus one short sentence each), then `<br>`; no IN THIS PART or FAILURE PATTERNS block.
 - [ ] Lead of 2–4 short paragraphs, business first, says where the part sits in the order's journey, names Kestrel & Pine as fictional once.
 - [ ] One or two mermaid diagrams of 5–9 nodes, fenced with `---begin mermaid---`, each with a numbered caption.
 - [ ] `## Chapters in this part` has one paragraph per chapter in config order, `[[permalink]]` first, the decided question in bold, the Kestrel & Pine case named, ending "Begin with [[commerce-architecture-styles]]."
@@ -66,3 +66,4 @@ Article only.
 - **2026-11-07** — Initial spec and part introduction. Status `accepted`. *(AI-mediated session)*
 - **2026-11-07** — Editorial review pass: glossed monolith and pool/silo/bridge, replaced unexpanded LCP/INP/CLS with plain wording, reworded the "four proposals" claim so it fits the app count, named the pitch sources per the item 13 ruling. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). *(AI-mediated session)*

@@ -3,19 +3,11 @@
 
 ![Part II — CATALOG: Products, Prices and Promises — logo](commerce-platform-architecture/posts/part-2-intro/assets/images/part-2-intro/logo.jpeg)
 
-> **IN THIS PART, YOU WILL:** Learn how a commerce platform decides what it sells, what it costs, what is discounted, how shoppers find it and whether it is really in stock, and who owns each of those facts.
-
 > **KEY POINTS:**
 >
-> * **Catalog facts have different owners and different clocks.** Product content changes with the season and tolerates a day's lag; a price changes daily and carries legal weight in the EU; a discount is decided in the cart; stock changes by the second. One system of record (the system whose value wins when copies disagree) per kind of fact, one path per clock.
-> * **Every channel shows a copy, and a copy needs a source, an effective date and a reconciliation.** The German storefront at €179, the search index saying "in stock" and the marketplace selling two hours after the shelf emptied were all copies nobody compared with their source.
-> * **A promise is computed by a rule, at a moment, in one place, and then frozen.** The price is selected at checkout and copied to the invoice; the discount is computed once in the cart and allocated to every line; the last unit is committed to exactly one order.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](#where-commerce-platforms-go-wrong):**
->
-> * **The Spaghetti Junction** — product content typed into four systems by four teams, so one color has three spellings and no owner.
-> * **The Price Nobody Can Explain** — one jacket, eleven prices, seven places, and no rule saying which is the source of which.
-> * **The Phantom Stock** — "in stock" computed from a copy of a copy, two hours behind the warehouse, on the busiest evening of the year.
+> * **Catalog facts have different owners and different clocks.** Content tolerates a day's lag, prices carry legal weight, discounts are decided in the cart and stock changes by the second.
+> * **Every channel shows a copy, and a copy needs a source and a reconciliation.** The €179 German price and the marketplace selling an empty shelf were copies nobody compared with their source.
+> * **A promise is computed once, in one place, and then frozen.** The price is copied to the invoice, the discount allocated to every line, and the last unit committed to exactly one order.
 
 Before a shop can take an order, it has to make four promises on one page: this is the product, this is what it costs, this is what is off today, and we have one for you. A fifth sits in the search box: type what you want and we will find it. Part I drew the map of a commerce platform and said every fact needs an owner. Part II is **everything the shopper sees before the cart**, and the first test of that rule, because these facts look alike and are not. A description has many producers and tolerates lag as long as it is complete; a price must be the same in every channel on the same day and, in Europe, keep its own history; a discount is only final once the cart knows the second item and the code; and a stock figure is stale within minutes at peak. Kestrel & Pine, the fictional outdoor brand this book follows, held each of these facts in four or more places in 2026, and each chapter opens with what that cost.
 

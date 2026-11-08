@@ -5,20 +5,11 @@
 
 ![Part I — COMMERCE: What a Commerce Platform Is — logo](commerce-platform-architecture/posts/part-1-intro/assets/images/part-1-intro/logo.jpeg)
 
-> **IN THIS PART, YOU WILL:** Follow one order through every system it touches, see why ways of selling shape systems, draw the map of a commerce platform, decide which system owns each fact, and sort the 2026 platform market into its kinds.
-
 > **KEY POINTS:**
 >
-> * **A commerce platform is a promise-keeping machine, not one product.** The storefront promises a product, a price, "in stock", a delivery date and a return right; the warehouse, the carrier, the payment provider and the finance system have to keep them. Every handoff between them is a message that can be late, lost, duplicated or misread, and that is where platforms break.
-> * **Who sells what to whom decides the systems.** A brand selling to consumers, a wholesaler, a marketplace seller and a retailer with stores make different promises, so they need different systems; a merchant running several lines needs a shared core for the facts they share and separate edges for the promises they do not.
-> * **Draw the map in capabilities, then name one record per fact.** About two dozen jobs in six layers, each the home of one business fact, with every other value a copy that learns from it. The market covers that map in seven kinds of platform, priced mostly on your sales; choose by the integration work you can own, because every kind moves that work rather than removing it.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](#where-commerce-platforms-go-wrong):**
->
-> * **The Phantom Stock** — the first promise in the journey, "in stock", is made from a copy of the warehouse's count that nobody has named as a copy.
-> * **Schrödinger's Order** — the warehouse's, the storefront's and the ledger's order are three objects, and no system owns the view across them.
-> * **The Spaghetti Junction** — connectors multiply when nobody has drawn which capability feeds which.
-> * **The Giant's Boots** — the landscape is full of architectures built for companies a hundred times larger, pitched after every incident.
+> * **A commerce platform is a promise-keeping machine, not one product.** The storefront makes the promises; the warehouse, carrier, payment provider and finance system keep them, and every handoff between them can fail.
+> * **Who sells what to whom decides the systems.** Consumer, wholesale, marketplace and store selling make different promises, so they need different systems around a shared core.
+> * **Draw the map in capabilities, then name one record per fact.** Every other value is a copy; choose a platform by the integration work you can own, because every kind moves that work rather than removing it.
 
 A shop shows a jacket, promises a price, says it is in stock, promises delivery tomorrow and a return within 14 days, and takes the money. Keeping those promises takes a dozen systems: a storefront, a payment provider, a warehouse, carriers, a returns portal, a finance system, usually a store till and a marketplace connector. **They are owned by different teams and vendors, and none can see the whole order.** This part is the business before the technology: what the promises are, who makes them, which systems keep them, and what the market sells to do so.
 
@@ -34,10 +25,6 @@ The merchant the book follows, Kestrel & Pine, is fictional: an outdoor brand fr
 
 **Figure 2:** *The order's journey as a chain of promises: the storefront makes them early, the other systems keep them late, and every arrow is a handoff that can be late, lost, duplicated or misread.*
 
-![Diagram: The five questions of Part I in reading order](commerce-platform-architecture/posts/part-1-intro/assets/images/part-1-intro/fig02-five-questions-part-i-reading-order.jpeg)
-
-**Figure 3:** *The five questions of Part I in reading order: each answer is the vocabulary the next question needs, and together they are the reasoning behind Kestrel & Pine's 2027 decisions.*
-
 {id: part-1--chapters-in-this-part}
 ## Chapters in this part
 
@@ -52,6 +39,10 @@ The merchant the book follows, Kestrel & Pine, is fictional: an outdoor brand fr
 [Suites, SaaS, Open Source and Composable: The Platform Landscape in 2026](#commerce-platform-landscape) decides **what kinds of platforms exist, who sells them, how they are priced and how the market changed up to 2026**: seven categories, priced mostly on sales rather than software, and a 2023–2026 convergence on selling layers beside a kept core. The case is the two rebuild pitches of February 2027, a consultancy's composable replacement and the agency's headless storefront, and decision W4, stay and surround.
 
 Begin with [Follow the Order: What Happens Between “Buy” and “Delivered”](#journey-of-an-order).
+
+![Diagram: The five questions of Part I in reading order](commerce-platform-architecture/posts/part-1-intro/assets/images/part-1-intro/fig02-five-questions-part-i-reading-order.jpeg)
+
+**Figure 3:** *The five questions of Part I in reading order: each answer is the vocabulary the next question needs, and together they are the reasoning behind Kestrel & Pine's 2027 decisions.*
 
 {id: part-1--sources-and-evidence}
 ## Sources and Evidence

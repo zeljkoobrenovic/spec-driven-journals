@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-11-07
+revised: 2026-11-08
 ---
 
 # Spec: Part II — CATALOG: Products, Prices and Promises
@@ -15,7 +15,7 @@ Readers new to commerce architecture who are about to read the catalog chapters.
 
 ## Success criteria
 
-- [ ] Opens with IN THIS PART, exactly three KEY POINTS, a two-sentence WHY IT MATTERS (loss, then decision) and a FAILURE PATTERNS callout with exact names linked to where-commerce-platforms-go-wrong.html.
+- [x] Opens with exactly three tight KEY POINTS (a bold claim plus one short sentence each), then `<br>`; no IN THIS PART or FAILURE PATTERNS block.
 - [ ] The lead frames the part in business terms first, says where it sits in Eva's jacket (before "add to cart"), and names Kestrel & Pine as fictional once.
 - [ ] Kestrel & Pine figures match the ledger and the chapters (€8,200 / 410 orders; €52,000 / 2,860 orders; €96,000 / 1,340 units / 1,120 orders; 9.4% to 4.1%; about 140 declined variants).
 - [ ] One mermaid diagram of 5–9 nodes with a Figure caption showing the part's shape.
@@ -61,3 +61,4 @@ Article only for now.
 - **2026-11-07** — Editorial review pass: tightened the chapter list and lead, defined SKU, GTIN, PIM and system of record on first use. *(AI-mediated session)*
 - **2026-11-07** — Final consistency pass: "the scenario ledger's" figures rephrased. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 1 mermaid diagram as illustrations and added 1 conceptual figure (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). *(AI-mediated session)*

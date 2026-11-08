@@ -9,20 +9,11 @@ icon: "assets/icons/part-8-intro.png"
 logo: "assets/images/part-8-intro/logo.jpeg"
 ---
 
-> **IN THIS PART, YOU WILL:** Learn what attackers take from a shop and which controls stop them, where personal data lives and how to design consent, retention and deletion across many systems, and how to read a law as a dated data requirement with an owner.
-
 > **KEY POINTS:**
 >
-> * **Attackers do not break in; they use the shop as built.** Card testing, credential stuffing and skimming are the payment form, the login and the checkout page used at machine speed. The hosted platform secures the service and the card-data scope; the merchant secures every identity, key, app, script and endpoint it adds, and watches the decline rate as closely as the order rate.
-> * **The order and the person are two different things in law.** The merchant is the controller of its customers' data; its platform, warehouse system and apps are processors; carriers, marketplaces and the payment provider decide for themselves. The order rests on the contract and on tax law and stays for years; the profile rests on consent and goes when the person says so, so the data model must let the transaction outlive the person.
-> * **Most rules are data requirements with a date.** A 30-day price history, a 14-day refund clock, a manufacturer field on every listing, a structured invoice over a network: each belongs in a system of record, with a test and a calendar row that names an owner. The platform absorbs some of it, never all of it.
-
-> **[FAILURE PATTERNS THIS PART ADDRESSES](where-commerce-platforms-go-wrong.html):**
->
-> * **The Secret Agent** — an app, script or integration that acts without its own identity cannot be traced when its key leaks, and it copies customer data as a processor nobody appointed.
-> * **The Lynchpin** — one shared admin password, one payment account and one person who knows where the keys are is a security architecture that fails in a single step.
-> * **The Familiar Stranger** — a person the systems cannot recognize as one cannot be deleted, told the truth about or respected when they opt out.
-> * **The Long Fuse** — a deletion request has a one-month clock and every rule in this part was published years before it applied; both are discovered late by a merchant with no map.
+> * **Attackers use the shop as built.** Card testing, credential stuffing and skimming are the checkout and login at machine speed; the merchant secures every identity, key, app and script it adds.
+> * **The order and the person are different things in law.** The order stays for years under contract and tax law; the profile goes when the person asks, so the transaction must outlive the person.
+> * **Most rules are data requirements with a date.** Each belongs in a system of record, with a test and a calendar row that names an owner.
 
 <br>
 Every part so far has asked how a shop works when everyone means well. **This part asks what happens when someone does not, and what the law requires regardless.** A shop is three public forms: a payment form that takes money from anyone with a valid card number, a login that lets anyone with the right password act as a customer, and an admin that lets them act as the merchant. None of it has to be broken to be abused. The same shop holds a name, an address and a purchase history in a dozen systems from a dozen vendors, each copy made for a reason and each reason with its own rule for how long it may stay. And much of what the shop must show, record and refund is written in the Official Journal of the European Union, with a date.
