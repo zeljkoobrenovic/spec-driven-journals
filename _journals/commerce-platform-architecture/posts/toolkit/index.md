@@ -15,18 +15,18 @@ logo: "assets/images/toolkit/logo.jpeg"
 >
 > * **Every card names an owner, a system of record and a date.** Those three fields are what turn a diagram into a decision: who is called when it breaks, which system wins when two disagree, and when the card must be looked at again.
 > * **The cards point at each other.** The capability map says which boxes exist, the entity–owner table says who owns each fact, the integration inventory lists every flow that moves a fact, and each flow has a contract card and a reconciliation card. A decision record changes a row in one of them; nothing else should.
-> * **Most fields were paid for by an incident.** The writer column came from the App That Wrote Stock, the sunset date from the Deprecated Endpoint, the SSCC source from the ASN Chargeback, the summary rule from the Three-Status Order. Write "unknown" rather than guess.
+> * **Most fields were paid for by an incident.** The writer column came from the App That Wrote Stock, the sunset date from the Deprecated Endpoint, the pallet-label source from a shipment-notice mismatch, the summary rule from the Three-Status Order. Write "unknown" rather than guess.
 
 <br>
-These are **working templates for a merchant whose order passes through more systems than one team can hold in its head**: the records the chapters ask you to keep, from the capability map of [[commerce-capability-map]] to the decision record of [[organizing-commerce-engineering]]. Each is the smallest form I have found that makes a design decision explicit, gives it an owner and leaves evidence that someone else can check. The chapters linked from each card give the reasoning and sources behind every field.
+A design discussion can end with agreement about a new system while leaving its data owner or recovery process undecided. These sixteen cards make those gaps visible by recording the business fact, responsible owner, systems involved and expected result. They range from a capability map to a migration plan and decision record. Each includes instructions to start; its linked chapter supplies the reasoning and sources.
 
-Each card is filled in once for **Kestrel & Pine, the fictional outdoor brand this book follows** ([[meet-kestrel-and-pine]]). Every Kestrel & Pine name, figure and date below is invented for teaching and agrees with the chapter that works the full case.
+Worked examples use **Kestrel & Pine, a fictional outdoor brand** ([[meet-kestrel-and-pine]]). Replace its names, dates and figures with your own. Keep the fields that expose a decision or responsibility; adapt the rest to your setting.
 
 Three conventions run through all sixteen cards.
 
-- **They are kept data, not documents.** A card lives where the people who change the system will see it, in one repository, not in a slide deck.
-- **They cite each other by identifier.** A decision record names the entity–owner rows it changes; a contract card names its inventory row.
-- **Blank is a finding.** An empty owner cell or a missing sunset date is where the next incident will come from.
+- **Keep cards with the work they describe.** Store them in a shared repository where the people changing the systems can find and update them; a detached slide deck is easy to leave behind.
+- **Link related cards by identifier.** A decision record names the ownership rows it changes, and a contract card names its integration inventory row, so a reviewer can trace the effects of a change.
+- **Investigate consequential blanks.** A missing owner leaves nobody responsible for recovery; a missing retirement date can leave an obsolete integration running. Use the gap to assign the next piece of work.
 
 ## Find the Template for the Question on Your Desk
 
@@ -49,7 +49,7 @@ Three conventions run through all sixteen cards.
 | A system of record is moving from one system to another | [Tool 15](#tool-15): Migration plan card | [[replatforming-and-migration]] |
 | A decision changes who owns a fact, which vendor we depend on or which app may write | [Tool 16](#tool-16): Architecture decision record | [[organizing-commerce-engineering]] |
 
-Two related records are not repeated here because their chapters give them in full: the ownership map and vendor card of [[organizing-commerce-engineering]], and the W7 metric definitions of [[commerce-data-and-analytics]].
+Two fuller records live in their chapters: the system and vendor ownership map in [[organizing-commerce-engineering]], and shared order, revenue and return definitions in [[commerce-data-and-analytics]].
 
 ## How the Records Connect
 
@@ -62,7 +62,7 @@ In plain words: start at the entity–owner table. A fact with no row, or a row 
 
 ## <a id="tool-1"></a>Tool 1: Capability Map
 
-**Purpose.** A capability map lists what the business must be able to do, such as "compute what each channel may sell", independent of which system does it today. Placing your systems on it shows the empty boxes (jobs no system owns) and the crowded ones, where incidents start.
+**Purpose.** List the jobs the business must perform, independently of today's systems. Then place each system against those jobs. Empty boxes expose missing capability; overlapping boxes prompt a decision about responsibility.
 
 **The template.** One row per capability, grouped in six layers: experience, offer, transaction, operations, partners and back office, foundations.
 
@@ -93,7 +93,7 @@ The whole map had about two dozen capabilities with thirteen systems placed on t
 
 ## <a id="tool-2"></a>Tool 2: Entity–Owner Table
 
-**Purpose.** The entity–owner table names, for each business fact, the one **system of record** (the system whose value is the truth when copies disagree), who may write it there, where copies may live and how disagreement is found. It turns "which system is right?" into a lookup.
+**Purpose.** Name the **system of record**, the authoritative source for each business fact. Record who may change it, where copies live and how disagreements are detected. The table should let a new colleague answer which value to trust.
 
 **The template.** One row per fact; stock and customers usually need more than one row.
 
@@ -417,7 +417,7 @@ The same 23 is what Eva Janssen's storefront showed on 13 April 2027.
 
 ## <a id="tool-12"></a>Tool 12: Peak Plan and Degradation Ladder
 
-**Purpose.** A peak plan measures every link in the order chain in orders per minute, proves each link with a load test, and decides in a calm month what to switch off in a busy hour. The **degradation ladder** is that switch-off order: features turned off one rung at a time, each by a named owner on a stated trigger, so that checkout, payment and the order path keep working.
+**Purpose.** Measure the order path in orders per minute and test each link. Define a **degradation ladder**, the sequence of optional work to pause under pressure. Each action needs an owner and trigger so checkout, payment and order processing retain capacity.
 
 **The template.**
 
@@ -459,7 +459,7 @@ Three of the eight rungs:
 
 ## <a id="tool-13"></a>Tool 13: Regulatory Calendar
 
-**Purpose.** Most rules that reach a shop are data requirements with a date: a 30-day price history, a refund clock, a manufacturer field on every listing, a structured invoice sent over a network. The calendar reads each rule as a field, a system of record, a test and an owner, so that a deadline is not discovered when it is a few months away (the Long Fuse).
+**Purpose.** Translate an applicable rule into required data or behavior, a responsible system, a test, an owner and a deadline. Record scope as well as dates; a rule may apply differently by country, product or company size.
 
 **The template.** One row per rule, sorted by date.
 
@@ -516,7 +516,7 @@ Page two prices each option over three years: subscriptions and any share of gro
 
 ## <a id="tool-15"></a>Tool 15: Migration Plan Card
 
-**Purpose.** When a system of record moves, two systems hold the same fact for a while and only one may be right. The card plans the move one seam at a time (a channel, a capability or a slice of traffic), with a reconciliation that proves old and new agree and a rehearsed way back, instead of one cutover date with no return (the Burned Bridge).
+**Purpose.** Plan each change of authoritative system as a limited step: one channel, capability or traffic slice. Specify how old and new results will be compared, who may write during the transition and how to recover if the new path fails.
 
 **The template.** One card per seam; the data rows once per migration.
 

@@ -18,26 +18,26 @@ logo: "assets/images/introduction/logo.jpeg"
 > * **Architecture decides who may make which promise, how the others learn of it, and what happens when they disagree.** The right answer changes with the size and shape of the business, so the book follows one fictional merchant as it grows, compares every decision across four scale stages, and says in each chapter what is established, what depends on context and what is the author's view.
 
 <br>
-On a Tuesday evening in April 2027, at 21:14, **Eva Janssen** in Nijmegen orders a Ridgewalker shell jacket, women's, size M, in moss, for €199, and two pairs of merino hiking socks at €18 each. She pays €235 by iDEAL, the Dutch bank-transfer payment method. Order **#1072455** is confirmed in under a minute.
+At 21:14 on 13 April 2027, Eva Janssen in Nijmegen buys a €199 Ridgewalker jacket and two €18 pairs of socks from **Kestrel & Pine, a fictional outdoor brand**. She pays €235 through iDEAL, the Dutch bank-transfer method. The shop confirms order #1072455. For Eva, the next step is waiting for delivery. For the merchant, several systems must now turn that confirmation into the right parcel, delivered when promised.
 
-In that minute the shop made her **five promises**: this product exists as described; it costs €199; it is in stock; it will arrive on Thursday; and she can send it back if it does not fit. No single system can keep all five. The price lives in one system, the stock count in the warehouse's system, the delivery date depends on the warehouse's pick waves and the carrier's network, the money sits with a payment provider, and the return right runs through a returns portal and, eventually, the finance system. **The page that made the promises owns almost none of the facts behind them.**
+The shop has promised the described product, an agreed price, available stock, a delivery date and a way to return it. Pricing supplies the amount, the warehouse supplies stock, the carrier helps determine delivery and finance records payment and any refund. The page taking the order depends on those systems' answers. If one is wrong or out of date, checkout can succeed while committing the merchant to a promise it cannot keep.
 
-Five months earlier, on the busiest evening of 2026, the same shop broke the "in stock" promise 1,340 times. The jacket sold out in the warehouse at 19:40, but the storefronts and marketplaces kept selling it for up to two hours, because each one was looking at a copy of the stock count that was refreshed hourly. Every system did what it had been built to do. **The failure lived between them.**
+On Black Friday 2026, the same shop oversold **1,340 units**. The jacket sold out at 19:40, but channels continued selling for up to two hours from old stock copies. The component systems stayed up. Their handoffs failed the customer.
 
-The shop is **Kestrel & Pine**, a fictional outdoor brand this book follows from its first architecture into its second. Eva's jacket is the recurring order: almost every chapter says where on its way from search to doorstep, and back, the chapter sits. This book is about how the systems behind that order fit together, why the decisions about them matter, and how those decisions change as a business grows.
+This book follows Eva's order from discovery to delivery, exchange and accounting. It explains who should own each fact, how other systems learn about changes and what to do when they disagree. The choices evolve as Kestrel & Pine adds channels, locations and complexity.
 
 ## Who This Book Is For
 
-This book is for people **new to commerce architecture** who need to understand how the systems behind selling fit together before they can make or judge decisions about them. You may have just joined:
+The book is for readers **new to commerce architecture** who need to understand how selling systems fit together and judge changes to them. You may have just joined:
 
 - **A retailer, a brand or a wholesaler**, as an engineer, product manager, analyst or engineering lead, and found a dozen systems that nobody drew.
 - **A commerce software vendor**, building one of those systems (a warehouse system, a returns portal, a marketplace connector), and need to understand the systems on either side of yours.
 - **An agency or a consultancy**, asked to recommend a platform, a migration or an integration.
 - **A leadership role**, as a CTO, head of ecommerce or finance or operations director, and need to know which technology questions are really business questions.
 
-**What you need to know already.** General software literacy: you know roughly what an API (a way for one program to call another), a database, a message queue and a web page are. You do not need to have built a shop.
+**Starting knowledge.** You should recognize an API, database, message queue and web page. You do not need commerce experience.
 
-**What you do not need to know.** Commerce vocabulary and architecture vocabulary. A **SKU** (stock keeping unit, one sellable variant such as "jacket, women's, M, moss"), **ATP** (available-to-promise, the quantity you may still sell), an **OMS** (order management system), a **WMS** (warehouse management system), a **PSP** (payment service provider), **EDI** (electronic data interchange, structured documents between companies), a **system of record** (the one system whose copy of a fact wins), **idempotency** (handling the same message twice with the same result as once) and **eventual consistency** (copies that agree only after a delay) are each explained the first time they appear in each chapter, and collected in the [[glossary]] with the chapter that owns each one.
+**Vocabulary stays local.** Chapters explain the terms their decisions need, such as **SKU**, a code for a sellable variant, or **system of record**, the authoritative home of a fact. They also explain mechanisms such as **idempotency**, making a repeated request have the same effect as one request. The [[glossary]] collects these definitions and links to fuller treatments.
 
 The book speaks from the position of **an architect who advises growing merchants**. When I give my judgement, I say so in the first person, with my reasons and the conditions under which I would decide differently.
 
@@ -148,7 +148,11 @@ Architecture writing becomes unreliable when facts, habits, guesses, opinions, e
 
 Two distinctions are easy to lose. A Kestrel & Pine figure, such as the 24% item return rate, is an illustration, not an industry benchmark. And a recommendation that sounds like a fact, such as "the warehouse is the system of record for physical stock", is still a recommendation, with reasons and exceptions.
 
-**Why claims carry dates.** An undated claim quietly goes stale. In **March 2025** Zalando's engineering blog described replacing a price-and-stock event stream, which could fall up to 30 minutes behind during Cyber Week, with a synchronous read API ([Zalando Engineering, 2025](https://engineering.zalando.com/posts/2025/03/event-driven-to-api.html)); a chapter describing the earlier design without its date would teach the opposite lesson ([[case-zalando]]). On **3 November 2026** bol announced that its Offers API v10 stops on 1 February 2027 ([bol partner platform, 2026](https://partnerplatform.bol.com/en/)), and Shopify releases a new API version every quarter ([Shopify API versioning, accessed November 2026](https://shopify.dev/docs/api/usage/versioning)). Laws run on a timetable too: the EU rule that a price reduction must be shown against the lowest price of the previous 30 days has applied since 28 May 2022 ([Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161)). So every company and regulatory claim carries its date, evidence older than about three years is flagged, and announced features are kept apart from generally available ones.
+**Why claims carry dates.** An undated claim quietly goes stale. In **March 2025** Zalando's engineering blog described replacing a price-and-stock event stream, which could fall up to 30 minutes behind during Cyber Week, with a synchronous read API ([Zalando Engineering, 2025](https://engineering.zalando.com/posts/2025/03/event-driven-to-api.html)); a chapter describing the earlier design without its date would teach the opposite lesson ([[case-zalando]]).
+
+On **3 November 2026** bol announced that its Offers API v10 stops on 1 February 2027 ([bol partner platform, 2026](https://partnerplatform.bol.com/en/)), and Shopify releases a new API version every quarter ([Shopify API versioning, accessed November 2026](https://shopify.dev/docs/api/usage/versioning)).
+
+Laws run on a timetable too: the EU rule that a price reduction must be shown against the lowest price of the previous 30 days has applied since 28 May 2022 ([Directive (EU) 2019/2161](http://publications.europa.eu/resource/celex/32019L2161)). So every company and regulatory claim carries its date, evidence older than about three years is flagged, and announced features are kept apart from generally available ones.
 
 ### Three tiers of take-away
 
@@ -174,7 +178,9 @@ The book uses three kinds of material, and no others.
 
 ## Kestrel & Pine and the Toolkit
 
-**Kestrel & Pine is fictional.** It is an outdoor apparel and equipment brand from Arnhem, founded in 2016, with **€48 million of revenue in 2026**: €27 million from online storefronts in the Netherlands, Belgium and Germany, €12 million from 1,100 wholesale accounts, €6 million from six stores and €3 million from three marketplaces (bol, Amazon.de and Zalando). It ships from its own warehouse in Duiven and runs thirteen systems joined by 34 integrations, with **no order management system and no product information system**: orders live in four systems and product data in four. In 2026 that landscape produced ten incidents the chapters reuse, from the Black Friday Oversell (about €96,000) and the Double Refund (€19,400 refunded twice) to the ASN Chargeback (€14,200 deducted by its largest wholesale customer for mislabeled pallets).
+**Kestrel & Pine is fictional.** Founded in Arnhem in 2016, it earns **€48 million in 2026**: €27 million online across the Netherlands, Belgium and Germany, €12 million wholesale, €6 million in stores and €3 million through marketplaces. It serves 1,100 wholesale accounts, six stores and three marketplaces: bol, Amazon.de and Zalando.
+
+Its Duiven warehouse connects to a landscape of thirteen systems and 34 integrations. Orders and product content each live in four places, without shared order or product management. The recurring incidents expose the cost: about €96,000 from overselling, €19,400 refunded twice and €14,200 deducted for pallet labels that did not match shipment notices.
 
 In January 2027 **Noor Visser** joins as Head of Engineering. She is the reader's stand-in: experienced in software, new to this merchant's commerce landscape. In March 2027 she launches **Waypoint**, a €1.1 million program that decides ownership first and buys the missing hubs second: the warehouse owns physical stock, an order management system becomes the one order record, a product information system (PIM) owns product content, integrations get owners, contracts and reconciliation, and the company **stays on its hosted platform** rather than replatforming. Its eight decisions, W1 to W8, are canonical; chapters explain them and never change them.
 

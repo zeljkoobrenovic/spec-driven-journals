@@ -18,13 +18,17 @@ logo: "assets/images/bibliography/logo.jpeg"
 > * **Keep documented facts, inferences and Kestrel & Pine distinct.** The sources support the documented facts. Reference architectures for real platforms are labeled inferences, the recommendations are my judgement, and Kestrel & Pine, the omnichannel brand the book follows, is fictional: no source here describes it.
 
 <br>
-This page lists the external sources the chapters cite. The research was conducted in **November 2026**, and most entries were consulted then; where a chapter recorded an access date, a version or a "last updated" date, the entry keeps it. Many sources are in **Dutch, German, French or Polish** (tax-authority guidance, statutes, retailer supplier manuals and trade press); the citing chapters translated what they use. Much vendor documentation is living and undated, so those entries carry **"n.d." with the month it was read**. The starting map for the research was a set of **Productscape domain models of commerce products, inferred from public product behavior**; they are listed once as the author's working model and are not evidence about any company's systems.
+The chapters draw on company accounts, technical documentation, research and official rules. This register lets you trace a claim to its source and see when that evidence was published or checked. Research took place in **November 2026**; entries retain publication, access, update and version dates. **'n.d.' means undated**, so the access month is the indication of when that documentation was read.
+
+Some sources are in Dutch, German, French or Polish, with translations used in the chapters. Productscape domain models appear once as the author's planning material, not evidence of a company's internal design.
 
 ## How to Read This Register
 
-**R** marks a consulted source; the numbers identify, they do not rank. The register holds **816 sources** harvested from the **Sources and Evidence** sections of 53 pages, deduplicated by normalized URL (scheme, `www.`, trailing slash, fragment and `.html` suffix ignored); where chapters cited the same legal text, filing or post under two URLs, the entry keeps both. Identifiers were assigned in topic order for this first edition and stay stable: **new sources append from the next free R-number and are never renumbered**, and a removed source's number is retired rather than reused, so a reference to an identifier keeps meaning the same document.
+**R-numbers identify sources; they do not rank them.** The register contains **816 sources** from the Sources and Evidence sections of **53 pages**. Equivalent URLs were consolidated, with alternate links retained where relevant.
 
-Each entry gives the identifier, the linked title, the author or publisher, the **publication year as the citing chapter gave it** ("n.d." where the source carries no date, with access or update dates kept where the chapter recorded them), one clause on what the source supports, the evidence type and the chapters that cite it. Company engineering evidence carries its year because old posts may describe systems that have since been replaced; a post more than about three years old is a record of that date, not of today. Where chapters cited one source with slightly different metadata, the entry keeps the wording most chapters used, and where they gave different years it keeps the most specific citation.
+Identifiers stay stable. New sources receive the next unused number; removed numbers are retired. Existing references therefore continue to identify the same document.
+
+Each entry provides a linked title, publisher or author, date, supported claim, evidence type and citing chapters. Metadata follows the chapters' citations, retaining the most specific date where they differ. **An old architecture post describes its period, not necessarily the company's present system.**
 
 | Evidence type | Sources | What it is | How to read it |
 | --- | --- | --- | --- |
@@ -40,11 +44,13 @@ Each entry gives the identifier, the linked title, the author or publisher, the 
 | Encyclopedia | 7 | Wikipedia entries, used for definitions, dates and widely reported incidents | Tertiary; the chapters use it only where no primary source was reachable, and the primary source wins where one is cited |
 | Author's working model | 1 | The author's Productscape domain models of eleven commerce products, inferred from public product behavior and mapped in [[domain-coverage]] | Not public evidence and not a description of any company's systems; they were used to check the book's coverage, never as a source for a fact |
 
-The chapters also rely on the book's own research briefs and plan, written in November 2026 to collect and check the company, platform, regulatory and practice facts the chapters use. Those are working notes, not public evidence, and are not listed; wherever a brief's fact matters, the chapter cites the public source behind it, and that source is listed below. Links to the companion books (RECONCILED, LISTED and others) are cross-references to published pages, not external evidence, and are not listed either.
+Private research notes and the book plan are excluded. Their claims point to public sources, which are listed here. Links to companion books such as RECONCILED and LISTED are reading cross-references and are also excluded from this external-source register.
 
 ## Topic Index
 
-Identifiers run in topic order, so each topic is one contiguous block. The first ten topics follow the book's parts: a source sits under the part whose chapters cite it most, and its **Cited in** line lists every page that uses it. Legal texts, regulator guidance and decisions cited by [[commerce-security]], [[privacy-and-customer-data]] or [[commerce-regulation]] sit together under Part VIII, so the law is found in one place, unless one other part cites them in more pages (VAT and e-invoicing law stays with the tax and EDI chapters that lean on it). The eleventh topic collects the filings, results and announcements of Shopify, Amazon, Zalando, commercetools and Shopware, which chapters across the book cite, together with the sources only the case studies in Part XI use. Engineering posts and product documentation by a case company sit under the part they inform.
+Browse by topic or use **Sources by Chapter** near the end. A source sits under the topic citing it most; its **Cited in** field lists all uses. Most legal sources sit with security, privacy and regulation, while tax and electronic-invoicing texts remain with those specialist topics.
+
+The final topic collects company filings, results and announcements, plus evidence used only in case studies. Engineering posts and product documentation remain under the technical subject they support.
 
 **Commerce and business models (R1–R94, 94 sources; [[part-1]]).** Business models and their numbers, the journey of an order, the capability map, boundaries and systems of record, and the platform landscape a newcomer meets in 2026: market reports, retailer filings, vendor pages and industry statistics. The most widely cited is R4, *MACH Alliance Research: 6x More Organizations Achieve AI ROI with a Composable Foundation*, cited in 7 pages.
 

@@ -24,19 +24,19 @@ logo: "assets/images/09-search-and-discovery/logo.jpeg"
 > * **The Lynchpin** — relevance configured inside one hosted vendor's console, by one agency, with no record of why.
 
 <br>
-Before a shopper can buy, they must find. On most storefronts they do that in one of three ways: they **search** (type words into a box), they **navigate** (click through categories and filters) or they are **recommended** something (a carousel of "you might also like"). All three answer the same question, "which of the 17,000 active variants should this person see first?", and all three depend on the same thing: **product data that is complete, correctly structured and fresh.**
+A shopper filters for a waterproof jacket, but a suitable product disappears from the results because its waterproof rating exists only in a spreadsheet. A better ranking algorithm cannot fill that gap reliably. Search, category filters and recommendations all depend on which product facts reach the storefront and how those facts are structured.
 
-This is why a search problem is rarely a search-engine problem. The engine ranks what it is given. If the jacket's waterproof rating lives in a spreadsheet, no engine can find it by "waterproof". If the price in the index is yesterday's, the results page lies. If stock in the index is two hours old, the results page sells what the warehouse has already shipped. **The search index is a copy of several systems of record, and the chapter's work is deciding which facts to copy, how fresh each copy must be, and what to do when a copy is wrong.**
+Freshness matters too. Yesterday's price can mislead a shopper; an old stock figure can show a product the warehouse has sold out. The **search index**, the prepared set of records the engine searches, combines copies from several systems. Each copy needs an update and repair process, or the storefront can keep advertising a product it cannot sell on the displayed terms.
 
 Reviews belong here for the same reason. A rating is a signal that ranks products and persuades shoppers, so it lives in the index next to the title and the price. But a review is also a claim about a purchase, and since 2022 EU law has required merchants to say whether reviews come from real purchasers and to check that they do. Reviews are discovery data with a legal provenance record.
 
-This chapter owns the **search index**, **relevance**, the **merchandising rule** and the **facet**. It builds on [[product-information]] (the attributes being indexed), [[pricing-architecture]] (the price being shown) and [[commerce-promotions]] (the strike-through price), hands the truth about stock to [[inventory-and-availability]], and leaves agentic commerce to [[ai-and-agentic-commerce]]. The sibling book LISTED goes deeper on engines in [[search-architecture]] and on ranking for marketplaces in [[ranking]]; this chapter does not repeat them.
+The chapter covers the search index, **relevance** (how well results match the request), **merchandising rules** (how the merchant changes their order) and **facets** (filters built from product attributes). Product content, prices, promotions and stock come from their own owners: [[product-information]], [[pricing-architecture]], [[commerce-promotions]] and [[inventory-and-availability]]. For deeper engine and ranking detail, see [[search-architecture]] and [[ranking]]; agents are covered in [[ai-and-agentic-commerce]].
 
-**Where we are in the order's journey.** Eva's jacket, the recurring order this book follows, begins before the cart: on 13 April 2027 Eva had to find the Ridgewalker on the Dutch storefront before she could put it in a basket. This chapter is step one of the journey, discovery, and it is the step where the catalog, the price and the stock are shown to a shopper together for the first time.
+**Where we are in the order's journey.** On 13 April 2027, Eva searches Kestrel & Pine's Dutch storefront for a jacket. Kestrel & Pine is the fictional outdoor brand used here. Before she can add the Ridgewalker to her cart, search must bring its description, price and stock status together.
 
 ## Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find
 
-Kestrel & Pine, the fictional outdoor brand this book follows (see [[meet-kestrel-and-pine]]), sells 3,400 products in 26,000 variants on three storefronts, using the search built into its hosted platform. In mid-March 2027 Hanna Berg, the Data Lead, brought the first-quarter search report so far to Noor Visser, the new Head of Engineering, and Teun Baas, who owns the catalog. The figures below are illustrative, invented for this chapter.
+Kestrel & Pine uses its hosted platform's built-in search for 3,400 products and 26,000 variants across three storefronts. In March 2027, Data Lead Hanna Berg reviewed search results with Head of Engineering Noor Visser and catalog owner Teun Baas. The figures that follow are illustrative.
 
 | What the Q1 2027 search report showed *(illustrative)* | Figure |
 | --- | --- |
@@ -96,7 +96,11 @@ The availability row is where Kestrel & Pine was hurt. Its platform indexed the 
 
 ### How the index is fed
 
-Two patterns exist. **Scheduled sync** copies the catalog on a timer, nightly or hourly. It is simple and it is always stale by up to one interval; Algolia's Shopify B2B (business-to-business) integration documents a daily resync, with some changes taking up to two days to reach all B2B customers, and notes that product reindexing is never automatic. **Event-driven indexing** listens for change events from the catalog, the pricing service and the availability service and updates the affected records within seconds; it is the design every system in Part VI aims at, and it needs the idempotent handling of repeated messages and the reconciliation job that Waypoint W5 requires of every integration, because an index update is a message in a bottle like any other. In both patterns a **full rebuild** must remain possible, because a change to the index's shape (a new attribute, a new language, a new embedding model) cannot be applied record by record.
+**Scheduled synchronization** copies the catalog hourly or nightly. Its freshness depends on that interval and successful delivery. Algolia's documented Shopify business-to-business integration, for example, describes a daily resync, some changes taking up to two days, and product reindexing that is not automatic.
+
+**Event-driven indexing** reacts to catalog, price and availability changes and can update affected records within seconds. It needs safe handling of repeated messages and a comparison job to find missed updates. Those are requirements of Kestrel & Pine's Waypoint integration standard, W5, explained in [[events-consistency-and-reconciliation]].
+
+Keep a **full rebuild** available with either approach. A new language, attribute or embedding model can require recreating the index as a whole.
 
 | Interaction | Freshness | Consistency | Latency | Availability |
 | --- | --- | --- | --- | --- |
@@ -189,7 +193,9 @@ The judgement: the engine matters less with each stage than the pipeline feeding
 
 **Metrics have definitions.** Algolia's analytics (documentation accessed November 2026) define the no-results rate as the percentage of searches with no results, click-through rate as the percentage of tracked searches with at least one click, conversion rate as the percentage with at least one conversion event, and average click position, where "smaller values are better"; keystrokes within 30 seconds aggregate into one search. Whatever engine a merchant uses, these four, per language and per channel, are the dashboard. Baymard's data show mobile and app sites performing worse than desktop, so a single blended number hides the worst channel.
 
-**Kestrel & Pine's 2027 search plan.** Noor's plan for search had five lines and no new vendor (illustrative): synonym sets per language in March; a monthly review of the top 50 zero-result queries with Teun's catalog team, the way promotions are reviewed; the waterproof rating, fabric, insulation and fit attributes modeled in the PIM for Q3 with the facet switched on only once 95% of jackets carry a value; availability in the index replaced by a coarse flag fed from the availability service when it goes live, with the product page asking for the exact number; and a reviews data export that keeps the order link, so the 6,800 reviews survive any later app change. The zero-result rate fell from 9.4% to 4.1% by Q4, most of it from the synonyms. The plan's cost was a few days of configuration and one attribute model; its precondition was a PIM the company had already decided to buy for other reasons.
+**Kestrel & Pine's 2027 search plan used the existing vendor.** Noor added synonyms per language and a monthly review of the top 50 searches returning no results. The catalog team would model waterproof rating, fabric, insulation and fit in the new product information management system (PIM). Filters would appear only after 95% of jackets had values.
+
+The plan also replaced indexed stock counts with a broad availability flag, leaving exact checks to the product page, and retained order links in exports of the 6,800 reviews. In this illustration, the zero-result rate fell from 9.4% to 4.1% by Q4, mainly through synonyms. The work took a few configuration days and an attribute model, using a PIM already approved for other needs.
 
 ## When It Goes Wrong
 

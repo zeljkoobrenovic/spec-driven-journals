@@ -18,15 +18,15 @@ logo: "assets/images/where-commerce-platforms-go-wrong/logo.jpeg"
 > * **The patterns travel in chains, and the chains start at the joins.** A Spaghetti Junction breeds Messages in a Bottle, which breed Phantom Stock, Schrödinger's Orders and Boomerangs; a Lynchpin sets up a Pulled Rug; a Giant's Boots ends as a Forked Platform or a Burned Bridge. Fixing the downstream symptom rarely holds; naming the origin usually does.
 
 <br>
-The [[introduction]] describes a commerce platform as a **promise-keeping machine**: it shows a product, promises a price, a delivery and a return, takes the money, and then has to keep every promise across a dozen systems owned by different teams and vendors. This page names the ways those promises break, so the rest of the book can point back to them.
+The storefront accepts a sale, but the warehouse never receives the order. Both systems can remain available while the customer waits for a parcel nobody is preparing. Other failures follow the same shape: prices, stock or status cross a handoff incorrectly. This guide names sixteen recurring patterns so you can recognize the warning signs, trace the mechanism and choose a remedy. The [[introduction]] gives the wider argument.
 
-None of the patterns implies incompetence. **Most are the residue of reasonable decisions**, taken one at a time by people accountable for one step: the manager who installed an app, the agency that wrote a script. The failure is the accumulation, and only someone accountable for the whole landscape sees it.
+Many patterns accumulate through reasonable local decisions: an app for a campaign, a script for a new channel or a shortcut for support. The risk becomes visible when someone examines their combined effect. Use the patterns to find that effect and assign responsibility.
 
-Each pattern gets a quote (fictional and unattributed), its mechanism and cost, an illustration from **Kestrel & Pine, the fictional outdoor brand this book follows** (see [[meet-kestrel-and-pine]]; its incidents are invented), a dated public example where the record supports it, the remedy direction and the chapters that address it. Mapping a public case to a pattern is the author's reading.
+Each entry gives a warning sign, mechanism, cost, remedy and reading links. Examples from **Kestrel & Pine, a fictional outdoor brand**, are invented, as are the opening quotes ([[meet-kestrel-and-pine]]). Public examples retain dates and sources; assigning one to a pattern is the author's interpretation.
 
 ## Sixteen Patterns to Recognize
 
-The patterns fall into four families: **truth** (five facts with no agreed owner: stock, order status, customer, return, price), **integration** (three), **platform and change** (five decisions about load, shape, upgrade, migration and tenancy) and **governance** (three).
+Four families organize the patterns: **truth**, disagreements over stock, orders, customers, returns and prices; **integration**, failures to exchange data reliably; **platform and change**, choices about capacity, structure and migration; and **governance**, responsibility for the systems and their changes.
 
 | Pattern | Warning sign | Family |
 | --- | --- | --- |
@@ -58,11 +58,13 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 **What it looks like.** The storefront's stock number is a copy of unknown age; click-and-collect promises what the store sold that afternoon.
 
-**Why it happens.** The system that knows stock is rarely the one that sells it, so every channel gets a copy through syncs nobody designed as a whole, and the copy grows writers (an app, an import). **A fact with two writers has no owner**.
+**Why it happens.** The warehouse knows physical stock, while sales channels use copies. Scheduled updates introduce delay; extra apps and imports can change the same number. Define the authoritative source and permitted writers before trying to synchronize faster.
 
 **What it costs.** Canceled orders, vouchers, marketplace penalties and seller ratings. Stock records are less accurate than assumed: the classic field study found 65% of about 370,000 inventory records inaccurate at one US retailer's stores (DeHoratius and Raman, *Management Science*, 2008; dated, still the field's reference). Even commercetools documents that its available quantity is eventually consistent "with a delay of up to 10 seconds" (n.d., accessed 2026-11).
 
-**At Kestrel & Pine (fictional).** On Friday 27 November 2026 the Ridgewalker jacket sold out at the Duiven warehouse at 19:40; the storefronts and the marketplaces kept selling it for up to two hours, because stock traveled WMS → ERP every 15 minutes, ERP → platform hourly, platform → marketplace connector hourly. **1,340 units** oversold, **1,120 orders** canceled or delayed, about **€96,000** including goodwill vouchers and marketplace penalties. In December the Utrecht click-and-collect pilot promised **37** items the store had already sold, because store stock reached the ERP only nightly.
+**At Kestrel & Pine (fictional).** The Ridgewalker sells out at Duiven at 19:40 on 27 November 2026. Stock updates pass from the warehouse management system (**WMS**) to the enterprise resource planning system (**ERP**) every 15 minutes, then hourly to the platform and hourly to marketplaces. Sales continue for up to two hours: **1,340 units oversold**, **1,120 orders canceled or delayed**, about **€96,000 in costs**.
+
+December's store-pickup pilot repeats the problem: nightly store-stock updates leave **37 promised items** already sold.
 
 **In public.** Shopify's August 2026 developer changelog moved draft-order and transfer holds from its `reserved` to its `committed` inventory state (5 August 2026): the stock vocabulary changes under the apps that read it.
 
@@ -146,7 +148,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 **What it costs.** Margin, parity penalties and regulatory exposure: since 28 May 2022 the EU's Omnibus rules require any price-reduction announcement to show the "prior price", the lowest price in at least the 30 days before the reduction (Directive (EU) 2019/2161, 2019), and the Dutch regulator ACM announced supervision of those rules from 1 January 2023 (6 December 2022).
 
-**At Kestrel & Pine (fictional).** In October 2026 the German storefront sold the Ridgewalker jacket at **€179** for **nine days** while the marketplace listing and the stores charged €199: the restore row of a campaign import had failed in an agency script that logged the error and reported success. **410 orders**, about **€8,200** of margin lost, a price-parity warning from a marketplace. In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on **2,860** orders because a combination setting from an October campaign had never been reverted: about **€52,000**.
+**At Kestrel & Pine (fictional).** In October 2026 the German storefront sold the Ridgewalker jacket at **€179** for **nine days** while the marketplace listing and the stores charged €199: the restore row of a campaign import had failed in an agency script that logged the error and reported success. **410 orders**, about **€8,200** of margin lost, a price-parity warning from a marketplace.
+
+In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on **2,860** orders because a combination setting from an October campaign had never been reverted: about **€52,000**.
 
 **In public.** The Omnibus rule (2022) and ACM's supervision (2023) make a 30-day price history per SKU and channel a legal requirement.
 
@@ -314,7 +318,9 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 
 **What it costs.** Sharing: slower change, one brand's peak degrading another. Separation: duplicated contracts and integrations.
 
-**At Kestrel & Pine (fictional, illustrative scene).** Kestrel & Pine runs its three storefronts in **one tenant** of its platform, which works because they share a catalog, a warehouse, a season and a price (€199 for the jacket in all three countries). The April 2027 stage map names the signals that would change the answer, a second brand, a fourth country or revenue past about €200 million, none planned for 2027–2028; what a second brand would share is deferred to the 2029 review on purpose, to be answered with measurements.
+**At Kestrel & Pine (fictional).** Three regional storefronts share **one tenant**, a merchant account on the hosted platform. They share a catalog, warehouse, season and €199 jacket price, so the arrangement fits.
+
+A second brand, fourth country or revenue near €200 million would trigger a review. None is planned for 2027–2028. The company defers the group-sharing decision to 2029 rather than choosing a structure before knowing the requirements.
 
 **In public.** Zalando completed its acquisition of ABOUT YOU on 11 July 2025 as a dual-brand consumer business "with shared logistics and payment infrastructure", with group synergies targeted at around €100 million a year (corporate.zalando.com, 11 July 2025).
 

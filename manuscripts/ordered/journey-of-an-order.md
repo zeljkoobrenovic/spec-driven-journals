@@ -17,20 +17,22 @@
 > * **The Message in a Bottle** — every handoff in the journey is a message sent from one system to another, and a message sent once and trusted is the cheapest way to lose or duplicate an order.
 > * **The Phantom Stock** — the first promise in the journey, "in stock", is made by the storefront from a number the warehouse produced up to two hours earlier.
 
-Ask a shopper what happens when they press "buy" and they will say: the money leaves my account and a parcel arrives. Ask the people who run a merchant and you get a different answer from each one. The ecommerce manager sees an order in the storefront's admin screen. The warehouse sees a pick list. The finance director sees an invoice and, days later, a payout. The support agent sees a ticket asking where the parcel is. **They are all describing the same order, and none of them can see the whole of it.**
+After a shopper pays for an order, the warehouse needs to pick it, finance needs to account for it and support may need to explain where it is. Each team sees a different record: a pick list, an invoice or a service ticket. When those records disagree, the shopper can be left waiting while every team believes its part is complete.
 
-That gap is the subject of this book, and this chapter is its map. An online order passes through about a dozen steps, from the moment a shopper searches for a jacket to the moment the accountant closes the month. At most of those steps the order moves from one system to another: storefront to payment provider and back, storefront to warehouse, warehouse to carrier, carrier to the customer's phone, and, if the jacket does not fit, back again through a returns portal, the warehouse and the finance system. **At every step a promise is made to the customer, and at almost every step the system that made the promise is not the one that has to keep it.**
+An online order passes through about a dozen steps, from a search for a jacket to the accountant's month-end close. It moves between the storefront, payment provider, warehouse and carrier. A return sends it back through the warehouse and finance. **Each handoff must carry a promise another system can keep**: the price agreed, the stock committed, the parcel expected or the refund owed.
 
-This is the gentlest chapter in the book, deliberately. It introduces the things an order is made of, the systems that hold them, and two words the rest of the book leans on: **promise** and **handoff**.
+Tracing those handoffs shows where responsibility or information goes missing. This chapter follows the records an order needs, the systems that hold them, and the checks that let a merchant explain what happened.
 
-**Where we are in the order's journey.** This chapter covers the whole of it. Eva Janssen's jacket, the order the book follows from [Meet Kestrel & Pine](#meet-kestrel-and-pine) onward, is walked here end to end for the first time, system by system; the chapters of [Part IX — JOURNEYS: One Order, End to End](#part-9) walk it again in full detail once the parts in between have explained each system.
+**Where we are in the order's journey.** Eva Janssen buys a jacket and socks from Kestrel & Pine, the fictional outdoor brand used throughout this book. We follow her order from search to delivery and return. [Meet Kestrel & Pine](#meet-kestrel-and-pine) introduces the company; [Part IX — JOURNEYS: One Order, End to End](#part-9) revisits the journey in detail.
 
 {id: journey-of-an-order--setting-the-scene-at-kestrel-pine-four-drawings-of-one-order}
 ## Setting the Scene at Kestrel & Pine: Four Drawings of One Order
 
 In her second week as Head of Engineering, in January 2027, Noor Visser asked four colleagues at Kestrel & Pine to draw what happens to an online order. She gave each a whiteboard and twenty minutes.
 
-Milan Petrov, who runs the storefronts and marketplaces, drew the platform (the hosted software-as-a-service commerce platform that runs the web shop) in the middle, with arrows to the payment provider and to "the warehouse". Daniel Okafor, Head of Operations, drew the warehouse system at Duiven in the middle, with orders arriving from "the integration thing" and parcels leaving with PostNL. Sanne de Wit, the Finance Director, drew the ERP (the enterprise resource planning system that keeps the books) in the middle, with invoices going out and payouts coming in. Ruben Alves, the lead integration engineer, drew thirty-four boxes and did not finish.
+Milan Petrov, who runs the storefronts and marketplaces, put the hosted commerce platform at the center, with arrows to payments and the warehouse. Daniel Okafor, Head of Operations, put Duiven's warehouse system at the center, with orders arriving and PostNL parcels leaving.
+
+Finance Director Sanne de Wit centered her drawing on the **ERP**, the enterprise resource planning system that keeps the books. Lead integration engineer Ruben Alves drew thirty-four boxes and ran out of time. Each had drawn the part they could see.
 
 **Four drawings, four centers, and not one of them wrong.** Each person drew the part of the journey their system owns, which is the part they can see. What nobody had drawn, because nobody owned it, was the order's path *between* the boxes: which message carries it from one to the next, what each message promises, and what happens when a message is late.
 
@@ -124,7 +126,9 @@ In plain words: an order can be *paid and not shipped*, *shipped and not paid* (
 
 **Figure 3:** *The goods line of a simple consumer order; money and returns have their own lines, and a support agent needs all three to answer "where is my order".*
 
-The Three-Status Order at Kestrel & Pine was exactly this. Order #1052877, a fleece and a pair of socks, shipped in two parcels because the socks were short in the pick location: the fleece on 7 December 2026, the socks a week later. The integration flow that connected the platform to the WMS had no notion of a partial shipment, so it marked the whole order fulfilled on the first shipment confirmation, and the platform showed *Delivered* once the carrier scanned the fleece. The warehouse management system (the WMS) tracks an order as a whole and showed *In picking* until the socks shipped. The ERP invoices on a WMS "order complete" message and showed *Not invoiced*. All three were true. None was the order's status, because no system held the order's status; each held one line of it, and no system could produce the sentence "your order ships in two parcels". [The Order Record: Lifecycle, State and the Order Management System](#order-management) explains how an order management system becomes the place that holds all three, and [Where Is My Order? Notifications, Service and the Customer Record](#customer-service-and-notifications) follows the eleven tickets.
+Kestrel & Pine's **Three-Status Order**, #1052877, shows the cost of that gap. The fleece shipped on 7 December 2026; the socks waited a week for replenishment. The integration could not represent a partial shipment, so it marked the whole order fulfilled when the fleece left. The platform then showed *Delivered* after the carrier's scan.
+
+The warehouse management system (WMS) kept the order *In picking* until the socks shipped. The ERP waited for the WMS's "order complete" message before invoicing. Each status described part of the order, but nobody could give the customer the useful answer: **your order ships in two parcels**. An order management system can hold that combined view ([The Order Record: Lifecycle, State and the Order Management System](#order-management)). The eleven support tickets are followed in [Where Is My Order? Notifications, Service and the Customer Record](#customer-service-and-notifications).
 
 {id: journey-of-an-order--eva-s-jacket-system-by-system}
 ## Eva's Jacket, System by System
@@ -208,7 +212,14 @@ Vendor documentation and regulation describe the journey's steps with surprising
 {id: journey-of-an-order--across-scale-stages-when-it-fits-and-when-it-limits}
 ## Across Scale Stages: When It Fits and When It Limits
 
-The thirteen steps do not change with the size of the merchant; what changes is how many systems share them and how many channels feed them. At the **Starting** stage (Kestrel & Pine in 2016–2018) one hosted platform makes and keeps most promises itself, and the PSP, a third-party warehouse and the carrier are the only outside systems. At the **Growing** stage (2019–2022) a second channel creates orders outside the platform, an ERP or a 3PL (a third-party logistics provider that warehouses and ships for the merchant) holds a copy of orders and stock, and "which system is right?" is asked for the first time. At the **Omnichannel** stage (2023 onward) four channels create orders in four systems and stock sits in a warehouse, six stores and a marketplace's fulfillment center; the joins carry the business, and an order hub, an availability service and written integration contracts become necessary. At the **Group** stage several brands or countries run the journey over shared services with local differences. Kestrel & Pine is at stage 3, and its 2027 problems are stage-3 problems: not any one system, but the handoffs between a dozen. [Who Sells What to Whom: Business Models and the Economics That Shape Architecture](#commerce-business-models) defines the stages; [What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages) works them.
+The thirteen steps stay much the same as a merchant grows. The number of systems, channels and stock locations changes:
+
+- **Starting:** one hosted platform handles most of the order, with an outside payment provider, warehouse and carrier. This was Kestrel & Pine in 2016–2018.
+- **Growing:** another channel creates orders elsewhere. An ERP or third-party logistics provider (3PL) holds copies of orders and stock. People start asking which copy to trust.
+- **Omnichannel:** orders arrive through several channels and stock sits in warehouses, stores and marketplace fulfillment centers. An order hub, an availability service and written integration contracts become necessary.
+- **Group:** several brands or countries share services while retaining local differences.
+
+Kestrel & Pine reached Omnichannel in 2023. Its 2027 problems concern the handoffs between systems. [Who Sells What to Whom: Business Models and the Economics That Shape Architecture](#commerce-business-models) defines the stages; [What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages) examines the transitions.
 
 {id: journey-of-an-order--when-it-goes-wrong-at-each-step}
 ## When It Goes Wrong at Each Step

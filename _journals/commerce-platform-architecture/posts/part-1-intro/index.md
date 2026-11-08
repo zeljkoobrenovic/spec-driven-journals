@@ -16,29 +16,29 @@ logo: "assets/images/part-1-intro/logo.jpeg"
 > * **Draw the map in capabilities, then name one record per fact.** Every other value is a copy; choose a platform by the integration work you can own, because every kind moves that work rather than removing it.
 
 <br>
-A shop shows a jacket, promises a price, says it is in stock, promises delivery tomorrow and a return within 14 days, and takes the money. Keeping those promises takes a dozen systems: a storefront, a payment provider, a warehouse, carriers, a returns portal, a finance system, usually a store till and a marketplace connector. **They are owned by different teams and vendors, and none can see the whole order.** This part is the business before the technology: what the promises are, who makes them, which systems keep them, and what the market sells to do so.
+A shopper places one order, but the warehouse, carrier, payment provider and finance team each have work to do before it is complete. The storefront's promises about product, price, stock, delivery and returns depend on those other systems. Understanding who supplies each answer makes it possible to locate a failure and decide what must change. This part introduces the business jobs, their owners and the software supporting them.
 
 ![A ticket of promises from an online shop being carried to a warehouse, a delivery van, a payment terminal and a ledger book.](assets/images/part-1-intro/part-1-intro-promise-ticket.jpeg)
 **Figure 1:** *The storefront writes the promises in seconds; the warehouse, the carrier, the payment provider and the finance system have to honour them over days.*
 
-Part I sits above the order's path rather than at one step of it. Its first chapter walks the book's recurring order, Eva Janssen's jacket, end to end for the first time; its second shows the same jacket leaving the warehouse four ways, to a consumer, a retail chain, a marketplace shopper and a store counter. The three chapters after that are about the whole platform: the map of its parts, the ownership of its facts, and the vendors that sell them.
+The first chapter traces one order end to end. The second compares consumer, wholesale, marketplace and store sales. The remaining chapters map capabilities, assign authority over facts and explain platform categories. Start with the decision you need to understand; each chapter supplies its own context.
 
-The merchant the book follows, Kestrel & Pine, is fictional: an outdoor brand from Arnhem with €48 million of 2026 revenue, thirteen systems, 34 integrations, 41 apps, no order hub and no product hub. Its warehouse stock had six writers, its orders were born in four systems, its product data lived in four places. **The claim of this part is that nearly every one of its ten 2026 incidents was a promise one system made and another could not keep, and that the remedy is a decision about ownership, not a faster sync or a new platform.** Its Waypoint program of March 2027 is that decision, written down.
+The example is **Kestrel & Pine, a fictional outdoor brand** with €48 million in 2026 revenue, thirteen systems, 34 integrations and 41 apps. Orders and product data each live in four places; six writers affect warehouse stock. Its **Waypoint** improvement program begins in March 2027 by deciding who owns what and how other systems learn of changes.
 
 ![Diagram: The order's journey as a chain of promises](assets/images/part-1-intro/fig01-order-s-journey-chain-promises-storefront.jpeg)
 **Figure 2:** *The order's journey as a chain of promises: the storefront makes them early, the other systems keep them late, and every arrow is a handoff that can be late, lost, duplicated or misread.*
 
 ## Chapters in this part
 
-[[journey-of-an-order]] decides **what has to happen, in which systems, for one online order to be found, bought, paid, shipped, delivered, returned and accounted for**: thirteen steps, a promise at each, a handoff between most, and three status lines (money, goods, returns) that no single "status" field can hold. The case is Eva's jacket, order #1072455 of 13 April 2027, through seven systems in nine days, and the Three-Status Order that showed *Delivered*, *In picking* and *Not invoiced* at once.
+[[journey-of-an-order]] follows **one purchase through thirteen steps**, including payment, delivery, return and accounting. Eva's jacket order shows the normal path. Another order, simultaneously marked delivered, in picking and uninvoiced, shows why one status word cannot explain everything.
 
-[[commerce-business-models]] decides **why a brand selling to consumers, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems**: a business model is a decision about who makes which promise, each number in an order's economics pulls on a different part of the platform, and the four scale stages are shapes, not revenue bands. The case is one Ridgewalker jacket sold four ways, €199 to a consumer and €95 to Bergzicht Outdoor, and the Price Drift that sold it at €179 in Germany for nine days.
+[[commerce-business-models]] explains **how the buyer and sales channel change the system requirements**. One jacket sold to a consumer, shop, marketplace customer or store visitor needs different pricing, payment and fulfillment. The chapter also introduces four growth stages as business shapes, rather than purchase thresholds.
 
-[[commerce-capability-map]] decides **what the parts of a commerce platform are, what each one owns and how they usually connect**: about two dozen capabilities in six layers, the fact each is the home for, the flows between them, and the three ways vendors cover the map. The case is Noor Visser's February 2027 whiteboard, with four empty boxes and six writers of warehouse stock.
+[[commerce-capability-map]] maps **the jobs a merchant must perform before choosing products**. Head of Engineering Noor Visser places Kestrel & Pine's systems against those jobs and exposes missing capabilities and overlapping writers.
 
-[[boundaries-and-systems-of-record]] decides **which system is right when several hold the same fact, and how the others find out**: the system of record, the copy, the writer, the bounded context inside which "order" has one meaning, and the entity–owner table that changes as the business grows. The case is "where does stock live?", answered six ways in March 2027, and decision W1, which made the warehouse system the record for physical stock.
+[[boundaries-and-systems-of-record]] assigns **an authoritative owner to each fact**. It distinguishes records from copies and explains why systems can mean different things by "order". The worked example resolves six competing answers about stock.
 
-[[commerce-platform-landscape]] decides **what kinds of platforms exist, who sells them, how they are priced and how the market changed up to 2026**: seven categories, priced mostly on sales rather than software, and a 2023–2026 convergence on selling layers beside a kept core. The case is the two rebuild pitches of February 2027, a consultancy's composable replacement and the agency's headless storefront, and decision W4, stay and surround.
+[[commerce-platform-landscape]] compares **seven platform categories and their operating costs**, using dated evidence through 2026. Two rebuild proposals test whether a new product would solve Kestrel & Pine's actual problems. The company chooses to keep its platform and add missing capabilities.
 
 Begin with [[journey-of-an-order]].
 

@@ -7,9 +7,9 @@
 
 > **KEY POINTS:**
 >
-> * **A product is four things, and only two of them may ever change.** The product is what the shopper browses, the variant is what they buy, the SKU is the merchant's code for it and the GTIN is the world's. Titles and copy change freely; SKUs and GTINs never do, because orders, warehouses and marketplaces are keyed on them.
+> * **A product is four things, and only two of them may ever change.** The product is what the shopper browses, the variant is what they buy, the stock keeping unit (SKU) is the merchant's code for it and the Global Trade Item Number (GTIN) identifies it across organizations. Titles and copy change freely; SKUs and GTINs never do, because orders, warehouses and marketplaces are keyed on them.
 > * **Product data has many producers and many consumers, so it needs one owner per attribute.** Purchasing, marketing, translators and suppliers write it; storefronts, marketplaces, search, the warehouse and wholesale read it. The design question is not which tool, but which system may change which field and how the others learn of it.
-> * **Every channel validates product data against its own rules and rejects quietly.** Google wants a stable id and a correct GTIN, bol wants an EAN and a classification "chunk", a storefront wants a translation. Syndication needs a per-channel outbox, a rejection report and a loop back to the owner.
+> * **Every channel validates product data against its own rules and rejects quietly.** Google wants a stable id and a correct GTIN, bol wants a barcode identifier and a classification "chunk", a storefront wants a translation. Syndication needs a per-channel outbox, a rejection report and a loop back to the owner.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-commerce-platforms-go-wrong):**
 >
@@ -17,16 +17,18 @@
 > * **The Pulled Rug** — a marketplace changes its content rules or retires an API version and listings go offline before anyone is told.
 > * **The Giant's Boots** — a product information system is bought because larger brands have one, before the merchant has more than one producer and one consumer of product data.
 
-Before a shop can promise a price, a delivery date or a return, it has to say what it is selling. That sounds too simple to need a chapter. It is not. **"The Ridgewalker jacket" is not one thing to a commerce platform.** It is a product the shopper browses, twenty-four variants the shopper can buy (six sizes in four colors, in a women's cut), twenty-four codes the warehouse counts, twenty-four barcodes the marketplaces scan, forty or so attributes, a dozen images, three languages of copy and a category in every channel's taxonomy. All of that has to agree, everywhere, every day of the season.
+The Ridgewalker women's jacket comes in six sizes and four colors: twenty-four variants, each needing an internal code and barcode. Its descriptions, images and attributes must also reach several channels in three languages. If a corrected waterproof rating reaches only the web shop, marketplace buyers can still receive the wrong information about the same jacket.
 
-Most merchants do not design this. They type product data into whatever system needs it next: the accounting system when the item is bought, the web platform when it is sold, a spreadsheet when the season is planned, a marketplace tool when it is listed. Each copy is correct on the day it is made. Then a color is renamed, a translation is fixed, a marketplace adds a mandatory field, and the copies part ways. **The problem this chapter solves is not "how do I describe a product" but "how do I describe it once, and let every channel read the same description."**
+Product data often begins wherever it is first needed: purchasing data in accounting, descriptions in the storefront, seasonal plans in spreadsheets and listings in a marketplace tool. The copies agree until someone renames a color, fixes a translation or adds a required field. **Give each field an owner and let the channels consume its value.** Otherwise every correction becomes another round of manual entry.
 
-**Where we are in the order's journey.** Eva's jacket, the recurring order of [Meet Kestrel & Pine](#meet-kestrel-and-pine), starts before Eva does. Before she can search for a jacket on 13 April 2027, the Ridgewalker women's, size M, color moss must exist as a variant with a title, an image, a Dutch description, a GTIN on its barcode and a SKU the warehouse can pick. This chapter is the step before step one of [Follow the Order: What Happens Between “Buy” and “Delivered”](#journey-of-an-order): the record everything else refers to.
+**Where we are in the order's journey.** Before Eva can find a jacket at Kestrel & Pine, the fictional outdoor brand, the Ridgewalker women's M in moss needs a title, image and Dutch description. It also needs a **SKU** (stock keeping unit, its internal variant code) and **GTIN** (Global Trade Item Number, the identifier encoded in its barcode). That record supports every later step in [Follow the Order: What Happens Between “Buy” and “Delivered”](#journey-of-an-order).
 
 {id: product-information--setting-the-scene-at-kestrel-pine-the-season-that-was-typed-four-times}
 ## Setting the Scene at Kestrel & Pine: The Season That Was Typed Four Times
 
-Kestrel & Pine is the fictional outdoor brand this book follows. It sells **3,400 products** in **26,000 sellable variants**, of which about **17,000 are active** at any time, with about **1,200 new variants** each season. In January 2027 its product data lives in **three places**: the platform (storefront content and variants), the ERP item master (the enterprise resource planning system's list of items, with purchasing data and costs) and shared spreadsheets (seasonal enrichment and translations). The marketplace connector holds a **fourth copy** for listings. There is **no PIM**.
+Kestrel & Pine sells **3,400 products** in **26,000 variants**, with about **17,000 active** and **1,200 new variants** each season. In January 2027, descriptions live in the platform, costs and purchasing data in the enterprise resource planning system (ERP), and translations and seasonal details in spreadsheets. The marketplace connector holds another copy.
+
+There is no **product information management system (PIM)**: a shared place to prepare product content for publication to all channels.
 
 In February 2027, Noor Visser, the new Head of Engineering, sat in on the Spring/Summer 2027 launch and wrote down what happened to one new variant of the Ridgewalker shell jacket on its way to being sold. The details are illustrative.
 
@@ -36,7 +38,7 @@ In February 2027, Noor Visser, the new Head of Engineering, sat in on the Spring
 4. **A translator** worked from a second spreadsheet. The German storefront launched with about **310 variants** still showing Dutch copy, for three weeks.
 5. **Milan Petrov's marketplace team** re-mapped the new variants to bol's attribute model by hand in the connector. bol declined about **140 of the new variants** for missing mandatory attributes; the first anyone heard of it was the upload report, a day later. On the listings that went live, the color read `olive`, chosen from bol's list in 2024 and never revisited.
 
-One color was typed four times, three ways, by four teams, and one marketplace quietly rejected a tenth of the season. Nobody had done anything wrong. **The landscape had no owner for product content, so every consumer of it had become a producer.** Waypoint's third decision, **W3**, answers this: a PIM in Q3 2027 as the system of record for product content and attributes, the ERP keeping costs and purchasing, the platform and the connector becoming consumers. This chapter explains why the order of those words matters.
+Four teams typed one color four times, in three forms. A marketplace rejected a tenth of the season. **Without an owner for product content, every channel created its own version.** Waypoint, Kestrel & Pine's improvement program, addresses this in decision W3: introduce a PIM in Q3 2027 for content and attributes. The ERP keeps costs and purchasing; the platform and marketplace connector consume published content.
 
 ![One green jacket in the middle, typed into four systems by four people as MOSS GRN, Moss, Moss and olive.](commerce-platform-architecture/posts/06-product-information/assets/images/06-product-information/06-one-color-typed-four-times.jpeg)
 
@@ -74,7 +76,12 @@ A **taxonomy** is a fixed tree of categories a channel understands. Every channe
 {id: product-information--bundles-digital-goods-translations-and-lifecycle}
 ### Bundles, digital goods, translations and lifecycle
 
-Four product shapes break the simple grid. A **bundle** or **kit** is a product sold as a set of other products: a tent with its footprint. The components keep their own identity and stock; the bundle is a selling arrangement, not a thing on a shelf, which decides where stock lives (at the component; [Is It in Stock? Inventory, Availability and the Promise You Can Keep](#inventory-and-availability)) and how the bundle price is split back to the components on the invoice ([Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions)). A **configurable product** is the parent that groups purchasable children; Adobe Commerce's documentation (updated October 2026) distinguishes a simple product, "a physical item with a single SKU", from a configurable one whose options each represent "a separate, simple product with a distinct SKU". A **digital good** has no shipment (a download, a license, a service) and skips the warehouse, the carrier and the usual tax treatment, which is why every platform models it as its own type. A **gift card product** is sold like a product but creates a prepaid balance, a liability in the books ([Tax, Invoices and the Books: From Order to Ledger](#tax-invoicing-and-ledger)).
+Four product shapes need more than a size-and-color grid:
+
+- A **bundle or kit** sells components together, such as a tent and footprint. Each component keeps its identity and stock. The sale must allocate the bundle price back to those components ([Is It in Stock? Inventory, Availability and the Promise You Can Keep](#inventory-and-availability), [Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions)).
+- A **configurable product** groups purchasable variants under a parent. Adobe Commerce's October 2026 documentation distinguishes that parent from the simple products, each with its own SKU.
+- A **digital good**, such as a download or license, skips warehouse and carrier processing and needs its own fulfillment and tax treatment.
+- A **gift card product** creates a prepaid balance when sold. Finance records the obligation to honor that balance ([Tax, Invoices and the Books: From Order to Ledger](#tax-invoicing-and-ledger)).
 
 Translation is per product, per language, and often per channel. Shopify's documentation puts it from the merchant's side: "each published language gets its own URLs, and your store displays the translated version when translations exist" (Shopify Help Center, n.d., accessed November 2026). Kestrel & Pine sells in three countries and two languages in Belgium alone, so every description exists at least three times by design, and each translation has its own completeness status.
 

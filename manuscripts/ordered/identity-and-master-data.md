@@ -7,7 +7,7 @@
 
 > **KEY POINTS:**
 >
-> * **Every system keys the same person or product its own way, so duplicates are the normal case.** An online account is keyed by e-mail, a store customer by phone or loyalty card, a wholesale contact by company plus person, a product by SKU in the warehouse and by GTIN on the marketplace. Nothing links them unless you build the link.
+> * **Every system keys the same person or product its own way, so duplicates are the normal case.** An online account is keyed by e-mail, a store customer by phone or loyalty card, a wholesale contact by company plus person, a product by an internal stock code in the warehouse and a global product identifier on the marketplace. Nothing links them unless you build the link.
 > * **Identity is a decision before it is software.** For each master entity, name the system of record, keep a cross-reference of every other system's identifier for it, write the matching rules and the survivorship rules down, and make every merge reversible. A merge that joins two different people is a privacy incident, not a data-quality blemish.
 > * **The marketing copy is not the master.** A customer data platform builds a fuzzy, useful profile for audiences; the record that drives orders, refunds, invoices and deletion requests must be exact and owned. Keep the two apart and let the exact one feed the fuzzy one.
 
@@ -16,18 +16,18 @@
 > * **The Familiar Stranger** — each system counts customers its own way, so nobody can say whether the store customer and the online customer are the same person.
 > * **The Spaghetti Junction** — every connector maps product and customer identifiers in its own way, so the cross-reference between systems lives inside the connectors, with no owner.
 
-Ask Kestrel & Pine, the fictional outdoor brand this book follows, how many customers it has, and you get four honest numbers. The platform counts accounts and guest checkouts. The point-of-sale system in the stores counts a loyalty list. The newsletter tool counts subscribers. The returns portal counts the people who have sent something back. Each number is right for its system, and none of them is the number of people who buy from Kestrel & Pine.
+A customer buys online, joins a store loyalty scheme and later contacts the returns portal. Each system may create its own record for that person. At Kestrel & Pine, the fictional outdoor brand, platform accounts, store loyalty entries, newsletter subscribers and returns contacts all overlap. Without reliable matching, support can miss part of a customer's history and reports can count one buyer several times.
 
-The same happens to products, more quietly. The Ridgewalker jacket in women's size M, color moss, is one physical thing with one barcode. In January 2027 it was also a platform variant, an ERP item with a variant code, a WMS item, a connector listing and three marketplace offers, each with its own identifier, and each connector held its own translation table. **When the joins between systems live inside the connectors, nobody owns them, and the day a connector changes, the joins go with it.**
+Products have the same problem. One Ridgewalker women's M in moss appears as a platform variant, finance item, warehouse item and several marketplace offers. Each has a local identifier. If only the connectors know how those identifiers match, replacing a connector can lose the relationship.
 
-This chapter is about the records that transactions point to, and the identifiers that name them. It owns four terms: **customer identity**, **master data**, the **golden record** and **matching**. It leans on [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](#boundaries-and-systems-of-record) for the idea of a system of record, hands the legal side of personal data to [Whose Data Is It? Privacy, Consent and Retention](#privacy-and-customer-data), and hands the product model itself to [What Are We Selling? Products, Variants and the Catalog](#product-information).
+This chapter explains **master data**, the shared records transactions refer to, and **matching**, the decision that two records describe the same entity. A **golden record** is the maintained, authoritative view assembled from those records. [Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record](#boundaries-and-systems-of-record) covers ownership, [Whose Data Is It? Privacy, Consent and Retention](#privacy-and-customer-data) covers personal-data rules and [What Are We Selling? Products, Variants and the Catalog](#product-information) explains the product model.
 
-**Where we are in the order's journey.** Eva's jacket, the recurring order (see [Meet Kestrel & Pine](#meet-kestrel-and-pine)), is placed on 13 April 2027 by a logged-in platform account. Before that, Eva bought socks in the Nijmegen store and joined its loyalty list. After it, on 19 April, the returns portal creates a contact for her exchange. This chapter sits underneath the whole journey: it decides whether those records are one customer.
+**Where we are in the order's journey.** Eva buys a jacket online on 13 April 2027. She has previously bought socks through the Nijmegen store's loyalty account. Her exchange request creates a returns contact on 19 April. The identity problem is whether those systems can establish that their records describe the same customer.
 
 {id: identity-and-master-data--setting-the-scene-at-kestrel-pine-four-evas}
 ## Setting the Scene at Kestrel & Pine: Four Evas
 
-In **March 2027**, Milan Petrov, the ecommerce and marketplaces manager, proposed an online loyalty program for the autumn. Noor Visser, the Head of Engineering, asked a question with no answer: how many customers would be eligible, and how would the program know that a shopper in the Nijmegen store is an account on the Dutch storefront?
+In March 2027, Ecommerce Manager Milan Petrov proposes an autumn online loyalty program. Head of Engineering Noor Visser asks how it would recognize a store customer online. Nobody can reliably count eligible customers or connect the accounts.
 
 Ruben Alves, the lead integration engineer, pulled the counts. The figures are illustrative.
 
@@ -49,7 +49,7 @@ Eva Janssen shows why. She is one person in Nijmegen. In Kestrel & Pine's system
 | The newsletter tool | A subscriber since 2022 under an older e-mail address | That she is a customer at all |
 | The returns portal | A contact created on 19 April 2027 from order #1072455, with her personal e-mail | Nothing else about her |
 
-No field is shared by all four. **The Familiar Stranger is not a data-quality accident. It is what four systems with four keys produce when nobody has decided that they describe one person.** Milan and Noor deferred the loyalty program until the customer record was unified ([Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions)); this chapter is what "unified" means.
+No field is shared by all four records. **The Familiar Stranger** is the book's name for this problem: a merchant repeatedly encounters a person its systems cannot reliably connect. Milan and Noor defer online loyalty until that relationship can be maintained ([Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions)).
 
 ![One shopper in the centre with four disconnected record cards around her, each from a different system and keyed by a different identifier](commerce-platform-architecture/posts/27-identity-and-master-data/assets/images/27-identity-and-master-data/27-four-evas.jpeg)
 
@@ -147,7 +147,9 @@ The pattern: **the flows that face a customer are exact or deferred, never fuzzy
 {id: identity-and-master-data--matching-and-merging}
 ## Matching and Merging
 
-**Matching** is deciding that two records with no shared identifier refer to the same real-world thing. The field is called record linkage, and it is older than commerce computing: Dunn described it in 1946, Newcombe and colleagues showed in 1959 that agreeing on a rare value (an unusual surname) is stronger evidence than agreeing on a common one, and Fellegi and Sunter gave the model most tools still use in 1969. In plain words: for each candidate pair, add up evidence field by field (the same e-mail is strong, the same first name weak), and compare the total with two thresholds. Above the upper one, a match; below the lower one, not; between them, a person decides. The 1969 paper is paywalled, so the citation is secondary.
+**Matching** is deciding that two records with no shared identifier refer to the same real-world thing. The field is called record linkage, and it is older than commerce computing: Dunn described it in 1946, Newcombe and colleagues showed in 1959 that agreeing on a rare value (an unusual surname) is stronger evidence than agreeing on a common one, and Fellegi and Sunter gave the model most tools still use in 1969.
+
+In plain words: for each candidate pair, add up evidence field by field (the same e-mail is strong, the same first name weak), and compare the total with two thresholds. Above the upper one, a match; below the lower one, not; between them, a person decides. The 1969 paper is paywalled, so the citation is secondary.
 
 There are two families of rule. **Deterministic matching** uses exact rules: the same normalized e-mail or phone means the same person. It is cheap, explainable and safe, and it misses every person who used two e-mail addresses. **Probabilistic matching** scores partial agreement (name, address, postal code) and tolerates typos. It finds more matches and makes more mistakes, which is why it needs thresholds and a review queue.
 
@@ -191,7 +193,9 @@ A merchant has four realistic ways to own customer identity, and the product sid
 
 **A cross-reference and matching service beside the existing systems.** Nothing moves; a small service, or tables in the integration platform or the data warehouse, holds the master id, the links and the merge log, and runs matching. It is the lightest way to make several masters behave as one, and the design Kestrel & Pine adopts. Its weakness: it is "just tables" until a wrong merge happens.
 
-**A customer data platform as the master.** The CDP Institute (2026 wording) defines a CDP as software that "creates and maintains a persistent, unified customer record that is accessible to other systems" and that "assumes primary responsibility for defining and maintaining customer identity". Twilio Segment's identity resolution (documentation of June 2026) merges each person's history across web, mobile, server and third-party sources into one profile through an identity graph of cookie ids, device ids, e-mails and external ids, with merge protection against non-unique anonymous ids. These are strong marketing tools. My judgement, labeled as mine: do not make the CDP the master that service agents, the OMS and the ERP read. Its profile is built for audiences and may be fuzzier than a record that drives invoices, refunds and deletion requests. Let the exact master feed the CDP, and let the CDP's matches come back as suggestions, not merges.
+**A customer data platform as the master.** The CDP Institute (2026 wording) defines a CDP as software that "creates and maintains a persistent, unified customer record that is accessible to other systems" and that "assumes primary responsibility for defining and maintaining customer identity". Twilio Segment's identity resolution (documentation of June 2026) merges each person's history across web, mobile, server and third-party sources into one profile through an identity graph of cookie ids, device ids, e-mails and external ids, with merge protection against non-unique anonymous ids.
+
+These are strong marketing tools. My judgement, labeled as mine: do not make the CDP the master that service agents, the OMS and the ERP read. Its profile is built for audiences and may be fuzzier than a record that drives invoices, refunds and deletion requests. Let the exact master feed the CDP, and let the CDP's matches come back as suggestions, not merges.
 
 For products: **the ERP item master or the PIM.** Until product content needs enrichment, translation and syndication, the ERP's item master with a SKU and a GTIN per variant is enough, and the cross-reference to channel ids lives beside it. From that point the PIM is the product master and the ERP keeps costs and purchasing, which is Waypoint's W3 ([What Are We Selling? Products, Variants and the Catalog](#product-information)).
 
@@ -245,7 +249,11 @@ In **June 2027**, at the weekly architecture hour, Noor Visser, Milan Petrov and
 - **Matching runs weekly.** Exact matches on normalized e-mail or phone link automatically; name plus address plus postal code goes to a review queue worked by the application support specialists; the platform's own merge is used only after review, with its preview.
 - **Consent is read from the master.** The newsletter tool's subscription state and the POS's opt-in flag are copied to the platform's consent record with source and date; the strictest state wins where they disagree.
 
-The first run, in **July 2027**, linked about **21,000** of the 38,000 loyalty entries to a platform customer by exact phone or e-mail, sent about **4,100** to the review queue and left the rest unlinked. Of the 165,000 newsletter subscribers, about **96,000** matched a platform customer. Eva Janssen's four records became one master with three links: her loyalty entry by phone, her returns contact by order number, and her older newsletter address by a reviewer who saw the same name, street and postal code. The product side waited for the PIM: its July 2027 load from the four copies of product data found 1,900 variants with conflicting attributes ([Moving Without Burning the Bridge: Replatforming and Migration](#replatforming-and-migration)), and the cross-reference of GTIN, SKU, platform, ERP, WMS and marketplace ids was built in the PIM at the same time (W3).
+The first run, in **July 2027**, linked about **21,000** of the 38,000 loyalty entries to a platform customer by exact phone or e-mail, sent about **4,100** to the review queue and left the rest unlinked. Of the 165,000 newsletter subscribers, about **96,000** matched a platform customer.
+
+Eva Janssen's four records became one master with three links: her loyalty entry by phone, her returns contact by order number, and her older newsletter address by a reviewer who saw the same name, street and postal code.
+
+The product side waited for the PIM: its July 2027 load from the four copies of product data found 1,900 variants with conflicting attributes ([Moving Without Burning the Bridge: Replatforming and Migration](#replatforming-and-migration)), and the cross-reference of GTIN, SKU, platform, ERP, WMS and marketplace ids was built in the PIM at the same time (W3).
 
 What the decision bought: one answer to "how many customers" (the master count, with unlinked store entries reported separately), a loyalty program that could start in 2028 on one list, a service screen that could show Eva's store purchases next to her online orders once the OMS arrived (W2), and an index of where every person's data lives, which [Whose Data Is It? Privacy, Consent and Retention](#privacy-and-customer-data) needs.
 

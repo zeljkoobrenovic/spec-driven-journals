@@ -13,23 +13,25 @@ logo: "assets/images/glossary/logo.jpeg"
 
 > **KEY POINTS:**
 >
-> * **Look a term up, then read its neighbors.** Each section collects one part's terms, so the rows around a term carry the contrasts that cause real design errors: product versus variant versus SKU, on hand versus committed versus available-to-promise, authorization versus capture, order versus shipment versus invoice, system of record versus copy.
+> * **Look a term up, then read its neighbors.** Each section collects one part's terms, so the rows around a term carry the contrasts that cause real design errors: product versus variant versus stock code, on hand versus committed versus available-to-promise, authorization versus capture, order versus shipment versus invoice, system of record versus copy.
 > * **One term, one meaning, one owning chapter.** Every row links to the chapter that owns or best explains the term, and the definitions follow how those chapters define them. When a chapter and this page disagree, one of them needs correcting.
 > * **Rules, standards and vendor terms date quickly.** Laws, protocols, products and their status are given as of November 2026, following the sources cited in the chapters. Check the current source before a definition here goes into a contract, a vendor evaluation or a design decision.
 
 <br>
 
-The words that cause the most trouble in commerce are ordinary ones. **"Order" means three different numbers** to the platform, the ERP and the warehouse report at Kestrel & Pine ([[commerce-data-and-analytics]]), and **"in stock" can mean on hand, available or "the last figure the connector received an hour ago"** ([[inventory-and-availability]]). This glossary pins each term to one definition and one owning chapter, so that the chapters, their readers and the AI tools that read them use the words the same way.
+A storefront's 'order' can differ from an invoice or warehouse shipment. 'In stock' may mean physical stock, sellable stock or a stale copy. Those differences affect both system behavior and the conclusions people draw from reports. This glossary defines the book's terms and links each to the chapter explaining its use, including [[commerce-data-and-analytics]] and [[inventory-and-availability]].
 
 ## How to Use This Glossary
 
-The sections follow the book's structure. The first collects the **six evidence labels**, the **three take-away tiers**, the **four scale stages** and the **sixteen failure patterns** from the Preface; the next eleven follow **Parts I to XI**, from the business of commerce through catalog, order, fulfillment, channels, integration, platform and trust to the journeys, the decisions that change with scale and the public names the case studies rely on. Then come two reference tables: the **standards, protocols and regulations** with their scope (EU, a country, the US or global), and **Kestrel & Pine's fictional names**. The **alphabetical index** at the end lists every term, alias and abbreviation with a link to the section that defines it.
+Browse by the book's parts or jump to the **[alphabetical index](#g-index)** for a term, alias or abbreviation. The opening section explains evidence labels, take-away tiers, growth stages and failure patterns. Separate tables collect standards and regulations, plus the fictional company and character names.
 
-Each section opens with the chapters that own its terms, then a table with 391 rows in all. The definitions are short teaching descriptions for a reader new to the field, not legal text, standards or vendor documentation; the chapter in the last column gives the full treatment, the sources and the worked example. Rows that combine two or more terms with a slash define all of them, because the difference between them is the point. Acronyms are expanded in the term or the definition. Kestrel & Pine, named in some rows and in its own section, is the fictional outdoor brand this book follows ([[meet-kestrel-and-pine]]); its names and numbers are illustrations, not facts about any real company.
+The **391 rows** give short teaching definitions. The final column links to fuller explanation, examples and sources. Slash-separated terms are defined together to show their distinction; acronyms are expanded in the row.
+
+**Kestrel & Pine is fictional**, and its names and figures illustrate the definitions ([[meet-kestrel-and-pine]]). Legal, standards and vendor entries summarize their subject; consult the cited source for the complete requirement.
 
 ## <a id="g-reading"></a>Preface — Evidence Labels, Take-Away Tiers and Failure Patterns
 
-Every chapter marks what kind of statement it is making, ends with three tiers of take-away and names the recurring ways commerce platforms fail. [[introduction]] explains the six evidence labels, the three tiers and the four scale stages; [[where-commerce-platforms-go-wrong]] tells each of the sixteen failure patterns with its warning sign. The last column names the guide and the chapter that does most of the repair work.
+These entries explain how to read the book's claims: evidence labels, conditional recommendations and the recurring failure patterns. [[introduction]] explains the distinctions; [[where-commerce-platforms-go-wrong]] describes warning signs and remedies.
 
 | Term | Definition | Chapter |
 | --- | --- | --- |
@@ -61,7 +63,7 @@ Every chapter marks what kind of statement it is making, ends with three tiers o
 
 ## <a id="g-commerce"></a>Part I — COMMERCE: What a Commerce Platform Is
 
-The business vocabulary and the first architecture words: what an order is and who promises what, the business models and the numbers that judge them, the capability map, ownership of facts, and the kinds of platform on the market. [[journey-of-an-order]] owns the promise and the handoff; [[commerce-business-models]] the models and economics; [[commerce-capability-map]] the capability and the layer; [[boundaries-and-systems-of-record]] the system of record and the bounded context; [[commerce-platform-landscape]] the platform shapes.
+The first group covers orders, business models, capabilities, data ownership and platform categories. The linked chapters introduce the concepts: [[journey-of-an-order]], [[commerce-business-models]], [[commerce-capability-map]], [[boundaries-and-systems-of-record]] and [[commerce-platform-landscape]].
 
 | Term | Definition | Chapter |
 | --- | --- | --- |
@@ -99,7 +101,7 @@ The business vocabulary and the first architecture words: what an order is and w
 
 ## <a id="g-catalog"></a>Part II — CATALOG: Products, Prices and Promises
 
-What is for sale, at what price, with which discount, how shoppers find it and whether it is in stock. [[product-information]] owns product, variant, SKU, GTIN and PIM; [[pricing-architecture]] the price list and the contract price; [[commerce-promotions]] the promotion and stored value; [[commerce-search-and-discovery]] the search index, relevance, merchandising rule and facet; [[inventory-and-availability]] stock, available-to-promise and reservations.
+These terms describe products, prices, discounts, discovery and sellable stock. Their main chapters are [[product-information]], [[pricing-architecture]], [[commerce-promotions]], [[commerce-search-and-discovery]] and [[inventory-and-availability]].
 
 | Term | Definition | Chapter |
 | --- | --- | --- |
@@ -142,7 +144,7 @@ What is for sale, at what price, with which discount, how shoppers find it and w
 
 ## <a id="g-order"></a>Part III — ORDER: Cart, Checkout, Payment and the Order Record
 
-From the draft to the legal record: the cart and its orchestration, the money and its backward flows, the order's states and routing, and tax, invoices and the books. [[cart-and-checkout]] owns cart, checkout and the idempotency key at checkout; [[commerce-payments]] the PSP, authorization and capture, SCA and refunds; [[order-management]] the OMS, state machines and routing; [[tax-invoicing-and-ledger]] tax calculation, the invoice, the credit note and order-to-ledger.
+These terms follow the cart into checkout, payment, order coordination and financial records. See [[cart-and-checkout]], [[commerce-payments]], [[order-management]] and [[tax-invoicing-and-ledger]] for complete examples.
 
 | Term | Definition | Chapter |
 | --- | --- | --- |
@@ -179,7 +181,7 @@ From the draft to the legal record: the cart and its orchestration, the money an
 
 ## <a id="g-fulfillment"></a>Part IV — FULFILLMENT: From Warehouse to Doorstep and Back
 
-Where promises are kept by people, buildings and vans. [[warehouse-and-fulfillment]] owns the WMS, the fulfillment order, the pick wave and the 3PL; [[shipping-and-delivery]] the carrier integration, the delivery promise and the tracking event; [[stores-and-omnichannel]] the POS and the omnichannel flows; [[returns-and-exchanges]] the RMA, disposition and exchange; [[customer-service-and-notifications]] the transactional notification, the order status page and the service view.
+These terms describe physical fulfillment and its customer-facing record: warehouse work, delivery, stores, returns and notifications. The main chapters are [[warehouse-and-fulfillment]], [[shipping-and-delivery]], [[stores-and-omnichannel]], [[returns-and-exchanges]] and [[customer-service-and-notifications]].
 
 | Term | Definition | Chapter |
 | --- | --- | --- |
@@ -260,7 +262,7 @@ Channels where an outside party sets the rules: marketplaces, business buyers, t
 
 ## <a id="g-integration"></a>Part VI — INTEGRATION: Making Separate Systems Behave Like One
 
-How separate systems move facts, survive repeats and gaps, keep their promises to each other, recognize the same customer and product, and count the same thing. [[integration-styles]] owns the styles and the inventory; [[events-consistency-and-reconciliation]] events, idempotency, the outbox, compensation and reconciliation; [[api-contracts-and-versioning]] the contract, the version and the webhook; [[identity-and-master-data]] identity, the golden record and matching; [[commerce-data-and-analytics]] the warehouse and metric definitions.
+These terms explain how systems exchange facts, recover from missing or repeated messages, maintain contracts, match identities and produce comparable reports. See [[integration-styles]], [[events-consistency-and-reconciliation]], [[api-contracts-and-versioning]], [[identity-and-master-data]] and [[commerce-data-and-analytics]].
 
 | Term | Definition | Chapter |
 | --- | --- | --- |

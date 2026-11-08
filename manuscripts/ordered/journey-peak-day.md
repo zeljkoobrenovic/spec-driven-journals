@@ -7,9 +7,9 @@
 
 > **KEY POINTS:**
 >
-> * **The evening was lost in the afternoon.** The order flow to the warehouse fell behind at about 13:00, when nobody was watching, because it created orders one at a time under the WMS vendor's rate limit. By the peak hour it was four hours behind, and no gauge showed it.
-> * **The sell-out at 19:40 took two hours to reach the shelves that were still selling.** The warehouse knew at 19:40, the ERP at 19:45, the storefronts at about 20:30 and the marketplaces at about 21:35, because stock traveled by three scheduled copies. 1,340 units were sold that did not exist.
-> * **The 2027 plan changes the chain, not the platform.** A forecast of 60 orders a minute, an order path through the OMS tested at 120, stock events to an availability service within a minute, eight switches with owners and triggers, a freeze, a situation room and a reconciliation report at 08:00 on Saturday.
+> * **The evening was lost in the afternoon.** The order flow to the warehouse fell behind at about 13:00, when nobody was watching, because it created orders one at a time under the warehouse vendor's rate limit. By the peak hour it was four hours behind, and no gauge showed it.
+> * **The sell-out at 19:40 took two hours to reach the shelves that were still selling.** The warehouse knew at 19:40, the finance system at 19:45, the storefronts at about 20:30 and the marketplaces at about 21:35, because stock traveled by three scheduled copies. 1,340 units were sold that did not exist.
+> * **The 2027 plan changes the chain, not the platform.** A forecast of 60 orders a minute, an order path through the order management system tested at 120, stock events to an availability service within a minute, eight switches with owners and triggers, a freeze, a situation room and a reconciliation report at 08:00 on Saturday.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-commerce-platforms-go-wrong):**
 >
@@ -17,18 +17,20 @@
 > * **The Phantom Stock** — three channels sold the same last jacket for up to two hours, because each learned of the warehouse's zero by a scheduled copy.
 > * **The Message in a Bottle** — a queue with no gauge, no alarm and no owner turned a resilience feature into a four-hour delay nobody could explain.
 
-The three journeys before this one follow a single order: Eva's jacket, Eva's exchange, Bergzicht's pallets. This one follows **31,000 orders in a week**, and a Friday evening on which **2,300 of them arrived in one hour**. It is the same chain of systems the earlier journeys crossed, the platform, the iPaaS, the WMS, the ERP, the marketplace connector, running at a pace none of its handoffs was designed for.
+In Black Friday week 2026, **Kestrel & Pine, the fictional outdoor brand**, takes **31,000 orders**, including **2,300 in one hour**. Its platform keeps accepting purchases, but integrations cannot send orders to the warehouse or return stock updates fast enough. Customers can therefore buy jackets that have already sold out while the storefront still appears to be working. Measuring the page's availability would miss the failure that matters to those customers.
 
-The journey is told twice. First **as it happened** in November 2026, with what each system did and what each person saw, in the order they saw it, which is not the order the problems began. Then **as it is planned** for November 2027, with the forecast, the rebuilt order path, the switches, the runbook and the morning-after report. The figures that the book's ledger fixes (31,000 orders, 2,300 in the peak hour, the 19:40 sell-out, 1,340 units, 1,120 orders, €96,000, the four-hour backlog) are canonical; every hour-by-hour figure is an **illustrative** reconstruction consistent with those totals, and is marked so. [Black Friday Every Year: Peak Load, Resilience and Recovery](#peak-load-and-reliability) explains the ideas this journey applies: orders per minute as the unit, backpressure, the degradation ladder, the situation room, reconciliation.
+We follow the evening twice: first the **November 2026 incident**, then the **November 2027 plan**. The scenario fixes the totals: a 19:40 sell-out, 1,340 units oversold, 1,120 orders canceled or delayed, €96,000 in costs and a four-hour backlog. Detailed hourly figures are labeled reconstructions.
 
-**Where we are in the order's journey.** Every step of Eva's jacket happens here, from product page to confirmation to warehouse release to stock update, except that it happens 2,300 times an hour and the steps that took minutes in April took hours in November.
+[Black Friday Every Year: Peak Load, Resilience and Recovery](#peak-load-and-reliability) explains the methods used in the plan: capacity in orders per minute, controlled queues, optional work that can be paused, an incident team and checks after recovery.
+
+**Where we are in the order's journey.** Product page, checkout, order export, picking and stock updates all run under peak pressure. The handoffs that take minutes for an ordinary April order now take hours.
 
 {id: journey-peak-day--the-week-before-the-evening}
 ## The Week Before the Evening
 
-Kestrel & Pine, the fictional outdoor brand this book follows (see [Meet Kestrel & Pine](#meet-kestrel-and-pine)), planned Black Friday week 2026 as a campaign. Milan Petrov, Ecommerce and Marketplaces Manager, configured an automatic **20% discount on all outerwear** for the week of 23–29 November, which put the Ridgewalker shell jacket, the hero product, at **€159.20** instead of €199 ([Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions) tells what else the promotion settings did that week). The agency built the campaign pages. Daniel Okafor, Head of Operations, booked temporary pickers for Duiven and an extra PostNL collection on Friday night. Stock for the German marketplace fulfillment program had been sent in advance in October.
+Ecommerce Manager Milan Petrov plans a **20% outerwear discount for 23–29 November**, reducing the Ridgewalker jacket from €199 to **€159.20**. The agency builds campaign pages. Operations Head Daniel Okafor books temporary pickers and an extra PostNL collection. Stock for German marketplace fulfillment has already been sent in October. [Discounts, Coupons and Loyalty: Promotions Without Chaos](#commerce-promotions) examines the campaign's discount settings.
 
-Nobody planned the systems. There was no forecast in orders per minute, no load test, no list of what to switch off, no one on call for the iPaaS, and no dashboard that showed orders against the warehouse's intake. The platform's status page was the only thing anyone intended to watch. That is not negligence; it is what a Growing-stage plan looks like when the business has become Omnichannel without noticing ([What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages)).
+The preparation misses the integrations. There is no throughput forecast, load test, list of optional work to pause, integration on-call owner or dashboard comparing accepted orders with warehouse intake. The team plans to watch only the platform's status page. The process still fits a smaller, simpler business ([What Changes at Each Scale: From First Store to Group](#commerce-scaling-stages)).
 
 The week built as the table shows. The daily figures are illustrative; the weekly total is the ledger's.
 
@@ -48,7 +50,11 @@ Thursday evening is the warning nobody read: the order flow kept up with Thursda
 {id: journey-peak-day--friday-27-november-2026-hour-by-hour}
 ## Friday 27 November 2026, Hour by Hour
 
-The platform took **11,500 orders** on Friday *(illustrative)*. Three clocks matter in what follows: the **order flow** from the platform to the WMS, which ran on the iPaaS and created orders in the WMS one at a time, several API calls each; the **stock chain**, WMS to ERP every 15 minutes, ERP to platform hourly, platform to marketplace connector hourly; and the **warehouse's waves** (a wave is a batch of orders released to pickers together), the last of which is normally released at 21:00 for PostNL's 22:30 collection, an hour before the storefront's "ordered before 22:00" promise expires ([Pick, Pack, Ship: Warehouse Management and Fulfillment](#warehouse-and-fulfillment)); for Black Friday Daniel had added a 23:00 collection. The capacity of the order flow, about **seven orders a minute**, is an illustrative reconstruction; it was never measured before the day.
+Friday brings **11,500 orders** *(illustrative)*. Three clocks shape the outcome:
+
+- **Order export:** the hosted integration tool (**iPaaS**, integration platform as a service) creates orders one at a time in the **warehouse management system (WMS)**. Its reconstructed capacity is about **seven orders per minute**; nobody measured it before the day.
+- **Stock updates:** WMS to the **enterprise resource planning system (ERP)** every 15 minutes, then hourly to the storefront platform and hourly onward to marketplaces.
+- **Picking and collection:** the last normal picking wave is 21:00 for PostNL at 22:30. Checkout promises next-day delivery until 22:00. Daniel adds a 23:00 collection for Black Friday ([Pick, Pack, Ship: Warehouse Management and Fulfillment](#warehouse-and-fulfillment)).
 
 | Time | Orders *(illustrative)* | What the systems did | What the team saw and did |
 | --- | --- | --- | --- |
@@ -68,7 +74,9 @@ Three things in the table deserve a closer look, because they are the mechanisms
 {id: journey-peak-day--the-queue-nobody-could-see}
 ### The queue nobody could see
 
-The order flow was a resilience feature. Because it queued orders rather than failing checkout, no shopper saw an error and no order was lost. The platform was right to say it held. But the queue had no gauge, no alarm and no owner, so it did what unwatched queues do: it absorbed the problem silently until the warehouse, the last system in the chain, noticed the absence of work. Ruben's 20:50 discovery was the first time anyone had looked at the queue on a peak day. The four-hour backlog at 21:00 and the midnight arrival of the 20:00 orders are the ledger's facts; the throughput of about seven a minute (four calls per order against a WMS limit of about 30 calls a minute) and the shape of the curve are illustrative, reconstructed in Ruben's June 2027 analysis ([Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation](#multi-tenancy-and-isolation)), which also found that on the platform's side nine apps and connectors shared one API budget that evening and throttled the order flow about 1,900 times. The WMS itself had capacity to spare.
+The queue prevents checkout failures and lost orders, but it cannot create processing capacity. **Without a gauge, alarm or owner, it hides the delay.** At 20:50, integration engineer Ruben Alves finally checks it. By 21:00 the backlog is four hours; 20:00 orders reach the warehouse after midnight.
+
+The illustrative reconstruction assumes roughly four calls per order against a warehouse limit of 30 per minute. Ruben's June 2027 review also finds about 1,900 platform-side throttles amid traffic from nine apps and connectors ([Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation](#multi-tenancy-and-isolation)). Warehouse picking capacity itself remains available.
 
 ![A pile of orders accumulating in a dark, unmonitored tunnel between a busy storefront and an idle warehouse.](commerce-platform-architecture/posts/40-journey-peak-day/assets/images/40-journey-peak-day/40-unwatched-queue.jpeg)
 
@@ -144,7 +152,9 @@ The forecast is **60 orders a minute** in the peak hour, about one and a half ti
 | Picking at Duiven (Friday evening and Saturday) | Never the limit in 2026 | 9,000 parcels a day with the peak roster *(illustrative)* | Daniel's staffing plan; the delivery promise is set from it |
 | ERP import and invoicing | Hourly | Daily batch, overnight, off the peak path (W5) | — |
 
-The order path is new. Since 15 September 2027 marketplace orders, and since 13 October D2C orders, are created in the **OMS** (order management system, the one order record of Waypoint W2), which sends fulfillment orders to the WMS in batches sized to the WMS's rate limit, with the order number as the **idempotency key** (a repeated message has the same effect as the first) so that a retry can never create a second pick list. The queue between the OMS and the WMS has a gauge (the age of the oldest unsent order), an alarm at ten minutes, a dead-letter queue (where messages go after they have failed every retry) with Ruben as its owner, and a replay procedure that was exercised in October. Wholesale orders by EDI and by hand move to the OMS on 8 December, after the peak, and nothing else changes during the freeze from 15 November to 5 December ([Moving Without Burning the Bridge: Replatforming and Migration](#replatforming-and-migration) gives the cutover sequence).
+The 2027 path uses a shared **order management system (OMS)**, introduced for marketplaces on **15 September** and direct consumer orders on **13 October**. It sends warehouse work in batches sized to the API limit. The order number identifies each request, so repeating it cannot create a second pick list: **idempotency**.
+
+The queue now shows its oldest unsent order and alarms at ten minutes. Failed messages enter a **dead-letter queue**, with Ruben responsible for recovery; the team practiced replay in October. Wholesale moves on **8 December**, after the peak. Changes freeze from **15 November to 5 December** ([Moving Without Burning the Bridge: Replatforming and Migration](#replatforming-and-migration)).
 
 The stock loop is replaced for the channels that oversold. The WMS emits a **stock event** on every pick, receipt and adjustment; the **availability service** (a module of the OMS, Waypoint W1) recomputes **available-to-promise** per channel (physical stock minus what is already promised, minus a per-channel buffer of three units per SKU for marketplaces and one for the storefronts) and publishes the change to the platform and the connector within a minute. The go/no-go for using it in the peak was **15 October**. Had it failed, the fallback was the 2026 chain with the ten-unit marketplace buffer and a person pausing listings by hand; that fallback was rehearsed too.
 

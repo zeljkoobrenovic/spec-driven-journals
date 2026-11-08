@@ -17,24 +17,26 @@
 > * **The Boomerang** — refunds computed from the undiscounted line price give the discount back twice.
 > * **The First Snowfall** — Black Friday is the first time all the promotion rules meet all the customers at once.
 
-Every merchant discounts. A new-customer code in the newsletter, 20% off outerwear in November, free shipping over a threshold, a gift card for a birthday, points for coming back. Each looks like a marketing decision, and each is also a **change to the price that the rest of the platform must be able to explain**: to the customer who returns one item from a discounted order, to the accountant who posts the invoice, to the tax authority that wants the right VAT on the right net amount, and to the finance director who must know how much gift-card money the company holds for customers who have not spent it yet.
+A shopper uses a welcome code to buy a jacket and socks, then returns the jacket. How much should the merchant refund? The answer depends on how the discount was shared across the items. If the returns system uses the jacket's list price, it can refund more than the shopper paid for it. A promotion therefore needs a recorded calculation that checkout, returns and finance can all use.
 
-**A promotion is a promise about a price, and promises interact.** Two promotions that are each sensible alone can combine into a price below cost; a promotion that is right on the product page can be wrong in the cart, because the cart knows something the page did not (a second item, a code, a shipping address); and a promotion that was right at order time can be wrong at refund time, because the refund looked at the line, not at the order. This chapter shows how a platform keeps all three moments consistent.
+Gift cards and loyalty points create a different obligation: track the balance customers can still spend. Treating that balance as an ordinary discount can lose the record of what the merchant owes.
 
-This chapter owns the **promotion engine**, **stacking**, the **store credit liability** and **discount allocation**. It builds on [What Does It Cost? Price Lists, Contract Prices, Currencies and Tax](#pricing-architecture), hands the cart to [From Cart to Confirmation: Checkout Orchestration](#cart-and-checkout), the invoice to [Tax, Invoices and the Books: From Order to Ledger](#tax-invoicing-and-ledger), the refund to [The Way Back: Returns, Exchanges, Refunds and Reverse Logistics](#returns-and-exchanges) and customer identity to [One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data).
+Offers can also interact before payment. Two valid discounts may combine into a price below cost, and a cart may qualify for a different offer after the shopper adds an item or address. The promotion rules must specify which combinations apply so that the advertised saving, checkout total and later refund agree.
 
-**Where we are in the order's journey.** Eva's jacket, the recurring order this book follows, was bought at full price on 13 April 2027: €199 for the Ridgewalker and €18 for each pair of socks, €235 in all, with free shipping because the cart passed €75. That free shipping is the only promotion Eva used, and it is still a rule the cart evaluated. This chapter sits between the price (the previous chapter) and the cart (Part III): the step where the price the customer pays is finally decided, and the one that leaves a trace on every later step.
+The chapter explains how a **promotion engine** evaluates offers, how **stacking** combines them, and how **discount allocation** shares a saving across items. It also separates discounts from stored balances the merchant owes customers. Related detail sits in [What Does It Cost? Price Lists, Contract Prices, Currencies and Tax](#pricing-architecture), [From Cart to Confirmation: Checkout Orchestration](#cart-and-checkout), [Tax, Invoices and the Books: From Order to Ledger](#tax-invoicing-and-ledger), [The Way Back: Returns, Exchanges, Refunds and Reverse Logistics](#returns-and-exchanges) and [One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data).
+
+**Where we are in the order's journey.** Eva buys from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027. Her €199 jacket and two €18 pairs of socks total €235. She gets no item discount, but qualifies for free shipping over €75. That is a promotion too: checkout must evaluate it and record the result.
 
 {id: commerce-promotions--setting-the-scene-at-kestrel-pine-the-black-friday-stacking-bug}
 ## Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug
 
-Kestrel & Pine, the fictional outdoor brand this book follows (see [Meet Kestrel & Pine](#meet-kestrel-and-pine)), sells on a hosted SaaS commerce platform in three countries. For **Black Friday week 2026 (23–29 November)** Milan Petrov, the Ecommerce and Marketplaces Manager, configured three promotions:
+Kestrel & Pine runs three countries' storefronts on a hosted software-as-a-service (SaaS) platform. For **Black Friday week, 23–29 November 2026**, Ecommerce and Marketplaces Manager Milan Petrov configured three promotions:
 
 - an **automatic 20% discount on all outerwear** (jackets, fleeces, trail trousers), applied to every cart without a code, valid for the week;
 - the standing **welcome code**, 10% off a first order, sent to every new newsletter subscriber;
 - the standing rule of **free shipping on orders over €75**.
 
-The campaign plan said the welcome code would *not* combine with the outerwear discount: a first-time customer would get whichever was better. Nobody checked the platform's **discount combination setting**, which says which classes of discount may apply to the same order. The agency had switched it in October for a short Trailhead fleece campaign that *was* meant to combine with a code, and never switched it back. The week's figures are illustrative, invented for this chapter and consistent with the rest of the book.
+The welcome code was meant to give a first-time customer the better offer, without combining with the outerwear discount. But the platform's **discount combination setting** still allowed both. The agency had enabled it for an October fleece campaign and left it on. Nobody checked the setting against the new campaign plan. The figures below are illustrative.
 
 | What happened in the week of 23–29 November 2026 | Figure *(illustrative)* |
 | --- | --- |
@@ -156,7 +158,9 @@ Four design rules follow:
 {id: commerce-promotions--kestrel-pine-s-stored-value-in-2027}
 ### Kestrel & Pine's stored value in 2027
 
-Kestrel & Pine sells gift cards online through the platform and in the stores through the POS (point of sale, the till software). Because there is no link between the POS and the platform, **an online gift card cannot be redeemed in a store, nor a store card online** (illustrative). At 31 December 2026 the outstanding balances were about **€186,000** online and **€41,000** in the stores; Sanne de Wit, the Finance Director, reconciles both to the liability account monthly from two exports. There is no online loyalty program; the stores keep a loyalty list in the POS. Noor and Milan agreed in 2027 not to launch one until the customer record is unified, because points earned by a customer the platform cannot recognize across channels are a liability it cannot redeem correctly. One cross-channel balance is a goal for after Waypoint; it needs a central balance service, which the 2028 POS evaluation (decision W4) will weigh.
+Kestrel & Pine sells gift cards online and through store point-of-sale (POS) tills. The systems are separate, so **neither can redeem the other's cards** *(illustrative)*. At 31 December 2026, outstanding balances were about **€186,000 online** and **€41,000 in stores**. Finance Director Sanne de Wit reconciles two exports to the liability account each month.
+
+Stores have a loyalty list; the online shop has no loyalty program. Noor and Milan deferred one until they could recognize the same customer across channels. Otherwise points could accumulate in an account the redemption system cannot identify. A shared balance service remains a goal after Waypoint, to be considered in the 2028 store-system evaluation under decision W4.
 
 {id: commerce-promotions--the-choices}
 ## The Choices

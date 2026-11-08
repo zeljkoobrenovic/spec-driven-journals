@@ -15,7 +15,7 @@ logo: "assets/images/32-storefront-architecture/logo.jpeg"
 >
 > * **A storefront is a rendering of facts other systems own.** It shows the catalog, prices, promotions, availability, search results and the cart, and hands the shopper to checkout; it owns none of them. Three rendering models exist (a theme rendered by the platform, a headless storefront on the vendor's runtime, a headless storefront anywhere else), and under all three the checkout stays on the platform.
 > * **Cache the shell, fetch the promise.** Product and category pages can be cached per market and language, which is what survives a peak day; the price for a logged-in account, live stock, the cart and the checkout cannot, and are fetched after the cached page renders. The platform's full-page cache and a headless framework's regeneration are the same idea at two layers.
-> * **Go headless for a need the theme cannot meet, never for speed alone.** The performance evidence is directional, dated and self-selected; a themed storefront with disciplined app scripts can pass Google's thresholds. Headless is justified by a shared front end across brands, a content-led site or an account-priced B2B portal, and it costs a second deployable that a small team must run.
+> * **Go headless for a need the theme cannot meet, never for speed alone.** The performance evidence is directional, dated and self-selected; a themed storefront with disciplined app scripts can pass Google's thresholds. Headless is justified by a shared front end across brands, a content-led site or a business-customer portal with negotiated prices, and it costs a second deployable that a small team must run.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -24,19 +24,23 @@ logo: "assets/images/32-storefront-architecture/logo.jpeg"
 > * **The First Snowfall** — the storefront meets forty times its normal traffic once a year, and whether its pages are cacheable decides whether it stands.
 
 <br>
-Everything else in this book happens behind a screen. The shopper sees one thing: a page, on a phone, that shows a jacket, a price, "in stock", a delivery promise and a button. The **storefront** is the software that produces that page, and the architectural question is not what it looks like but **where it is rendered, from which data, and who owns the machinery**. A storefront rendered by the platform from a theme is one answer; a separate application that fetches everything through APIs (a **headless** storefront, so called because the "head" the shopper sees has been cut off from the commerce engine behind it) is another.
+A slow product page can lose a sale before the shopper reaches checkout. Replacing the code that builds the page may help, but the delay might come from a price service, a stock lookup or an app script. A new page that waits for the same slow answers can inherit the same problem. Establish what is delaying the shopper before choosing a replacement.
 
-The question matters because the storefront is where the rest of the architecture becomes visible. It reads the catalog, prices, promotions, search, availability and the cart, and if any of those is slow, stale or wrong, the page is. It also carries the merchant's brand, which is why agencies and designers want to own it, and it is where most installed apps land their scripts, which is why it gets slow. **The storefront is the one component every stakeholder wants to change and nobody wants to operate.**
+The **storefront** produces the pages shoppers use to find products and buy. A platform can render them from a theme; a **headless storefront** is a separate application calling the commerce engine through APIs. The latter gives the merchant more control over how pages combine catalog, price, search and cart data. It also makes the team responsible for running that application and keeping its displayed answers fresh.
 
-Kestrel & Pine, the fictional outdoor brand this book follows, supplies the worked example: three localized storefronts rendered from one agency-customized theme, 41 apps' worth of scripts, a peak hour of 41 times normal traffic, and the headless rebuild Noor Visser was asked to approve in February 2027 and declined.
+Kestrel & Pine, the fictional outdoor brand, runs three localized storefronts from one agency-maintained theme. It has 41 installed apps and peak traffic 41 times an average hour. The example follows Head of Engineering Noor Visser's decision to decline a February 2027 headless proposal.
 
-**Where we are in the order's journey.** This chapter is the first step of Eva's jacket: the product page she opened on her phone at 21:14 on 13 April 2027, with its price, its "in stock" badge and its "ordered before 22:00, delivered tomorrow" promise. Every later step ([[cart-and-checkout]], [[commerce-payments]], [[order-management]]) begins with what that page showed her and whether it was true.
+**Where we are in the order's journey.** Eva sees the Ridgewalker jacket on her phone before completing checkout at 21:14 on 13 April 2027. Price, stock and the next-day delivery promise shape her decision. [[cart-and-checkout]], [[commerce-payments]] and [[order-management]] follow the obligations created by that page.
 
 ## Setting the Scene at Kestrel & Pine: The Headless Proposal
 
-In February 2027, the agency that has built and maintained Kestrel & Pine's theme since 2017 presented a proposal to Noor Visser, in her second month in the job: rebuild the three storefronts as a headless application on a modern front-end framework, hosted on the platform vendor's own edge runtime (servers spread close to shoppers that run the merchant's front-end code), with a headless content system behind it. The pitch had three arguments: the storefront would be faster, the brand team would get a content model the theme could not give them, and the company would be "ready for the future". The figure, a Kestrel & Pine illustration, was about €240,000 and nine months, plus a second runtime to operate.
+The agency proposes a separate storefront application on the platform vendor's **edge runtime**, servers near shoppers that execute frontend code, plus a separate content system. It promises better speed, more flexible brand content and future readiness.
 
-Noor did what the next sections of this chapter do. She measured the storefront, listed what each rendering model would change, and asked which of the agency's three arguments described a need the theme could not meet. The product pages' field measurements (the ones Google collects from real visitors, at the 75th percentile on mobile, February 2027, all illustrative) were: largest contentful paint 2.1 seconds, interaction to next paint 310 milliseconds, cumulative layout shift 0.08. Two of the three were already in Google's "good" range. The third, responsiveness, was not, and the agency's own audit traced it to scripts from eleven apps, not to the theme or the platform.
+The fictional estimate is **€240,000 and nine months**, followed by another application to maintain. Noor asks which need the existing theme cannot meet.
+
+She starts with real-user measurements. In the illustrative February 2027 mobile results, the main content appears in **2.1 seconds**, response to interaction takes **310 milliseconds**, and layout shift scores **0.08**. These are 75th-percentile measurements: three quarters of visits perform at least as well.
+
+Content loading and layout stability already meet Google's cited good ranges. Responsiveness does not. The agency traces it to scripts from eleven apps. That finding points to specific work before an architectural replacement.
 
 She declined the rebuild. The reasons form the rest of this chapter.
 
@@ -97,7 +101,11 @@ A storefront's performance on an ordinary day and its survival on a peak day bot
 ![A cached page shell stacked many times on the left, with a live price tag, stock badge and cart flying into empty slots on the page from the right.](assets/images/32-storefront-architecture/32-shell-and-promise-split.jpeg)
 **Figure 3:** *Cache the shell, fetch the promise: the page content is computed once and served many times, while the price, the stock badge and the cart are fetched for this shopper, now.*
 
-The pattern every model implements is **cache the shell, fetch the promise**: serve the cached page immediately, then fetch the live facts into it. Shopify's full-page cache is this at the platform layer. At the headless layer the same idea appears as **incremental static regeneration**: Vercel's documentation (updated 28 August 2026) describes serving the cached page while regenerating it in the background on a timer or on demand, names e-commerce catalogs "that need current pricing and availability without rebuilding the entire site" as the first use case, collapses concurrent requests for an uncached page "into one function invocation per region, protecting your backend during traffic spikes", and serves stale content with a retry if regeneration fails. Request collapsing is the peak-day feature: when 41 times the normal traffic hits one hero product at once, the backend sees one request, not thousands.
+The pattern every model implements is **cache the shell, fetch the promise**: serve the cached page immediately, then fetch the live facts into it. Shopify's full-page cache is this at the platform layer.
+
+At the headless layer the same idea appears as **incremental static regeneration**: Vercel's documentation (updated 28 August 2026) describes serving the cached page while regenerating it in the background on a timer or on demand, names e-commerce catalogs "that need current pricing and availability without rebuilding the entire site" as the first use case, collapses concurrent requests for an uncached page "into one function invocation per region, protecting your backend during traffic spikes", and serves stale content with a retry if regeneration fails.
+
+Request collapsing is the peak-day feature: when 41 times the normal traffic hits one hero product at once, the backend sees one request, not thousands.
 
 ![Diagram: Eva's product page arrives from the edge cache first](assets/images/32-storefront-architecture/fig03-eva-s-product-page-arrives-edge.jpeg)
 **Figure 4:** *Eva's product page arrives from the edge cache first; the storefront then fetches the facts that must be true now, availability and price, and fills them in.*
@@ -115,7 +123,9 @@ The pattern every model implements is **cache the shell, fetch the promise**: se
 
 ## Performance: What the Evidence Says, With Dates
 
-**Core Web Vitals** are Google's three field metrics for page experience, measured from real visitors and assessed at the 75th percentile of page loads, mobile and desktop separately (web.dev, updated 31 October 2024): **largest contentful paint** (LCP, when the main content has loaded; "good" is 2.5 seconds or less), **interaction to next paint** (INP, how quickly the page responds to a tap or click; good is 200 milliseconds or less) and **cumulative layout shift** (CLS, how much the page jumps while loading; good is 0.1 or less). INP replaced the older first-input-delay metric on 12 March 2024. Google's Search documentation says it "highly recommend[s]" good Core Web Vitals "for success with Search" and that they "align with what our core ranking systems seek to reward", without stating a weight (accessed November 2026).
+**Core Web Vitals** are Google's three field metrics for page experience, measured from real visitors and assessed at the 75th percentile of page loads, mobile and desktop separately (web.dev, updated 31 October 2024): **largest contentful paint** (LCP, when the main content has loaded; "good" is 2.5 seconds or less), **interaction to next paint** (INP, how quickly the page responds to a tap or click; good is 200 milliseconds or less) and **cumulative layout shift** (CLS, how much the page jumps while loading; good is 0.1 or less).
+
+INP replaced the older first-input-delay metric on 12 March 2024. Google's Search documentation says it "highly recommend[s]" good Core Web Vitals "for success with Search" and that they "align with what our core ranking systems seek to reward", without stating a weight (accessed November 2026).
 
 The evidence that speed moves money is consistent in direction and weak in precision:
 
@@ -130,7 +140,13 @@ The honest reading: **faster is better, nobody can tell you by how much, and the
 
 ### Accessibility is a requirement, not a performance option
 
-**WCAG 2.2**, the Web Content Accessibility Guidelines of the World Wide Web Consortium (W3C), is a Recommendation dated 12 December 2024, with three conformance levels (A, AA, AAA) and four principles (perceivable, operable, understandable, robust). The **European Accessibility Act** (Directive (EU) 2019/882) applies to services "provided to consumers after 28 June 2025" and lists "e-commerce services" explicitly, defined as a service provided at a distance "with a view to concluding a consumer contract"; microenterprises (under 10 people and up to €2 million turnover) are exempt. Kestrel & Pine, with 310 employees and three consumer storefronts, has been in scope since June 2025; its B2B portal, serving businesses, is not a consumer service. National enforcement differs; [[commerce-regulation]] owns the calendar. For the storefront the consequence is that accessibility criteria belong in the theme and in every app block, and that the agency's and the apps' output must be tested against them, whichever rendering model is chosen.
+**WCAG 2.2**, the Web Content Accessibility Guidelines of the World Wide Web Consortium (W3C), is a Recommendation dated 12 December 2024, with three conformance levels (A, AA, AAA) and four principles (perceivable, operable, understandable, robust).
+
+The **European Accessibility Act** (Directive (EU) 2019/882) applies to services "provided to consumers after 28 June 2025" and lists "e-commerce services" explicitly, defined as a service provided at a distance "with a view to concluding a consumer contract"; microenterprises (under 10 people and up to €2 million turnover) are exempt.
+
+Kestrel & Pine, with 310 employees and three consumer storefronts, has been in scope since June 2025; its B2B portal, serving businesses, is not a consumer service. National enforcement differs; [[commerce-regulation]] owns the calendar.
+
+An accessible theme can still contain an app block that a shopper cannot navigate or use. Apply accessibility criteria to both the theme and the inserted components, and test their combined purchase flow. The shopper needs to complete the whole task, whichever rendering model or supplier produced each piece.
 
 ### Mobile apps and progressive web apps
 

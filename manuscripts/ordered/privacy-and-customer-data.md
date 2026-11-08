@@ -17,20 +17,20 @@
 > * **The Secret Agent** — an app, script or export that copies customer data without a named owner or a contract is a processor nobody appointed.
 > * **The Long Fuse** — a data subject request has a legal clock of one month, and a cookie or transfer rule can change with a court decision; both are discovered late by merchants with no map.
 
-A commerce platform is, among other things, a machine for collecting personal data: a name, an address, an e-mail, what someone bought, what they returned and why, which pages they looked at. Every one of those is needed by someone, and every one is, in European law, personal data about a person who has rights over it.
+A customer asks a merchant to remove their personal data. Their account is in the commerce platform, but addresses, purchases and contacts have also reached warehouse, carrier, payment, marketing and support systems. Removing the storefront profile does not settle what happens to those copies. The merchant needs to know where the data went, why it is held and which records can be removed or must be retained.
 
-The trouble is not that a merchant holds personal data but that it holds it in a dozen systems from a dozen vendors, copied by integrations nobody mapped for this purpose, under rules that differ by system and by country. **Privacy in commerce is less a question of policy than of architecture: where is the person, who may hold them, for how long, and how do you reach every copy when they ask?** This chapter is not legal advice; it is an architect's reading of the rules.
+That is why the architecture needs a map of data copies, purposes, access and retention rules. A forgotten export can retain a record, and an unchanged integration can recreate one after removal. A request must reach the systems that hold the data and produce a result the merchant can verify. This chapter offers an architect's reading of the rules; legal details and national requirements still matter.
 
-This chapter owns four terms: **controller and processor**, **consent**, **retention** and the **data subject request**. It builds on [One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data), which decided which system knows who a customer is, and hands the wider regulatory calendar to [Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation](#commerce-regulation).
+The chapter explains who decides the use of data (**controller**), who processes it for that party (**processor**), how consent is recorded, how long records are retained and how requests are handled. [One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data) connects customer identities; [Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation](#commerce-regulation) provides the wider calendar.
 
-**Where we are in the order's journey.** When Eva Janssen orders her jacket on 13 April 2027 (the recurring order; see [Meet Kestrel & Pine](#meet-kestrel-and-pine)), her name and address go to the platform, the warehouse management system (WMS), the carrier and the payment service provider (PSP), her invoice to the ERP (the enterprise resource planning system that keeps the books), and her e-mail to the notification service and, if she ticked the box, the newsletter tool. When she exchanges the jacket on 19 April, the returns portal joins the list. Each system received the data for a reason, and each reason has its own rule for how long it may stay.
+**Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027. Fulfillment, payment and invoicing distribute her details to different systems. Notifications need an email address; newsletter enrollment needs its own basis. Her 19 April exchange adds the returns portal. Each copy needs a purpose and retention rule.
 
 {id: privacy-and-customer-data--setting-the-scene-at-kestrel-pine-the-request-from-ghent}
 ## Setting the Scene at Kestrel & Pine: The Request From Ghent
 
-Kestrel & Pine, the fictional outdoor brand this book follows, received a message through the Belgian storefront's contact form on **Monday 10 May 2027**. A customer in Ghent, call her Lotte Claes, wrote in Dutch: please delete all my data and stop e-mailing me. The details are illustrative.
+On **10 May 2027**, a Belgian customer, called Lotte Claes in this fictional example, asks Kestrel & Pine to delete her data and stop emailing her.
 
-Lotte was a modest customer: two orders on the Belgian storefront (October 2025 and November 2026), one bol order (March 2026), one return, a newsletter subscription since 2025 and a loyalty sign-up at the Antwerp store's till, the POS (point-of-sale system), in December 2026. The request reached Noor Visser, who asked the question this chapter is about: **which systems hold Lotte, and what should each of them do?**
+Lotte has two storefront orders, a marketplace order, a return, a newsletter subscription and an Antwerp store loyalty entry. Head of Engineering Noor Visser must identify the records behind those relationships and decide the action for each system. Deleting the storefront account alone will not complete the request.
 
 Ruben Alves and the application support team took seventeen working days to find out. She was in nine of the thirteen systems:
 
@@ -189,7 +189,11 @@ Backups need a sentence. A deletion cannot reach into last month's backup; the a
 
 **Sharing with partners.** Every order sends personal data to a carrier, the PSP, sometimes a marketplace, and to apps and connectors. The rules are minimization (the warehouse does not need the e-mail, the carrier does not need the order history), a recorded role per recipient, and a DPA or terms that cover the transfer. Kestrel & Pine's marketplace connector copied everything the marketplace sent; after Lotte's request it copies what the warehouse needs.
 
-**International transfers.** Most commerce stacks send data to the United States somewhere: analytics, e-mail delivery, support tooling, hosting. The lawful routes are an adequacy decision, standard contractual clauses (SCCs) or binding corporate rules. The EU-US Data Privacy Framework (DPF), Commission Implementing Decision (EU) 2023/1795 of 10 July 2023, is the adequacy decision for certified US companies; the modern SCCs are Decision (EU) 2021/914. The General Court dismissed Philippe Latombe's challenge to the DPF on 3 September 2025; an appeal (Case C-703/25 P) is pending as of November 2026; law firms advise keeping SCCs as a fallback. The architectural asset is a **transfer inventory** keyed to the integration map: per vendor, where the data goes and under which mechanism, so that a court decision becomes a filter on a list rather than a discovery project.
+**International transfers.** Most commerce stacks send data to the United States somewhere: analytics, e-mail delivery, support tooling, hosting. The lawful routes are an adequacy decision, standard contractual clauses (SCCs) or binding corporate rules. The EU-US Data Privacy Framework (DPF), Commission Implementing Decision (EU) 2023/1795 of 10 July 2023, is the adequacy decision for certified US companies; the modern SCCs are Decision (EU) 2021/914.
+
+The General Court dismissed Philippe Latombe's challenge to the DPF on 3 September 2025; an appeal (Case C-703/25 P) is pending as of November 2026; law firms advise keeping SCCs as a fallback.
+
+The architectural asset is a **transfer inventory** keyed to the integration map: per vendor, where the data goes and under which mechanism, so that a court decision becomes a filter on a list rather than a discovery project.
 
 **The store.** The POS holds a loyalty list and receipts; a store may also run cameras, Wi-Fi analytics and tablet sign-ups. Consent asked at a till by a member of staff is easy to ask badly and leaves no evidence. Kestrel & Pine's rule from mid-2027: the POS loyalty sign-up shows the same purposes and wording as the web, records the time and the store, and carries the master's consent once matched ([One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data)).
 
@@ -200,7 +204,14 @@ Backups need a sentence. A deletion cannot reach into last month's backup; the a
 
 For the data subject request, four realistic designs:
 
-**By hand, with a runbook**: a written list of systems, the action per system and the person responsible. Fits a Starting or Growing merchant with few systems and few requests; Lotte's seventeen days were this, without the runbook. **Platform-centered**: the platform's own erasure plus its app fan-out handles the storefront side; a runbook covers the rest. Fits a merchant whose customer data mostly lives in the platform and its apps. **An orchestrator on the integration platform, with the identity index**: the request becomes a flow (verify, resolve, fan out, record, reply). Fits the Omnichannel stage, where a dozen systems hold the person and requests arrive weekly; it is Kestrel & Pine's design from autumn 2027. **A privacy management product**: software that automates intake, verification, discovery across connected systems, consent records and the records of processing. Fits the Group stage; my judgement is that below it the product is bought to avoid a map that still has to be made.
+Choose the coordination method for the number of systems and requests:
+
+- **A runbook:** list the action and responsible person for each system. This can suit a small merchant with few requests.
+- **Platform-led handling:** use the platform's erasure and app notifications, with a runbook for outside systems.
+- **An integration flow:** verify the request, resolve identities, send the required actions, record results and reply. Kestrel & Pine adopts this in autumn 2027.
+- **A privacy management product:** automate more intake, discovery and records across a larger group.
+
+I would map the data before choosing the product. Automation still needs to know which systems and records it must reach.
 
 | Option | Fits when | Strengths | Costs and limits | Warning sign |
 | --- | --- | --- | --- | --- |
@@ -237,7 +248,13 @@ The judgement: the duties do not change with scale; a Starting-stage merchant is
 {id: privacy-and-customer-data--kestrel-pine-s-deletion-design-autumn-2027-illustrative}
 ### Kestrel & Pine's deletion design (autumn 2027, illustrative)
 
-After Lotte's request, two changes. In **June 2027** the identity rule linked every system's record to the customer master ([One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data)), and the July matching run produced the index. In **October 2027** Ruben Alves built the request orchestrator as an iPaaS flow with a human verification step: the request is logged, the requester verified through the platform's account or a signed e-mail reply, the index queried and the action table applied. The platform deletes the account, anonymizes the orders and notifies its apps; the OMS (live for marketplace orders from 15 September) pseudonymizes its order copies; the WMS and the shipping service purge addresses older than their claims window of **twelve months** *(assumption)*; the ERP keeps invoices and credit notes and marks the customer reference as erased; the POS deletes the loyalty entry; the returns portal deletes the contact; the data warehouse replaces e-mail and name with a hash. The carrier, the marketplace and the PSP are notified and the customer told to ask them directly. Backups are kept for **35 days** *(assumption)* and the deletion log is replayed after any restore.
+After Lotte's request, two changes. In **June 2027** the identity rule linked every system's record to the customer master ([One Customer, One Product: Identity and Master Data Across Systems](#identity-and-master-data)), and the July matching run produced the index.
+
+In **October 2027** Ruben Alves built the request orchestrator as an iPaaS flow with a human verification step: the request is logged, the requester verified through the platform's account or a signed e-mail reply, the index queried and the action table applied.
+
+The platform deletes the account, anonymizes the orders and notifies its apps; the OMS (live for marketplace orders from 15 September) pseudonymizes its order copies; the WMS and the shipping service purge addresses older than their claims window of **twelve months** *(assumption)*; the ERP keeps invoices and credit notes and marks the customer reference as erased; the POS deletes the loyalty entry; the returns portal deletes the contact; the data warehouse replaces e-mail and name with a hash.
+
+The carrier, the marketplace and the PSP are notified and the customer told to ask them directly. Backups are kept for **35 days** *(assumption)* and the deletion log is replayed after any restore.
 
 The second request through the flow, in November 2027, took **two working days** *(illustrative)*. The map that made it possible, one row per system with its legal role, data, action and retention clock, is now a column of Noor's ownership map, reviewed quarterly.
 

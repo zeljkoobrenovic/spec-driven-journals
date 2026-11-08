@@ -13,8 +13,8 @@ logo: "assets/images/07-pricing-architecture/logo.jpeg"
 
 > **KEY POINTS:**
 >
-> * **A price is a promise with a selection rule.** One SKU (one sellable variant) carries many prices (market, currency, customer group, channel, quantity, validity). What makes them one price is a deterministic, documented rule that picks one at a defined moment, and that moment must be the same for the storefront, the checkout and the invoice.
-> * **Separate the engine that selects a price from the copies that show it.** Channels that cannot call the engine (marketplaces, the point of sale, EDI orders from wholesale customers) receive copies, and every copy needs a source, an effective date and a reconciliation. Kestrel & Pine's Price Drift was a copy whose restore failed silently.
+> * **A price is a promise with a selection rule.** One stock keeping unit (SKU, a sellable variant) carries many prices (market, currency, customer group, channel, quantity, validity). What makes them one price is a deterministic, documented rule that picks one at a defined moment, and that moment must be the same for the storefront, the checkout and the invoice.
+> * **Separate the engine that selects a price from the copies that show it.** Channels that cannot call the engine (marketplaces, the point of sale, structured electronic orders from wholesale customers) receive copies, and every copy needs a source, an effective date and a reconciliation. Kestrel & Pine's Price Drift was a copy whose restore failed silently.
 > * **In the EU, price history is a legal record.** Consumer prices must be shown including tax, and any announced reduction must name the lowest price of the previous 30 days, so the pricing system must answer "what did we charge, where, when" for every SKU.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
@@ -24,19 +24,23 @@ logo: "assets/images/07-pricing-architecture/logo.jpeg"
 > * **The Secret Agent** — a repricing rule in a connector, an app or a spreadsheet import changes prices without a named owner, a floor or a person's approval.
 
 <br>
-The price is the promise the shopper remembers. Ask what the Ridgewalker jacket costs at Kestrel & Pine, the fictional outdoor brand this book follows, and the honest answer is a table: **€199** to a Dutch, Belgian or German consumer, including that country's VAT; **€95** excluding VAT to an outdoor shop; a lower negotiated price to its largest wholesale customer; €199 on bol, Amazon.de and Zalando less the marketplace's commission; €199 at the till in Antwerp; and, for one week in November, a Black Friday price that must be announced against the lowest price of the previous 30 days.
+At Kestrel & Pine, the fictional outdoor brand, the Ridgewalker jacket costs consumers **€199**, including local value-added tax (VAT), and wholesale buyers **€95**, excluding VAT, before negotiated terms. These are legitimate prices for different sales. The difficulty is ensuring that each channel selects the right one: a wrong price can either lose the sale or leave the merchant honoring an unintended discount.
 
-**These are not one price with exceptions. They are one product with a pricing rule,** whose inputs are who is buying, where, through which channel, how many, on which date. Most merchants never write the rule down; they type prices into each system that needs them, and each copy is right only on the day it is typed.
+The price rule therefore needs explicit inputs: buyer, country, channel, quantity and date. Marketplace commissions affect what the merchant keeps, while promotions affect what the buyer pays and which earlier price may be shown for comparison. Assign an owner to these rules so teams can explain a price and update it consistently. Typing separate prices into each system lets them drift as soon as one changes.
 
-**Where we are in the order's journey.** Eva's jacket (the recurring order of [[meet-kestrel-and-pine]]) meets this chapter on the product page, where she reads €199, and again at checkout on 13 April 2027, where the platform selects the price it will charge and freezes it on order #1072455. The invoice, the ledger ([[tax-invoicing-and-ledger]]) and the refund of her exchange ([[returns-and-exchanges]]) all reuse that frozen price. [[product-information]] described the jacket; this chapter prices it; [[commerce-promotions]] discounts it.
+**Where we are in the order's journey.** Eva sees €199 on the product page and pays that jacket price at checkout on 13 April 2027. The platform records it on order #1072455. The invoice and any later refund must use that recorded price, even after the price list changes. [[product-information]] describes the product, [[commerce-promotions]] covers discounts, and [[tax-invoicing-and-ledger]] follows it into the books.
 
 ## Setting the Scene at Kestrel & Pine: The Price Drift
 
 In October 2026 the German storefront sold the Ridgewalker at **€179** for **nine days** while the marketplace listings and the stores charged **€199**. A price-list sync had failed silently. **410 orders** went out at the low price, about **€8,200** of margin was lost, and one marketplace sent a price-parity warning. [[meet-kestrel-and-pine]] records the incident; what follows is this chapter's reconstruction of the mechanism, with illustrative details.
 
-The German autumn campaign ran from 25 September to 4 October at €179, ten percent off. Three systems had to know. In 2026 the German consumer price list lived in the ERP (the enterprise resource planning system that runs finance, purchasing and invoicing), and the connector the ERP partner had built pushed it to the platform's German market price list every hour; the campaign was entered there with a validity window ending 4 October. The marketplace connector had its own campaign calendar, typed in by Milan Petrov's team, with the same dates. The stores never ran the campaign at all; the point of sale (POS) gets a weekly price file, and Germany has no store.
+The illustrative reconstruction starts with a German autumn campaign at €179, running from 25 September to 4 October. In 2026, the German consumer price list lived in the enterprise resource planning system (ERP), which also ran finance and purchasing. A connector copied it to the platform hourly.
 
-On 5 October the hourly push that should have restored €199 failed on an error, logged it and reported the run as successful. The connector pushed only changes since its last run, so the next hour saw nothing to send. The marketplace connector restored €199 on schedule from its own calendar. From that morning, the German storefront was the only channel at €179. Nobody noticed, because nothing compared the channels. On 14 October a marketplace notified Milan that the listing was priced above the same product on Kestrel & Pine's own site, and Sanne de Wit's weekly margin report showed German online margin down. By then 410 orders had each given away €20.
+Milan Petrov's storefront team entered the same campaign dates separately in the marketplace connector. The stores did not run the campaign; their point-of-sale (POS) tills received a weekly price file, and none of the stores was in Germany.
+
+On 5 October, the update restoring €199 failed. The connector logged an error but reported success. Because it sent only changes since the last run, later runs never retried the missing price. The marketplace connector restored €199 from its own calendar, leaving only the German storefront at €179.
+
+Nothing compared the prices. On 14 October, a marketplace warned Milan about the difference, and Finance Director Sanne de Wit's margin report exposed the loss. By then, 410 orders had each lost €20 of margin.
 
 ![Three channels selling the same jacket, the storefront at €179 behind a broken sync marked OK, the others at €199.](assets/images/07-pricing-architecture/07-price-drift-one-channel-left-behind.jpeg)
 **Figure 1:** *The Price Drift: one restore failed silently, so for nine days one copy kept the campaign price while every other channel had moved back to €199.*
@@ -133,7 +137,9 @@ Two rows carry the design. Marketplace copies are asynchronous and must be **ack
 
 A **price change** should be an event with the SKU, the scope, the old and new values, the effective date, the author and the reason, published once by the source and consumed by every copy. Three kinds of author need rules.
 
-People: merchandising sets consumer and campaign prices; wholesale sets contract prices; finance approves anything below a cost floor. Their rights live in the source system; the copies are read-only. Imports: a spreadsheet import is a writer with no judgement, so it needs validation (no price below the floor, no gap in validity, no restore row missing) and a report that a person reads. Automations: a connector's repricer, an app that adjusts prices or an AI agent proposing changes is the **Secret Agent** unless it has its own identity, a floor and a ceiling, a log and an owner. Channel integration platforms sell repricing with "margin guardrails" (ChannelEngine, n.d., accessed November 2026), and the guardrails are the point: a repricer runs on the channel price, bounded by a floor computed from cost and fees, and never writes back to the base price. [[ai-and-agentic-commerce]] extends the rule to agents.
+**Control every way a price can change.** Merchandising sets consumer and campaign prices, wholesale sets contract prices, and finance approves prices below the cost floor. Give those rights in the source system and make copies read-only, so a channel cannot silently override an approved price and create a different offer.
+
+Spreadsheet imports can overwrite prices just as an application can. Validate floors, dates and restoration rows, then review the result so a campaign file cannot quietly restore an obsolete price. Automated repricers need an identity, owner, log and limits. ChannelEngine describes 'margin guardrails' in its undated guidance, accessed November 2026. Bound the channel price using costs and fees while keeping the base price unchanged; otherwise a channel adjustment can become the price other channels inherit. The same discipline applies to agents ([[ai-and-agentic-commerce]]).
 
 ## The Choices
 
@@ -186,7 +192,11 @@ The pattern: **the number of prices grows multiplicatively** (SKUs times markets
 
 ### Kestrel & Pine: the price of one jacket on 13 April 2027
 
-In April 2027 Noor, Milan, Lea and Sanne wrote the price ownership decision on one page. The platform's market price lists are the system of record for consumer prices in NL, BE and DE and for the campaign calendar; consumer prices no longer pass through the ERP, whose role shrinks to finance ([[erp-and-back-office-integration]]). The ERP's price lists are the system of record for wholesale list prices and contract prices. The ERP feeds no channel directly, meaning there is no ERP-to-storefront link: it publishes those prices as events to the platform's B2B catalogs and, once the OMS (order management system) is live in Q4 2027, to the OMS. The POS, the marketplace connector and the B2B catalogs are consumers, fed by price events with effective dates through the iPaaS (W5); the connector's price rules carry a floor per product group set from the ERP's landed costs. A daily price reconciliation across all copies starts in May 2027, and the partner-built connector's price flow is retired.
+In April 2027, Noor, Milan, wholesale lead Lea Moreau and Sanne agreed the owners. **The platform's market price lists own consumer prices and campaign dates** in the Netherlands, Belgium and Germany. The ERP retains wholesale list and contract prices; consumer prices no longer pass through it.
+
+The ERP publishes wholesale price changes to the platform's business catalogs and, once live in Q4 2027, the order management system (OMS). Storefronts do not read the ERP directly. Price events carry effective dates through the integration platform, as required by Waypoint decision W5. Store tills and the marketplace connector consume those events. The connector's floors use landed costs from the ERP.
+
+A daily comparison of all price copies starts in May 2027, and the old connector's price flow is retired.
 
 On the day of Eva's order, the Ridgewalker women's, size M, moss, is priced like this:
 

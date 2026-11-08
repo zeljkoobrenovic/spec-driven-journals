@@ -18,13 +18,13 @@ logo: "assets/images/domain-coverage/logo.jpeg"
 > * **The models are maps, not evidence.** They are architectural models inferred from public product behavior, with a modeled seed value for every number. Nothing on this page, and nothing in the book, uses them as a source for a fact about Shopify, Amazon or any specialist vendor.
 
 <br>
-This book was planned from **capability models, not from a table of contents**. Before the first chapter was written, three families of Productscape domain models were inventoried brick by brick: a model of a merchant commerce platform of the Shopify kind, a model of a retail marketplace of the Amazon kind, and nine models of specialist commerce products (a B2B webshop platform, a returns platform, an EDI network, a marketplace integrator, a commerce ERP, a store POS, a shipping platform, a cloud WMS and the hub that connects them). The chapters were drawn so that every brick lands somewhere, and so that what the models lack is added on purpose rather than by accident.
+Commerce spans more business jobs than one book can cover equally. The tables here show which chapters cover each job and which topics are outside the book's scope. They also record how the coverage differs from the eleven Productscape domain models used in planning: a merchant platform, a retail marketplace and nine specialist products. Use them to find a topic or identify a gap before treating the book as a complete map.
 
-This page is the audit trail of that planning. It answers four questions: **"Where is my capability covered?"**, **"Where does the book disagree with the models?"**, **"What did the book add?"** and **"What did it leave out?"** The capability map itself is in [[commerce-capability-map]] and the rule for deciding which system owns which fact is in [[boundaries-and-systems-of-record]]; this page does not repeat their arguments. It is a lookup table and is meant to be used as one.
+The page answers where a topic is covered, how the book differs from its planning models and what it leaves out. For the architectural argument, use [[commerce-capability-map]] to map the business jobs and [[boundaries-and-systems-of-record]] to assign ownership of facts.
 
 ## Where the Models Come From
 
-A **Productscape domain model** is a structured description of a product domain: the customers and what they care about, the product **bricks** (named business capabilities) and the **modules** inside each brick (screens, APIs, workers, services, adapters), the data each brick keeps, and a stress test of what could change in the business. The models are kept as JSON and Markdown in the author's sibling `productscape-workspace` repository and were compiled into a research digest for this book on 7 November 2026.
+A **Productscape domain model** describes customers, their needs, named capabilities called **bricks**, and the software modules and data supporting them. The author maintains the models as JSON and Markdown in a separate workspace. A research digest dated **7 November 2026** supplied this book's planning map; the models are not evidence of a real company's internal systems.
 
 | Family | Model (short code) | Inspired by | Bricks | Root groups |
 | --- | --- | --- | --- | --- |
@@ -41,13 +41,13 @@ Four rules follow from what the models are:
 
 ### How to Read the Tables
 
-The capability tables list the models whose bricks carry a capability by short code, then the chapter that covers it. The first chapter named is the **primary** one: it owns the terms and draws the architecture. Chapters in parentheses cover one part of the capability or use it as an input. Placements were built from the digest's capability inventory and the chapter contracts in the book plan, then checked against each written chapter. For the chapters still in revision when this page was compiled ([[commerce-security]], [[commerce-regulation]], [[journey-return-and-exchange]], [[ai-and-agentic-commerce]], [[case-shopify]]) the placements follow the chapter contracts.
+In each row, the short codes identify source models. The **first linked chapter** gives the main treatment; chapters in parentheses cover a related part or use the capability. Placements came from the research inventory and chapter contracts, checked against the available drafts. At compilation, security, regulation, return journey, AI commerce and Shopify case placements still followed their contracts.
 
-Three chapters cover every capability at map level and are not repeated in every row: [[commerce-capability-map]] (the map and the layers), [[boundaries-and-systems-of-record]] (the entity–owner table) and [[commerce-scaling-stages]] (every chapter's scale-stage table gathered into one). Part I, the journeys of Part IX and the cases of Part XI use capabilities as context and appear only where they own a point.
+Three broad treatments are omitted from repeated rows: [[commerce-capability-map]] for the overall map, [[boundaries-and-systems-of-record]] for ownership, and [[commerce-scaling-stages]] for growth. Journey and case chapters appear where they make a specific contribution.
 
 ## Coverage by Capability
 
-The digest deduplicated the eleven models' bricks into 152 capabilities. The tables below merge closely related ones into a row per chapter topic, so a row may stand for several digest entries.
+The eleven models contain **152 distinct capabilities** after duplicates are removed. Related capabilities share rows below, so a row is a topic group rather than a one-to-one model entry.
 
 ### Part II — Catalog
 
@@ -226,7 +226,7 @@ The models were drawn one product at a time, from what each product visibly does
 
 ## The Models' Personas and the Book's Readers
 
-The eleven models carry some sixty modeled customers. They cluster into eleven roles; each maps to a reader the book is written for and to a seat at Kestrel & Pine where that reader can watch the role at work. The personas are modeled archetypes, not real people or accounts.
+The models' roughly sixty customer descriptions group into eleven roles. The table connects those roles to readers and to fictional Kestrel & Pine characters. They are archetypes for understanding needs, not real customer accounts.
 
 | Persona cluster (models) | What the models say they want | Reader | Kestrel & Pine seat | Start with |
 | --- | --- | --- | --- | --- |
@@ -242,7 +242,9 @@ The eleven models carry some sixty modeled customers. They cluster into eleven r
 | Marketplace trust and resolution operator (ORM) | Catch fraud and abuse before reports; see at-risk promises early | Consultant or analyst on the operator's side | None; the book takes the seller's side | [[commerce-regulation]], [[customer-service-and-notifications]]; LISTED's [[fraud-prevention]] |
 | Counter staff, pickers and packers (POS, WMS) | A till that is never slow; know where to go and what to take; not blamed for mistakes | Engineer or product manager designing floor tools | The Duiven warehouse and the six stores | [[stores-and-omnichannel]], [[warehouse-and-fulfillment]] |
 
-Two things the persona lists show. The same four wants recur in nearly every model: stock true in every system, orders that arrive without retyping, changes that do not break the live chain, and a month close without reconciliation; those are the Truth and Integration families of [[where-commerce-platforms-go-wrong]], seen from the customer's chair. And no model has a persona for the **architect**, the role the book speaks in: the models describe what each product's customer wants and leave how the products should fit together to whoever buys them. That is the gap the book is written into.
+Four needs recur: reliable stock, orders without retyping, safe changes and an easier financial close. The failure guide describes what happens when those needs go unmet ([[where-commerce-platforms-go-wrong]]).
+
+The models describe each product's customer. This book adds the architect's question: **how should the products work together?**
 
 ## How to Use This Map
 
@@ -251,7 +253,7 @@ Two things the persona lists show. The same four wants recur in nearly every mod
 3. **Check the left-out list against your business.** If you sell food, pharma or cosmetics, lots are not optional; if you run a workshop or your own vans, the book leaves you a sidebar to write.
 4. **Use the persona row as a reading route.** Find your seat at Kestrel & Pine and start with the chapters in its row.
 
-The rest of the Reference section turns the map into working tools: [[toolkit]] holds the cards and templates the chapters introduce (the capability map, the entity–owner table, the integration inventory, the reconciliation card and the rest), [[glossary]] defines the terms each chapter owns, and [[bibliography]] lists every source the chapters cite. Continue with [[toolkit]].
+For practical records, continue to [[toolkit]]. Use [[glossary]] to look up terms and [[bibliography]] to trace the public sources.
 
 ## Sources and Evidence
 
