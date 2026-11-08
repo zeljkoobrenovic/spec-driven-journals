@@ -74,3 +74,4 @@ Readers new to commerce architecture, with the product manager, analyst or consu
 - **2026-11-07** — Editorial review pass: corrected Shopify's Basic price (€28, €21 paid yearly), moved Germany (2022) into the Growing stage, defined punchout, parity rules, repricing, tenancy and ASN, fixed the wholesale-contribution comparison and the Double Refund attribution. *(AI-mediated session)*
 - **2026-11-07** — Final consistency pass: "Not in the ledger" cells and note rephrased so the reader is not pointed to the scenario ledger. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-11-08** — Added two figures to "The Business Models, Defined by the People Who Report Them": the nine models at a glance, and seller of record / GMV / EDI-type sales (article-illustrator). *(AI-mediated session)*

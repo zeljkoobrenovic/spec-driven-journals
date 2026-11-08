@@ -138,6 +138,9 @@ No merchant builds all of this, and no vendor sells all of it, whatever the broc
 
 **Best-of-breed, or composable.** One product per box, chosen for that box, joined by APIs and an integration platform. The MACH Alliance (founded in June 2020 by commercetools, Contentstack, EPAM and Valtech; the acronym stands for microservices, API-first, cloud-native and headless; headless means the storefront is a separate application that talks to the commerce engine only through APIs) made this the named alternative to the suite. The specialist layers are real products with their own definitions: Manhattan describes an OMS as a platform "designed to track and manage the lifecycle of an order from start to finish", and Akeneo describes a PIM as a system "to centralize, manage, enrich, and distribute product information for commerce" (both n.d., accessed November 2026). Each box is best in its class and replaceable; the cost is the joins. The Alliance's own February 2026 survey of 600 enterprise technology leaders found 37% naming integration complexity as a primary concern, a figure against the interest of the people who published it.
 
+![The same grid of capability boxes three times: covered by one large suite block, by a platform block with many small app tiles, and by one differently colored product per box joined by many lines.](assets/images/03-commerce-capability-map/three-ways-to-cover-the-map.jpeg)
+**Figure 5:** *Three ways to cover the same map: a suite covers many boxes with one data model, a platform covers the center and rents the rest as apps, and best-of-breed picks one product per box and pays for the joins.*
+
 Two variants are worth naming. **ERP-centered commerce** makes the ERP the center and the storefront a front end; Microsoft's documentation of 22 September 2026 says its Business Central Shopify Connector "is preinstalled for all new sign-ups and trials", which is the clearest public sign that ERP plus hosted storefront is a mainstream small-merchant shape. And a **specialist group** pre-integrates several best-of-breed products under one owner: Katapull, a Dutch group, announced on 31 March 2025 that five companies had joined forces and on 7 October 2026 added a WMS vendor as its eighth label, listing on its site an ERP-and-webshop product, a POS, a WMS, a marketplace integrator, an EDI provider, a returns product, a shipping product and an online-performance agency. On the map that is six operational and partner boxes from one group, with the storefront platform still bought elsewhere; the public pages give no figures beyond customer and user counts, and the book uses nothing else about it.
 
 ### Trade-offs
@@ -167,6 +170,9 @@ The map does not change with scale. What changes is how many boxes have their ow
 
 Kestrel & Pine is at stage 3 with four boxes still empty. The judgement: fill a box with a dedicated system when the capability has more than one producer and more than one consumer and the system that holds it today cannot carry the workflow. A PIM is unnecessary at stage 1 and overdue at stage 3 with four channels; an OMS is overkill with one channel and one warehouse and overdue the day a second order source appears.
 
+![Four copies of the same capability map on rising steps labeled Starting, Growing, Omnichannel and Group, with more boxes filled by their own system at each step.](assets/images/03-commerce-capability-map/map-fills-with-scale.jpeg)
+**Figure 6:** *The map does not change with scale; the number of boxes with their own system does, from three or four at the Starting stage to twelve or more at Omnichannel, and shared boxes across brands at Group.*
+
 ## Reading a Vendor's Product Page Against the Map
 
 A product page lists features. The map lets you turn a feature list into three questions.
@@ -176,6 +182,9 @@ A product page lists features. The map lets you turn a feature list into three q
 3. **What is the unit behind the numbers?** Vendor claims count different things. "1,300 marketplaces" (ChannelEngine's site, November 2026) counts connectors that exist, not connections that are maintained. "4,500+ customers" and "27,500+ users" (Katapull's about page) differ by a factor of six because users are seats. GMV (gross merchandise value, the value of orders passing through a platform before refunds and before the vendor's cut) is sales volume, not the vendor's revenue; Shopify's reported 2025 GMV of about $378 billion is roughly thirty times its revenue of about $11.6 billion. Ask for the unit, the date and the definition before comparing two vendors; [[commerce-platform-landscape]] has the full list of traps.
 
 The same three questions apply inside your own company, to the systems you already have. Most landscapes contain a system that was bought for one box and has quietly grown into three.
+
+![A professional reads a vendor brochure through a magnifying glass that leads to three question cards: Which boxes?, Own or copy?, What unit?](assets/images/03-commerce-capability-map/reading-a-vendor-page.jpeg)
+**Figure 7:** *Reading a vendor page against the map comes down to three questions: which boxes it claims, whether it owns each fact or copies it, and what unit sits behind its numbers.*
 
 ## In Practice: Kestrel & Pine's Systems on the Map
 
@@ -198,13 +207,16 @@ This is Noor's February whiteboard as a table, reduced to the boxes that were no
 | Data and analytics | The data warehouse and a BI (business intelligence) reporting tool | Three definitions of "order" |
 
 ![Diagram: Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system](assets/images/03-commerce-capability-map/fig03-kestrel-pine-s-thirteen-systems-fill.jpeg)
-**Figure 5:** *Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system: product information, order management, availability and customer identity. Every 2026 incident sits on an empty box or on a box with several writers.*
+**Figure 8:** *Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system: product information, order management, availability and customer identity. Every 2026 incident sits on an empty box or on a box with several writers.*
 
 The Waypoint decisions read as a plan to fill the empty boxes and thin the overlaps: a PIM for product information (W3, Q3 2027), an OMS for order management with an availability service as one of its modules (W1 and W2, Q4 2027), the WMS as the single writer of physical stock (W1), and integration standards for the arrows (W5). Identity remains open; [[identity-and-master-data]] takes it up.
 
 ## When It Goes Wrong
 
 The map fails in four ways, and each shows up on the map before it shows up in the business.
+
+![Four small capability maps: two systems writing one box (Overlap), an empty box with spreadsheets (Gap), one system stretched over five boxes (Wrong box), and a tiny team before a huge map (Giant's map).](assets/images/03-commerce-capability-map/four-ways-the-map-fails.jpeg)
+**Figure 9:** *The map fails in four ways, each visible on the map before it shows in the business: two writers for one fact, a fact with no home, a system holding boxes it was not bought for, and a map copied from a giant.*
 
 **An overlap: two systems own one fact.** The App That Wrote Stock is the textbook case. A pre-order app adjusted inventory in the platform while the WMS feed also wrote it; for two weeks 600 variants carried phantom reservations. Detection is a *write audit*: for each box, list every system, app, script and person that can change its fact. If the list has more than one entry for a recorded fact, that is an overlap. Recovery is to name the single writer and re-publish the fact from it, which is exactly what the first weekly reconciliation in May 2027 did when it found 2.3% of active variants with a different quantity between the WMS and the platform (an illustrative figure).
 

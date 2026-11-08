@@ -56,7 +56,13 @@ Marketing uses the model names loosely. Statistics agencies and annual reports u
 | **Omnichannel** | Stores and digital channels sharing stock, orders and customers | Target's fiscal 2025 annual report (March 2026): stores fulfilled 97.6% of its merchandise sales, including shipment from stores, order pickup and same-day delivery |
 | **Subscription** | Recurring orders under a standing agreement, or a paid membership that changes the promises | Amazon reports "subscription services" of $49.6 billion in 2025 (Prime and digital subscriptions); Target's paid Target Circle 360 membership gives "unlimited same-day delivery on eligible orders over $35" |
 
+![A grid of nine small scenes, one per business model: B2C, D2C, Wholesale, B2B e-commerce, B2B2C, Marketplace selling, Marketplace operating, Omnichannel and Subscription.](assets/images/02-commerce-business-models/business-models-at-a-glance.jpeg)
+**Figure 1:** *The nine business models at a glance: each is a different answer to who sells, to whom, and through whose channel, and a merchant usually runs several at once.*
+
 Three terms in the table need plain words. The **seller of record** is the party that legally sells to the customer: the one whose name is on the invoice, who owes the VAT (value-added tax) and who answers for the consumer's rights. A marketplace operator usually is not, which is why Amazon says so in its annual report. **GMV** (gross merchandise value) is the value of orders passing through a platform, including what the platform does not keep: Shopify's 2025 annual report (February 2026) defines it as "the total dollar value of orders facilitated through our platform" net of refunds. **EDI-type sales** are orders received as structured messages between systems, which [[edi-and-e-invoicing]] explains; the point here is that for business customers they are the majority.
+
+![Three panels: the invoice links the shopper to the seller rather than the marketplace; a tall coin stack of GMV with only a small fee kept; and an EDI bar at 11.07% taller than a web bar at 8.39%.](assets/images/02-commerce-business-models/seller-of-record-gmv-edi.jpeg)
+**Figure 2:** *Three terms in pictures: the seller of record is the name on the invoice, GMV counts every order but the marketplace keeps only its fee, and in the EU more business turnover arrives by structured message (11.07%) than through web shops (8.39%) (Eurostat, 2024 data).*
 
 The models are not exclusive. Kestrel & Pine runs four at once, which is what "omnichannel" means in practice, and most merchants above the Starting stage run at least two.
 
@@ -80,7 +86,7 @@ A few words in the table need plain definitions. **Punchout** lets a business bu
 Two rows deserve emphasis. **Who captures the order** decides where the order record is born; a merchant with orders born in four systems needs a fifth to hold them ([[order-management]]). **Who holds the stock** decides how many locations the availability calculation must cover; a marketplace's fulfillment program is a location the merchant can see but not count ([[inventory-and-availability]]).
 
 ![Diagram: Kestrel & Pine's four business lines capture orders in four systems and draw on one stock and one profit-and-loss statement](assets/images/02-commerce-business-models/fig01-kestrel-pine-s-four-business-lines.jpeg)
-**Figure 1:** *Kestrel & Pine's four business lines capture orders in four systems and draw on one stock and one profit-and-loss statement; what the lines share is the stock and the money, and what they do not share is the promise.*
+**Figure 3:** *Kestrel & Pine's four business lines capture orders in four systems and draw on one stock and one profit-and-loss statement; what the lines share is the stock and the money, and what they do not share is the promise.*
 
 The **merchant's view and the vendor's view** of the same platform differ in the same way. Shopify's 2025 annual report (February 2026) notes that while most of its merchants subscribe to its Basic and Grow plans, the majority of its GMV comes from merchants on Shopify Plus and enterprise offerings. For the vendor, the product is a tenancy and GMV is the metric. For the merchant, the platform is one system among a dozen and the order is the metric. A merchant reading a vendor's roadmap should remember which metric it was written for.
 
@@ -121,7 +127,7 @@ Kestrel & Pine's Ridgewalker jacket sells at **€199** to a consumer (including
 Read across, the table says why the four heads of business lines asked for different things. The D2C unit earns the most and spends it on marketing, parcels and returns, so its platform must convert, promise and take returns well. The wholesale unit earns less than half as much but ships 240 at a time, on one invoice, with no returns, so its platform must get prices and documents right and nothing else. The marketplace unit pays a fee for the traffic D2C buys with marketing, and lives under rules it did not write. **One jacket, three businesses, three sets of promises, and the architecture has to serve all three without pretending they are the same.**
 
 ![One jacket travelling to a consumer, a retailer and a marketplace, earning about €79, €36 and €62 per unit.](assets/images/02-commerce-business-models/02-one-jacket-three-businesses.jpeg)
-**Figure 2:** *One Ridgewalker jacket, three businesses: about €79 per unit online, €36 wholesale and €62 on a marketplace, each with its own promises for the platform to keep.*
+**Figure 4:** *One Ridgewalker jacket, three businesses: about €79 per unit online, €36 wholesale and €62 on a marketplace, each with its own promises for the platform to keep.*
 
 ## Seasonality and the Peak
 
@@ -143,7 +149,7 @@ The book compares every decision across four **scale stages**. This chapter owns
 Kestrel & Pine passed through the first three: Starting in 2016–2018 with one Dutch web shop and a 3PL, Growing from 2019 with the first store, Belgium, Germany, the marketplace connector and the integration platform, and Omnichannel from 2023 with its own warehouse, the ERP, more stores and wholesale on the platform's business-to-business features. The Omnichannel stage is where its 2027 problems live, because that is the stage at which three or four models share one stock and one catalog, and the joins between a dozen systems become the business.
 
 ![Diagram: Each stage transition adds a channel or a location and, with it, a join between systems](assets/images/02-commerce-business-models/fig02-each-stage-transition-adds-channel-or.jpeg)
-**Figure 3:** *Each stage transition adds a channel or a location and, with it, a join between systems; the hubs arrive at the Omnichannel stage because that is where the joins outnumber the boxes.*
+**Figure 5:** *Each stage transition adds a channel or a location and, with it, a join between systems; the hubs arrive at the Omnichannel stage because that is where the joins outnumber the boxes.*
 
 **Vendors confirm the stages in their price lists.** Shopify's pricing page (n.d., accessed November 2026) runs from Basic at €28 a month (€21 paid yearly) to Plus "from €2,100" a month on one- or three-year terms, and its fee for using a third-party payment gateway falls from 2% on Basic to 0.2% on Plus. Shopware's pricing page (n.d., accessed November 2026) makes the Community Edition free until the shops linked to an account exceed €1 million of GMV in a year, after which a paid plan starts "from €600" a month, and states that pricing "is based on your gross merchandise value". Shopify's annual report says most merchants are on its two smallest plans while most GMV comes from Plus and enterprise. In plain words: a merchant crosses from a self-service plan to a negotiated contract at about the Growing-to-Omnichannel transition, and the fee cliffs and feature gates in a vendor's tiers are a map of which decisions the vendor expects at each size.
 
@@ -160,7 +166,7 @@ A merchant running several business models has three realistic ways to arrange i
 **A shared core with line-specific edges.** The facts every line shares, the product, the price list, the stock and the order record, are owned once, in systems that serve all lines: a product hub, a pricing source, an availability service and an order hub. The promises that differ per line are made at the edges: the consumer checkout, the B2B portal, the till, the marketplace listing. This is the Waypoint shape, and the one most Omnichannel merchants arrive at. It costs more systems and more integration discipline than one stack, and it only pays once the joins have become the problem.
 
 ![Three arrangements: one stack shared by every line, a separate stack per line with tangled joins, and a shared core with an edge per line.](assets/images/02-commerce-business-models/02-three-ways-to-arrange-stacks.jpeg)
-**Figure 4:** *One stack is simplest while the lines are alike, a stack per line multiplies the joins, and a shared core owns the common facts once while each line keeps its own edge.*
+**Figure 6:** *One stack is simplest while the lines are alike, a stack per line multiplies the joins, and a shared core owns the common facts once while each line keeps its own edge.*
 
 | Criterion | One stack for every line | A stack per line | Shared core, line-specific edges |
 | --- | --- | --- | --- |
