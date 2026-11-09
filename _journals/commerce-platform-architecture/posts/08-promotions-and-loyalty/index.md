@@ -64,6 +64,9 @@ Three things went wrong, and they are the three things this chapter is about. Th
 
 In plain words, a **promotion** is a rule that lowers the price a customer pays under stated conditions. A **coupon code** is a promotion the customer unlocks by typing a string; an **automatic discount** applies when the conditions are met with no code. **Eligibility** is the set of conditions: which products, customers, period, channel, minimum cart. **Stacking** is applying more than one promotion to the same cart or line. **Discount allocation** is spreading an order-level discount over the lines so that each line, and later each invoice line and return, carries its share.
 
+![An Eligibility rule card above four panels: a code unlocking a price (Coupon code), a tag lowering by itself (Automatic), two discount tags on one price (Stacking), and an order discount split across three lines (Allocation).](assets/images/08-promotions-and-loyalty/promotion-vocabulary.jpeg)
+**Figure 2:** *The five words of promotions: eligibility decides who and what qualifies, a coupon code or an automatic rule applies the discount, stacking combines several, and allocation spreads an order-level discount over the lines that will be invoiced and returned.*
+
 The table lists the shapes every platform supports and what each needs from the rest of the system.
 
 | Promotion type | Example | What it needs to compute | What it changes |
@@ -76,7 +79,13 @@ The table lists the shapes every platform supports and what each needs from the 
 | Free or reduced shipping | Free shipping over €75 | The subtotal and the shipping method | Shipping line |
 | Bundle | Jacket plus fleece for €279 | The presence of both items | Two lines, with a fixed total allocated between them |
 
+![Seven tiles, one per promotion type: % off, € off, Order discount, Buy X get Y, Tiered, Free shipping and Bundle.](assets/images/08-promotions-and-loyalty/seven-promotion-types.jpeg)
+**Figure 3:** *The seven shapes every platform supports: product discounts change a line, order discounts change the total and must be allocated, and shipping and bundle offers change the lines they touch.*
+
 Every row touches three things the business cares about: the **price** the customer sees and pays, which in the EU must obey the prior-price rule described later; the **margin**, which disappears silently when promotions combine (the Ridgewalker at €143.28 still cleared its €58 landed cost, but gave up about a sixth of its planned Black Friday unit margin); and the **books**, because the invoice must show the net price per line with the VAT on it, and a refund must give back what was paid for that line, not what was listed.
+
+![A discount tag with arrows to three places: a price tag with a struck-through old price (Price), a margin bar being cut (Margin), and an invoice with a ledger and a return arrow (Books).](assets/images/08-promotions-and-loyalty/one-discount-three-places.jpeg)
+**Figure 4:** *Every promotion touches three things: the price the customer sees, which EU rules tie to the prior price; the margin, which combined promotions erode silently; and the books, where each invoice line and each refund must carry the net price actually paid.*
 
 Two things that look like promotions are not. **Gift cards**, **store credit** and **loyalty points** are value the merchant has been paid for or has promised and not yet delivered: money it owes. They are ledgers, not rules, and get their own section.
 
@@ -85,7 +94,7 @@ Two things that look like promotions are not. **Gift cards**, **store credit** a
 A promotion system has five parts, whether it is a platform feature, an app or a service. The diagram shows them around the decision that matters: the final discount is computed once, in the cart, and written to the order with its allocation.
 
 ![Diagram: The product page shows an estimate](assets/images/08-promotions-and-loyalty/fig01-product-page-shows-estimate-promotion-engine.jpeg)
-**Figure 2:** *The product page shows an estimate; the promotion engine computes the final discount once, at cart time, from the base price, the rules and the customer's eligibility, and writes it to the order allocated per line so that the invoice, the refund and the analytics all read the same number.*
+**Figure 5:** *The product page shows an estimate; the promotion engine computes the final discount once, at cart time, from the base price, the rules and the customer's eligibility, and writes it to the order allocated per line so that the invoice, the refund and the analytics all read the same number.*
 
 ### The five parts
 
@@ -129,14 +138,14 @@ Here is the allocation on Eva's order, had she used a 10% code (she did not; the
 When Eva returns the jacket, the refund is **€179.10**, not €199. The 190 over-refunded Black Friday returns were this calculation skipped: the returns portal read the line price (€159.20 after the product discount) because the order-level 10% had never been written to the lines, and gave back €15.92 per jacket the customer had never paid. That is the Boomerang in one table row.
 
 ![A returns counter where the refund boomerang brings back €159.20 for a jacket paid at €143.28, losing €15.92.](assets/images/08-promotions-and-loyalty/08-boomerang-refund.jpeg)
-**Figure 3:** *The Boomerang: because the order-level 10% was never allocated to the lines, each Black Friday jacket return gave back €15.92 the customer had never paid.*
+**Figure 6:** *The Boomerang: because the order-level 10% was never allocated to the lines, each Black Friday jacket return gave back €15.92 the customer had never paid.*
 
 ## Gift Cards, Store Credit and Points: Ledgers, Not Promotions
 
 A **gift card** is value the customer paid for in advance. **Store credit** is value the merchant granted, typically as a refund alternative or a goodwill gesture. **Loyalty points** are value the customer earned by buying. All three share a property that no promotion has: **they are a liability on the balance sheet**, money or value the merchant owes, until they are redeemed or expire.
 
 ![Diagram: Stored value is a ledger](assets/images/08-promotions-and-loyalty/fig02-stored-value-ledger-every-issuance-redemption.jpeg)
-**Figure 4:** *Stored value is a ledger: every issuance, redemption, expiry and breakage estimate changes a balance per instrument in the commerce platform, and the sum of those balances must agree with the liability account in the finance system every month.*
+**Figure 7:** *Stored value is a ledger: every issuance, redemption, expiry and breakage estimate changes a balance per instrument in the commerce platform, and the sum of those balances must agree with the liability account in the finance system every month.*
 
 The accounting is settled and drives the data model. Under IFRS 15, the international accounting standard for revenue (issued May 2014, effective from 1 January 2018, replacing IFRIC 13 on loyalty programs) and its US twin ASC 606, the sale of a gift card is a contract liability, not revenue; revenue is recognized on redemption. The part that will never be redeemed is **breakage**; the standard requires the merchant to *estimate* it and recognize it "in proportion to the pattern of exercised rights" rather than wait for cards to expire, and unclaimed value owed to a government is a liability, not revenue. Loyalty points that give the customer a **material right** (a benefit valuable enough to count as something they paid for) are a separate performance obligation, with revenue deferred until they are used.
 
@@ -197,7 +206,9 @@ The judgement: the promotion *engine* changes little with scale; evaluating a th
 
 **The prior-price rule turns promotions into a data requirement.** Directive (EU) 2019/2161, the Omnibus Directive, applied by member states from 28 May 2022, requires any announced price reduction to show the **prior price**: the lowest price the trader applied in the 30 days before the reduction. The Dutch regulator ACM announced on 6 December 2022 that it would supervise the rule from 1 January 2023, with a worked example: a price raised from €50 to €70 and cut by 35% after 25 days is really a 9% discount on the €50 reference. On 11 June 2024 ACM published fines against Leen Bakker, G-Star Raw eStore, JYSK, PVH Brands Netherlands (Tommy Hilfiger) and Koopjedeal for discounts shown against a misleading reference price; Germany's § 11 PAngV transposes the same rule. For architecture this means an effective-dated price history per SKU per country that can answer "lowest price in the last 30 days" when a promotion is published, and a strike-through price that is itself a syndicated field. Had Kestrel & Pine's Price Drift run into November, the German strike-through price for the Ridgewalker would legally have been €179, not €199.
 
-**Stored value is a liability with accounting rules.** Starbucks' FY2025 10-K, above. PwC's revenue guide on unexercised rights (accessed November 2026) states the ASC 606 position that estimated breakage is recognized "in proportion to the pattern of exercised rights", that breakage not expected to occur is recognized only when the likelihood of redemption becomes remote, and that amounts due under unclaimed-property law are never breakage revenue. The IFRS Foundation's page confirms IFRS 15 replaced IFRIC 13 on customer loyalty programs; the matching IFRS 15 paragraphs B44–B47 are cited here from a secondary source, because the standard's own text was not checked for this chapter.
+**Stored value is a liability with accounting rules.** Unused gift-card balances and loyalty rights can remain obligations to customers. Deciding when unredeemed value becomes revenue, called breakage, therefore requires an accounting rule as well as a balance in the commerce system.
+
+Starbucks' FY2025 10-K, above. PwC's revenue guide on unexercised rights (accessed November 2026) states the ASC 606 position that estimated breakage is recognized "in proportion to the pattern of exercised rights", that breakage not expected to occur is recognized only when the likelihood of redemption becomes remote, and that amounts due under unclaimed-property law are never breakage revenue. The IFRS Foundation's page confirms IFRS 15 replaced IFRIC 13 on customer loyalty programs; the matching IFRS 15 paragraphs B44–B47 are cited here from a secondary source, because the standard's own text was not checked for this chapter.
 
 **Promotion abuse is an identity problem.** Ravelin's 2020 article on promotion abuse (older than three years, but the taxonomy holds) names multi-accounting for sign-up offers, self-referral and guessable codes as the main forms; its figure that 53% of merchants saw more abuse in a year is a vendor survey without a published sample, so treat it as directional.
 

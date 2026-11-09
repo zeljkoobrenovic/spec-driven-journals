@@ -71,3 +71,4 @@ Readers new to commerce architecture. The ecommerce manager who configures campa
 - **2026-11-07** — Editorial review pass: confirmed the Stacking Bug figures against ruling 9, expanded acronyms and accounting terms, removed internal ledger and brief references, timetoread 28. *(AI-mediated session)*
 - **2026-11-07** — Final consistency pass: ledger-as-document reference rephrased. *(AI-mediated session)*
 - **2026-11-07** — Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). *(AI-mediated session)*
+- **2026-11-09** — Added three figures to "What a Promotion Is, and What It Touches": the promotion vocabulary, the seven promotion types, and one discount touching price, margin and books (article-illustrator). *(AI-mediated session)*
