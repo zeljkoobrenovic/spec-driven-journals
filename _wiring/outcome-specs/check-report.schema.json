@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "check-report.schema.json",
+  "title": "Check report",
+  "description": "The result of checking one draft against its spec. Written by the check step, read by the revise step and by the author. One file per run, next to the draft (posts/<folder>/check-report.json); it records which revision of the draft and of the spec it judged, so a stale report cannot be mistaken for a current one.",
+  "type": "object",
+  "required": ["spec", "draft", "spec_sha", "draft_sha", "run_at", "round", "verdict", "results"],
+  "additionalProperties": false,
+  "properties": {
+    "spec": { "type": "string", "description": "Path of the spec that was checked against." },
+    "draft": { "type": "string", "description": "Path of the draft that was checked." },
+    "spec_sha": { "type": "string", "description": "Content hash of the spec at check time." },
+    "draft_sha": { "type": "string", "description": "Content hash of the draft at check time." },
+    "run_at": { "type": "string", "description": "ISO 8601 timestamp." },
+    "round": { "type": "integer", "minimum": 1, "description": "1 for the first check of a draft, incremented after each revision." },
+    "verdict": {
+      "enum": ["pass", "revise", "escalate"],
+      "description": "pass: no failed blocker or major criterion. revise: failures remain and the revision budget is not spent. escalate: failures remain after the budget, or a failure points at the spec; the author decides."
+    },
+    "reverse_outline": {
+      "type": "array",
+      "description": "The outline written from the draft by a reader who had not seen the spec: one entry per draft paragraph, in draft order.",
+      "items": {
+        "type": "object",
+        "required": ["draft_locator", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "draft_locator": { "type": "string", "description": "Section heading and paragraph number in the draft." },
+          "summary": { "type": "string", "description": "What the paragraph is about, in a word or short phrase (Transitions, margin test)." },
+          "matched_spec_paragraph": { "type": ["string", "null"], "description": "The spec paragraph it was aligned to, or null if none." }
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterion", "check", "verdict", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "criterion": { "type": "string", "description": "The acceptance criterion id, or the standard check id when the check runs without a declared criterion." },
+          "check": { "$ref": "common.schema.json#/$defs/check" },
+          "verdict": { "enum": ["pass", "fail", "waived"] },
+          "severity": { "enum": ["blocker", "major", "minor"] },
+          "spec_locus": { "type": "string", "description": "JSON pointer into the spec (for example /sections/3/paragraphs/1)." },
+          "draft_locus": { "type": "string", "description": "Section heading and paragraph number in the draft." },
+          "quote": { "type": "string", "description": "The passage the verdict rests on. Required for every failed rubric or cold_reader check." },
+          "finding": { "type": "string", "description": "What is wrong, in one or two sentences." },
+          "weak_pattern": {
+            "anyOf": [
+              { "$ref": "common.schema.json#/$defs/weak_introduction_pattern" },
+              { "$ref": "common.schema.json#/$defs/weak_conclusion_pattern" }
+            ]
+          },
+          "fault": {
+            "enum": ["draft", "spec", "unclear"],
+            "description": "Which side should change. 'spec' when the draft is better than the spec asked for, or the spec cannot be satisfied; this always escalates, because the spec is edited first and only by decision of the author."
+          },
+          "waived_by": { "type": "string", "description": "For waived results: who waived it and why." }
+        }
+      }
+    }
+  }
+}

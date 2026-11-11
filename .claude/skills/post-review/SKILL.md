@@ -121,6 +121,15 @@ Modality-specific checks:
 
 ### Layer 3 — Spec ↔ modality alignment
 
+**When the post has a `spec.json`**, alignment of `index.md` with the spec is
+the job of the `draft-check` skill, not of this review. Run
+`python3 _wiring/check_draft.py status <post-dir>` and report its output in
+the "Spec ↔ post alignment" section: a current passing report, a failing one
+(list its failed results), a stale one, or none. Do not walk the acceptance
+criteria yourself, and do not re-judge what the report already covers. Still
+do the Non-goals check below, and still check the other modalities against
+the spec's intent. The bullets below describe posts on the older `spec.md`.
+
 - Walk the spec's **Success criteria** one at a time and mark each
   **met / partially met / unmet**, citing where in which modality it is satisfied
   (or noting that it is not). The primary obligation falls on `index`, but a

@@ -1,0 +1,334 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "post-spec.schema.json",
+  "title": "Post spec",
+  "description": "Intent, flow and transitions for one post's internal content (post -> sections -> paragraphs). One file per post, at _journals/<journal>/posts/<folder>/spec.json, authored before the prose. It is the post's only spec: it replaces spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog sections are carried here as fields. intent, thesis.question, thesis.claim and role are copied from the journal spec and must match it.",
+  "type": "object",
+  "required": ["spec_version", "kind", "id", "journal", "part", "title", "status", "revised", "intent", "thesis", "role", "flow", "introduction", "sections", "conclusion", "non_goals", "modalities", "sources", "changelog"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "spec_version": { "const": "0.1" },
+    "kind": { "const": "post" },
+    "id": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The post's permalink; equals the post id in the journal spec."
+    },
+    "journal": { "$ref": "common.schema.json#/$defs/id" },
+    "part": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The id of the part this post belongs to in the journal spec."
+    },
+    "title": { "type": "string" },
+    "status": { "$ref": "common.schema.json#/$defs/status" },
+    "revised": { "$ref": "common.schema.json#/$defs/date" },
+    "basis": {
+      "type": "string",
+      "description": "For a spec written after the prose: what it was reconstructed from."
+    },
+    "intent": {
+      "$ref": "common.schema.json#/$defs/intent",
+      "description": "The reader outcome of the post. outcome and audience must match the journal spec; the post spec may add acceptance criteria but not remove any."
+    },
+    "thesis": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/thesis" },
+        { "required": ["supporting_claims"] }
+      ],
+      "description": "The post's claim (must match the journal spec) and the supporting claims its sections are responsible for."
+    },
+    "role": {
+      "$ref": "common.schema.json#/$defs/role",
+      "description": "The post's role in its part. Must equal the role recorded in the journal spec."
+    },
+    "flow": {
+      "$ref": "common.schema.json#/$defs/flow",
+      "description": "The pattern that orders the sections."
+    },
+    "introduction": { "$ref": "#/$defs/introduction" },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The body sections in reading order, one per second-level heading between the introduction and the conclusion.",
+      "items": { "$ref": "#/$defs/section" }
+    },
+    "conclusion": { "$ref": "#/$defs/conclusion" },
+    "non_goals": { "$ref": "common.schema.json#/$defs/record_keeping/non_goals" },
+    "modalities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["checklist", "summary", "dialog", "comics"] },
+      "description": "The docs this spec drives beyond the main article. Empty means article only."
+    },
+    "open_questions": { "$ref": "common.schema.json#/$defs/record_keeping/open_questions" },
+    "decision_log": { "$ref": "common.schema.json#/$defs/record_keeping/decision_log" },
+    "sources": { "$ref": "common.schema.json#/$defs/record_keeping/sources" },
+    "changelog": { "$ref": "common.schema.json#/$defs/record_keeping/changelog" },
+    "length": {
+      "type": "object",
+      "description": "Optional size limits the draft is checked against.",
+      "additionalProperties": false,
+      "properties": {
+        "max_words": { "type": "integer", "minimum": 1 },
+        "target_words": { "type": "integer", "minimum": 1 }
+      }
+    }
+  },
+
+  "$defs": {
+    "function": {
+      "description": "What a section or paragraph does for the argument. One function per unit.",
+      "enum": [
+        "claim",
+        "explanation",
+        "evidence",
+        "example",
+        "analysis",
+        "definition",
+        "description",
+        "process",
+        "comparison",
+        "cause_effect",
+        "counterargument",
+        "refutation",
+        "context",
+        "recommendation",
+        "synthesis",
+        "transition"
+      ],
+      "enumDescriptions": {
+        "claim": "Paragraphs step 1: states a controlling idea the following units develop.",
+        "explanation": "Paragraphs step 2: says how the reader should interpret a claim.",
+        "evidence": "Paragraphs step 3: facts, figures, quotations or sources that support a claim.",
+        "example": "Paragraphs step 3 / 'illustration': a case that shows the claim at work.",
+        "analysis": "Paragraphs step 4: explains why the evidence or example supports the claim.",
+        "definition": "Defines a term the argument depends on (OSU, Functions of Paragraphs).",
+        "description": "Describes a person, place, thing or state of affairs (Paragraphs 'description').",
+        "process": "Explains how something works, step by step (Paragraphs 'process').",
+        "comparison": "Sets alternatives side by side (OSU: comparison or contrast).",
+        "cause_effect": "Explores the causes or effects of what was presented (OSU).",
+        "counterargument": "States a position against the thesis fairly.",
+        "refutation": "Answers a counterargument (OSU: refute a point of view).",
+        "context": "(extension) sets the scene or the stakes before the argument starts.",
+        "recommendation": "(extension) says what the reader should do; the author's judgement, labelled as such.",
+        "synthesis": "Conclusions: shows how earlier points fit together.",
+        "transition": "Moves the reader from one part of the post to another (Transitions: a transition can be an entire paragraph)."
+      }
+    },
+    "organization": {
+      "description": "How a paragraph's sentences are ordered (Paragraphs, 'ways to organize a paragraph').",
+      "enum": ["narration", "description", "process", "classification", "illustration"]
+    },
+    "form": {
+      "description": "How the unit appears on the page. Tables, lists and figures are specified like paragraphs: one controlling idea each.",
+      "enum": ["prose", "list", "table", "figure", "callout", "code"]
+    },
+
+    "evidence_item": {
+      "type": "object",
+      "description": "One piece of support a paragraph uses. Each item must say why it is relevant: 'NONE of your examples should be left unexplained' (Paragraphs, step 4).",
+      "required": ["kind", "what", "shows"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": ["fact", "statistic", "quotation", "source", "example", "case", "scenario", "analogy", "table", "figure", "reasoning"],
+          "description": "'scenario' is a fictional or illustrative case and must be labelled as such in the prose."
+        },
+        "what": { "type": "string", "description": "The item itself: the figure, the quotation, the case." },
+        "source": { "type": "string", "description": "Where it comes from, with a date for company facts." },
+        "shows": { "type": "string", "description": "Why this item supports the paragraph's controlling idea." }
+      }
+    },
+
+    "advances_thesis": {
+      "type": "object",
+      "description": "How the unit advances the post thesis (Paragraphs: every paragraph 'clearly related to the thesis').",
+      "required": ["supports", "how"],
+      "additionalProperties": false,
+      "properties": {
+        "supports": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/claim_id" },
+          "description": "The post's supporting claims this unit argues for."
+        },
+        "how": { "type": "string" }
+      }
+    },
+
+    "paragraph": {
+      "type": "object",
+      "description": "The smallest specified unit: one paragraph (or one table, list or figure) with exactly one controlling idea.",
+      "required": ["id", "controlling_idea", "function"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^p[0-9]+[a-z]?$" },
+        "form": { "$ref": "#/$defs/form", "default": "prose" },
+        "controlling_idea": {
+          "type": "string",
+          "description": "The single idea that 'controls what happens in the rest of the paragraph', as a full sentence a topic sentence could state (Paragraphs). If it needs 'and' to join two ideas, it is two paragraphs."
+        },
+        "function": { "$ref": "#/$defs/function" },
+        "organization": { "$ref": "#/$defs/organization" },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_item" },
+          "description": "Required in substance for functions evidence and example; the semantic validator enforces it."
+        },
+        "advances_thesis": {
+          "$ref": "#/$defs/advances_thesis",
+          "description": "Optional on a paragraph: when absent, the paragraph inherits its section's advances_thesis."
+        },
+        "transition_in": {
+          "$ref": "common.schema.json#/$defs/transition",
+          "description": "The link from the previous paragraph of the same section. Required on every paragraph except the first of its section."
+        }
+      }
+    },
+
+    "section": {
+      "type": "object",
+      "required": ["id", "heading", "controlling_idea", "function", "advances_thesis", "paragraphs"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "heading": {
+          "type": "string",
+          "description": "The heading as it should appear. A reader skimming headings alone should be able to follow the argument."
+        },
+        "controlling_idea": {
+          "type": "string",
+          "description": "The single idea the section establishes."
+        },
+        "function": { "$ref": "#/$defs/function" },
+        "advances_thesis": { "$ref": "#/$defs/advances_thesis" },
+        "flow": {
+          "$ref": "common.schema.json#/$defs/flow",
+          "description": "The pattern that orders the section's paragraphs. Optional for sections of one or two paragraphs."
+        },
+        "transition_in": {
+          "$ref": "common.schema.json#/$defs/transition",
+          "description": "The link from the previous section (or, for the first section, from the introduction). Required on every section."
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/paragraph" }
+        }
+      }
+    },
+
+    "introduction": {
+      "type": "object",
+      "description": "How the post brings the reader in (Introductions).",
+      "required": ["hook", "bridge", "thesis_statement", "roadmap", "paragraphs"],
+      "additionalProperties": false,
+      "properties": {
+        "hook": { "$ref": "common.schema.json#/$defs/hook" },
+        "bridge": {
+          "type": "object",
+          "description": "The path from the reader's world to the topic.",
+          "required": ["from_reader_world", "to_topic"],
+          "additionalProperties": false,
+          "properties": {
+            "from_reader_world": { "type": "string", "description": "The situation the reader already recognises." },
+            "to_topic": { "type": "string", "description": "The step that turns that situation into the post's question." }
+          }
+        },
+        "thesis_statement": {
+          "type": "object",
+          "description": "Where and how the thesis is stated. It must appear in the introduction, never for the first time in the conclusion (Conclusions: the 'Sherlock Holmes' conclusion).",
+          "required": ["text", "placement"],
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "description": "The thesis as the reader will meet it; may be worded more plainly than thesis.claim but must say the same thing." },
+            "placement": { "type": "string", "description": "Which element carries it (for example 'KEY POINTS bullet 1 and paragraph p02')." }
+          }
+        },
+        "roadmap": {
+          "type": "object",
+          "description": "What the introduction tells the reader to expect. A reader of the introduction alone must be able to predict the sections from it (Introductions: 'Ask a friend').",
+          "required": ["promises", "placement"],
+          "additionalProperties": false,
+          "properties": {
+            "promises": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["promise", "kept_in"],
+                "additionalProperties": false,
+                "properties": {
+                  "promise": { "type": "string" },
+                  "kept_in": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { "$ref": "common.schema.json#/$defs/id" },
+                    "description": "The sections that keep the promise."
+                  }
+                }
+              }
+            },
+            "placement": { "type": "string" }
+          }
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/paragraph" }
+        }
+      }
+    },
+
+    "conclusion": {
+      "type": "object",
+      "description": "What the post leaves the reader with (Conclusions).",
+      "required": ["synthesis", "so_what", "callback", "takeaway", "paragraphs"],
+      "additionalProperties": false,
+      "properties": {
+        "heading": { "type": "string" },
+        "synthesis": {
+          "type": "string",
+          "description": "How the sections' points fit together into something no single section says. Not a list of what each section said ('Synthesize, don't summarize')."
+        },
+        "so_what": {
+          "type": "string",
+          "description": "Why the reader should care, answered concretely (the 'So What' game)."
+        },
+        "callback": {
+          "type": "object",
+          "description": "The return to the introduction ('Return to the theme or themes in the introduction').",
+          "required": ["to", "how"],
+          "additionalProperties": false,
+          "properties": {
+            "to": { "type": "string", "description": "The element of the introduction that is picked up again, normally the hook." },
+            "how": { "type": "string", "description": "What the reader can now see in it that they could not at the start." }
+          }
+        },
+        "takeaway": { "$ref": "common.schema.json#/$defs/takeaway" },
+        "hand_off": {
+          "type": "object",
+          "description": "The link to the next post in reading order. Must agree with the next post's transition_in in the journal spec.",
+          "required": ["to", "relationship", "carries_over", "introduces"],
+          "additionalProperties": false,
+          "properties": {
+            "to": { "$ref": "common.schema.json#/$defs/id" },
+            "relationship": { "$ref": "common.schema.json#/$defs/relationship" },
+            "carries_over": { "type": "string" },
+            "introduces": { "type": "string" }
+          }
+        },
+        "transition_in": {
+          "$ref": "common.schema.json#/$defs/transition",
+          "description": "The link from the last body section into the conclusion."
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/paragraph" }
+        }
+      }
+    }
+  }
+}

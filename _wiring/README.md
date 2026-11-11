@@ -45,11 +45,35 @@ These scripts call Google Gemini to create missing per-post icons or hero
 images. They are idempotent around existing files and front-matter fields.
 They require network access and a valid `GEMINI_API_KEY`.
 
+## Outcome Specs
+
+```bash
+python3 _wiring/validate_spec.py <journal> [<folder>]      # spec -> validate
+python3 _wiring/check_draft.py structure <post-dir>        # draft -> deterministic checks + alignment
+python3 _wiring/check_draft.py units <post-dir>            # the draft as numbered units, no spec content
+python3 _wiring/check_draft.py finalize <post-dir> --results <file.json> [--round N]
+python3 _wiring/check_draft.py status <post-dir>           # is there a current, passing check report?
+```
+
+`outcome-specs/` holds the JSON Schemas for the journal spec
+(`_journals/<j>/journal-spec.json`), the post spec
+(`_journals/<j>/posts/<slug>/spec.json`) and the check report, with `RULES.md`
+(the rule and source behind each field and check), `PIPELINE.md` (the
+pipeline and what happens when a check fails) and two worked examples.
+
+`outcome_specs.py` is the shared library: a validator for the subset of JSON
+Schema the schemas use, the semantic rules, the draft parser and the renderer
+that `build.py` uses to show `spec.json` as the spec page. All three scripts
+are standard-library only and call no model; the reverse outline, the
+cold-reader answers and the judge's rulings come from the `draft-check` skill
+and reach `check_draft.py finalize` through `--results`.
+
 ## Spec Helpers
 
-`spec-template.md` is the canonical template for per-post specs. Specs sit next
-to `index.md`, are versioned in git, and are rendered by `build.py` when
-present.
+`spec-template.md` is the template for the older `spec.md` per-post specs,
+still used by posts that have not been converted to `spec.json`. Specs sit
+next to `index.md`, are versioned in git, and are rendered by `build.py` when
+present; `spec.json` wins when a post has both.
 
 The leading-underscore scripts are one-off migration helpers:
 

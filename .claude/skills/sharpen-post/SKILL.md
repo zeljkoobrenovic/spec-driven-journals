@@ -59,6 +59,16 @@ deletes wastes the effort.
 
 ## Contract rules
 
+- **A post with a `spec.json` is sharpened under tighter rules.** Its spec
+  fixes the sections, the paragraphs and their order, so in such a post this
+  skill may tighten sentences and words freely, but may cut, merge, split or
+  reorder a paragraph or section only after the spec has been changed to
+  match (the `spec-creator` skill; the spec is edited first). Run
+  `python3 _wiring/check_draft.py structure <post-dir>` when done: it must
+  still report that sections, unit counts and forms match. Any edit makes the
+  post's `check-report.json` stale; say so in the report and recommend
+  `draft-check`. Record the pass in the spec's `changelog` field. Wherever
+  the rest of this skill says `spec.md`, read the post's spec.
 - **`spec.md` is the contract.** Read its Intent, Audience, Success criteria and
   Non-goals before cutting. Do cut material the Non-goals exclude. By default,
   do not cut something a success criterion requires.

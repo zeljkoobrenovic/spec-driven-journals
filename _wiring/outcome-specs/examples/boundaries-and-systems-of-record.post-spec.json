@@ -1,0 +1,1493 @@
+{
+  "$schema": "../post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "boundaries-and-systems-of-record",
+  "journal": "commerce-platform-architecture",
+  "part": "part-1",
+  "title": "Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record",
+  "status": "draft",
+  "revised": "2026-11-11",
+  "basis": "Worked example, reconstructed from the published chapter (posts/04-boundaries-and-systems-of-record/index.md) and its spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over below. Paragraph ids follow the order of the published chapter; a table, list or figure that belongs to a paragraph is recorded as that paragraph's evidence. The conclusion's callback describes what the contract asks for; the published chapter does not yet do it (see PIPELINE.md, 'What the worked example exposed').",
+  "intent": {
+    "outcome": {
+      "know": [
+        "What a business fact, a system of record, a copy, a writer and a bounded context are.",
+        "The four ways merchants assign ownership and when each stops fitting."
+      ],
+      "believe": [
+        "Copies are unavoidable; the failure is a copy that nobody has declared to be a copy.",
+        "'Single source of truth' means one record per fact, not one system for every fact."
+      ],
+      "can_do": [
+        "Write an entity–owner table for their own landscape, with a writer list and a reconciliation per row.",
+        "Tell, from the writer list, whether a claimed system of record is one."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or integration lead who inherits a landscape of connectors, and product, finance and operations leaders who are told to 'sync it both ways'.",
+      "already_knows": [
+        "The order's journey and its handoffs (journey-of-an-order).",
+        "The four scale stages (commerce-business-models).",
+        "The capability map and that each capability owns a kind of fact (commerce-capability-map).",
+        "Kestrel & Pine and the Black Friday Oversell, in outline (meet-kestrel-and-pine)."
+      ],
+      "does_not_know": [
+        "System of record, copy, writer, bounded context, reconciliation, event.",
+        "ERP, WMS, POS, PIM, OMS, PSP beyond a first mention."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given two systems that show different values for one fact, the reader asks which is the record and who may write it, before asking how to synchronize faster.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "blocker",
+        "probe": "The shop shows 12 units of a jacket and the warehouse system shows 0. Using only this chapter: what are the first two questions you ask?",
+        "expected": "Which system is the record for this fact; who or what can write the value in each system. Not 'how do we sync faster'."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can explain why three systems showing three statuses for one order may all be correct.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Shop: 'Delivered'. Warehouse: 'In picking'. Finance: 'Not invoiced'. Can all three be right? Explain.",
+        "expected": "Yes: each system's 'order' is a different object in a different bounded context; what is missing is an owner of the view across them."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can fill one row of an entity–owner table with all six columns for a fact of their choice.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Fill one row of the entity–owner table for 'consumer price'.",
+        "expected": "Record, who may write, where copies live, how copies learn, how disagreement is found; all five answered specifically."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (callouts and paragraphs p01 to p04) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Records and copies; why 'order' means different things; an entity–owner table; a comparison of ownership choices; Kestrel & Pine's stock as the worked case; vendor documentation as evidence."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "The conclusion returns to the introduction's two disagreeing statuses and says what the reader can now see in them.",
+        "check": "conclusion_calls_back_to_introduction",
+        "method": "rubric",
+        "severity": "major"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "When several systems hold the same fact (a price, a stock level, an order status, a customer), which one is right, and how do the others find out?",
+    "claim": "Copies of a fact are unavoidable and harmless; unowned copies are the failure, so a merchant must name exactly one system of record per fact (not per system, and not per company), treat every other value as a copy that learns from it, and reassign that ownership when the business changes shape.",
+    "disputed_by": "The view that the remedy for disagreeing systems is faster two-way synchronization, or a single source of truth read as one system that holds everything.",
+    "so_what": "Kestrel & Pine oversold 1,340 units on one evening while every system reported its own number honestly; without a named record, no amount of synchronization can say which number should have won.",
+    "how_why": "A disagreement can be resolved only if one value is entitled to win; the writer list shows whether a record is real, bounded contexts explain why one shared model is not the answer, and each scale stage brings a new system that claims facts the previous owner held.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "When copies disagree, the question is which value is entitled to win, not how to copy faster."
+      },
+      {
+        "id": "S2",
+        "claim": "Ownership is decided per fact, and it is real only when the record has one writer and its copies have none."
+      },
+      {
+        "id": "S3",
+        "claim": "The same word names different objects in different bounded contexts, so systems should share identifiers and translate at boundaries instead of sharing one model."
+      },
+      {
+        "id": "S4",
+        "claim": "Ownership becomes usable as an entity–owner table whose rows also name the writers, the refresh and how disagreement is found."
+      },
+      {
+        "id": "S5",
+        "claim": "Which system should be the hub depends on where orders and stock originate, so ownership must be reassigned at each stage transition."
+      },
+      {
+        "id": "S6",
+        "claim": "Ownership that has been decided still erodes, and each way it erodes has a detection and a recovery."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Makes the part's central decision: for each fact on the capability map, which system is the record and which are copies.",
+    "supports": [
+      "P1-4"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "scene, facts-records-copies, bounded-contexts, entity-owner-table: each supplies the terms the next one uses"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "four-ways"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "scale-stages"
+      }
+    ],
+    "rationale": "The reader meets six honest, disagreeing numbers before any term is defined, so the vocabulary arrives as the answer to a problem they already feel. The table comes only after records, copies and contexts, because its columns are those terms. Choices, stages and failure modes follow the table because each is a way of filling it in or keeping it true. Opening with definitions would lose the newcomer; opening with the table would present columns the reader cannot yet read."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A customer asks where a parcel is. The storefront says Delivered; the warehouse system says In picking. Is one record stale, or do the two describe different parts of the order?"
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has contacted support about an order, or answered such a contact, has seen two screens disagree.",
+      "to_topic": "Until someone knows which value is authoritative, copying either status faster only spreads the wrong answer; that authority is what a system of record is."
+    },
+    "thesis_statement": {
+      "text": "Copies are unavoidable; unowned copies are the failure. Name one system of record per fact, decide who may change it, how copies learn and how errors are repaired.",
+      "placement": "KEY POINTS callout, first bullet, and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "Build an entity–owner table: business facts and the systems responsible for them.",
+          "kept_in": [
+            "facts-records-copies",
+            "entity-owner-table"
+          ]
+        },
+        {
+          "promise": "Explain how systems can use different meanings for 'order'.",
+          "kept_in": [
+            "bounded-contexts"
+          ]
+        },
+        {
+          "promise": "Compare ownership choices.",
+          "kept_in": [
+            "four-ways",
+            "suite-and-vendors",
+            "scale-stages"
+          ]
+        },
+        {
+          "promise": "Work through Kestrel & Pine's six stock writers.",
+          "kept_in": [
+            "scene",
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Say what happens when systems disagree.",
+          "kept_in": [
+            "truth-patterns",
+            "when-it-goes-wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "function": "context",
+        "organization": "narration",
+        "controlling_idea": "Two systems show two statuses for one parcel, and until support knows whether one is stale or both are right, copying either faster makes things worse.",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Storefront 'Delivered', warehouse 'In picking'.",
+            "shows": "A disagreement the reader can picture, in which speed is visibly not the missing thing."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "function": "claim",
+        "controlling_idea": "A system of record is the system whose value is authoritative for one fact, and naming it forces three further decisions: who may change the fact, how copies are updated, how errors are repaired.",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The unresolved question of which status to trust.",
+          "introduces": "The system of record as the thing that settles it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "function": "transition",
+        "controlling_idea": "The chapter builds an entity–owner table, explains why 'order' has several meanings, compares ownership choices and works Kestrel & Pine's stock, leaving the wider map and the repair mechanics to two other chapters.",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The decisions a system of record requires.",
+          "introduces": "The order in which the chapter takes them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "function": "context",
+        "controlling_idea": "In the journey of Eva's jacket, the stock badge, the price and the shipment status all reach her through copies, and this chapter decides which system each copy answers to.",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The chapter's subject.",
+          "introduces": "Its position on the recurring order's journey.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: \"Where Does Stock Live?\"",
+      "controlling_idea": "Six people gave six honest answers to 'where does stock live', and the useful question turned out to be which of the six is right, not how to sync them faster.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows the problem before the vocabulary: every number was honest, and none was entitled to win."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The question, the six answers, the evening it mattered, then the decision: the reader reaches W1 the way Noor did."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The introduction's claim that a fact needs an authoritative system.",
+        "introduces": "One company and one fact, stock, where no system had that authority.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "function": "context",
+          "organization": "narration",
+          "controlling_idea": "Before the Waypoint program was approved, the head of engineering asked who owned the stock figure and got six answers.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Who / where stock lives in their words / what the number actually is, six rows.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Each answer is true of a different number, so the disagreement is structural, not a mistake by any one person."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "function": "evidence",
+          "organization": "narration",
+          "controlling_idea": "At 20:00 on Black Friday, twenty minutes after the warehouse sold its last unit, six systems showed six quantities for one jacket.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Reconstruction for the Ridgewalker women's M in moss, 27 November 2026, labelled illustrative.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The six answers were not only six opinions; they were six different numbers at the same moment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The six answers.",
+            "introduces": "One variant at one moment under those six answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "function": "cause_effect",
+          "controlling_idea": "Because the copying chain took up to two hours, channels sold from old figures and produced the Black Friday Oversell.",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1,340 units oversold, 1,120 orders cancelled or delayed, about €96,000.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The cost of copies that nobody had ranked."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Six different quantities.",
+            "introduces": "What selling from them cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "function": "claim",
+          "controlling_idea": "The question that led to a decision was 'which of the six is right?', and the answer, the shelf, made the warehouse system the record and everything else a copy.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Waypoint decision W1: WMS for Duiven stock, POS for store stock, marketplace stock as a tracked external location, an availability service computing from the three; Figure 1.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Reframing the question from speed to authority is what produced an actionable decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The two-hour chain, which invites the question 'how do we sync faster'.",
+            "introduces": "The different question that was asked.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "facts-records-copies",
+      "heading": "Facts, Records and Copies",
+      "controlling_idea": "Four plain terms (fact, record, copy, writer) are enough to state ownership, and the writer list is the test of whether it is real.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Supplies the terms the thesis is stated in and the test that distinguishes a named record from a real one."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Each definition uses only the ones before it: a record is defined for a fact, a copy against the record, a writer against both; the warning about 'single source of truth' needs all four."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The words 'record' and 'copy', used in the scene without definition.",
+        "introduces": "Their definitions, and two further terms.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "function": "transition",
+          "controlling_idea": "Three words carry the chapter."
+        },
+        {
+          "id": "p10",
+          "function": "definition",
+          "organization": "illustration",
+          "controlling_idea": "A business fact is something the business needs to be true about the world and acts on.",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A variant's barcode, a customer's price, 14 units in Duiven, order #1072455 has shipped.",
+              "shows": "Facts are small and specific, which is why ownership is per fact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announcement of three words.",
+            "introduces": "The first.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "function": "definition",
+          "organization": "illustration",
+          "controlling_idea": "The system of record for a fact is the one system whose value wins when copies disagree and the only one in which the fact is changed directly.",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "The bank's ledger is the record for your balance; the budgeting app holds a copy. The shelf count in the WMS against the number on the product page.",
+              "shows": "The reader already accepts this ranking in everyday life."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fact.",
+            "introduces": "The system that is authoritative for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "function": "definition",
+          "controlling_idea": "A copy is the same fact held elsewhere; copies are necessary, and the only rule is that a copy is known to be a copy and is never edited to fix a disagreement.",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The storefront needs a stock number to render in milliseconds; the data warehouse needs every order; the marketplace needs the price.",
+              "shows": "Copies exist for good reasons, so eliminating them is not the goal."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The record as the one authoritative value.",
+            "introduces": "Every other value, and why it is legitimate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "function": "claim",
+          "controlling_idea": "The practical test of ownership is the writer list: if a copy has writers of its own it is a second record, and the two will diverge.",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rule that a copy is never edited.",
+            "introduces": "The writer, and a test that makes the rule checkable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "function": "refutation",
+          "controlling_idea": "'Single source of truth' is right as one record per fact and wrong as one system for every fact.",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "No system is the natural home of both the shelf count and the ledger posting; Figure 2.",
+              "shows": "The popular phrase, read literally, contradicts per-fact ownership."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Ownership per fact, tested by writers.",
+            "introduces": "The common phrase that sounds like the same idea and is often read as its opposite.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bounded-contexts",
+      "heading": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order",
+      "controlling_idea": "The same word names different objects in different systems, so some disagreements are not stale copies at all and need translation, not a winner.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Blocks the wrong conclusion from the previous section, that one shared model would make ownership simple."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The concept and its sources first, then one order in four contexts, then the incident, then the rules that follow; the reader sees the incident as a case of the concept rather than as an anecdote."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Record and copy as two values of the same fact.",
+        "introduces": "Cases where two systems hold different facts under one name.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "function": "definition",
+          "controlling_idea": "A bounded context is a boundary inside which a model and its words have one agreed meaning.",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Eric Evans, Domain-Driven Design (2003).",
+              "source": "Evans 2003",
+              "shows": "The term and its origin."
+            },
+            {
+              "kind": "quotation",
+              "what": "Fowler: total unification of the domain model for a large system 'will not be feasible or cost-effective'; confusion recurs 'with polysemes like Customer and Product'.",
+              "source": "Martin Fowler, 'BoundedContext', 2014-01-15",
+              "shows": "Practitioner authority for the claim that one model for everyone is not the remedy."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "function": "example",
+          "organization": "classification",
+          "controlling_idea": "The storefront, order management, the warehouse and the ERP each have their own 'order', and they are not the same object.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Context / what 'order' means / what it contains / its states, four rows.",
+              "shows": "Side by side, the four objects visibly differ in content and in states."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The abstract definition.",
+            "introduces": "The same idea in plain words for one term, 'order'.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "function": "evidence",
+          "organization": "narration",
+          "controlling_idea": "The Three-Status Order generated 11 tickets because its three statuses described three different objects, each correctly.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1052877: fleece shipped 7 December 2026, socks waited a week; platform 'Delivered', WMS 'In picking', ERP 'Not invoiced'.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "All three statuses were true of their own object; this is the introduction's puzzle, resolved."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four meanings of 'order'.",
+            "introduces": "One order on which three of them collided.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "function": "analysis",
+          "controlling_idea": "What was missing was not a correct status but an owner of the view across contexts, which is the job of an order management system.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Six days without a combined view; Waypoint decision W2 assigns it to a purchased OMS.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The remedy is an owner of the whole order that keeps the separate facts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three honest statuses.",
+            "introduces": "The consequence for the customer and what resolves it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "function": "example",
+          "organization": "classification",
+          "controlling_idea": "'Product' and 'customer' split across contexts in the same way as 'order'.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Product as content, PIM attributes, ERP item, WMS SKU; Eva Janssen as four unlinked customer records.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The pattern is general, not a peculiarity of orders."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "'Order' meaning four things.",
+            "introduces": "Two more words with the same property.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "function": "recommendation",
+          "controlling_idea": "Translate at the boundary and share identifiers rather than models.",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The OMS-to-WMS connector turns an order into a fulfillment order; order number, SKU and GTIN let contexts refer to the same thing; Figure 3.",
+              "shows": "Both rules are concrete work with an owner, not a slogan."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Words that legitimately mean different things per context.",
+            "introduces": "Two design rules that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "entity-owner-table",
+      "heading": "The Entity–Owner Table",
+      "controlling_idea": "Ownership is written down as one row per fact that names the record, the writers, the copies, how copies learn and how disagreement is found, and how fresh each copy must be differs by fact.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S2"
+        ],
+        "how": "Turns the definitions into the artifact the reader will produce, and adds the columns that make ownership enforceable."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole table first, then the rows that surprise newcomers, then the one column most tables omit, then the separate question of freshness; the reader needs the whole before the exceptions make sense."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "Records, copies, writers and contexts.",
+        "introduces": "One table that holds all four for every fact.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "function": "claim",
+          "controlling_idea": "The chapter's deliverable is a table with one row per business fact and five columns of decisions, given here for a merchant at the omnichannel stage.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fourteen facts by system of record, who may write, copies live in, how copies learn, disagreement found by.",
+              "source": "Author's recommendation",
+              "shows": "The decisions are specific enough to be written per fact, and the table is short enough to maintain."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "function": "analysis",
+          "organization": "classification",
+          "controlling_idea": "Four rows carry lessons newcomers miss: stock has a record per location, availability has no human writer, payment's record is outside the company, and business and consumer customers have different records.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The App That Wrote Stock (phantom reservations on 600 variants); the Double Refund (212 returns, €19,400).",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Each lesson corresponds to an incident caused by ignoring it."
+            },
+            {
+              "kind": "quotation",
+              "what": "'Mixing both directions without a clear ownership rule can lead to conflicting records.'",
+              "source": "Microsoft Learn, Business Central Shopify Connector, October 2026",
+              "shows": "A vendor states the per-entity ownership rule in its own documentation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The full table.",
+            "introduces": "The rows that deserve a second look.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "function": "claim",
+          "controlling_idea": "A record with copies and no reconciliation is a record on trust, so every copy row needs a named way of finding disagreement.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Black Friday chain ran on trust.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The omitted column is the one whose absence caused the incident."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The rows.",
+            "introduces": "The column most tables leave out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "function": "claim",
+          "controlling_idea": "Ownership decides who wins, not how quickly copies must follow; freshness depends on what a stale copy costs and differs sharply by fact.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six facts by how stale a copy may be, agreement required and why.",
+              "source": "Author's judgement from industry practice and Kestrel & Pine's incidents",
+              "shows": "Seconds for availability and a day for ledger postings are both correct."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Ownership as the question of who wins.",
+            "introduces": "The separate question of how fast copies must follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "function": "analysis",
+          "controlling_idea": "Choosing one refresh rhythm for all facts is how an ERP's hourly cycle became the storefront's availability latency.",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Freshness per fact.",
+            "introduces": "What happens when one rhythm is applied to all.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "four-ways",
+      "heading": "Four Ways to Assign Ownership",
+      "controlling_idea": "Merchants assign ownership in four ways, three of them decisions, and the right one is set by where orders and stock originate.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows that the table can be filled in differently and gives the rule for choosing."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "p27 to p31: from one-channel arrangements to the many-channel one"
+          }
+        ],
+        "rationale": "Each option gets the same treatment (what it is, evidence, when it fits, when it stops fitting), so the closing table and rule read as a summary of a fair comparison; 'no decision' comes last because it is defined by the absence of the other three."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "One recommended table for one stage.",
+        "introduces": "The other ways the same table is filled in.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "function": "transition",
+          "controlling_idea": "There are four ways; three are decisions and the fourth is what happens without one."
+        },
+        {
+          "id": "p27",
+          "function": "comparison",
+          "controlling_idea": "With the ERP as hub, the web shop is a front end; this fits one channel and one warehouse and stops fitting when several parties need stock within minutes.",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Business Central acts as the system of record for inventory', pushed one way every 15 to 30 minutes.",
+              "source": "Microsoft Learn, Business Central Shopify Connector, October 2026",
+              "shows": "A shipped product encodes this option and its batch rhythm."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The count of four.",
+            "introduces": "The first option.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "function": "comparison",
+          "controlling_idea": "With the platform as hub, its order and stock are the record; this fits a direct-to-consumer brand and stops fitting when orders or stock originate elsewhere.",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The ERP as the centre.",
+            "introduces": "The opposite centre.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "function": "comparison",
+          "controlling_idea": "With ownership per fact and an order hub, each fact goes to the system that originates it, which keeps a sales estimate from overwriting a physical count.",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Two single-hub arrangements.",
+            "introduces": "An arrangement with no single hub.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "function": "evidence",
+          "controlling_idea": "Specialist vendors describe the same boundaries, and should be read as explaining their own categories.",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fluent Commerce: 'your ERP stays the system of record'; OneStock on ERP as product master and OMS as master for availability.",
+              "source": "Vendor pages, undated, accessed November 2026",
+              "shows": "The per-fact arrangement is sold as such, with the vendor's interest noted."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The per-fact arrangement.",
+            "introduces": "Public statements that match it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "function": "recommendation",
+          "controlling_idea": "Per-fact ownership fits several channels and stock locations and is not worth its cost before there is a coordination problem.",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The arrangement and its backers.",
+            "introduces": "Its cost and when not to pay it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "function": "description",
+          "controlling_idea": "With no decision, every system becomes a writer of every fact it holds; this is the default because it is never chosen.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine in January 2027: 34 integrations, six writers of stock, four sources of orders, four copies of product data.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Each connector was reasonable; the sum is the fourth option."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Three arrangements someone chose.",
+            "introduces": "The one nobody chooses.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "function": "recommendation",
+          "controlling_idea": "Choose the hub by where orders and stock originate, not by which system is largest; the second order source or stock location is the moment per-fact ownership becomes necessary.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four options by record for stock, orders, content, finance, fits, breaks when, copies tolerated; Figure 4.",
+              "source": "Author's judgement, consistent with the vendor statements",
+              "shows": "The rule is the pattern across the 'fits' and 'breaks when' rows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options.",
+            "introduces": "The rule for choosing among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "suite-and-vendors",
+      "heading": "Ownership in a Suite and Across Vendors",
+      "controlling_idea": "A suite makes most ownership decisions for the merchant, yet the systems outside it and the decision itself remain the merchant's.",
+      "function": "refutation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Answers the objection that buying one vendor's suite makes the table unnecessary."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Ownership as something the merchant assigns.",
+        "introduces": "The case where a vendor has already assigned it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "function": "counterargument",
+          "controlling_idea": "Inside a suite or a vendor-built connector, the entity–owner table becomes settings the vendor has chosen or exposed.",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Salesforce release of July 2026; Business Central connector's per-entity direction settings.",
+              "source": "Salesforce press release 2026-07-06; Microsoft Learn 2026",
+              "shows": "The strongest form of the objection: vendors really do decide."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "function": "refutation",
+          "controlling_idea": "Two things stay the merchant's even in a suite: the systems outside it, and the judgement whether the suite's ownership is right for the business.",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Document every field that moves between systems, and name the system of record for each'; 'Decide in advance what happens when the two systems disagree.'",
+              "source": "Shopify, ERP integration guidance, updated 2026-08-28",
+              "shows": "A suite vendor's own guidance puts the decision back with the merchant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the suite decides.",
+            "introduces": "What it cannot decide.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "truth-patterns",
+      "heading": "When Ownership Is Not Decided: The Five Truth Patterns",
+      "controlling_idea": "Each of the five 'Truth' failure patterns is a fact without an owner.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Connects the chapter's remedy to failures the reader already knows by name from the preface."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The ways ownership can be assigned.",
+        "introduces": "What each unassigned fact looks like as a named failure.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "function": "analysis",
+          "organization": "classification",
+          "controlling_idea": "The five Truth patterns map one to one onto a fact with no record, a Kestrel & Pine incident and the owner Waypoint named.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Pattern / fact with no record / incident / owner named, five rows.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The mapping is complete: no Truth pattern lacks a missing owner."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "function": "analysis",
+          "controlling_idea": "The Secret Agent is the same failure seen from the writer's side: something changes a fact without being on the writer list.",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The five patterns in the family.",
+            "introduces": "One outside it that belongs to the same cause.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scale-stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The table is rewritten at each scale stage, because each stage brings a system that claims facts the previous owner held.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Supplies the 'reassign when the business changes shape' half of the thesis."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "Ownership as a decision made once.",
+        "introduces": "How the decision moves over the four stages.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "function": "claim",
+          "controlling_idea": "Each stage brings a new system that claims facts, and the moment of handover is when two writers exist.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages by typical ownership, what becomes necessary and warning signs of outgrowing it.",
+              "source": "Author's judgement",
+              "shows": "The owner of stock, orders and content changes at each stage in a predictable direction."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "function": "recommendation",
+          "controlling_idea": "Reassign ownership at the stage transition, not after the first incident; the sign is a second system that originates orders or counts stock.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine moved to stage 3 in 2023 and kept stage 2's ownership for four years.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The cost of waiting is the incident history of the whole chapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The stage table.",
+            "introduces": "One company that did not follow it, and the rule drawn from that.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Public evidence and the worked example both show one writer per fact being enforced, and what it would have changed on the evening of the oversell.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Tests the remedy against the opening incident, so the reader sees the same evening with and without it."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From what real companies document, to one company's before-and-after table, to one minute of one evening."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The rules and the stages.",
+        "introduces": "Cases of the rules applied.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "function": "evidence",
+          "controlling_idea": "Real vendors and one very large retailer enforce one writer per entity, mechanically.",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'each item store always goes to a specific partition', so 'that only one consumer deals with that item store combination'.",
+              "source": "Confluent blog, former Walmart engineering director, 2020-05-04; age and non-endorsement noted",
+              "shows": "The single-writer rule can be enforced by the plumbing, not only by policy."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "function": "comparison",
+          "controlling_idea": "Under Waypoint decision W1, each stock location has one record and one kind of writer, and copies learn by event.",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "January 2027 against after W1 (Q4 2027): record, writers, availability, how copies learn, disagreement found by.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Every row of the before column is a cause named earlier in the chapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "One writer per entity at Walmart's scale.",
+            "introduces": "The same rule applied to the running example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "function": "analysis",
+          "organization": "narration",
+          "controlling_idea": "Replayed against the new design, the Black Friday evening oversells a handful of units instead of 1,340.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "19:40 last unit scanned, channels at zero before 19:41; first reconciliation in May 2027 finds 2.3% of variants differing (illustrative); Figure 5.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The decision, not faster copying of the old chain, removes the oversell window."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The after-W1 design.",
+            "introduces": "Its effect on the incident the chapter opened with.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-it-goes-wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Ownership decided is not ownership kept: five things erode it, each with a detection and a recovery.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Prevents the reader from treating the table as a one-off document."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Five failure modes in the same three-part shape (what happens, detection, recovery), ordered from failures in the copies to failure in the record itself, which no ownership rule fixes."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design working as intended.",
+        "introduces": "How it stops working after it is decided.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "function": "claim",
+          "controlling_idea": "Ownership decided is not ownership kept; five things go wrong."
+        },
+        {
+          "id": "p44",
+          "function": "process",
+          "controlling_idea": "A second writer appears; a periodic write audit against the writer column finds it, and removing the write and re-publishing from the record repairs it.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The App That Wrote Stock.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "A named case of the failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The count of five.",
+            "introduces": "The first.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "function": "process",
+          "controlling_idea": "A copy goes stale; a lag metric per copy finds it, and a full re-publication from the record repairs it.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The two-hour chain; the Deprecated Endpoint of February 2027.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Staleness by design and staleness by breakage are the same failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first failure.",
+            "introduces": "The second.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "function": "process",
+          "controlling_idea": "A copy is edited by hand; change logs and daily refund reconciliation find it, and routing the action through the owner repairs it.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Double Refund.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "A well-meant manual fix is a write outside the flow."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second failure.",
+            "introduces": "The third.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "function": "process",
+          "controlling_idea": "A copy is mistaken for the record; asking which table row a disputed number comes from finds it, and publishing the table repairs it.",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third failure.",
+            "introduces": "The fourth.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "function": "process",
+          "controlling_idea": "The record itself is wrong; no ownership rule fixes that, and it must be corrected in the record by its own writers.",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Four failures of copies.",
+            "introduces": "The failure of the record.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "Records, bounded contexts, the hub choice and the failure modes are one decision seen four ways: for every fact, someone must be able to say which value wins, who may change it, and how anyone would find out that a copy has drifted. The table is where that is written; the stage transition is when it is rewritten.",
+    "so_what": "A bought hub fed by unreconciled sources is one more copy, and a written table with no reconciliation is a record on trust; the reader's first step costs nothing and comes before any purchase.",
+    "callback": {
+      "to": "The introduction's parcel that is Delivered in one system and In picking in another.",
+      "how": "The reader can now say that neither status was stale: they were true of different objects, and what was missing was an owner of the view across them."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the entity–owner table for your own landscape before buying any hub, with the writer list and the reconciliation per row, and revisit it the day a second system originates orders or counts stock. Eight questions to ask follow."
+    },
+    "hand_off": {
+      "to": "commerce-platform-landscape",
+      "relationship": "sequence",
+      "carries_over": "The parts mapped and their owners named.",
+      "introduces": "What the market sells to fill the boxes, who sells it and how it is priced."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failure modes and their repairs.",
+      "introduces": "What holds across all of the chapter, sorted by how settled it is.",
+      "form": "phrase",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p49",
+        "form": "list",
+        "function": "synthesis",
+        "controlling_idea": "Established: several systems holding one fact is normal, different systems legitimately model the same word differently, and one writer per entity can be enforced mechanically."
+      },
+      {
+        "id": "p50",
+        "form": "list",
+        "function": "synthesis",
+        "controlling_idea": "Depends on context: which system is the hub, where the customer record lives and how fresh a copy must be.",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the field agrees on.",
+          "introduces": "What changes with the situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "form": "list",
+        "function": "recommendation",
+        "controlling_idea": "The author's synthesis: write the table before buying a hub, and reassign ownership at the stage transition rather than after the incident.",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "form": "list",
+        "function": "recommendation",
+        "controlling_idea": "Eight questions let the reader test ownership of any fact in their own landscape.",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p53",
+        "function": "transition",
+        "controlling_idea": "With the parts mapped and their owners named, the next question is what the market sells to fill the boxes.",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The reader's own table.",
+          "introduces": "The market that offers to fill it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The capability map itself.",
+      "covered_in": [
+        "commerce-capability-map"
+      ]
+    },
+    {
+      "topic": "How copies are kept consistent: events, idempotency, the outbox, the design of reconciliation jobs; integration styles.",
+      "covered_in": [
+        "events-consistency-and-reconciliation",
+        "integration-styles"
+      ]
+    },
+    {
+      "topic": "Available-to-promise and the availability service's design; the order state machine and the OMS as a product.",
+      "covered_in": [
+        "inventory-and-availability",
+        "order-management"
+      ]
+    },
+    {
+      "topic": "Customer matching, golden records and master data management.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "The ERP-as-hub debate in depth and ERP connector mechanics.",
+      "covered_in": [
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "The finance ledger's own system-of-record rules.",
+      "covered_in": [
+        "systems-of-record"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The six-quantity reconstruction for the Ridgewalker variant at 20:00 on 27 November 2026 is labelled illustrative; journey-peak-day and inventory-and-availability may reuse or refine it.",
+    "The entity–owner table names the platform's price lists as the consumer price record; pricing-architecture may move that to a pricing engine for the omnichannel stage and should then update the row here.",
+    "Customer identity is left 'not yet decided' in the Truth-pattern table because the Waypoint decisions name no customer master; identity-and-master-data should resolve it.",
+    "The published conclusion does not return to the introduction's parcel; the callback in this spec is not yet realised in the prose."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-07",
+      "decision": "Lead with 'which of the six is right?' so that the business problem (six honest answers, one oversell) precedes the vocabulary; the definitions follow the scene.",
+      "rejected": [
+        "Opening with the definition of a system of record."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Use the Three-Status Order to teach bounded contexts, because order status is the case where the copies are all correct about different objects; stock is used for records and copies, where one value is simply wrong.",
+      "rejected": [
+        "Teaching bounded contexts with stock."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Keep the hub comparison to four options and cite vendors' own boundary statements (Fluent, OneStock, Microsoft), with vendor interest noted in the text.",
+      "rejected": [
+        "Inferring any vendor's internals."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Include the 'Across Scale Stages' section although it is optional in Part I, because the chapter's third key point is that ownership changes with scale and the table is where that is shown.",
+      "rejected": [
+        "Omitting the section, as Part I permits."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Incidents, Waypoint decisions W1 to W3 and W5, the stock sync chain, the May 2027 reconciliation."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-integration-and-data.md",
+      "contributed": "Business Central connector ownership statements, Walmart partitioning, reconciliation and master-data material."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-b2b-edi-erp.md",
+      "contributed": "The ERP, commerce and OMS hub comparison; Shopify ERP guidance; OneStock and Business Central customer ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-landscape.md",
+      "contributed": "The Salesforce 2026 release; Fluent Commerce."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md",
+      "contributed": "Availability as a derived value."
+    },
+    {
+      "kind": "internal",
+      "ref": "commerce-capability-map, meet-kestrel-and-pine, where-commerce-platforms-go-wrong",
+      "contributed": "Neighbouring pages whose terms and incidents this chapter relies on."
+    },
+    {
+      "kind": "external",
+      "ref": "Microsoft Learn, Business Central Shopify Connector pages (2026-09-22 to 2026-10-16)",
+      "contributed": "Per-entity system-of-record statements and the one-way inventory cycle."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify, 'ERP integration' (updated 2026-08-28)",
+      "contributed": "The two-sentence discipline: name the record per field, decide in advance what happens on disagreement."
+    },
+    {
+      "kind": "external",
+      "ref": "Fluent Commerce and OneStock product pages (accessed 2026-11)",
+      "contributed": "Vendor statements of OMS and ERP boundaries."
+    },
+    {
+      "kind": "external",
+      "ref": "Salesforce press release (2026-07-06)",
+      "contributed": "The suite case."
+    },
+    {
+      "kind": "external",
+      "ref": "Confluent blog, Walmart inventory (2020-05-04)",
+      "contributed": "One writer per entity enforced by partitioning."
+    },
+    {
+      "kind": "external",
+      "ref": "Eric Evans, Domain-Driven Design (2003); Martin Fowler, 'BoundedContext' (2014-01-15)",
+      "contributed": "The bounded-context concept and the claim that one unified model is not feasible."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-11",
+      "change": "Reconstructed as an outcome spec (worked example for the outcome-specs proposal): thesis, supporting claims, section and paragraph structure, transitions and acceptance criteria added; record-keeping sections carried over from spec.md. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: three mermaid diagrams redrawn as illustrations, two conceptual figures added."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document references rephrased as Kestrel & Pine facts."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: Three-Status Order mechanism corrected to the ledger, wholesale prices moved by price events, a paraphrased Walmart quote replaced with the source's verified wording."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500,
+    "target_words": 5500
+  }
+}

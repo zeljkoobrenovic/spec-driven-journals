@@ -1,0 +1,1462 @@
+{
+  "$schema": "../journal-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "journal",
+  "id": "commerce-platform-architecture",
+  "title": "ORDERED: Architecting Commerce Platforms",
+  "status": "draft",
+  "revised": "2026-11-11",
+  "basis": "Worked example, reconstructed after the fact from PLAN.md, config.yaml, the introduction, the Part I pages and the closing lines of Parts X and XI. The journal level and every part are specified; posts are specified in full for Part I only and at outline level elsewhere (folder, title and question taken from PLAN.md). Part theses for Parts II to XI are derived from the plan and the section descriptions, not from a reading of those chapters, and need the author's confirmation.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "How the systems behind selling fit together: the capabilities, the facts each owns and the joins between them.",
+        "The sixteen named failure patterns and the four scale stages."
+      ],
+      "believe": [
+        "Most commerce failures are a promise one system made and another could not keep; they live in the joins between systems.",
+        "The right architecture depends on the shape and stage of the business, and no platform category is the answer for everyone."
+      ],
+      "can_do": [
+        "Locate a commerce failure at a handoff and name the fact that had no owner.",
+        "Write an entity–owner table and an integration inventory for their own landscape.",
+        "Go from the decision in front of them to the chapters that answer it.",
+        "Judge a vendor's claim against the capability map and their own scale stage."
+      ]
+    },
+    "audience": {
+      "who": "People new to commerce architecture who have just joined a retailer, brand, wholesaler, marketplace seller, commerce software vendor or agency: engineers, product managers, analysts, consultants and leaders who must understand the systems before making or judging decisions about them.",
+      "already_knows": [
+        "Roughly what an API, a database and a queue are.",
+        "What buying something online is like from the shopper's side."
+      ],
+      "does_not_know": [
+        "Commerce vocabulary: SKU, ATP, OMS, WMS, PSP, EDI, PIM, 3DS, punchout.",
+        "The architectural vocabulary the book uses: bounded context, system of record, eventual consistency, idempotency."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Every supporting claim of the journal thesis is argued by at least one part, and every part except Reference supports at least one.",
+        "check": "children_cover_parent_thesis",
+        "method": "deterministic",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the introduction alone can say what the book argues and list the subjects of its parts in order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what does this book argue, and what will its parts cover, in order?",
+        "expected": "The promise-keeping claim, and the sequence commerce basics, catalog, order, fulfillment, channels, integration, platform, trust, journeys, evolution, cases."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Each part's last argued page hands off to the next part with the relationship that part declares in transition_in.",
+        "check": "transition_expresses_declared_relationship",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-4",
+        "statement": "No chapter uses a commerce or architecture term before the chapter that owns it, or a one-clause definition, has introduced it.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-5",
+        "statement": "The page that carries the journal's closing synthesizes the parts and returns to Eva's order; it does not only hand off to the reference pages.",
+        "check": "conclusion_calls_back_to_introduction",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-6",
+        "statement": "Given a described commerce incident the book does not contain, a reader who finished the book names the fact without an owner and the join at which the promise broke.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace customer is refunded by the marketplace and again by the merchant's returns tool. What went wrong, in the book's terms?",
+        "expected": "The refund has no single owner; two systems may write it; the return's resolution needs one record and a reconciliation."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do the systems behind selling fit together, why do the architectural decisions between them matter, and how do those decisions change as a business grows?",
+    "claim": "A commerce platform is a promise-keeping machine: nearly every commerce failure is a promise one system made and another could not keep, so commerce architecture is the work of deciding which system may make which promise, how the others learn of it and what happens when they disagree, and the right decision changes with the shape and size of the business.",
+    "disputed_by": "The view that a commerce platform is a product a merchant selects, so that failures are the product's shortcomings and the remedy is a better or newer platform.",
+    "so_what": "A merchant that accepts the claim spends its effort on ownership of facts and on the joins between systems, and stops expecting a replatforming to fix failures that were never inside the platform.",
+    "how_why": "The storefront makes promises in seconds from copies of facts; a dozen systems owned by different teams and vendors keep them over days. Wherever a fact has no named record or a join has no owner, two systems can both be honest and still break the promise.",
+    "supporting_claims": [
+      {
+        "id": "J1",
+        "claim": "A commerce platform is the whole set of systems that make and keep promises, and its failures live in the joins between them."
+      },
+      {
+        "id": "J2",
+        "claim": "Each promise (product, price, availability, payment, delivery, return) rests on facts that need exactly one owning system, with every other value a copy."
+      },
+      {
+        "id": "J3",
+        "claim": "Each channel beyond the merchant's own shop adds promise-makers and writers the merchant does not control."
+      },
+      {
+        "id": "J4",
+        "claim": "Separate systems behave like one only through designed joins: integration styles, events with reconciliation, contracts and shared identity."
+      },
+      {
+        "id": "J5",
+        "claim": "What a merchant can promise is bounded by how the platforms it buys are built."
+      },
+      {
+        "id": "J6",
+        "claim": "Security, privacy and regulation are promises imposed from outside that become requirements on the same systems."
+      },
+      {
+        "id": "J7",
+        "claim": "The right assignment of promises changes with the business's shape, and should be changed at stage transitions rather than after incidents."
+      },
+      {
+        "id": "J8",
+        "claim": "The public record of real companies supports these claims and shows where they stop applying."
+      }
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "preface and part-1: the claim, the patterns, the example and the vocabulary come before any capability"
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "part-5 to part-8: from one shop to all channels, then the joins, the platform's inside and the outside rules"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "part-9 to part-11: the argument re-run as journeys, then as decisions over time, then tested against public cases"
+      }
+    ],
+    "rationale": "Parts II to IV follow one order in the sequence it happens (offer, commit, fulfil), so a newcomer always knows where they are; the scope then widens only after the single-shop path is complete. Evidence from real companies comes last, because the reader needs the vocabulary to read the cases critically. Moving the cases first would make them anecdotes; moving integration before fulfillment would explain joins between systems the reader has not met."
+  },
+  "opening": {
+    "carried_by": "introduction",
+    "hook": {
+      "type": "vivid_anecdote",
+      "content": "At 21:14 on 13 April 2027, Eva Janssen in Nijmegen buys a €199 Ridgewalker jacket and two pairs of socks; the shop confirms order #1072455, and on Black Friday 2026 the same shop oversold 1,340 units while every component system stayed up."
+    },
+    "bridge": "From the shopper's side, where the next step is waiting for a parcel, to the merchant's side, where several systems must turn a confirmation into the right parcel on the promised day.",
+    "roadmap": "Who the book is for; eleven parts that follow one order; a routing table from decisions to chapters; how to read the evidence labels and the three take-away tiers."
+  },
+  "closing": {
+    "carried_by": "case-composable-movement",
+    "synthesis": "The same question was asked of a jacket order, a wholesale reorder, a peak day, an AI agent and four real companies, and got the same kind of answer each time: name who may make the promise and who must keep it.",
+    "so_what": "The reader's next architectural decision can be tested with one question before any product is compared: which promise is this, who makes it and which system has to keep it?",
+    "callback": "Eva's five promises from the introduction: this jacket, at this price, in stock, on Thursday, returnable.",
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Start with the entity–owner table and the integration inventory from the toolkit, for the reader's own landscape."
+    }
+  },
+  "non_goals": [
+    {
+      "topic": "Payments and the finance ledger in depth.",
+      "covered_in": [
+        "RECONCILED"
+      ]
+    },
+    {
+      "topic": "Marketplaces as a business.",
+      "covered_in": [
+        "LISTED"
+      ]
+    },
+    {
+      "topic": "The internals of AI agents.",
+      "covered_in": [
+        "Architecting Agentic Systems"
+      ]
+    }
+  ],
+  "open_questions": [
+    "Part theses for Parts II to XI are derived from PLAN.md and the section descriptions and need the author's confirmation.",
+    "No published page performs the journal's closing; the last case hands off to the reference pages."
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "Positioning, the central idea, the structure, and each page's folder, permalink, title and question."
+    },
+    {
+      "kind": "internal",
+      "ref": "config.yaml",
+      "contributed": "Part titles and the reading order."
+    },
+    {
+      "kind": "internal",
+      "ref": "introduction, part-1 and the five Part I chapters",
+      "contributed": "The opening, Part I's thesis, and each chapter's claim and hand-off."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-11",
+      "change": "Reconstructed from the published book as the worked example for the outcome-specs proposal. Status draft."
+    }
+  ],
+  "parts": [
+    {
+      "id": "preface",
+      "title": "Preface",
+      "detail": "outline",
+      "thesis": {
+        "question": "What does the book argue, how do commerce platforms fail, and which company do its examples come from?",
+        "claim": "A commerce platform is a promise-keeping machine, its failures fall into sixteen recurring patterns that are almost all broken promises between systems, and one fictional merchant can show them all."
+      },
+      "role": {
+        "contribution": "Performs the journal's opening and names the failure patterns and the running example every chapter refers to.",
+        "supports": [
+          "J1"
+        ]
+      },
+      "posts": [
+        {
+          "id": "introduction",
+          "folder": "introduction",
+          "title": "Introduction: Why Commerce Architecture Matters",
+          "kind": "front_matter",
+          "detail": "outline",
+          "question": "What does this book argue, who is it for, and how should it be read?"
+        },
+        {
+          "id": "where-commerce-platforms-go-wrong",
+          "folder": "where-commerce-platforms-go-wrong",
+          "title": "Out of Stock, Out of Sync: Sixteen Ways Commerce Platforms Go Wrong",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?"
+        },
+        {
+          "id": "meet-kestrel-and-pine",
+          "folder": "meet-kestrel-and-pine",
+          "title": "Meet Kestrel & Pine",
+          "kind": "front_matter",
+          "detail": "outline",
+          "question": "Which company do the book's examples come from, and what state are its systems in?"
+        }
+      ]
+    },
+    {
+      "id": "part-1",
+      "title": "Part I — COMMERCE: What a Commerce Platform Is",
+      "detail": "full",
+      "intent": {
+        "outcome": {
+          "know": [
+            "The order's journey, the business models and scale stages, the capability map, the ownership of facts and the platform categories."
+          ],
+          "believe": [
+            "A commerce platform is the whole set of systems that make and keep promises, not one product a merchant buys."
+          ],
+          "can_do": [
+            "Describe their own company's commerce landscape in the book's vocabulary: steps, capabilities, records, copies and a platform category."
+          ]
+        },
+        "acceptance_criteria": [
+          {
+            "id": "AC-1",
+            "statement": "Every supporting claim of the part thesis is argued by at least one chapter, and every chapter supports at least one.",
+            "check": "children_cover_parent_thesis",
+            "method": "deterministic",
+            "severity": "blocker"
+          },
+          {
+            "id": "AC-2",
+            "statement": "Each chapter's closing hand-off expresses the relationship its successor declares in transition_in.",
+            "check": "transition_expresses_declared_relationship",
+            "method": "rubric",
+            "severity": "major"
+          },
+          {
+            "id": "AC-3",
+            "statement": "A reader who has read only Part I can explain the Black Friday Oversell as a promise one system made and another could not keep, naming the fact that had no record.",
+            "check": "custom",
+            "method": "cold_reader",
+            "severity": "major",
+            "probe": "Explain in three sentences why Kestrel & Pine oversold on Black Friday, using the vocabulary of Part I.",
+            "expected": "The storefront promised stock from a copy up to two hours old; physical stock had no named record and six writers; the handoff chain, not any one system, failed."
+          }
+        ]
+      },
+      "thesis": {
+        "question": "What is a commerce platform, before any technology is chosen?",
+        "claim": "A commerce platform is the whole set of systems that make and keep promises to a customer, and nearly every commerce failure is a promise one system made and another could not keep.",
+        "disputed_by": "The everyday meaning of 'commerce platform' as the product a merchant buys to run its web shop.",
+        "so_what": "A merchant that treats the platform as one product looks for failures inside that product and replaces it; a merchant that sees the set of systems looks at the joins and fixes ownership.",
+        "how_why": "The storefront makes the promises in seconds while the warehouse, carrier, payment provider and finance system keep them over days, each from its own copy of the facts.",
+        "supporting_claims": [
+          {
+            "id": "P1-1",
+            "claim": "An order is a chain of promises handed from system to system, and it breaks at the handoffs."
+          },
+          {
+            "id": "P1-2",
+            "claim": "Who sells what to whom decides which promises are made and therefore which systems are needed."
+          },
+          {
+            "id": "P1-3",
+            "claim": "The platform is a map of capabilities, each owning one kind of fact, and no vendor covers the whole map."
+          },
+          {
+            "id": "P1-4",
+            "claim": "For each fact exactly one system must be the record; every other value is a copy."
+          },
+          {
+            "id": "P1-5",
+            "claim": "Buying a platform moves the integration work to a different owner; it does not remove it."
+          }
+        ]
+      },
+      "role": {
+        "contribution": "Establishes the central idea and the vocabulary (promise, handoff, capability, record, copy, scale stage) that Parts II to XI apply.",
+        "supports": [
+          "J1",
+          "J2"
+        ]
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "journey-of-an-order to commerce-capability-map: one order, then all merchants, then the whole map"
+          }
+        ],
+        "rationale": "Each chapter's answer is the vocabulary the next question needs: the journey names the steps the business models vary, the models say what the map must hold, the map names the facts that ownership assigns, and ownership tells the reader what to ask of a product. Reordering would force a chapter to use terms the reader has not met."
+      },
+      "opening": {
+        "carried_by": "part-1",
+        "hook": {
+          "type": "intriguing_example",
+          "content": "A shopper places one order, but the warehouse, carrier, payment provider and finance team each have work to do before it is complete."
+        },
+        "bridge": "From the reader's experience as a shopper (one click, one confirmation) to the merchant's side, where the storefront's promises depend on other systems' answers.",
+        "roadmap": "Five chapters as five questions in order: the order's journey, who sells what to whom, the capability map, who owns each fact, the platform landscape."
+      },
+      "closing": {
+        "carried_by": "commerce-platform-landscape",
+        "synthesis": "The journey, the business shape, the map and the ownership table are one line of reasoning: together they say what a merchant must be able to do before it can judge any product.",
+        "so_what": "Kestrel & Pine keeps its platform and adds the missing capabilities, because its problems were unowned facts, which no replacement product would have fixed.",
+        "callback": "The part opening's single order whose promises depend on systems the shopper never sees.",
+        "takeaway": {
+          "type": "course_of_action",
+          "content": "Before comparing platforms, map capabilities, name one record per fact, and choose by the integration work you can carry."
+        }
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The preface's claim that a commerce platform is a promise-keeping machine, and the merchant Kestrel & Pine.",
+        "introduces": "The business before the technology: what the promises are, who makes them and who owns the facts behind them.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-1",
+          "folder": "part-1-intro",
+          "title": "Part I — COMMERCE: What a Commerce Platform Is",
+          "kind": "part_intro",
+          "detail": "full",
+          "question": "What does Part I argue, and in what order should its chapters be read?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "Part I answers five questions in order: what happens to an order, who sells what to whom, what the parts are, who owns each fact, and what the market sells."
+              ],
+              "can_do": [
+                "Pick the Part I chapter that answers the decision in front of them."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+                "expected": "Order journey; business models; capability map; ownership of facts; platform landscape."
+              }
+            ]
+          },
+          "role": {
+            "contribution": "Performs the part's opening: states the part thesis and the reading order.",
+            "supports": []
+          },
+          "post_spec": "posts/part-1-intro/spec.json"
+        },
+        {
+          "id": "journey-of-an-order",
+          "folder": "01-journey-of-an-order",
+          "title": "Follow the Order: What Happens Between “Buy” and “Delivered”",
+          "kind": "chapter",
+          "detail": "full",
+          "question": "What has to happen, in which systems, for one online order to be found, bought, paid, shipped, delivered, returned and accounted for?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The thirteen steps of an order and the system that holds the order at each one.",
+                "The three status lines of an order: money, goods and returns."
+              ],
+              "believe": [
+                "An order is a chain of promises, and it breaks at the handoffs between systems, rarely inside one."
+              ],
+              "can_do": [
+                "Given a late, lost, duplicated or misread order, name the handoff at which it went wrong."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a description of an order that support cannot explain, the reader names the handoff and the two systems on either side of it.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "An order shows 'Delivered' in the shop and 'In picking' in the warehouse. Using only this chapter: which handoff would you inspect first, and why?",
+                "expected": "The goods status line between warehouse and storefront; the reader separates it from the money and returns lines."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Every term the rest of Part I relies on (handoff, promise, status line, system) is defined here before it is used.",
+                "check": "known_before_new",
+                "method": "rubric",
+                "severity": "major"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What has to happen, in which systems, for one online order to be found, bought, paid, shipped, delivered, returned and accounted for?",
+            "claim": "An order is a chain of promises rather than a database row: each of its thirteen steps hands it to a different system, and nearly every commerce failure is a handoff message that arrived late, was lost, was duplicated or was misread.",
+            "disputed_by": "The view that an order is one record with one status, and that failures are bugs inside the system that holds it.",
+            "so_what": "If failures live in handoffs, a merchant looks for them between systems and gives each handoff an owner, instead of replacing the system that reported the symptom.",
+            "how_why": "Each system holds its own copy of the order and learns of changes only by message; money, goods and returns move through separate states, so one status word cannot be true in every system at once."
+          },
+          "role": {
+            "contribution": "Supplies the journey and the vocabulary (promise, handoff, status line) that every later chapter places itself on.",
+            "supports": [
+              "P1-1"
+            ]
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The part's claim that a platform is the set of systems that make and keep promises.",
+            "introduces": "One order followed through thirteen steps, as the concrete case of that claim.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/01-journey-of-an-order/spec.json"
+        },
+        {
+          "id": "commerce-business-models",
+          "folder": "02-commerce-business-models",
+          "title": "Who Sells What to Whom: Business Models and the Economics That Shape Architecture",
+          "kind": "chapter",
+          "detail": "full",
+          "question": "Why do a D2C brand, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The commerce business models and what each changes: who captures the order, sets the price, is the legal seller, holds the stock and ships.",
+                "The four scale stages (Starting, Growing, Omnichannel, Group), defined by shape."
+              ],
+              "believe": [
+                "Systems follow from the business model and its unit economics, not from the technology."
+              ],
+              "can_do": [
+                "Place their own company in a business model and a scale stage, and say which numbers pull hardest on its architecture."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a short description of a merchant, the reader assigns it a scale stage and justifies the choice by channels, locations and brands, not by revenue.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A brand sells online in two countries, has opened three stores and has just started on one marketplace. Which stage is it in, and what told you?",
+                "expected": "Omnichannel (or moving from Growing to Omnichannel), argued from channels and stock locations."
+              }
+            ]
+          },
+          "thesis": {
+            "question": "Why do a D2C brand, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems?",
+            "claim": "A business model is a decision about who makes which promise, so the systems a merchant needs follow from who captures the order, sets the price, is the legal seller, holds the stock and ships, and its scale stage is defined by that shape rather than by revenue.",
+            "disputed_by": "The view that commerce is one problem with one best platform, and that merchants differ only in size.",
+            "so_what": "A merchant that copies the architecture of a company with a different model or shape buys problems it does not have and leaves its own unsolved.",
+            "how_why": "Each unit-economics number pulls on a different part of the platform (conversion on checkout, returns on the reverse flow, the peak day on capacity), and each added channel or location turns the joins between systems into the problem."
+          },
+          "role": {
+            "contribution": "Explains why the same journey needs different systems for different merchants, and defines the four scale stages every later chapter compares against.",
+            "supports": [
+              "P1-2"
+            ]
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The thirteen-step journey, which is the same for every merchant.",
+            "introduces": "The systems that run the journey differ sharply by who sells what to whom.",
+            "form": "paragraph",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/02-commerce-business-models/spec.json"
+        },
+        {
+          "id": "commerce-capability-map",
+          "folder": "03-commerce-capability-map",
+          "title": "The Map of a Commerce Platform: Capabilities and Layers",
+          "kind": "chapter",
+          "detail": "full",
+          "question": "What are all the parts of a commerce platform, what does each do, and how do they usually connect?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "About two dozen capabilities in six layers and the kind of business fact each one owns.",
+                "The three ways vendors cover the map: suite, platform plus apps, best-of-breed assembly."
+              ],
+              "believe": [
+                "A capability is a job the business needs done, not a product; drawing jobs first makes gaps and overlaps visible."
+              ],
+              "can_do": [
+                "Place any system or vendor product on the map and say which capabilities it claims."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a vendor's product description, the reader names the capabilities it covers and one it does not.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A vendor says its product 'unifies orders across channels and routes them to the best location'. Which capabilities on the map is that, and which neighbouring capability is not included?",
+                "expected": "Order management and sourcing; not warehouse management (or not inventory counting)."
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What are all the parts of a commerce platform, what does each do, and how do they usually connect?",
+            "claim": "A commerce platform is best mapped as capabilities, the jobs the business needs done, each owning one kind of business fact; systems are placed on that map afterwards, and no vendor covers all of it.",
+            "disputed_by": "The habit of describing a platform as a list of products or vendors, which hides both the jobs nobody does and the jobs two systems both claim.",
+            "so_what": "Where two systems both believe they own a fact is where money leaks; the map is the tool that finds those places before an incident does.",
+            "how_why": "Products bundle and split jobs differently per vendor, so only the jobs are stable enough to compare one landscape with another."
+          },
+          "role": {
+            "contribution": "Turns the journey and the business models into a stable map of jobs, which the ownership chapter then assigns facts on.",
+            "supports": [
+              "P1-3"
+            ]
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The business models and unit economics, which say what a platform must do.",
+            "introduces": "The parts a platform is made of and what each one owns.",
+            "form": "paragraph",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/03-commerce-capability-map/spec.json"
+        },
+        {
+          "id": "boundaries-and-systems-of-record",
+          "folder": "04-boundaries-and-systems-of-record",
+          "title": "Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record",
+          "kind": "chapter",
+          "detail": "full",
+          "question": "When several systems hold the same fact (a price, a stock level, an order status, a customer), which one is right, and how do the others find out?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "What a business fact, a system of record, a copy, a writer and a bounded context are.",
+                "The four ways merchants assign ownership and when each stops fitting."
+              ],
+              "believe": [
+                "Copies are unavoidable; the failure is a copy that nobody has declared to be a copy.",
+                "'Single source of truth' means one record per fact, not one system for every fact."
+              ],
+              "can_do": [
+                "Write an entity–owner table for their own landscape, with a writer list and a reconciliation per row.",
+                "Tell, from the writer list, whether a claimed system of record is one."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given two systems that show different values for one fact, the reader asks which is the record and who may write it, before asking how to synchronize faster.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "blocker",
+                "probe": "The shop shows 12 units of a jacket and the warehouse system shows 0. Using only this chapter: what are the first two questions you ask?",
+                "expected": "Which system is the record for this fact; who or what can write the value in each system. Not 'how do we sync faster'."
+              },
+              {
+                "id": "AC-2",
+                "statement": "The reader can explain why three systems showing three statuses for one order may all be correct.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Shop: 'Delivered'. Warehouse: 'In picking'. Finance: 'Not invoiced'. Can all three be right? Explain.",
+                "expected": "Yes: each system's 'order' is a different object in a different bounded context; what is missing is an owner of the view across them."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can fill one row of an entity–owner table with all six columns for a fact of their choice.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Fill one row of the entity–owner table for 'consumer price'.",
+                "expected": "Record, who may write, where copies live, how copies learn, how disagreement is found; all five answered specifically."
+              }
+            ]
+          },
+          "thesis": {
+            "question": "When several systems hold the same fact (a price, a stock level, an order status, a customer), which one is right, and how do the others find out?",
+            "claim": "Copies of a fact are unavoidable and harmless; unowned copies are the failure, so a merchant must name exactly one system of record per fact (not per system, and not per company), treat every other value as a copy that learns from it, and reassign that ownership when the business changes shape.",
+            "disputed_by": "The view that the remedy for disagreeing systems is faster two-way synchronization, or a single source of truth read as one system that holds everything.",
+            "so_what": "Kestrel & Pine oversold 1,340 units on one evening while every system reported its own number honestly; without a named record, no amount of synchronization can say which number should have won.",
+            "how_why": "A disagreement can be resolved only if one value is entitled to win; the writer list shows whether a record is real, bounded contexts explain why one shared model is not the answer, and each scale stage brings a new system that claims facts the previous owner held."
+          },
+          "role": {
+            "contribution": "Makes the part's central decision: for each fact on the capability map, which system is the record and which are copies.",
+            "supports": [
+              "P1-4"
+            ]
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The capability map, which says what the parts are and what each should own.",
+            "introduces": "What happens when two parts hold the same fact and disagree, which the map alone cannot settle.",
+            "form": "paragraph",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/04-boundaries-and-systems-of-record/spec.json"
+        },
+        {
+          "id": "commerce-platform-landscape",
+          "folder": "05-commerce-platform-landscape",
+          "title": "Suites, SaaS, Open Source and Composable: The Platform Landscape in 2026",
+          "kind": "chapter",
+          "detail": "full",
+          "question": "What kinds of platforms exist, who sells them, how they are priced and how the market changed up to 2026?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "Seven platform categories and where each puts the integration work and the cost.",
+                "That most platforms are priced on the merchant's sales, with dated figures."
+              ],
+              "believe": [
+                "A platform category moves integration work; it does not remove it."
+              ],
+              "can_do": [
+                "Read a vendor's 2026 pitch as a layer to add or a move to make, and say who would carry the work afterwards."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given two platforms with the same feature list, the reader names three operating-model differences to ask about before comparing features.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Two platforms both offer cart, catalog and checkout. What would you ask before comparing features?",
+                "expected": "Who runs hosting and upgrades; how the price moves with sales; who carries integration and what leaving costs."
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What kinds of platforms exist, who sells them, how they are priced and how the market changed up to 2026?",
+            "claim": "The category of a commerce platform decides where the integration work and the cost land rather than whether they exist, so a merchant should choose by the work it can carry, and should read every 2026 pitch as a layer to add beside what it has, not a reason to move.",
+            "disputed_by": "Feature comparisons and vendor claims that one category (composable, suite, hosted) is the modern answer for everyone.",
+            "so_what": "A merchant that replatforms to escape integration work finds the same work on the other side, under a different owner and price.",
+            "how_why": "Hosted platforms push variation to apps, suites keep integration inside one data model, open source moves hosting and upgrades to the merchant and composable moves integration to the merchant; by 2026 vendors in every category sell modules that sit beside an existing stack."
+          },
+          "role": {
+            "contribution": "Closes the part by connecting the map and the ownership decisions to what a merchant can buy.",
+            "supports": [
+              "P1-5"
+            ]
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The parts mapped and their owners named.",
+            "introduces": "What the market sells to fill the boxes, who sells it and how it is priced.",
+            "form": "sentence",
+            "placement": "end_of_previous"
+          },
+          "post_spec": "posts/05-commerce-platform-landscape/spec.json"
+        }
+      ]
+    },
+    {
+      "id": "part-2",
+      "title": "Part II — CATALOG: Products, Prices and Promises",
+      "detail": "outline",
+      "thesis": {
+        "question": "What does the shop offer, and what can it promise about it?",
+        "claim": "Every promise a shop makes before the order (this product, this price, this discount, findable, in stock) is a fact owned by one capability and shown from copies, and it is only as good as the copy the channel reads."
+      },
+      "role": {
+        "contribution": "Applies the record-and-copy rule to the facts that exist before an order: product, price, promotion, search index and availability.",
+        "supports": [
+          "J2"
+        ]
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Part I's rule of one record per fact and its capability map.",
+        "introduces": "The first group of facts on the map, those a shopper sees before buying.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-2",
+          "folder": "part-2-intro",
+          "title": "Part 2 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "product-information",
+          "folder": "06-product-information",
+          "title": "What Are We Selling? Products, Variants and the Catalog",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How should products be modeled so that every channel shows the right thing?"
+        },
+        {
+          "id": "pricing-architecture",
+          "folder": "07-pricing-architecture",
+          "title": "What Does It Cost? Price Lists, Contract Prices, Currencies and Tax",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Where should a price be computed, and how do you keep it consistent across storefronts, stores, marketplaces and wholesale?"
+        },
+        {
+          "id": "commerce-promotions",
+          "folder": "08-promotions-and-loyalty",
+          "title": "Discounts, Coupons and Loyalty: Promotions Without Chaos",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do you offer discounts, coupons, bundles and loyalty rewards without breaking the price, the margin or the books?"
+        },
+        {
+          "id": "commerce-search-and-discovery",
+          "folder": "09-search-and-discovery",
+          "title": "Finding the Product: Search, Navigation and Merchandising",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do shoppers find products, and what has to be true of the data for search to work?"
+        },
+        {
+          "id": "inventory-and-availability",
+          "folder": "10-inventory-and-availability",
+          "title": "Is It in Stock? Inventory, Availability and the Promise You Can Keep",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What does \"in stock\" mean, who computes it, and how do you avoid selling what you do not have?"
+        }
+      ]
+    },
+    {
+      "id": "part-3",
+      "title": "Part III — ORDER: Cart, Checkout, Payment and the Order Record",
+      "detail": "outline",
+      "thesis": {
+        "question": "How does intent become a commitment the merchant must keep?",
+        "claim": "Checkout is the moment the catalog's promises are fixed into an order, and the order, the payment and the invoice are three records with three owners that must be kept in agreement from then on."
+      },
+      "role": {
+        "contribution": "Follows the promises from the catalog into the commitment: cart, payment, order record and ledger.",
+        "supports": [
+          "J2"
+        ]
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The catalog's facts: product, price, promotion and availability.",
+        "introduces": "The step at which those facts are fixed into an order and money is taken.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-3",
+          "folder": "part-3-intro",
+          "title": "Part 3 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "cart-and-checkout",
+          "folder": "11-cart-and-checkout",
+          "title": "From Cart to Confirmation: Checkout Orchestration",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What happens between \"add to cart\" and \"order confirmed\", and why is checkout the most protected part of a platform?"
+        },
+        {
+          "id": "commerce-payments",
+          "folder": "12-payments",
+          "title": "Taking the Money: Payment Providers, Authorization, Capture and Refunds",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How does money move from the shopper to the merchant, and what can go wrong?"
+        },
+        {
+          "id": "order-management",
+          "folder": "13-order-management",
+          "title": "The Order Record: Lifecycle, State and the Order Management System",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Where does the order live once it is placed, what states does it pass through, and when does a merchant need an order management system (OMS)?"
+        },
+        {
+          "id": "tax-invoicing-and-ledger",
+          "folder": "14-tax-invoicing-and-ledger",
+          "title": "Tax, Invoices and the Books: From Order to Ledger",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How does an order become tax, an invoice and entries in the books, and what does the commerce system owe finance?"
+        }
+      ]
+    },
+    {
+      "id": "part-4",
+      "title": "Part IV — FULFILLMENT: From Warehouse to Doorstep and Back",
+      "detail": "outline",
+      "thesis": {
+        "question": "How is the promise kept after the order is placed?",
+        "claim": "The promise made at checkout is kept or broken by the warehouse, the carrier, the store and the returns flow, which hold the physical facts the storefront only copies."
+      },
+      "role": {
+        "contribution": "Shows the keeping side of the promise: warehouse, delivery, stores, returns and service.",
+        "supports": [
+          "J2"
+        ]
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The order record and the payment taken.",
+        "introduces": "The physical work that has to match the record: picking, shipping, delivery and the way back.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-4",
+          "folder": "part-4-intro",
+          "title": "Part 4 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "warehouse-and-fulfillment",
+          "folder": "15-warehouse-and-fulfillment",
+          "title": "Pick, Pack, Ship: Warehouse Management and Fulfillment",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What happens to an order inside the warehouse, and what does the warehouse system need from the rest of the platform?"
+        },
+        {
+          "id": "shipping-and-delivery",
+          "folder": "16-shipping-and-delivery",
+          "title": "Getting It There: Carriers, Labels, Tracking and the Delivery Promise",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How are carriers chosen, labels produced and tracking shown, and how do you make a delivery promise you can keep?"
+        },
+        {
+          "id": "stores-and-omnichannel",
+          "folder": "17-stores-and-omnichannel",
+          "title": "Stores Are Systems Too: Point of Sale and Omnichannel Fulfillment",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What does a physical store add to the architecture, and how do click-and-collect, ship-from-store and endless aisle actually work?"
+        },
+        {
+          "id": "returns-and-exchanges",
+          "folder": "18-returns-and-exchanges",
+          "title": "The Way Back: Returns, Exchanges, Refunds and Reverse Logistics",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How does a return travel back through the systems, and how do you make sure the money, the stock and the books all agree?"
+        },
+        {
+          "id": "customer-service-and-notifications",
+          "folder": "19-customer-service-and-notifications",
+          "title": "Where Is My Order? Notifications, Service and the Customer Record",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How does the customer learn what is happening, and what does a service agent need to see?"
+        }
+      ]
+    },
+    {
+      "id": "part-5",
+      "title": "Part V — CHANNELS: Selling Everywhere",
+      "detail": "outline",
+      "thesis": {
+        "question": "What changes when orders arrive from outside the shop?",
+        "claim": "Marketplaces, business customers, EDI partners and the ERP each bring their own promise-maker and their own rules, so every added channel multiplies the copies of each fact and the parties entitled to write them."
+      },
+      "role": {
+        "contribution": "Widens the journey from one shop to every channel an order can arrive through.",
+        "supports": [
+          "J3"
+        ]
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The single-shop journey of Parts II to IV, from catalog to return.",
+        "introduces": "Orders created by someone else's system, under someone else's rules.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-5",
+          "folder": "part-5-intro",
+          "title": "Part 5 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "marketplaces-and-channel-integration",
+          "folder": "20-marketplaces-and-channel-integration",
+          "title": "Selling on Someone Else's Platform: Marketplaces and Channel Integration",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What does it take to list, sell and fulfil on marketplaces, and how do marketplace orders fit into the order record?"
+        },
+        {
+          "id": "b2b-commerce",
+          "folder": "21-b2b-commerce",
+          "title": "Selling to Businesses: Accounts, Contract Prices, Quotes and Approvals",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What is different when the buyer is a company?"
+        },
+        {
+          "id": "edi-and-e-invoicing",
+          "folder": "22-edi-and-e-invoicing",
+          "title": "Documents Between Companies: EDI, Punchout and E-Invoicing",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do large trading partners exchange orders, shipping notices and invoices without a web shop, and what do e-invoicing mandates require?"
+        },
+        {
+          "id": "erp-and-back-office-integration",
+          "folder": "23-erp-and-back-office-integration",
+          "title": "The Back Office: ERP Integration and Who Is the Hub",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What does the ERP do in a commerce business, what should it own, and should it be the hub of integration?"
+        }
+      ]
+    },
+    {
+      "id": "part-6",
+      "title": "Part VI — INTEGRATION: Making Separate Systems Behave Like One",
+      "detail": "outline",
+      "thesis": {
+        "question": "How do separately owned systems behave like one platform?",
+        "claim": "Separate systems agree only when their joins are designed: an integration style chosen per flow, events with reconciliation, contracts with versions, and shared identity; the joins are where most commerce failures live."
+      },
+      "role": {
+        "contribution": "Gives the mechanisms by which copies learn from records and disagreements are found.",
+        "supports": [
+          "J4"
+        ]
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The many systems and channels of Parts II to V, each holding copies of the same facts.",
+        "introduces": "The joins between them as a design subject of their own.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-6",
+          "folder": "part-6-intro",
+          "title": "Part 6 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "integration-styles",
+          "folder": "24-integration-styles",
+          "title": "APIs, Events, Files and Middleware: How Commerce Systems Talk",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What ways do systems have to exchange data, and when is each the right choice?"
+        },
+        {
+          "id": "events-consistency-and-reconciliation",
+          "folder": "25-events-consistency-and-reconciliation",
+          "title": "Built to Disagree and Recover: Events, Eventual Consistency and Reconciliation",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "If systems can only be eventually consistent, how do you keep them from drifting apart for good?"
+        },
+        {
+          "id": "api-contracts-and-versioning",
+          "folder": "26-api-contracts-and-versioning",
+          "title": "Promises Between Systems: API Contracts, Webhooks and Versioning",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do you change a system other systems depend on without breaking them?"
+        },
+        {
+          "id": "identity-and-master-data",
+          "folder": "27-identity-and-master-data",
+          "title": "One Customer, One Product: Identity and Master Data Across Systems",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do you know that two records in two systems are the same customer, product or order?"
+        },
+        {
+          "id": "commerce-data-and-analytics",
+          "folder": "28-commerce-data-and-analytics",
+          "title": "Counting the Same Thing Everywhere: Data Platforms, Definitions and Analytics",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Why do three reports show three different order counts, and how do you build analytics that the business trusts?"
+        }
+      ]
+    },
+    {
+      "id": "part-7",
+      "title": "Part VII — PLATFORM: How Commerce Platforms Are Built",
+      "detail": "outline",
+      "thesis": {
+        "question": "How are the platforms a merchant buys built inside, and why should a merchant care?",
+        "claim": "A platform's internal structure (its architecture style, tenancy, extension points, storefront delivery and peak behaviour) sets the limits of what a merchant on it can promise."
+      },
+      "role": {
+        "contribution": "Looks inside the bought platform to show which of the merchant's decisions it has already made.",
+        "supports": [
+          "J5"
+        ]
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The merchant's own landscape and its joins.",
+        "introduces": "The inside of the platforms the merchant buys.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-7",
+          "folder": "part-7-intro",
+          "title": "Part 7 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "commerce-architecture-styles",
+          "folder": "29-commerce-architecture-styles",
+          "title": "Monolith, Modular Monolith, Microservices, Composable: What the Evidence Says",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How should a commerce system be structured internally, and what do the famous examples really show?"
+        },
+        {
+          "id": "multi-tenancy-and-isolation",
+          "folder": "30-multi-tenancy-and-isolation",
+          "title": "Many Merchants, One Platform: Multi-Tenancy, Pods and Isolation",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do SaaS commerce platforms serve many merchants on shared systems, and why should a merchant care?"
+        },
+        {
+          "id": "extensibility-and-app-ecosystems",
+          "folder": "31-extensibility-and-app-ecosystems",
+          "title": "Apps, Plugins and Functions: Extensibility and Ecosystem Governance",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do platforms let merchants and partners extend them without breaking them, and how should a merchant govern its apps?"
+        },
+        {
+          "id": "storefront-architecture",
+          "folder": "32-storefront-architecture",
+          "title": "Delivering the Storefront: Themes, Headless, Rendering and Performance",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How does the storefront reach the shopper's browser, and when does headless make sense?"
+        },
+        {
+          "id": "peak-load-and-reliability",
+          "folder": "33-peak-load-and-reliability",
+          "title": "Black Friday Every Year: Peak Load, Resilience and Recovery",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do you prepare a commerce platform and its integrations for a day with forty times the normal traffic?"
+        }
+      ]
+    },
+    {
+      "id": "part-8",
+      "title": "Part VIII — TRUST: Security, Privacy and Regulation",
+      "detail": "outline",
+      "thesis": {
+        "question": "What can go wrong on purpose, and what does the law require?",
+        "claim": "Security, privacy and regulation are promises too, made to customers and regulators, and they turn into concrete requirements on the same systems and joins the earlier parts describe."
+      },
+      "role": {
+        "contribution": "Adds the promises that are imposed from outside: by attackers' interest, by privacy law and by regulation.",
+        "supports": [
+          "J6"
+        ]
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The platform's structure and limits.",
+        "introduces": "Promises the merchant does not choose: protection, consent and legal duties.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-8",
+          "folder": "part-8-intro",
+          "title": "Part 8 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "commerce-security",
+          "folder": "34-commerce-security",
+          "title": "Protecting the Shop: Card Data, Account Takeover, Bots and Skimmers",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What do attackers want from a commerce platform, and what controls matter most?"
+        },
+        {
+          "id": "privacy-and-customer-data",
+          "folder": "35-privacy-and-customer-data",
+          "title": "Whose Data Is It? Privacy, Consent and Retention",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What personal data does a commerce platform hold, what may it do with it, and how do you build consent and retention in?"
+        },
+        {
+          "id": "commerce-regulation",
+          "folder": "36-commerce-regulation",
+          "title": "Rules Turned Into Requirements: Consumer, Payment, Invoicing and Platform Regulation",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Which laws change what a commerce platform must do, by when, and how do you read them as requirements?"
+        }
+      ]
+    },
+    {
+      "id": "part-9",
+      "title": "Part IX — JOURNEYS: One Order, End to End",
+      "detail": "outline",
+      "thesis": {
+        "question": "What does the whole argument look like in motion?",
+        "claim": "Run end to end, four journeys show that every step named in Parts II to VIII is a promise with a system, a fact and a failure attached, and that the failures occur at the handoffs."
+      },
+      "role": {
+        "contribution": "Re-assembles the parts into four complete stories so the reader sees the claims hold together.",
+        "supports": [
+          "J1",
+          "J4"
+        ]
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The capabilities, joins and rules of Parts II to VIII, each taught separately.",
+        "introduces": "Four orders followed through all of them at once.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-9",
+          "folder": "part-9-intro",
+          "title": "Part 9 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "journey-consumer-order",
+          "folder": "37-journey-consumer-order",
+          "title": "Journey 1: Eva's Jacket, From Search to Doorstep",
+          "kind": "walkthrough",
+          "detail": "outline",
+          "question": "What does the whole argument look like when one consumer order runs through every system without failing?"
+        },
+        {
+          "id": "journey-return-and-exchange",
+          "folder": "38-journey-return-and-exchange",
+          "title": "Journey 2: The Jacket Comes Back",
+          "kind": "walkthrough",
+          "detail": "outline",
+          "question": "How does a return and exchange travel back through the systems, and where do the money, the stock and the books part ways?"
+        },
+        {
+          "id": "journey-wholesale-order",
+          "folder": "39-journey-wholesale-order",
+          "title": "Journey 3: A Chain Reorders by EDI, From Order to Invoice",
+          "kind": "walkthrough",
+          "detail": "outline",
+          "question": "How does a wholesale reorder by EDI run from order to invoice, and where does it fail?"
+        },
+        {
+          "id": "journey-peak-day",
+          "folder": "40-journey-peak-day",
+          "title": "Journey 4: Black Friday, Hour by Hour",
+          "kind": "walkthrough",
+          "detail": "outline",
+          "question": "What happened hour by hour on the 2026 peak day, and what does the 2027 plan change?"
+        }
+      ]
+    },
+    {
+      "id": "part-10",
+      "title": "Part X — EVOLUTION: Decisions That Change With Scale",
+      "detail": "outline",
+      "thesis": {
+        "question": "Which decisions change as the business grows, and when?",
+        "claim": "The right architecture is a function of the business's shape: buying, replatforming, ownership and team structure have different right answers at each scale stage, and the time to change them is the stage transition."
+      },
+      "role": {
+        "contribution": "Turns the per-chapter scale tables into the decisions a growing merchant must retake.",
+        "supports": [
+          "J7"
+        ]
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The landscape as it works at one moment, shown in the journeys.",
+        "introduces": "How the same decisions look different as the business moves through the four stages.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-10",
+          "folder": "part-10-intro",
+          "title": "Part 10 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "build-buy-or-assemble",
+          "folder": "41-build-buy-or-assemble",
+          "title": "Build, Buy or Assemble: Choosing and Changing Platforms",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "How do you choose between a suite, a SaaS platform with apps, a composable assembly and custom build, and how do you compare their real costs?"
+        },
+        {
+          "id": "replatforming-and-migration",
+          "folder": "42-replatforming-and-migration",
+          "title": "Moving Without Burning the Bridge: Replatforming and Migration",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "When a platform must change, how do you move without a big-bang cutover?"
+        },
+        {
+          "id": "commerce-scaling-stages",
+          "folder": "43-commerce-scaling-stages",
+          "title": "What Changes at Each Scale: From First Store to Group",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Which architecture decisions change as a business grows, and what are the signs that a stage is ending?"
+        },
+        {
+          "id": "organizing-commerce-engineering",
+          "folder": "44-organizing-commerce-engineering",
+          "title": "Who Builds and Who Owns: Teams, Vendors, Agencies and Governance",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "Who should own each part of a commerce platform, and how do small teams work with vendors and agencies?"
+        },
+        {
+          "id": "ai-and-agentic-commerce",
+          "folder": "45-ai-and-agentic-commerce",
+          "title": "Assistants and Agents: AI in Commerce and What Is Real in 2026",
+          "kind": "chapter",
+          "detail": "outline",
+          "question": "What is AI actually doing in commerce systems, what is agentic commerce, and what must a platform have in place before an agent can buy from it?"
+        }
+      ]
+    },
+    {
+      "id": "part-11",
+      "title": "Part XI — PRACTICE: How Others Built It",
+      "detail": "outline",
+      "thesis": {
+        "question": "Does the public record of real companies support the book's argument?",
+        "claim": "Dated public evidence from Shopify, Amazon, Zalando and the composable vendors supports the book's patterns, and also shows which of those companies' choices a merchant cannot and should not copy."
+      },
+      "role": {
+        "contribution": "Tests the argument against evidence the reader can check, and bounds it by saying where the evidence stops.",
+        "supports": [
+          "J8"
+        ]
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The book's argument, made so far with a fictional merchant and dated examples.",
+        "introduces": "Four real cases read in full against that argument.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "part-11",
+          "folder": "part-11-intro",
+          "title": "Part 11 introduction",
+          "kind": "part_intro",
+          "detail": "outline",
+          "question": "What does this part argue, and in what order should its chapters be read?"
+        },
+        {
+          "id": "case-shopify",
+          "folder": "46-case-shopify",
+          "title": "Case: Shopify, the Modular Monolith That Serves Millions of Merchants",
+          "kind": "case",
+          "detail": "outline",
+          "question": "What did Shopify build, why, and which of its lessons transfer to a merchant?"
+        },
+        {
+          "id": "case-amazon",
+          "folder": "47-case-amazon",
+          "title": "Case: Amazon, From Monolith to Services to the Everything Store",
+          "kind": "case",
+          "detail": "outline",
+          "question": "What did Amazon build, why, and what can only Amazon do?"
+        },
+        {
+          "id": "case-zalando",
+          "folder": "48-case-zalando",
+          "title": "Case: Zalando, Microservices, Platform Strategy and the Return to Discipline",
+          "kind": "case",
+          "detail": "outline",
+          "question": "What did Zalando's microservices and platform strategy teach, including the later corrections?"
+        },
+        {
+          "id": "case-composable-movement",
+          "folder": "49-case-composable-movement",
+          "title": "Case: commercetools, Shopware and the Composable Movement",
+          "kind": "case",
+          "detail": "outline",
+          "question": "What did the composable movement promise, what did it cost, and how did its vendors change course by 2026?"
+        }
+      ]
+    },
+    {
+      "id": "appendix",
+      "title": "Appendix",
+      "detail": "outline",
+      "thesis": {
+        "question": "How does one agent-mediated purchase work in protocol detail?",
+        "claim": "An agent can buy from a platform only if the platform already publishes the facts the book's earlier parts assign owners to: catalog, price, availability, payment authority and order status."
+      },
+      "role": {
+        "contribution": "Works one protocol in detail for readers who need it; the book's argument does not depend on it.",
+        "supports": [
+          "J2"
+        ]
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Part X's account of agentic commerce and the cases' evidence.",
+        "introduces": "One protocol followed message by message.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "ucp-beginners-tutorial",
+          "folder": "ucp-beginners-tutorial",
+          "title": "Universal Commerce Protocol: A Beginner's Tutorial",
+          "kind": "tutorial",
+          "detail": "outline",
+          "question": "How does one purchase run through the Universal Commerce Protocol, step by step?"
+        }
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "Reference",
+      "detail": "outline",
+      "thesis": {
+        "question": "Where does the reader look things up?",
+        "claim": "The book's models, templates, terms and sources are collected in one place so a chapter can be used without rereading it."
+      },
+      "role": {
+        "contribution": "Apparatus: coverage map, toolkit, glossary and bibliography.",
+        "supports": []
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The cards, terms and sources introduced chapter by chapter.",
+        "introduces": "The same material gathered for lookup.",
+        "form": "paragraph",
+        "placement": "end_of_previous"
+      },
+      "posts": [
+        {
+          "id": "domain-coverage",
+          "folder": "domain-coverage",
+          "title": "Domain Coverage",
+          "kind": "reference",
+          "detail": "outline",
+          "question": "Which research models stand behind the book, and which chapters cover them?"
+        },
+        {
+          "id": "toolkit",
+          "folder": "toolkit",
+          "title": "Toolkit",
+          "kind": "reference",
+          "detail": "outline",
+          "question": "Which cards and templates do the chapters introduce, and where is each one used?"
+        },
+        {
+          "id": "glossary",
+          "folder": "glossary",
+          "title": "Glossary",
+          "kind": "reference",
+          "detail": "outline",
+          "question": "What does each commerce and architecture term used in the book mean?"
+        },
+        {
+          "id": "bibliography",
+          "folder": "bibliography",
+          "title": "Bibliography",
+          "kind": "reference",
+          "detail": "outline",
+          "question": "Which sources does the book cite?"
+        }
+      ]
+    }
+  ]
+}

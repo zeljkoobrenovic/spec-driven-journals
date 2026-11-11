@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "journal-spec.schema.json",
+  "title": "Journal spec",
+  "description": "Intent, flow and transitions for a journal, its parts and its posts (journal -> parts -> posts). One file per journal, at _journals/<journal>/journal-spec.json, authored before any prose. It is the authority for each post's intent, thesis and role; the post spec copies those and adds the post's internal structure.",
+  "type": "object",
+  "required": ["spec_version", "kind", "id", "title", "status", "revised", "intent", "thesis", "flow", "opening", "closing", "parts", "changelog"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "spec_version": { "const": "0.1" },
+    "kind": { "const": "journal" },
+    "id": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The journal's directory name under _journals/."
+    },
+    "title": { "type": "string" },
+    "status": { "$ref": "common.schema.json#/$defs/status" },
+    "revised": { "$ref": "common.schema.json#/$defs/date" },
+    "basis": {
+      "type": "string",
+      "description": "For a spec written after the prose: what it was reconstructed from and how far the reconstruction goes."
+    },
+    "intent": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/intent" },
+        { "required": ["audience"] }
+      ],
+      "description": "The reader outcome of the whole journal. The audience is required here and inherited by every part and post that does not narrow it."
+    },
+    "thesis": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/thesis" },
+        { "required": ["supporting_claims"] }
+      ],
+      "description": "The journal's central claim and the supporting claims its parts are responsible for."
+    },
+    "flow": {
+      "$ref": "common.schema.json#/$defs/flow",
+      "description": "The pattern that orders the parts."
+    },
+    "opening": { "$ref": "common.schema.json#/$defs/opening" },
+    "closing": { "$ref": "common.schema.json#/$defs/closing" },
+    "non_goals": { "$ref": "common.schema.json#/$defs/record_keeping/non_goals" },
+    "open_questions": { "$ref": "common.schema.json#/$defs/record_keeping/open_questions" },
+    "decision_log": { "$ref": "common.schema.json#/$defs/record_keeping/decision_log" },
+    "sources": { "$ref": "common.schema.json#/$defs/record_keeping/sources" },
+    "changelog": { "$ref": "common.schema.json#/$defs/record_keeping/changelog" },
+    "parts": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The parts in reading order. This order must equal the order of sections in config.yaml. A journal without parts has exactly one part.",
+      "items": { "$ref": "#/$defs/part" }
+    }
+  },
+
+  "$defs": {
+    "post_kind": {
+      "description": "What kind of page a post is. Kinds that carry structure rather than argument (part_intro, front_matter, reference) may have an empty role.supports and are exempt from the orphan check.",
+      "enum": ["chapter", "part_intro", "front_matter", "case", "walkthrough", "tutorial", "record", "essay", "reference"]
+    },
+
+    "part": {
+      "type": "object",
+      "required": ["id", "title", "detail", "thesis", "role", "posts"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/id" },
+        "title": {
+          "type": "string",
+          "description": "Must equal the section title in config.yaml."
+        },
+        "detail": { "$ref": "common.schema.json#/$defs/detail" },
+        "intent": { "$ref": "common.schema.json#/$defs/intent" },
+        "thesis": {
+          "description": "The part's claim. A full part gives the complete thesis with supporting claims for its posts; an outline part gives the question and the claim.",
+          "anyOf": [
+            { "$ref": "common.schema.json#/$defs/thesis" },
+            { "$ref": "common.schema.json#/$defs/thesis_outline" }
+          ]
+        },
+        "role": {
+          "$ref": "common.schema.json#/$defs/role",
+          "description": "What the part contributes to the journal thesis; supports lists the journal's supporting claims."
+        },
+        "flow": {
+          "$ref": "common.schema.json#/$defs/flow",
+          "description": "The pattern that orders the part's posts."
+        },
+        "opening": { "$ref": "common.schema.json#/$defs/opening" },
+        "closing": { "$ref": "common.schema.json#/$defs/closing" },
+        "transition_in": {
+          "$ref": "common.schema.json#/$defs/transition",
+          "description": "The link from the previous part into this one. Required on every part except the first."
+        },
+        "posts": {
+          "type": "array",
+          "minItems": 1,
+          "description": "The posts in reading order. This order must equal the order of the section's posts in config.yaml.",
+          "items": { "$ref": "#/$defs/post" }
+        }
+      },
+      "if": { "properties": { "detail": { "const": "full" } } },
+      "then": {
+        "required": ["intent", "flow", "opening", "closing"],
+        "properties": {
+          "thesis": {
+            "allOf": [
+              { "$ref": "common.schema.json#/$defs/thesis" },
+              { "required": ["supporting_claims"] }
+            ]
+          },
+          "posts": { "items": { "properties": { "detail": { "const": "full" } } } }
+        }
+      }
+    },
+
+    "post": {
+      "type": "object",
+      "required": ["id", "folder", "title", "kind", "detail", "question"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/id",
+          "description": "The post's permalink."
+        },
+        "folder": {
+          "type": "string",
+          "description": "The post folder under posts/, as listed in config.yaml without '/index.md'."
+        },
+        "title": { "type": "string" },
+        "kind": { "$ref": "#/$defs/post_kind" },
+        "detail": { "$ref": "common.schema.json#/$defs/detail" },
+        "question": {
+          "type": "string",
+          "description": "The question the post answers. Present even at outline level, so the hierarchy can be checked for gaps before any post is specified in full."
+        },
+        "intent": { "$ref": "common.schema.json#/$defs/intent" },
+        "thesis": {
+          "$ref": "common.schema.json#/$defs/thesis",
+          "description": "The post's claim. Its supporting claims are declared in the post spec, where the sections that argue for them live."
+        },
+        "role": {
+          "$ref": "common.schema.json#/$defs/role",
+          "description": "What the post contributes to the part thesis; supports lists the part's supporting claims."
+        },
+        "transition_in": {
+          "$ref": "common.schema.json#/$defs/transition",
+          "description": "The link from the previous post of the same part into this one. Required on every full post except the first of its part; the first post is reached through the part's own transition_in."
+        },
+        "post_spec": {
+          "type": "string",
+          "description": "Path of the post spec, relative to the journal directory (posts/<folder>/spec.json)."
+        }
+      },
+      "if": { "properties": { "detail": { "const": "full" } } },
+      "then": {
+        "required": ["intent", "role"],
+        "if": { "properties": { "kind": { "enum": ["part_intro", "front_matter", "reference"] } } },
+        "else": { "required": ["thesis"] }
+      }
+    }
+  }
+}

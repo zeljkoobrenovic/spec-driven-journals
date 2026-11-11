@@ -1,6 +1,6 @@
 ---
 name: detailed-article
-description: Write or revise the detailed main article (index.md) of a spec-driven journal post from its spec.md contract, following the house record style (status highlight, MADR-inspired sections, cross-links). Use when asked to write, draft, expand, or revise a post's main article, index.md, or "the article modality" in _journals/*/posts/*/.
+description: Write or revise the detailed main article (index.md) of a spec-driven journal post from its spec contract (spec.json, or the older spec.md), following the house record style (status highlight, MADR-inspired sections, cross-links). Use when asked to write, draft, expand, or revise a post's main article, index.md, or "the article modality" in _journals/*/posts/*/.
 ---
 
 # Detailed Article (the `index` modality)
@@ -13,6 +13,50 @@ post has one, and it is the default tab on the rendered post page. Other
 modalities (`summary.md`, `dialog.md`, `comics.md`) are derived from the spec
 and this article; when the article changes substantively, flag sibling
 modality files that may now be stale.
+
+## Which contract
+
+- If the post folder has a **`spec.json`**, it is the contract, and the
+  section "Writing from `spec.json`" below replaces steps 1–4 of the
+  workflow. Ignore any `spec.md` beside it.
+- Otherwise the older **`spec.md`** is the contract and the workflow applies
+  as written.
+
+Wherever this skill says `spec.md`, read "the post's spec".
+
+## Writing from `spec.json`
+
+1. Check that the spec validates
+   (`python3 _wiring/validate_spec.py <journal> <folder>`) and that its
+   `status` is `accepted`. If it is `draft`, stop and say so: an article is
+   not drafted from a spec the author has not accepted, unless the author
+   says to go ahead.
+2. Read the spec whole, then the journal's style guide and ledger if it has
+   them, and the previous and next posts' entries in `journal-spec.json`.
+3. Write the introduction, each section and the conclusion **unit by unit in
+   spec order**. One spec paragraph becomes one prose paragraph (or one list
+   with its lead-in, when `"form": "list"`), which:
+   - states the paragraph's `controlling_idea` and nothing that belongs to
+     another paragraph;
+   - does the job its `function` names;
+   - uses the `evidence` listed, and after each item says what it shows;
+   - opens by expressing its `transition_in`: the declared relationship, from
+     what is carried over to what is introduced.
+   Tables, figures and quotations listed as evidence sit with their paragraph.
+   Section headings are the spec's `heading` values, unchanged.
+4. **Do not add, drop, merge, split or reorder units.** If the argument cannot
+   be written as specified, stop and report which unit and why. That is a
+   fault in the spec, and the spec is changed first, by the author's decision.
+5. The introduction carries the spec's hook, bridge, thesis statement and
+   roadmap; the conclusion its synthesis, answer to "so what?", callback,
+   takeaway and hand-off. The house style below still governs voice,
+   callouts, front matter and format.
+6. **Do not certify your own draft.** Run
+   `python3 _wiring/check_draft.py structure <post-dir>` and fix any
+   structural failure. Then hand the draft to the `draft-check` skill, which
+   uses readers that did not write it. Report the draft as written and
+   unchecked until that has run.
+7. Continue with workflow steps 5 and 6 (wiring and build).
 
 ## Contract rules
 

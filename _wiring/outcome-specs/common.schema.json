@@ -1,0 +1,501 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Outcome spec: shared definitions",
+  "description": "Definitions shared by journal-spec.schema.json and post-spec.schema.json. Every enum value names the guide it came from in RULES.md; values marked (extension) are not in the UNC guides and are listed there with the reason they were added.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable lowercase identifier. For posts it is the permalink, so it never changes once published."
+    },
+    "claim_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*-?[0-9]+$",
+      "description": "Identifier of one supporting claim of a thesis, unique within the spec file (for example J3, P1-4, S2)."
+    },
+    "status": {
+      "enum": ["draft", "accepted", "drifted", "superseded"],
+      "description": "Same lifecycle as spec.md: draft (still being written), accepted (spec and prose agree), drifted (prose has moved beyond the spec), superseded (a replacement spec exists)."
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "detail": {
+      "enum": ["outline", "full"],
+      "description": "How far this unit is specified. 'outline' is a placeholder that fixes the unit's place, question and claim; 'full' is the contract a draft can be generated from and checked against. A unit must be 'full' before any of its prose is drafted."
+    },
+
+    "non_goal": {
+      "type": "object",
+      "description": "Something the unit deliberately does not cover, so a later session does not drift into it.",
+      "required": ["topic"],
+      "additionalProperties": false,
+      "properties": {
+        "topic": { "type": "string" },
+        "covered_in": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Where the topic is covered instead: permalinks of other posts, or a named work."
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "description": "A choice made while shaping the spec, with the alternatives that were rejected. Records why the spec has this shape; the changelog records how it changed over time.",
+      "required": ["date", "decision"],
+      "additionalProperties": false,
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "decision": { "type": "string", "description": "What was chosen and why." },
+        "rejected": { "type": "array", "items": { "type": "string" }, "description": "The options considered and not taken." }
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "Something the spec was built from.",
+      "required": ["kind", "ref", "contributed"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["internal", "external"] },
+        "ref": { "type": "string", "description": "A permalink or repository path for internal sources; author, title and date for external ones." },
+        "contributed": { "type": "string", "description": "What this source contributed to the spec." }
+      }
+    },
+    "changelog_entry": {
+      "type": "object",
+      "description": "One change to the spec, the prose or both, including status transitions.",
+      "required": ["date", "change"],
+      "additionalProperties": false,
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "change": { "type": "string" }
+      }
+    },
+    "record_keeping": {
+      "description": "The property definitions for the sections carried over from spec.md. Referenced one by one from the journal and post schemas.",
+      "non_goals": { "type": "array", "items": { "$ref": "#/$defs/non_goal" } },
+      "open_questions": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Unresolved points. They stay until answered or moved to a follow-up record."
+      },
+      "decision_log": { "type": "array", "items": { "$ref": "#/$defs/decision" } },
+      "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+      "changelog": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "$ref": "#/$defs/changelog_entry" },
+        "description": "Newest first."
+      }
+    },
+
+    "audience": {
+      "type": "object",
+      "description": "Who reads this unit and what they bring. Required at journal level; below it, give it only where the unit narrows the journal's audience.",
+      "required": ["who", "already_knows"],
+      "additionalProperties": false,
+      "properties": {
+        "who": {
+          "type": "string",
+          "description": "The reader, specifically enough to decide how broad the opening should be (Introductions: 'Decide how general or broad your opening should be')."
+        },
+        "already_knows": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Known information the prose may start from without explaining it (Flow: readers process known information faster than new)."
+        },
+        "does_not_know": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "New information that must be introduced before it is used."
+        }
+      }
+    },
+
+    "check": {
+      "description": "Identifier of a standard outcome check (defined in RULES.md, section 'Check catalogue'), or 'custom' for a criterion specific to this unit.",
+      "enum": [
+        "thesis_passes_tests",
+        "children_cover_parent_thesis",
+        "role_matches_journal_spec",
+        "intro_predicts_content",
+        "reverse_outline_matches_spec",
+        "one_controlling_idea_per_paragraph",
+        "paragraph_traces_to_thesis",
+        "evidence_is_explained",
+        "transition_expresses_declared_relationship",
+        "known_before_new",
+        "no_weak_introduction_pattern",
+        "no_weak_conclusion_pattern",
+        "conclusion_synthesizes_and_answers_so_what",
+        "conclusion_calls_back_to_introduction",
+        "custom"
+      ]
+    },
+    "check_method": {
+      "description": "How the criterion is checked against the prose.",
+      "enum": ["deterministic", "reverse_outline", "cold_reader", "rubric", "human"],
+      "enumDescriptions": {
+        "deterministic": "A script decides from the spec and the draft's structure, with no model call.",
+        "reverse_outline": "A reader who has not seen the spec writes a one-phrase summary of each draft paragraph; the outline is compared with the spec (Flow, Transitions, Paragraphs).",
+        "cold_reader": "A reader who has seen only part of the draft (for example the introduction) answers a question, and the answer is compared with the spec (Introductions: 'Ask a friend').",
+        "rubric": "A reader who has the spec and the draft judges one named question and must quote the passage the verdict rests on.",
+        "human": "The author decides."
+      }
+    },
+    "acceptance_criterion": {
+      "type": "object",
+      "description": "One checkable statement about the finished prose. A criterion states what a reader can do or what the text demonstrably does, never what the text 'covers'.",
+      "required": ["id", "statement", "check", "method", "severity"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^AC-?[0-9]+$" },
+        "statement": {
+          "type": "string",
+          "description": "The outcome, phrased so that two reviewers would agree on pass or fail."
+        },
+        "check": { "$ref": "#/$defs/check" },
+        "method": { "$ref": "#/$defs/check_method" },
+        "severity": {
+          "enum": ["blocker", "major", "minor"],
+          "description": "blocker: the unit may not be published; major: must be revised or explicitly waived by the author; minor: reported, does not block."
+        },
+        "probe": {
+          "type": "string",
+          "description": "For cold_reader and rubric methods: the exact question put to the reader."
+        },
+        "expected": {
+          "type": "string",
+          "description": "What a passing answer or finding contains."
+        }
+      }
+    },
+
+    "intent": {
+      "type": "object",
+      "description": "The effect this unit must have on its reader, with the criteria that prove it happened.",
+      "required": ["outcome", "acceptance_criteria"],
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "type": "object",
+          "description": "What changes for the reader. At least one of the three lists is non-empty.",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "know": {
+              "type": "array", "items": { "type": "string" }, "minItems": 1,
+              "description": "Facts or concepts the reader can state afterwards."
+            },
+            "believe": {
+              "type": "array", "items": { "type": "string" }, "minItems": 1,
+              "description": "Positions the reader should now hold or at least take seriously."
+            },
+            "can_do": {
+              "type": "array", "items": { "type": "string" }, "minItems": 1,
+              "description": "Things the reader can do afterwards that they could not do before."
+            }
+          }
+        },
+        "audience": { "$ref": "#/$defs/audience" },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/acceptance_criterion" }
+        }
+      }
+    },
+
+    "supporting_claim": {
+      "type": "object",
+      "description": "One of the claims that together establish a thesis. Children declare which of these they support; a claim with no child is a gap, a child with no claim is an orphan.",
+      "required": ["id", "claim"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/claim_id" },
+        "claim": { "type": "string" }
+      }
+    },
+    "thesis_outline": {
+      "type": "object",
+      "description": "The minimum a unit needs to hold its place in the hierarchy: the question it answers and the claim it makes.",
+      "required": ["question", "claim"],
+      "additionalProperties": false,
+      "properties": {
+        "question": { "type": "string" },
+        "claim": { "type": "string" }
+      }
+    },
+    "thesis": {
+      "type": "object",
+      "description": "One specific, disputable claim that answers a stated question (Thesis Statements).",
+      "required": ["question", "claim", "disputed_by", "so_what", "how_why"],
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "The question the unit answers, phrased as a question ('Do I answer the question?')."
+        },
+        "claim": {
+          "type": "string",
+          "description": "The answer, as one sentence that interprets the subject rather than naming it. No vague evaluative words such as 'good', 'successful', 'important', 'in positive and negative ways' ('Is my thesis statement specific enough?')."
+        },
+        "disputed_by": {
+          "type": "string",
+          "description": "The position a reasonable reader could hold instead. If nobody could disagree, the claim is a summary, not a thesis ('Have I taken a position that others might challenge or oppose?')."
+        },
+        "so_what": {
+          "type": "string",
+          "description": "What follows for the reader if the claim is true: the larger issue or decision it connects to ('So what?' test)."
+        },
+        "how_why": {
+          "type": "string",
+          "description": "The line of reasoning in brief: how or why the claim holds, so the reader is not left asking ('how and why?' test)."
+        },
+        "supporting_claims": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/supporting_claim" },
+          "description": "The claims that add up to this thesis. Required wherever the unit has children that argue for it ('Does my essay support my thesis specifically and without wandering?')."
+        }
+      }
+    },
+
+    "role": {
+      "type": "object",
+      "description": "What this unit contributes to its parent's thesis.",
+      "required": ["contribution", "supports"],
+      "additionalProperties": false,
+      "properties": {
+        "contribution": {
+          "type": "string",
+          "description": "One sentence: what the parent's argument would lack without this unit."
+        },
+        "supports": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/claim_id" },
+          "uniqueItems": true,
+          "description": "The parent's supporting claims this unit argues for. May be empty only for units that carry structure rather than argument (kinds part_intro, front_matter, reference)."
+        }
+      }
+    },
+
+    "flow_pattern": {
+      "description": "The organizational pattern that orders a unit's children (Flow, 'coherence').",
+      "enum": [
+        "chronological",
+        "grouping",
+        "large_to_small",
+        "small_to_large",
+        "assertion_evidence_reasoning",
+        "imrd",
+        "prerequisite_order",
+        "problem_solution",
+        "comparison",
+        "order_of_importance"
+      ],
+      "enumDescriptions": {
+        "chronological": "Flow: a history or a step-by-step process.",
+        "grouping": "Flow: similar ideas together (advantages/disadvantages, causes/effects).",
+        "large_to_small": "Flow: from the general or wide view to the specific.",
+        "small_to_large": "Flow: 'or vice versa', from the specific case to the wide view.",
+        "assertion_evidence_reasoning": "Flow: claim, then evidence, then the reasoning that connects them.",
+        "imrd": "Flow: introduction, methods, results, discussion.",
+        "prerequisite_order": "(extension) each child supplies the vocabulary or decision the next one needs; the known-to-new rule applied to whole units.",
+        "problem_solution": "(extension) the failure first, then what resolves it.",
+        "comparison": "(extension) alternatives set side by side on the same criteria.",
+        "order_of_importance": "(extension) most consequential first, or last."
+      }
+    },
+    "flow": {
+      "type": "object",
+      "description": "How the unit's children are ordered and why that order serves the reader.",
+      "required": ["pattern", "rationale"],
+      "additionalProperties": false,
+      "properties": {
+        "pattern": { "$ref": "#/$defs/flow_pattern", "description": "The primary pattern." },
+        "additional_patterns": {
+          "type": "array",
+          "description": "Patterns used inside sub-ranges of the children (Flow: one primary pattern, additional patterns within sections).",
+          "items": {
+            "type": "object",
+            "required": ["pattern", "applies_to"],
+            "additionalProperties": false,
+            "properties": {
+              "pattern": { "$ref": "#/$defs/flow_pattern" },
+              "applies_to": { "type": "string", "description": "Which children, by id or range." }
+            }
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Why this order, in terms of its effect on the reader, and what would break if the children were reordered (Flow's reverse-outline questions)."
+        }
+      }
+    },
+
+    "relationship": {
+      "description": "The logical relationship a transition expresses (Transitions, table of logical relationships).",
+      "enum": [
+        "similarity",
+        "contrast",
+        "sequence",
+        "time",
+        "example",
+        "emphasis",
+        "place",
+        "cause_effect",
+        "additional_support",
+        "conclusion_summary",
+        "elaboration",
+        "problem_solution"
+      ],
+      "enumDescriptions": {
+        "similarity": "Transitions: Similarity (also, likewise, similarly).",
+        "contrast": "Transitions: Exception/Contrast (but, however, nevertheless, in contrast).",
+        "sequence": "Transitions: Sequence/Order (first, next, then, finally).",
+        "time": "Transitions: Time (after, before, meanwhile, later).",
+        "example": "Transitions: Example (for example, specifically, to illustrate).",
+        "emphasis": "Transitions: Emphasis (indeed, in fact).",
+        "place": "Transitions: Place/Position (above, beyond, here).",
+        "cause_effect": "Transitions: Cause and Effect (consequently, therefore, thus).",
+        "additional_support": "Transitions: Additional Support or Evidence (furthermore, in addition, moreover).",
+        "conclusion_summary": "Transitions: Conclusion/Summary (in the end, on the whole).",
+        "elaboration": "(extension) the second unit unpacks a term or claim the first one only named.",
+        "problem_solution": "(extension) the first unit leaves a problem open and the second resolves it."
+      }
+    },
+    "transition": {
+      "type": "object",
+      "description": "The link from the previous sibling into this unit. Declared on every child except the first, so a reordering cannot leave a transition pointing at the wrong pair. A transition summarizes what came before and helps the reader anticipate what comes next (Transitions).",
+      "required": ["relationship", "carries_over", "introduces"],
+      "additionalProperties": false,
+      "properties": {
+        "relationship": { "$ref": "#/$defs/relationship" },
+        "carries_over": {
+          "type": "string",
+          "description": "The known information picked up from the previous sibling (Flow: known before new)."
+        },
+        "introduces": {
+          "type": "string",
+          "description": "The new information this unit hands on."
+        },
+        "form": {
+          "enum": ["word", "phrase", "sentence", "paragraph"],
+          "description": "Transitions: within paragraphs, single words or short phrases; between paragraphs, a phrase or sentence; between sections, a transitional paragraph."
+        },
+        "placement": {
+          "enum": ["end_of_previous", "start_of_this", "both"],
+          "description": "Transitions: at the end of the first unit, at the beginning of the second, or in both places."
+        }
+      }
+    },
+
+    "hook_type": {
+      "description": "How the opening draws the reader in (Introductions, 'Open with something that will draw readers in').",
+      "enum": [
+        "intriguing_example",
+        "provocative_quotation",
+        "puzzling_scenario",
+        "vivid_anecdote",
+        "thought_provoking_question",
+        "direct_statement"
+      ],
+      "enumDescriptions": {
+        "direct_statement": "(extension) the claim itself, stated first; used by decision- and principle-shaped records that open with a Status/Decision highlight."
+      }
+    },
+    "hook": {
+      "type": "object",
+      "required": ["type", "content"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "$ref": "#/$defs/hook_type" },
+        "content": {
+          "type": "string",
+          "description": "The specific example, scenario, anecdote, question or quotation, not a description of one. A provocative quotation must be closely related to the argument."
+        }
+      }
+    },
+    "takeaway_type": {
+      "description": "What the closing leaves the reader with (Conclusions, strategies for an effective conclusion).",
+      "enum": [
+        "course_of_action",
+        "solution",
+        "questions_for_further_study",
+        "broader_implications",
+        "provocative_insight"
+      ]
+    },
+    "takeaway": {
+      "type": "object",
+      "required": ["type", "content"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "$ref": "#/$defs/takeaway_type" },
+        "content": { "type": "string" }
+      }
+    },
+    "weak_introduction_pattern": {
+      "description": "Introductions, 'Five kinds of less effective introductions'. Used in check reports.",
+      "enum": ["placeholder", "restated_question", "websters_dictionary", "dawn_of_man", "book_report"]
+    },
+    "weak_conclusion_pattern": {
+      "description": "Conclusions, 'Four kinds of ineffective conclusions' and 'Strategies to avoid'. Used in check reports.",
+      "enum": [
+        "thats_my_story",
+        "sherlock_holmes",
+        "america_the_beautiful",
+        "grab_bag",
+        "in_conclusion_opener",
+        "new_idea_or_subtopic",
+        "rephrased_thesis_only",
+        "body_evidence_in_conclusion"
+      ]
+    },
+
+    "opening": {
+      "type": "object",
+      "description": "How a journal or part brings the reader in. The prose lives in the post named by carried_by; that post's own spec must realise these fields.",
+      "required": ["carried_by", "hook", "bridge", "roadmap"],
+      "additionalProperties": false,
+      "properties": {
+        "carried_by": { "$ref": "#/$defs/id", "description": "The post that performs this opening." },
+        "hook": { "$ref": "#/$defs/hook" },
+        "bridge": {
+          "type": "string",
+          "description": "How the reader is moved from their own situation into the unit's subject (Introductions: a bridge 'from their own lives into the place of your analysis')."
+        },
+        "roadmap": {
+          "type": "string",
+          "description": "What the reader is told to expect, in order (Introductions: 'road map'; Flow: signposting)."
+        }
+      }
+    },
+    "closing": {
+      "type": "object",
+      "description": "What a journal or part leaves the reader with. The prose lives in the post named by carried_by.",
+      "required": ["carried_by", "synthesis", "so_what", "callback", "takeaway"],
+      "additionalProperties": false,
+      "properties": {
+        "carried_by": { "$ref": "#/$defs/id" },
+        "synthesis": {
+          "type": "string",
+          "description": "How the children's points fit together into something none of them says alone (Conclusions: 'Synthesize, don't summarize')."
+        },
+        "so_what": {
+          "type": "string",
+          "description": "The answer to 'So what?' / 'Why should anybody care?' (Conclusions: the 'So What' game)."
+        },
+        "callback": {
+          "type": "string",
+          "description": "The element of the opening that the closing returns to (Conclusions: 'Return to the theme or themes in the introduction')."
+        },
+        "takeaway": { "$ref": "#/$defs/takeaway" }
+      }
+    }
+  }
+}

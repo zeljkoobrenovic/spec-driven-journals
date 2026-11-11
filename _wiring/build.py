@@ -473,6 +473,36 @@ def _collect_modalities(src: Path, body: str, journal_name: str, crosslink_index
     return mods
 
 
+def _load_spec(post_dir: Path, label: str):
+    """Return (meta, markdown body) of a post's spec, or (None, None).
+
+    spec.json (the outcome spec) wins over the older spec.md when both exist.
+    A spec.json that does not validate is still shown, as raw JSON, with a
+    warning on stderr, so a broken spec is visible rather than silently absent.
+    """
+    spec_json = post_dir / "spec.json"
+    if spec_json.is_file():
+        import outcome_specs
+        raw = spec_json.read_text(encoding="utf-8")
+        try:
+            doc = json.loads(raw)
+            errors = outcome_specs.schema_errors(doc, "post-spec.schema.json")
+        except ValueError as exc:
+            doc, errors = {}, [str(exc)]
+        if errors:
+            print(f"[warn] {label}: spec.json does not validate ({len(errors)} error(s)); "
+                  "run _wiring/validate_spec.py", file=sys.stderr)
+            return ({"status": "draft", "revised": ""},
+                    "> This spec does not validate against the post-spec schema.\n\n```json\n" + raw + "\n```\n")
+        meta = {"status": doc.get("status", ""), "revised": doc.get("revised", "")}
+        return meta, outcome_specs.post_spec_markdown(doc)
+    spec_md = post_dir / "spec.md"
+    if spec_md.is_file():
+        # plain markdown; front matter carries status and revised
+        return parse_front_matter(spec_md.read_text(encoding="utf-8"))
+    return None, None
+
+
 # --- build ---------------------------------------------------------------
 
 def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_index: dict = None):
@@ -562,14 +592,11 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                 if s_title else ""
             )
 
-            # If a sibling spec.md exists, render it to <slug>.spec.html and
-            # expose a "View spec" link on the main post.
-            spec_src = src.parent / "spec.md"
+            # If the post has a spec (spec.json, or the older spec.md), render
+            # it to <slug>.spec.html and expose a "View spec" link on the post.
             spec_link_html = ""
-            if spec_src.is_file():
-                spec_body = spec_src.read_text(encoding="utf-8")
-                # specs use plain markdown; no front matter expected, but tolerate it
-                spec_meta, spec_body = parse_front_matter(spec_body)
+            spec_meta, spec_body = _load_spec(src.parent, f"{journal_dir.name}/{slug}")
+            if spec_body is not None:
                 # Single-modality payload: the client shows no tab bar when
                 # there is exactly one modality, so spec pages look unchanged.
                 spec_payload = {

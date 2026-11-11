@@ -212,6 +212,28 @@ Non-trivial posts are driven by a lightweight spec — a `spec.md` file sitting 
 - **Edit the spec first**: when intent for a post shifts, update the spec *before* the post. If you find yourself updating the post first, that's a signal the spec is being treated as documentation, not as a contract.
 - **Foundation ADR**: see `_journals/foundations/posts/spec-driven-authoring/index.md` for the durable rationale.
 
+### Outcome specs (`journal-spec.json` and `spec.json`)
+
+Writing is outcome-based: every journal, part, post and paragraph is written to achieve a stated effect on the reader and is checked against it. Two hierarchical JSON specs are authored **before** any prose, and the prose is generated from them and validated against them.
+
+| Spec | File | Levels | Holds |
+| --- | --- | --- | --- |
+| Journal spec | `_journals/<journal>/journal-spec.json` | journal → parts → posts | Each unit's intent (reader outcome, audience, acceptance criteria), thesis, role in its parent's thesis, flow pattern, transition from its predecessor, opening and closing |
+| Post spec | `_journals/<journal>/posts/<slug>/spec.json` | post → sections → paragraphs | Intent, thesis and role (copied from the journal spec), introduction (hook, bridge, thesis statement, roadmap), every section and paragraph with its controlling idea, function, evidence and incoming transition, conclusion (synthesis, so-what, callback, takeaway, hand-off), plus non-goals, modalities, open questions, decision log, sources and changelog |
+
+- **`spec.json` replaces `spec.md`.** New specs are `spec.json`. A post that still has only a `spec.md` keeps working exactly as described above until it is converted; when both exist, `spec.json` is the contract and the build renders it. Wherever a skill says `spec.md`, read the post's spec. Existing journals are converted only when the author asks, one post or journal at a time.
+- **Schemas and rules** live in `_wiring/outcome-specs/`: `journal-spec.schema.json`, `post-spec.schema.json`, `common.schema.json` (shared definitions and enums), `check-report.schema.json`, `RULES.md` (each field and check, the writing guide it came from, the rule in one line) and `PIPELINE.md` (the pipeline and what happens when a check fails). `examples/` has ORDERED as a journal spec and its chapter 4 as a post spec.
+- **Pipeline**: spec → validate → draft → check draft against spec → revise.
+  1. `journal-spec` skill writes `journal-spec.json`; `spec-creator` writes `spec.json`, copying intent, thesis and role from the journal spec.
+  2. `python3 _wiring/validate_spec.py <journal> [<folder>]` checks each file against its schema and the semantic rules: supporting claims have no gaps and no orphans, every child after the first has a transition, order and titles equal `config.yaml`, the post spec agrees with the journal spec, every section is announced by the roadmap, the hand-off matches the next post. The author sets `status: accepted`; nothing is drafted from a `draft` spec.
+  3. `detailed-article` writes `index.md` unit by unit in spec order and may not add, drop, merge or reorder units.
+  4. `draft-check` checks the draft with readers that did not write it (a reverse outliner and cold readers that see only the prose, and a judge) and writes `posts/<slug>/check-report.json` through `python3 _wiring/check_draft.py` (`units`, `structure`, `finalize`, `status`).
+  5. Failures are revised locally, at most two rounds. A failure whose fault is the spec, or one that survives two rounds, is escalated to the author; the spec is changed first and only by the author's decision.
+- **A check report is tied to the exact spec and draft it judged** (content hashes). Any later edit to `index.md` or `spec.json`, including sharpening, bold emphasis and illustration, makes it stale; `check_draft.py status <post-dir>` says so, and the post is checked again.
+- **Acceptance criteria state reader outcomes**, not contents: what a reader can do or what the text demonstrably does. "A table shows X" is not a criterion.
+- **The scripts run no model.** `validate_spec.py` and `check_draft.py` are standard-library only, like `build.py`; the readers are agents started by the `draft-check` skill.
+- **Build behaviour**: when `spec.json` exists the build renders it as `docs/<journal>/<slug>.spec.html` (same page and status chip as a `spec.md` spec). A `spec.json` that does not validate is shown as raw JSON with a `[warn]` line on stderr. `journal-spec.json` and `check-report.json` are not rendered.
+
 ### House style for new posts
 
 When adding to `tech-decisions-log`, `ai-decisions-log`, `foundations`, or `principles`, follow the established record shape so the journal stays internally consistent:
