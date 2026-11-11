@@ -86,9 +86,12 @@ Let `P` be the post folder.
 8. **On `REVISE`:** rewrite only the units named in the failed results, each
    from its own spec entry (controlling idea, function, evidence, transition).
    Do not add, drop, merge or reorder units. Then return to step 2 with
-   `--round` increased by one and fresh readers; a reader that saw the
+   `--round` increased by one (round 1 is the first check, so two revisions
+   end at round 3) and fresh readers; a reader that saw the
    previous round is not reused.
-9. **On `ESCALATE`, or after round 2 still fails:** stop. Report each
+9. **On `ESCALATE`:** stop. The script escalates when a failure is at fault
+   in the spec, or when failures remain after two revisions (the check of
+   round 3). Report each
    remaining failure with its quote, say whether the draft or the spec looks
    wrong and why, and give the author the three options: revise by hand,
    change the spec (then re-validate and redraft the affected units), or
