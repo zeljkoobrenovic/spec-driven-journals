@@ -69,7 +69,9 @@ Three terms carry the chapter. The **RMA** is the merchant's side of the promise
 
 ### Return rates as an economic fact
 
-The rate decides how much of this deserves engineering. The US National Retail Federation (NRF) with Happy Returns put US retail returns at **$890 billion** for 2024 (December 2024) and projected **$849.9 billion** for 2025, with an estimated online return rate of **19.3%** of online sales and **9%** of all returns judged fraudulent (October 2025); its 2024 survey found that **76%** of consumers "consider free returns a key factor in deciding where to shop". Apparel is higher: Coresight's survey of 100 US apparel decision-makers (April 2023, a small survey and now three years old) estimated a **24.4%** return rate on online apparel orders, with size and fit the reason in **53%** of cases. Kestrel & Pine's 24% is apparel-typical. Definitions matter: NRF's rates are shares of sales value across all US retail; Coresight's is a share of online apparel orders; Kestrel & Pine quotes items and orders separately. Quote the basis with every number.
+The return rate estimates how much of the original selling and shipping work will be followed by inspection, replacement or refund work. State what the rate counts: returned items, affected orders and refunded sales value are different measures.
+
+The US National Retail Federation (NRF) with Happy Returns estimated $890 billion in US retail returns for 2024 (December 2024) and projected $849.9 billion for 2025, with 19.3% of online sales value returned and 9% of returns judged fraudulent (October 2025). Its 2024 survey also found free returns influenced where 76% of respondents shopped. Coresight's smaller April 2023 survey of 100 US apparel decision-makers estimated returns on 24.4% of online apparel orders, with size or fit cited in 53% of cases. That apparel survey is three years old; neither measure directly matches Kestrel & Pine's separately reported shares of items and orders.
 
 What a return costs is mostly invisible in the order system: the label, the handling at the bench, the grading, the repackaging, the markdown on the 39% not resold as new, and the capital tied up in a jacket that spends ten days in transit and inspection. Policy is the lever that moves the rate: better size guidance and photos, charging for returns on some items, and steering toward exchanges. All three need data the return record must capture: the reason, the size ordered against the size kept, the disposition.
 
@@ -81,6 +83,8 @@ Seen from outside, a return is a loop through six systems. The figure shows the 
 **Figure 2:** *A return loops through six systems; the warehouse's disposition is the one event that releases the refund, the restock and the credit note, and the order record is the only system that may ask for a refund.*
 
 ### Two records: the return and the reverse fulfillment
+
+A return request records what the customer wants to send back and what the merchant agrees to accept. Reverse fulfillment records the physical work of receiving and inspecting it. Keeping them separate prevents a customer's request from being mistaken for goods already back on the shelf.
 
 The clearest public model of this split is Shopify's developer documentation (n.d., accessed November 2026). A **return** "represents the intent of a buyer to ship one or more items from an order back to a merchant"; it moves through `REQUESTED`, `OPEN`, `DECLINED`, `CLOSED` ("when all items have been processed and a restock decision has been made") and `CANCELED`.
 
@@ -152,6 +156,8 @@ Four decisions shape a returns architecture; each has a few realistic answers.
 My rule: **choose the refund trigger and the refund writer before choosing the product**, write both into the integration contract, and let the warehouse's disposition be the trigger unless the goods are cheap enough that fraud costs less than waiting. At Kestrel & Pine's rate and prices, inspection is the only defensible trigger, and the €199 jacket that comes back worn is the reason.
 
 ## Returns From Marketplaces and Stores
+
+A marketplace can authorize a return or issue a refund outside the merchant's own portal. The merchant must import those actions into its return and payment records, or staff can repeat work the marketplace has already completed.
 
 A return the merchant did not start still has to reconcile. On Amazon, for seller-fulfilled orders, Amazon's seller guidance (April 2025) says most items "can be returned within 30 days of the order's 'estimated delivery date'"; US return requests covered by Amazon's policy are authorized automatically and prepaid labels are issued through Amazon's shipping; sellers should "respond to requests within 24 hours" when their authorization is needed and issue refunds "within two days of receiving returns, or Amazon may issue an automatic refund"; a claim under the A-to-z Guarantee can be charged to the seller.
 

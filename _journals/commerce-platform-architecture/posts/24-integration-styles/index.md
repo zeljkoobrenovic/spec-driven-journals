@@ -69,7 +69,7 @@ The style is the main lever on the first three; the inventory is the only lever 
 
 ## The Four Styles: File, Shared Database, Direct Call, Message
 
-The vocabulary most practitioners still use comes from Gregor Hohpe and Bobby Woolf's *Enterprise Integration Patterns* (2003; the book is old, the styles have not changed, the technology under them has). It names four **integration styles**:
+An **integration style** is the mechanism by which systems exchange data or request work. It determines whether they share storage, wait for one another or continue independently. The four styles below use the vocabulary of Gregor Hohpe and Bobby Woolf's *Enterprise Integration Patterns* (2003); the categories remain useful despite changes in their implementation technology.
 
 1. **File transfer.** One system writes a file; the other reads it later. The file is the contract. Commerce examples: the nightly product feed to a marketplace, the EDI order Bergzicht's system sends through the EDI provider, the POS export of store stock to the ERP.
 2. **Shared database.** Two systems read and write the same tables. Common inside a suite where the web shop and the ERP are one product; risky across vendors, because any schema change breaks the other side and there is no record of who changed what.
@@ -102,7 +102,9 @@ Two of these need plain words. A **webhook** is a notification, not a guarantee:
 
 **Change data capture** reads a database's transaction log, the record every database keeps of each change, and turns it into a stream of "row inserted, updated, deleted" events. Debezium, the most used open-source tool for this (documentation for version 3.7, accessed November 2026), describes itself as a set of source connectors that use each database's own change-capture features. CDC is the honest way to get events out of a system never built to publish them. Its limit is meaning: "row updated in the item ledger table" is not "stock changed for SKU X at location Y" (a SKU being one sellable variant, one size in one color), and someone has to write that translation and keep it current.
 
-"Event-driven" itself means several things. Martin Fowler's 2017 article separates **event notification** (the source says "order #1072455 changed" and receivers call back for details; low coupling, hidden flow) from **event-carried state transfer** (the event carries the data; receivers keep their own copy and never call back; faster, but every receiver now holds a copy that can go stale). A **stock event** in this book's sense ([[inventory-and-availability]]) is the second kind: "SKU 2113-M-moss at Duiven: 14 on hand, 3 reserved, as of 21:14:07." Fowler's other two, event sourcing and CQRS (command query responsibility segregation), are internal design choices of a platform or an OMS, not integration styles.
+**Event notification** announces that a fact changed, such as 'order #1072455 changed'; receivers fetch the details when they need them. **Event-carried state transfer** includes the data in the message, allowing receivers to maintain local copies without that extra lookup. The second reduces calls to the source but leaves each receiver responsible for a copy that can become stale. A stock event here uses that form: 'SKU 2113-M-moss at Duiven: 14 on hand, 3 reserved, as of 21:14:07' ([[inventory-and-availability]]).
+
+These terms follow Martin Fowler's 2017 article. It also distinguishes **event sourcing**, rebuilding state from stored changes, and **CQRS** (command query responsibility segregation), separating models for reading and changing data. Those concern a system's internal design rather than how two systems exchange a stock update.
 
 ## Point to Point, Hub, or the Vendor's Connector
 

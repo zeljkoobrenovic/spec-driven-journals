@@ -61,7 +61,7 @@ A merchant can see the spectrum in what vendors sell. Adobe's information center
 
 ## How a Shared Platform Keeps Tenants Apart
 
-The public evidence comes from three vendors who have described their mechanisms, each at a date.
+A shared platform must route each request to the right tenant's data and prevent one tenant's workload from exhausting shared capacity. The following vendor accounts show how identifiers, placement and resource limits work together.
 
 **Shopify: a tenant identifier, a router and pods (2018–2021).** By 2015, per Shopify's 2018 engineering post, its database "could no longer be scaled by buying a bigger server", so it **sharded**: split the one database into many, each holding a set of shops. Sharding alone reduced resilience, because one failed shard could take an action down for everyone.
 
@@ -205,7 +205,9 @@ Two decisions carry over. The three storefronts stay in **one tenant**: the plat
 
 ## When It Goes Wrong
 
-**A neighbor's flash sale on your pod.** The documented case is Shopify's 2021 example of two flash-sale merchants on one pod with synchronized bursts; the vendor's remedy was to move one. Detection: slow responses on a day that is not your peak, with your own logs quiet. Recovery: there is none on your side; report it, and ask the vendor what its isolation unit is and whether it rebalances.
+**A neighbor's flash sale on your pod.** Another merchant's traffic can exhaust infrastructure your shop shares, slowing you down even when your own demand is normal.
+
+The documented case is Shopify's 2021 example of two flash-sale merchants on one pod with synchronized bursts; the vendor's remedy was to move one. Detection: slow responses on a day that is not your peak, with your own logs quiet. Recovery: there is none on your side; report it, and ask the vendor what its isolation unit is and whether it rebalances.
 
 **A noisy neighbor inside your tenant.** Your own stock app consumes the budget your order flow needs. Detection: throttled responses in the order flow's logs while another app's call count climbs; the gauge that was missing in 2026, queue depth with rate-limit headroom. Recovery: pause the app (a switch on the degradation ladder), then redesign it to events and bulk operations.
 

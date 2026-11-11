@@ -61,25 +61,49 @@ The architectural question is **which actions the software is allowed to carry o
 
 ## What AI Already Does in Commerce
 
-Six uses are established. Each is worth having at the right stage, and each has a public record thinner than the marketing.
+AI already supports several everyday commerce jobs. The first five uses below help merchants run the shop; the last describes how shoppers reach it.
 
-**Search and recommendations.** Amazon's item-to-item collaborative filtering (recommending from what other shoppers bought together) was described in a 2003 paper; its 2019 history records that a deep-learning model first lost to the old method and a plain bestseller list: **a strong baseline is hard to beat.** Hosted "AI search" adds vector search, which matches meaning so that "waterproof jacket" finds "rain shell"; every published lift is a customer case without a control ([[commerce-search-and-discovery]]). Zalando's assistant, a ChatGPT-based beta in April 2023, had "more than 22 million unique users" in 2026 by its Q3 2026 release (3 November 2026).
+### Search and recommendations
 
-**Content.** Generated listings are common (Amazon reported more than 100,000 sellers using its tools in September 2023). The architectural point is where generated text lands: **in the system of record for product content, with a review state, or the channels drift apart** ([[product-information]]).
+Search finds products matching a shopper's request; recommendations suggest products they might want. AI can match meaning, so "waterproof jacket" finds "rain shell", or learn from products people buy together. Both help shoppers discover suitable items ([[commerce-search-and-discovery]]).
 
-**Service bots.** Klarna said on 27 February 2024 that its assistant handled 2.3 million conversations in its first month, two thirds of its chats, the work of 700 agents. In May 2025 its CEO told Bloomberg it was rehiring humans because the bots produced "lower quality" output: measure resolution, not **deflection** (the share of contacts a bot absorbs). **A bot is only as good as the APIs behind it**: order status, shipment events, return eligibility and refund state, the same APIs an external agent needs, and the ones Kestrel & Pine's "five tabs" could not provide ([[customer-service-and-notifications]]).
+Amazon described its purchase-pattern recommender in 2003. Its 2019 history reported that an early deep-learning model lost to both the older method and a bestseller list: **compare a new model with a simple alternative**. Zalando launched its conversational assistant in April 2023 and reported over 22 million unique users in its 3 November 2026 release. Usage shows adoption, but does not establish additional sales.
 
-**Fraud.** Scoring belongs in the PSP (the payment service provider that takes the shopper's money) or a specialist; Stripe's Radar page claims a "32% average reduction in fraud" with no accuracy or false-positive rate published. Agents break the premise of bot defense, that a non-human session is hostile ([[commerce-security]]).
+### Product content
 
-**Forecasting.** Deep demand forecasting (Amazon's DeepAR paper, 2017) produces a purchase proposal a buyer approves, and it needs clean sales and stock-out history, which a merchant with six writers of stock does not have.
+Content tools turn product facts or rough notes into draft titles, descriptions and translations, reducing repetitive writing. Someone must check the draft against the product facts before publication; fluent text can still describe the wrong material or feature.
 
-**AI traffic.** Adobe Analytics reported in January 2026 that visits to US retail sites referred by generative-AI products rose 693% year on year in the 2025 holiday season, growth from an unpublished, small base.
+Amazon reported more than 100,000 sellers using its listing tools in September 2023. Save reviewed text in the authoritative product record so every channel publishes the same approved description ([[product-information]]).
 
-What the six have in common: each reads the merchant's data, and each writes either a derived copy that goes stale or a proposal a person approves. None of them owns a fact.
+### Customer service bots
+
+A service bot answers routine questions, such as where an order is or whether an item can be returned. It needs current order, shipment and refund records to give a useful answer. A convincing reply based on an old status can create another support contact ([[customer-service-and-notifications]]).
+
+In February 2024, Klarna reported 2.3 million bot conversations in its first month, two thirds of its chats. In May 2025 its CEO told Bloomberg it was rehiring humans because output quality was lower. Measure whether the customer's problem was resolved, alongside **deflection**, the share of contacts the bot handles without a person.
+
+### Fraud screening
+
+Fraud models estimate whether a payment is suspicious. The merchant or its **payment service provider (PSP)** uses that assessment to accept it, request another check or reject it. The tradeoff is catching fraudulent purchases while letting legitimate customers pay.
+
+Stripe's Radar page claims a "32% average reduction in fraud" without publishing accuracy or false-positive rates. That figure alone cannot show how often genuine purchases are blocked. Authorized shopping agents also require bot defenses to distinguish permitted automation from abuse ([[commerce-security]]).
+
+### Demand forecasting
+
+Forecasting estimates how many units of each product shoppers will want, helping buyers plan replenishment. It needs sales and availability history: low sales while a jacket was unavailable do not necessarily mean low demand.
+
+Amazon's DeepAR paper (2017) describes a demand-forecasting method. Its output can inform a purchase proposal; the merchant still decides what to order. Conflicting stock records weaken the evidence behind that decision.
+
+### Visits referred by AI assistants
+
+Shoppers can discover a product through an AI assistant and follow its link to the merchant's shop. This creates a discovery channel whose value depends on the purchases those visitors make.
+
+Adobe Analytics reported in January 2026 that these visits to US retail sites rose 693% year on year during the 2025 holiday season, from an unpublished, small base. Track resulting orders and their value as well as traffic growth.
+
+Across these uses, the merchant still needs reliable product, price, stock and order records. Rankings, generated text, risk scores and forecasts depend on those facts; their usefulness must be judged against the business task they support.
 
 ## Assistants in the Admin: The Secret Agent Wears a Badge
 
-The second place AI arrived is the back office. Shopify announced Sidekick in July 2023 and said on 21 May 2025 that it could run reports, create segments, filter orders and set up discount codes "with the merchant's approval"; its help page (accessed November 2026) describes it editing orders and presenting changes for review before applying them, and its Fall 2026 edition claims daily sessions up 4.2 times year on year, a vendor figure. Shopware (June 2026) and Salesforce (July 2026) followed with their own admin agents.
+An admin assistant helps merchant staff inspect records and propose changes, such as a customer segment or a discount. When it can apply those changes, it becomes another writer to the merchant's systems. Shopify announced Sidekick in July 2023 and said on 21 May 2025 that it could run reports, create segments, filter orders and set up discount codes "with the merchant's approval"; its help page (accessed November 2026) describes it editing orders and presenting changes for review before applying them, and its Fall 2026 edition claims daily sessions up 4.2 times year on year, a vendor figure. Shopware (June 2026) and Salesforce (July 2026) followed with their own admin agents.
 
 Three things are the same across all of them: **the assistant acts through the platform's own APIs and permission model**; **every vendor describes a draft-and-review step**; and **the assistant's reach ends where the platform's data ends** (Sidekick cannot see Kestrel & Pine's WMS unless an app exposes it). The review step is a vendor default today and a setting someone can switch off; a merchandiser who lets an assistant "clean up" inventory has recreated the App That Wrote Stock. One writer per fact, and an assistant is not it ([[human-oversight-and-bounded-autonomy]]).
 
@@ -106,18 +130,22 @@ Two shapes exist as of November 2026, and the difference decides what a merchant
 
 A **commerce protocol** is a published contract (feed, cart, checkout, order, payment token) that lets any agent talk to any merchant without a bespoke integration, as EDI lets any retailer send any supplier an order ([[edi-and-e-invoicing]]). Four names recur, in layers.
 
-![Diagram: MCP carries the calls, UCP or ACP say what the calls mean, AP2 and the card networks carry the money, and a signature says who is calling](assets/images/45-ai-and-agentic-commerce/fig02-mcp-carries-calls-ucp-or-acp.jpeg)
-**Figure 3:** *MCP carries the calls, UCP or ACP say what the calls mean, AP2 and the card networks carry the money, and a signature says who is calling; a European checkout adds the shopper's own authentication at the end.*
+![Layers of an agent purchase: tool calls, commerce operations, payment authorization and processing, and caller identity.](assets/images/45-ai-and-agentic-commerce/fig02-mcp-carries-calls-ucp-or-acp.jpeg)
+**Figure 3:** *MCP exposes tools; UCP or ACP define commerce operations. AP2 can record payment authority, while payment providers and networks process the money. Request signatures identify the caller; buyer authentication is a separate step.*
 
 **MCP (Model Context Protocol)** is the transport: how an agent discovers and calls tools such as "search catalog" or "create cart". It says nothing about what a cart is ([[tool-ecosystems-and-mcp]]).
 
-**ACP** is OpenAI and Stripe's specification: feed, checkout, delegated payment, and since April 2026 cart, orders and authentication. Its repository calls it "in beta", governed by the two founders; its feed upload "currently targets the US".
+**ACP (Agentic Commerce Protocol)** is OpenAI and Stripe's specification: feed, checkout, delegated payment, and since April 2026 cart, orders and authentication. Its repository calls it "in beta", governed by the two founders; its feed upload "currently targets the US".
 
-**UCP** is the Google-led consortium standard: catalog, cart, checkout, identity linking and order, over REST or JSON-RPC with MCP "built in" and AP2 for payment. Its governance council is Google, Shopify and Stripe; its repository shows no version tags. Google said on 16 September 2026 that UCP "enables direct checkout for hundreds of thousands of brands and retailers", which counts enabled merchants, not transacting ones.
+**UCP (Universal Commerce Protocol)** describes commerce capabilities such as catalog, cart, checkout, identity linking and order. Merchant and application profiles advertise supported features and versions, so both sides can agree on the exchange. Its published [UCP specification, 2026-08-25](https://ucp.dev/2026-08-25/specification/overview/) supports several interfaces, including REST and MCP. Google said on 16 September 2026 that UCP "enables direct checkout for hundreds of thousands of brands and retailers", which counts enabled merchants, not transacting ones.
 
-**AP2** is the payment layer under UCP: signed mandates that give a "non-repudiable audit trail" of what the shopper authorized. Its repository holds samples and demos.
+**ACP and UCP overlap:** both cover shopping and purchasing, rather than dividing into payment versus commerce. Their contracts differ, so supporting one does not automatically support the other. The appendix [[ucp-beginners-tutorial]] follows discovery, checkout, payment and order confirmation step by step.
 
-**Agent identity** is the layer the others assume. Cloudflare proposed **Web Bot Auth** in May 2025: an agent signs each HTTP request and publishes its keys at a well-known address, because "user agent headers alone are easily spoofed". It is now an IETF working-group draft (29 October 2026) and underpins Visa's Trusted Agent Protocol and Mastercard's Agent Pay; Shopify's agent profiles work the same way, where "higher trust tiers unlock broader access, including direct checkout completion". Amazon, which sued Perplexity in November 2025 over its shopping agent, insists third-party agents "operate openly" ([[case-amazon]]; the identity model is in [[agent-identity-and-least-privilege]]).
+**AP2 (Agent Payments Protocol)** provides signed mandates recording what the shopper authorized. UCP can use it through an optional extension. AP2 does not itself process the charge; the merchant still needs a payment provider.
+
+**Agent identity** The merchant needs to identify the calling application, limit its permissions and connect each action to an accountable owner.
+
+is the layer the others assume. Cloudflare proposed **Web Bot Auth** in May 2025: an agent signs each HTTP request and publishes its keys at a well-known address, because "user agent headers alone are easily spoofed". It is now an IETF working-group draft (29 October 2026) and underpins Visa's Trusted Agent Protocol and Mastercard's Agent Pay; Shopify's agent profiles work the same way, where "higher trust tiers unlock broader access, including direct checkout completion". Amazon, which sued Perplexity in November 2025 over its shopping agent, insists third-party agents "operate openly" ([[case-amazon]]; the identity model is in [[agent-identity-and-least-privilege]]).
 
 ### Status as of 7 November 2026
 
@@ -127,8 +155,8 @@ Every row is volatile; re-check the primary source before relying on it.
 | --- | --- | --- | --- |
 | Instant Checkout (OpenAI, Stripe) | 29 Sep 2025 | Pulled back March 2026; "moving to Apps"; discovery with hand-off | US |
 | ACP (OpenAI and Stripe as "Founding Maintainers"; Apache 2.0) | 29 Sep 2025 | Beta; latest spec 17 Apr 2026 | Feed "currently targets the US" |
-| AP2 (Google with 60+ organizations) | 16 Sep 2025 | Specification and samples; used inside UCP | Payment layer |
-| UCP (council: Google, Shopify, Stripe, two seats open) | 11 Jan 2026 | Shopping spec "latest", no version tags; "hundreds of thousands" of merchants enabled | US; Canada and Australia "early next year"; UK later; EU not mentioned |
+| AP2 (Google with 60+ organizations) | 16 Sep 2025 | Specification and samples; optional mandates extension in UCP | Payment authorization records |
+| UCP (council: Google, Shopify, Stripe, two seats open) | 11 Jan 2026 | Published specification 2026-08-25; "hundreds of thousands" of merchants enabled | US; Canada and Australia "early next year"; UK later; EU not mentioned |
 | Shopify Agentic Storefronts | 10 Dec 2025 | Live; ChatGPT discovery only; direct checkout in Google, Copilot, Meta; Storefront MCP replaced by UCP endpoints; checkout needs signed requests | ChatGPT: must sell to US; Google: US, Canada, Australia |
 | Visa Intelligent Commerce and TAP; Mastercard Agent Pay | Apr and Oct 2025 | EU pilots with the shopper authenticating each purchase (Visa July 2026; Mastercard June 2026) | Pilot |
 | Worldline, ING, Mastercard | 2 Jun 2026 | One production pilot transaction (Netherlands) | Pilot |
@@ -150,9 +178,13 @@ The consequence for architecture is small and strict. **The cart the agent build
 ![Diagram: A European agent purchase as the 2026 pilots shaped it](assets/images/45-ai-and-agentic-commerce/fig03-european-agent-purchase-2026-pilots-shaped.jpeg)
 **Figure 4:** *A European agent purchase as the 2026 pilots shaped it: the agent builds the cart, the merchant finalizes price and promise, the shopper authenticates that exact cart, and the order carries the agent's identity for service and disputes.*
 
-**The AI Act.** Regulation 2024/1689 applies generally from 2 August 2026. Its Article 50 is the live obligation for commerce: an AI system that interacts with people must tell them so "unless this is obvious", and generated content must be marked as artificial in a machine-readable way. Search and recommendations are not high-risk uses ([[commerce-regulation]]).
+**The AI Act.** Transparency concerns whether shoppers recognize an automated interaction and can identify generated content.
 
-**Consumer law.** A CERRE issue paper of July 2026 argues that EU consumer law "implicitly assumes" a human makes the purchase decision; every protocol treats the agent as the consumer's instrument, a working assumption, not settled law.
+Regulation 2024/1689 applies generally from 2 August 2026. Its Article 50 is the live obligation for commerce: an AI system that interacts with people must tell them so "unless this is obvious", and generated content must be marked as artificial in a machine-readable way. Search and recommendations are not high-risk uses ([[commerce-regulation]]).
+
+**Consumer law.** Delegated buying raises a responsibility question: which terms did the customer authorize, and who answers when the agent acts outside them?
+
+A CERRE issue paper of July 2026 argues that EU consumer law "implicitly assumes" a human makes the purchase decision; every protocol treats the agent as the consumer's instrument, a working assumption, not settled law.
 
 **For a Dutch, Belgian or German merchant in November 2026, no live consumer channel lets an agent complete a checkout**: ChatGPT has no in-chat checkout anywhere; Google's covers the US, Canada and Australia; Copilot, Meta, Perplexity and Amazon are US-centered; the card-network pilots authenticate the shopper each time; Zalando's agent checkout is planned for 2027. The realistic 2026–2027 work is feed quality, discovery presence, and payment-side readiness through the PSP and the card networks.
 
@@ -269,7 +301,7 @@ Part X ends here, with the newest kind of actor asking the oldest question in th
 - [OpenAI shifts checkout plans](https://digitalcommerce360.com/2026/03/06/openai-shifts-checkout-plans-agentic-commerce-strategy/), Digital Commerce 360, 2026, and [Shopify says purchases are coming inside ChatGPT](https://www.modernretail.co/technology/shopify-says-purchases-are-coming-inside-chatgpt-through-agentic-storefronts-as-openai-retreats-on-instant-checkout/), Modern Retail, 2026 — the March 2026 retreat and the "integrity of transactions" argument.
 - [Announcing Agent Payments Protocol (AP2)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol), Google Cloud, 2025 — mandates and partners; [AP2 repository](https://github.com/google-agentic-commerce/AP2), n.d., accessed 2026-11.
 - [Agentic commerce: new AI tools and a protocol](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/), Google, 2026; [Universal Cart at Google Marketing Live](https://blog.google/products-and-platforms/products/shopping/shopping-updates-google-marketing-live/), Google, 2026; [Google Shopping holiday updates](https://blog.google/products-and-platforms/products/shopping/google-shopping-updates-holiday-shopping/), Google, 2026 — UCP launch, geography, "hundreds of thousands" enabled.
-- [ucp.dev](https://ucp.dev/), UCP Authors, 2026; [UCP MAINTAINERS](https://github.com/Universal-Commerce-Protocol/.github/blob/main/MAINTAINERS.md) and [repository](https://github.com/Universal-Commerce-Protocol/ucp), n.d., accessed 2026-11 — capabilities, transports, councils, absence of version tags.
+- [ucp.dev](https://ucp.dev/), UCP Authors, 2026; [UCP MAINTAINERS](https://github.com/Universal-Commerce-Protocol/.github/blob/main/MAINTAINERS.md) and [repository](https://github.com/Universal-Commerce-Protocol/ucp), n.d., accessed 2026-11 — capabilities, transports and councils; [UCP specification, 2026-08-25](https://ucp.dev/2026-08-25/specification/overview/) and [UCP and AP2](https://ucp.dev/documentation/ucp-and-ap2/), checked 2026-11-09 — versioned contracts and optional mandates extension.
 - [The agentic commerce platform](https://www.shopify.com/news/ai-commerce-at-scale), Shopify, 2026; [Winter '26 Edition](https://www.shopify.com/news/winter-26-edition-renaissance), Shopify, 2025; [Fall '26 Edition](https://www.shopify.com/editions/fall2026), Shopify, 2026 — Agentic Storefronts, Sidekick app extensions, the 4.2x figure.
 - [Agentic storefronts](https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts), [ChatGPT channel](https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/chatgpt) and [Google channel](https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/google), Shopify Help Center, n.d., accessed 2026-11 — buyer geography and product exclusions.
 - [Build for agents](https://shopify.dev/docs/agents), [Catalog](https://shopify.dev/docs/agents/catalog) and [Storefront MCP](https://shopify.dev/docs/apps/build/storefront-mcp), shopify.dev, n.d., accessed 2026-11 — agent profiles, trust tiers, cache limits, the MCP-to-UCP replacement.

@@ -15,7 +15,7 @@ logo: "assets/images/42-replatforming-and-migration/logo.jpeg"
 >
 > * **The documented failures were not feature failures.** Target's 2011 in-house platform went down at its first peak (the cause was never confirmed), Finish Line reverted in 2012 after seventeen days, Marks & Spencer lost 8.1% of online sales in the quarter after its 2014 relaunch. Load, performance, timing and customer habit broke them, not missing features, and one recovered only because the old platform was still running.
 > * **Migrate along seams, with a bridge that stays up.** The strangler approach moves one channel, one capability or one slice of traffic at a time behind a router or a copy of the flow, runs old and new side by side with a reconciliation that proves they agree, and keeps the old system operable until the new one has met real load.
-> * **Data migration is five migrations.** Products (identifiers must not change), customers (consent moves, passwords do not), orders (history is read, not re-created), gift cards and credit (liabilities that must balance to the cent) and URLs (every old address redirected) each need their own plan and check.
+> * **Data migration is five migrations.** Products (identifiers must not change), customers (consent moves, passwords do not), orders (history is read, not re-created), gift cards and credit (liabilities that must balance to the cent) and URLs (every old address accounted for) each need their own plan and check.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -85,7 +85,7 @@ What the cases share is the pattern this book calls **The Burned Bridge**: every
 
 ## The Strangler Approach for Commerce
 
-Martin Fowler's note on the **strangler fig** (first written in 2004, restated 22 August 2024) gives the alternative in one sentence: a gradual approach to modernizing a serious system, because plans to replace one wholesale tend to "go down in flames", replacement takes long, users cannot wait for features, and existing behavior is hard to pin down and partly unwanted. The name is from a fig that grows around a host tree until the tree is gone. In plain words: **put something in front of the old system, route one piece of its work to the new system, check, route the next piece, and switch the old system off only when nothing is routed to it any more.**
+The **strangler approach** replaces a system one piece at a time. Put a routing layer in front of the old system, direct one part of its work to the replacement, check the result, then move the next part. Retire the old system when nothing depends on it. This lets the merchant keep trading and learn from each transfer before committing the whole shop. Martin Fowler described the **strangler fig** pattern in 2004 and restated it on 22 August 2024, warning that wholesale replacement plans tend to "go down in flames" because replacement takes time, users need ongoing changes and existing behavior is hard to establish. The name comes from a fig growing around its host tree.
 
 Thoughtworks' *Patterns of Legacy Displacement* (20 July 2021, revised 5 March 2024) names the moves. **Transitional architecture**: temporary components built only to make the migration safe, and removed afterwards. **Event interception**: capture the changes flowing into the old system and send a copy to the new one. **Divert the flow**: route a slice of traffic or a business flow to the new system. **Legacy mimic**: make the new system look like the old one to the integrations that still expect it. **Dark launching**: run the new path without showing its result. **Canary release**: a small share of traffic first.
 
@@ -131,11 +131,13 @@ A platform's data is not one export. Each kind of data has its own owner, its ow
 | **Customers** | Accounts, addresses, consent, company accounts and price lists for B2B | Passwords are stored as one-way hashes and usually cannot move; consent must move with its proof; a deletion request mid-migration must reach both systems ([[privacy-and-customer-data]]) | A password reset flow tested before go-live; consent flags counted; the identity map kept ([[identity-and-master-data]]) |
 | **Orders** | History for support and returns; open orders in flight | Re-creating history fires every side effect again: notifications, stock reservations, invoices. Orders are read, not replayed ([[order-management]]) | History imported read-only with its original numbers; open orders listed and tracked by hand through the cutover window |
 | **Gift cards, store credit, loyalty points** | Balances, which are liabilities on the balance sheet ([[commerce-promotions]]) | A balance lost is money owed to a customer with no record; a balance duplicated is money given away twice | Sum of balances in old equals sum in new to the cent, signed off by finance |
-| **URLs and search presence** | Every product, category and content address | A redirect map that is incomplete loses rankings and customers who have bookmarked a page; the M&S quarter | Every old URL returns a redirect to its new equivalent; crawl the old sitemap after go-live |
+| **URLs and search presence** | Every product, category and content address | Missing redirects lose search traffic and bookmarked journeys | Map each old URL to a relevant permanent redirect or an intentional removal; crawl the saved URL list after go-live |
 | **Integrations and apps** | The 34 flows that read or write the old owner | Each one points at the old endpoint until somebody changes it: the Deprecated Endpoint of February 2027 in reverse ([[api-contracts-and-versioning]]) | The integration inventory with an owner and a cutover task per flow; a legacy mimic where a flow cannot change in time |
 
 ![Five handcarts carrying products, customers, orders, gift cards and URLs from an old system to a new one.](assets/images/42-replatforming-and-migration/42-five-migrations.jpeg)
 **Figure 3:** *A platform's data is not one export: products, customers, orders, gift cards and URLs each move separately, with their own trap and their own check.*
+
+Preserve search visibility as well as URLs: localized-page links, product markup and crawl rules need to move too. [[storefront-architecture]] explains these technical search-engine optimization (SEO) requirements. A removed page without a suitable replacement should return “not found” (`404`) or “gone” (`410`), not redirect to the homepage.
 
 The order history deserves one more sentence. It is tempting to "migrate the orders" by creating them in the new system. Every order created in a commerce system fires something: a confirmation e-mail, a reservation, a fulfillment request, an invoice. Importing 293,000 D2C orders as new orders is 293,000 e-mails. **History is imported as history**, flagged, read-only, with its original numbers and dates, or it is left in the old system behind a read-only link for support.
 
@@ -239,7 +241,7 @@ The reconciliation's first fortnight is the part worth reading twice. The parall
 5. Are there two writers for any fact during the migration, and if so, why?
 6. How are orders imported: as history with their original numbers, or re-created with their side effects?
 7. Do the gift-card and store-credit balances sum to the same number in both systems, and who signed that off?
-8. Does every old URL redirect, and who crawled the old sitemap afterwards?
+8. Does each old URL have the intended redirect or removal response, and who checked the saved URL list afterwards?
 9. Which of the thirty-four integrations reads or writes the thing that is moving, who owns each, and which need a mimic?
 10. When is the next peak, and what is frozen around it?
 

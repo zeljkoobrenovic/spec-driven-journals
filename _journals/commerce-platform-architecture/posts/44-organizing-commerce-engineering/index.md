@@ -83,6 +83,8 @@ Two rules make the map more than documentation. **Every row has a technical owne
 
 ## Team Shapes for a Commerce Merchant
 
+Team boundaries decide where changes can be made independently and where people must coordinate. If each team owns only one vendor system, a customer-facing improvement can require a handoff at every integration.
+
 Conway's 1968 paper observed that organizations "are constrained to produce designs which are copies of the communication structures of these organizations." In a merchant this works in reverse: a landscape of a dozen vendors pushes the organization into one team, or one person, per vendor, and the handoffs between systems become handoffs between people who report to different managers. **The organization copies the vendor landscape, and the vendor landscape's gaps become the organization's.**
 
 *Team Topologies* (Skelton and Pais, 2019) gives the vocabulary that fits a small team. Four team types: **stream-aligned** (aligned to a flow of work from a segment of the business domain), **platform** (an internal product that accelerates stream-aligned teams), **enabling** (helps a team overcome obstacles and detects missing capabilities) and **complicated-subsystem** (where deep technical expertise is needed). Three interaction modes: collaboration, X-as-a-service, facilitation. One premise: teams can only handle so much complexity before breaking down. The vocabulary was written for software companies; the mapping to a merchant is mine.
@@ -153,7 +155,9 @@ The versioning row deserves emphasis because it is the Pulled Rug's calendar. Ke
 
 Governance in a merchant has one purpose: to keep the ownership decisions true after the meeting ends. Heavy process (architecture boards, review gates, templates that take an afternoon) will not survive a team of fourteen with a peak season. Light process can, if it is specific.
 
-**Decision records.** Michael Nygard's note of November 2011 defined the architecture decision record: a short text file with title, context (the forces at play, "described as neutral facts, often in tension"), decision ("We will…"), status (proposed, accepted, deprecated, superseded) and consequences. Without one, a newcomer can only "blindly accept the decision" or "blindly change it". In a merchant the decisions worth a record are the ownership ones (which system is the system of record for stock, price, product, order), the vendor ones (why this OMS, with what exit) and the app ones (which apps may write stock). Kestrel & Pine's Waypoint decisions W1–W8 are ADR-shaped; Noor numbered them as the first eight records *(illustrative)*, and the 2029 review is the date on which W4 is re-opened.
+**Decision records.** A decision record preserves a choice, its reasons and its consequences so someone joining later can judge whether it still holds.
+
+Michael Nygard's note of November 2011 defined the architecture decision record: a short text file with title, context (the forces at play, "described as neutral facts, often in tension"), decision ("We will…"), status (proposed, accepted, deprecated, superseded) and consequences. Without one, a newcomer can only "blindly accept the decision" or "blindly change it". In a merchant the decisions worth a record are the ownership ones (which system is the system of record for stock, price, product, order), the vendor ones (why this OMS, with what exit) and the app ones (which apps may write stock). Kestrel & Pine's Waypoint decisions W1–W8 are ADR-shaped; Noor numbered them as the first eight records *(illustrative)*, and the 2029 review is the date on which W4 is re-opened.
 
 **Standing rules.** Rules that need no meeting, because they are checkable from the map:
 
@@ -173,7 +177,7 @@ A merchant that buys everything still needs its own product managers, for a reas
 
 ## Engineering Practices on Rented Software
 
-**Environments and sandboxes.** On SaaS the merchant never gets a full copy of production. Shopify's development stores are for development and testing only, cannot process real transactions and are capped at 250 per organization (accessed November 2026); Stripe's sandboxes are isolated test environments where "card networks and payment providers don't process payments" (accessed November 2026); Adobe Commerce Cloud Pro provides integration, staging and production environments, with staging on dedicated hardware matching production (accessed November 2026).
+**Environments and sandboxes.** An isolated test environment lets a team try changes without affecting customers or moving real money. What it reproduces varies by vendor. Shopify's development stores are for development and testing only, cannot process real transactions and are capped at 250 per organization (accessed November 2026); Stripe's sandboxes are isolated test environments where "card networks and payment providers don't process payments" (accessed November 2026); Adobe Commerce Cloud Pro provides integration, staging and production environments, with staging on dedicated hardware matching production (accessed November 2026).
 
 The gap is the chain: no vendor offers a sandbox of platform plus payment provider (PSP) plus ERP plus WMS together. Zalando's 2020 account of its Cyber Week preparation describes order-flow simulators that place marked test orders which fulfillment skips, exercising inventory and payments in production.
 
@@ -183,7 +187,9 @@ A small team can copy the pattern at small scale: a test customer, a test SKU, a
 
 **Feature flags.** Pete Hodgson's taxonomy of October 2017 (release, experiment, ops and permissioning toggles) gives the team a vocabulary: release toggles to ship unfinished checkout changes dark, ops toggles as the peak-day switch-off list of [[peak-load-and-reliability]], permissioning toggles for staff-only or B2B-only features.
 
-**AI coding tools.** The dated evidence is mixed and worth stating plainly. DORA's 2024 report (October 2024) found more than 75% of respondents relying on AI for at least one daily task, with a 25% increase in adoption associated with small gains in documentation and code quality but an estimated 1.5% lower delivery throughput and 7.2% lower delivery stability. DORA's 2025 report calls AI "an amplifier, magnifying an organization's existing strengths and weaknesses".
+**AI coding tools.** These tools help developers write, explain and revise code. For a merchant's integration team, the useful question is whether that help produces dependable changes faster, including review and recovery work.
+
+The dated evidence is mixed and worth stating plainly. DORA's 2024 report (October 2024) found more than 75% of respondents relying on AI for at least one daily task, with a 25% increase in adoption associated with small gains in documentation and code quality but an estimated 1.5% lower delivery throughput and 7.2% lower delivery stability. DORA's 2025 report calls AI "an amplifier, magnifying an organization's existing strengths and weaknesses".
 
 METR's randomized trial of July 2025, with sixteen experienced developers on 246 tasks in mature repositories, measured a 19% *increase* in completion time with early-2025 tools, while the developers believed they had been 20% faster. Shopify's CEO wrote to staff in April 2025 that "reflexive AI usage" is a baseline expectation and that teams must show why AI cannot do a task before asking for headcount.
 
@@ -218,7 +224,9 @@ The judgement: the team shape should change one stage *before* the system landsc
 
 **The agency contract ends.** On exit the agency holds the theme repository, the app credentials and the scripts. Detection: the merchant cannot deploy a theme change without the agency. Recovery: repository and credentials transfer as a condition of every statement of work, from the first one; a handover run through the map, row by row.
 
-**The vendor retires the mechanism.** Shopify's retirement of Scripts on 30 June 2026 is the dated example of a platform ending an extension mechanism on a published date; Adobe's June 2027 enforcement of supported versions on its cloud is another. Detection: the vendor card's calendar. Recovery: migration to the replacement mechanism (Functions, in Shopify's case) planned a year ahead, owned by the row's owner ([[extensibility-and-app-ecosystems]]).
+**The vendor retires the mechanism.** An extension or integration can stop working when its vendor withdraws the interface it uses.
+
+Shopify's retirement of Scripts on 30 June 2026 is the dated example of a platform ending an extension mechanism on a published date; Adobe's June 2027 enforcement of supported versions on its cloud is another. Detection: the vendor card's calendar. Recovery: migration to the replacement mechanism (Functions, in Shopify's case) planned a year ahead, owned by the row's owner ([[extensibility-and-app-ecosystems]]).
 
 **The Secret Agent returns.** A new app, installed by a marketer to run a pre-order campaign, asks for an inventory-write scope and gets it. Detection: the quarterly app review, or better, an install rule that routes any write scope on stock, price or orders through the integration pair. Recovery: revoke the scope, reconcile the stock the app touched (the May 2027 reconciliation found 2.3% of active variants different, most from such apps), and record the decision.
 

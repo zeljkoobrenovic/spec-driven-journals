@@ -56,6 +56,8 @@ The right-hand column is the subject of the rest of this chapter. The promise wa
 
 ## commercetools: From Flagship to Layers
 
+The commerce engine supplies operations such as pricing, carts and orders through APIs, while the merchant chooses the storefront and surrounding components. This separation is the role commercetools plays in the composable model.
+
 **commercetools** was founded in Munich in 2006, acquired by the German retail group REWE in 2015, and funded in 2019 ($145 million from Insight Partners at a $300 million valuation) and 2021 ($140 million led by Accel at $1.9 billion), as TechCrunch summarized in February 2025. It is the composable flagship: founding member of the alliance, a Leader in Gartner's Magic Quadrant for Digital Commerce every year since 2020, and, as of its 22 April 2026 release, past a "$100B GMV run-rate" with more than 600 million orders a year across 36 countries. (**GMV**, gross merchandise volume, is the value of orders through the platform, not the vendor's revenue; a **run-rate** annualizes a recent period and is not a full-year figure.)
 
 The turn is in its releases.

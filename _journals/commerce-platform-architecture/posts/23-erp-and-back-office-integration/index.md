@@ -123,7 +123,7 @@ Waypoint's finance-only rule is the OMS-as-hub position written as an ownership 
 
 ## Batch or Events: The ERP's Rhythm
 
-ERP integration is batch by default, and the vendors say so. Shopify's enterprise guidance on ERP integration (updated August 2026) says financials "sync in real time or through a daily batch". Business Central's connector runs its customer, company, order and inventory synchronizations as scheduled job-queue entries and recommends "every 15-30 minutes" for inventory. OneStock's "hourly or nightly" is the same observation from a competitor's side.
+A **batch** exchanges accumulated changes on a schedule; an **event** reports a particular change for consumers to process. The choice determines how long another system waits for a new invoice, order or stock figure. ERP connectors commonly use scheduled jobs: Business Central recommends inventory synchronization every 15–30 minutes, while OneStock describes hourly or nightly exchanges. Shopify's ERP guidance allows real-time financial synchronization or a daily batch (updated August 2026). Those are operating choices to check against each flow's required freshness.
 
 **Finance can often work in batches; availability needs fresher answers.** A complete, reconciled daily feed is more useful to finance than a fast feed that silently loses orders. Let each fact's owner publish changes, then let consumers process them at the cadence their work requires.
 

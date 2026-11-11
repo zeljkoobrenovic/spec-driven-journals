@@ -397,8 +397,8 @@ Choosing, changing and organizing platforms, and where AI fits. [[build-buy-or-a
 | **Assistant / agent** | An **assistant** is an LLM in a product that helps a person; an **agent** is an assistant given tools and permission to use them, so it can create a cart, place an order or change a stock figure. | [[ai-and-agentic-commerce]] |
 | **Agentic commerce** | Agents that discover, compare and buy on a shopper's behalf, inside a chat product or a marketplace app. | [[ai-and-agentic-commerce]], [[case-amazon]] |
 | **Commerce protocol** | A published contract (feed, cart, checkout, order, payment token) that lets any agent talk to any merchant without a bespoke integration, as EDI lets any retailer send an order. | [[ai-and-agentic-commerce]] |
-| **MCP (Model Context Protocol)** | The transport layer for agents: how an agent discovers and calls tools such as "search catalog" or "create cart". | [[ai-and-agentic-commerce]] |
-| **ACP / UCP / AP2** | Agentic commerce protocols as of 2026: **ACP**, OpenAI and Stripe's specification (feed, checkout, delegated payment, later cart and orders); **UCP**, the Google-led consortium standard (catalog to order, MCP built in); **AP2**, the payment layer under UCP, with signed mandates as an audit trail of what the shopper authorized. | [[ai-and-agentic-commerce]] |
+| **MCP (Model Context Protocol)** | A protocol through which an application discovers and calls tools such as "search catalog" or "create cart"; UCP can expose its commerce operations through this interface. | [[ai-and-agentic-commerce]], [[ucp-beginners-tutorial]] |
+| **ACP / UCP / AP2** | **ACP**, OpenAI and Stripe's commerce specification, covers feeds, carts, checkout, orders and delegated payment. **UCP** covers overlapping commerce workflows through discoverable capabilities and profiles. **AP2** records payment authority in signed mandates; UCP supports it as an optional extension, while payment providers process the charge. | [[ai-and-agentic-commerce]], [[ucp-beginners-tutorial]] |
 | **Agent identity** | Proof of which agent is calling and for whom, the layer the protocols assume; Web Bot Auth, for example, has the agent sign each request with published keys. | [[ai-and-agentic-commerce]] |
 | **Agent readiness** | Making a merchant usable by agents without building one: accurate product data, availability and the delivery promise by API, and order status by API (Waypoint W8). | [[ai-and-agentic-commerce]] |
 
@@ -465,7 +465,7 @@ The laws, standards and protocols the chapters cite, with their scope (EU, NL, B
 | **INFORM Consumers Act** | US | Marketplace seller verification | Effective 27 June 2023: marketplaces collect and verify bank, tax and contact data from high-volume sellers. | [[commerce-regulation]] |
 | **FTC rule on fake reviews** | US | Consumer reviews rule | From 14 August 2024, bans fake or AI-generated reviews, sentiment-conditioned incentives, undisclosed insider reviews and review suppression. | [[commerce-search-and-discovery]], [[commerce-regulation]] |
 | **US state privacy laws** | US | Opt-out privacy model | At least 19 state laws as of 2025, built on opt-out rather than the EU's opt-in. | [[commerce-regulation]] |
-| **MCP / ACP / UCP / AP2** | global | Agentic commerce protocols | The 2025–2026 protocols that let agents call tools, check out and pay; versions and backers change quickly, so date every claim. | [[ai-and-agentic-commerce]] |
+| **MCP / ACP / UCP / AP2** | global | Agentic commerce protocols | MCP exposes tools; ACP and UCP define commerce exchanges; AP2 records payment authority. Versions and backers change quickly, so date every claim. | [[ai-and-agentic-commerce]], [[ucp-beginners-tutorial]] |
 
 ## <a id="g-kestrel"></a>Kestrel & Pine Names (Fictional)
 

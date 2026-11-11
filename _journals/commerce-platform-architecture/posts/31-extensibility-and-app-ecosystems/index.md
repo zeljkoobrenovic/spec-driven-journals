@@ -55,7 +55,7 @@ Noor's question to Milan was not "which app did it". It was: **who in this compa
 
 ## Five Ways to Extend a Platform
 
-A commerce platform is a promise-keeping machine that many businesses share. Shopify's annual report for the year ended 31 December 2025 (filed 11 February 2026) describes its platform as "'single branch' software, which means that all of our merchants use the latest version", serving "millions" of merchants with "more than 21,000 apps" in its App Store at year end. One codebase cannot carry a million businesses' particular needs, so the long tail of behavior lives in apps; at a different scale, that is why SAP Commerce describes itself as "a flexible, modular architecture based on extensions".
+Merchants need behavior that a shared platform's core does not provide. **Extensions** add that behavior through defined entry points, allowing the platform to serve different businesses without a separate core for each. Shopify's annual report for the year ended 31 December 2025 (filed 11 February 2026) describes its platform as "'single branch' software, which means that all of our merchants use the latest version", serving "millions" of merchants with "more than 21,000 apps" in its App Store at year end. At a different scale, SAP Commerce describes itself as "a flexible, modular architecture based on extensions".
 
 Three things decide how dangerous an extension is: **where it runs** (inside the platform's process or outside it), **what it may touch** (everything the platform can reach, or only the data its permissions cover) and **how tightly it is coupled to the platform's version** (whether a release can break it silently, or whether it talks to a versioned interface with a stated support window).
 

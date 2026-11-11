@@ -67,6 +67,8 @@ The last two rows bypass every other control: a skimmer does not need to beat th
 
 ## Shared Responsibility: What the Platform Does and What You Must Do
 
+Buying a hosted platform divides security work between vendor and merchant. The vendor can secure its infrastructure while an unsafe app, exposed key or poorly managed staff account still creates a route into the shop.
+
 The line between what the vendor does and what the merchant does is published. Adobe's shared-responsibility model for Adobe Commerce on cloud infrastructure (n.d., accessed November 2026) is the most explicit: Adobe maintains the core code, the operating system, global firewall rules and PCI certification for the infrastructure; the merchant secures "custom code and integrations with third-party applications", applies patches, manages user access and handles its own incidents.
 
 Shopify states that it is "certified Level 1 PCI DSS compliant" and that the certification "extends by default to all stores powered by Shopify", while adding that "there are also steps you will need to take on your own" (Shopify, n.d., accessed November 2026).
@@ -116,6 +118,8 @@ Two other requirements recur. **Requirement 12.8** makes the merchant responsibl
 
 ## Card Testing: The Attack and the Controls
 
+Card testing uses a merchant's payment or card-saving interface to discover which stolen card details still work. The merchant bears processing costs and disruption even when the attempts do not become genuine orders.
+
 Stripe's documentation is the clearest public description of the attack (Stripe, "Protect yourself from card testing", n.d., accessed November 2026). Attackers prefer **saving a card** to paying with it, because card-setup authorizations "don't typically show up on cardholder statements". The symptoms are a spike in failed payments, a spike in HTTP 402 responses (the status code a payment API returns for a declined charge) and low-value payments "often with nonsensical customer names and emails". The consequences outlast the night: in Stripe's words, "a high decline rate might damage the reputation of your business with card issuers and card networks".
 
 ![Diagram: Card testing on the Card-Testing Night](assets/images/34-commerce-security/fig02-card-testing-card-testing-night-every.jpeg)
@@ -155,6 +159,8 @@ Three controls carry the weight: **rate limits and bot management on the login**
 **Inventory hoarding** turns the cart into an attack surface: if a cart holds stock for 30 minutes, a bot can hold a launch's units for 30 minutes at no cost. The control is the reservation model, not the edge: a short hold, extended only by progress through checkout, and a limit per account during launches ([[inventory-and-availability]]). **Scraping** is tolerated selectively: comparison and search engines scrape, so the typical policy allows product pages, challenges cart and checkout, and rate-limits the storefront API.
 
 ## Skimmers: The Attack in the Shopper's Browser
+
+A web skimmer is malicious code that copies payment or personal information as the shopper enters it. Code running on an otherwise legitimate checkout page can steal data before the merchant's payment provider receives it.
 
 The British Airways breach of 2018 remains the clearest public record of web skimming, though it is eight years old and predates PCI DSS v4. The attacker entered BA's network on 22 June 2018 with a stolen third-party login that had no multi-factor authentication, found a saved privileged credential, and between 14 and 25 August 2018 added 22 lines of JavaScript to the payment pages that sent card details to an attacker-controlled site; roughly 429,612 people's data was potentially accessible, and the UK Information Commissioner's Office issued a £20 million penalty on 16 October 2020 (Wikipedia, citing the ICO penalty notice, 2020).
 

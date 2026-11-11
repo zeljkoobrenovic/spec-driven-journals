@@ -202,7 +202,9 @@ The approach changes with scale more than most topics in this book, because stoc
 
 ## In Practice
 
-The dated vendor evidence is above: Shopify's states added in 2023 and re-labeled in 2026, commercetools' 10-second window, Adobe's reservations and sourcing rules (2026), Business Central's compare-then-send sync (2026), Walmart's partition per item and store (2020). One more finding belongs here. **The counted fact is itself often wrong.** DeHoratius and Raman examined nearly 370,000 inventory records from 37 stores of one US retailer and found 65% inaccurate (*Management Science*, April 2008). The study is old, pre-dates RFID and concerns one retailer; use it as the field's classic finding, not a current rate. Later reviews cite 20% to 67% across studies. That is why cycle counting (counting a small part of the stock on a rolling schedule, so errors are found continuously) and safety buffers exist.
+Synchronizing every stock copy still fails if the original count is wrong. **Cycle counting** checks a small part of physical stock on a rolling schedule so discrepancies can be found and corrected; safety buffers reduce the risk while uncertainty remains.
+
+DeHoratius and Raman found 65% of nearly 370,000 inventory records inaccurate across 37 stores of one US retailer (*Management Science*, April 2008). This is an old, pre-RFID study of one retailer, not a current industry rate; later reviews report 20% to 67% across studies. It explains why counting accuracy deserves its own controls alongside the integration mechanisms discussed above.
 
 ### Kestrel & Pine, worked
 

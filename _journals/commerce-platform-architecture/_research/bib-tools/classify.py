@@ -110,7 +110,7 @@ TYPE_DOM = [  # on the URL, first match wins; anything unmatched is practitioner
      r'experienceleague\.adobe|learn\.microsoft|help\.sap|userapps\.support\.sap|sap\.github\.io|support\.google|sell\.amazon|'
      r'stripe\.com|adyen\.com|mollie\.com|commercetools\.com|shopware\.com|bigcommerce\.com|woocommerce\.com|prestashop\.com|'
      r'magento|mage-os\.org|odoo\.com|picqer\.com|akeneo\.com|inriver\.com|lightspeedhq|ccvshop|katapull\.nl|algolia\.com|elastic\.co|'
-     r'manh\.com|fluentcommerce|kibocommerce|onestock-retail|celigo\.com|channelengine|gorgias\.com|twilio\.com|segment\.com|'
+     r'manh\.com|dematic\.com|fluentcommerce|kibocommerce|onestock-retail|celigo\.com|channelengine|gorgias\.com|twilio\.com|segment\.com|'
      r'littledata|loopreturns|jtl-software|plentyone|elasticpath|medusajs|saleor\.io|salesforce\.com|confluent\.io|'
      r'aws\.amazon\.com|cloud\.google\.com|github\.com|kubernetes\.io|jumbo\.com|ideal\.nl|klarna\.com|visa\.|mastercard|'
      r'cloudflare\.com|vercel\.com|netlify|contentful|bol\.com|zalando\.com|amazon\.com|sendcloud|myparcel|postnl|dhl|dpd|'

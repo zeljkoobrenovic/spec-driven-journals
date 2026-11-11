@@ -174,6 +174,8 @@ For products, matching is simpler and stricter. The GTIN is the match key across
 
 ### Consent travels with the identity
 
+Merging customer records must preserve what the person agreed to. An address supplied for delivery does not become permission to send marketing when two accounts are joined.
+
 The General Data Protection Regulation (GDPR), the EU's personal-data law, defines consent as a freely given, specific, informed and unambiguous indication of the person's wishes (Article 4(11)) and requires the controller to be able to demonstrate that consent was given (Article 7(1)). "Demonstrate" is a data requirement: the record must hold when, where and to what the person agreed, which is why Shopify's consent mutation records "when and where the customer gave or withdrew consent". A merge must carry that evidence forward, with its source, rather than recompute consent from whichever record survived. The legal side belongs to [[privacy-and-customer-data]].
 
 ## The Choices

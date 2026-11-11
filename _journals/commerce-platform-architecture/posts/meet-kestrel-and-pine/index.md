@@ -80,7 +80,7 @@ The largest account is **Bergzicht Outdoor**, a fictional Dutch outdoor chain wi
 
 Belgian business customers have received **Peppol** e-invoices (a European network for structured electronic invoices) since January 2026 ([[edi-and-e-invoicing]]).
 
-**Marketplaces.** **bol** (NL and BE), **Amazon.de** and **Zalando** (DE and NL), all through **the marketplace connector**, a channel integration service that publishes listings, pulls orders and pushes stock levels. About **40%** of marketplace units for Germany are fulfilled by the marketplace's own fulfillment program from stock Kestrel & Pine sends there in advance, a location outside its control ([[marketplaces-and-channel-integration]]).
+**Marketplaces.** Kestrel & Pine also sells through other companies' shopping sites: **bol** (NL and BE), **Amazon.de** and **Zalando** (DE and NL). **The marketplace connector**, a channel integration service, publishes listings, pulls orders and pushes stock levels. About **40%** of marketplace units for Germany are fulfilled by the marketplace's own fulfillment program from stock Kestrel & Pine sends there in advance, a location outside its control ([[marketplaces-and-channel-integration]]).
 
 ## The Volumes Every Design Is Sized Against
 

@@ -55,7 +55,7 @@ A smaller post from April 2016 is the most honest about the first months: a team
 
 ## The Cost of Distributed Data, Stated Early
 
-The clearest early statement of what the split would cost came not from the shop teams but from business intelligence. In September 2015 a Zalando post observed that the monolith's "consolidation of data in a single place makes business intelligence fairly simple", whereas "with each service owning its data, data is spread over a significantly larger number of cloud-based microservices"; article and order data alone were spread across eight PostgreSQL databases. Zalando's response was to deploy Kafka, a message log, on AWS "to make our event data available for downstream systems", and to plan a data lake.
+When services own separate databases, a business report must bring their facts back together. An order total and a product category no longer necessarily live in the same place, so analytics needs an explicit collection and matching process. In September 2015 a Zalando post observed that the monolith's "consolidation of data in a single place makes business intelligence fairly simple", whereas "with each service owning its data, data is spread over a significantly larger number of cloud-based microservices"; article and order data alone were spread across eight PostgreSQL databases. Zalando's response was to deploy Kafka, a message log, on AWS "to make our event data available for downstream systems", and to plan a data lake.
 
 Two terms. An **event** is a message sent the moment something happens (an order placed, a price changed) so other systems can react. An **event bus** is the shared channel on which services publish events and others subscribe.
 
@@ -66,6 +66,8 @@ By May 2017 a Zalando post on "third-generation microservices" described the int
 > **INFERENCE, NOT DOCUMENTED:** This is the earliest honest statement in the record of the rule [[events-consistency-and-reconciliation]] is built on: once each system owns its own data, there is no single place to query, so analytics and reconciliation need a stream of what happened. Kestrel & Pine meets this problem without a single microservice: its thirteen systems hold orders in four places and product data in four, and its data warehouse has three definitions of an order (Waypoint decision W7 picks one). An Omnichannel merchant meets the *data* problem of distribution long before the *team* problem, and should take the event-stream lesson without the service count.
 
 ## The API Guild and the Guidelines
+
+Shared API rules let teams and external partners integrate without relearning every interface. Agreeing on names, message shapes and change policies also makes incompatibilities easier to catch before release.
 
 The piece of Zalando's 2015 work that is still alive, still public and still maintained in 2026 is its API standard. It began as the **API Guild** in March 2015: an informal group of about 20 people who set standards and review APIs as "a sounding board and review resource, not an approval board, to avoid bottlenecks", spending about 10% of their week on it. The September 2015 post explains why it mattered to the business: Zalando's "open platform strategy relies on public APIs used by external partners", so "We cannot afford to break our APIs", and "Ideally, all Zalando APIs should look like the same author created them".
 
@@ -114,7 +116,7 @@ The evidence does not support "microservices failed at Zalando". It supports som
 
 ## 2025: When the Event Stream Fell Behind
 
-The 2025 post deserves its own section because it is the most useful single document in the case for a merchant, and because it is the Black Friday Oversell told by a platform.
+Publishing every change as an event gives each receiving system work to process and a copy to maintain. If receivers fall behind, a price or stock answer can be stale even though the source is correct. Zalando's 2025 account shows this failure in a commerce pipeline.
 
 Zalando's price and stock updates were published as events. Consumers, the systems that needed current prices and stock, subscribed to the stream and maintained their own copies. The March 2025 post "From Event-Driven to API" reports what happened at scale: "over 90% of each payload unchanged" was being reprocessed, because an event carried the whole record even when one field had changed; during Cyber Week events "could be delayed by up to 30 minutes"; and teams that could not consume the streams fast enough used other sources, producing "divergent versions of product data". The pipeline was replaced by a synchronous, low-latency **Product Read API** (PRAPI): callers ask for the current price and stock and get an answer now.
 
@@ -165,6 +167,8 @@ The FY2025 fact sheet (12 March 2026) gives the scale around this: GMV €17,560
 > **INFERENCE, NOT DOCUMENTED:** Zalando's platform story is Amazon's in European form and on a European timetable: marketplace (2011), then ship-from-store (2018), then fulfillment for partners, then fulfillment for anyone on any channel (2023), then the shop software itself (SCAYLE, in the group from 2025). The architectural consequence is the one [[case-amazon]] drew: **one stock pool serving several seller-of-record models and several demand channels**, which is the Omnichannel-stage problem (own site, stores, wholesale, marketplaces) at a much larger scale. Two cautions are in the record. Connected Retail shows that a channel built on its own technology gets consolidated once the general program can do the job. And the partner share falling after the ABOUT YOU merger shows that an acquisition imports the acquired company's model mix, not only its revenue ([[commerce-scaling-stages]]).
 
 ## AI at Zalando: Discovery First, Then Identity
+
+A conversational shopping assistant helps a customer describe and refine a search. Giving software authority to act on that customer's behalf adds a different requirement: the system must carry the customer's permissions without exposing their credentials.
 
 On 19 April 2023 Zalando announced a beta "fashion assistant powered by ChatGPT" for selected customers in four countries, letting them describe what they want in their own words and refine the results in conversation. The annual report for 2025 says the Zalando Assistant "was used by over 6 million customers" that year, and that Zalando sees "the emerging channel of agentic commerce as a great opportunity" while noting "the rise of AI agents as digital gatekeepers".
 

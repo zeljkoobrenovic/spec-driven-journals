@@ -112,6 +112,8 @@ The soft opt-in deserves a sentence because every merchant asks about it. The eP
 
 ## Consent, Cookies and Tracking
 
+A consent choice must control what the shop and its connected tools actually do. Recording a preference in a banner is insufficient if tracking scripts ignore it or another system continues the marketing the customer declined.
+
 Consent lives in two laws. The GDPR defines it (Article 4(11)) as a freely given, specific, informed and unambiguous indication of the person's wishes by a statement or a clear affirmative action, and requires the controller to be able to demonstrate it (Article 7(1)). The ePrivacy Directive (Article 5(3), as amended in 2009) adds a rule about the device: storing information on, or reading information from, a user's device is allowed only with consent after clear information, except for what is strictly necessary to transmit a communication or to provide a service the user explicitly asked for.
 
 In plain words: the cart cookie and the language choice need no consent; the analytics tag, the advertising pixel and the personalization script do, before they fire. The regulators Kestrel & Pine answers to agree on the substance:
@@ -140,6 +142,8 @@ The design consequence joins this chapter to the previous one. **Consent is stat
 
 
 ## Data Subject Requests Across Many Systems
+
+A customer may ask to see, correct or delete personal data. The merchant must locate the relevant copies and coordinate a response, even when different vendors hold the account, orders and marketing history.
 
 The GDPR requires the controller to act on a request "without undue delay and in any event within one month", extendable by two months for complex or numerous requests (Article 12(3)). What makes it hard is not the law but the fan-out: one person, many systems, a different right answer in each. Three parts make it a job.
 

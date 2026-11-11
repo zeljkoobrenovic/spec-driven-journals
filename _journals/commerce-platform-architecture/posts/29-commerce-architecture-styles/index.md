@@ -109,6 +109,8 @@ Both are consolidations of *one subsystem* that had been cut too fine. The trans
 
 ### Composable and MACH: a style whose definition moved (2020–2026)
 
+Composable commerce assembles separate products through their interfaces. The label describes a purchasing and integration approach; an industry alliance's changing definition needs to be read alongside the concrete responsibilities it leaves with the merchant.
+
 The MACH Alliance was announced in June 2020 by commercetools, Contentstack, EPAM and Valtech, with the acronym spelled out as "Microservices, API-first, Cloud-Native, and Headless". It passed 100 members in December 2023. In August 2025 it listed five guiding principles without restating the acronym, and as of November 2026 its principles page states three (Open, Composable, Connected) and no longer defines microservices or headless at all.
 
 Its own February 2026 survey of 600 enterprise technology decision-makers reports that 37% cite integration complexity as a primary concern, a finding against interest from a vendor alliance whose respondents are its adopters.
@@ -118,6 +120,8 @@ In the same period commercetools, the alliance's flagship vendor, cut about 10% 
 What a composable vendor sells as a unit is visible in its documentation. A commercetools Project is "the top-level container" for a merchant's data, isolated from other Projects, with published limits (25 API Extensions per Project as of November 2026). Its API Extensions, synchronous call-outs to the merchant's own code before a cart or order is saved, carry a plain warning: "if it fails or takes a second longer to return a result, the whole API call fails or takes a second longer." That sentence is the distribution cost of microservices, delivered to the merchant's doorstep. And none of the accounts above describes a company with fourteen people in technology.
 
 ## What Each Style Costs
+
+Splitting a system lets teams change and deploy parts independently. It also turns some local calls into network requests that can fail or arrive late, leaving the merchant to coordinate records across systems.
 
 Martin Fowler's 2015 "Microservice Trade-Offs" names the benefits as strong module boundaries, independent deployment and technology diversity, and the costs as **distribution** (remote calls are slower and can fail), **eventual consistency** ("because of their laudable insistence on decentralized data management") and **operational complexity** ("there's just no way to handle dozens of services without the automation and collaboration that continuous delivery fosters"). His "MonolithFirst" of the same year adds the point that decides most cases: "even experienced architects working in familiar domains have great difficulty getting boundaries right at the beginning", so "the premium of microservices is a drag you should do without" early on.
 
@@ -143,6 +147,8 @@ The people cost is the one the pitch decks omit. Netflix's own account of its mo
 | Right when | One team, one product, early | Several teams, one product, a decade of change ahead | Hundreds of engineers; the organization is the bottleneck | Capabilities differ in pace and the merchant can staff the joins |
 
 ## Modularity Sized to the Team
+
+A team must be able to understand and operate the boundaries it creates. Separate services still require coordination when their owners cannot make changes independently.
 
 Melvin Conway wrote in 1968 that organizations "are constrained to produce designs which are copies of the communication structures of these organizations". Every account above is Conway's observation at work: Amazon's two-pizza teams produced services; Zalando's 260 teams produced 4,000 applications; Shopify's one release train produced one deployment unit with internal ownership. Team Topologies, the 2019 book by Matthew Skelton and Manuel Pais, rests on the premise that "teams can only handle so much complexity before breaking down".
 
@@ -208,13 +214,21 @@ The one piece of the rebuild option Noor kept was the vocabulary. She wrote the 
 
 **The distributed monolith.** Services that must be deployed, tested and rolled back together, with the network added for nothing; Uber named it "networked monoliths" in 2020. Detection: a release that needs three teams in one meeting; a change to one service that always needs a change to another. Recovery: merge the pair, or redraw the boundary around the data that actually flows, as Uber's domains did.
 
-**The half-finished migration.** Zalando in 2020 "still dealt with monoliths from 2010" and had some functionality implemented twice. Detection: two systems that both claim to own an order or a price; a legacy program nobody dares to switch off. Recovery: the strangler approach ([[replatforming-and-migration]]), replacing the old system one capability at a time with a retirement date for each; never the one-date cutover of The Burned Bridge.
+**The half-finished migration.** Old and new implementations remain active, leaving duplicate behavior and unclear ownership.
 
-**The boundary in the wrong place.** Zalando's price-and-stock pipeline (described in 2025) reprocessed payloads that were more than 90% unchanged and fell up to 30 minutes behind during Cyber Week, and consumers' adapted copies became competing sources of truth; Prime Video's pipeline paid for every step between stages that belonged in one process. Detection: consumers behind at peak; copies that disagree; a bill that scales with hops, not with orders. Recovery: a synchronous read API beside the events for "what is the price now", and a merged boundary where the data flow is tight.
+Zalando in 2020 "still dealt with monoliths from 2010" and had some functionality implemented twice. Detection: two systems that both claim to own an order or a price; a legacy program nobody dares to switch off. Recovery: the strangler approach ([[replatforming-and-migration]]), replacing the old system one capability at a time with a retirement date for each; never the one-date cutover of The Burned Bridge.
 
-**The over-decomposed integration layer.** Segment's 140 services for 140 destinations is the shape a merchant's 34 integrations take when each is its own deployable with its own queue. Detection: engineers who spend their weeks keeping connectors alive; library versions that differ per connector. Recovery: one integration service with a module per flow and recorded traffic replayed as tests, as Segment did.
+**The boundary in the wrong place.** Steps that need the same data are separated, adding delays and synchronization work to each change.
 
-**Composable without a platform team.** The MACH Alliance's own 2026 survey puts integration complexity first among its adopters' concerns. Detection: every vendor pair joined by a different script with a different owner; a vendor's call-out timeout failing your checkout. Recovery: an integration inventory ([[integration-styles]]) and a contract per join (W5).
+Zalando's price-and-stock pipeline (described in 2025) reprocessed payloads that were more than 90% unchanged and fell up to 30 minutes behind during Cyber Week, and consumers' adapted copies became competing sources of truth; Prime Video's pipeline paid for every step between stages that belonged in one process. Detection: consumers behind at peak; copies that disagree; a bill that scales with hops, not with orders. Recovery: a synchronous read API beside the events for "what is the price now", and a merged boundary where the data flow is tight.
+
+**The over-decomposed integration layer.** Each connector becomes a separately operated service, multiplying deployments and support work.
+
+Segment's 140 services for 140 destinations is the shape a merchant's 34 integrations take when each is its own deployable with its own queue. Detection: engineers who spend their weeks keeping connectors alive; library versions that differ per connector. Recovery: one integration service with a module per flow and recorded traffic replayed as tests, as Segment did.
+
+**Composable without a platform team.** The merchant buys separate components without assigning a team to maintain their joins.
+
+The MACH Alliance's own 2026 survey puts integration complexity first among its adopters' concerns. Detection: every vendor pair joined by a different script with a different owner; a vendor's call-out timeout failing your checkout. Recovery: an integration inventory ([[integration-styles]]) and a contract per join (W5).
 
 ## What to Take Away
 

@@ -75,11 +75,15 @@ The pattern to notice is the third column: **most rows land in a system Kestrel 
 
 ### Consumer law: withdrawal, the button, the prior price, reviews
 
+Consumer protections affect both the purchase decision and the customer's ability to undo it. The checkout must make the commitment clear, while returns and payment systems need the dates and records used to handle withdrawal.
+
 The **Consumer Rights Directive** (2011/83/EU, applying to contracts from 13 June 2014) gives a consumer "a period of 14 days to withdraw from a distance or off-premises contract, without giving any reason", extended to 12 months if the trader fails to inform them; the trader must refund "not later than 14 days from the day on which he is informed of the consumer's decision to withdraw", and may withhold it until the goods are back; and an order button must be labeled "only with the words 'order with obligation to pay' or a corresponding unambiguous formulation" (Directive 2011/83/EU, 2011). Three clocks and one string. The clocks need the right events recorded: delivery (the carrier's scan), the withdrawal notice (the returns portal) and receipt of the goods (the WMS). Eva's exchange request of 19 April 2027 started the clock that day, not on 22 April when the jacket reached Duiven.
 
 The **Omnibus Directive** (2019/2161, applied from 28 May 2022) added the **prior-price rule**: "any announcement of a price reduction shall indicate the prior price", meaning "the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction" (Directive (EU) 2019/2161, 2019). It also made ranking parameters and review provenance material information, blacklisted claiming reviews are genuine "without taking reasonable and proportionate steps to check", and required disclosure of prices personalized by automated decision-making. [[pricing-architecture]] works the Black Friday case where an autumn campaign at €179 makes the lawful "was" price €179, not €199; [[commerce-search-and-discovery]] covers reviews. **A 30-day price history per SKU per country is a legal record**, and a merchant whose prices live in seven copies, as Kestrel & Pine's did in 2026, cannot produce it.
 
 ### Payments: strong customer authentication and what is coming
+
+Payment rules affect how a checkout verifies the payer and handles additional authentication. The design must accommodate those steps without losing the cart or mistaking an interrupted payment for a completed order.
 
 The second **Payment Services Directive**, **PSD2** (Directive (EU) 2015/2366, applying from 13 January 2018) requires strong customer authentication when a payer initiates an electronic payment; the technical standards (Delegated Regulation (EU) 2018/389, from 14 September 2019) allow exemptions for remote transactions up to €30 and for low-risk transactions below thresholds. For the checkout this means a challenge in the middle of paying by card and an exemption strategy for saved cards ([[commerce-payments]]).
 
@@ -89,15 +93,19 @@ Since 9 October 2025 euro-area banks also apply **verification of payee** (Regul
 
 ### Invoicing: the mandates and ViDA
 
-[[edi-and-e-invoicing]] owns the mandate calendar in full. For a Dutch brand selling to businesses in three countries, as of November 2026: **Belgium** requires structured e-invoices over Peppol between VAT-registered businesses since 1 January 2026, with fines of €1,500 to €5,000 for lacking the technical means (FPS Finance, 2024 and 2025); **Germany** requires receiving since 1 January 2025 and issuing from 1 January 2027 for German-established issuers above €800,000 prior-year turnover, from 2028 for all (Federal Ministry of Finance FAQ, n.d.); **the Netherlands** plans a domestic mandate from 1 July 2030 and reporting from 1 July 2031 (Rijksoverheid, 11 September 2026); and **ViDA** requires e-invoicing-based reporting for cross-border business-to-business supplies from 1 July 2030 (Council Directive (EU) 2025/516). The mandates are domestic in scope: a Dutch supplier is not automatically obliged in Belgium or Germany, but its customers there can demand the format, and many do.
+Electronic invoicing requirements determine which structured invoice a trading partner or authority can receive and when. A valid PDF may not satisfy that exchange. [[edi-and-e-invoicing]] provides the full mandate calendar; for a Dutch brand selling to businesses in three countries, as of November 2026:
 
 ### Platforms and marketplaces: the DSA and product safety
+
+A marketplace needs to know who is selling and make relevant product information available to buyers. For the merchant, this creates seller and product records that must remain consistent across sales channels.
 
 The **Digital Services Act** (Regulation (EU) 2022/2065, applying from 17 February 2024) requires a marketplace, before a trader may sell, to obtain the trader's identity and contact details, an identification document, "the payment account details of the trader", the trade-register number and a self-certification to offer only compliant products, and to verify them (Art. 30); it bans deceptive interfaces (Art. 25) and requires the interface to let traders provide compliance and product-safety information (Art. 31). For a merchant selling on three marketplaces this is an onboarding data set to keep current three times; for one operating a marketplace or dropship program, a seller-onboarding workflow with verification (LISTED's [[marketplace-regulation]] treats the operator's side).
 
 The **GPSR** (Regulation (EU) 2023/988, applying from 13 December 2024) treats a product offered online as made available in the EU if the offer targets EU consumers, and requires every distance offer to show the manufacturer's name and address, the responsible person's where the manufacturer is outside the EU, identification including a picture, and warnings in a language the consumer understands (Art. 19); marketplaces must let traders provide this per product (Art. 22(9)). In data terms: **four mandatory attributes per product, owned by the PIM and syndicated everywhere**, with publication blocked when they are missing.
 
 ### Product and packaging: destruction bans, producer responsibility, the passport
+
+Product obligations continue beyond listing and sale. A merchant needs records of materials, packaging and the fate of unsold goods to explain what it placed on the market and what happened afterward.
 
 The **ESPR** (Regulation (EU) 2024/1781) prohibits, "from 19 July 2026, the destruction of unsold consumer products as listed in Annex VII", which covers apparel, clothing accessories and footwear; the prohibition "shall not apply to micro and small enterprises" and applies to medium-sized enterprises from 19 July 2030 (Art. 25(1)); and economic operators that discard unsold products must disclose yearly the number and weight discarded by category, the reasons and the share sent to reuse, recycling, recovery or disposal (Art. 24).
 
@@ -109,15 +117,21 @@ The **Packaging and Packaging Waste Regulation** (Regulation (EU) 2025/40) appli
 
 ### Accessibility
 
+Customers must be able to use the whole purchasing path, including identification and payment. An accessible product page is of little help when the next vendor's checkout widget prevents the customer from ordering.
+
 The **European Accessibility Act** (Directive (EU) 2019/882) covers e-commerce services (websites and apps through which consumers conclude contracts) from **28 June 2025**, exempts microenterprises providing services (fewer than 10 persons and at most €2 million turnover), lets products lawfully in use before that date continue until 28 June 2030, and requires "identification methods, electronic signatures, security, and payment services which are perceivable, operable, understandable and robust" (Directive (EU) 2019/882, 2019). The technical content in practice is WCAG 2.1 AA. Because the obligation covers identification and payment, **every embedded widget on the path to the order is in scope**: the hosted checkout, the PSP's iframe, the consent banner. Vendor conformance statements become a procurement item, and the theme is audited per release.
 
 ### Cyber and AI: NIS2, the Cyber Resilience Act and the AI Act
+
+Security and AI rules assign duties according to the service a business provides and the systems it uses. First identify the merchant's role; that determines which operational records, supplier commitments and incident processes need review.
 
 **NIS2** (Directive (EU) 2022/2555, applied nationally from 18 October 2024) covers listed entity types that are medium-sized or larger, among them "providers of online marketplaces"; significant incidents require an early warning within 24 hours, a notification within 72 hours and a final report within a month (Art. 23(4)). The Netherlands brought it into force as the **Cyberbeveiligingswet** on 15 August 2026 (Rijksoverheid, 7 July 2026). An ordinary retailer is usually out of scope; a marketplace operator or commerce SaaS vendor is in. The merchant meets NIS2 through its suppliers, as incident-notification clauses in the platform's, the WMS vendor's and the iPaaS vendor's contracts, so the 24-hour and 72-hour clocks become terms the merchant's incident process ([[commerce-security]]) must meet. The **Cyber Resilience Act** (Regulation (EU) 2024/2847) adds vendors' duties from 11 December 2027.
 
 The **AI Act** (Regulation (EU) 2024/1689) applied generally from 2 August 2026. Its live obligations for commerce are transparency: a system "intended to interact directly with natural persons" must say it is an AI unless that is obvious, and generated content must be "marked in a machine-readable format and detectable as artificially generated" (Art. 50). The **Digital Omnibus on AI** (Regulation (EU) 2026/1744, July 2026) moved the high-risk obligations to 2 December 2027 (Annex III) and 2 August 2028 (Annex I). A search or fraud model is not high-risk; worker monitoring in warehouse software is the case to watch. Kestrel & Pine's W8 decision, agent readiness without agents, keeps it outside most of this in 2027 ([[ai-and-agentic-commerce]]).
 
 ### Data: the Data Act and transfers
+
+A merchant changing software vendors needs a workable way to retrieve its data and move services. Contract rights matter only if the export, migration and supplier handoff can be carried out.
 
 The **Data Act** (Regulation (EU) 2023/2854) applies from 12 September 2025; its switching chapter covers cloud contracts concluded after that date and, from 12 September 2027, older ones (Art. 29). For a merchant it is an exit right: the OMS and PIM contracts Kestrel & Pine signs in 2027 must allow switching and data retrieval, the legal floor under [[replatforming-and-migration]]. Transfers belong to [[privacy-and-customer-data]].
 

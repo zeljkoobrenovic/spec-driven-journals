@@ -53,7 +53,7 @@ TITLE = {
     'cmrc-q2-earnings-call-flags-softer-b2c-demand-outlook-cut': 'CMRC Q2 earnings call flags softer B2C demand, outlook cut',
     'digitalcommerce360.com/2026/02/17/shopify-revenue-gmv-q4-2025': 'Shopify revenue and GMV in Q4 2025',
     'standardwebhooks.com': 'Standard Webhooks (project site)',
-    'Universal-Commerce-Protocol/ucp': 'Universal Commerce Protocol repository',
+    'Universal-Commerce-Protocol/ucp$': 'Universal Commerce Protocol repository',
     # same title, different documents: name the publisher
     'docs.mollie.com/docs/webhooks': 'Mollie: Webhooks',
     'shopify.dev/docs/apps/build/webhooks$': 'Shopify: Webhooks',

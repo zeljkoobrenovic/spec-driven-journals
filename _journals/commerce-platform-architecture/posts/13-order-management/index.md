@@ -105,7 +105,7 @@ The order-level words a customer sees ("Delivered", "Shipped") are summaries com
 
 An order is edited, held or canceled far more often than newcomers expect: wrong size, wrong address, a line out of stock, a fraud hold, a customer who changed their mind. Each change is a transaction against the money, goods and stock commitments, not a form update.
 
-**Edits.** Shopify's order editing (developer docs, n.d., accessed November 2026) begins a *calculated order* that tracks changes, lets a line's quantity be set to zero to remove it, and commits the edit; "You can edit only unfulfilled line items", and "If an edit changes the total order value, then a balance might need to be collected from or refunded to the customer". The constraint is the rule everywhere: **the edit window closes when the warehouse accepts the work.** In the fulfillment-order handshake that Shopify documents, once a warehouse has accepted a request "the merchant can no longer cancel it directly and must submit a cancellation request". Every edit must also reach the systems that already copied the order: the WMS's pick, the ERP's invoice copy, the availability service's commitment. An edit that reaches the platform and not the warehouse ships the wrong size.
+**Edits.** Changing a size, quantity or address changes work other systems may already have accepted. Before committing an edit, establish whether fulfillment can still change and whether the amount paid needs adjustment. Shopify handles this through a provisional *calculated order*, followed by a committed edit, and allows changes only to unfulfilled lines (developer documentation, n.d., accessed November 2026). After a warehouse accepts the work, cancellation becomes a request it must approve. Send every accepted change to the warehouse, finance and availability records as well: a size corrected only in the storefront can still be shipped incorrectly.
 
 **Holds.** A hold stops fulfillment without canceling: a fraud review, an address check, a customer's request. The stock stays committed; Shopify documents that an order on hold keeps its inventory reserved while fulfillment waits.
 
@@ -214,7 +214,7 @@ The shape of the record does not change with scale: an order has lines, money, p
 
 ## In Practice
 
-The dated vendor evidence is above: Shopify's three status families and fulfillment-order handshake, commercetools' separate states, Adobe's sourcing algorithms (2026), Kibo's candidates and child shipments, Fluent's split rules and ERP boundary, Manhattan's and IBM's OMS descriptions, all accessed November 2026. One figure frames the volume: Shopify processed 13 billion webhooks in the period its CTO described for 2021 (engineering blog, 20 January 2022; a source more than three years old, so the figure is historical), the scale at which "your app might receive the same webhook more than once" becomes the design assumption behind idempotent order creation.
+Order updates are delivered as messages, and repeating a message must not repeat the order or shipment it describes. That is why the order record needs to recognize a retry even when all connected systems are working. Shopify's CTO described 13 billion webhooks for 2021 in a 20 January 2022 engineering post. The figure is historical, more than three years old; it illustrates the operating volume behind Shopify's warning that an app may receive a webhook more than once. The same recovery requirement applies to a smaller merchant.
 
 ### Kestrel & Pine, worked: W2 and the order that had three statuses
 

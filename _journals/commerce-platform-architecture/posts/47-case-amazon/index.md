@@ -57,7 +57,7 @@ The sequence to take from this is **monolith, scaling wall, services**, in that 
 
 ## The Cart That Never Says No
 
-The Dynamo paper is the one place where Amazon explains a system in enough detail to learn from it, and the system it chose to explain is the shopping cart.
+A shopping cart needs to accept a customer's changes even when part of the storage system is unavailable. Keeping several copies helps availability but creates a new problem: reconciling changes when those copies disagree. Amazon's 2007 Dynamo paper explains that tradeoff through its cart design.
 
 The motivation is stated as a business requirement. Customers "should be able to view and add items to their shopping cart even if disks are failing, network routes are flapping, or data centers are being destroyed by tornados". Dynamo targets "an 'always writeable' data store", meaning one "that is highly available for writes". The reasoning is commercial: a refused add-to-cart is a lost sale, while a cart that is briefly out of date is harmless. So the cart "must allow customers to add and remove items from their shopping cart even amidst network and server failures", which "forces us to push the complexity of conflict resolution to the reads".
 
@@ -81,9 +81,11 @@ The 2012 sequel is as instructive as the paper. Announcing the managed database 
 
 Amazon is as famous for how it organizes engineers as for what they built. Two of the three well-known rules are documented by Amazon; the third is not.
 
-**Two-pizza teams.** Amazon's own DevOps guidance on the AWS documentation site (undated, accessed November 2026) quotes Jeff Bezos: "We try to create teams that are no larger than can be fed by two pizzas. We call that the two-pizza team rule." It ties the size to ownership: the team should see its service "as an end-to-end venture" rather than treating production "as black boxes where they have no visibility". The phrase is commonly dated to a 2004 Fast Company profile, which could not be fetched for this chapter, so the date is secondary. **You build it, you run it**, the rule that the team that writes a service also operates it in production, appears in the 2007 digest of the Vogels interview alongside the team rule.
+**Two-pizza teams.** A small team owns a service through development and production support, reducing the handoffs between writing software and operating it.
 
-**The "API mandate".** This is the rule most often quoted in architecture reviews, and it exists in public only as one person's recollection. Steve Yegge, a former Amazon engineer, wrote in October 2011 (in a post preserved as a public gist) that "back around 2002 I think, plus or minus a year" Bezos issued a mandate: "All teams will henceforth expose their data and functionality through service interfaces"; "Teams must communicate with each other through these interfaces"; no other communication, "no direct reads of another team's data store"; the technology "doesn't matter"; and "All service interfaces, without exception, must be designed from the ground up to be externalizable". No page from Amazon that the brief could fetch confirms the memo. Treat it as **widely reported**, not as an Amazon document.
+Amazon's own DevOps guidance on the AWS documentation site (undated, accessed November 2026) quotes Jeff Bezos: "We try to create teams that are no larger than can be fed by two pizzas. We call that the two-pizza team rule." It ties the size to ownership: the team should see its service "as an end-to-end venture" rather than treating production "as black boxes where they have no visibility". The phrase is commonly dated to a 2004 Fast Company profile, which could not be fetched for this chapter, so the date is secondary. **You build it, you run it**, the rule that the team that writes a service also operates it in production, appears in the 2007 digest of the Vogels interview alongside the team rule.
+
+**The "API mandate".** This is the rule most often quoted in architecture reviews, and it exists in public only as one person's recollection. Steve Yegge, a former Amazon engineer, wrote in October 2011 (in a post preserved as a public gist) that "back around 2002 I think, plus or minus a year" Bezos issued a mandate: "All teams will henceforth expose their data and functionality through service interfaces"; "Teams must communicate with each other through these interfaces"; no other communication, "no direct reads of another team's data store"; the technology "doesn't matter"; and "All service interfaces, without exception, must be designed from the ground up to be externalizable". No Amazon document reviewed for this chapter confirms the memo. Treat it as **widely reported**, not as an Amazon document.
 
 What Amazon has confirmed, in its own words, is the outcome. In September 2006 Vogels wrote that Amazon "continues on the path of opening up all of its services for customers and partners to use", and that with Fulfillment by Amazon "we are now also opening up our fulfillment network for everyone to use". Ten years later, in his 2016 retrospective on AWS, he wrote that the lesson of building management APIs first was one "we had already learned from our experiences with Amazon retail".
 
@@ -93,7 +95,7 @@ An **externalizable interface** is an API designed so that it *could* be offered
 
 ## Fulfillment as a Platform
 
-This is the part of Amazon's record that most changes how a merchant should think, because it is about the business model, and the business model is documented in filings.
+Fulfillment means storing, picking, packing and shipping goods. Offering it as a service lets other merchants use a provider's warehouse and delivery network while continuing to sell their own stock. Amazon's filings document how that service became part of its business model.
 
 Three terms first. In the **first-party** model (1P), Amazon buys stock and is the seller. In the **third-party** model (3P), an independent seller sells on Amazon's site and Amazon takes fees. The **seller of record** is the legal party that sells to the consumer and carries the obligations: the invoice, the value-added tax, the consumer's right to return. **Fulfillment by Amazon** (FBA) is the service in which the seller sends stock to Amazon's warehouses and Amazon picks, packs, ships and handles returns.
 

@@ -32,6 +32,8 @@ Reviews belong here for the same reason. A rating is a signal that ranks product
 
 The chapter covers the search index, **relevance** (how well results match the request), **merchandising rules** (how the merchant changes their order) and **facets** (filters built from product attributes). Product content, prices, promotions and stock come from their own owners: [[product-information]], [[pricing-architecture]], [[commerce-promotions]] and [[inventory-and-availability]]. For deeper engine and ranking detail, see [[search-architecture]] and [[ranking]]; agents are covered in [[ai-and-agentic-commerce]].
 
+External search engines also need discoverable product pages and deliberate policies for filter URLs. [[storefront-architecture]] covers that technical search-engine optimization (SEO) work.
+
 **Where we are in the order's journey.** On 13 April 2027, Eva searches Kestrel & Pine's Dutch storefront for a jacket. Kestrel & Pine is the fictional outdoor brand used here. Before she can add the Ridgewalker to her cart, search must bring its description, price and stock status together.
 
 ## Setting the Scene at Kestrel & Pine: The Waterproof Jacket Nobody Could Find
@@ -187,11 +189,13 @@ The judgement: the engine matters less with each stage than the pipeline feeding
 
 ## In Practice
 
-**Deprecation is a search risk too.** commercetools' older Product Projection Search is deprecated: projects created after 31 August 2026 cannot activate it, and it deactivates after 30 days without calls (documentation accessed November 2026). A search integration built on a retired API is Kestrel & Pine's Deprecated Endpoint of February 2027 in another system; [[api-contracts-and-versioning]] covers the discipline.
+**Retired search interfaces.** A storefront depends on the interface through which it queries the search engine. If that interface is withdrawn, the integration must move before the cutoff. commercetools' older Product Projection Search cannot be activated by projects created after 31 August 2026 and deactivates after 30 days without calls (documentation accessed November 2026). This is the Deprecated Endpoint failure in the search path; [[api-contracts-and-versioning]] explains how to prepare for it.
 
-**Limits are documented, so read them.** Shopify's filters use the first 1,000 results for counts and allow 25 filters per store; Algolia's Shopify B2B integration suggests about 50 company locations before records hit size limits and stores only the highest volume tier; commercetools indexes up to 10,000 variants and standalone prices combined per product in its Modular Catalog. Each limit is a design constraint a merchant discovers at the worst moment unless it is read first.
+**Limits are documented, so read them.** Search limits can exclude filter values, customer-specific prices or variants from the records the engine can use. Check the required catalog combinations before committing to a service.
 
-**Metrics have definitions.** Algolia's analytics (documentation accessed November 2026) define the no-results rate as the percentage of searches with no results, click-through rate as the percentage of tracked searches with at least one click, conversion rate as the percentage with at least one conversion event, and average click position, where "smaller values are better"; keystrokes within 30 seconds aggregate into one search. Whatever engine a merchant uses, these four, per language and per channel, are the dashboard. Baymard's data show mobile and app sites performing worse than desktop, so a single blended number hides the worst channel.
+Shopify's filters use the first 1,000 results for counts and allow 25 filters per store; Algolia's Shopify B2B integration suggests about 50 company locations before records hit size limits and stores only the highest volume tier; commercetools indexes up to 10,000 variants and standalone prices combined per product in its Modular Catalog. Each limit is a design constraint a merchant discovers at the worst moment unless it is read first.
+
+**Measuring search.** Track whether shoppers find results, click them and complete a purchase, then examine which language or channel performs poorly. These outcomes reveal different problems: missing products, weak ranking or an offer shoppers do not accept. Algolia's analytics define no-results rate, click-through rate, conversion rate and average click position; they aggregate keystrokes within 30 seconds into one search (documentation accessed November 2026). Preserve those counting rules when comparing reports. Baymard's research finds weaker performance on mobile and apps than desktop, showing why a blended figure can hide the channel needing attention.
 
 **Kestrel & Pine's 2027 search plan used the existing vendor.** Noor added synonyms per language and a monthly review of the top 50 searches returning no results. The catalog team would model waterproof rating, fabric, insulation and fit in the new product information management system (PIM). Filters would appear only after 95% of jackets had values.
 

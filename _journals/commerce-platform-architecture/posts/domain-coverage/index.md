@@ -77,6 +77,8 @@ The eleven models contain **152 distinct capabilities** after duplicates are rem
 
 ### Part IV — Fulfillment
 
+Beyond the modeled capabilities, [[warehouse-and-fulfillment]] also explains warehouse automation: work release, equipment control, robot fleet integration, confirmed movements and the effect of downtime on dispatch.
+
 | Capability | Models | Chapter |
 | --- | --- | --- |
 | Warehouses, locations, containers; purchase orders, goods receipt, put-away; pick-location replenishment | WMS, ERP, POS | [[warehouse-and-fulfillment]] ([[erp-and-back-office-integration]]) |
@@ -119,7 +121,7 @@ The eleven models contain **152 distinct capabilities** after duplicates are rem
 
 | Capability | Models | Chapter |
 | --- | --- | --- |
-| Hosted storefront with themes and content pages; CMS, SEO and sitemaps; headless framework, storefront API, edge hosting | MCP, B2B, ERP, POS | [[storefront-architecture]] ([[commerce-search-and-discovery]]) |
+| Hosted storefront with themes and content pages; CMS; technical SEO (crawlability, product markup, localized URLs and sitemaps); headless framework, storefront API, edge hosting | MCP, B2B, ERP, POS | [[storefront-architecture]] ([[commerce-search-and-discovery]]) |
 | Multi-tenant accounts: tenants, administrations, branches, shops, warehouses, clients, sub-accounts; multi-shop from one back office; package entitlements and plan metering | all | [[multi-tenancy-and-isolation]] |
 | App store, review and partner program; sandboxed extensions and functions; no-code workflow automation; embedded white-label partner integrations; app billing and revenue share | MCP, MKT, ERP, RET, WMS, SHP, B2B | [[extensibility-and-app-ecosystems]] ([[multi-tenancy-and-isolation]]) |
 | The vendor's own internal structure; hosting with patching and backups | MCP, ORM, B2B | [[commerce-architecture-styles]]; the hosting duty under shared responsibility in [[commerce-security]] |

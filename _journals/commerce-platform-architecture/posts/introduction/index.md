@@ -88,7 +88,7 @@ Every chapter in Parts II to VIII has a section titled **"Across Scale Stages: W
 
 ## How the Book Is Organized
 
-Three preface pages, eleven parts and four reference pages. Each part asks one question:
+Three preface pages, eleven parts, an appendix tutorial and four reference pages. Each part asks one question:
 
 | Section | The question it answers | Chapters |
 | --- | --- | --- |
@@ -104,6 +104,7 @@ Three preface pages, eleven parts and four reference pages. Each part asks one q
 | **[[part-9]]** | What does the whole book look like for one order, one return, one EDI reorder and one Black Friday? | 37–40: four journeys, each told on two architectures |
 | **[[part-10]]** | Which decisions change with scale: platform choice, migration, stage, ownership and AI? | 41–45: build or buy, replatforming, scaling stages, organizing engineering, AI and agents |
 | **[[part-11]]** | What did Shopify, Amazon, Zalando and the composable vendors actually build, and what transfers? | 46–49: four dated cases |
+| **Appendix** | How does a shopping application use Universal Commerce Protocol, from discovery to a confirmed order? | [[ucp-beginners-tutorial]] |
 | **Reference** | Where do the research maps land, which templates help, what does a term mean, and where is the source? | [[domain-coverage]], [[toolkit]], [[glossary]], [[bibliography]] |
 
 **Part I is the one part not to skip.** It introduces the vocabulary, the capability map and the entity–owner table that every later chapter points back to.
