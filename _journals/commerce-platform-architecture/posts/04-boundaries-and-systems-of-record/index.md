@@ -28,7 +28,7 @@ A customer asks where a parcel is. The storefront says *Delivered*, but the ware
 
 A **system of record** is the system whose value is authoritative for a particular fact. Naming one gives support and other systems a place to resolve disagreements. It also requires decisions about who may change that fact, how copies receive updates and how errors are repaired. Two-way synchronization without those decisions can let each system overwrite the other's answer.
 
-This chapter builds an entity–owner table: a list of business facts and the systems responsible for them. It explains how systems can use different meanings for "order", compares ownership choices and works through Kestrel & Pine's six stock writers. [[commerce-capability-map]] supplies the wider map; [[events-consistency-and-reconciliation]] explains how to detect and repair disagreements.
+This chapter starts from six answers Kestrel & Pine's own people gave to the question "where does stock live?". It then defines the terms ownership is stated in, explains how systems can use different meanings for "order", and builds an entity–owner table: a list of business facts and the systems responsible for them. Last, it compares the ways merchants assign ownership, using what vendors publish about their own products as evidence, and returns to Kestrel & Pine's stock to show what the decision changes. [[commerce-capability-map]] supplies the wider map; [[events-consistency-and-reconciliation]] explains how to detect and repair disagreements.
 
 **Where we are in the order's journey.** Eva Janssen buys a Ridgewalker jacket from Kestrel & Pine, the fictional outdoor brand. The stock badge, €199 price and later shipment status all reach her through copies. The warehouse management system (WMS) confirms what shipped; the storefront displays that answer. This chapter decides which system each copy must answer to.
 
@@ -56,7 +56,7 @@ Noor's question was not "how do we sync faster". It was **"which of the six is r
 
 ## Facts, Records and Copies
 
-Three words carry this chapter.
+The scene used "record" and "copy" without defining them. Four terms carry this chapter: fact, record, copy and writer.
 
 A **business fact** is something the business needs to be true about the world: this variant has this barcode, this customer pays this price, there are 14 units of this size in Duiven, order #1072455 has shipped. The business acts on facts: it promises delivery, takes money, prints invoices.
 
@@ -97,7 +97,7 @@ Two design rules follow. First, **translate at the boundary** rather than forcin
 
 ## The Entity–Owner Table
 
-The deliverable of this chapter is a table with one row per business fact. For each fact it names the system of record, who may write it there, where copies are allowed, how the copies learn about changes, and how disagreement is detected. The version below is the author's recommendation for a merchant at the omnichannel stage with its own warehouse, stores, wholesale and marketplaces; the stage table later in the chapter says how it differs earlier and later. It assumes a PIM and an OMS exist; without them the platform holds those rows.
+The deliverable of this chapter is a table with one row per business fact. For each fact it names the system of record, who may write it there, where copies are allowed, how the copies learn about changes, and how disagreement is detected. Two words recur in the last two columns. An **event** is a message sent the moment something changes, as opposed to a periodic copy. A **reconciliation** is a job that compares two systems' values and reports the differences. The version below is the author's recommendation for a merchant at the omnichannel stage with its own warehouse, stores, wholesale and marketplaces; the stage table later in the chapter says how it differs earlier and later. It assumes a PIM and an OMS exist; without them the platform holds those rows.
 
 | Fact | System of record | Who may write | Copies live in | How copies learn | Disagreement found by |
 | --- | --- | --- | --- | --- | --- |
@@ -108,7 +108,7 @@ The deliverable of this chapter is a table with one row per business fact. For e
 | Physical stock per location | WMS (warehouse), POS (stores), tracked external location (marketplace program) | Scans, counts and receipts in that system only | Availability service, ERP, data warehouse | Stock events per SKU and location | Cycle counts in the record; WMS-to-platform reconciliation, weekly |
 | Availability per channel (derived) | Availability service | The computation only; no manual edits | Storefronts, marketplaces, B2B portal | Publication on every stock or reservation event | Oversell and cancellation rate, daily |
 | Order | OMS | Order creation from channels; state changes from fulfillment, payment and returns events | Platform order history, WMS, ERP, service tool, warehouse | Order events | Order count per channel per day, OMS versus each source, daily |
-| Payment | PSP | The PSP, on instructions from checkout and the OMS | The order (a reference and a status) | Payment webhooks | Settlement-to-order reconciliation per payout |
+| Payment | PSP (payment service provider) | The PSP, on instructions from checkout and the OMS | The order (a reference and a status) | Payment webhooks | Settlement-to-order reconciliation per payout |
 | Shipment and tracking | WMS and shipping service (shipment); carrier (events) | Pack confirmation; carrier scans | OMS, notifications, service tool | Shipment and tracking events | Shipped-not-delivered aging, daily |
 | Return | Returns portal (request); WMS (receipt and grade); OMS (resolution) | The customer, the inspector, the OMS | ERP (credit note), PSP (refund) | Return events | Refunds versus credit notes versus receipts, daily |
 | Invoice, credit note, ledger | ERP | Posting from OMS and PSP batches; finance | Reports | Daily batch | Period close |
@@ -123,7 +123,7 @@ Several rows carry lessons that newcomers miss.
 - **Payment's record is outside the company.** The PSP (payment service provider, the company that takes the shopper's money and pays it out to the merchant) holds the transaction; the order holds a reference. A refund issued by hand in the PSP console, outside the returns flow, is a write to the record that the OMS does not know about, which is the Double Refund: 212 returns refunded twice, €19,400.
 - **The business customer and the consumer have different records.** Microsoft's October 2026 documentation for its Business Central Shopify Connector says it plainly: decide "which system is the system of record for customer data", notes that most businesses manage customer records, payment terms and credit limits in the ERP, and warns that "Mixing both directions without a clear ownership rule can lead to conflicting records."
 
-The "disagreement found by" column is the part most tables leave out. A record with copies and no reconciliation (a job that compares two systems' values and reports the differences) is a record on trust, and trust is what the Black Friday chain ran on. [[events-consistency-and-reconciliation]] designs those jobs; here the rule is only that every copy row has one.
+The "disagreement found by" column is the part most tables leave out. A record with copies and no reconciliation is a record on trust, and trust is what the Black Friday chain ran on. [[events-consistency-and-reconciliation]] designs those jobs; here the rule is only that every copy row has one.
 
 ### How fresh must a copy be?
 
@@ -138,11 +138,11 @@ Ownership decides who wins; it does not decide how quickly the copies must follo
 | Product content | Hours | Eventual | A late description is a missed sale, not a wrong one |
 | Ledger postings | A day | Exact per period | Finance works in periods |
 
-The table is the author's judgement from industry practice and Kestrel & Pine's incidents. Its point is that the record for availability needs an event-driven copy (an **event** is a message sent the moment something changes, as opposed to a periodic copy) while the record for ledger postings can be fed by a nightly batch, and that choosing one rhythm for all facts is how an ERP's hourly cycle became a storefront's availability latency.
+The table is the author's judgement from industry practice and Kestrel & Pine's incidents. Its point is that the record for availability needs an event-driven copy while the record for ledger postings can be fed by a nightly batch, and that choosing one rhythm for all facts is how an ERP's hourly cycle became a storefront's availability latency.
 
 ## Four Ways to Assign Ownership
 
-Merchants assign ownership in one of four ways. Three are decisions; the fourth is what happens without one.
+The table above is one way to fill in those columns, the one I recommend for the omnichannel stage. It is not the only way: merchants assign ownership in one of four ways. Three are decisions; the fourth is what happens without one.
 
 **The ERP as hub.** The ERP is the record for products, stock, orders and customers, and the web shop is a front end that reads from it and posts orders into it. Microsoft's connector documentation of October 2026 encodes this: "Business Central acts as the system of record for inventory", pushed to Shopify one way on a recommended cycle of every 15 to 30 minutes; customers are managed in Business Central and exported; orders flow the other way, from the shop into the ERP. This fits one channel, one warehouse and a wholesale-heavy business, because the ERP already holds the terms, the prices and the valued stock. It stops fitting when stores, marketplaces and a WMS each need stock in minutes and the ERP's batch rhythm cannot serve them.
 
@@ -208,7 +208,7 @@ Kestrel & Pine moved from stage 2 to stage 3 in 2023 and kept stage 2's ownershi
 
 **Public examples.** The vendor statements quoted above (Microsoft's connector documentation of 2026, Shopify's ERP guidance of August 2026, Fluent Commerce and OneStock) are the clearest public cases of records being named per entity. At a much larger scale, a 2020 account by a former Walmart engineering director on Confluent's blog describes Walmart's inventory backend partitioning its event stream so that "each item store always goes to a specific partition", which ensured "that only one consumer deals with that item store combination": one writer per entity, enforced by the plumbing. The account (May 2020) is six years old, is the author's own view with Walmart not endorsing it, and describes a group-stage system; the principle is the one in Figure 2.
 
-**Kestrel & Pine's stock, before and after W1.** The table reconstructs the writer list for the Ridgewalker jacket's warehouse stock in January 2027 and under the Waypoint design from Q4 2027.
+**Kestrel & Pine's stock, before and after W1.** Kestrel & Pine applies the same rule under Waypoint decision W1: each stock location gets one record and one kind of writer, and every copy learns by event. The table reconstructs the writer list for the Ridgewalker jacket's warehouse stock in January 2027 and under the Waypoint design from Q4 2027.
 
 | | January 2027 | After W1 (Q4 2027) |
 | --- | --- | --- |
@@ -220,10 +220,12 @@ Kestrel & Pine moved from stage 2 to stage 3 in 2023 and kept stage 2's ownershi
 | How copies learn | WMS to ERP every 15 minutes, ERP to platform hourly, platform to connector hourly | Stock events, seconds; the sync chain retired |
 | Disagreement found by | Customers, on 27 November 2026 | Weekly WMS-to-platform reconciliation; cycle counts in the WMS |
 
-Replay the Black Friday evening against the right-hand column. At 19:40 the last Ridgewalker women's M moss is scanned at a packing station; the WMS emits a stock event; the availability service recomputes the channel quantities to zero within seconds and publishes them; the storefronts and the connector stop selling the variant before 19:41. The 1,340 oversold units become a handful, from orders already in checkout at 19:40, which is what the per-channel buffer exists to absorb. The first weekly reconciliation in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative), most left behind by the three apps; the apps' write access was removed, and the number is the reconciliation's baseline.
+Replay the Black Friday evening against the right-hand column. At 19:40 the last Ridgewalker women's M moss is scanned at a packing station; the WMS emits a stock event; the availability service recomputes the channel quantities to zero within seconds and publishes them; the storefronts and the connector stop selling the variant before 19:41. The 1,340 oversold units become a handful, from orders already in checkout at 19:40, which is what the per-channel buffer exists to absorb.
 
 ![Diagram: Kestrel & Pine's warehouse stock before and after Waypoint decision W1](assets/images/04-boundaries-and-systems-of-record/fig03-kestrel-pine-s-warehouse-stock-before.jpeg)
 **Figure 5:** *Kestrel & Pine's warehouse stock before and after Waypoint decision W1: six writers feeding a two-hour chain of copies become one writer per location, an availability service that computes what each channel may sell, and copies that learn by event.*
+
+The new design did not make the copies right by being named. Its own reconciliation had to find what the old chain had left behind: the first weekly run in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative), most left behind by the three apps. The apps' write access was removed, and that figure is the reconciliation's baseline.
 
 ## When It Goes Wrong
 
@@ -244,7 +246,7 @@ Ownership decided is not ownership kept. Five things go wrong, each with a detec
 **Established.**
 
 - Several systems holding one fact is normal, and the field's remedy is to name a system of record per fact and treat the rest as copies; vendors that document their integrations say so in those words (Microsoft 2026, Shopify 2026, Fluent Commerce and OneStock 2026).
-- Different systems legitimately model "order", "product" and "customer" differently; Evans' bounded context (2003) and Fowler's 2014 restatement hold that unifying one model across a large system is not feasible or cost-effective, so the work is translation at the boundary and shared identifiers.
+- Different systems legitimately model "order", "product" and "customer" differently; Evans' bounded context (2003) and Fowler's 2014 restatement hold that unifying one model across a large system is not feasible or cost-effective, so the work is translation at the boundary and shared identifiers. The parcel that opened this chapter, *Delivered* in the storefront and *In picking* in the warehouse, was such a case: neither status was stale, each was true of its own object, and what was missing was an owner of the view across them.
 - One writer per entity is enforceable mechanically: a single refresh direction per entity in a connector, or a single consumer per item-and-location partition in an event stream (Walmart's 2020 account).
 
 **Depends on context.**
