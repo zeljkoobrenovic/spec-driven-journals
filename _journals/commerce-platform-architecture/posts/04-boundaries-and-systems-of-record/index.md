@@ -34,7 +34,7 @@ This chapter starts from six answers Kestrel & Pine's own people gave to the que
 
 ## Setting the Scene at Kestrel & Pine: "Where Does Stock Live?"
 
-In early March 2027, Head of Engineering Noor Visser asked who owned Kestrel & Pine's stock figure. CEO Mara Lindqvist was about to approve **Waypoint**, the company's commerce improvement program. Noor needed a clear answer before changing the integrations. The people running those systems gave her six.
+In early March 2027, Head of Engineering Noor Visser asked who owned Kestrel & Pine's stock figure. CEO Mara Lindqvist was about to approve **Waypoint**, the company's commerce improvement program. Noor needed a clear answer before changing the integrations. The people running those systems gave her six, and, as the table shows, each answer was true of a different number.
 
 | Who | Where stock lives, in their words | What the number actually is |
 | --- | --- | --- |
@@ -45,7 +45,7 @@ In early March 2027, Head of Engineering Noor Visser asked who owned Kestrel & P
 | Milan again, for marketplaces | "The connector pushes it to bol, Amazon.de and Zalando every hour." | A copy of the platform's copy |
 | Daniel again, for Germany | "Some of it is in the marketplace's warehouse." | Stock sent to the marketplace's fulfillment program in advance, in a location outside the company's control |
 
-Lead integration engineer Ruben Alves reconstructed the stock figures for the Ridgewalker women's M in moss at 20:00 on Black Friday, 27 November 2026. The warehouse had sold its last unit twenty minutes earlier. Six systems showed six quantities, from zero to a healthy double-digit storefront count *(illustrative reconstruction)*.
+Lead integration engineer Ruben Alves then put numbers on those six answers. He reconstructed the stock figures for the Ridgewalker women's M in moss at 20:00 on Black Friday, 27 November 2026. The warehouse had sold its last unit twenty minutes earlier. Six systems showed six quantities, from zero to a healthy double-digit storefront count *(illustrative reconstruction)*.
 
 The copying chain took up to two hours. Channels kept selling from old figures, producing the **Black Friday Oversell**: 1,340 units oversold, 1,120 orders canceled or delayed and about €96,000 in costs.
 
@@ -75,7 +75,7 @@ One phrase deserves a warning. "Single source of truth" is right only if read as
 
 Ownership is harder than it looks because the same word names different things in different systems. **Bounded context** is the term Eric Evans gave this in *Domain-Driven Design* (2003): a boundary inside which a model, and the words in it, have one agreed meaning. Martin Fowler's 2014 note calls it "a central pattern in Domain-Driven Design", repeats Evans' claim that "total unification of the domain model for a large system will not be feasible or cost-effective", and adds, from experience, "Time and time again I see this confusion recur with polysemes like 'Customer' and 'Product'" (a polyseme is a word with several related meanings).
 
-In plain words: the warehouse, the storefront and the ledger are three bounded contexts. Each has its own "order", and the three are not the same object.
+In plain words: the storefront, order management, the warehouse and the finance system (the ERP) are four bounded contexts. Each has its own "order", and, as the table shows, the four are not the same object.
 
 | Context | What "order" means there | What it contains | Its states |
 | --- | --- | --- | --- |
@@ -108,7 +108,7 @@ The deliverable of this chapter is a table with one row per business fact. For e
 | Physical stock per location | WMS (warehouse), POS (stores), tracked external location (marketplace program) | Scans, counts and receipts in that system only | Availability service, ERP, data warehouse | Stock events per SKU and location | Cycle counts in the record; WMS-to-platform reconciliation, weekly |
 | Availability per channel (derived) | Availability service | The computation only; no manual edits | Storefronts, marketplaces, B2B portal | Publication on every stock or reservation event | Oversell and cancellation rate, daily |
 | Order | OMS | Order creation from channels; state changes from fulfillment, payment and returns events | Platform order history, WMS, ERP, service tool, warehouse | Order events | Order count per channel per day, OMS versus each source, daily |
-| Payment | PSP (payment service provider) | The PSP, on instructions from checkout and the OMS | The order (a reference and a status) | Payment webhooks | Settlement-to-order reconciliation per payout |
+| Payment | PSP (payment service provider) | The PSP, on instructions from checkout and the OMS | The order (a reference and a status) | Payment webhooks (messages the PSP sends when a payment changes state) | Settlement-to-order reconciliation per payout |
 | Shipment and tracking | WMS and shipping service (shipment); carrier (events) | Pack confirmation; carrier scans | OMS, notifications, service tool | Shipment and tracking events | Shipped-not-delivered aging, daily |
 | Return | Returns portal (request); WMS (receipt and grade); OMS (resolution) | The customer, the inspector, the OMS | ERP (credit note), PSP (refund) | Return events | Refunds versus credit notes versus receipts, daily |
 | Invoice, credit note, ledger | ERP | Posting from OMS and PSP batches; finance | Reports | Daily batch | Period close |
@@ -132,7 +132,7 @@ Ownership decides who wins; it does not decide how quickly the copies must follo
 | Fact | A copy may be stale for | Agreement required | Why |
 | --- | --- | --- | --- |
 | Availability shown to a channel | Seconds at peak; minutes normally | Eventual, within a buffer | Every minute of staleness is an oversell window; Kestrel & Pine's two hours produced 1,340 oversold units |
-| Consumer price | Minutes; exact at a promotion's start and end | Exact across channels | A stale price is a broken promise, and on marketplaces a parity breach; the Price Drift ran nine days |
+| Consumer price | Minutes; exact at a promotion's start and end | Exact across channels | A stale price is a broken promise, and on marketplaces a parity breach; at Kestrel & Pine a stale €179 price once ran for nine days, an incident the company calls the Price Drift |
 | Order existence | Seconds to minutes | Exact: never lost, never doubled | A missed order is a missed cut-off; a doubled one ships twice |
 | Order status | Minutes | Eventual | Stale status creates "where is my order" contacts, not losses |
 | Product content | Hours | Eventual | A late description is a missed sale, not a wrong one |
@@ -142,7 +142,7 @@ The table is the author's judgement from industry practice and Kestrel & Pine's 
 
 ## Four Ways to Assign Ownership
 
-The table above is one way to fill in those columns, the one I recommend for the omnichannel stage. It is not the only way: merchants assign ownership in one of four ways. Three are decisions; the fourth is what happens without one.
+The entity–owner table above is one way to fill in those columns, the one I recommend for the omnichannel stage. It is not the only way: merchants assign ownership in one of four ways. Three are decisions; the fourth is what happens without one.
 
 **The ERP as hub.** The ERP is the record for products, stock, orders and customers, and the web shop is a front end that reads from it and posts orders into it. Microsoft's connector documentation of October 2026 encodes this: "Business Central acts as the system of record for inventory", pushed to Shopify one way on a recommended cycle of every 15 to 30 minutes; customers are managed in Business Central and exported; orders flow the other way, from the shop into the ERP. This fits one channel, one warehouse and a wholesale-heavy business, because the ERP already holds the terms, the prices and the valued stock. It stops fitting when stores, marketplaces and a WMS each need stock in minutes and the ERP's batch rhythm cannot serve them.
 
@@ -200,7 +200,7 @@ The entity–owner table is not written once. Each stage brings a new system tha
 | 1 — Starting | The platform is the record for product, price, stock, order and customer; an accounting package for the books; the portal of a 3PL (a third-party warehouse that ships on the merchant's behalf) holds a copy of stock | Nothing beyond one e-mail per customer and a monthly payout reconciliation | A 3PL or an accounting system starts writing stock or customers back |
 | 2 — Growing | An ERP arrives and claims items, business customers and valued stock; the platform keeps D2C customers and orders; a POS brings store stock and a second customer key | Decide the product master and the stock master now; one direction per entity; a daily order and stock reconciliation | Two systems write stock; a spreadsheet becomes the product master; the first oversell |
 | 3 — Omnichannel | The WMS owns physical stock, an OMS owns orders and availability, a PIM owns content, the ERP keeps identity, cost and finance, the platform keeps checkout | The full table with a refresh and a reconciliation per row; matching rules for customers; the ERP's rhythm decoupled from availability | Support checks three systems for one order; a stock sync chain measured in hours; refunds issued in two places |
-| 4 — Group | One table per brand or country, with shared records where sharing pays (PIM, customer master, OMS) and separate ones where it does not; survivorship rules per attribute | A master data function with a merge log; governance that decides what is shared before a stack is forced on a brand | One Size Fits None: brands forced onto one record before the benefit is measured, or kept apart when they should share |
+| 4 — Group | One table per brand or country, with shared records where sharing pays (PIM, customer master, OMS) and separate ones where it does not; survivorship rules per attribute (which source wins for each field when records are merged) | A master data function with a merge log (a record of which records were combined); governance that decides what is shared before a stack is forced on a brand | One Size Fits None: brands forced onto one record before the benefit is measured, or kept apart when they should share |
 
 Kestrel & Pine moved from stage 2 to stage 3 in 2023 and kept stage 2's ownership for four years: the ERP as stock master for a company with its own WMS, the platform as order record for a company with four order sources. The judgement: **reassign ownership at the stage transition, not after the first incident.** The sign that it is time is always the same, a second system that originates orders or counts stock.
 
@@ -261,6 +261,8 @@ Ownership decided is not ownership kept. Five things go wrong, each with a detec
 - Reassign ownership at the stage transition rather than after the incident: the day a second system originates orders or counts stock, the previous owner's claim has already expired, whatever the configuration still says.
 
 ## Questions to Ask
+
+The take-aways become useful when they are asked of one fact at a time, so put these questions to each row of your own table:
 
 1. For this fact, which system is the record, and is that written down anywhere a new colleague could find it?
 2. Who, and what, can write this fact in that system and in every copy? Is there more than one entry on the list?
