@@ -28,7 +28,7 @@ A customer asks where a parcel is. The storefront says *Delivered*, but the ware
 
 A **system of record** is the system whose value is authoritative for a particular fact. Naming one gives support and other systems a place to resolve disagreements. It also requires decisions about who may change that fact, how copies receive updates and how errors are repaired. Two-way synchronization without those decisions can let each system overwrite the other's answer.
 
-This chapter starts from six answers Kestrel & Pine's own people gave to the question "where does stock live?". It then defines the terms ownership is stated in, explains how systems can use different meanings for "order", and builds an entity–owner table: a list of business facts and the systems responsible for them. Last, it compares the ways merchants assign ownership, using what vendors publish about their own products as evidence, and returns to Kestrel & Pine's stock to show what the decision changes. [[commerce-capability-map]] supplies the wider map; [[events-consistency-and-reconciliation]] explains how to detect and repair disagreements.
+This chapter starts from six answers Kestrel & Pine's own people gave to the question "where does stock live?". It then defines the terms ownership is stated in, explains how systems can use different meanings for "order", and builds an entity–owner table: a list of business facts and the systems responsible for them. Then it compares the ways merchants assign ownership, using what vendors publish about their own products as evidence, and returns to Kestrel & Pine's stock to show what the decision changes. It closes with what goes wrong: the failures of ownership that was never decided, and the ways decided ownership is lost. [[commerce-capability-map]] supplies the wider map; [[events-consistency-and-reconciliation]] explains how to detect and repair disagreements.
 
 **Where we are in the order's journey.** Eva Janssen buys a Ridgewalker jacket from Kestrel & Pine, the fictional outdoor brand. The stock badge, €199 price and later shipment status all reach her through copies. The warehouse management system (WMS) confirms what shipped; the storefront displays that answer. This chapter decides which system each copy must answer to.
 
@@ -84,7 +84,7 @@ In plain words: the storefront, order management, the warehouse and the finance 
 | Warehouse | Work to do | A fulfillment order: pick lines, bins, a packing station, one or more parcels; a split order is two of these | Released, in picking, packed, shipped |
 | ERP | Something to invoice and post | A sales order with net amounts, VAT, a debtor, a receivable | Open, invoiced, paid |
 
-Kestrel & Pine's **Three-Status Order**, #1052877, generated 11 support tickets because its three statuses described different objects. The fleece shipped on 7 December 2026; the socks waited a week for replenishment. The platform showed *Delivered* after the fleece's carrier scan. The WMS showed *In picking* while the socks waited. The enterprise resource planning system (ERP) showed *Not invoiced* because it required the WMS's "order complete" message.
+The parcel that opened this chapter, *Delivered* in one system and *In picking* in another, was a real order at Kestrel & Pine. The **Three-Status Order**, #1052877, generated 11 support tickets because its three statuses described different objects. The fleece shipped on 7 December 2026; the socks waited a week for replenishment. The platform showed *Delivered* after the fleece's carrier scan. The WMS showed *In picking* while the socks waited. The enterprise resource planning system (ERP) showed *Not invoiced* because it required the WMS's "order complete" message.
 
 For six days, nobody could give the customer a combined view. **An order management system (OMS) must explain the whole order while retaining the separate facts.** Waypoint decision W2 assigns that job to a purchased OMS, with one state model and one order number family.
 
@@ -119,7 +119,7 @@ The deliverable of this chapter is a table with one row per business fact. For e
 Several rows carry lessons that newcomers miss.
 
 - **Stock has three records, not one**, because the warehouse, the stores and the marketplace's program each count a different shelf. Ownership is per fact *and per location*.
-- **Availability has no human writer.** It is computed from the stock records and the open orders. A hand edit to a channel's available quantity is a second writer, and it is how the App That Wrote Stock produced phantom reservations on 600 variants.
+- **Availability has no human writer.** It is computed from the stock records and the open orders. A hand edit to a channel's available quantity is a second writer, and it is how a pre-order app at Kestrel & Pine, adjusting inventory in the platform while the WMS feed also wrote it, produced two weeks of phantom reservations on 600 variants. The company calls that incident the App That Wrote Stock.
 - **Payment's record is outside the company.** The PSP (payment service provider, the company that takes the shopper's money and pays it out to the merchant) holds the transaction; the order holds a reference. A refund issued by hand in the PSP console, outside the returns flow, is a write to the record that the OMS does not know about, which is the Double Refund: 212 returns refunded twice, €19,400.
 - **The business customer and the consumer have different records.** Microsoft's October 2026 documentation for its Business Central Shopify Connector says it plainly: decide "which system is the system of record for customer data", notes that most businesses manage customer records, payment terms and credit limits in the ERP, and warns that "Mixing both directions without a clear ownership rule can lead to conflicting records."
 
@@ -148,7 +148,7 @@ The entity–owner table above is one way to fill in those columns, the one I re
 
 **The platform as hub.** The commerce platform is the record for orders, customers and stock; the ERP subscribes to the result for finance. This is the natural shape of a direct-to-consumer (D2C) brand on a hosted platform with one or two channels: the platform's order is the order, its customer is the customer, its stock number is the stock. It stops fitting when orders are created elsewhere (a POS from another vendor, EDI from a retail chain, a marketplace connector) and when stock is counted elsewhere (an own warehouse on a WMS), because the platform's model cannot hold those orders well and its stock number becomes a copy with its own writers.
 
-**Ownership per fact, with an order hub.** Assign physical stock to the WMS, orders and availability to the OMS, product content to the PIM, and identity, costs and finance to the ERP. The commerce platform keeps the storefront and checkout. The warehouse can then report what it counted while order management decides how much remains uncommitted. Separating those facts prevents a channel's sales estimate from overwriting a physical count.
+**Ownership per fact, with an order hub.** Assign physical stock to the WMS, orders to the OMS, availability to a service that computes it from the stock records and open orders, product content to the PIM, and identity, costs and finance to the ERP. The commerce platform keeps the storefront and checkout. The warehouse can then report what it counted while the availability service works out how much of it remains uncommitted. Separating those facts prevents a channel's sales estimate from overwriting a physical count.
 
 Specialist vendors describe similar boundaries. Fluent Commerce says its OMS routes orders while "your ERP stays the system of record". OneStock describes the ERP as product master when no PIM exists, and its OMS as master for inventory availability (both undated vendor guidance, accessed November 2026). Read these as vendors explaining their own categories.
 
@@ -177,29 +177,15 @@ In a suite, the vendor has made most of these decisions for you. Salesforce's Ju
 
 Two things remain yours even in a suite. First, the systems outside it: the PSP, the carriers, the marketplaces, a POS or WMS from another vendor, the EDI partners. Their facts are records the suite copies, and the suite's copies need the same refresh and reconciliation as anyone's. Second, the decision itself: the suite decides what it owns, not whether that is right for your business. Shopify's enterprise guidance of August 2026 states the discipline that holds across vendors in two sentences: "Document every field that moves between systems, and name the system of record for each" and "Decide in advance what happens when the two systems disagree."
 
-## When Ownership Is Not Decided: The Five Truth Patterns
-
-[[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner.
-
-| Pattern | The fact with no record | Kestrel & Pine's incident | The owner Waypoint named |
-| --- | --- | --- | --- |
-| The Phantom Stock | Physical stock, and availability per channel | The Black Friday Oversell (1,340 units, about €96,000); the Store Stock Mirage (37 items promised that Utrecht had sold) | WMS and POS for stock; the availability service for what each channel may sell (W1) |
-| Schrödinger's Order | The order's state across contexts | The Three-Status Order (#1052877, six days, 11 tickets) | The OMS, one state model, one order number family (W2) |
-| The Familiar Stranger | Customer identity | Eva Janssen as four unlinked records | Not yet decided; [[identity-and-master-data]] |
-| The Boomerang | The refund and its link to the return | The Double Refund (212 returns, €19,400 twice) | The OMS as the owner of the return's resolution; refunds only through the flow (W2, W5) |
-| The Price Nobody Can Explain | The consumer price per market | The Price Drift (€179 for nine days, 410 orders, about €8,200) | A single price source per market, published by event (W5); [[pricing-architecture]] |
-
-The pattern that is not in the family, The Secret Agent, is the ownership failure seen from the writer's side: a script, app or person that changes a fact without being on the writer list. The App That Wrote Stock was a Secret Agent and a Phantom Stock at once.
-
 ## Across Scale Stages: When It Fits and When It Limits
 
-The entity–owner table is not written once. Each stage brings a new system that claims facts the previous owner held, and the moment of handover is when two writers exist. The stages are the book's four ([[commerce-scaling-stages]]).
+Whether the merchant or a vendor assigns it, ownership is not assigned once, and the entity–owner table is not written once. Each stage brings a new system that claims facts the previous owner held, and the moment of handover is when two writers exist. The stages are the book's four ([[commerce-scaling-stages]]).
 
 | Stage | Typical ownership | What becomes necessary | Warning signs of outgrowing it |
 | --- | --- | --- | --- |
 | 1 — Starting | The platform is the record for product, price, stock, order and customer; an accounting package for the books; the portal of a 3PL (a third-party warehouse that ships on the merchant's behalf) holds a copy of stock | Nothing beyond one e-mail per customer and a monthly payout reconciliation | A 3PL or an accounting system starts writing stock or customers back |
 | 2 — Growing | An ERP arrives and claims items, business customers and valued stock; the platform keeps D2C customers and orders; a POS brings store stock and a second customer key | Decide the product master and the stock master now; one direction per entity; a daily order and stock reconciliation | Two systems write stock; a spreadsheet becomes the product master; the first oversell |
-| 3 — Omnichannel | The WMS owns physical stock, an OMS owns orders and availability, a PIM owns content, the ERP keeps identity, cost and finance, the platform keeps checkout | The full table with a refresh and a reconciliation per row; matching rules for customers; the ERP's rhythm decoupled from availability | Support checks three systems for one order; a stock sync chain measured in hours; refunds issued in two places |
+| 3 — Omnichannel | The WMS owns physical stock, an OMS owns orders, an availability service computes what each channel may sell, a PIM owns content, the ERP keeps identity, cost and finance, the platform keeps checkout | The full table with a refresh and a reconciliation per row; matching rules for customers; the ERP's rhythm decoupled from availability | Support checks three systems for one order; a stock sync chain measured in hours; refunds issued in two places |
 | 4 — Group | One table per brand or country, with shared records where sharing pays (PIM, customer master, OMS) and separate ones where it does not; survivorship rules per attribute (which source wins for each field when records are merged) | A master data function with a merge log (a record of which records were combined); governance that decides what is shared before a stack is forced on a brand | One Size Fits None: brands forced onto one record before the benefit is measured, or kept apart when they should share |
 
 Kestrel & Pine moved from stage 2 to stage 3 in 2023 and kept stage 2's ownership for four years: the ERP as stock master for a company with its own WMS, the platform as order record for a company with four order sources. The judgement: **reassign ownership at the stage transition, not after the first incident.** The sign that it is time is always the same, a second system that originates orders or counts stock.
@@ -227,9 +213,23 @@ Replay the Black Friday evening against the right-hand column. At 19:40 the last
 
 The new design did not make the copies right by being named. Its own reconciliation had to find what the old chain had left behind: the first weekly run in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative), most left behind by the three apps. The apps' write access was removed, and that figure is the reconciliation's baseline.
 
+## When Ownership Is Not Decided: The Five Truth Patterns
+
+After W1, Kestrel & Pine's stock has an owner. Most of its other facts did not, and the failures that followed already have names. [[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner.
+
+| Pattern | The fact with no record | Kestrel & Pine's incident | The owner Waypoint named |
+| --- | --- | --- | --- |
+| The Phantom Stock | Physical stock, and availability per channel | The Black Friday Oversell (1,340 units, about €96,000); the Store Stock Mirage (37 items promised that Utrecht had sold) | WMS and POS for stock; the availability service for what each channel may sell (W1) |
+| Schrödinger's Order | The order's state across contexts | The Three-Status Order (#1052877, six days, 11 tickets) | The OMS, one state model, one order number family (W2) |
+| The Familiar Stranger | Customer identity | Eva Janssen as four unlinked records | Not yet decided; [[identity-and-master-data]] |
+| The Boomerang | The refund and its link to the return | The Double Refund (212 returns, €19,400 twice) | The OMS as the owner of the return's resolution; refunds only through the flow (W2, W5) |
+| The Price Nobody Can Explain | The consumer price per market | The Price Drift (€179 for nine days, 410 orders, about €8,200) | A single price source per market, published by event (W5); [[pricing-architecture]] |
+
+The pattern that is not in the family, The Secret Agent, is the ownership failure seen from the writer's side: a script, app or person that changes a fact without being on the writer list. The App That Wrote Stock was a Secret Agent and a Phantom Stock at once.
+
 ## When It Goes Wrong
 
-Ownership decided is not ownership kept. Five things go wrong, each with a detection and a recovery.
+Those five patterns come from ownership that was never decided. But ownership decided is not ownership kept. Five things go wrong, each with a detection and a recovery.
 
 **A second writer appears.** An app, a script, an integration "fix" or a well-meaning colleague starts changing a fact in a copy or beside the record. The App That Wrote Stock is the case. Detection is a periodic *write audit*: for each row of the entity–owner table, list every credential, app scope, job and role that can change the fact, and compare it with the writer column. Recovery is to remove the write, then re-publish the fact from the record to every copy.
 
