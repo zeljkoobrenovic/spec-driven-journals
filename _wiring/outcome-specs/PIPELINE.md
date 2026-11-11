@@ -241,6 +241,29 @@ checks, which do not exist yet.
 6. **Part theses for Parts II to XI are derived from the plan**, not from a
    reading of those chapters. They are plausible and unconfirmed.
 
+### One end-to-end run (12 November 2026)
+
+The whole check step was run once on a scratch copy of chapter 4: a reverse
+outliner and four cold readers that saw only the prose, then a judge, then
+`check_draft.py finalize`. Verdict `escalate` in round 1, with 11 results
+passed and 9 failed.
+
+- All three cold-reader criteria passed; 52 of 53 paragraphs matched the
+  spec's controlling ideas in order; 47 of 49 transitions expressed the
+  declared relationship; no weak introduction or conclusion pattern.
+- Four failures were faults of the draft, among them observation 2 above
+  (the conclusion does not return to the opening), which the judge found
+  independently.
+- Three were faults of the example spec and one was unclear: a paragraph
+  specified as one idea that holds two, a roadmap that used "writer" before
+  it is defined and under-promised the evidence, and "three words" for four
+  terms. The example has been corrected; the draft-side findings are listed
+  in its `open_questions`.
+
+This is one run with one judge. It shows the step works end to end and that
+it finds faults on both sides; it does not establish how reliable any single
+ruling is.
+
 ## 4. Decisions
 
 ### Made (author, 11 November 2026)

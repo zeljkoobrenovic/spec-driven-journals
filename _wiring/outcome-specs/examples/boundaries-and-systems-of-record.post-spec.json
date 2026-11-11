@@ -7,8 +7,8 @@
   "part": "part-1",
   "title": "Who Owns the Truth: Boundaries, Bounded Contexts and Systems of Record",
   "status": "draft",
-  "revised": "2026-11-11",
-  "basis": "Worked example, reconstructed from the published chapter (posts/04-boundaries-and-systems-of-record/index.md) and its spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over below. Paragraph ids follow the order of the published chapter; a table, list or figure that belongs to a paragraph is recorded as that paragraph's evidence. The conclusion's callback describes what the contract asks for; the published chapter does not yet do it (see PIPELINE.md, 'What the worked example exposed').",
+  "revised": "2026-11-12",
+  "basis": "Worked example, reconstructed from the published chapter (posts/04-boundaries-and-systems-of-record/index.md) and its spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over below, then corrected after one end-to-end check run. It is a contract, not a description: in the places listed under open_questions the published chapter does not yet do what the spec asks.",
   "intent": {
     "outcome": {
       "know": [
@@ -164,10 +164,16 @@
       "placement": "IN THIS CHAPTER callout and paragraph p03",
       "promises": [
         {
-          "promise": "Build an entity–owner table: business facts and the systems responsible for them.",
+          "promise": "Work through Kestrel & Pine's six answers to 'where does stock live', before and after the decision that settled it.",
           "kept_in": [
-            "facts-records-copies",
-            "entity-owner-table"
+            "scene",
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Define the terms ownership is stated in: fact, record, copy and writer.",
+          "kept_in": [
+            "facts-records-copies"
           ]
         },
         {
@@ -177,18 +183,17 @@
           ]
         },
         {
-          "promise": "Compare ownership choices.",
+          "promise": "Build an entity–owner table: business facts and the systems responsible for them.",
+          "kept_in": [
+            "entity-owner-table"
+          ]
+        },
+        {
+          "promise": "Compare ownership choices, using what vendors publish about their own products as evidence.",
           "kept_in": [
             "four-ways",
             "suite-and-vendors",
             "scale-stages"
-          ]
-        },
-        {
-          "promise": "Work through Kestrel & Pine's six stock writers.",
-          "kept_in": [
-            "scene",
-            "in-practice"
           ]
         },
         {
@@ -229,7 +234,7 @@
       {
         "id": "p03",
         "function": "transition",
-        "controlling_idea": "The chapter builds an entity–owner table, explains why 'order' has several meanings, compares ownership choices and works Kestrel & Pine's stock, leaving the wider map and the repair mechanics to two other chapters.",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's six answers about stock, defines the terms of ownership, explains why 'order' has several meanings, builds an entity–owner table and compares ownership choices against vendors' published documentation, leaving the wider map and the repair mechanics to two other chapters.",
         "transition_in": {
           "relationship": "sequence",
           "carries_over": "The decisions a system of record requires.",
@@ -379,7 +384,7 @@
         {
           "id": "p09",
           "function": "transition",
-          "controlling_idea": "Three words carry the chapter."
+          "controlling_idea": "Four terms carry the chapter: fact, record, copy and writer."
         },
         {
           "id": "p10",
@@ -395,7 +400,7 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The announcement of three words.",
+            "carries_over": "The announcement of four terms.",
             "introduces": "The first.",
             "form": "word",
             "placement": "start_of_this"
@@ -1059,7 +1064,7 @@
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "From what real companies document, to one company's before-and-after table, to one minute of one evening."
+        "rationale": "From what real companies document, to one company's before-and-after table, to one minute of one evening, and then to what the first reconciliation found."
       },
       "transition_in": {
         "relationship": "example",
@@ -1110,7 +1115,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "19:40 last unit scanned, channels at zero before 19:41; first reconciliation in May 2027 finds 2.3% of variants differing (illustrative); Figure 5.",
+              "what": "19:40 last unit scanned, the availability service publishes zero within seconds, channels stop selling before 19:41; the per-channel buffer absorbs orders already in checkout; Figure 5.",
               "source": "Kestrel & Pine scenario ledger",
               "shows": "The decision, not faster copying of the old chain, removes the oversell window."
             }
@@ -1119,6 +1124,26 @@
             "relationship": "cause_effect",
             "carries_over": "The after-W1 design.",
             "introduces": "Its effect on the incident the chapter opened with.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42b",
+          "function": "evidence",
+          "controlling_idea": "The first reconciliation after the change found copies that had drifted, which is the reason every copy row has one.",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "May 2027: 2.3% of active variants differ between the WMS and the platform (illustrative), most left behind by the three apps; their write access was removed and the figure became the baseline.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Naming the record did not by itself make the copies right; the reconciliation is what found the difference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The new design working on the evening of the oversell.",
+            "introduces": "What the design's own reconciliation found once it ran.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1370,7 +1395,11 @@
     "The six-quantity reconstruction for the Ridgewalker variant at 20:00 on 27 November 2026 is labelled illustrative; journey-peak-day and inventory-and-availability may reuse or refine it.",
     "The entity–owner table names the platform's price lists as the consumer price record; pricing-architecture may move that to a pricing engine for the omnichannel stage and should then update the row here.",
     "Customer identity is left 'not yet decided' in the Truth-pattern table because the Waypoint decisions name no customer master; identity-and-master-data should resolve it.",
-    "The published conclusion does not return to the introduction's parcel; the callback in this spec is not yet realised in the prose."
+    "Published chapter against this spec, conclusion: it does not return to the introduction's Delivered / In picking parcel (conclusion.callback).",
+    "Published chapter against this spec, in-practice: the Black Friday replay and the May 2027 reconciliation are one paragraph; the spec has them as p42 and p42b.",
+    "Published chapter against this spec, introduction: the roadmap paragraph says 'six stock writers' before 'writer' is defined, and does not say that the comparison rests on vendor documentation.",
+    "Published chapter against this spec, facts-records-copies: the section opens 'Three words carry this chapter' and then defines four terms.",
+    "Published chapter against this spec, found by the same check run and not yet examined: the paragraph that introduces the before-and-after table does not state its claim in prose (p41); the opening of 'Four Ways to Assign Ownership' does not contrast with the table before it (p26); the entity–owner table uses PSP, reconciliation and event before the prose defines them (p21)."
   ],
   "decision_log": [
     {
@@ -1465,6 +1494,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Corrected after an end-to-end check run on a scratch copy of the chapter (verdict escalate; three results at fault in the spec, one unclear): p42 split into p42 and p42b, the roadmap reordered to section order with the evidence named and 'six stock writers' removed, p09 changed from three words to four terms. The draft-side findings are recorded under open_questions. Status draft."
+    },
     {
       "date": "2026-11-11",
       "change": "Reconstructed as an outcome spec (worked example for the outcome-specs proposal): thesis, supporting claims, section and paragraph structure, transitions and acceptance criteria added; record-keeping sections carried over from spec.md. Status draft."

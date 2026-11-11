@@ -15,6 +15,6 @@ skills); no existing journal has been converted yet.
 | `RULES.md` | Each field and check, the guide it came from, the rule in one line; sources; the check catalogue |
 | `PIPELINE.md` | The pipeline today, the proposed pipeline, what happens when a check fails, what the example exposed, open decisions |
 | `examples/commerce-platform-architecture.journal-spec.json` | ORDERED as a journal spec: all 14 parts, Part I's posts in full, the other 62 posts at outline level |
-| `examples/boundaries-and-systems-of-record.post-spec.json` | ORDERED chapter 4 as a post spec: 10 sections, 53 paragraphs |
+| `examples/boundaries-and-systems-of-record.post-spec.json` | ORDERED chapter 4 as a post spec: 10 sections, 54 paragraphs |
 
 Both examples were reconstructed from published text and are in `draft`. The post spec is the only spec file for a post: it replaces `spec.md`.
