@@ -79,6 +79,7 @@ in the schema, and none is attributed to a guide.
 | --- | --- | --- |
 | C `flow.pattern` | Flow | "How am I ordering ideas? Can I describe the pattern?" Name one primary pattern: chronological, grouping, large to small or the reverse, assertion-evidence-reasoning, IMRD. |
 | C `flow.additional_patterns` | Flow | A draft has one primary pattern and may use additional patterns inside sections. |
+| checks `flow_order_is_sound`, `flow_is_followable` | Flow | Flow is "easy to read smoothly from beginning to end": the declared order is tested on its own before drafting, and the reader's experience of it is tested on the prose. |
 | C `flow.rationale` | Flow | "Why are the ideas presented in this order? Would they make more sense if I reorder them? What effect does the order of ideas have on my readers?" |
 | C `opening.roadmap`, P `introduction.roadmap` | Flow; Introductions; Thesis | Signpost near the beginning; the introduction is "a road map for the rest of your paper". |
 | P `paragraph.organization` | Paragraphs | Order a paragraph's sentences by narration, description, process, classification or illustration. |
@@ -139,7 +140,7 @@ in the schema, and none is attributed to a guide.
 ## Check catalogue
 
 Checks are identified by the values of `check` in `common.schema.json`. The
-first two run on the spec before any prose exists; the rest run on a draft.
+first four run on the spec before any prose exists; the rest run on a draft.
 Every standard check runs on every draft at its default severity; a spec lists
 a check under `acceptance_criteria` only to change the severity, to add a
 probe, or to add a `custom` criterion.
@@ -147,6 +148,7 @@ probe, or to add a `custom` criterion.
 | Check | Runs on | Method | Default severity | Guide | Rule |
 | --- | --- | --- | --- | --- | --- |
 | `thesis_passes_tests` | spec | rubric | blocker | Thesis | The claim answers its question, can be disputed, is specific, and its `so_what` and `how_why` are not restatements of the claim. |
+| `flow_order_is_sound` | spec | rubric | major | Flow | A reader given only the ordered ideas and the declared pattern confirms the order follows the pattern, that each item relies only on earlier ones, and that the stated reason says what would break if it changed ("Can I describe the pattern? Would they make more sense if I reorder them?"). |
 | `children_cover_parent_thesis` | spec | deterministic | blocker | Thesis | Every supporting claim has a child that supports it (no gaps); every arguing child supports a claim (no orphans); no child cites an unknown claim. |
 | `role_matches_journal_spec` | spec | deterministic | blocker | Thesis | The post spec's intent outcome, thesis and role equal the journal spec's entry for that post. |
 | `intro_predicts_content` | draft | cold reader | major | Introductions | A reader shown only the introduction predicts the sections, the kind of evidence and the tone. |
@@ -156,6 +158,7 @@ probe, or to add a `custom` criterion.
 | `evidence_is_explained` | draft | rubric | major | Paragraphs | Every example, figure, table and quotation is followed by a sentence saying what it shows. |
 | `transition_expresses_declared_relationship` | draft | rubric | major | Transitions | At each boundary the prose expresses the declared relationship and picks up the declared known information. |
 | `known_before_new` | draft | rubric | major | Flow | No term is used before the audience knows it; sentences that open a paragraph start from something already introduced. |
+| `flow_is_followable` | draft | cold reader | major | Flow | A reader of the prose alone can say what principle orders the sections and why each comes where it does, and reports no place where they lost the thread ("Readers should not have to stop, double back, reread, or work hard to find connections between ideas"). |
 | `no_weak_introduction_pattern` | draft | rubric | major | Introductions | The introduction is none of: placeholder, restated question, Webster's Dictionary, "dawn of man", book report. |
 | `no_weak_conclusion_pattern` | draft | rubric | major | Conclusions | The conclusion is none of: "That's My Story and I'm Sticking to It", "Sherlock Holmes", "America the Beautiful", "Grab Bag"; it does not open with "in conclusion", introduce a new idea or subtopic, end on a rephrased thesis alone, or hold evidence that belongs in the body. |
 | `conclusion_synthesizes_and_answers_so_what` | draft | rubric | major | Conclusions | The conclusion states something no single section states, and says why it matters. |

@@ -4,6 +4,7 @@
     python3 _wiring/validate_spec.py <journal>              # journal-spec.json and every posts/**/spec.json
     python3 _wiring/validate_spec.py <journal> <folder>     # the journal spec and one post spec
     python3 _wiring/validate_spec.py --file <spec.json> [--journal-spec <journal-spec.json>]
+    python3 _wiring/validate_spec.py --flow <spec.json>     # print the order of ideas for the flow rubric
 
 <journal> is a directory name under _journals/. Two layers run for each file:
 the JSON Schema in _wiring/outcome-specs/, then the semantic rules (thesis
@@ -33,6 +34,9 @@ def report(label, kind, errors):
 def main(argv):
     if not argv or argv[0] in ("-h", "--help"):
         sys.exit(__doc__)
+    if argv[0] == "--flow":
+        print(osp.flow_outline(osp.load_json(argv[1])))
+        return
     if argv[0] == "--file":
         path = Path(argv[1])
         journal = None

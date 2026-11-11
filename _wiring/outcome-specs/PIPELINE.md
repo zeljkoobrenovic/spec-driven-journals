@@ -102,6 +102,12 @@ Two layers, both of which must pass before the author is asked to accept.
     evidence item says what it shows;
   - `conclusion.hand_off` names the next post and uses the relationship that
     post declares.
+- **Flow rubric**, one model call per spec by a reader that sees only the
+  order of ideas and the declared flow
+  (`python3 _wiring/validate_spec.py --flow <spec>`): does the sequence follow
+  the declared pattern, does each item rely only on earlier ones, which item
+  would it move, and does the stated reason say what would break. Verdict:
+  sound, sound with notes, or unsound.
 - **Thesis rubric**, one model call per thesis by a judge that sees only the
   thesis object: does the claim answer the question, could a reasonable
   reader dispute it, is it free of vague evaluative words, and are `so_what`
@@ -133,7 +139,7 @@ than its check needs.
 | --- | --- | --- | --- |
 | Script | Spec and draft | Compares headings, paragraph counts per section, length, the hand-off link, cross-link targets | The structural half of `reverse_outline_matches_spec`; length |
 | Reverse outliner | The draft only | Writes one short phrase per paragraph; flags any paragraph that needs two | `reverse_outline_matches_spec`, `one_controlling_idea_per_paragraph` |
-| Cold reader | The introduction only, or the draft only | Answers each criterion's `probe` | `intro_predicts_content` and every `cold_reader` criterion |
+| Cold reader | The introduction only, or the draft only | Answers each criterion's `probe`; one reads the whole draft and reports how it is organised and where it lost the thread | `intro_predicts_content`, `flow_is_followable` and every `cold_reader` criterion |
 | Judge | Spec, draft, the outline and the cold reader's answers | Aligns outline to spec; scores answers against `expected`; rules on each transition, each evidence item, the introduction and the conclusion, quoting the passage each verdict rests on | All remaining checks |
 
 The output is one `check-report.json` (schema in this folder), stamped with
@@ -153,6 +159,7 @@ Every failed result names a `fault`: the draft, the spec, or unclear.
 | A transition expresses a different relationship | draft | Rewrite the boundary sentences only. |
 | A transition cannot be written because the relationship does not hold | spec | Escalate: the order or the declared relationship is wrong. |
 | The cold reader cannot predict the content from the introduction | draft | Rewrite the roadmap paragraph, then the hook and bridge if it fails again. |
+| The flow reader cannot say why a section is where it is, or lost the thread | draft, or spec when the order itself is the cause | Rewrite the opening of the section or paragraph named so it says what it takes from what came before. If the order is the cause, escalate. |
 | A weak introduction or conclusion pattern is found | draft | Rewrite the named element; the report gives the pattern. |
 | The conclusion summarizes, or does not return to the introduction | draft | Rewrite from `conclusion.synthesis` and `conclusion.callback`. |
 | A custom cold-reader criterion fails | unclear | Revise the sections that the probe depends on once; if it fails again, escalate. |
@@ -182,7 +189,7 @@ Rules that hold across the table:
 | --- | --- |
 | Journal spec | `journal-spec` skill → `_journals/<j>/journal-spec.json` |
 | Post spec | `spec-creator` skill → `posts/<slug>/spec.json` (replaces `spec.md`) |
-| Validate | `python3 _wiring/validate_spec.py <journal> [<folder>]`: schema, then the semantic rules. The thesis rubric is a step of the two spec skills. |
+| Validate | `python3 _wiring/validate_spec.py <journal> [<folder>]`: schema, then the semantic rules. The thesis rubric and the flow rubric are steps of the two spec skills; `--flow <spec>` prints the reader's input for the latter. |
 | Draft | `detailed-article` skill, section "Writing from `spec.json`" |
 | Check | `draft-check` skill starts the readers; `python3 _wiring/check_draft.py` does the deterministic part (`structure`), prepares the reader input (`units`), assembles and validates the report and computes the verdict (`finalize`), and reports staleness (`status`) |
 | Revise | `draft-check` skill, two rounds, then escalation |

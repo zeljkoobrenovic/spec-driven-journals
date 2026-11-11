@@ -40,6 +40,7 @@ APPARATUS_HEADINGS = {
 # Default severity of each standard check (RULES.md, "Check catalogue").
 DEFAULT_SEVERITY = {
     "thesis_passes_tests": "blocker",
+    "flow_order_is_sound": "major",
     "children_cover_parent_thesis": "blocker",
     "role_matches_journal_spec": "blocker",
     "intro_predicts_content": "major",
@@ -49,6 +50,7 @@ DEFAULT_SEVERITY = {
     "evidence_is_explained": "major",
     "transition_expresses_declared_relationship": "major",
     "known_before_new": "major",
+    "flow_is_followable": "major",
     "no_weak_introduction_pattern": "major",
     "no_weak_conclusion_pattern": "major",
     "conclusion_synthesizes_and_answers_so_what": "major",
@@ -57,7 +59,7 @@ DEFAULT_SEVERITY = {
 }
 # Checks that need a reader (a model or a person); check_draft.py cannot run them.
 DRAFT_READER_CHECKS = [c for c in DEFAULT_SEVERITY
-                       if c not in ("thesis_passes_tests", "children_cover_parent_thesis",
+                       if c not in ("thesis_passes_tests", "flow_order_is_sound", "children_cover_parent_thesis",
                                     "role_matches_journal_spec", "custom")]
 MAX_REVISION_ROUNDS = 2
 
@@ -339,6 +341,46 @@ def validate_file(path, journal=None, journal_dir=None):
         errors = schema_errors(doc, "post-spec.schema.json")
         return kind, errors or post_semantic_errors(doc, journal)
     return kind, ["'kind' must be 'journal' or 'post'"]
+
+
+def flow_outline(doc):
+    """The order of ideas of a spec and the flow it declares, as plain text.
+
+    This is all the flow rubric's reader is given: the claims in order and
+    the declared pattern and rationale, with no intent, evidence, transitions
+    or record keeping, so the order is judged on its own.
+    """
+    def flow_lines(flow, indent=""):
+        extra = "; ".join(f"{a['pattern']} in {a['applies_to']}" for a in flow.get("additional_patterns", []))
+        return [f"{indent}Declared order: {flow['pattern']}" + (f" (also {extra})" if extra else ""),
+                f"{indent}Declared reason: {flow['rationale']}"]
+
+    out = []
+    if doc.get("kind") == "journal":
+        out += [f"JOURNAL: {doc['title']}", f"Claim: {doc['thesis']['claim']}"] + flow_lines(doc["flow"]) + [""]
+        for n, part in enumerate(doc["parts"], 1):
+            out.append(f"{n}. PART {part['title']}: {part['thesis']['claim']}")
+            if part.get("flow"):
+                out += flow_lines(part["flow"], "   ")
+            for k, post in enumerate(part["posts"], 1):
+                claim = post.get("thesis", {}).get("claim") or post["question"]
+                out.append(f"   {n}.{k} [{post['kind']}] {post['title']}: {claim}")
+            out.append("")
+        return "\n".join(out)
+    out += [f"POST: {doc['title']}", f"Claim: {doc['thesis']['claim']}"] + flow_lines(doc["flow"]) + [""]
+    out.append("0. INTRODUCTION")
+    out += [f"   0.{k} {p['controlling_idea']}" for k, p in enumerate(doc["introduction"]["paragraphs"], 1)]
+    out.append("")
+    for n, section in enumerate(doc["sections"], 1):
+        out.append(f"{n}. SECTION {section['heading']}: {section['controlling_idea']}")
+        if section.get("flow"):
+            out += flow_lines(section["flow"], "   ")
+        out += [f"   {n}.{k} {p['controlling_idea']}" for k, p in enumerate(section["paragraphs"], 1)]
+        out.append("")
+    n = len(doc["sections"]) + 1
+    out.append(f"{n}. CONCLUSION")
+    out += [f"   {n}.{k} {p['controlling_idea']}" for k, p in enumerate(doc["conclusion"]["paragraphs"], 1)]
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------------

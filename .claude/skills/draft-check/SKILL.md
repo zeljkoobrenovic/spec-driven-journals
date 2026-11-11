@@ -53,6 +53,12 @@ Let `P` be the post folder.
      evidence, and in what tone.
    - For each acceptance criterion with `method: cold_reader`: give it the
      whole draft and the criterion's `probe`, nothing else.
+   - For `flow_is_followable`: give it the whole draft and ask how easy it
+     was to follow, not whether it is good: what principle orders the
+     sections; for each section, why it comes where it does; every place it
+     lost the thread, had to re-read or met something out of place, with the
+     sentence quoted; and whether any reordering would have been easier. Tell
+     it not to invent problems and not to leave out real ones.
    Each returns its answer in plain prose.
 6. **Judge** (one agent; input: `spec.json`, `structure.json`, the reverse
    outline, the cold readers' answers). It returns one result per check and
@@ -65,6 +71,14 @@ Let `P` be the post folder.
      quotation in the draft.
    - `transition_expresses_declared_relationship`: every `transition_in`, read
      at the boundary between the two aligned units.
+   - `flow_is_followable`: the flow reader's account against the spec's
+     `flow` (post level and per section). Pass when the organising principle
+     the reader describes agrees with the declared pattern, no section's
+     position is "unclear" to it, and it reports no material lost-thread
+     point. Each material point is one failed result with the reader's quote;
+     the fault is the draft when the spec's order is fine and the prose
+     obscures it, the spec when the reader's difficulty comes from the order
+     itself.
    - `known_before_new`: terms against `audience.already_knows` and
      `does_not_know`.
    - `no_weak_introduction_pattern`, `no_weak_conclusion_pattern`: name the

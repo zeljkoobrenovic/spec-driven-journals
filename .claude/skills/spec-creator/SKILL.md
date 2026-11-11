@@ -102,7 +102,18 @@ reader who never saw it could be tested against.
    next post's `transition_in`.
 9. **Thesis rubric**, when the thesis was written here rather than copied:
    as in the `journal-spec` skill, a fresh agent given only the thesis object.
-10. **Build** if the post is wired and has an `index.md`:
+10. **Flow rubric.** Whenever the order of units was written or changed, print
+    the order of ideas with `python3 _wiring/validate_spec.py --flow <spec file>`
+    and give that output, and nothing else, to a fresh agent. Ask it, citing
+    item numbers: does the sequence follow the declared pattern; does every
+    item rely only on what earlier items established; which item would it
+    move, merge or cut, and what the reader would gain; does the declared
+    reason say what would break if the order changed. It ends with a verdict:
+    sound, sound with notes, or unsound. On unsound, change the order (and
+    every `transition_in` the change invalidates) or the declared flow, and
+    run it again. Report the verdict and any notes you did not act on; the
+    author decides those.
+11. **Build** if the post is wired and has an `index.md`:
     `python3 _wiring/build.py`. The spec renders as
     `docs/<journal>/<slug>.spec.html`.
 
@@ -138,7 +149,7 @@ Only when asked, for the post named.
 
 ## Report
 
-File written; validator result; which fields were copied from the journal
+File written; validator result; the flow rubric's verdict and notes; which fields were copied from the journal
 spec; decisions taken by default; open questions; for a conversion, the
 success criteria rewritten or dropped.
 

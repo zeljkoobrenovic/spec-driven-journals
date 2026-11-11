@@ -81,8 +81,19 @@ This skill writes **only** `journal-spec.json`. Post specs are written by
    claim free of vague evaluative words ("good", "successful", "important",
    "in positive and negative ways"); are `so_what` and `how_why` more than
    restatements of the claim. Revise any thesis that fails and say which did.
-9. Set `revised`, add a `changelog` entry, leave `status: draft`. The author
-   sets `accepted`.
+9. **Flow rubric.** Whenever the order of units was written or changed, print
+   the order of ideas with `python3 _wiring/validate_spec.py --flow <spec file>`
+   and give that output, and nothing else, to a fresh agent. Ask it, citing
+   item numbers: does the sequence follow the declared pattern; does every
+   item rely only on what earlier items established; which item would it
+   move, merge or cut, and what the reader would gain; does the declared
+   reason say what would break if the order changed. It ends with a verdict:
+   sound, sound with notes, or unsound. On unsound, change the order (and
+   every `transition_in` the change invalidates) or the declared flow, and
+   run it again. Report the verdict and any notes you did not act on; the
+   author decides those.
+10. Set `revised`, add a `changelog` entry, leave `status: draft`. The author
+    sets `accepted`.
 
 ## Changing an accepted journal spec
 
@@ -98,7 +109,8 @@ This skill writes **only** `journal-spec.json`. Post specs are written by
 ## Report
 
 Files written; what is at `outline` and what at `full`; validator result;
-theses that failed the rubric and how they changed; decisions you took by
+theses that failed the rubric and how they changed; the flow rubric's
+verdict and notes; decisions you took by
 default; questions for the author.
 
 ## Anti-patterns

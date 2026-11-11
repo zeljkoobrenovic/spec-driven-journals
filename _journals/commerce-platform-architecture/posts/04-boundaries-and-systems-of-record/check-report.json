@@ -2,29 +2,29 @@
   "spec": "_journals/commerce-platform-architecture/posts/04-boundaries-and-systems-of-record/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/04-boundaries-and-systems-of-record/index.md",
   "spec_sha": "0f1bbcee03976903",
-  "draft_sha": "25d1b0cf67d2fb5a",
-  "run_at": "2026-11-12T00:32:26+01:00",
-  "round": 2,
-  "verdict": "revise",
+  "draft_sha": "b2ec11a03343b00e",
+  "run_at": "2026-11-12T00:40:29+01:00",
+  "round": 3,
+  "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Chapter goal: decide the record, the copies and the tie-break for every business fact",
+      "summary": "Chapter goal: decide each fact's record, its copies, and how disagreements resolve",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Three key points: unowned copies fail, words differ per system, ownership shifts with scale",
+      "summary": "Three key points: owned copies, words differing by system, ownership shifting with scale",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Three failure patterns addressed: phantom stock, conflicting order statuses, unexplained price drift",
+      "summary": "Three failure patterns addressed: phantom stock, multi-status order, unexplained price drift",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "A parcel shows two conflicting statuses; faster copying will not settle which is right",
+      "summary": "Opening case: storefront and warehouse show conflicting parcel statuses, and faster copying won't help",
       "matched_spec_paragraph": "p01"
     },
     {
@@ -34,22 +34,22 @@
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Roadmap of the chapter's steps and pointers to two related chapters",
+      "summary": "Roadmap of the chapter's sections and pointers to neighbouring chapters",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Places the chapter in Eva's order journey: which system each copy answers to",
+      "summary": "Places the chapter in Eva's order journey: what she sees arrives through copies",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: \"Where Does Stock Live?\" ¶1",
-      "summary": "Noor asks who owns stock and gets six different true answers",
+      "summary": "Noor asks who owns the stock figure and gets six different true answers",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: \"Where Does Stock Live?\" ¶2",
-      "summary": "Ruben reconstructs six systems showing six stock quantities on Black Friday evening",
+      "summary": "Ruben reconstructs six differing stock quantities for one jacket on Black Friday",
       "matched_spec_paragraph": "p06"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: \"Where Does Stock Live?\" ¶4",
-      "summary": "The real question is which figure is right; decision W1 names stock records",
+      "summary": "Asking which figure is right leads to decision W1 naming stock records",
       "matched_spec_paragraph": "p08"
     },
     {
@@ -69,22 +69,22 @@
     },
     {
       "draft_locator": "Facts, Records and Copies ¶2",
-      "summary": "Defines a business fact with examples the business acts on",
+      "summary": "Defines a business fact as something the business acts on",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "Facts, Records and Copies ¶3",
-      "summary": "Defines system of record, with bank and warehouse examples",
+      "summary": "Defines system of record, with bank ledger and warehouse shelf count examples",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "Facts, Records and Copies ¶4",
-      "summary": "Defines a copy: legitimate, refreshed from the record, never edited to fix disagreement",
+      "summary": "Defines a copy: necessary, refreshed from the record, never edited to fix",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "Facts, Records and Copies ¶5",
-      "summary": "Defines a writer; the writer list is the practical test of ownership",
+      "summary": "Defines writer; the writer list is the practical test of ownership",
       "matched_spec_paragraph": "p13"
     },
     {
@@ -94,22 +94,22 @@
     },
     {
       "draft_locator": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order ¶1",
-      "summary": "Introduces bounded context via Evans and Fowler: one word, different meanings per system",
+      "summary": "Introduces bounded context via Evans and Fowler: one word, several meanings",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order ¶2",
-      "summary": "Four systems are four contexts, each with its own different order object",
+      "summary": "Four systems are four contexts, each with a different order object",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order ¶3",
-      "summary": "Three-Status Order: three statuses described three different objects, causing support tickets",
+      "summary": "Three-Status Order case: each system's status described a different object",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order ¶4",
-      "summary": "Nobody had a combined view; W2 gives a purchased OMS that job",
+      "summary": "An OMS must own the whole-order view; decision W2 buys one",
       "matched_spec_paragraph": "p18"
     },
     {
@@ -124,47 +124,47 @@
     },
     {
       "draft_locator": "The Entity–Owner Table ¶1",
-      "summary": "Introduces the entity-owner table: its columns, two terms, and scope assumptions",
+      "summary": "Introduces the entity–owner table, its columns, and its assumed merchant stage",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "The Entity–Owner Table ¶2",
-      "summary": "Lessons from specific rows: stock, availability, payment and customer records",
+      "summary": "Four non-obvious rows: stock per location, computed availability, external payment record, customer types",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "The Entity–Owner Table ¶3",
-      "summary": "Every copy needs a reconciliation job to detect disagreement",
+      "summary": "Every copy needs a reconciliation job to detect disagreement with the record",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "The Entity–Owner Table ¶4",
-      "summary": "Ownership does not set copy freshness; staleness cost differs by fact",
+      "summary": "Required copy freshness is separate from ownership and varies by fact",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "The Entity–Owner Table ¶5",
-      "summary": "Freshness table is the author's judgement; one rhythm for all facts fails",
+      "summary": "One refresh rhythm for all facts is wrong; availability needs events, ledger tolerates batch",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶1",
-      "summary": "The table is one option; merchants assign ownership in four ways",
+      "summary": "Merchants assign ownership in four ways; one is having no decision",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶2",
-      "summary": "ERP as hub: what it is, where it fits, where it stops fitting",
+      "summary": "ERP-as-hub option: how it works, where it fits, where it stops fitting",
       "matched_spec_paragraph": "p27"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶3",
-      "summary": "Platform as hub: what it is, where it fits, where it stops fitting",
+      "summary": "Platform-as-hub option: how it works, where it fits, where it stops fitting",
       "matched_spec_paragraph": "p28"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶4",
-      "summary": "Ownership per fact with an order hub: who owns what and why",
+      "summary": "Per-fact ownership with an order hub splits facts across specialist systems",
       "matched_spec_paragraph": "p29"
     },
     {
@@ -174,22 +174,22 @@
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶6",
-      "summary": "Per-fact ownership suits multi-channel merchants but adds cost not justified early",
+      "summary": "Per-fact ownership adds cost; not worth it early without a coordination problem",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶7",
-      "summary": "No decision: pairwise two-way syncs make every system a writer, as at Kestrel & Pine",
+      "summary": "No-decision option: pairwise two-way syncs make every system a writer",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "Four Ways to Assign Ownership ¶8",
-      "summary": "Rule: choose the hub by where orders and stock originate",
+      "summary": "Rule: pick the hub by where orders and stock originate",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "Ownership in a Suite and Across Vendors ¶1",
-      "summary": "Suites and vendor connectors pre-decide ownership or turn it into settings",
+      "summary": "Suites and vendor connectors pre-make ownership decisions or turn them into settings",
       "matched_spec_paragraph": "p34"
     },
     {
@@ -204,22 +204,22 @@
     },
     {
       "draft_locator": "When Ownership Is Not Decided: The Five Truth Patterns ¶2",
-      "summary": "The Secret Agent pattern is the same failure seen from the writer's side",
+      "summary": "The Secret Agent pattern is the same failure seen as an unlisted writer",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
-      "summary": "Ownership shifts at each scale stage, when a new system claims facts",
+      "summary": "Ownership table changes at each scale stage as new systems claim facts",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
-      "summary": "Kestrel & Pine kept old ownership too long; reassign at the stage transition",
+      "summary": "Kestrel & Pine kept outdated ownership; reassign at stage transition, not after incidents",
       "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "In Practice ¶1",
-      "summary": "Public examples of one record or writer per entity, including Walmart's partitioning",
+      "summary": "Public examples: vendor statements and Walmart's one-consumer-per-item-store partitioning",
       "matched_spec_paragraph": "p40"
     },
     {
@@ -229,22 +229,22 @@
     },
     {
       "draft_locator": "In Practice ¶3",
-      "summary": "Replaying Black Friday under the new design cuts oversell to a handful",
+      "summary": "Replaying Black Friday under the new design shrinks the oversell to a handful",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "In Practice ¶4",
-      "summary": "First reconciliation found leftover differences; app write access removed, baseline set",
+      "summary": "First reconciliation found leftover stock mismatches; app write access removed",
       "matched_spec_paragraph": "p42b"
     },
     {
       "draft_locator": "When It Goes Wrong ¶1",
-      "summary": "Kept ownership can still fail in five ways, each detectable and recoverable",
+      "summary": "Announces five ways decided ownership erodes, each with detection and recovery",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "When It Goes Wrong ¶2",
-      "summary": "Failure: a second writer appears; detect by write audit, remove and re-publish",
+      "summary": "Failure: a second writer appears; detect by write audit, recover by re-publishing",
       "matched_spec_paragraph": "p44"
     },
     {
@@ -259,7 +259,7 @@
     },
     {
       "draft_locator": "When It Goes Wrong ¶5",
-      "summary": "Failure: a copy is mistaken for the record; trace numbers to the table",
+      "summary": "Failure: a copy is mistaken for the record; trace disputed numbers to the table",
       "matched_spec_paragraph": "p47"
     },
     {
@@ -269,27 +269,27 @@
     },
     {
       "draft_locator": "What to Take Away ¶1",
-      "summary": "Established take-aways: record per fact, legitimate differing models, enforceable single writer",
+      "summary": "Established takeaways: record per fact, bounded contexts, mechanically enforced single writer",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "What to Take Away ¶2",
-      "summary": "Context-dependent take-aways: choice of hub, customer record, required copy freshness",
+      "summary": "Context-dependent takeaways: hub choice, customer record location, copy freshness",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "What to Take Away ¶3",
-      "summary": "Author's synthesis: write the table before buying a hub; reassign at stage transitions",
+      "summary": "Author's advice: write the table before buying a hub; reassign at stage transitions",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Eight questions to ask of each fact in the reader's own table",
+      "summary": "Eight questions to ask of each fact in your own ownership table",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "Questions to Ask ¶2",
-      "summary": "Bridge to the next chapter on the commerce platform market landscape",
+      "summary": "Hands off to the next chapter on the commerce platform market landscape",
       "matched_spec_paragraph": "p53"
     }
   ],
@@ -305,120 +305,171 @@
       "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 54 aligned units: the blind outliner's phrase names the same idea as the spec paragraph's controlling_idea, in the same order (p01 to p53, incl. p42b).",
+      "finding": "All 54 aligned units match their spec controlling ideas in spec order; the three callout entries have no spec paragraph. Closest calls: p42b (draft does not say in words that this is why every copy row has a reconciliation) and p18 (owner of the cross-context view is stated as the OMS's job, not as 'what was missing'); both carry the same idea.",
       "severity": "blocker"
     },
     {
       "criterion": "AC-5",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "Mirrors check 1: the reverse outline lists the same controlling ideas in the same order as the spec paragraphs.",
+      "finding": "Mirrors the reverse-outline verdict: same controlling ideas, same order, no unmatched or extra body units.",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "The outliner flagged no unit two_ideas; on reading, the densest units (Entity-Owner Table ¶1, Scene ¶4, Entity-Owner Table ¶5) each serve one idea, with definitions or attribution subordinate to it.",
+      "finding": "The outliner flagged no unit. Read the densest candidates (Entity-Owner Table ¶1 with its two inline definitions, Facts ¶6 with the master-data parenthesis, Scale Stages ¶2): each serves one idea; the extras are glosses or the example the spec assigns.",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every body unit ties to the supporting claim its section declares (S1 to S6); the roadmap, journey placement and hand-off are structural units serving the thesis as a whole.",
+      "finding": "Every body unit ties to the supporting claim its section declares (S1 scene and truth patterns, S2 definitions, S3 contexts, S4 table, S5 four ways and stages, S6 failure modes); intro, roadmap and hand-off units are structural.",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Each table, figure and quotation is preceded or followed by a statement of what it shows (e.g. 'as the table shows, each answer was true of a different number', 'Its point is that...', 'one writer per entity, enforced by the plumbing'; figures carry explanatory captions).",
+      "finding": "All eight tables are introduced or followed by a statement of what they show ('as the table shows...', 'Its point is that...', 'Each is a fact without an owner'); quotations are glossed (e.g. 'one writer per entity, enforced by the plumbing'); the five figures carry explanatory captions. Weakest: the four-options table, whose following sentence gives provenance first and reads the Fits/Breaks rows only through 'My rule'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "When Ownership Is Not Decided: The Five Truth Patterns ¶1",
+      "quote": "[[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner.",
+      "finding": "The section opens on a pointer to another chapter and picks up nothing from the preceding text (the ways ownership is assigned, or the suite section's closing quote); only the heading links back, and the cause-effect arrives in the second sentence without the carried-over element.",
+      "fault": "draft",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "All other declared transitions (43 paragraph boundaries, 10 section boundaries, conclusion) express the declared relationship, by connective sentence or by parallel bold run-in labels; p02, p25 and truth-patterns deliver it in the second sentence rather than the first, and p03 does not pick up 'the decisions' but is an unmistakable roadmap.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/5/transition_in",
-      "draft_locus": "Four Ways to Assign Ownership ¶6",
-      "quote": "This arrangement fits a merchant with several order channels and stock locations. It adds a system and integrations to operate.",
-      "finding": "Declared contrast (the arrangement and its backers versus its cost and when not to pay it), but the paragraph opens by affirming the fit and then adds the cost with no adversative; after the vendor paragraph the reader must infer the turn.",
-      "fault": "draft",
+      "finding": "The other 52 declared boundaries pass: explicit ones (e.g. 'Ruben Alves then put numbers on those six answers', 'Noor's question was not...', 'The same happens with', 'Two design rules follow', 'Two things remain yours even in a suite', 'The new design did not make the copies right by being named') and bold run-in parallels (the four options, the five failure modes, the conclusion's three labels). Passed narrowly, relationship implied rather than worded: Introduction ¶3 (roadmap does not pick up 'the decisions'), Bounded Contexts ¶4 ('For six days, nobody could give the customer a combined view'), Facts ¶5 (writer definition opens without picking up 'never edited').",
       "severity": "major"
     },
     {
       "criterion": "known_before_new",
       "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/intent/audience",
-      "draft_locus": "The Entity–Owner Table ¶1",
-      "quote": "Cycle counts in the record; WMS-to-platform reconciliation, weekly",
-      "finding": "'Cycle counts' is warehouse jargon used here, in the before/after table and in When It Goes Wrong ¶6, and never explained to an audience new to commerce architecture; every other acronym and term (WMS, ERP, POS, OMS, PIM, SKU, GTIN, PSP, EDI, B2B, D2C, 3PL, event, reconciliation) is given where it first appears.",
-      "fault": "draft",
+      "verdict": "pass",
+      "finding": "Every term on the does_not_know list is defined or expanded at first use (system of record, copy, writer, bounded context, event, reconciliation; WMS, ERP, POS, PIM, OMS, PSP, plus SKU, GTIN, EDI, B2B, D2C, 3PL). Incident names (App That Wrote Stock, Double Refund, Price Drift, Store Stock Mirage, Deprecated Endpoint) are glossed in the sentence or cell where they first appear. Not expanded but outside the spec's lists: B2C, API, 'monolith', 'orchestration', 'data warehouse'.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens on a concrete puzzling scenario, defines its key term in use and gives a specific roadmap; none of the five weak patterns is present.",
+      "finding": "Opens on a concrete puzzling scenario, then the claim and a specific roadmap; none of placeholder, restated question, dictionary opener, dawn of man or book report.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "The conclusion is sorted by how settled each point is, adds a judgement and a course of action, and brings no new subtopic or fresh evidence; citations in the bullets only name sources already used.",
+      "finding": "The conclusion is sorted by how settled each point is, cites body evidence by reference only, adds no new subtopic, does not open with 'in conclusion' and ends on a course of action plus hand-off, not a rephrased thesis.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "'Write the entity–owner table before buying any hub ... a bought OMS fed by four unreconciled order sources is a fifth copy, and a written table with no reconciliation is a record on trust' joins the table, hub choice and reconciliation as no single section does and gives the so_what. Note: the spec's unifying line ('one decision seen four ways') and 'costs nothing' are not stated; the second synthesis bullet repeats Scale Stages ¶2.",
+      "finding": "'Write the entity–owner table before buying any hub ... a bought OMS fed by four unreconciled order sources is a fifth copy, and a written table with no reconciliation is a record on trust' is stated by no single section and matches the spec's so_what. The spec's unifying sentence (records, contexts, hub choice and failure modes as one decision seen four ways) is not stated in those words; 'costs nothing' is absent.",
       "severity": "major"
     },
     {
       "criterion": "AC-6",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "The first Established list returns to it explicitly: 'The parcel that opened this chapter, *Delivered* in the storefront and *In picking* in the warehouse ... neither status was stale, each was true of its own object, and what was missing was an owner of the view across them.'",
+      "finding": "'The parcel that opened this chapter, Delivered in the storefront and In picking in the warehouse, was such a case: neither status was stale, each was true of its own object, and what was missing was an owner of the view across them.'",
       "severity": "major"
     },
     {
       "criterion": "AC-4",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The cold reader predicted, in the right order, the six answers, the vocabulary, bounded contexts for 'order', the entity–owner table, the comparison of ownership choices, the return to Kestrel & Pine's stock, and vendor documentation as evidence. Not predicted as separate steps: the suite section, the Truth patterns and the erosion failure modes (only 'some named failure patterns'), and the scale shift was folded into the comparison; not material against the expected answer.",
+      "finding": "The cold reader predicted all six expected items in the right order (six answers, vocabulary, meanings of 'order', entity-owner table, comparison of ownership choices with vendor documentation, return to Kestrel & Pine's stock). Wrong or missing, not material to the expected answer: placed the Kestrel & Pine return last, so did not foresee the closing failure-modes section; did not foresee the suite section; expected vendor documentation as the only external evidence, whereas the draft also uses Evans, Fowler and the Walmart account.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Cold answer asks first 'which system is the record for this fact?' and second 'who or what can write the shop's number', explicitly before any syncing fix; the writer question is asked of the shop's copy rather than of each system, which still meets the expected answer.",
+      "finding": "Cold answer asks which system is the record, then who or what can write the number, and explicitly refuses a hand fix; no 'sync faster'. Slight narrowing: it asks about writers in the shop only, not in each system.",
       "severity": "blocker"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Cold answer: yes, each system describes a different object sharing one order number, each honest inside its own bounded context, and what is missing is an owner of the view across them (an OMS).",
+      "finding": "Cold answer: yes, each 'order' is a different object sharing an order number, none is stale, and what is missing is an owner of the view across them (the OMS). Matches expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Cold answer fills all columns specifically: pricing capability as record, pricing owner with effective dates as writer, copies in storefronts, POS, marketplace listings and connector, event on change, hourly price comparison per channel.",
+      "finding": "Cold answer fills record, who may write, copies, how copies learn and disagreement found by for consumer price, each specifically (platform price lists; pricing owner with effective dates; storefronts, POS, marketplaces, connector; event on change; hourly per-channel comparison).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Last, it compares the ways merchants assign ownership, using what vendors publish about their own products as evidence, and returns to Kestrel & Pine's stock to show what the decision changes.",
+      "finding": "The roadmap paragraph says 'Last' and stops at the comparison and the stock case, so the Truth patterns and 'When It Goes Wrong' sections arrive unannounced and the reader could not place them. The spec's p03 controlling idea prescribes this shorter list although /introduction/roadmap promises 'what happens when systems disagree' in p03, so the paragraph as specified cannot keep the sixth promise.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Bounded Contexts: Why the Warehouse's Order Is Not the Ledger's Order ¶3",
+      "quote": "Kestrel & Pine's **Three-Status Order**, #1052877, generated 11 support tickets because its three statuses described different objects.",
+      "finding": "The opening parcel puzzle (Delivered versus In picking) is answered here with the same two statuses but never tied back to it; the link is only made in the take-aways, so the reader carried the opening case as unresolved. The spec says this evidence is 'the introduction's puzzle, resolved', and the prose does not signal it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Entity–Owner Table ¶2",
+      "quote": "A hand edit to a channel's available quantity is a second writer, and it is how the App That Wrote Stock produced phantom reservations on 600 variants.",
+      "finding": "The App That Wrote Stock is cited as a known incident at its first appearance, with no word on what the app was or did; the audience is assumed to know only the Black Friday Oversell in outline, so a newcomer has to guess. (W5 is likewise used in the Truth patterns table without being introduced as W1 and W2 were; the other incidents the reader listed are glossed where they appear.)",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Four Ways to Assign Ownership ¶4",
+      "quote": "Assign physical stock to the WMS, orders and availability to the OMS, product content to the PIM, and identity, costs and finance to the ERP.",
+      "finding": "The entity–owner table and decision W1 give availability to a separate 'Availability service', while this sentence (and the stage 3 row, 'an OMS owns orders and availability') gives it to the OMS, with nothing saying whether they are the same system; the reader had to go back and check. The spec's p29 does not ask for this wording.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6",
+      "draft_locus": "When Ownership Is Not Decided: The Five Truth Patterns ¶1",
+      "quote": "[[where-commerce-platforms-go-wrong]] names five patterns in a family it calls Truth. Each is a fact without an owner.",
+      "finding": "The reader marked this section 'unclear': it sits between the suite section and the stages section, splitting the two that answer 'which ownership, when', and reads as a recap of incidents already told. The spec prescribes this position, its transition_in carries over a section two places back, and the top-level rationale itself lists 'choices, stages and failure modes' in the other order; the draft's missing transition sentence makes it worse but is not the cause.",
+      "fault": "spec",
       "severity": "major"
     }
   ]
