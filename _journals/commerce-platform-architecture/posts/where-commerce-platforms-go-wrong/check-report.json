@@ -1,0 +1,1446 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/where-commerce-platforms-go-wrong/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/where-commerce-platforms-go-wrong/index.md",
+  "spec_sha": "f8fa9de9b475eac5",
+  "draft_sha": "941985e67158520d",
+  "run_at": "2026-11-12T09:40:43+01:00",
+  "round": 2,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Commerce failures happen when a fact crosses a handoff between systems wrongly, and this guide names sixteen such recurring patterns so they can be recognized, traced and remedied",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Patterns build up from reasonable local decisions, so they are a tool for finding the combined effect and assigning responsibility, not blame",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "What each entry contains and which examples are invented versus public and sourced / what follows the sixteen entries: stages, chains and three uses",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶1",
+      "summary": "The patterns are grouped into four families: truth, integration, platform and change, governance",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶2",
+      "summary": "A warning sign only prompts a look; confirm it by asking for a number",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶3",
+      "summary": "Opening quote for Phantom Stock: the site showed stock the warehouse had run out of hours earlier",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶4",
+      "summary": "Phantom Stock's sign: the storefront's stock figure is a copy of unknown age, so it promises items already sold",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶5",
+      "summary": "Phantom Stock's cause: channels sell from delayed copies that several things can write, so fix ownership and writers before speeding up sync",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶6",
+      "summary": "Phantom Stock's cost: cancellations, penalties and ratings, with evidence that stock records are less accurate and less current than assumed",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶7",
+      "summary": "Fictional case: a jacket sells out on Black Friday but chained 15-minute and hourly updates let sales continue for two hours, with the oversell, cancellation and cost figures",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶8",
+      "summary": "Fictional case continued: the December store-pickup pilot repeats it, with nightly store-stock updates promising 37 items already sold",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶9",
+      "summary": "Public example: Shopify moved certain holds between inventory states, showing stock vocabulary can change under the apps reading it",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶10",
+      "summary": "Phantom Stock's remedy: one writer per location, stock changes as events, availability computed in one place and copies reconciled (decision W1 of the Waypoint program)",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶11",
+      "summary": "Pointers to the three chapters that cover availability, ownership of facts and drift measurement",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶12",
+      "summary": "Opening quote for Schrödinger's Order: customer, warehouse and finance each see a different status for one order",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶13",
+      "summary": "Schrödinger's Order's sign: each system holds a different order status and split shipments have none",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶14",
+      "summary": "Its cause: money, shipments and returns each have their own state, and no single record keeps them apart",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶15",
+      "summary": "Its cost: \"where is my order\" support load first, then unposted invoices and duplicate shipments",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶16",
+      "summary": "Fictional case: a two-parcel order shows three conflicting statuses in three systems for six days while the customer opens 11 tickets",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶17",
+      "summary": "Public example: Shopify keeps separate order, payment and fulfillment statuses and gets no shipping updates without a tracking number",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶18",
+      "summary": "Its remedy: one order record across channels with separate states and a summary taken from the least-advanced shipment (W2)",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶19",
+      "summary": "Pointers to the chapters on the order record, the service view and keeping the ERP from becoming a second order system",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶20",
+      "summary": "Opening quote for the Familiar Stranger: nobody is sure the online buyer and the store loyalty member are the same person",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶21",
+      "summary": "Familiar Stranger's sign: stores cannot see online orders and a privacy request means searching nine systems",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶22",
+      "summary": "Its cause: every channel keeps its own customer table and nobody owns matching them, since each system works without it",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶23",
+      "summary": "Its cost: duplicate marketing, blind service, a wrong loyalty count, and a GDPR response deadline that cannot be met if the person cannot be found",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶24",
+      "summary": "Fictional case: Eva Janssen exists as four unlinked customer records, the store cannot recognize her, and online loyalty is postponed until the record is unified",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶25",
+      "summary": "Public example: Shopify deprecated its legacy customer accounts, showing identity is a model that gets rebuilt",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶26",
+      "summary": "Its remedy: a customer master with one identifier, written matching rules and linked channel records, with loyalty only afterwards",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶27",
+      "summary": "Pointers to the chapters on the customer master, privacy requests and why loyalty waits",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶28",
+      "summary": "Opening quote for the Boomerang: a return was refunded twice and the customer kept both",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶29",
+      "summary": "Boomerang's sign: two systems can refund, stock goes up at the dock scan and credit notes come from a spreadsheet",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶30",
+      "summary": "Its cause: a return involves goods, money and books under three owners, and nothing defines which event releases the refund",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶31",
+      "summary": "Its cost is permanent because returns are routine: return and fraud rates, plus payment providers' own warnings about double refunds",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶32",
+      "summary": "Fictional case: 212 returns refunded twice in January 2027, by the portal and by hand, sending out €19,400 twice",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶33",
+      "summary": "Fictional case continued: 190 jackets refunded at more than was paid because the order discount was never allocated to lines",
+      "matched_spec_paragraph": "p35a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶34",
+      "summary": "Public example: Shopify separates the return from the warehouse's reverse fulfillment and names four dispositions, so money and stock are separate records",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶35",
+      "summary": "Its remedy: one return record, the warehouse disposition as the single trigger, one refunding system keyed on the return id and a daily refund match",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶36",
+      "summary": "Pointers to the chapters on returns, payments and refunds, and credit notes",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶37",
+      "summary": "Opening quote for the Price Nobody Can Explain: one country shows a different price and nobody knows which was intended",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶38",
+      "summary": "Its sign: prices held in five systems with separate campaign calendars, unintended discount stacking and refunds at prices nobody paid",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶39",
+      "summary": "Its cause: several roles and rules set prices, each system keeps its own number, imports fail silently and promotion settings outlive campaigns",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶40",
+      "summary": "Its cost: margin, parity penalties and legal exposure under the EU prior-price rule and Dutch supervision of it",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶41",
+      "summary": "Fictional case: the German storefront sold a jacket €20 too cheap for nine days after a campaign import's restore step failed silently, with order, margin and parity consequences",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶42",
+      "summary": "Fictional case continued: two discounts stacked on 2,860 Black Friday orders because an old combination setting was never reverted",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶43",
+      "summary": "No public incident is offered; instead the law itself makes a 30-day price history per SKU and channel mandatory",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶44",
+      "summary": "Its remedy: one owner per kind of price, dated price events, campaigns as data, price history, ordered promotion rules, reconciliation and prices frozen on the order",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶45",
+      "summary": "Pointers to the chapters on pricing, promotions and marketplace price parity",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶46",
+      "summary": "Opening quote for the Spaghetti Junction: dozens of integrations, many ownerless, several writing stock",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶47",
+      "summary": "Its sign: flows, scripts and plugins carry the same fact along several paths and nobody can list them",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶48",
+      "summary": "Its cause: each point-to-point connector was the quickest answer to one need and cheap at first",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶49",
+      "summary": "Its cost: incidents that cannot be diagnosed, upgrades that cannot be planned and money, with a survey citing integration complexity as a top concern",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶50",
+      "summary": "Fictional case: the integration inventory's counts of 34 integrations by type, the ownerless ones, the few with reconciliation and the multiple writers of stock",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶51",
+      "summary": "Public example: Zalando replaced over 100 disconnected interfaces with one developer portal and catalog",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶52",
+      "summary": "Its remedy: an inventory with an owner and contract per flow, shared facts as events through one place and a reconciliation per copy (W5)",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶53",
+      "summary": "Pointers to the chapters on integration styles, ERP flows and assigning owners",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶54",
+      "summary": "Opening quote for the Message in a Bottle: the sender disclaims responsibility for whether the order arrived",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶55",
+      "summary": "Its sign: retries create duplicate orders or refunds and dropped messages leave paid orders unpicked",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶56",
+      "summary": "Its cause: vendors document that messages may arrive twice, late or never, yet integrations are built assuming exactly-once delivery",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶57",
+      "summary": "Its cost: duplicates, lost orders, drift and peak backlogs, illustrated by Zalando's event pipeline delaying price and stock data in Cyber Week",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶58",
+      "summary": "Fictional case: on Black Friday a one-at-a-time order flow hit the WMS rate limit, backed up four hours and made about 8,000 orders miss promised next-day delivery",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶59",
+      "summary": "Public example: Stripe warns not to trigger fulfillment from the checkout landing page alone, so one unconfirmed signal is not enough",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶60",
+      "summary": "Its remedy: idempotency keys, a record of handled events, state fetched from its owner, a dead-letter queue and daily reconciliation",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶61",
+      "summary": "Pointers to the chapters on idempotency and reconciliation, integration styles and payments",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶62",
+      "summary": "Opening quote for the Pulled Rug: a vendor's change notice went to someone who had long since left",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶63",
+      "summary": "Its sign: scripts calling retired API versions, partner deductions arriving before the mapping is fixed and changelogs going to an unread mailbox",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶64",
+      "summary": "Its cause: the vendor announces changes but the merchant has no record of the dependency, no reader and no test",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶65",
+      "summary": "Its cost: stale stock, account strikes, deductions and emergency rewrites / the retirement dates are published in advance, as Amazon's and bol's API sunsets show",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶66",
+      "summary": "Fictional case: a retired API version, announced to a departed agency contact, left an old script failing quietly and bol stock stale for two days",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶67",
+      "summary": "Fictional case continued: a wholesale customer deducted €14,200 because despatch advices did not match the pallets that arrived",
+      "matched_spec_paragraph": "p68a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶68",
+      "summary": "Public example: Shopify's quarterly API versioning schedule is just one of many vendor calendars to track",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶69",
+      "summary": "Its remedy: pinned versions and sunset dates per integration, a role mailbox, owned partner cards, contract tests and despatch advices built from what was packed",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶70",
+      "summary": "Pointers to the chapters on API versioning and contract tests and on EDI partner cards and despatch advices",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶71",
+      "summary": "Opening quote: a system that worked all year fails on Black Friday",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶72",
+      "summary": "At peak the storefront survives but stock sync and the order queue break",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶73",
+      "summary": "Designs and load tests target the ordinary hour and the storefront, not the 20-40x peak or the integrations",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶74",
+      "summary": "The cost is oversells and broken promises on the most visible day, as in Target's 2011 site outages",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶75",
+      "summary": "Kestrel & Pine's Black Friday 2026 numbers: the platform held while stock sync and the WMS queue failed, with oversell, backlog and late orders",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶76",
+      "summary": "Kestrel & Pine could not switch off guest card payments without a deploy",
+      "matched_spec_paragraph": "p76a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶77",
+      "summary": "Shopify publicly load-tests and proves its own peak capacity, but the merchant must size its own connectors",
+      "matched_spec_paragraph": "p77"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶78",
+      "summary": "Fix by load-testing the integrations above last peak, adding degrade switches, a change freeze and a runbook",
+      "matched_spec_paragraph": "p78"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶79",
+      "summary": "Pointers to the chapters on peak planning, the peak-day walkthrough and warehouse queue sizing",
+      "matched_spec_paragraph": "p79"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶80",
+      "summary": "Opening quote: copying the giants' microservice architecture because they use it",
+      "matched_spec_paragraph": "p80"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶81",
+      "summary": "Small teams and mid-size merchants adopt composable or headless setups, getting the costs without the giants' reasons",
+      "matched_spec_paragraph": "p81"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶82",
+      "summary": "Giants publish persuasive work and vendors sell the most labour-intensive shape, so nobody checks whether the problem applies",
+      "matched_spec_paragraph": "p82"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶83",
+      "summary": "The cost is expense and slower change with no benefit, shown by Segment's and Prime Video's public returns to a single service",
+      "matched_spec_paragraph": "p83"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶84",
+      "summary": "Kestrel & Pine's head of engineering measured and turned down both a composable and a headless rebuild, choosing to stay on the SaaS platform (W4)",
+      "matched_spec_paragraph": "p84"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶85",
+      "summary": "Zalando replacing an event stream with a synchronous API shows even a giant backing away from a choice others copied",
+      "matched_spec_paragraph": "p85"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶86",
+      "summary": "Fix by counting your actual channels, warehouses, countries, teams and double-written facts, and adding capability only for a measured problem",
+      "matched_spec_paragraph": "p86"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶87",
+      "summary": "Pointers to the chapters on architecture styles, the stay-and-surround decision and the stage test",
+      "matched_spec_paragraph": "p87"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶88",
+      "summary": "Opening quote: go-live just before peak with the old platform switched off the same day",
+      "matched_spec_paragraph": "p88"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶89",
+      "summary": "Everything is migrated at once, the old system is turned off to save money, and the date falls just before peak",
+      "matched_spec_paragraph": "p89"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶90",
+      "summary": "A single cutover looks cheaper than running two systems and its risks looked harmless in the demo",
+      "matched_spec_paragraph": "p90"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶91",
+      "summary": "The cost is lost sales and sometimes a forced rollback, as when Finish Line reverted its new site after 17 days",
+      "matched_spec_paragraph": "p91"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶92",
+      "summary": "Kestrel & Pine brought in its OMS and PIM in stages through 2027 with shadow and parallel runs, instead of one cutover",
+      "matched_spec_paragraph": "p92"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶93",
+      "summary": "Target's 2011 launch shows a date set too close to peak, though the record does not say whether it had a way back as Finish Line did",
+      "matched_spec_paragraph": "p93"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶94",
+      "summary": "Fix by migrating in stages, keeping the old path alive through a peak, running in parallel, rehearsing rollback and planning exit at purchase",
+      "matched_spec_paragraph": "p94"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶95",
+      "summary": "Pointers to the chapters on migration, the strangler pattern and the public replatforming record",
+      "matched_spec_paragraph": "p95"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶96",
+      "summary": "Opening quote: an upgrade cannot be taken because customizations would have to be redone",
+      "matched_spec_paragraph": "p96"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶97",
+      "summary": "Customized vendor files, scripts in the checkout and unused apps accumulate on the platform",
+      "matched_spec_paragraph": "p97"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶98",
+      "summary": "Each customization was the quickest route at the time and nobody is responsible for staying upgradeable",
+      "matched_spec_paragraph": "p98"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶99",
+      "summary": "The cost is missed features, security risk and forced migration on the vendor's schedule, as Adobe's and Shopify's end-of-support dates show",
+      "matched_spec_paragraph": "p99"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶100",
+      "summary": "Kestrel & Pine customized its theme but not its checkout, which keeps staying on the platform feasible",
+      "matched_spec_paragraph": "p100"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶101",
+      "summary": "Kestrel & Pine's 41 apps, some unused or writing stock, are a lesser version of the problem, addressed by an app-ownership rule",
+      "matched_spec_paragraph": "p100a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶102",
+      "summary": "No public case beyond the vendors' end-of-support dates is offered, and those show timing rather than a merchant's cost",
+      "matched_spec_paragraph": "p101"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶103",
+      "summary": "Fix by assigning an owner for upgradeability, using only supported extension points, registering customizations and budgeting upgrades",
+      "matched_spec_paragraph": "p102"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶104",
+      "summary": "Pointers to the chapters on extensibility and app governance, storefront architecture and checkout",
+      "matched_spec_paragraph": "p103"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶105",
+      "summary": "Opening quote: all brands are moved to one group platform on a vague synergy case",
+      "matched_spec_paragraph": "p104"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶106",
+      "summary": "Either dissimilar brands are forced onto one shared platform account, or brands duplicate everything because sharing was never measured",
+      "matched_spec_paragraph": "p105"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶107",
+      "summary": "The sharing decision is made on cost alone, with operational differences missing from the business case",
+      "matched_spec_paragraph": "p106"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶108",
+      "summary": "Sharing costs slower change and cross-brand peak interference, separation costs duplication; no public figures are given",
+      "matched_spec_paragraph": "p107"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶109",
+      "summary": "Kestrel & Pine's three storefronts share one account sensibly because catalog, warehouse, season and pricing are the same",
+      "matched_spec_paragraph": "p108"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶110",
+      "summary": "Kestrel & Pine names the triggers for revisiting sharing and postpones the group decision until requirements are known",
+      "matched_spec_paragraph": "p109"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶111",
+      "summary": "Zalando's ABOUT YOU acquisition is a public example of a deliberate sharing decision, not of the failure, for which no case is cited",
+      "matched_spec_paragraph": "p110"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶112",
+      "summary": "Fix by deciding sharing capability by capability and stating the expected benefit as a number first",
+      "matched_spec_paragraph": "p111"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶113",
+      "summary": "Pointers to the chapters on multi-tenancy, group-stage signals and the Zalando case",
+      "matched_spec_paragraph": "p112"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶114",
+      "summary": "Opening quote: the only person who understands the EDI mappings is away",
+      "matched_spec_paragraph": "p113"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶115",
+      "summary": "Undocumented connectors and knowledge held in one consultant's head",
+      "matched_spec_paragraph": "p114"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶116",
+      "summary": "Relying on a specialist is efficient and planning for their exit pays nothing until it is needed",
+      "matched_spec_paragraph": "p115"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶117",
+      "summary": "The cost is outages lasting as long as a person is absent and dependencies that end when the vendor decides, as with Shopify logistics and Zalando Connected Retail",
+      "matched_spec_paragraph": "p116"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶118",
+      "summary": "Kestrel & Pine's key EDI mappings and ERP connector each depended on a single outsider, and five integrations had no owner at all",
+      "matched_spec_paragraph": "p117"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶119",
+      "summary": "Zalando ending Connected Retail shows a platform withdrawing a channel that others depended on",
+      "matched_spec_paragraph": "p118"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶120",
+      "summary": "Fix with an ownership map, contracts held by the merchant, a second person for each mapping and exit cost assessed when buying",
+      "matched_spec_paragraph": "p119"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶121",
+      "summary": "Pointers to the chapters on engineering organization, build-or-buy and EDI",
+      "matched_spec_paragraph": "p120"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶122",
+      "summary": "Opening quote: a regulatory deadline discovered three months before it applies",
+      "matched_spec_paragraph": "p121"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶123",
+      "summary": "Regulatory obligations are discovered by accident and compliance, such as accessibility, has never been checked",
+      "matched_spec_paragraph": "p122"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶124",
+      "summary": "Rules arrive piecemeal by topic and country, nobody tracks them and none has an owner",
+      "matched_spec_paragraph": "p123"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶125",
+      "summary": "The cost is fines, blocked invoices and rushed spending, though the e-invoicing, accessibility and PCI deadlines were all published in advance",
+      "matched_spec_paragraph": "p124"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶126",
+      "summary": "Kestrel & Pine met the Belgian e-invoicing deadline in time, sending invoices over Peppol from the ERP",
+      "matched_spec_paragraph": "p125"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶127",
+      "summary": "Kestrel & Pine's regulatory calendar gives every upcoming rule a date and an owner",
+      "matched_spec_paragraph": "p125a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶128",
+      "summary": "The Belgian mandate gave fifteen months' public notice before fines began",
+      "matched_spec_paragraph": "p126"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶129",
+      "summary": "Fix with an owned regulatory calendar and by making vendor compliance a purchasing requirement",
+      "matched_spec_paragraph": "p127"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶130",
+      "summary": "Pointers to the chapters on regulation, e-invoicing and tax, and security",
+      "matched_spec_paragraph": "p128"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶131",
+      "summary": "Opening quote: stock levels changed overnight and nobody is sure which app did it",
+      "matched_spec_paragraph": "p129"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶132",
+      "summary": "Scripts and apps write data through a shared admin key alongside the official feeds",
+      "matched_spec_paragraph": "p130"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶133",
+      "summary": "Apps are easy to install, hard to see and over-permissioned by default, and AI agents are now arriving the same way with more autonomy",
+      "matched_spec_paragraph": "p131"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶134",
+      "summary": "The cost is false stock, drifting prices and possibly a compromised checkout, as in the polyfill.io script takeover",
+      "matched_spec_paragraph": "p132"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶135",
+      "summary": "At Kestrel & Pine a pre-order app and the WMS feed both wrote inventory, corrupting 600 variants, like the earlier price script",
+      "matched_spec_paragraph": "p133"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶136",
+      "summary": "Kestrel & Pine's response is to name every writer (W5) and to prepare data and APIs for agents without deploying one (W8)",
+      "matched_spec_paragraph": "p133a"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶137",
+      "summary": "Polyfill.io is the public example of third-party checkout code changing owner unnoticed",
+      "matched_spec_paragraph": "p134"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶138",
+      "summary": "Fix by giving every writer an owner, separate credentials and minimal rights, with human approval for large changes and for AI agents",
+      "matched_spec_paragraph": "p135"
+    },
+    {
+      "draft_locator": "Sixteen Patterns to Recognize ¶139",
+      "summary": "Pointers to the chapters on app governance, security and agentic commerce",
+      "matched_spec_paragraph": "p136"
+    },
+    {
+      "draft_locator": "Where the Patterns Strike ¶1",
+      "summary": "Across the four scale stages, most patterns originate at Growing and do their damage at Omnichannel, in the author's judgement",
+      "matched_spec_paragraph": "p137"
+    },
+    {
+      "draft_locator": "Where the Patterns Strike ¶2",
+      "summary": "Most of Kestrel & Pine's ten recorded incidents trace back to Growing-stage designs still in use",
+      "matched_spec_paragraph": "p138"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶1",
+      "summary": "Patterns cause one another in three chains, and fixes work at the start of a chain",
+      "matched_spec_paragraph": "p138a"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶2",
+      "summary": "Tangled integrations lead to lost messages, which lead to the stock, order, refund and price failures, all exposed at peak",
+      "matched_spec_paragraph": "p139"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶3",
+      "summary": "Lack of ownership links the single-person dependency, the withdrawn vendor service, the unsupervised writer and the missed deadline",
+      "matched_spec_paragraph": "p140"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶4",
+      "summary": "Copying a giant's architecture leads to a forked platform or an all-at-once migration",
+      "matched_spec_paragraph": "p141"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶5",
+      "summary": "The customer-identity pattern underlies all three chains",
+      "matched_spec_paragraph": "p141a"
+    },
+    {
+      "draft_locator": "How the Patterns Reinforce Each Other ¶6",
+      "summary": "Because most of the ten incidents come from one fact having two writers, Waypoint settles ownership first, then hubs, then trustworthy copies, keeping the platform",
+      "matched_spec_paragraph": "p142"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶1",
+      "summary": "Failures surface away from where they start, so the cure is usually ownership, contracts and reconciliation rather than a new platform",
+      "matched_spec_paragraph": "p147"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶2",
+      "summary": "The lost sale from the opening can now be named and traced upstream to an unowned connector / the useful question is who owns the join now, not who is at fault, and three occasions allow asking it",
+      "matched_spec_paragraph": "p148"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶3",
+      "summary": "In design reviews, trace one order through the design and check each handoff for possible patterns",
+      "matched_spec_paragraph": "p143"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶4",
+      "summary": "In vendor demos, ask to be shown the failure cases rather than the features",
+      "matched_spec_paragraph": "p144"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶5",
+      "summary": "In due diligence, request the inventories, registers and reconciliation reports; each one missing signals an unowned pattern",
+      "matched_spec_paragraph": "p145"
+    },
+    {
+      "draft_locator": "Using the Patterns ¶6",
+      "summary": "Hand-off to the next page, which introduces the merchant followed through the book",
+      "matched_spec_paragraph": "p146"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted sixteen named patterns in four families, entries of warning sign, mechanism, cost, remedy and reading links, then stages, chains and three uses, with invented Kestrel & Pine examples and dated public cases: all three roadmap promises and the substance of AC-5's expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "156 units checked (73 from outline A, 83 from outline B); every summary states the controlling idea of its aligned spec paragraph, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "3 units were marked two_ideas (Introduction ¶3, Sixteen Patterns to Recognize ¶65, Using the Patterns ¶2). Read against draft and spec each carries one idea: how the page is made up and ordered; a cost with the concession that the dates were public; the opening sale worked through name, origin and the ownership question.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "156 units checked; each ties to S1 to S4 directly or through its section's advances_thesis (catalog S1/S2/S3, stage section S3, chains section S4); introduction and conclusion state and apply the thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The opening starts from a concrete scenario (a sale the warehouse never receives) and moves to the claim and a roadmap; none of the listed weak patterns is present.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The closing synthesises, calls back, gives a course of action announced in the roadmap and hands off; it adds no new subtopic or body evidence and is not a bare restatement.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Using the Patterns ¶1 states the spec's synthesis (a failure shows somewhere other than where it began, in time and in the landscape) and the so-what (rarely a new platform; ownership, contracts and reconciliation); ¶2 adds ownership, not blame.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Using the Patterns ¶2 returns to the opening sale, names it a Message in a Bottle, looks upstream for an unowned Spaghetti Junction connector and asks who owns the join, as the spec's callback declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named The Message in a Bottle, the integration family, The Spaghetti Junction (a connector with no owner) upstream, and the idempotency key, record of handled events and reconciliation: the full expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named the four families with the expected clause for each; for truth it gave 'two or more writers' without 'or no owner', which the page itself does not say, and it noted that the platform-and-change clause fits only two of that family's five patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader asked for the integration inventory with the count of integrations, those without a named owner, those with a reconciliation and the writers of the same fact: the expected answer. It noted that the page gives no threshold.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-7",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "ac7.txt: sixteen rows, same names, warning signs and families, same order as the style guide's table.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/16",
+      "draft_locus": "Sixteen Patterns to Recognize ¶17",
+      "quote": "**In public.** Shopify's help documentation keeps separate order, payment and fulfillment status families on one order, and states that without a tracking number \"no shipping updates are received\" (n.d., accessed 2026-11).",
+      "finding": "The unit reports the source and the quotation and stops; unlike the other 'In public' units it does not say what they show (the spec: a large vendor models the order with several states, so one status word is not the vendor's design either).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶3",
+      "quote": "**The governance chain.** It too starts with something nobody owns.",
+      "finding": "155 declared transitions read; this one fails. The similarity is worded ('too'), but what it should carry over, a chain that starts with connectors nobody owns, is not said in the integration-chain unit before it, so the comparison points at nothing; both flow readers reported it (flow1 3.40, flow2 31).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/flow",
+      "draft_locus": "Sixteen Patterns to Recognize ¶1",
+      "quote": "The order of the families, and the order of patterns within a family, is never explained.",
+      "finding": "Both readers find the position of the family groups unclear from the text and have to infer 'symptom first'; the spec's reason (truth first because a newcomer has met its symptoms, then what carries the facts, then decisions and omissions) is not said in the draft.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow2, sections 1 and 2 ('the piece never says it'; platform and change entries 'unclear why third')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Sixteen Patterns to Recognize ¶1",
+      "quote": "The four families are defined twice in different words (by cause in the key points, by subject in the section). I went back to check they were the same four.",
+      "finding": "The callout defines the families by fault and ¶1 by subject area, and the fault clause for platform and change covers two of its five patterns (reader-ac2 found the same).",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/thesis_statement",
+      "draft_locus": "Introduction ¶1",
+      "quote": "I met four different statements of what the sixteen have in common and was not sure which one to hold on to.",
+      "finding": "The 'promise' statement of the first key point is not taken up by the entries or the closing; the spec puts it in the thesis statement and gives no later unit that returns to it.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/9",
+      "draft_locus": "Sixteen Patterns to Recognize ¶10",
+      "quote": "I kept wondering what the eight were and whether I had missed a list.",
+      "finding": "Waypoint enters in the last clause of the first entry; W2, W4, W5 and W8 then appear piecemeal, W5 with different content at ¶52 and ¶136, and the only overview is the last unit of the chains section. The spec has no unit that lays the program out.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/32",
+      "draft_locus": "Sixteen Patterns to Recognize ¶33",
+      "quote": "Not yet explained. The two prices only made sense after line 146 in the next entry (20% discount stacked with a 10% code).",
+      "finding": "The case needs the stacking that the next pattern tells, 'before' is ambiguous, and flow1 could not see why a wrong amount sits under a refund paid twice; the difficulty comes from where the spec places the unit.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/74",
+      "draft_locus": "Sixteen Patterns to Recognize ¶75",
+      "quote": "The stacking bug was \"about **€43,000** of margin\" in the Price entry; here it is €52,000. I went back to check and could not reconcile the two.",
+      "finding": "The draft gives two amounts for what reads as one stacking bug and does not say how the €52,000 relates to the €43,000 of ¶42.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow2, item 10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Where the Patterns Strike ¶2",
+      "quote": "The ten are never listed or numbered.",
+      "finding": "Neither reader could count ten incidents in the entries, tell which were not 'met above' or check the eight-and-two split in the chains section, and two incidents are dated after 'starts 2027'. The spec asks for the counts and has no unit that lists the ten.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/91",
+      "draft_locus": "Sixteen Patterns to Recognize ¶92",
+      "quote": "In each case I read on expecting the failure.",
+      "finding": "The Kestrel & Pine slot, which elsewhere reports an incident, here (and at ¶109) reports the pattern avoided without saying so first; the spec specifies these counter-examples under the same label.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2, item 23 (i)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/75",
+      "draft_locus": "Sixteen Patterns to Recognize ¶76",
+      "quote": "Out of place. No incident involving guest card payments has been mentioned, so I do not know why this feature needed switching off or what happened because it could not be.",
+      "finding": "The unit states the missing switch and not what the spec says it shows (the merchant had no way to degrade on purpose), so it reads as detached from its entry.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/8",
+      "draft_locus": "Sixteen Patterns to Recognize ¶9",
+      "quote": "I re-read this to find the phantom stock in it.",
+      "finding": "Both readers read a vendor changing a definition under its integrators as The Pulled Rug, not The Phantom Stock; the evidence is the spec's choice for this pattern.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.16",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Sixteen Patterns to Recognize ¶6",
+      "quote": "This is under \"What it costs\" but it is a mechanism, not a cost.",
+      "finding": "The commercetools delay explains why copies lag and sits in the cost unit, where the spec places it.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2, item 15",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/57",
+      "draft_locus": "Sixteen Patterns to Recognize ¶58",
+      "quote": "This example is a queue slowed by load: nothing is duplicated or lost. It reads as a First Snowfall example, and it is retold there (line 232).",
+      "finding": "The fictional case does not show a message lost or duplicated, which is how the pattern is defined and what the conclusion's callback names; the spec assigns the backlog to both patterns (its open question c).",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.19",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/66",
+      "draft_locus": "Sixteen Patterns to Recognize ¶67",
+      "quote": "The Pulled Rug is a format or API changing without the merchant knowing. Nothing here says anything changed.",
+      "finding": "The Bergzicht deduction reads as a data-quality error; the spec's unit holds no change of format (its open question b).",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2, item 20",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/90",
+      "draft_locus": "Sixteen Patterns to Recognize ¶91",
+      "quote": "Offered as the cost of a Burned Bridge, but it is a case in which the bridge was kept.",
+      "finding": "The cost unit's public case kept its way back and the 'In public' case is not known to have lacked one, so neither shows the pattern; the reader learns this only at ¶93.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2, item 24",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/flow",
+      "draft_locus": "Sixteen Patterns to Recognize ¶119",
+      "quote": "I could not work out what separates the public material in \"What it costs\" from the \"In public\" slot.",
+      "finding": "'In public' repeats the cost unit's case (¶43, ¶119, ¶128, ¶137), holds a vendor document or a remedy, or says nothing is cited, so the slot has no constant job; the spec gives public evidence to both slots.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.25",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/65",
+      "draft_locus": "Sixteen Patterns to Recognize ¶66",
+      "quote": "Read three times. It is not clear who retired the version (a connector, or bol), what \"announced\" attaches to, or how 8 February relates to the 1 February switch-off in the paragraph above.",
+      "finding": "The sentence separates 'announced' from what was announced and follows a real bol date with a near-identical fictional one; bol is also glossed here one use after ¶65.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.26",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/132",
+      "draft_locus": "Sixteen Patterns to Recognize ¶133",
+      "quote": "I could not tell which way the evidence was meant to point.",
+      "finding": "Under 'Why it happens' the protocols are said to give the agent an identity and a mandate, which both readers took for the remedy; the draft does not say what this shows, and the spec placed the evidence in the mechanism unit.",
+      "fault": "unclear",
+      "corroborated_by": "reader-flow2, item 25",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶3",
+      "quote": "These two are likenesses, not links: neither says what causes what.",
+      "finding": "The Secret Agent and the Long Fuse are compared to a Lynchpin, not placed in a chain, and Figure 18's caption puts the Secret Agent in the chain and leaves the Long Fuse out; the spec's controlling idea calls them 'the same absence'.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.41",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/flow",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶1",
+      "quote": "Nothing says that families and chains are two different groupings.",
+      "finding": "The Pulled Rug (integration family) is in the governance chain and the First Snowfall (platform family) in the integration chain; both readers went back to the table. The spec's rationale notes the difference and the draft does not.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.42",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶4",
+      "quote": "One Size Fits None appears in no chain and is not mentioned. With fifteen patterns placed, I searched for the sixteenth.",
+      "finding": "The spec places the pattern on no chain in prose or figure (its own open question).",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.42",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶5",
+      "quote": "One sentence, after the figure, with no explanation of how. It reads as a leftover.",
+      "finding": "The identity thread is asserted and not explained; the spec gives the unit one sentence and says the reason would have to come from the author.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow2, item 32",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/91",
+      "draft_locus": "Sixteen Patterns to Recognize ¶92",
+      "quote": "I could not fix the moment the story is told from.",
+      "finding": "Events up to January 2028 are told in the past tense while other entries speak from early 2027 ('None is planned for 2027–2028').",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.13 (last sentence)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "Using the Patterns ¶2",
+      "quote": "The chance to do what? I took it to mean the chance to ask who owns the join, but had to look back one sentence to decide.",
+      "finding": "The sentence that announces the three uses does not name what the situations are a chance for.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.45",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶6",
+      "quote": "I was unsure whether the sentence sorts by symptom or by origin.",
+      "finding": "'A fact with two writers' is the cause of eight incidents here, while the units above make the truth patterns the end of a chain (the spec's open question a). Reported by one flow reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/100",
+      "draft_locus": "Sixteen Patterns to Recognize ¶101",
+      "quote": "I was not sure which pattern I was reading about.",
+      "finding": "Apps that write stock and the app governance rule are The Secret Agent's subject and remedy; the spec places them under The Forked Platform. Reported by one flow reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/80",
+      "draft_locus": "Sixteen Patterns to Recognize ¶81",
+      "quote": "**What it looks like.** A 14-person team runs a dozen composable vendors (commerce bought as separate services); a €48 million merchant builds a headless storefront",
+      "finding": "The merchant's own team size and revenue appear in a generic slot without a label (again at ¶124), and the page never states its size, so a reader cannot tell the general case from the fictional one; the spec's controlling idea carries the figures.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.6; reader-flow2, item 11",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Where the Patterns Strike ¶2",
+      "quote": "Its April 2027 stage map traces most of the ten to Growing-stage designs still running in 2026.",
+      "finding": "The merchant's documents are used as known: the stage map here and the head of engineering's capability map at ¶50 get no clause saying what they are.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.39; reader-flow2, item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/49",
+      "draft_locus": "Sixteen Patterns to Recognize ¶50",
+      "quote": "The pre-order app that wrote inventory beside the WMS feed (March 2026) is the pattern at its smallest.",
+      "finding": "Systems named without a role or before their story: 'the' pre-order app is first described at ¶135, and 'the marketplace connector' (¶66) is never explained.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.8; reader-flow2, item 19",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/1",
+      "draft_locus": "Sixteen Patterns to Recognize ¶1",
+      "quote": "Refunds, restocking and credit notes are reconciled by hand after the return arrives, and sometimes twice.",
+      "finding": "'Reconciled' and 'reconciliation' are used from the table to the conclusion's verdict and never explained as comparing two copies of a fact; the nearest hint is 'copies reconciled so drift is measured' (¶10).",
+      "fault": "draft",
+      "corroborated_by": "on the spec's does_not_know list ('reconciliation') and the draft never explains it",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/2",
+      "draft_locus": "Sixteen Patterns to Recognize ¶7",
+      "quote": "Stock updates pass from the warehouse management system (**WMS**) to the enterprise resource planning system (**ERP**) every 15 minutes",
+      "finding": "ERP is expanded and its role (finance, invoicing, stock bookkeeping) is never given, although later sentences depend on invoices living there.",
+      "fault": "draft",
+      "corroborated_by": "on the spec's does_not_know list (ERP) and the draft only expands it, never explains it",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/91",
+      "draft_locus": "Sixteen Patterns to Recognize ¶92",
+      "quote": "The order management system (OMS), one record for every channel's orders, came in seam by seam in 2027",
+      "finding": "'Seam' is used here and in the remedy before its only gloss (¶95), which uses the word itself.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.36; reader-flow2, item 23 (iii)",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/56",
+      "draft_locus": "Sixteen Patterns to Recognize ¶57",
+      "quote": "its event-driven price and stock pipeline, reprocessing payloads of which \"over 90%\" were unchanged, delayed events \"by up to 30 minutes\" during Cyber Week and left consumers with \"divergent versions of product data\", before it was replaced by a synchronous read API for the critical path",
+      "finding": "Event-driven pipeline, payloads, consumers, synchronous read API and critical path are unexplained in one sentence and again at ¶85; the spec lists 'synchronous read API' as left unglossed for the word limit.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, items 3.28 and 3.29",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/39",
+      "draft_locus": "Sixteen Patterns to Recognize ¶40",
+      "quote": "**What it costs.** Margin, parity penalties and regulatory exposure",
+      "finding": "'Parity penalties' and the 'price-parity warning' (¶41) are never explained; the spec lists the term as left unglossed for the word limit.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.37",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/83",
+      "draft_locus": "Sixteen Patterns to Recognize ¶84",
+      "quote": "Waypoint's W4, stay on the SaaS platform and surround it, is the decision not to wear the boots.",
+      "finding": "SaaS is an unexpanded, unexplained abbreviation at its first use.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.37",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/125",
+      "draft_locus": "Sixteen Patterns to Recognize ¶126",
+      "quote": "issued and numbered in the ERP through the EDI provider as access point",
+      "finding": "E-invoicing and regulation terms left unexplained: access point, B2B (¶125) and 'the product passport' (¶127); the spec lists access point and B2B as left unglossed for the word limit.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow1, item 3.37 (the product passport)",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/8",
+      "draft_locus": "Sixteen Patterns to Recognize ¶9",
+      "quote": "moved draft-order and transfer holds from its `reserved` to its `committed` inventory state",
+      "finding": "Draft-order holds, transfer holds and the two inventory states are unexplained; only the clause after the colon carries the point.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow1, item 3.16",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/thesis_statement",
+      "draft_locus": "Introduction ¶1",
+      "quote": "Truth patterns are a fact with two writers; integration patterns are a message with no key, no contract or no owner",
+      "finding": "The family clauses in the KEY POINTS callout use writer, key and contract in a technical sense with no gloss; 'key' is explained only at ¶60 and 'writer' and 'contract' never. The wording is the thesis's. Reported by the terms reader only.",
+      "fault": "unclear",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/thesis/claim",
+      "draft_locus": "Introduction ¶1",
+      "quote": "The patterns travel in chains, and the chains start at the joins.",
+      "finding": "'Joins' is used in the callout and six more times and never defined or equated with 'handoff', which ¶1 does define. Reported by the terms reader (and noted by the intro reader), not by a flow reader.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/9",
+      "draft_locus": "Sixteen Patterns to Recognize ¶10",
+      "quote": "One writer per location's stock, changes published as events",
+      "finding": "'Event' in the integration sense (a message saying that something happened) recurs in four remedies and is never glossed. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/20",
+      "draft_locus": "Sixteen Patterns to Recognize ¶21",
+      "quote": "**What it looks like.** A store cannot see an online order; a data-subject request becomes a search across nine systems.",
+      "finding": "'Data-subject request' is not explained here or at ¶23, which gives only its deadline; the spec's notes count it as glossed. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-10",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/43",
+      "draft_locus": "Sixteen Patterns to Recognize ¶44",
+      "quote": "campaigns as data, a 30-day price history, promotions with an evaluation order and stop rule",
+      "finding": "Remedy shorthand the reader could not follow: 'campaigns as data', 'evaluation order and stop rule', and at ¶69 'partner cards' and 'contract tests'. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-8",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/117",
+      "draft_locus": "Sixteen Patterns to Recognize ¶118",
+      "quote": "The February 2027 ownership map found **5 integrations with no named owner**",
+      "finding": "Verified in the draft: ¶50 and ¶118 both give February 2027, with 13 and 5 integrations without an owner. The AC-8 reader reports that the ledger's rulings date the 5 to April 2027, after the ownership map; flow1 3.10, flow2 9, the terms reader and the AC-3 reader could not reconcile the two counts. The spec's p117 carries the February date.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-8",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "How the Patterns Reinforce Each Other ¶6",
+      "quote": "Sorted by cause, eight of the ten incidents are a fact with two writers; two are what the outside world does to a landscape nobody watches.",
+      "finding": "A Kestrel & Pine figure the AC-8 reader could not find in the ledger, whose only 'eight of the ten' is the stage map's; the spec's own open question says the count by cause is not in the ledger.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-9",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/124",
+      "draft_locus": "Sixteen Patterns to Recognize ¶125",
+      "quote": "requirements 6.4.3 and 11.6.1 of PCI DSS, the card industry's security standard, on payment-page scripts became mandatory on 31 March 2025; Germany has required businesses to receive e-invoices since 1 January 2025.",
+      "finding": "Verified: these two public examples name no publisher and no source date (the spec's sources are PCI SSC and the German BMF); in the same unit the Belgian site carries no date or 'accessed'.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-9",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/132",
+      "draft_locus": "Sixteen Patterns to Recognize ¶133",
+      "quote": "the agent protocols (Agentic Commerce Protocol releases through April 2026; Universal Commerce Protocol, launched 11 January 2026)",
+      "finding": "Verified: neither protocol names who published it (the spec's sources are the ACP repository and Google).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-9",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/82",
+      "draft_locus": "Sixteen Patterns to Recognize ¶83",
+      "quote": "(InfoQ, 3 May 2023; the original post has been removed)",
+      "finding": "Verified: a source three and a half years old is not marked dated, while the Segment source beside it and the June 2023 Shopify source at ¶117 are.",
+      "fault": "draft",
+      "severity": "major"
+    }
+  ]
+}

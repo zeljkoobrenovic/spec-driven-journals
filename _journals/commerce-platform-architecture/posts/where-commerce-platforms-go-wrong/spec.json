@@ -1,0 +1,3249 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "where-commerce-platforms-go-wrong",
+  "journal": "commerce-platform-architecture",
+  "part": "preface",
+  "title": "Out of Stock, Out of Sync: Sixteen Ways Commerce Platforms Go Wrong",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published page (posts/where-commerce-platforms-go-wrong/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the published page, in its order; the tables, the eighteen figures and the two opening callouts are recorded as evidence or placement, not as units. Intent outcome, acceptance criteria AC-1 to AC-6, thesis and role are copied unchanged from the journal spec. It is a contract, not a description: the places where the published page does not do what the spec asks are listed under open_questions. Revised on 2026-11-12 from the flow rubric's notes: seven case units that held two ideas are split, the chains section gains a lead paragraph and a unit for the identity thread, and the conclusion gains two opening paragraphs; the published page was revised to match.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The sixteen pattern names, each with its warning sign and its family.",
+        "What each family points to: a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns.",
+        "The three chains (integration, governance, platform) and the stage at which a pattern is typically born and the stage at which it hurts."
+      ],
+      "believe": [
+        "A pattern accumulates from decisions that were each reasonable locally, so finding it is not finding someone to blame.",
+        "Repairing the symptom at the end of a chain rarely holds; naming the origin usually does, and the remedy is rarely a new platform."
+      ],
+      "can_do": [
+        "Name the pattern and family behind a described incident, and the chapter that addresses it.",
+        "Ask for the number that would confirm a warning sign.",
+        "Use the patterns as questions in a design review, a vendor demo and due diligence."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture, most of all those who will sit in a design review, a vendor demo or a due-diligence exercise within weeks of joining: the engineer, product manager, analyst or leader who needs a name for what is going wrong before arguing about a fix.",
+      "already_knows": [
+        "What buying, returning and waiting for a parcel are like from the shopper's side.",
+        "Roughly what an API, an app and a script are.",
+        "The book's claim that a failure is a promise one system made and another could not keep, the four scale stages, and the bare list of sixteen pattern names (introduction)."
+      ],
+      "does_not_know": [
+        "Kestrel & Pine, its systems, people and incidents (the next page introduces them).",
+        "System of record, available-to-promise, idempotency key, reconciliation, dead-letter queue, reverse fulfillment order, disposition, tenant.",
+        "WMS, ERP, OMS, PIM, POS, iPaaS, EDI, Peppol, SKU, webhook."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a described incident the page does not contain, the reader names the pattern, its family and the upstream pattern to check first.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After a timeout, a retry created a second shipment for 40 orders. Using only this page: which pattern is this, which family is it in, which upstream pattern would you check for, and what is the remedy direction?",
+        "expected": "The Message in a Bottle, integration family; look upstream for a Spaghetti Junction (a connector with no owner or contract); an idempotency key on every message, a record of handled events and a reconciliation."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can say, for each of the four families, where it tells them to look.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: name the four families of patterns and say in one clause each what kind of thing has gone wrong.",
+        "expected": "Truth: a fact with two writers or no owner. Integration: a message with no key, no contract or no owner. Platform and change: a decision copied from a bigger company or made on one date. Governance: a dependency, deadline or actor nobody owns."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given a warning sign, the reader names a number or document to ask for before concluding the pattern is present.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A colleague says 'we have a Spaghetti Junction'. Using only this page: what would you ask to see before agreeing?",
+        "expected": "The integration inventory: how many integrations, how many with a named owner, how many with a reconciliation job, how many systems write the same fact."
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every Kestrel & Pine example can be followed without the merchant page: each is labeled fictional and names its systems by role with a one-clause explanation.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reader of the opening alone (the two callouts and the three paragraphs before the first heading) can predict the page's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the first three paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+        "expected": "Sixteen named patterns in four families, each with warning sign, mechanism, cost and remedy; then how they chain and how to use them. Evidence: invented examples from a fictional merchant, and dated public cases."
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-7",
+        "statement": "A reader who meets a pattern name in any later chapter finds the same name, warning sign and family on this page: the sixteen equal the style guide's table, in its order.",
+        "check": "custom",
+        "method": "deterministic",
+        "severity": "major"
+      },
+      {
+        "id": "AC-8",
+        "statement": "A reader who checks any Kestrel & Pine figure on this page against the scenario ledger finds the same figure there.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "List every Kestrel & Pine number on the page (units, euros, orders, days, counts of integrations and apps) and compare each with _research/scenario-ledger.md. Which differ?",
+        "expected": "None differ; among them 1,340 units, €96,000, 37 items, 600 variants, 11 tickets, 212 returns, €19,400, €179 for nine days, 410 orders, €8,200, €52,000, €14,200, two days, 34 integrations, 13 and 5 without owner, 41 apps, €240,000."
+      },
+      {
+        "id": "AC-9",
+        "statement": "For every public example the reader can tell who published it and when, and is told when a source is older than about three years.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "For each public example on the page: is a publisher and a date (or 'n.d., accessed') given where the example is used, and is a source older than about three years marked as dated?",
+        "expected": "Every example carries a publisher and a date; the 2008, 2011, 2013 and 2018 sources are marked as dated."
+      },
+      {
+        "id": "AC-10",
+        "statement": "Every commerce term and system abbreviation the page uses is explained in one clause where it first appears, so the page can be read before Part I.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "major"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?",
+    "claim": "Commerce platforms fail in sixteen recurring patterns in four families (a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns), and what the patterns have in common is that each grew from decisions that were reasonable one at a time and that they travel in chains that start at the joins between systems.",
+    "disputed_by": "The view that each commerce incident is a separate defect or a single bad decision in the system that showed the symptom, to be fixed in that system or by replacing it.",
+    "so_what": "Faced with an incident, the reader names the pattern, looks upstream along its chain for the connector, writer or dependency without an owner, and assigns that; a fix applied where the symptom appeared will have to be made again.",
+    "how_why": "Each app, script and connector was the fastest way to meet one need, and the risk shows only in their combined effect. Connectors without owners send messages that are trusted to arrive once; late, lost and duplicated messages leave stale stock, conflicting statuses and double refunds; the peak day shows them all in one evening. Of Kestrel & Pine's ten incidents, eight are a fact with two writers.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The failures recur as sixteen recognizable patterns, each with a warning sign that a number can confirm, a mechanism, a cost and a remedy direction."
+      },
+      {
+        "id": "S2",
+        "claim": "The sixteen sort into four families, and the family says what kind of thing lacks an owner: a fact, a message, a decision, or a dependency, deadline or actor."
+      },
+      {
+        "id": "S3",
+        "claim": "Each pattern grew from decisions that were reasonable one at a time, which is why most are born at one scale stage and paid for at a later one."
+      },
+      {
+        "id": "S4",
+        "claim": "The patterns travel in chains that start at the joins between systems, so a repair holds at the origin of a chain and not at its last symptom."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the book its shared names for failure: without it the merchant's incidents are ten anecdotes and no chapter can open by naming the patterns it works on.",
+    "supports": [
+      "PF-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "sixteen-patterns: the patterns by family; how-the-patterns-reinforce: one chain per paragraph"
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "sixteen-patterns to how-the-patterns-reinforce: single patterns, then their spread over the stages, then the chains that join them"
+      }
+    ],
+    "rationale": "The catalog comes first because the stage table and the chains are written in pattern names and mean nothing to a reader who has not met them. The stage table follows because it adds one fact per pattern (when it starts, when it hurts) and prepares the idea that origin and symptom are apart in time; it is also where the merchant's ten incidents are first counted, so that the later count by cause has something to stand on. The chains come third because they say that origin and symptom are also apart in the landscape, and they need both the names and that idea. The closing section first says what the three sections add up to and returns to the opening sale, and only then gives the three uses, because each use (walk the handoffs, ask to see the pattern, ask for the owner's document) applies the lesson that the origin is something unowned upstream. Opening with the chains would give the reader a diagram of sixteen unknown names; opening with the uses would hand out questions before the reader knows what a bad answer looks like."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "The storefront accepts a sale, but the warehouse never receives the order. Both systems remain available while the customer waits for a parcel nobody is preparing."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has waited for a parcel that never came, or been told an item was in stock when it was not, has met one of these failures from the outside.",
+      "to_topic": "Inside the merchant each is a price, a stock figure or a status that crossed a handoff incorrectly, and the ways that happens recur often enough to be named."
+    },
+    "thesis_statement": {
+      "text": "Nearly every pattern is a promise one system made and another could not keep. The sixteen fall into four families that tell you where to look, they accumulate through reasonable local decisions, and they travel in chains that start at the joins.",
+      "placement": "KEY POINTS callout (bullets 1 to 3) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "Paragraph p03 (last sentence), with the IN THIS SECTION and KEY POINTS callouts",
+      "promises": [
+        {
+          "promise": "Sixteen named patterns in four families, each with its warning sign, mechanism, cost, remedy direction and the chapters that address it, shown at the fictional merchant and in a dated public case.",
+          "kept_in": [
+            "sixteen-patterns"
+          ]
+        },
+        {
+          "promise": "The scale stage at which each pattern starts and the stage at which it hurts.",
+          "kept_in": [
+            "where-the-patterns-strike"
+          ]
+        },
+        {
+          "promise": "The chains in which one pattern sets off another, and (in the closing section) three uses: a design review, a vendor demo and due diligence.",
+          "kept_in": [
+            "how-the-patterns-reinforce"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A storefront can accept a sale that the warehouse never receives while both systems stay available, and the other commerce failures have the same shape: a price, a stock figure or a status crosses a handoff, the point where one system passes a fact to the next, incorrectly.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A sale accepted by the storefront, an order the warehouse never receives, and a customer waiting for a parcel nobody is preparing.",
+            "shows": "The reader sees a failure in which no system is down, so the fault has to be looked for between systems."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Many patterns accumulate from decisions that were each reasonable locally, so the risk shows only in their combined effect, and finding a pattern is a way to assign responsibility, not to find someone to blame.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The recurring failures at the handoffs.",
+          "introduces": "Where they come from: an app, a script or a shortcut that each made sense alone.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The page gives sixteen entries of one shape (warning sign, mechanism, cost, remedy, reading links), with invented examples from the fictional Kestrel & Pine and dated public examples assigned by the author's interpretation, and then the stages, the chains and three uses.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The patterns as a way to find a combined effect.",
+          "introduces": "The shape of each entry, the two kinds of example it uses, and what follows the sixteen entries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "sixteen-patterns",
+      "heading": "Sixteen Patterns to Recognize",
+      "controlling_idea": "Commerce platforms fail in sixteen recognizable patterns in four families, each with a warning sign a number can confirm, a mechanism made of locally reasonable choices, a cost, and a remedy that assigns an owner.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Names and sorts the sixteen, and shows for each one the mechanism, the cost and the remedy direction, once with an invented case and once with a dated public one."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "problem_solution",
+            "applies_to": "Each pattern's own units: quote, what it looks like, why it happens, what it costs, the Kestrel & Pine case (one or two units), the public record, the remedy direction, the chapters."
+          },
+          {
+            "pattern": "large_to_small",
+            "applies_to": "p04 to p05 before the patterns: the four families and the table first, then the single patterns."
+          }
+        ],
+        "rationale": "The table comes first so the reader has all sixteen names and families before reading any one. The patterns then follow the table's order, family by family (five truth, three integration, five platform and change, three governance), so that a reader learns one kind of fault at a time and the family tells them where to look. Truth comes first because its symptoms (stock, status, refunds, prices) are the ones a newcomer has met as a customer; integration follows because it carries those facts; platform and change and governance come last because they are decisions and omissions with no symptom of their own until one of the earlier patterns appears. Every pattern has the same parts in the same order, sign before mechanism, mechanism before cost, cases before remedy, so that the reader can compare patterns and find a part again; moving the remedy ahead of the cases would hand out an answer before the reader has seen what it answers. Between one pattern and the next the transition is the parallel third-level sub-heading itself: it names the next row of the table, and the entry under it repeats the shape the reader has just finished. That is the declared form for the fifteen boundaries between patterns (relationship sequence, form phrase); no connective sentence is asked of the draft there, and the family of each pattern is given by the table, not repeated in the entry. How one pattern causes another is left to the chains section, which is where the page argues it. A Kestrel & Pine case that reports two incidents is two units, the second opening without a label, as the stock and price patterns already did."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction's promise of sixteen named patterns and the shape of each entry.",
+        "introduces": "The four families, the table of names and warning signs, and then each pattern in turn.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Four families organize the sixteen patterns: truth, integration, platform and change, and governance.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Sixteen rows: pattern name, warning sign and family (five truth, three integration, five platform and change, three governance).",
+              "shows": "Gives every pattern a name and an observable sign before any is explained, and sorts them by where to look.",
+              "source": "Style guide's pattern table (_research/style-guide.md)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Sorts the sixteen into the four families the thesis names."
+          }
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "A warning sign is a prompt to look and not a verdict, so the reader should ask for the number that would confirm it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The warning signs in the table.",
+            "introduces": "Their limit: a sign needs a number before it counts as a finding.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The Phantom Stock sounds like a site that showed twelve units of an item the warehouse had been out of since seven o'clock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"The site said we had twelve. The warehouse had none since seven o'clock.\"",
+              "shows": "Puts the warning sign in the words a colleague would use."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: every channel sells from an aging copy of a stock number, so the shelf can be empty while the screens still say \"in stock\".",
+              "shows": "Shows the copies and their age in one picture before the mechanism is explained."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The table's first row, and the rule that a warning sign has to be confirmed by a number.",
+            "introduces": "The first truth pattern, The Phantom Stock, announced by its sub-heading and opened by its quote; the sub-heading is the transition.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The storefront's stock number is a copy of unknown age, so click-and-collect can promise what the store sold that afternoon.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Phantom Stock: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The warehouse knows the physical stock while the channels sell from scheduled copies that extra apps and imports can also change, so the source and its permitted writers have to be defined before the sync is made faster.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Phantom Stock growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Phantom Stock: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Phantom stock costs canceled orders, vouchers, marketplace penalties and seller ratings, and stock records are less accurate than merchants assume.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "65% of about 370,000 inventory records were inaccurate at one US retailer's stores.",
+              "shows": "Even the record the copies are taken from is often wrong, so the copies cannot be better.",
+              "source": "DeHoratius and Raman, Management Science, 2008 (dated)"
+            },
+            {
+              "kind": "source",
+              "what": "commercetools documents its available quantity as eventually consistent \"with a delay of up to 10 seconds\".",
+              "shows": "A vendor states in writing that its stock figure lags.",
+              "source": "commercetools API documentation, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Phantom Stock: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "On Black Friday 2026 Kestrel & Pine's channels went on selling the Ridgewalker for up to two hours after it sold out, because stock passed from the warehouse system to the ERP every 15 minutes and then hourly to the platform and the marketplaces.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sell-out at Duiven at 19:40 on 27 November 2026; 1,340 units oversold, 1,120 orders canceled or delayed, about €96,000 in costs.",
+              "shows": "Puts a number of units and euros on a chain of scheduled copies.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Phantom Stock: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The store-pickup pilot in December repeated the problem with nightly store-stock updates.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "37 promised pickup items had already been sold in the store.",
+              "shows": "The same mechanism recurs wherever a channel promises from a copy, at small scale as well as large.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Phantom Stock: the first Kestrel & Pine case.",
+            "introduces": "A second case of the same mechanism at the same merchant.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Shopify's August 2026 changelog moved two kinds of hold from one inventory state to another, which shows that the stock vocabulary itself changes under the apps that read it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Draft-order and transfer holds moved from the `reserved` to the `committed` inventory state on 5 August 2026.",
+              "shows": "A reader of a stock figure can be wrong without any message failing, because the figure's meaning changed.",
+              "source": "Shopify developer changelog, 2026-08-05"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Phantom Stock: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The remedy is one writer per location's stock, changes published as events, available-to-promise computed in one place and copies reconciled so that drift is measured, which is the first decision (W1) of Kestrel & Pine's Waypoint program.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Phantom Stock: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The inventory chapter owns available-to-promise, the systems-of-record chapter names the owner of each fact and the reconciliation chapter measures the drift.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Phantom Stock: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Schrödinger's Order sounds like an order the customer sees as delivered, the warehouse as in picking and finance as never invoiced.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"The customer sees Delivered. The warehouse says In picking. Finance says it was never invoiced.\"",
+              "shows": "States three answers to one question, which is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: each system keeps its own status for the same order, and each is honest and wrong at once.",
+              "shows": "Shows that the statuses differ by system, not by error."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Phantom Stock, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, Schrödinger's Order (family: truth), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The platform's status is set by the first message it received, the ERP waits for one that never came, and a split shipment has no status at all.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Schrödinger's Order: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The money, each shipment and each return have their own state, so without one record that keeps them apart every system's status is honest and wrong.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows Schrödinger's Order growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Schrödinger's Order: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "An order nobody can place costs service load first and money second.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "\"Where is my order\" is the largest single category of e-commerce support contacts, at 18% of incoming requests in one helpdesk vendor's data.",
+              "shows": "The question the pattern makes unanswerable is the one customers ask most.",
+              "source": "Gorgias, updated 2023-11-13"
+            },
+            {
+              "kind": "reasoning",
+              "what": "Invoices that never post and duplicate shipments follow from statuses that disagree.",
+              "shows": "Names the money cost after the service cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Schrödinger's Order: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "A Kestrel & Pine order shipped in two parcels showed three statuses for six days, because an agency flow marked the whole order fulfilled on the first warehouse confirmation.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1052877, December 2026: fleece shipped 7 December, socks 14 December; platform Delivered, WMS In picking, ERP Not invoiced; one customer opened 11 support tickets.",
+              "shows": "One split shipment is enough to produce three honest statuses and a measurable service cost.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Schrödinger's Order: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Shopify's own documentation keeps order, payment and fulfillment status as separate families on one order.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Separate status families; without a tracking number \"no shipping updates are received\".",
+              "shows": "A large vendor models the order with several states, so one status word is not the vendor's design either.",
+              "source": "Shopify Help Center, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Schrödinger's Order: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The remedy is one order record for every channel, with separate states for money, each shipment and returns, and a summary computed from the least-advanced shipment.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Schrödinger's Order: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The order-management chapter owns the order record and its states, the customer-service chapter builds the service view and the ERP chapter stops the ERP from being a second order system.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Schrödinger's Order: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The Familiar Stranger sounds like a merchant that can only guess whether its online customer and its store loyalty member are the same person.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Is the Eva who bought a jacket online the Eva on the store loyalty list? Probably.\"",
+              "shows": "The word \"probably\" is the warning sign: identity is a guess."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: each channel keeps its own customer record, so one person becomes several strangers nobody can match.",
+              "shows": "Shows one person split across channel records."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for Schrödinger's Order, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Familiar Stranger (family: truth), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "A store cannot see an online order, and a data-subject request becomes a search across nine systems.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Familiar Stranger: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Each channel's system keys its customer table on what it collects, and matching them is a project nobody owns because every system works without it.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Familiar Stranger growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Familiar Stranger: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Unmatched customer records cost duplicate marketing, blind service and a loyalty program built on a wrong count, and they put a legal deadline out of reach.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Under the GDPR a data-subject request must be answered within one month, extendable by two.",
+              "shows": "A merchant that cannot find the person in all its systems cannot meet a dated legal duty.",
+              "source": "Regulation (EU) 2016/679, Article 12(3), 2016"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Familiar Stranger: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The customer the book follows at Kestrel & Pine exists as four unlinked records, so the store that takes her return cannot see her online order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva Janssen is an online account, a store customer in the POS loyalty list, a newsletter subscriber and a returns-portal contact with no shared identifier; in 2027 the online loyalty program was postponed until the customer record is unified.",
+              "shows": "Shows the pattern on the customer the book follows, and a business decision that had to wait for the fix.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Familiar Stranger: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Shopify marked its legacy customer accounts deprecated in February 2026, so identity is a model a merchant has to rebuild, not a table it can keep.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Legacy customer accounts deprecated as of 26 February 2026.",
+              "shows": "Even the platform's own customer model is replaced over time.",
+              "source": "Shopify developer documentation, accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Familiar Stranger: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The remedy is a customer master with one identifier per person, written matching rules and channel records linked to it, with loyalty after the match.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Familiar Stranger: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The identity chapter owns the customer master and matching, the privacy chapter serves data-subject requests and the promotions chapter explains why loyalty waits.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Familiar Stranger: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The Boomerang sounds like a refund that support sent and the returns portal then sent again.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"We refunded it. Then the portal refunded it. The customer kept both, and who can blame her.\"",
+              "shows": "Two senders of one refund is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: a return touches goods, money and books with three owners, so the refund can be paid twice and the credit note made by hand.",
+              "shows": "Shows the three owners a return passes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Familiar Stranger, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Boomerang (family: truth), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Two systems can issue a refund, stock rises at the dock scan and credit notes come from a spreadsheet.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Boomerang: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A return touches goods, money and books under three owners, and nothing says which event releases the refund.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Boomerang growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Boomerang: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Returns are frequent enough that an unowned way back is a standing cost, and payment providers themselves warn of double refunds.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "The 2025 US online return rate was 19.3% of online sales, with 9% of all returns fraudulent.",
+              "shows": "Returns are a routine flow, so a fault in it repeats.",
+              "source": "NRF, October 2025"
+            },
+            {
+              "kind": "source",
+              "what": "Stripe notes a \"risk of double refund\" for bank-debit methods; Mollie \"blocks duplicate refunds made in a short time frame\".",
+              "shows": "Providers document the duplicate as an expected failure.",
+              "source": "Stripe and Mollie documentation, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Boomerang: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "In January 2027 Kestrel & Pine refunded 212 returns twice, once through the returns portal and once by hand in the payment provider's console.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "212 returns over three weeks; €19,400 paid twice, most of it recovered by asking customers to transfer it back.",
+              "shows": "Two systems able to refund the same return, with the euro amount.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Boomerang: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35a",
+          "controlling_idea": "In the Black Friday week before, 190 returned jackets were refunded at a price nobody had paid, because the order-level discount had never been allocated to the lines.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "190 jackets refunded at €159.20 instead of the €143.28 paid, about €3,000.",
+              "shows": "A second way the money leg of a return goes wrong: the refund amount has no owner either.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Boomerang: the double refund at Kestrel & Pine.",
+            "introduces": "A second case at the same merchant: the wrong refund amount.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Shopify's returns model separates the return from the reverse fulfillment order and names the warehouse's dispositions, so money and stock are two records.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Return (the buyer's intent and the money) versus reverse fulfillment order (the warehouse's work), with four dispositions: restocked, processing required, not restocked, missing.",
+              "shows": "A vendor's model already keeps apart what the pattern confuses.",
+              "source": "Shopify developer documentation, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Boomerang: the two fictional cases.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The remedy is one return record whose warehouse disposition is the single trigger for restock, refund and credit note, with one refunding system keyed on the return id and a daily refund match.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Boomerang: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The returns chapter owns the return record and refund reconciliation, the payments chapter owns refunds and keys and the tax chapter books credit notes.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Boomerang: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The Price Nobody Can Explain sounds like one product at 179 in Germany and 199 everywhere else, with nobody able to say which was meant.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Germany is at 179. Everyone else is at 199. Which one did we mean?\"",
+              "shows": "Two prices and no author is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: prices live in several systems with their own calendars and imports, so the same product carries several prices and nobody can say why.",
+              "shows": "Shows the several price copies and their calendars."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Boomerang, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Price Nobody Can Explain (family: truth, the last of its five), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Prices live in five systems with five campaign calendars, discounts stack without anyone configuring it and a refund uses a price nobody paid.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Price Nobody Can Explain: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Several roles set prices under several rules, each selling system keeps its own number, imports fail silently and promotion settings outlive their campaign.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Price Nobody Can Explain growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Price Nobody Can Explain: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "An unexplained price costs margin and parity penalties and exposes the merchant to consumer-price law.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Since 28 May 2022 the EU Omnibus rules require any price-reduction announcement to show the lowest price of at least the 30 days before.",
+              "shows": "A merchant that cannot say who set a price cannot show its 30-day history either.",
+              "source": "Directive (EU) 2019/2161, 2019"
+            },
+            {
+              "kind": "fact",
+              "what": "The Dutch regulator ACM announced supervision of those rules from 1 January 2023.",
+              "shows": "The rule is enforced in one of the merchant's countries.",
+              "source": "ACM, 2022-12-06"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Price Nobody Can Explain: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Kestrel & Pine's German storefront sold the Ridgewalker €20 under every other channel for nine days because a script logged a failed restore row and reported success.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "October 2026: €179 instead of €199 for nine days, 410 orders, about €8,200 of margin, a marketplace price-parity warning.",
+              "shows": "A silent import failure becomes a dated, priced incident.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Price Nobody Can Explain: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "In Black Friday week a discount and a welcome code stacked because a combination setting from October had never been reverted.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A 20% outerwear discount stacked with a 10% welcome code on 2,860 orders, about €52,000 in all.",
+              "shows": "A promotion setting that outlived its campaign cost more than the price drift.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Price Nobody Can Explain: the first Kestrel & Pine case.",
+            "introduces": "A second case of the same mechanism at the same merchant.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "No public incident is cited for the unexplained price; the public record is the law, which makes a 30-day price history per SKU and channel a requirement.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The Omnibus rule (2022) and ACM's supervision (2023), as cited under the cost; SKU glossed here as one sellable variant.",
+              "shows": "The page says plainly that it has a rule and no incident: the rule turns price ownership from good practice into an obligation.",
+              "source": "Directive (EU) 2019/2161; ACM, 2022-12-06"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Price Nobody Can Explain: the fictional case.",
+            "introduces": "What the public record does and does not hold for this pattern.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The remedy is one owner per kind of price, price events with effective dates, campaigns as data, a 30-day history, promotions with an evaluation order and a stop rule, and prices frozen on the order.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Price Nobody Can Explain: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The pricing chapter owns price ownership and history, the promotions chapter owns stacking and line allocation and the marketplaces chapter handles parity.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Price Nobody Can Explain: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The Spaghetti Junction sounds like a count of integrations in which a third have no owner and four write stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Thirty-four integrations. Thirteen have no owner. Four of them write stock.\"",
+              "shows": "The count is the number that confirms the sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: each connector was the fastest way to meet one need, until nobody can list them or say who owns them.",
+              "shows": "Shows the tangle as the sum of single connectors."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Price Nobody Can Explain, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Spaghetti Junction (family: integration, the first of its three), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Flows, agency scripts and vendor plugins move the same fact along several paths, and nobody can produce the list.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Spaghetti Junction: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Each connector was the fastest way to meet one need, and point-to-point is cheap the first ten times.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Spaghetti Junction growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Spaghetti Junction: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "A tangle of connectors costs incidents that cannot be diagnosed and upgrades that cannot be planned.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "37% of 600 enterprise technology decision-makers cited integration complexity as a primary concern.",
+              "shows": "Integration complexity is a common, measured concern even among buyers of composable systems.",
+              "source": "MACH Alliance survey, 2026-02-18"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Spaghetti Junction: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Kestrel & Pine's February 2027 inventory counted 34 integrations, of which 13 had no named owner and only 3 had a reconciliation job.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "14 on the iPaaS, 9 agency scripts, 11 vendor connectors or plugins; none of the reconciliations covered stock or orders; four flows wrote stock into the platform and six writers of Duiven stock were found in all; the pre-order app of March 2026 is the pattern at its smallest.",
+              "shows": "The inventory is the document that turns the warning sign into numbers: owners, reconciliations and writers.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Spaghetti Junction: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Zalando replaced more than 100 disconnected interfaces with one developer portal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "\"More than 100 disconnected interfaces\" replaced by one portal holding over 40,000 registered entities.",
+              "shows": "At a giant's scale the same tangle was answered with a single inventory.",
+              "source": "Zalando Engineering, 2023-08-03"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Spaghetti Junction: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The remedy is an integration inventory with an owner and a contract per flow, shared facts moving as events through one place and a reconciliation for every copy.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Spaghetti Junction: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The integration-styles chapter owns the styles and the inventory, the ERP chapter untangles the ERP's flows and the organization chapter assigns the owners.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Spaghetti Junction: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "The Message in a Bottle sounds like a sender who considers an order delivered to the warehouse because it was sent.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"We sent the order to the warehouse. If it didn't arrive, that's on them.\"",
+              "shows": "Sending treated as arriving is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 7: messages between systems arrive once, twice, late or never, and a design that trusts them to arrive once finds the duplicates and gaps through customers.",
+              "shows": "Shows the four fates of a message."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Spaghetti Junction, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Message in a Bottle (family: integration), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "A retry creates a second order or refund, and a dropped message leaves an order paid and never picked.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Message in a Bottle: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Delivery between systems is at least once, sometimes twice, late or never, and vendors say so, but integrations assume exactly once because on a quiet day it holds.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify: an app \"might receive the same webhook more than once\", 8 retries over 4 hours, then the subscription is deleted; Stripe retries for up to three days; Mollie calls ten times over 26 hours and stops.",
+              "shows": "Three vendors document duplicates and give-ups, so exactly-once is the integrator's assumption, not the vendor's promise.",
+              "source": "Shopify, Stripe and Mollie documentation, n.d., accessed 2026-11"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Message in a Bottle growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Message in a Bottle: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Trusted messages cost duplicates, lost orders, drifting copies and backlogs at peak.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Zalando's event-driven price and stock pipeline reprocessed payloads of which \"over 90%\" were unchanged, delayed events \"by up to 30 minutes\" in Cyber Week and left \"divergent versions of product data\", and was replaced by a synchronous read API on the critical path.",
+              "shows": "A well-resourced company met late messages and drifting copies at peak and changed the design.",
+              "source": "Zalando Engineering, 2025-03-07"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Message in a Bottle: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "On Black Friday 2026 the flow that created Kestrel & Pine's orders in the warehouse system one at a time was throttled, and about 8,000 orders missed the promised next-day delivery.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The WMS vendor's rate limit throttled the iPaaS flow; the queue backed up for four hours.",
+              "shows": "A late message, not a lost one, broke a delivery promise for thousands of orders.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Message in a Bottle: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Stripe tells integrators not to trigger fulfillment from the checkout landing page alone.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"You can't rely on triggering fulfillment only from your checkout landing page, because it's not guaranteed customers visit that page.\"",
+              "shows": "A provider states that a single unconfirmed signal is not enough to act on.",
+              "source": "Stripe fulfillment guide, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Message in a Bottle: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "The remedy is an idempotency key from the business event on every message, a record of handled events, state fetched from its owner, a dead-letter queue and a daily reconciliation.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Message in a Bottle: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "The events and reconciliation chapter owns idempotency, dead letters and reconciliation, the integration-styles chapter chooses the style and the payments chapter applies the rules to money.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Message in a Bottle: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The Pulled Rug sounds like a change announced in good time to a contact who left the year before.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"They announced it in November. The e-mail went to someone who left in 2025.\"",
+              "shows": "The announcement existed; its reader did not."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 8: vendors announce their changes, but without a record of the dependency and someone reading the changelog, the integration breaks first and the news arrives later.",
+              "shows": "Shows the announcement missing its reader."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Message in a Bottle, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Pulled Rug (family: integration, the last of its three), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "A script keeps calling a retired version, chargebacks arrive before the new mapping and changelogs reach a mailbox nobody reads.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Pulled Rug: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Vendors announce changes, but the merchant has no record of the dependency, no reader and no test, so the contract exists on one side only.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Pulled Rug growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Pulled Rug: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "A missed change costs stale stock, seller-account strikes, chargebacks and emergency rewrites, although the calendars are public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Amazon's Marketplace Web Service was \"no longer available\" from 1 April 2024, with migration to the Selling Partner API required by 31 March 2024.",
+              "shows": "A major channel retired an API on a published date.",
+              "source": "Amazon SP-API changelog, 2023–2024"
+            },
+            {
+              "kind": "fact",
+              "what": "bol announced on 3 November 2026 that version 10 of its Offers API would be switched off on 1 February 2027.",
+              "shows": "A marketplace in the merchant's own market gives three months' notice.",
+              "source": "bol partner platform, 2026-11-03"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Pulled Rug: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "In February 2027 a retired API version left Kestrel & Pine's bol stock stale for two days, because the announcement went to a contact who had left the agency.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "8 February 2027: the marketplace connector retired the API version a 2021 agency script used to push stock to bol, a Dutch marketplace; announced in November 2026 to a contact who had left in 2025; the script logged errors and kept running.",
+              "shows": "A vendor change that was announced and still not read, with its days of stale stock.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Pulled Rug: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68a",
+          "controlling_idea": "In Q3 2026 the wholesale chain Bergzicht Outdoor deducted €14,200 for despatch advices whose pallet labels did not match what arrived.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€14,200 deducted; a despatch advice is glossed as the EDI (electronic data interchange) message that tells a buyer what is on its way.",
+              "shows": "The same pattern with a trading partner's document format in place of a vendor's API.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Pulled Rug: the vendor's retired version.",
+            "introduces": "A second case at the same merchant: a partner's document contract.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "Shopify's API versioning policy is one published calendar among the many a merchant depends on.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Quarterly releases, each version supported for at least 12 months, with a nine-month overlap.",
+              "shows": "The dates are knowable in advance; the pattern is not reading them.",
+              "source": "Shopify developer documentation, n.d., accessed 2026-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Pulled Rug: the two fictional cases.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "The remedy is pinned versions and sunset dates per integration, a role mailbox for changelogs, partner cards with owners, contract tests and despatch advices generated from what was packed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Pulled Rug: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "The API-contracts chapter owns versions, sunsets and contract tests, and the EDI chapter owns the partner card and the despatch advice.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Pulled Rug: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "The First Snowfall sounds like a system that worked all year until the Friday that mattered.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"It worked fine all year. Then Friday happened.\"",
+              "shows": "The first real load arriving on the busiest day is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 9: the busiest day is the first time the system and its integrations meet real load, and it is usually the joins, not the storefront, that give way.",
+              "shows": "Points at the joins as the part that gives way."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Pulled Rug, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The First Snowfall (family: platform and change, the first of its five), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "At peak the storefront holds while the stock sync and the order queue do not.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The First Snowfall: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "Peak is 20 to 40 times an ordinary hour, every design decision was made against the ordinary hour, and load tests cover the storefront but not the joins.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The First Snowfall growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The First Snowfall: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "An untested peak costs oversells and missed promises on the day the brand is measured.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Target's new site, launched in 2011 after leaving Amazon's platform, crashed on 13 September 2011 and was \"down most of the day\", with a second 2.5-hour outage on 25 October.",
+              "shows": "A large retailer's first peak on a new platform was its first real test.",
+              "source": "MPR News, 2011 (dated)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The First Snowfall: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "In Black Friday week 2026 Kestrel & Pine's platform held at about 41 times an ordinary hour while the stock sync chain and the warehouse connector queue did not.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "23–29 November 2026: 31,000 online orders, 10.6% of the year's; a peak hour of 2,300 orders, 38 a minute; the oversell, a four-hour backlog, 8,000 late orders and a stacking bug of about €52,000, each met under an earlier pattern.",
+              "shows": "The evening's failures were all at the joins, and the peak made them visible together.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The First Snowfall: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76a",
+          "controlling_idea": "Kestrel & Pine also had no kill switch, a setting that turns a feature off without a deploy, for guest card payments.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "No way to disable guest card payments without a deploy.",
+              "shows": "Besides joins that failed, the merchant had no way to degrade on purpose, which the remedy's switches answer.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The First Snowfall: the joins that failed on the Friday.",
+            "introduces": "What was missing as well: a switch to turn a feature off.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "Shopify tests above last year's peak and proved its capacity in 2025; that covers the platform and leaves the merchant's own connectors as the merchant's to size.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify tests at 150% of the previous year's peak, reaching 200 million requests a minute.",
+              "shows": "The platform vendor tests above last year's peak; the comparison is with merchants who do not test their joins.",
+              "source": "Shopify Engineering, 2025-11-20"
+            },
+            {
+              "kind": "statistic",
+              "what": "Sales peaked at $5.1 million a minute over Black Friday weekend 2025.",
+              "shows": "The platform's capacity is proven publicly; the connectors behind it are not covered by that proof.",
+              "source": "Shopify, 2025-12-02"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The First Snowfall: the fictional case and the missing switch.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p78",
+          "controlling_idea": "The remedy is to test the joins at a multiple of last year's peak, with switches to degrade without a deploy, a dated change freeze and a named runbook.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The First Snowfall: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p79",
+          "controlling_idea": "The peak-load chapter owns the peak plan and switches, the peak-day journey walks the 2026 Friday and the 2027 plan, and the warehouse chapter sizes the order queue.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The First Snowfall: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p80",
+          "controlling_idea": "The Giant's Boots sounds like an argument that because Amazon and Zalando do it, so should we.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Amazon does it with microservices. Zalando does it with 4,000 applications. So should we.\"",
+              "shows": "A reason borrowed from another company is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 10: copying the architecture of a company a hundred times larger brings its costs without its reasons.",
+              "shows": "Shows the mismatch of size."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The First Snowfall, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Giant's Boots (family: platform and change), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p81",
+          "controlling_idea": "A 14-person team runs a dozen composable vendors or a €48 million merchant builds a headless storefront, with the giant's costs and without its reasons.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Giant's Boots: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p82",
+          "controlling_idea": "The giants publish good work and vendors sell the shape that produces the most work, so the question \"do we have that problem\" is easy to skip.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Giant's Boots growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Giant's Boots: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p83",
+          "controlling_idea": "A copied architecture costs money and slower change without the benefit, and companies have reversed such designs in public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Segment grew to over 140 services, with three engineers spending most of their time keeping them running, and consolidated back into one.",
+              "shows": "A company that had the scale still found the shape too costly.",
+              "source": "Twilio Segment, 2018-07-10 (dated)"
+            },
+            {
+              "kind": "case",
+              "what": "An Amazon Prime Video team reported that a serverless monitoring design supported about 5% of expected load and that one process cut cost by 90%.",
+              "shows": "Even inside the giant, the fashionable shape was reversed where it did not fit.",
+              "source": "InfoQ, 2023-05-03; the original post has been removed"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Giant's Boots: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p84",
+          "controlling_idea": "In February 2027 Kestrel & Pine's head of engineering declined two rebuild pitches that cited the oversell, after measuring.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A composable rebuild replacing the platform (about €3.2 million 18 months) and a headless rebuild of the three storefronts (about €240,000 and nine months, plus a second runtime); Waypoint's W4 is to stay on the SaaS platform and surround it.",
+              "shows": "An incident is used to sell an architecture; measuring first is what refused it.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Giant's Boots: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p85",
+          "controlling_idea": "Zalando's own replacement of an event stream with a synchronous read API is a giant narrowing a choice that others copied from it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Zalando replaced the event stream on its critical path with a synchronous read API.",
+              "shows": "The model being copied has itself moved on.",
+              "source": "Zalando Engineering, 2025-03-07"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Giant's Boots: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p86",
+          "controlling_idea": "The remedy is to count channels, warehouses, countries, teams and facts with two writers, and to add a capability only when a measured problem demands it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Giant's Boots: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p87",
+          "controlling_idea": "The architecture-styles chapter compares the styles with their reasons, the build-buy chapter works the stay-and-surround decision and the scaling-stages chapter gives the stage test.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Giant's Boots: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p88",
+          "controlling_idea": "The Burned Bridge sounds like a go-live date on which the old platform is switched off the same day.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Go-live is 19 November. The old platform is switched off the same day.\"",
+              "shows": "One date for both the start and the end is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 11: moving everything on one date with the old platform switched off leaves no way back when something goes wrong.",
+              "shows": "Shows the missing way back."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Giant's Boots, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Burned Bridge (family: platform and change), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p89",
+          "controlling_idea": "Everything moves at once, the old platform is switched off to save a month's subscription and a contract sets the date weeks before peak.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Burned Bridge: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p90",
+          "controlling_idea": "A big bang looks cheaper than running two systems, and each risk looked fine in the demo.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Burned Bridge growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Burned Bridge: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p91",
+          "controlling_idea": "A migration with no way back costs lost sales and sometimes a reversal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Finish Line switched e-commerce technology on 19 November 2012 and reverted 17 days later to the former platform, \"which it had kept operable\", at a cost of about $3 million in quarterly sales.",
+              "shows": "The retailer could only reverse because it had kept the old platform running, which is what the pattern omits.",
+              "source": "Retail Dive, 2013-01-08 (dated)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Burned Bridge: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p92",
+          "controlling_idea": "Kestrel & Pine's Waypoint program replaced nothing on one date: the order management system came in seam by seam through 2027.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Shadow copy of all orders in August, parallel run 1–14 September, marketplace orders 15 September, D2C orders 13 October, a freeze around Black Friday, wholesale orders 8 December, old paths retired January 2028; the PIM went live one storefront at a time.",
+              "shows": "The counter-example: a migration scheduled so that each step can be undone.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Burned Bridge: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p93",
+          "controlling_idea": "Target's 2011 launch a few weeks before its holiday season is a date chosen against the calendar, and the record cited shows the timing and the outages, not whether a way back existed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Target's 2011 launch and its two outages, already cited under The First Snowfall; Finish Line, under the cost, is the case that kept its old platform operable.",
+              "shows": "The timing made the failure expensive; the page says what this record does not show and points to the case that does show a way back.",
+              "source": "MPR News, 2011 (dated)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Burned Bridge: the fictional case.",
+            "introduces": "A dated public example, with what it does and does not show.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p94",
+          "controlling_idea": "The remedy is to migrate by seams, keep the old path operable until the new one has run a peak, run in parallel, rehearse rollback and design the exit in at purchase.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Burned Bridge: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p95",
+          "controlling_idea": "The replatforming chapter owns seams, parallel runs and rollback, the architecture-styles chapter explains the strangler pattern and the composable-movement case reads the public record.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Burned Bridge: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p96",
+          "controlling_idea": "The Forked Platform sounds like a team that cannot take the vendor's upgrade because its theme and checkout changes would have to be redone.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"We can't take the upgrade. The theme and the checkout changes would all have to be redone.\"",
+              "shows": "An upgrade that has become a project is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 12: customize the core deeply enough and every vendor upgrade becomes a project.",
+              "shows": "Shows the customized core diverging from the vendor's line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Burned Bridge, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Forked Platform (family: platform and change), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p97",
+          "controlling_idea": "The signs are agency edits to files the vendor has since replaced, scripts inside the checkout and apps nobody uses.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Forked Platform: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p98",
+          "controlling_idea": "Each customization was the fastest route, and nobody owns upgradeability.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Forked Platform growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Forked Platform: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p99",
+          "controlling_idea": "A fork costs lost features, security exposure and a forced migration on the vendor's date.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adobe Commerce gives each release line three years of standard support, and from 1 June 2027 cloud environments on unsupported versions \"may be taken offline\".",
+              "shows": "The vendor sets a date after which the fork cannot simply be kept.",
+              "source": "Adobe lifecycle policy, accessed 2026-11"
+            },
+            {
+              "kind": "fact",
+              "what": "Shopify's `checkout.liquid` customizations stopped working on 13 August 2024 (announced 13 February 2023), and Shopify Scripts stopped executing on 30 June 2026.",
+              "shows": "Customizations made outside supported extension points were switched off on announced dates.",
+              "source": "Shopify changelog, 2023-02-13 and 2026-04-09"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Forked Platform: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p100",
+          "controlling_idea": "Kestrel & Pine's theme has been customized since 2017 but its checkout has not, which is one reason it can stay on the platform.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Theme customized by the agency since 2017; checkout untouched; the decision to stay on the platform is W4.",
+              "shows": "Shows how far a fork has to go before staying is impossible.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Forked Platform: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p100a",
+          "controlling_idea": "Kestrel & Pine's 41 installed apps are the smaller fork, which the April 2027 app governance rule answers with a named owner per app and no right to write stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "41 installed apps: 22 installed by the agency, 6 unused, 3 wrote inventory.",
+              "shows": "Apps fork a platform too, and the count makes it visible.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Forked Platform: the customized theme and the untouched checkout.",
+            "introduces": "A second, smaller fork at the same merchant: its apps.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p101",
+          "controlling_idea": "No public case of a fork is cited beyond the vendor sunset calendars, which show when a fork stops working and not what one cost a merchant.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The Adobe and Shopify sunset dates given under the cost.",
+              "shows": "The page says plainly that the calendars are its only public record for this pattern and what they leave out.",
+              "source": "Adobe lifecycle policy; Shopify changelogs (as cited under the cost)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Forked Platform: the two fictional cases.",
+            "introduces": "What the public record does and does not hold for this pattern.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p102",
+          "controlling_idea": "The remedy is an owner for upgradeability, supported extension points only, a register of customizations and apps and upgrades budgeted as routine.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Forked Platform: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p103",
+          "controlling_idea": "The extensibility chapter owns extension points, app governance and the register, the storefront chapter separates theme from core and the checkout chapter keeps the checkout unforked.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Forked Platform: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p104",
+          "controlling_idea": "One Size Fits None sounds like a plan to put all three brands on the group platform with \"synergies\" as the business case.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"All three brands go on the group platform next year. The business case is 'synergies'.\"",
+              "shows": "A benefit with no number is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 13: forcing different brands onto one stack before anyone measures the benefit, or keeping them apart when they should share, decides on cost and misses the operational differences.",
+              "shows": "Shows both directions of the error."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Forked Platform, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, One Size Fits None (family: platform and change, the last of its five), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p105",
+          "controlling_idea": "Either one tenant serves brands with different catalogs, rules and peaks and every change is a negotiation, or two brands run two of everything because nobody measured what sharing would save.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One Size Fits None: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p106",
+          "controlling_idea": "The decision is made on cost, and the operational differences are invisible in the business case.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows One Size Fits None growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One Size Fits None: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p107",
+          "controlling_idea": "Sharing costs slower change and one brand's peak degrading another, while separation costs duplicated contracts and integrations, and no public figure is cited for either.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One Size Fits None: the mechanism.",
+            "introduces": "What it costs in each direction.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p108",
+          "controlling_idea": "Kestrel & Pine's three regional storefronts share one tenant, and the arrangement fits because they share a catalog, a warehouse, a season and a price.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Labeled illustrative scene: three storefronts in one tenant (a merchant account on the hosted platform), one catalog, one warehouse, one €199 jacket price.",
+              "shows": "Shows that sharing is right when the things shared really are the same; the ledger has no incident for this pattern.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "One Size Fits None: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p109",
+          "controlling_idea": "The company defers the group-sharing decision to 2029 rather than choose a structure before it knows the requirements.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A second brand, a fourth country or revenue near €200 million would trigger a review; none is planned for 2027–2028.",
+              "shows": "Names the signals that would reopen the decision, which is the measuring the pattern skips.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One Size Fits None: the shared tenant that fits.",
+            "introduces": "What would reopen that arrangement, and the deferral of the group decision to 2029.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p110",
+          "controlling_idea": "Zalando completed its acquisition of ABOUT YOU as two brands with shared logistics and payment infrastructure, which is a sharing decision and not a failure; no public case of the failure is cited.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Completed 11 July 2025 as a dual-brand consumer business \"with shared logistics and payment infrastructure\", with group synergies targeted at around €100 million a year.",
+              "shows": "A group shared the capabilities with scale economics and kept the brands apart, and put a number on the benefit; the page says that this illustrates the remedy and that it has no public case of the pattern itself.",
+              "source": "corporate.zalando.com, 2025-07-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One Size Fits None: the fictional case.",
+            "introduces": "A dated public example, with what it does and does not show.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p111",
+          "controlling_idea": "The remedy is to decide sharing per capability: share what has scale economics and the same rules, keep apart what differs by brand, and write the benefit as a number first.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "One Size Fits None: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p112",
+          "controlling_idea": "The multi-tenancy chapter owns tenancy and isolation, the scaling-stages chapter names the Group-stage signals and the Zalando case reads a group's sharing decisions.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One Size Fits None: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p113",
+          "controlling_idea": "The Lynchpin sounds like mappings only one consultant understands, and he is on holiday.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Only the EDI consultant understands the mappings. He's on holiday.\"",
+              "shows": "One person between the merchant and a working capability is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 14: when a capability customers rely on runs through one vendor, connector, agency or person, the whole cart depends on one pin.",
+              "shows": "Shows the single point the capability hangs on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for One Size Fits None, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Lynchpin (family: governance, the first of its three), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p114",
+          "controlling_idea": "A connector is documented nowhere and its mappings live in one consultant's head.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Lynchpin: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p115",
+          "controlling_idea": "Specialists are efficient, and an exit plan has no visible return until the day it is needed.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Lynchpin growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Lynchpin: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p116",
+          "controlling_idea": "A single dependency costs outages as long as one person's absence and programs that end on the vendor's date.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify sold its logistics business to Flexport in a deal that closed on 6 June 2023.",
+              "shows": "A vendor left a capability its merchants had built on.",
+              "source": "Shopify, 2023-06-06"
+            },
+            {
+              "kind": "fact",
+              "what": "Zalando's Connected Retail program, through which physical shops sold branch stock on its platform, ends by the end of June 2027.",
+              "shows": "A channel can be ended by the platform that owns it.",
+              "source": "TextilWirtschaft, 2026-04-24"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Lynchpin: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p117",
+          "controlling_idea": "At Kestrel & Pine three things each ran through one party: the largest wholesale partner's EDI mappings through one consultant, an undocumented connector through the ERP partner, and five integrations through nobody named.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bergzicht Outdoor, €2.1 million a year, mappings built in 2025; the ERP partner's connector was undocumented until the lead integration engineer wrote its contract in Q3 2027; the February 2027 ownership map found 5 integrations with no named owner, among them the scripts behind the stale bol stock and the nine-day German price.",
+              "shows": "Ties the unowned dependency to revenue and to two of the earlier incidents.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Lynchpin: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p118",
+          "controlling_idea": "The end of Connected Retail is a channel retired by the platform that owned it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Connected Retail's end, announced April 2026 and effective June 2027.",
+              "shows": "The merchants on it had no say in the date.",
+              "source": "TextilWirtschaft, 2026-04-24"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Lynchpin: the fictional case.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p119",
+          "controlling_idea": "The remedy is an ownership map for every system, integration and app, contracts in the merchant's hands, a second person per mapping and exit cost assessed at purchase.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Lynchpin: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p120",
+          "controlling_idea": "The organization chapter owns the ownership map, the build-buy chapter prices exit at purchase and the EDI chapter puts partner knowledge on a card.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Lynchpin: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p121",
+          "controlling_idea": "The Long Fuse sounds like a mandate that starts in January and is discovered in October.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Belgium wants structured invoices from January. It's October.\"",
+              "shows": "The gap between the two months is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 15: a legal deadline found only months before it lands leaves too little time to meet it.",
+              "shows": "Shows the time already burned when the deadline is noticed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Lynchpin, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Long Fuse (family: governance), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p122",
+          "controlling_idea": "Finance learns of a mandate from a newsletter, and the storefront has never had an accessibility audit.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Long Fuse: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p123",
+          "controlling_idea": "Rules land per topic and per country, nobody in a 14-person team reads the Official Journal, and each rule arrives without an owner.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Long Fuse growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Long Fuse: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p124",
+          "controlling_idea": "A deadline found late costs fines, blocked invoices and emergency prices, although the dates are public years ahead.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Belgium's structured B2B e-invoicing obligation applied from 1 January 2026, announced 18 September 2024, with fines of €1,500, €3,000 and €5,000.",
+              "shows": "Notice was fifteen months and the penalty is stated.",
+              "source": "einvoice.belgium.be"
+            },
+            {
+              "kind": "fact",
+              "what": "The European Accessibility Act applied to e-commerce services from 28 June 2025; PCI DSS requirements 6.4.3 and 11.6.1 became mandatory on 31 March 2025; Germany has required businesses to receive e-invoices since 1 January 2025.",
+              "shows": "Several rules from several bodies landed within one year.",
+              "source": "Directive (EU) 2019/882; PCI SSC; German BMF"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Long Fuse: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p125",
+          "controlling_idea": "Kestrel & Pine caught the fuse once: its Belgian business customers have received e-invoices over Peppol since January 2026.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "E-invoices over Peppol (glossed as a European network for structured electronic invoices), issued and numbered in the ERP through the EDI provider as access point.",
+              "shows": "A rule met on time.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Long Fuse: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p125a",
+          "controlling_idea": "Its 2027 regulatory calendar turns each remaining rule into a dated requirement with an owner.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kept by the head of engineering with the finance director; covers accessibility of the three storefronts and the checkout widgets, the Dutch e-invoicing plan for 2030, packaging rules and the product passport.",
+              "shows": "The remedy at work: a list with dates and owners for the rules still to come.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Long Fuse: the one rule caught in time.",
+            "introduces": "What the merchant does about the rules still ahead.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p126",
+          "controlling_idea": "The Belgian mandate gave fifteen months of notice and then fines.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Announced September 2024 for January 2026.",
+              "shows": "The notice was long enough for anyone who had an owner reading it.",
+              "source": "einvoice.belgium.be"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Long Fuse: the fictional case and its calendar.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p127",
+          "controlling_idea": "The remedy is a regulatory calendar with a named owner that lists each rule's countries, date and systems, with vendor conformance as a procurement item.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Long Fuse: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p128",
+          "controlling_idea": "The regulation chapter owns the calendar, the EDI and tax chapters implement e-invoicing and the security chapter covers the PCI requirements.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Long Fuse: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p129",
+          "controlling_idea": "The Secret Agent sounds like 600 stock levels changed overnight by something the team can only guess at.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Invented quote: \"Something changed 600 stock levels on Tuesday night. We think it was the pre-order app.\"",
+              "shows": "A write nobody can attribute is the warning sign."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 16: a script, app or AI agent that writes orders, stock, prices or money with no owner, no identity of its own and no approval changes the business in the dark.",
+              "shows": "Shows the unattributed writer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entry for The Long Fuse, complete down to its chapters, and the order of the table.",
+            "introduces": "The next row of the table, The Secret Agent (family: governance, the last pattern), announced by its parallel sub-heading and opened by its quote; the sub-heading is the transition and no connective sentence is asked for.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p130",
+          "controlling_idea": "Scripts and apps share one admin's API key and write beside the official feeds.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Secret Agent: the quoted symptom.",
+            "introduces": "The signs by which the pattern shows in general.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p131",
+          "controlling_idea": "Apps are easy to add, hard to see and broadly permitted by default, and AI agents arrive through the same door with more autonomy, as live agent-initiated payments and the agent protocols show.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows The Secret Agent growing from choices that were each sensible alone."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Secret Agent: what the pattern looks like.",
+            "introduces": "The mechanism that produces it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Visa reported 31 issuers and 4 merchants live with agent-initiated transactions in Europe; the Agentic Commerce Protocol (releases through April 2026) and the Universal Commerce Protocol (launched 11 January 2026) carry an identity and a mandate for the agent.",
+              "shows": "Agents that transact already exist, and their protocols treat identity and mandate as required.",
+              "source": "Visa, 2026-07-02; ACP repository; Google, 2026-01-11"
+            }
+          ]
+        },
+        {
+          "id": "p132",
+          "controlling_idea": "An unowned writer costs phantom stock and price drift and, at worst, a compromised checkout.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The `cdn.polyfill.io` script, embedded by more than 100,000 sites, was sold in February 2024 and was injecting malware.",
+              "shows": "Code running in a checkout changed owner without the sites knowing.",
+              "source": "Sansec, 2024-06-25"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Secret Agent: the mechanism.",
+            "introduces": "What it costs, with public figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p133",
+          "controlling_idea": "At Kestrel & Pine a pre-order app wrote stock beside the official feed unseen, as the price-import script of the earlier pattern wrote prices.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2026: two weeks of phantom reservations on 600 variants; the October 2026 price script, told under The Price Nobody Can Explain, is pointed to and not retold.",
+              "shows": "Two earlier incidents share an unowned writer as their cause.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Secret Agent: the cost in general.",
+            "introduces": "One invented case at Kestrel & Pine, labeled fictional.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p133a",
+          "controlling_idea": "Waypoint answers by naming every writer (W5) and by preparing for AI agents without deploying one (W8).",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Secret Agent: the two unseen writers.",
+            "introduces": "The merchant's answer: W5 and W8.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p134",
+          "controlling_idea": "Polyfill.io is checkout code that changed hands unseen.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Polyfill.io sale and malware injection, June 2024.",
+              "shows": "The public counterpart of an unowned writer inside the checkout.",
+              "source": "Sansec, 2024-06-25"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Secret Agent: the fictional case and the merchant's answer.",
+            "introduces": "A dated public example.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p135",
+          "controlling_idea": "The remedy is an owner, separate credentials and stated rights for every writing actor, least privilege, human approval over a threshold and a person at the gate for AI agents.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Secret Agent: the pattern as shown in the cases.",
+            "introduces": "The direction of the remedy, without teaching it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p136",
+          "controlling_idea": "The extensibility chapter owns app governance and permissions, the security chapter covers API keys and script monitoring and the AI chapter covers agents, mandates and W8.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Secret Agent: the remedy direction.",
+            "introduces": "The chapters that own each part of it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "where-the-patterns-strike",
+      "heading": "Where the Patterns Strike",
+      "controlling_idea": "Most patterns are born at the Growing stage and paid for at the Omnichannel stage, so the origin of a pattern and its cost are a stage apart.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Places each pattern's origin in an earlier stage than its cost, which is what 'reasonable when chosen' looks like over time."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The sixteen patterns, each described on its own.",
+        "introduces": "When each one typically begins and when it hurts, across the four scale stages.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p137",
+          "controlling_idea": "Across the four scale stages (Starting, Growing, Omnichannel, Group) most patterns are born at Growing and paid for at Omnichannel, in the author's judgement.",
+          "function": "claim",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Sixteen patterns by four stages (Starting, Growing, Omnichannel, Group), with the cell where each is born and the cell where it hurts marked.",
+              "shows": "Fourteen of the sixteen are born at Growing and hurt at Omnichannel; the Giant's Boots starts earlier and One Size Fits None later. Labeled as the author's judgement, not a survey.",
+              "source": "Author's judgement"
+            }
+          ]
+        },
+        {
+          "id": "p138",
+          "controlling_idea": "Kestrel & Pine starts 2027 with ten incidents on record, and its stage map traces most of them to Growing-stage designs still running in 2026.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ten incidents on record at the start of 2027, most of them met in the catalog as the fictional cases; the April 2027 stage map traces most of the ten (eight, in the ledger) to Growing-stage designs. The page says 'most' so that 'eight of the ten' has one sense on the page, the count by cause.",
+              "shows": "The stage table's claim holds for the book's merchant.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 17: seeds planted at the Growing stage grow into a thorny vine and a bill at Omnichannel; the caption now stops at 'paid for at the Omnichannel stage'.",
+              "shows": "Shows the delay between origin and cost in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The stage at which patterns are born and the stage at which they hurt.",
+            "introduces": "The fictional merchant's ten incidents, counted here for the first time, sorted by the stage their designs came from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "how-the-patterns-reinforce",
+      "heading": "How the Patterns Reinforce Each Other",
+      "controlling_idea": "The patterns travel in three chains that start at the joins between systems, so a repair holds at the origin of a chain and not at its last symptom.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Names the three chains and their origins and shows the fictional merchant ordering its program by them."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "A lead paragraph states the section's claim, then one chain per paragraph. The integration chain comes first because it is the longest and ends in the truth patterns, the symptoms the reader met first in the catalog. The governance chain comes second because it starts the same way, with something nobody owns; putting the platform chain between them would separate the two chains whose origins are alike and hide that likeness. The platform chain comes third because it starts differently, with a copied decision, and is the shortest. (This is not the order of the families in the catalog, which is truth, integration, platform and change, governance.) The identity thread follows the three chains because it belongs to none of them. The merchant's incidents sorted by cause come last: the count of eight with two writers is the reason for the order of the Waypoint decisions and would mean nothing before the chains are named; it is the only 'eight of the ten' on the page: the stage section says 'most', so the phrase has one sense."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The stage table, which treats each pattern alone.",
+        "introduces": "The patterns as causes of one another: three chains and where each starts.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p138a",
+          "controlling_idea": "One pattern sets up the next, in three chains, so a repair holds where a chain starts and not where it ends.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "States the claim the three chains then show."
+          }
+        },
+        {
+          "id": "p139",
+          "controlling_idea": "In the integration chain a Spaghetti Junction produces Messages in a Bottle, which produce the truth patterns, and the First Snowfall makes all of them visible in one evening.",
+          "function": "cause_effect",
+          "organization": "process",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that patterns set each other up in chains.",
+            "introduces": "The first and longest chain, from connectors to messages to the truth patterns.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p140",
+          "controlling_idea": "In the governance chain something nobody owns sets up the next failure: a Lynchpin sets up the Pulled Rug, and the Secret Agent and the Long Fuse are the same absence in an actor and a deadline.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first chain.",
+            "introduces": "A second chain, and where it starts: with something nobody owns. The unit says so in its first sentence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p141",
+          "controlling_idea": "In the platform chain the Giant's Boots lead to the Forked Platform or the Burned Bridge.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 18: the three chains drawn with twelve of the sixteen patterns, the First Snowfall amplifying whatever is already there.",
+              "shows": "Lets the reader trace from a symptom back to its origin; the three governance-only patterns are left to the prose."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Two chains that start with something unowned.",
+            "introduces": "A third that starts with a copied decision; the unit says so before the colon.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p141a",
+          "controlling_idea": "The Familiar Stranger, the identity thread, runs under all three chains.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The three chains.",
+            "introduces": "The one truth pattern that belongs to none of them and lies under all.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p142",
+          "controlling_idea": "Sorted by cause, eight of Kestrel & Pine's ten incidents are a fact with two writers, which is why Waypoint decides ownership first, adds the hubs second, makes the copies trustworthy third and keeps the platform.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ten incidents by cause: eight a fact with two writers, two what the outside world does to a landscape nobody watches; the hubs glossed as an OMS for orders and a PIM for product content.",
+              "shows": "The chains' common origin, a fact or flow without one owner, accounts for most of one merchant's incidents and so sets the order of its remedy.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three chains and the thread, and the ten incidents counted in the stage section.",
+            "introduces": "The ten sorted by cause, and what that implies for the order of the repair.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Using the Patterns",
+    "synthesis": "The catalog, the stage table and the chains say one thing: a failure shows somewhere other than where it began, in time (born at one stage, paid for at the next) and in the landscape (a refund or a stock figure at the end of a chain that began at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons).",
+    "so_what": "The remedy is rarely a new platform; it is ownership, contracts and reconciliation. Finding a pattern is not finding someone to blame, because each decision behind it was reasonable when made: the question is who owns the join now.",
+    "callback": {
+      "to": "The opening sale that the storefront accepted and the warehouse never received.",
+      "how": "The reader can now name it (a Message in a Bottle), look upstream for the Spaghetti Junction connector with no owner, and ask who owns that join."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Use the patterns as questions: in a design review at every handoff of one order, in a vendor demo by asking to see the pattern and not the feature, and in due diligence by asking for the inventory, the writers, the version register, the regulatory calendar and the reconciliation reports."
+    },
+    "hand_off": {
+      "to": "meet-kestrel-and-pine",
+      "relationship": "example",
+      "carries_over": "The sixteen pattern names, and the Kestrel & Pine incidents this page used one at a time as illustrations.",
+      "introduces": "The merchant as a whole: its business lines, systems and people, and the ten incidents as one landscape's history."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The catalog, the stage table and the chains.",
+      "introduces": "What the three add up to, then the opening sale again, then three situations in which to use the patterns.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p147",
+        "controlling_idea": "The catalog, the stage table and the chains say one thing, that a failure shows somewhere other than where it began, so the remedy is rarely a new platform but ownership, contracts and reconciliation.",
+        "function": "claim"
+      },
+      {
+        "id": "p148",
+        "controlling_idea": "The sale the page opened with can now be named a Message in a Bottle and traced upstream to an unowned connector, and the question to ask there is who owns the join now, not who is to blame.",
+        "function": "analysis",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "A failure shows somewhere other than where it began.",
+          "introduces": "The opening sale, named and traced upstream; the question of ownership, not blame; a closing sentence that announces three situations.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p143",
+        "controlling_idea": "In a design review, walk one order through the design and ask at every handoff which pattern could occur and what prevents it.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The question of who owns the join, and the announcement of three situations.",
+          "introduces": "The first situation: a design review, one order walked through every handoff.",
+          "form": "sentence",
+          "placement": "both"
+        }
+      },
+      {
+        "id": "p144",
+        "controlling_idea": "In a vendor demo, ask to see the pattern and not the feature.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "The patterns used as questions about one's own design.",
+          "introduces": "The same questions put to a vendor: a split shipment's status, a refund sent twice, what an app may write.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p145",
+        "controlling_idea": "In due diligence, ask for the documents that name owners, because each missing document is a pattern with no owner.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "Questions put to a vendor.",
+          "introduces": "Documents asked of a company: the integration inventory, the writers of stock, prices and money, the version register, the regulatory calendar, the last reconciliation reports.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p146",
+        "controlling_idea": "The next page introduces the merchant the book follows, with the ten incidents used here as they were lived.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The patterns and the Kestrel & Pine incidents used one at a time.",
+          "introduces": "The merchant as a whole, on the next page.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any remedy in depth; every pattern links to the chapters that own it."
+    },
+    {
+      "topic": "Introducing Kestrel & Pine as a company; the page uses the incidents only as illustrations.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "A taxonomy of security threats; the Card-Testing Night is a trust failure, not one of the sixteen.",
+      "covered_in": [
+        "commerce-security"
+      ]
+    },
+    {
+      "topic": "Ranking the patterns by frequency; no survey supports it, and the stage table is labeled as the author's judgement."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Some public examples (Shopify Scripts' end date, the Visa agentic-transactions release, the bol Offers API v10 switch-off) rest on brief entries tagged VERIFIED or WIDELY REPORTED with search-snippet provenance; a reviewer should spot-check the three URLs before print.",
+    "One Size Fits None has no ledger incident; the page uses the three-storefronts-in-one-tenant situation and the deferred 2029 review as a labeled illustrative scene. If multi-tenancy-and-isolation adds a canonical scene, this page should reuse it.",
+    "The chapter-to-pattern links were drawn from the chapters written so far and the PLAN contracts; when the remaining chapters land, their 'Failure patterns this chapter addresses' blocks should be checked against this page's 'Where this book helps' lists.",
+    "Draft check, round 2 (2026-11-12): escalate, 13 results passed and 48 failed; the check was stopped there because the remaining blocking failures need new content, a ledger ruling, more words than the 6,500 limit allows, or a change to the journal spec. Passing: AC-1, AC-2, AC-3, AC-5, AC-6 (all 156 units match the spec in order), AC-7, one idea per paragraph, tracing to the thesis, both weak-pattern checks, and both conclusion checks. For the author to decide: (1) evidence the two flow readers found out of place or off-pattern, all chosen in the original page: the Shopify hold-state change under The Phantom Stock (reads as a Pulled Rug), the commercetools delay in a cost unit, the throttled queue as the only Message in a Bottle case (nothing is lost or duplicated), the Bergzicht deduction under The Pulled Rug (nothing changed), Finish Line and Target under The Burned Bridge (neither shows a bridge burned), the wrong-amount refund under The Boomerang before the stacking is told, the apps under The Forked Platform, and the agent protocols under The Secret Agent's mechanism; (2) the 'In public' slot has no constant job (a case, a vendor document, a repeat of the cost unit's source, or a statement that nothing is cited); (3) from The Giant's Boots on, 'At Kestrel & Pine' reports a pattern avoided, partly in a finished 2027 to 2028, without saying so first; (4) Waypoint arrives piecemeal (W1, W2, W4, W5, W8) and the page has no unit that lays the program out, nor one that lists the ten incidents, so neither count can be checked from this page and the Card-Testing Night behind the kill switch is never told; (5) the 'promise' statement of the first KEY POINTS bullet is not taken up again, the callout and the first body paragraph define the families differently, and the reason for the family order is in this spec's rationale but not on the page; (6) the governance chain is one link and two likenesses, Figure 18's caption places the Secret Agent on it and omits the Long Fuse, and the Pulled Rug and the First Snowfall sit on chains of another family without comment; (7) ledger: the February 2027 inventory has 13 integrations without an owner and the February 2027 ownership map has 5 (ledger lines integration-styles and organizing-commerce-engineering); two AC-8 readers say a later ruling dates the 5 to April 2027; the merchant's team size (14) and revenue (€48 million) are used in generic slots without a label; (8) sources: the PCI DSS and German e-invoicing dates and the two agent protocols name no publisher where they are used; (9) terms still unexplained for lack of words: reconciliation (never defined as comparing two copies), the ERP's role, seam, SaaS, parity, event, join (never tied to handoff), writer, key and contract in the callout, the hold states of the Shopify example, the event-pipeline vocabulary of the Zalando example, access point, B2B, product passport, data-subject request, click-and-collect, and the remedy shorthand (campaigns as data, stop rule, partner card, contract test); (10) the Shopify order-status example (The Schrödinger's Order, 'In public') does not say what it shows. About 150 to 200 more words would pay for (8) to (10); the limit does not allow them.",
+    "Contract problem for the author (journal spec): the thesis says the chains 'start at the joins between systems', and the KEY POINTS callout repeats it. On the page only the integration chain starts at a join (connectors); the governance chain starts at a person or vendor (a Lynchpin) and the platform chain at a copied decision (the Giant's Boots). The conclusion now names the three origins as they are ('a connector nobody owns, a dependency nobody watches or a decision copied without its reasons'). Either the thesis is reworded in the journal spec (for example 'start at something nobody owns') or the two chains are argued to be joins; thesis, S4 and the section's controlling idea were left as copied.",
+    "Two counts of eight. The ledger's stage map traces eight of the ten incidents to Growing-stage designs; the thesis says eight of the ten are a fact with two writers. Both flow readers of round 1 could not tell whether these are the same eight, and the ledger does not say. The page now says 'most of the ten' for the stage map and keeps 'eight of the ten' for the count by cause only. The count by cause is not in the ledger (it comes from the journal spec and the merchant page); the author should confirm it and say whether the stage map's eight may return.",
+    "The identity thread is one sentence ('The Familiar Stranger runs under all three chains'); the page does not say why, and One Size Fits None is placed on no chain in the prose or in Figure 18. Material for either would have to come from the author.",
+    "Public record: The Price Nobody Can Explain, The Forked Platform and One Size Fits None have no public incident; the page now says so in each 'In public' unit, and One Size Fits None also says that no public figure is cited for its cost. The Burned Bridge reuses Target and says what that record does not show. If the briefs hold a dated incident for any of the four, it should replace the disclaimer.",
+    "Terms: glossed on first use in this pass: handoff, click-and-collect, the platform, available-to-promise, reconciled, Waypoint and W1, split shipment, data-subject request, POS, disposition, SKU, iPaaS, webhook, idempotency key, dead-letter queue, outbox, chargeback (in the partner sense), EDI and despatch advice, kill switch, composable, headless, OMS, D2C, PIM, strangler pattern, PCI DSS, Peppol, the four stages, 3PL, the hubs. Not glossed, for lack of words under the 6,500 limit: eventually consistent, parity penalties, credit note, serverless, access point, synchronous read API, and the abbreviations inside the stage table (EDI, B2B).",
+    "Flow rubric, second run (2026-11-12, verdict: sound with notes), notes not acted on: (a) 'a fact with two writers' is the cause of eight incidents in p142 but the truth patterns are the end of the integration chain in p139, so a reader cannot tell whether two writers is origin or symptom; (b) the Bergzicht deduction (p68a) is a partner's document contract, while the Pulled Rug's mechanism (p66) speaks only of vendor-announced changes; (c) the Black Friday backlog is used under both The Message in a Bottle (p60) and The First Snowfall (p76), and no Kestrel & Pine case shows a lost message, which is what the conclusion's callback names; (d) the Lynchpin's quote and its 'What it looks like' say the same thing; (e) the Phantom Stock's mechanism (p08) ends with a remedy clause ahead of the remedy unit; (f) 'group-sharing decision' and 'Group-stage signals' appear in One Size Fits None before the stages are listed in the next section, and 'seam by seam' (p92) before the remedy speaks of seams; (g) the order of patterns inside a family is the style guide's and is not argued. Each needs new content or a change to the author's wording, so they are left to the author.",
+    "Length. The former spec.md asked for 7,000 to 9,000 words, while its changelog records a trim 'toward 6,500 words'. max_words stays at 6,500; the revised page is within a few words of it, so every gloss added later has to be paid for by a cut. The author should say which figure is the contract.",
+    "The stacking bug's figure: the draft-check pass changed 'about €52,000' to 'about €43,000 of margin'; this was reverted to the published €52,000, which consistency ruling 9 fixes as the canonical total (€43,000 margin plus €5,600 and €3,000)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Stopped the draft check after round 2 (escalate, 13 passed, 48 failed) instead of running a third round. Round 2 cleared the round 1 failures that a local revision could clear (one idea per paragraph now passes; evidence and transition failures fell from 4 and 3 to 1 each; the ledger corrections held), and what remains is listed under open_questions for the author. After the round, a few cheap fixes were applied without another check: the governance chain's opening no longer says 'too' (its transition is redeclared as sequence), the closing sentence of p148 names what the three situations are a chance for, the InfoQ source is marked dated, bol is glossed at its first use. The peak-day total of about €52,000 under The First Snowfall still does not say how it relates to the €43,000 of the stacking alone. The check report of round 2 is therefore stale.",
+      "rejected": [
+        "A third round: with two flow readers each listing about forty points, a fresh pair finds a different corroborated set each time, and the blocking spec faults cannot be removed without the author.",
+        "Cutting glosses to pay for explanations, or the reverse."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After the round 1 draft check (escalate: 12 passed, 55 failed, many of them faults of the reconstructed spec), these changes were made under the author's standing approval to take such recommendations: the Shopify readiness evidence moves from The First Snowfall's cost (p75) to its public record (p77), and the Visa and agent-protocol evidence from The Secret Agent's cost (p132) to its mechanism (p131), because both readers and the judge found them out of place under 'What it costs'; the stage section says 'most of the ten' so that 'eight of the ten' has one sense; the second One Size Fits None case (p109) is declared an elaboration, not additional support; the governance and platform chains each open by saying how they start. Ledger corrections in the published text: the stacking cost is about €43,000 (€52,000 is the peak-day bug total, kept under The First Snowfall), the composable pitch is about €3.2 million over 18 months, and the Spaghetti Junction quote says four integrations write stock, as its own case does. Figure 17's caption loses the remedy clause that moved to the conclusion.",
+      "rejected": [
+        "Changing intent, thesis, role or acceptance criteria.",
+        "Raising the 6,500-word limit to pay for the explanations still missing; they are listed under open_questions instead."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review ('auto mode'). Taken: (1) the chains section's flow rationale now describes the order the chains come in (integration, governance, platform) and why, instead of claiming the catalog's family order; (2) the ten incidents are counted where they are first used (p138), and 'eight of the ten' is given as two explicit counts, by stage (p138) and by cause (p142), so the phrase has one sense at each use; (3) the roadmap announces every section: p03's last sentence names the stages, the chains and the three uses; (4) the conclusion gains a synthesis paragraph (p147) and a callback paragraph (p148) ahead of the three uses; the sentence 'the remedy is rarely a new platform; it is ownership, contracts and reconciliation' moves there from p138, and the statement that finding a pattern is not finding someone to blame is made in p02 and p148, as intent.outcome.believe asks; (5) terms are glossed on first use (list under open_questions); (6) seven Kestrel & Pine case units that held two ideas are split (p35a, p68a, p76a, p100a, p125a, p133a) and the identity thread is its own unit (p141a); (7) 'In public' units without evidence of their own (p45, p93, p101, p110) and the unfigured cost (p107) now say what the public record does and does not show; (8) the chains section gains a lead paragraph (p138a) that states its claim.",
+      "rejected": [
+        "Reordering the chains to the catalog's family order: the integration chain has to come first because it ends in the truth patterns.",
+        "Inventing public incidents or figures for the patterns that have none.",
+        "Moving the count of eight with two writers (p142) into the conclusion, where it would be body evidence in a conclusion.",
+        "A fourth introduction paragraph for the roadmap: AC-5 (journal spec) speaks of three paragraphs before the first heading."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Between patterns the parallel sub-heading is the declared transition: the fifteen pattern-opening units carry relationship 'sequence' (the next row of the table), form 'phrase', carried by the sub-heading and the quote. The relationships the reconstruction had declared there (similarity, contrast, cause and effect) were not on the page and are argued in the chains section instead.",
+      "rejected": [
+        "Adding a connective sentence to each of sixteen entries, which would disturb the catalog's repeated shape.",
+        "Keeping declared relationships that the page does not express."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "New units keep the numbering of the unit they were split from (p35a and so on); the two new conclusion paragraphs are p147 and p148 although they come before p143, so that no existing id changes.",
+      "rejected": [
+        "Renumbering all paragraphs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json by reconstructing sections and paragraphs from the published page in its own order, one spec paragraph per published unit (146: 3 in the introduction, 133 in 'Sixteen Patterns to Recognize', 2 and 4 in the next two sections, 4 in the conclusion). 'Using the Patterns' is specified as the conclusion because it is the last section before 'Sources and Evidence' and holds the takeaway and the hand-off; the sixteen sub-headed patterns stay inside one section because the page gives them third-level headings. Differences between the contract and the page are recorded as open questions, not smoothed over.",
+      "rejected": [
+        "Reordering or merging units to make the spec tidier than the page.",
+        "One section per pattern, which the page's heading levels do not support.",
+        "An unheaded conclusion made of the hand-off paragraph alone, which the structural check cannot align."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md: the name-and-family match, the ledger figures, the dated public sources and the explained terms were rewritten as outcomes (AC-7 to AC-10). The three inventories (the parts of each pattern section; the list of closing sections; the absence of an 'Across Scale Stages' section and of take-away tiers) were dropped, because the paragraph list of this spec and the reverse-outline check (AC-6) now hold them. The length criterion (7,000 to 9,000 words) became the length field, set to 6,500 words to fit the page as later trimmed.",
+      "rejected": [
+        "Carrying the inventories over as criteria."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Organized the page as table, then one section per pattern, then strike table, chains, use and hand-off, following the sibling book's 'Fifteen Ways Vehicle Platforms Go Wrong' page, because readers of both books should recognize the shape."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used Kestrel & Pine's ten incidents (plus the ledger's chapter additions: the stacking bug, the inventory counts, the declined pitches, the OMS cut-over) so that every illustration also appears in a chapter with the same numbers; only One Size Fits None gets a labeled illustrative scene.",
+      "rejected": [
+        "Inventing new scenes for this page."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose one dated public example per pattern, and preferred vendor documentation and regulators' own dates, because they can be re-verified; where the public record is thin (The Familiar Stranger, Schrödinger's Order) the example is a vendor model rather than an incident.",
+      "rejected": [
+        "Several public examples per pattern.",
+        "Trade-press incident stories, which age quickly."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Drew the chains diagram with twelve of the sixteen patterns, keeping under the fourteen-node rule and leaving the three governance-only patterns (One Size Fits None, The Long Fuse, The Familiar Stranger) to the prose.",
+      "rejected": [
+        "A diagram with all sixteen patterns."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "The sixteen patterns, warning signs and families; page format; valid permalinks."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "The ten incidents and the chapter additions used as illustrations."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "The Preface contract and the chapter contracts that decide 'Where this book helps'."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/ briefs, lightly: inventory-fulfillment-returns, checkout-payments-tax, integration-and-data, marketplaces-channels-pos, platform-engineering-scale, platform-landscape, cases-amazon-zalando, commerce-business-models, security-privacy-regulation, b2b-edi-erp, catalog-pricing-search, ai-agentic-commerce, shopify",
+      "contributed": "The dated public examples, from the briefs' VERIFIED or WIDELY REPORTED entries."
+    },
+    {
+      "kind": "internal",
+      "ref": "The existing chapters' 'Failure patterns this chapter addresses' blocks",
+      "contributed": "The chapter-to-pattern links."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json, entry where-commerce-platforms-go-wrong",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-6, thesis and role, copied unchanged; the hand-off relationship from the next page's transition_in."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify, commercetools, Stripe, Mollie, Adobe, bol, Amazon and Zalando documentation and announcements (dates as cited on the page)",
+      "contributed": "Stock states, order statuses, webhooks, refunds, version calendars, lifecycle policies."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando Engineering (2023, 2025), Twilio Segment (2018), InfoQ on Prime Video (2023), MACH Alliance (2026)",
+      "contributed": "The giants' own accounts."
+    },
+    {
+      "kind": "external",
+      "ref": "MPR News (2011) and Retail Dive (2013)",
+      "contributed": "The Target and Finish Line replatforming cases."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2019/2161, GDPR, Directive (EU) 2019/882, FPS Finance Belgium, German BMF, PCI SSC",
+      "contributed": "The regulatory dates."
+    },
+    {
+      "kind": "external",
+      "ref": "DeHoratius and Raman (2008); NRF (2025); Gorgias (2023); Sansec (2024); Visa (2026); Google and the ACP repository (2026)",
+      "contributed": "The figures and the agent protocols."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Stacking-bug figure restored to the canonical €52,000 (consistency ruling 9) in the page and in p-evidence; the earlier 'ledger correction' to €43,000 was wrong."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 draft check (escalate, 13 passed, 48 failed); remaining failures recorded under open_questions; p140's transition redeclared; cheap post-round fixes applied to index.md, so check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 draft check (escalate). Evidence of p75 and p132 moved to p77 and p131; p138 says 'most'; p109, p140, p141 transitions redeclared; ledger corrections (€43,000, 18 months, four writers in the quote); p27, p133 ideas updated. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Rubric notes taken on the author's instruction: chains-section rationale corrected; ten incidents counted before use and the two counts of eight told apart; roadmap sentence added to p03; conclusion given a synthesis (p147) and a callback (p148), with the remedy sentence moved from p138 and the blame statement added; terms glossed; units p35a, p68a, p76a, p100a, p125a, p133a, p138a and p141a added by splitting or as a section lead; 'In public' units p45, p93, p101, p110 say what the record does not show; pattern-to-pattern transitions declared as the parallel sub-heading. index.md revised to match. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to spec.json: paragraph-level spec reconstructed from the published page in its order; intent, thesis and role copied from the journal spec; success criteria rewritten as AC-7 to AC-10 or dropped; status set back to draft for the author's review. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Added one illustration per failure pattern (16 figures, article-illustrator); existing figures renumbered 17–18. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 1 mermaid diagram as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: February 2027 pitches aligned with ruling 13a; trimmed toward 6,500 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

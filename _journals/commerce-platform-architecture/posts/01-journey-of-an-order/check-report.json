@@ -1,0 +1,707 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/01-journey-of-an-order/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/01-journey-of-an-order/index.md",
+  "spec_sha": "fcfb0311f91a61ec",
+  "draft_sha": "ec05ec53053de8bb",
+  "run_at": "2026-11-12T08:57:17+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the chapter offers: one order traced through all its steps and systems, plus the book's vocabulary",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "The chapter's three main claims: an order is a chain of promises, every system holds its own message-fed copy, and the order has three status lines",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "The three named failure patterns from the book's catalogue that this chapter touches",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Different teams see different records of the same paid order, and disagreement leaves the shopper waiting",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "An order crosses many systems that each keep a copy, so every handoff must carry a keepable promise",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap of the chapter, from the four drawings to what changes with growth",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Where the chapter sits: Eva's order at the fictional company, with pointers to related chapters",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶1",
+      "summary": "The new engineering head asks four colleagues to draw an order's path",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶2",
+      "summary": "The storefront lead and the operations head each put their own system at the center",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶3",
+      "summary": "The finance and integration drawings, and the observation that each person drew only what they could see",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶4",
+      "summary": "All four drawings were right but nobody drew or owned the path between the systems",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶5",
+      "summary": "The seven systems behind the drawings, six holding a copy of the order and one only carrying messages",
+      "matched_spec_paragraph": "p24a"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶6",
+      "summary": "The chapter will follow one order as Noor did, after first setting up the steps, terms, entities and status lines",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Journey in Thirteen Steps ¶1",
+      "summary": "Every order goes through the same steps, tabulated with the promise made at each and who must keep it",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Journey in Thirteen Steps ¶2",
+      "summary": "Three observations on the steps: promises are made early and kept late, maker and keeper differ, and the after-delivery steps apply to all orders",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Promises and Handoffs ¶1",
+      "summary": "Announces that promise and handoff are the two core terms defined here",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Promises and Handoffs ¶2",
+      "summary": "Definition of a promise, and of a commerce platform as all systems that make and keep promises",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Promises and Handoffs ¶3",
+      "summary": "Definition of a handoff as responsibility passing by message, complete only on acceptance",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Things an Order Is Made Of ¶1",
+      "summary": "Introduces the entities, the nouns that messages and systems are about",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Things an Order Is Made Of ¶2",
+      "summary": "Two distinctions newcomers miss: a cart is not an order and an order is not a shipment",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "One Order, Three Status Lines ¶1",
+      "summary": "Why one status is not enough: money, goods and returns move independently, giving three status lines",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "One Order, Three Status Lines ¶2",
+      "summary": "Two vendors' data models already keep separate payment, fulfillment and return states",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "One Order, Three Status Lines ¶3",
+      "summary": "Mixed combinations of states are normal, illustrated by the goods line of a simple order",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "One Order, Three Status Lines ¶4",
+      "summary": "A past two-parcel order whose partial shipment was flattened into fully fulfilled",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "One Order, Three Status Lines ¶5",
+      "summary": "How the systems then disagreed on that order and nobody could tell the customer it ships in two parcels",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶1",
+      "summary": "Opens the walk-through and notes that the fictional numbers stay fixed across the book",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶2",
+      "summary": "The facts of Eva's order: items, prices, payment method, time and delivery promise",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶3",
+      "summary": "Search and product page: three promises shown, only the price originating in the shop platform",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶4",
+      "summary": "Cart and checkout: the shop platform gathers many inputs to turn a draft into promises",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶5",
+      "summary": "Payment: the provider collects by instant bank transfer and reports the result by webhook",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶6",
+      "summary": "Order creation overlaps with payment; the order is committed, confirmed and published onward",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶7",
+      "summary": "Fulfillment: the order is copied to ERP and warehouse, picked, packed and reported back",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶8",
+      "summary": "Carrier delivery arrives a day later than promised because the promise is an outdated fixed rule",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶9",
+      "summary": "Service: an agent would need five separate screens to answer where the order is",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶10",
+      "summary": "Return: Eva requests a size exchange through the portal, which makes two further promises",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶11",
+      "summary": "Exchange: the returned jacket is received and the replacement ships",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶12",
+      "summary": "Accounting: invoice at dispatch, payout matching, credit note for the exchange, and revenue counted at delivery",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶13",
+      "summary": "Introduces a table of what each system knew at each moment",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Eva's Jacket, System by System ¶14",
+      "summary": "Six correct copies raise the question of which one to believe, the system of record",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶1",
+      "summary": "Each handoff carries unstated requirements for freshness, consistency, speed and downtime",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶2",
+      "summary": "Messages can fail those requirements in only four ways, all seen at the company",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶3",
+      "summary": "Late: stale stock figures caused a large oversell on a peak evening",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶4",
+      "summary": "Lost: a retired API version silently stopped stock updates reaching a marketplace",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶5",
+      "summary": "Duplicated: two refund routes without a shared record paid many returns twice",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶6",
+      "summary": "Misread: systems interpreted the same shipped message differently",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Why the Joins Are Where Things Break ¶7",
+      "summary": "The two remedies, idempotency and reconciliation, with a first reconciliation result",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "When It Goes Wrong at Each Step ¶1",
+      "summary": "Introduces a table of failures along the journey with their detection and recovery",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong at Each Step ¶2",
+      "summary": "Most detection is comparing copies and most recovery is safely resending",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶1",
+      "summary": "Real vendor documentation and law describe the same handoffs as the fictional case",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶2",
+      "summary": "Vendors make fulfillment wait for a payment message, not the browser return / that payment message is itself unreliable and must be deduplicated or verified",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶3",
+      "summary": "A warehouse must accept a fulfillment request, and a refusal is an answer rather than a failure",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶4",
+      "summary": "Customer tracking depends on carrier events, and without them support absorbs where-is-my-order contacts",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶5",
+      "summary": "EU consumer law sets deadlines for delivery, withdrawal and refund that the order record must compute",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Says ¶6",
+      "summary": "Invoices are immutable, so a return is corrected by a linked credit note",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Across Scale Stages ¶1",
+      "summary": "The steps stay constant across four growth stages while the number of copies of the order grows",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Across Scale Stages ¶2",
+      "summary": "The company is at the third stage, where its problems are handoff problems as expected",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Recap of the points that are firmly established",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Recap of the choices that depend on the merchant's situation",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "The author's own stance: judge by handoffs and trace a real order first",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight practical questions for a reader to ask about an order's path",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the next chapter on how the journey differs by business model",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "One Order, Three Status Lines ¶4",
+      "quote": "Kestrel & Pine's **Three-Status Order**, #1052877, shows what happens when even one line is flattened",
+      "finding": "Both flow readers re-read here: the section teaches three status lines (money, goods, returns) and the incident named 'Three-Status' concerns one line, its three statuses being three systems' readings of the goods line. The prose never says what the 'three' in the name counts.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 1 (flow reader A, item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/flow",
+      "draft_locus": "One Order, Three Status Lines ¶2",
+      "quote": "Shopify's documentation (n.d., accessed November 2026) keeps three status families on one order",
+      "finding": "Both flow readers understood the dense vendor paragraph only after the 'In plain words' paragraph that follows it, and both proposed the same swap (or moving the vendor paragraph to 'In Practice'). The order claim, vendors, plain words is the one the spec's section flow declares.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 2 and reordering a (flow reader A, item 8 and reordering a)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "The Journey in Thirteen Steps ¶2",
+      "quote": "**steps 10 to 13 exist for every order**, not only the problem ones: at Kestrel & Pine, 24% of items sold online came back in 2026",
+      "finding": "Both flow readers re-read because the evidence seems to contradict the claim: 24% returned is not every order, and Eva later 'did not call'. The draft repeats the spec's wording ('exist for every order') with the spec's statistic, whose declared point is only that the late steps are routine.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 3 (flow reader A, item 5)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "The Journey in Thirteen Steps ¶1",
+      "quote": "Pricing, inventory, delivery promise",
+      "finding": "The lead-in says the last column gives 'which system usually has to keep it', but directly after the seven systems were fixed the column names functions (pricing, inventory, tax, search, 'delivery promise' keeping the delivery promise). Both flow readers could not tell whether these are systems, parts of the shop platform or topics.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 4 (flow reader A, item 4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Why the Joins Are Where Things Break ¶2",
+      "quote": "A message can miss those requirements in only four ways",
+      "finding": "After a table with four requirement columns, 'those requirements ... four ways' invites a column-to-way mapping that does not exist; reader B went back to the table and gave up on the mapping, reader A tried the same match (and called it momentary). The prose does not say that the four ways cut across the four requirements.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 15 (flow reader B, item 7)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Why the Joins Are Where Things Break ¶5",
+      "quote": "Two senders, one receiver, no shared record of what had already been done.",
+      "finding": "Both flow readers stopped over whether two different senders each issuing a refund is the same failure as one message arriving twice, which is what 'duplicated' meant so far and what the idempotency definition two paragraphs later covers ('receiving the same message twice'); the AC-3 reader noted the same gap. Neither the spec's p41/p43 nor the prose says why the two refunds count as one repeated message.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 9 (flow reader A, item 16)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong at Each Step ¶1",
+      "quote": "The four ways apply along the whole journey.",
+      "finding": "Both flow readers stopped at this lead-in because the table does not do what it announces: reader A expected each failure labelled as one of the four ways and found entries that are not message failures; reader B found a column headed 'Step' with seven rows that are not the thirteen steps and had to work out how it differs from the handoff table one section earlier.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 11 (flow reader A, item 18); same passage",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8",
+      "draft_locus": "In Practice: What the Public Record Says ¶1",
+      "quote": "Vendor documentation and regulation describe the same handoffs with surprising precision.",
+      "finding": "Both flow readers marked this section's place 'partly unclear' for the same reason: vendor documentation was already used as evidence in the status-lines section and in the idempotency paragraph, so they could not tell why those citations sit earlier and these sit here. The earlier placements are the spec's (p20, p43).",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, section note on 'In Practice' (flow reader A, same section note)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Drawings of One Order ¶4",
+      "quote": "**Four drawings, four centers, and not one of them wrong.**",
+      "finding": "Reader A counted three centers and looked back for the fourth: the sentence before says Ruben drew thirty-four boxes and ran out of time, with no center.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Eva's Jacket, System by System ¶3",
+      "quote": "Three promises, three sources, and only the price originates in the shop platform.",
+      "finding": "Reader A stopped to work out the distinction: the delivery rule sits in the theme, and the storefront was defined as the shop platform's customer-facing pages, so it too seems to originate in the shop platform.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/12",
+      "draft_locus": "Eva's Jacket, System by System ¶13",
+      "quote": "Wed afternoon, shipped",
+      "finding": "Reader A checked back: the walk says PostNL collected the parcel on Wednesday evening and that such an order leaves with the evening collection, while the table says shipped on Wednesday afternoon.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/13",
+      "draft_locus": "Eva's Jacket, System by System ¶14",
+      "quote": "Six systems, six copies of the order, each correct about its own part.",
+      "finding": "Reader A could not reconcile 'six of the seven will each hold a copy of every order' with a table of five systems, a carrier that 'knew only the parcel' and a returns portal that holds nothing until a return is requested. The count is the spec's (p24a, p37) and is already listed in its open questions.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "In Practice: What the Public Record Says ¶3",
+      "quote": "A refusal is an answer within the handoff, not a fifth way for a message to fail.",
+      "finding": "Reader A was sent back to see whether something had been missed: the sentence answers an objection the reader had not raised. The sentence is required by the spec's controlling idea for p47.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Why the Joins Are Where Things Break ¶3",
+      "quote": "through the **marketplace connector**",
+      "finding": "Reader B wondered whether it had missed something: after the scene fixed the count at seven systems 'named once for the whole chapter', the marketplace connector and an agency's script appear as further systems in the failure examples. The spec both fixes the cast at seven (p24a) and requires the connector (p39, p40).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "Why the Joins Are Where Things Break ¶7",
+      "quote": "are the field's answer",
+      "finding": "Reader B could see how idempotency answers 'duplicated' and reconciliation finds 'lost', but not how either deals with 'late' or 'misread', although the takeaways say the two contain all four; the paragraph does not say which way each remedy answers.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong at Each Step ¶1",
+      "quote": "a marketplace's price-parity warning",
+      "finding": "'Price-parity warning' is used in the failure table and never explained; the audience is new to commerce.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 17; flow reader B, item 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong at Each Step ¶1",
+      "quote": "Stock events instead of periodic sync",
+      "finding": "'Stock events' and 'periodic sync' are used as a recovery in the failure table without explanation; 'event' is never defined as a kind of message.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 17; flow reader B, item 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "In Practice: What the Public Record Says ¶2",
+      "quote": "warns against relying on the landing page",
+      "finding": "'Landing page' (the page the shopper returns to after paying) is used without being named or explained, and returns in the takeaways; the reader has to infer it from the sentence before.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 17",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "One Order, Three Status Lines ¶2",
+      "quote": "commercetools' order documentation (n.d., accessed November 2026) does the same",
+      "finding": "Shopify and commercetools are cited without a word on what each is, while Mollie, Gorgias and Odoo each get a gloss; a newcomer must infer that they are shop platforms.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "Why the Joins Are Where Things Break ¶7",
+      "quote": "Stripe's documentation (n.d., accessed November 2026) describes the mechanism on the payment side",
+      "finding": "Stripe is cited here, its first appearance, without saying that it is a payment provider.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "**Each handoff must carry a promise another system can keep**",
+      "finding": "'Handoff', one of the four terms AC-2 names and on the does_not_know list, carries the introduction's bold claim five sections before its definition; the reader of AC-2 found the body in order but the introduction's thesis resting on the word undefined. The spec's p02 controlling idea and bridge prescribe this sentence.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "One Order, Three Status Lines ¶2",
+      "quote": "Neither vendor uses this book's names, but the lines are there: payment status is the money line",
+      "finding": "'Money line', 'goods line' and 'returns line' are called 'this book's names' although the text has only said that an order has three status lines; the names are never given before they are used.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Promises and Handoffs ¶3",
+      "quote": "pick these three lines",
+      "finding": "'Line' (order line, cart line) is used here and four more times and never defined; the reader could not tell why a jacket and two pairs of the same socks make three lines.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "The Journey in Thirteen Steps ¶1",
+      "quote": "takes the money or reserves it",
+      "finding": "Reserving as opposed to taking money is never explained, and 'authorized' in the status-lines section is not tied to it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong at Each Step ¶1",
+      "quote": "Idempotent order-to-invoice posting",
+      "finding": "'Posting' is an accounting term used in the failure table and again in the takeaways without explanation.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong at Each Step ¶1",
+      "quote": "carrier exceptions",
+      "finding": "'Carrier exceptions' is used as a detection in the failure table and never explained.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "quote": "for every distance sale",
+      "finding": "'Distance sale' appears only in the takeaways and is never explained.",
+      "fault": "draft",
+      "severity": "major"
+    }
+  ]
+}

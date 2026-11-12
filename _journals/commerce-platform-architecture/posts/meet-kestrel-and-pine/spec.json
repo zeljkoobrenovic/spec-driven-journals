@@ -1,0 +1,1494 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "meet-kestrel-and-pine",
+  "journal": "commerce-platform-architecture",
+  "part": "preface",
+  "title": "Meet Kestrel & Pine",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published page (posts/meet-kestrel-and-pine/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the published page, in its order; tables, figures and callouts are recorded as evidence of the paragraph they follow. Intent outcome, the journal's acceptance criteria, thesis and role are copied unchanged from journal-spec.json. It is a contract, not a description: the places where the published page does not do what the contract asks are listed under open_questions, each beginning 'Published text against this spec'. Revised on 2026-11-12 after the flow rubric: the order of ideas was changed where the decision log says so, and the page was revised to match.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Kestrel & Pine at a glance: a fictional outdoor brand with €48 million revenue in 2026, four business lines, three countries, six stores, 1,100 wholesale accounts and three marketplaces.",
+        "The January 2027 landscape: thirteen systems named by role, no order management and no product information system, and a stock chain that can run two hours behind.",
+        "The ten incidents by name, each with its pattern, and the eight Waypoint decisions W1 to W8.",
+        "Eva's order #1072455 and the four other recurring examples, whose facts do not change between chapters."
+      ],
+      "believe": [
+        "Kestrel & Pine's problems are in the joins: every system works, and eight of the ten incidents are one fact in several systems with no agreed owner.",
+        "Keeping the platform and deciding ownership first follows from what failed; the platform is not what failed."
+      ],
+      "can_do": [
+        "Follow any chapter's opening scene without a re-introduction of the company, its people or its systems.",
+        "Look up a figure, a person, an incident or a Waypoint decision when a chapter cites it.",
+        "Explain an incident as a named pattern acting on this landscape."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture who have just joined a merchant, a vendor or an agency: engineers, product managers, analysts, consultants and leaders. Most of all the engineer or architect who, like Noor Visser, has to decide about systems they did not choose; the page is written at her altitude.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "The book's claim that a commerce platform is the whole set of systems that make and keep promises, the four scale stages by name and Kestrel & Pine in one paragraph (introduction).",
+        "The names of the sixteen failure patterns, and the Kestrel & Pine incidents used one at a time to illustrate them (where-commerce-platforms-go-wrong)."
+      ],
+      "does_not_know": [
+        "WMS, ERP, POS, PSP, OMS, PIM, EDI, DESADV, SSCC, iPaaS, GTIN, SKU, 3PL, SaaS, Peppol, D2C, B2B.",
+        "Available-to-promise, system of record, idempotent handling, event, reconciliation, tenant, click-and-collect."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can explain the Black Friday Oversell by the stock chain and say why Waypoint does not replace the platform.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: why did Kestrel & Pine oversell on Black Friday 2026, and why does its Waypoint program not replace the commerce platform?",
+        "expected": "Stock passed from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so channels sold for up to two hours after the sell-out at 19:40 (1,340 units). The platform held; the joins failed, so Waypoint names an owner per fact, adds the missing hubs and stays on the platform (W4)."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given the name of an incident and of a Waypoint decision, the reader says what each is without help from the citing chapter.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A later chapter mentions 'the Three-Status Order' and 'W2'. Using only this page: what was the first, which pattern is it, and what does the second change?",
+        "expected": "Order #1052877 showed Delivered in the platform, In picking in the WMS and Not invoiced in the ERP for six days; Schrödinger's Order. W2 makes a bought order management system the one order record for every channel."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what eight of the ten incidents have in common and how the other two differ.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: what do most of the ten incidents have in common, and what are the remaining ones?",
+        "expected": "Eight are a fact (stock, status, price, identity) in more than one system with no agreed owner and no reliable way for copies to learn of a change; the other two are what the outside world does to a landscape nobody watches as a whole."
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every system and commerce term on the page is explained in one clause where it first appears, so the page can be read before Part I.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reader of the opening alone (the two callouts and the three paragraphs before the first heading) can predict the page's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the first three paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+        "expected": "The company and its business lines, its growth, catalog, channels, systems and people; its incidents; the Waypoint program; the recurring order. Evidence: invented but consistent figures in reference tables, no public sources."
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-7",
+        "statement": "A reader who checks any Kestrel & Pine figure on the page against the scenario ledger, or one of the page's tables against another, finds no disagreement; the four business lines add up to the €48.0 million stated.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Compare each figure, date and name on the page with _research/scenario-ledger.md and with the page's other tables. Quote every pair that disagrees.",
+        "expected": "No disagreeing pair; €27.0M + €12.0M + €6.0M + €3.0M = €48.0M."
+      },
+      {
+        "id": "AC-8",
+        "statement": "A reader who sees only the callouts and the lead, or only the Sources line, can tell that the company, Bergzicht Outdoor, Veluwe Capital and the people are invented, and no reader can name the vendor of any Kestrel & Pine system from the page.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is the company labeled fictional in the callouts, in the lead and in the Sources line, and does any Kestrel & Pine system carry a vendor or product name? Quote the passages.",
+        "expected": "Fictional in all three places; every system named by role (the platform, the ERP, the WMS, the POS, the PSP). Named marketplaces and carriers are real companies whose dealings with Kestrel & Pine are said to be invented."
+      },
+      {
+        "id": "AC-9",
+        "statement": "Given the name of an incident, the reader names the chapter that works it in full and the pattern names the page gives it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: which chapters would you open to read the Double Refund in full, and which pattern names does the page give it?",
+        "expected": "returns-and-exchanges and commerce-payments; The Boomerang and The Message in a Bottle."
+      },
+      {
+        "id": "AC-10",
+        "statement": "The reader can say whom 'you' refers to in the later chapters and what position that person is in.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: when a later chapter addresses 'you', whom does it usually mean, and what is that person's situation?",
+        "expected": "Noor Visser, Head of Engineering since January 2027: new to the company, not new to engineering, and asked to decide about systems she did not choose."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which company do the book's examples come from, and what state are its systems in?",
+    "claim": "The book's examples come from Kestrel & Pine, a fictional composite outdoor brand whose thirteen systems each work while orders, product data and stock each live in four of them with no order hub and no product hub; eight of its ten incidents are therefore the same problem, a fact with several copies and no agreed owner, which its Waypoint program answers by naming owners first, adding the missing hubs second and keeping the platform.",
+    "disputed_by": "The reading that a merchant with an oversell, double refunds and drifting prices has ten separate problems, or has outgrown its commerce platform and should replace it.",
+    "so_what": "The reader can take each chapter's scene as one more view of a single landscape, check any figure against this page, and ask of each Waypoint decision what the equivalent ownership decision would be in their own company.",
+    "how_why": "Each system was bought for the stage the company was in and connected when the need arose. Stock is copied from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so every channel can sell a unit for up to two hours after it left the shelf. On Black Friday the platform held and that chain did not.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Kestrel & Pine is a fictional composite of a growing omnichannel brand, whose four business lines and channels place different demands on its systems."
+      },
+      {
+        "id": "S2",
+        "claim": "Each system was bought for the stage the company was in and connected when the need arose, so every system works on its own."
+      },
+      {
+        "id": "S3",
+        "claim": "Orders, product data and stock each live in several systems, with no order hub, no product hub and a stock chain that can run two hours behind."
+      },
+      {
+        "id": "S4",
+        "claim": "Eight of the ten incidents are one problem: a fact with several copies, no agreed owner and no reliable way for the copies to learn of a change."
+      },
+      {
+        "id": "S5",
+        "claim": "Waypoint names an owner for each fact first, adds the missing hubs second and keeps the platform, because the joins failed and the platform did not."
+      },
+      {
+        "id": "S6",
+        "claim": "The company's figures, people, incidents and worked examples are fixed in one record, so any chapter can cite them without introducing them again."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Supplies the one merchant, with fixed figures, incidents and decisions, that every chapter's scene and worked example draws on, and performs the part's closing.",
+    "supports": [
+      "PF-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "rationale": "Each section supplies what the next one uses. The glance gives the four business lines; the history says at which stage each system arrived and names every system once, with a gloss, so that the catalog, the channels and the volumes can use those names; each of those three ends on or contains a copy of a fact (product data in four places, store stock copied nightly, a two-hour stock delay in the volumes table). The volumes close the account of the business because they count what flows through the channels; before the channels the figures would have nothing to be counted in. The people come before the systems because the landscape is told as what Noor Visser found and its table names owners (Ruben Alves, the agency, the ERP partner): met first, they are known when the table uses them. The landscape then gathers the copies already seen into two gaps and one stock chain, and the incidents follow it directly, because each incident's mechanism is the landscape's; with the cast between them, as the page first had it, the stock chain was explained and then left for a page. Waypoint follows the incidents because its decisions answer them, and the recurring examples come last because four of the five happen while Waypoint runs and test its priorities. Moving the incidents before the landscape would put ten failures in front of a reader who has not met the stock chain; moving Waypoint before the incidents would present eight decisions as a shopping list. A last short section says how chapters use the record, and the conclusion draws the preface together."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "The previous page used Kestrel & Pine's incidents one at a time, each to illustrate one failure pattern. This page gives the merchant whole, so that the same incidents can be read as the history of one landscape."
+    },
+    "bridge": {
+      "from_reader_world": "The reader has met Kestrel & Pine in one paragraph of the introduction and in the incidents the patterns page used one at a time, and will meet a Kestrel & Pine scene at the top of every chapter.",
+      "to_topic": "This page gives the company whole and once: an invented composite whose catalog, people, systems and incidents are kept consistent, so that one architectural decision can be seen to affect the next."
+    },
+    "thesis_statement": {
+      "text": "Every one of Kestrel & Pine's systems works, yet orders begin in four of them, product data is kept in four places and warehouse stock is copied along a chain of four, with no hub for orders or for product data. Eight of its ten incidents are therefore one problem, a fact with several copies and no agreed owner, and the Waypoint program answers it by naming an owner for each fact first, adding the missing hubs second and keeping the platform.",
+      "placement": "KEY POINTS callout (bullets 2 and 3) and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "The business first: the company at a glance, how it grew, what it sells, through which channels and in what volumes.",
+          "kept_in": [
+            "at-a-glance",
+            "growth",
+            "catalog",
+            "channels",
+            "volumes"
+          ]
+        },
+        {
+          "promise": "Then its people and the systems they run, as Noor Visser found them in January 2027.",
+          "kept_in": [
+            "people",
+            "landscape"
+          ]
+        },
+        {
+          "promise": "The ten incidents those systems produced.",
+          "kept_in": [
+            "problems"
+          ]
+        },
+        {
+          "promise": "The Waypoint program approved to answer them.",
+          "kept_in": [
+            "waypoint"
+          ]
+        },
+        {
+          "promise": "The five recurring examples, first among them the order every chapter returns to.",
+          "kept_in": [
+            "examples"
+          ]
+        },
+        {
+          "promise": "How the chapters use all of it.",
+          "kept_in": [
+            "usage"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The previous page used Kestrel & Pine's incidents one at a time to illustrate the failure patterns; this page gives the merchant whole: an invented composite of common growth patterns, not a portrait of a real retailer, with its systems named by role and its facts kept consistent so that one decision can be seen to affect the next.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Named marketplaces and carriers are real companies; their dealings with Kestrel & Pine are invented.",
+            "shows": "Says where the fiction ends, so that no real company's conduct is read from the page."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The page's claim: every system works, yet orders begin in four systems, product data is kept in four places and warehouse stock is copied along a chain of four, so eight of the ten incidents are one problem, a fact with several copies and no agreed owner, which Waypoint answers by naming owners first, adding the missing hubs second and keeping the platform.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The merchant given whole and its consistent facts.",
+          "introduces": "What the whole shows that single incidents could not: one cause behind eight of ten incidents, and the program that follows from it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The page is a reference laid out in the order its claim needs: the business (the company at a glance, its growth, catalog, channels and volumes), the people and the systems, the ten incidents, the Waypoint program, the five recurring examples and how chapters use them, each part with its invented figures in a table.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The claim about systems, incidents and Waypoint.",
+          "introduces": "The order in which the page establishes it, and how to use the page as a reference.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "heading": "Kestrel & Pine at a Glance",
+      "controlling_idea": "Kestrel & Pine is a profitable, founder-controlled outdoor brand of €48.0 million revenue in 2026, whose four business lines place different demands on the same systems.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Gives the company its fixed baseline figures and the four lines whose differences the landscape has to serve."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The company, its size, its split into four lines, then what the split means for one jacket: each paragraph divides the figure before it. D2C and B2B are defined in the sentence that introduces the table, because the table's first column uses them."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The fictional outdoor brand the opening announced.",
+        "introduces": "Its basic facts: founders, ownership, countries, size and business lines.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Kestrel & Pine B.V. is a founder-controlled outdoor apparel and equipment brand, founded in Arnhem in 2016, that sells mostly own-brand goods in euros in the Netherlands, Belgium and Germany.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Founders Mara Lindqvist and Teun Baas keep the majority; fictional investor Veluwe Capital a minority since 2022; own-brand about 75% of revenue, third-party equipment 25%; Belgium since 2020, Germany since 2022.",
+              "shows": "Fixes who decides and where the company sells, which later sections rely on (the Waypoint budget, three storefronts).",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "In 2026 it is a profitable mid-sized company with a small technology team: €48.0 million revenue, 310 employees, 14 of them in technology.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Gross margin 54%; EBITDA about €3.4 million; 96 employees in stores, 88 in the warehouse, 126 at head office; technology spend about €2.6 million a year, 5.4% of revenue.",
+              "shows": "The company is healthy and its technology budget is modest, so its problems cannot be read as the result of distress.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The company and its markets.",
+            "introduces": "Its size in 2026: revenue, margin, headcount and technology spend.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Four business lines, which the page defines as it names them (D2C, selling through the brand's own storefronts, and B2B, selling to other companies), share the company but place different demands on its systems.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Revenue 2026, orders or transactions, average value and notes per line: online D2C storefronts €27.0M (NL €18.5M, DE €5.5M, BE €3.0M), 293,000 orders, €92; wholesale €12.0M, 9,400 orders, €1,277, 1,100 active accounts, 30-day terms; stores €6.0M, 118,000 transactions, €51, six stores; marketplaces €3.0M, 43,000 orders, €70, bol, Amazon.de and Zalando, other companies' shopping sites.",
+              "shows": "The lines differ by more than an order of magnitude in order count and in order value, so one design cannot be sized for all four; the table is the baseline every example quotes.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "D2C and B2B are defined in the paragraph before the table that uses them.",
+              "shows": "The reader meets the two abbreviations with their meaning, not in a table cell."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The €48.0 million total.",
+            "introduces": "Its split into four lines, each with its own order count and average value, and the two abbreviations the table uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The same jacket sold on a store receipt, in a web order and in a wholesale order needs different prices, payment terms and fulfillment, which is why the four lines cannot be served by one design.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A €51 store receipt, a €92 web order and a €1,277 wholesale order can contain the same jacket.",
+              "shows": "One product reaches the systems as three different kinds of sale.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The table's three average values: €51, €92 and €1,277.",
+            "introduces": "One jacket inside all three, and what each kind of sale demands of the systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "growth",
+      "heading": "How Kestrel & Pine Grew, 2016–2027",
+      "controlling_idea": "Each scale stage Kestrel & Pine passed through left behind a system chosen for that stage, and since 2023 it has had more than a dozen of them to join.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows the landscape as the sum of purchases that were each reasonable at the time, which is the 'how' of the thesis."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The company as it stands in 2026, with its four lines.",
+        "introduces": "How it got there, stage by stage, and which system each stage added.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The history matters because every one of the three scale stages Kestrel & Pine has passed through left a system behind, chosen for the stage it was bought in, and the timeline names each of those systems, with a one-clause gloss, in the row where it arrived.",
+          "function": "claim",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Year, what happened, stage, one row per year from 2016 to 2027. Starting: the Dutch web shop on a hosted SaaS commerce platform, one payment provider and a 3PL in Tiel (2016), the agency for theme and apps (2017). Growing: the Arnhem store on a cloud POS from a different vendor (2019), Belgium (2020), the Utrecht store, the marketplace connector, the integration platform and GTINs (2021), Germany, Veluwe Capital and Ruben Alves (2022). Omnichannel: the Duiven warehouse on its own WMS, the ERP and the platform's enterprise tier, two stores (2023), Eindhoven and the data warehouse (2024), Antwerp, EDI with Bergzicht and the returns portal (2025), Peppol, the click-and-collect pilot and the Black Friday Oversell (2026), Noor Visser and Waypoint (2027).",
+              "shows": "Each row adds systems for the need of that year and stage; reading down the table gives the order in which the landscape was assembled, and one row per year keeps each gloss next to the one or two systems it explains.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "The table glosses in one clause each system and term it is the first to name: SaaS, 3PL, theme and apps, POS, the marketplace connector, the integration platform (iPaaS), GTIN, WMS, ERP, the data warehouse, EDI, Bergzicht Outdoor, the returns portal, Peppol, click-and-collect, the Black Friday Oversell and Waypoint.",
+              "shows": "Every later section can use these names without a forward reference; the landscape table repeats the glosses for the reader who looks a system up."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The shape of the business, not its revenue, decides the stage: Kestrel & Pine became Omnichannel in 2023, when it had stores, wholesale, marketplaces, three countries and its own warehouse at the same time, and its problems now live in the joins between more than a dozen systems.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Revenue bands as rough markers: Starting under about €2 million, Growing to about €20 million, Omnichannel to about €200 million, Group beyond that or several brands.",
+              "shows": "At €48 million the company sits low in the Omnichannel band, so it is the shape, not the size, that puts it there.",
+              "source": "The book's scale stages (commerce-scaling-stages)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The stage column of the table.",
+            "introduces": "What decides a stage: the revenue bands are rough markers, the shape of the business decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "catalog",
+      "heading": "The Catalog and the Products",
+      "controlling_idea": "The catalog of 3,400 products and 26,000 variants, with a few recurring prices, has its data kept in four places and no system that owns it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S6"
+        ],
+        "how": "Fixes the products and prices every example uses and shows the first fact with several copies: product data."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The whole catalog and its units, then one product and its prices, then where the data about them is kept: the reader has to know what a variant is before four copies of its data mean anything, so the trouble comes last."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The dozen systems the history left behind.",
+        "introduces": "What all of them hold data about: products, variants and SKUs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Kestrel & Pine sells 3,400 products in 26,000 sellable variants, and the book calls one sellable variant a SKU.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A product is 'the Ridgewalker shell jacket, women's', a variant one size in one color; about 17,000 variants active at any time; about 1,200 new variants per season; a GTIN on every own-brand SKU since 2021.",
+              "shows": "Gives the reader the unit that stock, listings and orders are counted in, and its scale.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The hero product is the Ridgewalker shell jacket, and a few fictional prices recur through the book.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Consumer price including VAT, wholesale price excluding VAT, landed cost: Ridgewalker shell jacket €199, €95, €58; Trailhead fleece €119, €57; merino hiking socks €18, €8.50.",
+              "shows": "These are the prices Eva's order, the Price Drift and Bergzicht's reorder are computed from.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "VAT is expanded (value-added tax) and landed cost glossed in the sentence that introduces the price table.",
+              "shows": "The table's column heads are readable by a newcomer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Products and variants in general.",
+            "introduces": "The one product and the few prices the examples use.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Where the product data lives is the first sign of trouble: in January 2027 it is kept in three places, the platform, the ERP and shared spreadsheets, with a fourth copy in the marketplace connector, four copies in all, and there is no PIM.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The platform holds storefront content and variants, the ERP item master purchasing and costs, shared spreadsheets seasonal enrichment and translations, and the marketplace connector a fourth copy for listings.",
+              "shows": "One kind of fact has four holders and none is named as the source, the pattern the incidents repeat.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The products and their prices.",
+            "introduces": "Where the data about them is kept: four copies and no owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "Channels and Customers",
+      "controlling_idea": "Each of the four channels reaches its customers through a different system, and each keeps or receives its own copy of stock and orders.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Shows, channel by channel, where orders enter and where stock is copied late or not at all."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "A sentence that ties the four channels to the four business lines, then one labeled paragraph per channel: the two the company sells through itself to consumers (online, stores), then wholesale, then marketplaces, where another company's site and partly another company's warehouse stand between it and the customer. The two wholesale details (the largest account's EDI messages, then the Belgian e-invoices) sit directly after wholesale because they are meaningless without it. Moving marketplaces earlier would introduce the connector's stock push before the reader has seen that store stock is copied only nightly."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The catalog, and the four business lines of the first table.",
+        "introduces": "The channel each line sells through, to whom, and the system each channel runs on.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12a",
+          "controlling_idea": "The catalog reaches customers through four channels, one for each business line, and no single system serves all four.",
+          "function": "transition"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Online: three localized storefronts run in one tenant of the platform, and the Dutch one promises next-day delivery from a rule written into the page, not computed from the warehouse's state.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Netherlands, Belgium in Dutch and French, Germany; one configuration, theme and set of apps; orders before 22:00 delivered tomorrow; iDEAL, card, PayPal, Klarna, Bancontact, Apple Pay. iDEAL is glossed here, at its first use.",
+              "shows": "The delivery promise Eva's order later breaks is a static rule, visible here before the example.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four channels, each on its own system.",
+            "introduces": "The first: the online storefronts on the platform.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Stores: six stores keep their stock in a POS that copies it to the ERP only nightly and has no link to the platform.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 1,800 variants per store; Arnhem (2019), Utrecht (2021, click-and-collect pilot since 2026), Amsterdam and Nijmegen (2023), Eindhoven (2024), Antwerp (2025, Belgian fiscal receipt rules); the pilot is checked by phone and e-mail; card payments through a separate terminal provider.",
+              "shows": "The nightly copy and the missing link are the mechanism of the Store Stock Mirage.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The online channel on the platform.",
+            "introduces": "The second channel, on a system the platform cannot see.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Wholesale: the 1,100 active accounts send their orders by two routes, 62% through the platform's B2B portal and 38% by e-mail or phone, keyed into the ERP by hand.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "62% of wholesale orders through the B2B portal (company accounts, price lists, payment terms); 38% by e-mail or phone.",
+              "shows": "Wholesale orders begin in the platform or in the ERP depending on how the customer orders.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stores.",
+            "introduces": "The third channel, whose orders enter two different systems.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The largest wholesale account, the fictional chain Bergzicht Outdoor, has ordered by EDI since 2025, exchanging three messages with Kestrel & Pine: the order, the despatch advice that says what is on which pallet, and the invoice.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "38 shops, a distribution center in Zwolle, €2.1 million a year; EDI glossed as the long-established standard for exchanging business documents between companies' systems; ORDERS, DESADV (despatch advice, also ASN) and INVOIC named and explained, with EDIFACT and SSCC.",
+              "shows": "One account worth more than 4% of revenue orders through a route of its own, and the reader has the despatch advice and the pallet label explained before the landscape table and the ASN Chargeback use them.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The wholesale accounts and their two ordering routes.",
+            "introduces": "The largest account and a third route, EDI, with its three messages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Belgian business customers have received Peppol e-invoices since January 2026.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Electronic documents exchanged with wholesale customers.",
+            "introduces": "A second kind: structured e-invoices over the Peppol network.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Marketplaces: Kestrel & Pine sells on bol, Amazon.de and Zalando through the marketplace connector, and about 40% of its German marketplace units ship from stock held in the marketplace's own fulfillment program, a location outside its control.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "bol (NL and BE), Amazon.de, Zalando (DE and NL); the connector publishes listings, pulls orders and pushes stock levels; about 40% of marketplace units for Germany fulfilled by the marketplace's program.",
+              "shows": "Orders and stock exist in a fourth place, part of it physically outside the company.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The wholesale channel and its documents.",
+            "introduces": "The fourth channel, run through a connector that publishes listings, pulls orders and pushes stock.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "volumes",
+      "heading": "The Volumes Every Design Is Sized Against",
+      "controlling_idea": "The 2026 volumes are the fixed, illustrative figures that designs in later chapters are sized against, and two of them, the return rate and the peak hour, rule out sizing by averages.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S3"
+        ],
+        "how": "Supplies the numbers every chapter quotes, among them the two-hour stock delay and the four-hour queue at peak."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four channels.",
+        "introduces": "How much flows through them in a year, in a peak week and in a peak hour.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "Chapters quote these illustrative 2026 figures when they size a queue, a sync interval or a peak plan.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Measure and 2026 value: 293,000 online D2C orders (about 800 a day); 43,000 marketplace orders; 9,400 wholesale orders; 118,000 store transactions; about 17,000 active variants of 26,000; 336,000 parcels plus 9,400 wholesale shipments and 1.9 million units from Duiven; 72,000 return parcels, item return rate 24%, order return rate 19% on D2C, 28% of returns exchanges, 61% resold as new; Black Friday week 31,000 D2C orders, 10.6% of the year's; peak hour Friday 27 November 20:00–21:00, 2,300 orders, 38 per minute, traffic about 41 times an average hour; delays at peak: stock shown to shoppers up to two hours old, orders queued up to four hours before reaching the warehouse.",
+              "shows": "One table holds every load figure, so a chapter's sizing argument can be checked against it; the counts of apps and integrations, which describe the systems, are in the landscape table.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Two of the figures deserve a pause because they overturn sizing by averages: the 24% item return rate, and the peak hour, with storefront traffic at about 41 times an average hour and 2,300 orders.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "A 24% item return rate: one item comes back for every four shipped.",
+              "shows": "The return path carries routine volume, so it has to be designed as a main flow.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "statistic",
+              "what": "Storefront traffic in the peak hour is about 41 times an average hour, and a design that works at 800 orders a day meets 2,300 in one hour, once a year; the pattern The First Snowfall warns about this.",
+              "shows": "The average hides the load that breaks the design.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table of volumes.",
+            "introduces": "The two rows a designer must not read past, and what each implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "heading": "The People",
+      "controlling_idea": "The business is run by a small fictional cast, each of whom owns something the architecture depends on, and the reader's stand-in is Noor Visser, who has to decide about systems she did not choose.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S4"
+        ],
+        "how": "Fixes the cast every scene uses and ties each system and fact to a person, which is what 'owner' means in the incidents and in Waypoint; it also introduces Noor, through whose arrival the landscape is told."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The business as described so far: its lines, catalog, channels and volumes, and the names the timeline has already used (Noor Visser, Ruben Alves, the agency).",
+        "introduces": "The whole cast and what each person owns.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "The business described so far is run by a small fictional cast, from Mara Lindqvist, the CEO who holds the Waypoint budget, to Ruben Alves, the agency and the ERP partner, who own its integrations; each owns something the architecture depends on, so most of the book's tensions are between their legitimate goals.",
+          "function": "claim",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Person, role, pronouns, and what the person owns or does in the book: Mara Lindqvist, co-founder and CEO, the Waypoint budget; Teun Baas, co-founder, Chief Product and Brand, the catalog and the seasons; Noor Visser, Head of Engineering since January 2027, the reader's stand-in, proposed Waypoint; Daniel Okafor, Head of Operations, the warehouse, the stores and the carriers; Sanne de Wit, Finance Director, the ERP, invoicing and month-end; Milan Petrov, Ecommerce and Marketplaces Manager, the storefronts, the apps and the marketplace connector; Lea Moreau, Head of Wholesale, the B2B portal and the EDI relationship; Ruben Alves, Lead Integration Engineer since 2022, the iPaaS and the integration inventory; Hanna Berg, Data Lead, the data warehouse and metric definitions; Eva Janssen, a customer in Nijmegen, the recurring order; Pieter Smit, buyer at Bergzicht Outdoor, the spring reorder; the agency, the theme, the apps and several scripts; the ERP partner, the platform-to-ERP connector.",
+              "shows": "Every system the page has named has an owner in the table, and no row owns the connections between the systems as a whole.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "When a chapter says 'you' it usually means Noor, who leads a technology team of 14: new to this company, not new to engineering, and asked to decide about systems she did not choose.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Noor, nine engineers (four integration and back-end, three storefront and apps, two data), two product managers and two application support specialists.",
+              "shows": "The team is small against the 34 integrations it has to keep running.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cast table, where Noor is marked as the reader's stand-in.",
+            "introduces": "Her team and her position, which is the reader's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "landscape",
+      "heading": "The Systems Landscape in January 2027",
+      "controlling_idea": "In January 2027 every system in the landscape works, but none holds all orders or all product data, and stock reaches the channels through a chain of copies that can run two hours behind.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S2"
+        ],
+        "how": "States the two gaps and the stock chain, which are the mechanism the thesis attributes the incidents to."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The assertion first (every system works, two are missing), with the table as its evidence; then the reasoning: what the two missing systems would do, what their absence does to orders and product data, and the one chain of copies behind the largest incident. The stock chain comes last because the figure it is read from is attached to the paragraph before it, and because the next section opens on the incident it produced."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Noor Visser, asked to decide about systems she did not choose.",
+        "introduces": "Those systems as she found them in January 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "When Noor Visser arrives in January 2027 she finds a landscape in which every system works, each named here by its role, and two rows of the table have no system at all.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Area, system, since, notes: the platform (2016; three storefronts in one tenant, agency theme, 41 apps of which 6 unused and 3 write stock); the ERP (2023; connector built by the ERP partner); the WMS (2023; orders in from the platform, stock out to the ERP, via the iPaaS); order management: none (orders live in the platform, the connector, the ERP and the POS); product information: none (data in the platform, the ERP, spreadsheets and the connector); the marketplace connector (2021; hourly stock sync); the POS (2019; store stock to the ERP nightly, no link to the platform); the returns portal (2025; refunds through the platform's API); the shipping service (2023); the PSP (2016; separate terminal provider for stores since 2019); the EDI provider (2025; ORDERS, DESADV, INVOIC with Bergzicht; Peppol); the iPaaS plus agency scripts and vendor connectors (2021; 34 integrations, owned by Ruben Alves); the data warehouse and a BI tool (2024; three definitions of 'order'). Each system is glossed in one clause.",
+              "shows": "The reader sees every system by role and the two rows, answered 'none', where a fact has four holders.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The table names thirteen systems and two gaps, and the two missing systems explain much of the difficulty: an order management system, which would coordinate orders from every channel with shared states, and a product information management system, which would own descriptions and attributes.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table: thirteen systems counted from its rows, and the two rows that say 'none'.",
+            "introduces": "What each missing system would do if it existed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Thirteen systems, counted after the table: eleven rows name one each, the payments row adds the stores' terminal provider and the data row a BI tool; scripts and connectors between systems are not counted.",
+              "shows": "The count the thesis uses can be checked against the table the reader has just read."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Without those two systems, orders begin in four places and product descriptions are maintained four times, because buying a useful system for each new need has left the company without shared ownership.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1, the January 2027 landscape: four channels create orders in four different systems, stock travels from the WMS to the ERP to the platform to the marketplace connector in quarter-hourly and hourly hops, and no system holds all orders or all product data.",
+              "shows": "The two gaps and the stock chain are visible in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What an OMS and a PIM would do.",
+            "introduces": "What happens instead, and the cause: one purchase per need, no shared ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The stock sync chain in the middle of the figure is the mechanism behind the Black Friday Oversell: warehouse stock is copied from the WMS to the ERP, the platform and the connector in turn, four copies in all, so a sale can take up to two hours to reduce the number a shopper sees.",
+          "function": "process",
+          "organization": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The WMS tells the ERP every 15 minutes; the ERP tells the platform every hour; the platform tells the connector every hour; the connector tells the marketplaces. A sale at Duiven can take up to two hours to reach Amazon.de, and in that time every channel believes it can still sell the unit.",
+              "shows": "The delay is the sum of scheduled copies, each working as designed.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2, the Black Friday Oversell: an empty jacket shelf at Duiven at 19:40 while storefront screens still show the jacket in stock from a copy up to two hours old; 1,340 units oversold.",
+              "shows": "What the chain did on its worst evening: the shelf and its copies disagree."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The landscape without shared ownership, as drawn in the figure.",
+            "introduces": "One chain of copies in it, hop by hop, and the incident it produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "problems",
+      "heading": "The Problems Kestrel & Pine Starts 2027 With",
+      "controlling_idea": "Every system works and the problems are in the joins: eight of the ten incidents are one fact held in several systems with no agreed owner.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Lists the ten incidents with their numbers, patterns and owning chapters and states what eight of them have in common."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The landscape Noor found: every system working, two hubs missing, and a stock chain that can run two hours behind.",
+        "introduces": "What that landscape produced: ten incidents, the first of them the oversell the stock chain explains.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "When Noor starts, every system in that landscape works and the problems are in the joins: ten incidents, most from 2026 and two from her first weeks, define the position she starts from, all but one an instance of a pattern named on the previous page and each worked in full by the chapter that owns it; they keep the numbers by which chapters cite them.",
+          "function": "evidence",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "1 The Black Friday Oversell (27 November 2026): sold out at Duiven at 19:40, sold elsewhere for up to two hours; 1,340 units oversold, 1,120 orders canceled or delayed, about €96,000; The Phantom Stock and The First Snowfall. 2 The Three-Status Order (December 2026): order #1052877 Delivered in the platform, In picking in the WMS, Not invoiced in the ERP for six days, 11 support tickets; Schrödinger's Order. 3 The Double Refund (January 2027): 212 returns refunded twice, €19,400, most recovered; The Boomerang and The Message in a Bottle. 4 The Price Drift (October 2026): the German storefront at €179 for nine days against €199 elsewhere, 410 orders, about €8,200 of margin; The Price Nobody Can Explain. 5 The ASN Chargeback (Q3 2026): Bergzicht deducted €14,200 for despatch advices that did not match the pallets, because the DESADV came from the ERP's view and not from what the warehouse packed; The Pulled Rug and The Lynchpin.",
+              "shows": "Five incidents in which two or three systems held different values of one fact (stock, status, refund, price, shipment contents).",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "scenario",
+              "what": "6 The Store Stock Mirage (December 2026): click-and-collect at Utrecht promised 37 items already sold; The Phantom Stock from the store side. 7 The App That Wrote Stock (March 2026): a pre-order app and the WMS feed both wrote inventory, two weeks of phantom reservations on 600 variants; The Secret Agent and The Spaghetti Junction. 8 The Card-Testing Night (August 2026): 48,000 bot attempts, €2,900 in PSP fees, account paused 40 minutes; a trust failure, not one of the sixteen patterns. 9 The Familiar Stranger: Eva Janssen is four unlinked customer records. 10 The Deprecated Endpoint (February 2027): the connector retired an API version an agency script still read, stock to bol stale for two days; The Pulled Rug.",
+              "shows": "The remaining five, each with its figures, its pattern and its owning chapter linked, so a later chapter can cite an incident by name.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "fact",
+              "what": "Incident 5 uses the despatch advice (DESADV) and the pallet label as the channels section explained them, and adds no definition of its own.",
+              "shows": "The incident can be read for its point: the message was built from the wrong system."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Eight of the ten incidents (1 to 7 and 9) are the same problem, a fact (stock, an order's status, a refund, a price, a shipment's contents, a customer's identity) that lives in more than one system with no agreed owner and no reliable way for the copies to learn of a change; the other two, the Card-Testing Night (8) and the Deprecated Endpoint (10), are what the outside world does to a landscape nobody watches as a whole.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The ten incidents.",
+            "introduces": "What eight of them share and how the other two differ.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "waypoint",
+      "heading": "The Waypoint Program",
+      "controlling_idea": "Waypoint answers the incidents in a deliberate order: who owns each fact first, then the missing hubs, then trustworthy copies, with the platform kept because the joins failed and the platform did not.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Presents the eight decisions and reads their order as the argument the thesis ends on."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ten incidents, eight of them a fact with no agreed owner.",
+        "introduces": "The program approved in March 2027 to answer them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "To answer the incidents, Mara Lindqvist approved Waypoint in March 2027 on Noor's proposal, €1.1 million over 2027–2028, and its eight decisions are canonical: chapters explain them and never change them.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Decision, what changes, when. W1 Stock ownership: the WMS is the system of record for stock at Duiven, the POS for store stock, marketplace fulfillment stock a tracked external location; an availability service computes available-to-promise per channel from stock events; the sync chain is retired (Q4 2027). W2 One order record: a bought OMS becomes the order hub for every channel, with one state model; the platform keeps checkout and storefront order history (Q4 2027). W3 Product information: a PIM is the system of record for content and attributes; the ERP keeps costs and purchasing (Q3 2027). W4 Stay and surround: no replatforming; OMS, PIM and availability are added beside the SaaS platform; its POS evaluated in 2028 (2027, review 2029). W5 Integration standards: an owner, a contract, idempotent handling and a reconciliation job per integration; stock, orders and prices by events, products by scheduled publication, finance by daily batch (from 2027). W6 EDI compliance: SSCC labels at pack time, DESADV from the WMS pack confirmation (2027). W7 One definition of an order in the data warehouse, owned by the Data Lead (2027). W8 Agent readiness, not agents: product data, availability, delivery promise and order status by API; no shopper-facing AI agent in 2027 (2027).",
+              "shows": "Each decision is stated with what changes and when, and system of record, event, available-to-promise, idempotent and reconciliation job are glossed in the cell that first uses them.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Read by priority instead of by number, the decisions are the argument: Waypoint decides who owns each fact first, then adds the hubs the landscape lacks, then makes the copies trustworthy, and it does not replace the platform because the joins failed and the platform did not.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Ownership (the system-of-record choices in W1, W3 and W7) comes before the hubs that hold what was decided (the availability service in W1, the OMS in W2, the PIM in W3), which come before the integration standards and EDI compliance (W5, W6); W4 keeps the platform, and W8 builds on the result: accurate product data, availability and order status are what a later shopping agent would need. The table lists the decisions by number and its dates do not show this priority.",
+              "shows": "A hub bought before ownership is decided would be one more holder of a fact with no agreed owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The eight decisions in the table.",
+            "introduces": "The priority among them, which is not the table's order (owners in W1, W3, W7; the hubs; W5, W6; W4), and why that priority is the point.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "heading": "The Recurring Worked Examples",
+      "controlling_idea": "Five stories with fixed facts recur through the book, so the reader can follow one order across chapters; Black Friday 2026 is evidence behind Waypoint and the four stories of 2027 test its priorities.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S5"
+        ],
+        "how": "Fixes the five examples every chapter draws on and ties them to Waypoint as its evidence and its test."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p32 to p34: Eva's order from 13 to 22 April 2027"
+          }
+        ],
+        "rationale": "The announcement, then the five stories in the same labeled shape, Eva's first and longest because the book follows it most; her order is told in date order and ends with the exchange and its refund variant, then the paragraph that says which chapters use it. The three other stories of 2027 follow, and Black Friday 2026 comes last of the five, so that the four stories that test Waypoint sit together and the one that is evidence for it leads into the closing paragraph, which divides the five in exactly that way and needs every story before it."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The incidents and Waypoint's priorities.",
+        "introduces": "Five stories with fixed facts, on which the chapters show the problems and test the program.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Five stories recur through the book, four from spring 2027 and one from 2026, with facts that never change, so one order can be followed across many chapters and its numbers will always agree.",
+          "function": "transition"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Eva's jacket, the recurring order: on Tuesday 13 April 2027 at 21:14 Eva Janssen orders a €199 Ridgewalker and two €18 pairs of socks on the Dutch storefront, pays €235 by iDEAL and is promised delivery the next day.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ridgewalker shell jacket, women's, size M, color moss; free shipping; order #1072455; ordered before 22:00, so delivery promised for Wednesday.",
+              "shows": "Every later mention of the order refers to these figures.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The announcement of five stories.",
+            "introduces": "The first and most used: Eva's order as placed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The order is delivered on Thursday 15 April, a day later than promised, because Duiven's last pick wave leaves at 21:00.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Picked and packed at Duiven on Wednesday 14 April, shipped with PostNL, delivered Thursday 15 April.",
+              "shows": "A promise made by the storefront was broken with every system working as designed.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The order placed at 21:14 with a next-day promise.",
+            "introduces": "What happened to it: picked Wednesday, delivered Thursday.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The order ends with an exchange: on Monday 19 April Eva asks through the returns portal to swap the jacket for size L, and the exchange ships on 22 April, the day the return is received and graded resellable; a chapter that needs a refund instead uses a €199 refund by iDEAL reversal.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Exchange for size L requested 19 April (too small); return received and inspected 22 April, graded resellable; exchange order shipped the same day. Refund variant: €199 by iDEAL reversal, booked as a credit note.",
+              "shows": "The order's journey includes a return through a separate system, and the alternative ending is fixed like the rest.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3, Eva's jacket crosses seven systems in nine days: the platform sells and takes the money, the iPaaS carries the order to the WMS, PostNL delivers, stock trickles back through the ERP, and the exchange re-enters through the returns portal; every arrow is a handoff that can be late, lost or duplicated.",
+              "shows": "The whole order is shown once as a sequence of handoffs between seven named systems before Part I walks it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The delivery.",
+            "introduces": "The exchange that follows it, and the refund some chapters use in its place.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "This is the order that chapter 1 walks step by step and two journeys of Part IX work in full, and every chapter says near its top where in this journey it sits.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Eva's order, told to its end and drawn in Figure 3.",
+            "introduces": "Where the book uses it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Bergzicht's spring reorder: an EDI order of 6 April 2027 for 240 units, worth €19,860, is picked to three labeled pallets, announced by a despatch advice at pack confirmation, delivered on 9 April and invoiced the same day.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "ORDERS message on Tuesday 6 April 2027; 240 units across 18 SKUs (Ridgewalker jackets and Trailhead fleeces); €19,860 excluding VAT; three pallets with SSCC labels; DESADV at pack confirmation; Zwolle distribution center 9 April; INVOIC the same day; payment due 9 May on 30-day terms.",
+              "shows": "The wholesale flow as it should run, against which the ASN Chargeback can be read.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Eva's consumer order.",
+            "introduces": "The second story: a wholesale order by EDI, in the same fixed detail.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The marketplace variant: on the day of Eva's order, two Amazon.de customers order a Ridgewalker, one shipped by Kestrel & Pine from Duiven and one by the marketplace's fulfillment program, and the two orders look alike to the customers and nothing alike to the systems.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "13 April 2027; one seller-fulfilled order from Duiven, one fulfilled from the stock sent to the marketplace in advance.",
+              "shows": "The same sale takes two different paths through the landscape.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The wholesale story.",
+            "introduces": "The third story: one product, two marketplace fulfillment routes.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The stock reconciliation: in May 2027 the first weekly comparison of the WMS and the platform found 2.3% of active variants with a different quantity, most left behind by the three apps that wrote stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "First weekly reconciliation between the WMS and the platform, May 2027: 2.3% of active variants differ; reconciliation glossed as a job that compares two systems' quantities and lists the differences.",
+              "shows": "Two copies of stock disagreed measurably once someone compared them.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The marketplace story.",
+            "introduces": "The fourth story: a first reconciliation and what it found.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Black Friday 2026 is the fifth story and the only one from before Waypoint: the week of 23–29 November and its Friday evening, with the numbers already given in the volumes table and in problem 1.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "31,000 orders, a peak hour of 2,300, the sell-out at 19:40, the two-hour stock lag and the four-hour WMS queue.",
+              "shows": "The peak example is assembled from the volumes table and incident 1 and adds no new number.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The four stories dated 2027.",
+            "introduces": "The one story from 2026, which reuses figures the page has already given.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Black Friday 2026, like the ten incidents, is evidence behind Waypoint; the four stories of 2027 fall in April and May, after Waypoint was approved and before its hubs arrive, and chapters use them to test its priorities: ownership before hubs, then contracts and reconciliation to make every copy trustworthy.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five stories, the last of them the one from 2026.",
+            "introduces": "How they divide by year and what each group does for Waypoint.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "usage",
+      "heading": "How the Chapters Use Kestrel & Pine",
+      "controlling_idea": "Because its facts are fixed, every chapter uses Kestrel & Pine in the same places and under the same three conventions.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Says where and under which rules the fixed record is used, which is what makes it citable without re-introduction."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The company, its incidents, its program and its five stories, all with fixed facts.",
+        "introduces": "What that lets every chapter do with them: where the company appears in a chapter and under which conventions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Because its facts are fixed, every chapter uses Kestrel & Pine in the same places: an opening 2027 scene, a worked example after the concepts and the public evidence, and, in Parts II to VIII, one column of the closing table across the four scale stages.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The journeys of Part IX follow the recurring orders end to end; the case studies of Part XI leave Kestrel & Pine and test the book against the public record.",
+              "shows": "Says where the company is used most and where it is deliberately absent."
+            }
+          ]
+        },
+        {
+          "id": "p42a",
+          "controlling_idea": "Three conventions hold in every chapter: Kestrel & Pine is labeled fictional when it first appears, its systems are named by role and never by vendor, and its facts come from one canonical record.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The 1,340 units, the €19,400 and order #1072455 mean the same on every page; numbers that are neither Kestrel & Pine's nor documented are labeled as assumptions.",
+              "shows": "Names three figures the reader has met on this page as the test of the third convention."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Where the company appears in a chapter.",
+            "introduces": "The rules it appears under.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The preface's three pages are one argument at three sizes: the ten incidents are instances of the patterns the previous page named, the patterns are promises broken at the joins between systems, and the order of Waypoint's decisions (who owns each fact, then the missing hubs, then trustworthy copies, with the platform kept) is the book's claim written as one company's program.",
+    "so_what": "The reader can open any chapter, take its scene as one more view of a landscape and a list of failures they already know, check any figure against this page, and expect the chapter to explain a decision about ownership and joins, not a product choice.",
+    "callback": {
+      "to": "The book's first page, which opened on Eva's order #1072455 and the 1,340 units oversold on Black Friday, and this page's opening statement that the facts are kept consistent so that one decision can be seen to affect the next (p01).",
+      "how": "The two numbers have returned on this page as the recurring order and as incident 1, now with the landscape that explains them; they mean the same on every page."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin Part I as Noor began her first week: follow one order through every system it touches and ask at each handoff which system made the promise and which one has to keep it."
+    },
+    "hand_off": {
+      "to": "part-1",
+      "relationship": "elaboration",
+      "carries_over": "Kestrel & Pine with its problems and its program, and the preface's claim that a commerce platform is the set of systems that make and keep promises.",
+      "introduces": "Part I, which takes up the business before the technology: what the promises are, who makes them and who owns the facts behind them, starting from one order followed through every system."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The merchant as the page has given it, and the way chapters will use it.",
+      "introduces": "What the merchant adds up to with the two pages before it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p43",
+        "controlling_idea": "Read together, the preface's three pages are one argument at three sizes: the ten incidents are instances of the named patterns, the patterns are promises broken at the joins, and the order of Waypoint's decisions is the book's claim written as one company's program; Eva's order #1072455 and the 1,340 oversold units, on which the book opened, have returned here as the recurring order and as incident 1.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p44",
+        "controlling_idea": "Part I takes up the business before the technology, what the promises are, who makes them and who owns the facts behind them, and it begins where Noor began in her first week: by following one order through every system it touches and asking at each handoff which system made the promise and which one has to keep it.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The argument of the preface: promises, joins and owners.",
+          "introduces": "The next step: Part I and the question to carry into it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The failure patterns themselves and how they chain.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "The order's journey step by step; the four journeys in full.",
+      "covered_in": [
+        "journey-of-an-order",
+        "part-9"
+      ]
+    },
+    {
+      "topic": "Designing or justifying any Waypoint decision; each owning chapter does that.",
+      "covered_in": [
+        "inventory-and-availability",
+        "order-management",
+        "product-information",
+        "build-buy-or-assemble",
+        "events-consistency-and-reconciliation",
+        "edi-and-e-invoicing",
+        "commerce-data-and-analytics",
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "The scale stages as a model; the business-model economics.",
+      "covered_in": [
+        "commerce-scaling-stages",
+        "commerce-business-models"
+      ]
+    },
+    {
+      "topic": "Real-company evidence; this page cites none and the Sources section says so."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Chapters may append canonical facts to the ledger after this page was written (for example illustrative latencies, team details, 2027 peak-plan numbers); a review pass should fold additions that matter book-wide back into this page.",
+    "The timeline fixes a few dates the ledger gives only by 'since' year (the agency in 2017, the iPaaS and the connector in 2021, Ruben Alves in 2022); they are consistent with the ledger's 'Since' columns but a reviewer should confirm no chapter needs them earlier.",
+    "For the author (contract): the thesis and KEY POINTS say 'thirteen systems'. The ledger uses the number (additions for commerce-capability-map and commerce-scaling-stages) but never lists the thirteen. The page now counts them from its own landscape table: eleven rows that name a system, plus the stores' terminal provider and the BI tool. Confirm that this is the intended count, or say how thirteen is counted.",
+    "For the author (contract): the thesis says orders, product data and stock 'each live in four' systems. The page supports four for orders (platform, connector, ERP, POS) and for product data (platform, ERP, spreadsheets, connector; the spreadsheets are not one of the thirteen systems). For stock the body now says what it can support: warehouse stock is copied along a chain of four (WMS, ERP, platform, connector). Store stock in the POS and the stock at the marketplace's fulfillment program are further holders, so 'stock in four' is true of Duiven stock only; the ledger's own addition speaks of 'six systems each holding a stock number for the Ridgewalker jacket'. The KEY POINTS callout now says 'warehouse stock is copied along a chain of four'. Changing the wording of the thesis would be a journal-spec change.",
+    "For the author (fact): the page now names the 'other two' incidents as the Card-Testing Night and the Deprecated Endpoint. The ledger and the patterns page say only 'eight' and 'two'; the naming is inferred (the other eight each have a fact in two or more systems: stock, status, refund, price, shipment contents, stock, stock, identity). Confirm, or name the two.",
+    "For the author (contract): AC-5 fixes the opening at 'the two callouts and the three paragraphs before the first heading', so the pick-up of the patterns page, the thesis and the roadmap share three paragraphs; p01 carries both the pick-up and the kind of fiction.",
+    "Flow rubric (second run, sound with notes), not acted on: p21 and p22 both announce the two missing systems, and p27 repeats 'every system works' from p21; the rubric would have p22 open directly on what the two systems would do. Kept, because p22's first sentence is the author's and names the two gaps as the explanation.",
+    "Flow rubric (second run), not acted on: the section-level reasons for at-a-glance and landscape describe their order without saying what would break if two paragraphs swapped.",
+    "For the author (ledger): the stock chain's hops, as the ledger gives them (WMS to ERP every 15 minutes, ERP to platform hourly, platform to connector hourly), add up to two and a quarter hours before the connector's own push, against the ledger's 'up to two hours'. Both flow readers of rounds 1 and 2 stopped on the arithmetic. The page repeats the ledger; the ledger would have to say which hops the two hours cover.",
+    "For the author (ledger): the ten incidents keep the ledger's numbers, which follow no order a reader can see (not date, not cost, not the eight/two split), incident 9 has no date, and incidents 3 and 10 are dated after Noor's arrival although the section is headed 'The Problems Kestrel & Pine Starts 2027 With'. The page now says so in the lead sentence; a reordering or a new heading is the author's and the ledger's to make.",
+    "For the author: 'EDI partner card' (W6) is glossed on the page as 'a written record of what that partner requires'; the ledger does not define the term. Confirm or correct the gloss.",
+    "Draft check, round 3 (last round; verdict escalate, 17 passed, 15 failed, of which 5 blocking and 10 minor). Blocking and at fault in the spec or the ledger, left for the author: (1) the stock chain's hops exceed 'up to two hours' (see the ledger question above); (2) the four-hour queue at peak is given without a cause on this page: the ledger says only that the WMS connector queue backed up and orders reached the warehouse late, and the cause (the WMS vendor's rate limit) is on the patterns page, not in the ledger's baseline. Blocking and at fault in the draft, fixed after the round without a re-check: 'a dozen systems' against thirteen; what 'first, then' orders in the Waypoint paragraph; the order of the three sizes in the conclusion.",
+    "Draft check, round 3, minor findings (one reader each) not acted on: 'authorizations', 'credit note', 'price-parity warning' and 'fulfillment' are never explained; 'the platform' is used in its narrow sense (the hosted commerce platform) and never set against the book's wide sense of a commerce platform, which chapter 1 settles by calling the product 'the shop platform'; how the 2027 stories 'test' Waypoint is not shown on this page; the conclusion does not say in words that any figure can be checked against this page (the spec's so_what), which the judge passed narrowly."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "After the round 2 draft check (escalate), under the author's standing approval: the count of thirteen systems is made after the landscape table (p22) and not announced before it (p21); p12 returns to the ledger's wording for product data (three places and a fourth copy, four copies in all); p20 says the 41 times is storefront traffic; p27 says that two of the ten incidents date from Noor's first weeks and that the incidents keep the ledger's numbers; p41 dates the 2027 stories between Waypoint's approval and the arrival of its hubs.",
+      "rejected": [
+        "Changing the stock chain's intervals or its 'up to two hours' so that the hops add up: both are the ledger's figures (see open questions).",
+        "Renumbering the incidents so that the two outside-world incidents come last: the numbers are the ledger's."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After the round 1 draft check (escalate: failures at fault in the spec), the recommended spec changes were taken under the author's standing approval, with intent, thesis, role and acceptance criteria untouched. 'How the Chapters Use Kestrel & Pine' becomes the last body section (p42, p42a) and the conclusion gets its own heading, 'What to Take Away', so the conclusion no longer introduces new material. Figure 2 moves from p28 to the stock-chain paragraph p24, next to the mechanism it pictures. The growth table has one row per year, so each cell carries one or two glosses. The system rows of the volumes table (apps, integrations) move to the landscape table, and the peak delays are stated without system names. The EDI messages, the despatch advice and the pallet label are explained with Bergzicht in the channels section (p16), so incident 5 no longer stops for four definitions; the Peppol paragraph (p17) is separate again. p28 says which incidents are the eight and lists all six kinds of fact. p30 says the argument is the priority of the decisions, not the table's order. p03 is the roadmap only. Product data is counted as four copies wherever it appears.",
+      "rejected": [
+        "Renumbering W1 to W8 or the ten incidents to show the priority: both numberings are the ledger's.",
+        "Keeping the 2026-11-07 decision of one timeline row per scale stage: it was taken for length, and the page is well under its limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review. Order: 'The People' moves before 'The Systems Landscape in January 2027', so the cast is known when the landscape names its owners and the stock chain is followed directly by the incidents it explains. Opening: p01 picks up the patterns page (the journal spec's transition) and absorbs the 'composite, named by role' paragraph; p02 states the thesis in the body with counts the body supports (orders in four systems, product data in four places, warehouse stock along a chain of four, eight of ten incidents); p03 is a roadmap that announces every section, the volumes included, and absorbs the 'use the tables' paragraph. Forward references: D2C and B2B are defined before the table that uses them; the growth table glosses each system and term it is the first to name; iDEAL, VAT, reconciliation job and pick wave are glossed at first use; the 'other two' incidents are named. Merges: the Bergzicht EDI and Peppol paragraphs (p16, p17); Eva's exchange and its refund variant (p34, p35); in the closing, where chapters use the company and under which conventions (old p42, p43). A lead sentence (p12a) opens the channels section, and each section boundary now carries something over. The conclusion gains a synthesis paragraph (p43) that performs the part's closing with the callback to the book's first page, and the hand-off (p44) introduces Part I as the business before the technology. Declared flow: the post-level additional patterns (large_to_small, chronological, grouping) are dropped because the order does not follow them; the catalog section is declared prerequisite_order. After the second run of the flow rubric (sound with notes): Black Friday 2026 moves to be the last of the five stories, so the four 2027 stories sit together; p08 says that the timeline names and glosses each system; p25 names the cast members later sections use; p41 restates Waypoint's priorities in the order p30 gave them.",
+      "rejected": [
+        "Moving the landscape before the catalog and the channels so that every system is glossed there first: the landscape is the explanation of the copies those sections show, and would arrive before them.",
+        "Reordering the ten incidents by date: their numbers are canonical in the ledger and chapters cite 'problem 1'.",
+        "Changing 'thirteen systems' or 'stock in four' in the thesis: copied from the journal spec; recorded as open questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec with one paragraph per unit of the published page, in the published section order and with the published headings, so that the structural check passes against the unchanged text and any reordering is a visible decision of the author. The closing section 'How the Chapters Use Kestrel & Pine' is specified as the conclusion, because it carries the hand-off and the part's closing; 'Sources and Evidence' is apparatus and has no spec unit.",
+      "rejected": [
+        "Writing the spec the contract would ideally ask for (an opening that picks up the patterns page, a closing that performs the part's synthesis), which would have described a page that does not exist.",
+        "Treating the closing section as an eleventh body section and leaving the conclusion to the hand-off paragraph alone."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Of the eight success criteria in spec.md, four were rewritten as reader outcomes (AC-7 ledger agreement, AC-8 fictional labeling and role names, AC-9 from the incidents criterion, AC-10 from the cast criterion), one was already covered by the journal spec's AC-4 (terms defined), and three were dropped as inventories or format rules (two diagrams with captions; the callout and section format; the prose word range). The 6,500-word cap is kept as length.max_words.",
+      "rejected": [
+        "Carrying the eight criteria over unchanged."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Mirrored the meet-axleby structure (glance, history, products, channels, volumes, landscape, people, problems, program, examples, usage) but wrote the ten incidents as a numbered list, because each needs two or three sentences that define a term (DESADV, SSCC) at the point the newcomer meets it, and a table cell cannot carry that.",
+      "rejected": [
+        "The ten incidents as a table."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Collapsed the growth timeline to one row per scale stage, to keep the page within length while still showing which system arrived at which stage.",
+      "rejected": [
+        "One row per year."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Drew the second diagram as a sequence of Eva's jacket across systems, so the page shows the order's journey once before Part I walks it, and so the handoffs the book calls 'joins' are visible as arrows.",
+      "rejected": [
+        "A second structural view of the landscape."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the Card-Testing Night as a trust failure outside the sixteen patterns, as the ledger does.",
+      "rejected": [
+        "Forcing it under The Secret Agent."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Kestrel & Pine fact."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "The Preface contract and the chapter that owns each incident and term."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "Page format, failure-pattern names, term list, valid permalinks."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-axleby (vehicle-data-dealer-saas-architecture)",
+      "contributed": "Structure and conventions of a 'meet the company' page."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json, part preface, post meet-kestrel-and-pine",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-6, thesis and role, copied unchanged."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 3 (escalate: 17 passed, 15 failed, 5 of them blocking, all under flow_is_followable): cheap fixes applied without a further round, so the check report is stale. Spec: 'more than a dozen' systems in the growth section; p27 says all but one incident is an instance of a named pattern. Draft: the same two, plus the priority sentence of p30, the order of the three sizes in p43 and a gloss of the two hubs in KEY POINTS. Remaining findings are under open questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: p12, p20, p21, p22, p27 and p41 reworded; evidence notes of p25 and p30 adjusted. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: new body section 'usage' (p42, p42a) and conclusion heading 'What to Take Away'; Figure 2 attached to p24; growth table one row per year; system rows moved from the volumes table to the landscape table; EDI terms moved from incident 5 to p16 and p17 restored; p03, p12, p12a, p21, p22, p28, p30, p31 and p41 reworded. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: people before landscape; opening rewritten as pick-up, thesis and roadmap; three merges (p17 into p16, p35 into p34, old p42 and p43 into p42); new p12a and a synthesis paragraph p43; transitions rewritten for every unit whose predecessor changed; post-level additional flow patterns dropped; open questions about the published text replaced by the ones that remain. index.md revised to match; any earlier check report is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, ten sections and 44 paragraphs with their transitions, introduction and conclusion reconstructed from the published page in its own order; record-keeping sections carried over; success criteria rewritten as outcomes or dropped (see decision log). External sources: none, the page is entirely fictional. Status draft, awaiting the author's review."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: Eva's late delivery made explicit, American spelling, timetoread. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

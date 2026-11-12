@@ -206,6 +206,10 @@
   "changelog": [
     {
       "date": "2026-11-12",
+      "change": "Preface brought from outline to full: part intent, thesis with supporting claims PF-1 to PF-3, flow, opening and closing; intent, thesis, role and transitions for introduction, where-commerce-platforms-go-wrong and meet-kestrel-and-pine, reconstructed from the published pages and their spec.md files. The part claim drops 'almost all'."
+    },
+    {
+      "date": "2026-11-12",
       "change": "Chapter 1 (journey-of-an-order): thesis claim reworded by the author's decision after it failed the thesis rubric; it now answers its question (what has to happen, in which systems) before saying where an order breaks, and drops 'nearly every commerce failure'. The last clause is limited to breaks in the chain between systems, since failures inside one system also exist."
     },
     {
@@ -217,10 +221,78 @@
     {
       "id": "preface",
       "title": "Preface",
-      "detail": "outline",
+      "detail": "full",
+      "intent": {
+        "outcome": {
+          "know": [
+            "The book's claim: a commerce platform is the whole set of systems that make and keep promises to a customer.",
+            "The names of the sixteen failure patterns and their four families: truth, integration, platform and change, governance.",
+            "Kestrel & Pine in outline: four channels, thirteen systems, no order hub and no product hub, ten incidents, and the Waypoint program that keeps the platform."
+          ],
+          "believe": [
+            "Commerce failures are found at the joins between systems, and the remedy is ownership, contracts and reconciliation before any new platform."
+          ],
+          "can_do": [
+            "Name the pattern and the family behind a described commerce incident.",
+            "Recognize a Kestrel & Pine incident or a Waypoint decision (W1 to W8) when a later chapter cites it by name.",
+            "Go from the decision in front of them to the chapter that answers it."
+          ]
+        },
+        "acceptance_criteria": [
+          {
+            "id": "AC-1",
+            "statement": "Every supporting claim of the part thesis is argued by at least one of the three pages.",
+            "check": "children_cover_parent_thesis",
+            "method": "deterministic",
+            "severity": "blocker"
+          },
+          {
+            "id": "AC-2",
+            "statement": "Each page's closing hand-off expresses the relationship its successor declares in transition_in.",
+            "check": "transition_expresses_declared_relationship",
+            "method": "rubric",
+            "severity": "major"
+          },
+          {
+            "id": "AC-3",
+            "statement": "A reader who has read only the preface can say what the Black Friday Oversell was, which named patterns it is an instance of, and what Kestrel & Pine decided about its platform.",
+            "check": "custom",
+            "method": "cold_reader",
+            "severity": "major",
+            "probe": "Using only the three preface pages: what was the Black Friday Oversell, which of the sixteen patterns was it, and what did Kestrel & Pine decide to do about its commerce platform afterwards?",
+            "expected": "The jacket sold out in the warehouse at 19:40 while channels kept selling for up to two hours from old stock copies, 1,340 units oversold; The Phantom Stock and The First Snowfall; Waypoint decides who owns each fact first, adds an order hub, a product hub and an availability service, and stays on the platform."
+          },
+          {
+            "id": "AC-4",
+            "statement": "Chapter 1 can rely on the preface for what its audience already knows: after the preface a reader recalls at least twelve of the sixteen pattern names and at least five of the ten incidents without looking back.",
+            "check": "custom",
+            "method": "cold_reader",
+            "severity": "minor",
+            "probe": "Without looking back: list as many of the sixteen failure patterns and of Kestrel & Pine's ten incidents as you can, by name.",
+            "expected": "At least twelve pattern names and at least five incident names, with no invented ones."
+          }
+        ]
+      },
       "thesis": {
         "question": "What does the book argue, how do commerce platforms fail, and which company do its examples come from?",
-        "claim": "A commerce platform is a promise-keeping machine, its failures fall into sixteen recurring patterns that are almost all broken promises between systems, and one fictional merchant can show them all."
+        "claim": "The book argues that a commerce platform is the whole set of systems that make and keep promises to a customer; such platforms fail in sixteen recurring patterns whose chains start at the joins between systems; and the examples come from one fictional merchant, Kestrel & Pine, where eight of ten incidents are a fact held in several systems with no agreed owner.",
+        "disputed_by": "The view that a commerce platform is the product a merchant buys, that its failures are unrelated defects of that product, and that a merchant with as many incidents as Kestrel & Pine has outgrown its platform and should replace it.",
+        "so_what": "A reader who accepts this starts every later chapter looking for the promise, the join and the owner, and reads Kestrel & Pine's decision to keep its platform as the consequence of the argument instead of as a budget compromise.",
+        "how_why": "The storefront promises in seconds from copies of facts that the warehouse, carrier, payment provider and finance system hold; each connector between them was added for one need, so copies drift where nobody owns the connection. At Kestrel & Pine the platform stayed up on Black Friday while a stock chain of quarter-hourly and hourly copies ran two hours behind.",
+        "supporting_claims": [
+          {
+            "id": "PF-1",
+            "claim": "A commerce platform is the whole set of systems that make and keep promises to a customer, and architecture decides which system may make each promise, how the others learn of it and what happens when they disagree."
+          },
+          {
+            "id": "PF-2",
+            "claim": "Commerce platforms fail in sixteen recurring patterns in four families, each begun as a locally reasonable decision, and the patterns travel in chains that start at the joins between systems."
+          },
+          {
+            "id": "PF-3",
+            "claim": "One merchant shows the patterns together: at Kestrel & Pine eight of ten incidents are a fact held in several systems with no agreed owner, so its program decides ownership first and keeps the platform."
+          }
+        ]
       },
       "role": {
         "contribution": "Performs the journal's opening and names the failure patterns and the running example every chapter refers to.",
@@ -228,30 +300,317 @@
           "J1"
         ]
       },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "large_to_small",
+            "applies_to": "introduction to meet-kestrel-and-pine: the claim about all commerce platforms, then the recurring patterns, then one merchant"
+          }
+        ],
+        "rationale": "Each page supplies what the next one uses. The introduction gives the promise claim, the four scale stages and Kestrel & Pine in one paragraph; the patterns page needs all three, because it explains each pattern as a broken promise, illustrates it with a Kestrel & Pine incident and places it on the stages. The merchant page labels each of its ten incidents with a pattern name, so it needs the patterns first. With the merchant page second, its incident list would carry sixteen names the reader has not met; with the patterns page first, its stage table and its 'promise' wording would have nothing to rest on, and the reader would meet sixteen failures before knowing what the book is for."
+      },
+      "opening": {
+        "carried_by": "introduction",
+        "hook": {
+          "type": "vivid_anecdote",
+          "content": "At 21:14 on 13 April 2027, Eva Janssen in Nijmegen buys a €199 Ridgewalker jacket and two €18 pairs of socks and pays €235 by iDEAL; the shop confirms order #1072455. On Black Friday 2026 the same shop oversold 1,340 units while its component systems stayed up."
+        },
+        "bridge": "From the shopper's side, where the next step is waiting for delivery, to the merchant's side, where the page that took the order depends on answers from pricing, the warehouse, the carrier and finance.",
+        "roadmap": "This page gives the argument and how to read the book; the next page names the sixteen failure patterns; the third introduces Kestrel & Pine; Part I then begins with one order followed step by step."
+      },
+      "closing": {
+        "carried_by": "meet-kestrel-and-pine",
+        "synthesis": "The claim, the patterns and the merchant are one argument seen at three sizes: Kestrel & Pine's ten incidents are instances of the named patterns, the patterns are promises broken at joins, and the order of Waypoint's decisions (who owns each fact, then the missing hubs, then trustworthy copies, with the platform kept) is the book's claim written as a program.",
+        "so_what": "The reader can treat every chapter's opening scene as a view of one known landscape and one known list of failures, and can expect each chapter to explain a decision about ownership and joins, not a product choice.",
+        "callback": "Eva's order #1072455 and the Black Friday oversell of 1,340 units from the introduction's first paragraphs, which return as the recurring order and as incident 1.",
+        "takeaway": {
+          "type": "course_of_action",
+          "content": "Begin Part I as Noor began her first week: follow one order through every system it touches and ask at each handoff which system made the promise and which one has to keep it."
+        }
+      },
       "posts": [
         {
           "id": "introduction",
           "folder": "introduction",
           "title": "Introduction: Why Commerce Architecture Matters",
           "kind": "front_matter",
-          "detail": "outline",
-          "question": "What does this book argue, who is it for, and how should it be read?"
+          "detail": "full",
+          "question": "What does this book argue, who is it for, and how should it be read?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The book's claim and the three questions architecture answers for every promise: who may make it, how the others learn of it, what happens when they disagree.",
+                "The four scale stages (Starting, Growing, Omnichannel, Group), and that the shape of the business decides the stage, not its revenue.",
+                "How the book is laid out: three preface pages, eleven parts that follow one order, an appendix and four reference pages.",
+                "The six kinds of statement and the three tiers of take-away.",
+                "Kestrel & Pine in one paragraph, and the names of the sixteen failure patterns in four families."
+              ],
+              "believe": [
+                "A commerce platform is the whole set of systems that make and keep promises, not one product, and its failures live in the joins.",
+                "The right architecture changes with the shape of the business."
+              ],
+              "can_do": [
+                "Go from the decision in front of them to the chapter to start with.",
+                "Tell a documented fact from a recommendation, an illustration and an assumption when a chapter states one."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "A reader of this page alone can state the book's argument and list the subjects of its parts in order.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only this page: what does this book argue, and what will its parts cover, in order?",
+                "expected": "A commerce platform is the set of systems that make and keep promises, and failures are promises one system made and another could not keep; then commerce basics, catalog, order, fulfillment, channels, integration, platform, trust, journeys, evolution, cases."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given a decision the routing table lists, the reader names the chapter to start with.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Your channels keep overselling and you must decide which system should own stock. Using only this page: which chapter do you open first, and why not the storefront or marketplace chapter?",
+                "expected": "The inventory and availability chapter, because the fix is deciding which system owns stock, not making the copies faster; systems of record and reconciliation follow."
+              },
+              {
+                "id": "AC-3",
+                "statement": "Given three sentences in the book's style, the reader labels each with the kind of statement it is.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Using only this page, say what kind of statement each is: (a) 'Kestrel & Pine's item return rate is 24%.' (b) 'I would make the warehouse the system of record for physical stock.' (c) 'Assume 800 orders a day.'",
+                "expected": "(a) an illustration, not an industry benchmark; (b) a recommendation, with reasons and exceptions; (c) an assumption, not to be used as a benchmark."
+              },
+              {
+                "id": "AC-4",
+                "statement": "A reader of the opening alone (the two callouts and the four paragraphs before the first heading) can predict the page's sections.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the callouts and the first four paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+                "expected": "Who the book is for; the promise-keeping argument; the order's journey and the scale stages as the book's organization; how to find a chapter for a decision; how to read the evidence; the fictional merchant. Evidence: one fictional order and incident, with dated public sources."
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "What does this book argue, who is it for, and how should it be read?",
+            "claim": "This book argues that a commerce platform is not a product a merchant buys but the whole set of systems that make and keep promises to a customer, so that architecture is deciding which system may make each promise, how the others learn of it and what happens when they disagree; it is for readers new to commerce architecture, who should read it in order along one order's journey or enter it from the decision on their desk.",
+            "disputed_by": "The view that a commerce platform is the product a merchant subscribes to, licenses or assembles, so that a newcomer should begin by comparing products and vendors.",
+            "so_what": "A reader who accepts this stops looking for the fault inside one product, asks of every design which promise it is and which system keeps it, and treats a vendor comparison as a later step that follows the ownership decisions.",
+            "how_why": "The storefront promises a product, a price, stock, a delivery date and a return in seconds; pricing, the warehouse, the carrier and finance supply the facts and do the keeping over days, and every handoff between them can be late, lost, duplicated or misread. On Black Friday 2026 Kestrel & Pine's systems all stayed up and 1,340 units were still oversold from a stock copy up to two hours old."
+          },
+          "role": {
+            "contribution": "Performs the journal's and the part's opening: states the claim, the four scale stages and the reading order, and gives the pattern names and the merchant in outline so the next two pages have something to unpack.",
+            "supports": [
+              "PF-1"
+            ]
+          }
         },
         {
           "id": "where-commerce-platforms-go-wrong",
           "folder": "where-commerce-platforms-go-wrong",
           "title": "Out of Stock, Out of Sync: Sixteen Ways Commerce Platforms Go Wrong",
           "kind": "chapter",
-          "detail": "outline",
-          "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?"
+          "detail": "full",
+          "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "The sixteen pattern names, each with its warning sign and its family.",
+                "What each family points to: a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns.",
+                "The three chains (integration, governance, platform) and the stage at which a pattern is typically born and the stage at which it hurts."
+              ],
+              "believe": [
+                "A pattern accumulates from decisions that were each reasonable locally, so finding it is not finding someone to blame.",
+                "Repairing the symptom at the end of a chain rarely holds; naming the origin usually does, and the remedy is rarely a new platform."
+              ],
+              "can_do": [
+                "Name the pattern and family behind a described incident, and the chapter that addresses it.",
+                "Ask for the number that would confirm a warning sign.",
+                "Use the patterns as questions in a design review, a vendor demo and due diligence."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "Given a described incident the page does not contain, the reader names the pattern, its family and the upstream pattern to check first.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After a timeout, a retry created a second shipment for 40 orders. Using only this page: which pattern is this, which family is it in, which upstream pattern would you check for, and what is the remedy direction?",
+                "expected": "The Message in a Bottle, integration family; look upstream for a Spaghetti Junction (a connector with no owner or contract); an idempotency key on every message, a record of handled events and a reconciliation."
+              },
+              {
+                "id": "AC-2",
+                "statement": "The reader can say, for each of the four families, where it tells them to look.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Using only this page: name the four families of patterns and say in one clause each what kind of thing has gone wrong.",
+                "expected": "Truth: a fact with two writers or no owner. Integration: a message with no key, no contract or no owner. Platform and change: a decision copied from a bigger company or made on one date. Governance: a dependency, deadline or actor nobody owns."
+              },
+              {
+                "id": "AC-3",
+                "statement": "Given a warning sign, the reader names a number or document to ask for before concluding the pattern is present.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "minor",
+                "probe": "A colleague says 'we have a Spaghetti Junction'. Using only this page: what would you ask to see before agreeing?",
+                "expected": "The integration inventory: how many integrations, how many with a named owner, how many with a reconciliation job, how many systems write the same fact."
+              },
+              {
+                "id": "AC-4",
+                "statement": "Every Kestrel & Pine example can be followed without the merchant page: each is labeled fictional and names its systems by role with a one-clause explanation.",
+                "check": "known_before_new",
+                "method": "rubric",
+                "severity": "major"
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reader of the opening alone (the two callouts and the three paragraphs before the first heading) can predict the page's sections.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the callouts and the first three paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+                "expected": "Sixteen named patterns in four families, each with warning sign, mechanism, cost and remedy; then how they chain and how to use them. Evidence: invented examples from a fictional merchant, and dated public cases."
+              },
+              {
+                "id": "AC-6",
+                "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?",
+            "claim": "Commerce platforms fail in sixteen recurring patterns in four families (a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns), and what the patterns have in common is that each grew from decisions that were reasonable one at a time and that they travel in chains that start at the joins between systems.",
+            "disputed_by": "The view that each commerce incident is a separate defect or a single bad decision in the system that showed the symptom, to be fixed in that system or by replacing it.",
+            "so_what": "Faced with an incident, the reader names the pattern, looks upstream along its chain for the connector, writer or dependency without an owner, and assigns that; a fix applied where the symptom appeared will have to be made again.",
+            "how_why": "Each app, script and connector was the fastest way to meet one need, and the risk shows only in their combined effect. Connectors without owners send messages that are trusted to arrive once; late, lost and duplicated messages leave stale stock, conflicting statuses and double refunds; the peak day shows them all in one evening. Of Kestrel & Pine's ten incidents, eight are a fact with two writers."
+          },
+          "role": {
+            "contribution": "Gives the book its shared names for failure: without it the merchant's incidents are ten anecdotes and no chapter can open by naming the patterns it works on.",
+            "supports": [
+              "PF-2"
+            ]
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The introduction's claim that a failure is a promise one system made and another could not keep, its four scale stages, and its bare list of sixteen pattern names in four families.",
+            "introduces": "Each pattern unpacked: its warning sign, why it happens, what it costs, one fictional and one public example, a remedy direction and the chapters that address it; then the stages at which patterns strike and the chains they form.",
+            "form": "paragraph",
+            "placement": "both"
+          }
         },
         {
           "id": "meet-kestrel-and-pine",
           "folder": "meet-kestrel-and-pine",
           "title": "Meet Kestrel & Pine",
           "kind": "front_matter",
-          "detail": "outline",
-          "question": "Which company do the book's examples come from, and what state are its systems in?"
+          "detail": "full",
+          "question": "Which company do the book's examples come from, and what state are its systems in?",
+          "intent": {
+            "outcome": {
+              "know": [
+                "Kestrel & Pine at a glance: a fictional outdoor brand with €48 million revenue in 2026, four business lines, three countries, six stores, 1,100 wholesale accounts and three marketplaces.",
+                "The January 2027 landscape: thirteen systems named by role, no order management and no product information system, and a stock chain that can run two hours behind.",
+                "The ten incidents by name, each with its pattern, and the eight Waypoint decisions W1 to W8.",
+                "Eva's order #1072455 and the four other recurring examples, whose facts do not change between chapters."
+              ],
+              "believe": [
+                "Kestrel & Pine's problems are in the joins: every system works, and eight of the ten incidents are one fact in several systems with no agreed owner.",
+                "Keeping the platform and deciding ownership first follows from what failed; the platform is not what failed."
+              ],
+              "can_do": [
+                "Follow any chapter's opening scene without a re-introduction of the company, its people or its systems.",
+                "Look up a figure, a person, an incident or a Waypoint decision when a chapter cites it.",
+                "Explain an incident as a named pattern acting on this landscape."
+              ]
+            },
+            "acceptance_criteria": [
+              {
+                "id": "AC-1",
+                "statement": "A reader of this page alone can explain the Black Friday Oversell by the stock chain and say why Waypoint does not replace the platform.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Using only this page: why did Kestrel & Pine oversell on Black Friday 2026, and why does its Waypoint program not replace the commerce platform?",
+                "expected": "Stock passed from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so channels sold for up to two hours after the sell-out at 19:40 (1,340 units). The platform held; the joins failed, so Waypoint names an owner per fact, adds the missing hubs and stays on the platform (W4)."
+              },
+              {
+                "id": "AC-2",
+                "statement": "Given the name of an incident and of a Waypoint decision, the reader says what each is without help from the citing chapter.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "A later chapter mentions 'the Three-Status Order' and 'W2'. Using only this page: what was the first, which pattern is it, and what does the second change?",
+                "expected": "Order #1052877 showed Delivered in the platform, In picking in the WMS and Not invoiced in the ERP for six days; Schrödinger's Order. W2 makes a bought order management system the one order record for every channel."
+              },
+              {
+                "id": "AC-3",
+                "statement": "The reader can say what eight of the ten incidents have in common and how the other two differ.",
+                "check": "custom",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "Using only this page: what do most of the ten incidents have in common, and what are the remaining ones?",
+                "expected": "Eight are a fact (stock, status, price, identity) in more than one system with no agreed owner and no reliable way for copies to learn of a change; the other two are what the outside world does to a landscape nobody watches as a whole."
+              },
+              {
+                "id": "AC-4",
+                "statement": "Every system and commerce term on the page is explained in one clause where it first appears, so the page can be read before Part I.",
+                "check": "known_before_new",
+                "method": "rubric",
+                "severity": "major"
+              },
+              {
+                "id": "AC-5",
+                "statement": "A reader of the opening alone (the two callouts and the three paragraphs before the first heading) can predict the page's sections.",
+                "check": "intro_predicts_content",
+                "method": "cold_reader",
+                "severity": "major",
+                "probe": "After reading only the callouts and the first three paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+                "expected": "The company and its business lines, its growth, catalog, channels, systems and people; its incidents; the Waypoint program; the recurring order. Evidence: invented but consistent figures in reference tables, no public sources."
+              },
+              {
+                "id": "AC-6",
+                "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+                "check": "reverse_outline_matches_spec",
+                "method": "reverse_outline",
+                "severity": "blocker"
+              }
+            ]
+          },
+          "thesis": {
+            "question": "Which company do the book's examples come from, and what state are its systems in?",
+            "claim": "The book's examples come from Kestrel & Pine, a fictional composite outdoor brand whose thirteen systems each work while orders, product data and stock each live in four of them with no order hub and no product hub; eight of its ten incidents are therefore the same problem, a fact with several copies and no agreed owner, which its Waypoint program answers by naming owners first, adding the missing hubs second and keeping the platform.",
+            "disputed_by": "The reading that a merchant with an oversell, double refunds and drifting prices has ten separate problems, or has outgrown its commerce platform and should replace it.",
+            "so_what": "The reader can take each chapter's scene as one more view of a single landscape, check any figure against this page, and ask of each Waypoint decision what the equivalent ownership decision would be in their own company.",
+            "how_why": "Each system was bought for the stage the company was in and connected when the need arose. Stock is copied from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so every channel can sell a unit for up to two hours after it left the shelf. On Black Friday the platform held and that chain did not."
+          },
+          "role": {
+            "contribution": "Supplies the one merchant, with fixed figures, incidents and decisions, that every chapter's scene and worked example draws on, and performs the part's closing.",
+            "supports": [
+              "PF-3"
+            ]
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The sixteen pattern names, and the Kestrel & Pine incidents the patterns page used one at a time as illustrations.",
+            "introduces": "The merchant as a whole: its business lines, systems and people, the ten incidents as one landscape's history, the Waypoint decisions and the recurring orders.",
+            "form": "sentence",
+            "placement": "both"
+          }
         }
       ]
     },

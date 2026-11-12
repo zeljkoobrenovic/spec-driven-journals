@@ -1,0 +1,1410 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "introduction",
+  "journal": "commerce-platform-architecture",
+  "part": "preface",
+  "title": "Introduction: Why Commerce Architecture Matters",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published page (posts/introduction/index.md) and its former spec.md on 2026-11-12, then reordered the same day on the flow rubric's notes (see decision_log); the page was revised to match. One spec paragraph per unit of the page; tables and figures are evidence of the paragraph they belong to.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The book's claim and the three questions architecture answers for every promise: who may make it, how the others learn of it, what happens when they disagree.",
+        "The four scale stages (Starting, Growing, Omnichannel, Group), and that the shape of the business decides the stage, not its revenue.",
+        "How the book is laid out: three preface pages, eleven parts that follow one order, an appendix and four reference pages.",
+        "The six kinds of statement and the three tiers of take-away.",
+        "Kestrel & Pine in one paragraph, and the names of the sixteen failure patterns in four families."
+      ],
+      "believe": [
+        "A commerce platform is the whole set of systems that make and keep promises, not one product, and its failures live in the joins.",
+        "The right architecture changes with the shape of the business."
+      ],
+      "can_do": [
+        "Go from the decision in front of them to the chapter to start with.",
+        "Tell a documented fact from a recommendation, an illustration and an assumption when a chapter states one."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can state the book's argument and list the subjects of its parts in order.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what does this book argue, and what will its parts cover, in order?",
+        "expected": "A commerce platform is the set of systems that make and keep promises, and failures are promises one system made and another could not keep; then commerce basics, catalog, order, fulfillment, channels, integration, platform, trust, journeys, evolution, cases."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a decision the routing table lists, the reader names the chapter to start with.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your channels keep overselling and you must decide which system should own stock. Using only this page: which chapter do you open first, and why not the storefront or marketplace chapter?",
+        "expected": "The inventory and availability chapter, because the fix is deciding which system owns stock, not making the copies faster; systems of record and reconciliation follow."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given three sentences in the book's style, the reader labels each with the kind of statement it is.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page, say what kind of statement each is: (a) 'Kestrel & Pine's item return rate is 24%.' (b) 'I would make the warehouse the system of record for physical stock.' (c) 'Assume 800 orders a day.'",
+        "expected": "(a) an illustration, not an industry benchmark; (b) a recommendation, with reasons and exceptions; (c) an assumption, not to be used as a benchmark."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the opening alone (the two callouts and the four paragraphs before the first heading) can predict the page's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the first four paragraphs: what will this page discuss, in what order, and with what kind of evidence?",
+        "expected": "Who the book is for; the promise-keeping argument; the order's journey and the scale stages as the book's organization; how to find a chapter for a decision; how to read the evidence; the fictional merchant. Evidence: one fictional order and incident, with dated public sources."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader who knows software but not commerce can say what a SKU, a system of record and idempotency are after reading this page.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: what is a SKU, what is a system of record, and what does idempotency mean?",
+        "expected": "A SKU is a code for a sellable variant; a system of record is the authoritative home of a fact; idempotency makes a repeated request have the same effect as one request."
+      },
+      {
+        "id": "AC-7",
+        "statement": "Given a merchant described by its channels and countries, the reader names its scale stage and says why revenue alone does not decide it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: a brand with €15 million revenue has stores, a wholesale line and sells in two countries. Which scale stage's problems does it have, and why?",
+        "expected": "Omnichannel, because the shape of the business decides the stage; the revenue bands are illustrative markers, not thresholds."
+      },
+      {
+        "id": "AC-8",
+        "statement": "The reader can say what the book's material is and is not: public dated sources, verified research briefs and domain models used as maps, with nothing in the models used as a fact about a real company.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: does the book use its domain models as facts about Shopify or Amazon, and does it recommend products?",
+        "expected": "No on both counts: the models are research maps inferred from public product behavior, real companies appear only as dated cases with sources, and the book recommends architectures, not products."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this book argue, who is it for, and how should it be read?",
+    "claim": "This book argues that a commerce platform is not a product a merchant buys but the whole set of systems that make and keep promises to a customer, so that architecture is deciding which system may make each promise, how the others learn of it and what happens when they disagree; it is for readers new to commerce architecture, who should read it in order along one order's journey or enter it from the decision on their desk.",
+    "disputed_by": "The view that a commerce platform is the product a merchant subscribes to, licenses or assembles, so that a newcomer should begin by comparing products and vendors.",
+    "so_what": "A reader who accepts this stops looking for the fault inside one product, asks of every design which promise it is and which system keeps it, and treats a vendor comparison as a later step that follows the ownership decisions.",
+    "how_why": "The storefront promises a product, a price, stock, a delivery date and a return in seconds; pricing, the warehouse, the carrier and finance supply the facts and do the keeping over days, and every handoff between them can be late, lost, duplicated or misread. On Black Friday 2026 Kestrel & Pine's systems all stayed up and 1,340 units were still oversold from a stock copy up to two hours old.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The book is written for readers new to commerce architecture, who need general software knowledge and no commerce experience."
+      },
+      {
+        "id": "S2",
+        "claim": "A commerce platform is the whole set of systems that make and keep promises to a customer, its failures are promises broken at the joins between systems, and architecture answers three questions for every promise."
+      },
+      {
+        "id": "S3",
+        "claim": "The right answers change with the shape of the business, so the book follows one fictional merchant as it grows and compares every decision across four scale stages."
+      },
+      {
+        "id": "S4",
+        "claim": "The book can be read in order along one order's journey or entered from the decision on the reader's desk, and it says where its subject stops."
+      },
+      {
+        "id": "S5",
+        "claim": "A reader can weigh each statement in the book, because it keeps six kinds of statement apart, dates its claims, uses only public material and labelled fiction, and states its own limits."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the journal's and the part's opening: states the claim, the four scale stages and the reading order, and gives the pattern names and the merchant in outline so the next two pages have something to unpack.",
+    "supports": [
+      "PF-1"
+    ]
+  },
+  "flow": {
+    "pattern": "grouping",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "argument to kestrel-and-pine: the claim, the recurring forms in which it shows, why the answers differ by stage, then the merchant followed through the stages; 'who' stands first by convention and because the opening ends on the reader"
+      },
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "journey to leaves-to-others: the order's journey, the layout of parts it explains, entry by one decision as the alternative to that layout, then where the subject stops"
+      },
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "evidence to living-journal: the kinds of statement and the dating rule, then the material behind the statements, then how current that material is"
+      }
+    ],
+    "rationale": "Three groups. First what the book says, to whom and about whom (who, argument, failure-patterns, stages, kestrel-and-pine): the opening ends on the reader, so 'who' continues from it; the failure patterns stand directly after the claim because they are the recurring forms of the broken promises it describes; the stages follow because they say why the answers to the same questions differ; and the merchant follows the stages because it is the one company the stage table tracks. The merchant cannot stand later: the journey, the Part IX journeys, the evidence rules and the conclusion all use its order, its 2027 program or its figures, and two readers of the earlier order lost the thread at each of those points. Then how to move through the book (journey, organization, decision, leaves-to-others): the journey comes before the table of parts because it is the reason for the order of the table's rows, and no part is cited by number before the table; the routing table is offered only after the learning path it is an alternative to; what the book leaves to other books follows the routing table as the decisions it does not route. Last how far to trust it (evidence, draws-on, living-journal): the reader learns to read a statement before learning what stands behind it, and how current the material is comes last because it qualifies both. This group cannot precede the second: its take-away tiers and its 'every chapter' need the map of parts and the shape of a chapter."
+  },
+  "introduction": {
+    "hook": {
+      "type": "vivid_anecdote",
+      "content": "At 21:14 on 13 April 2027, Eva Janssen in Nijmegen buys a €199 Ridgewalker jacket and two €18 pairs of socks from Kestrel & Pine, a fictional outdoor brand, and pays €235 through iDEAL; the shop confirms order #1072455. On Black Friday 2026 the same shop oversold 1,340 units while its component systems stayed up."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has bought something online knows the shopper's side: after the confirmation, the next step is waiting for delivery.",
+      "to_topic": "On the merchant's side the page that took the order depends on answers from pricing, the warehouse, the carrier and finance, so checkout can succeed while committing the merchant to a promise it cannot keep."
+    },
+    "thesis_statement": {
+      "text": "A commerce platform is not one product you buy but the whole set of systems that make and keep promises to a customer; most commerce failures are a promise one system made and another could not keep; and architecture decides who may make which promise, how the others learn of it and what happens when they disagree.",
+      "placement": "KEY POINTS callout, all three bullets, and paragraph p04, which also names the audience and the two ways of reading"
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout, in the order of the sections; KEY POINTS third bullet and paragraph p04",
+      "promises": [
+        {
+          "promise": "Say who the book is for.",
+          "kept_in": [
+            "who"
+          ]
+        },
+        {
+          "promise": "State what the book argues, a promise-keeping machine whose failures live in the joins, and name the recurring patterns in which the promises break.",
+          "kept_in": [
+            "argument",
+            "failure-patterns"
+          ]
+        },
+        {
+          "promise": "Say why every decision is compared across four scale stages, and introduce the one fictional merchant the book follows through them.",
+          "kept_in": [
+            "stages",
+            "kestrel-and-pine"
+          ]
+        },
+        {
+          "promise": "Show how the eleven parts follow one order.",
+          "kept_in": [
+            "journey",
+            "organization"
+          ]
+        },
+        {
+          "promise": "Show how to find the chapter for the decision in front of you, and say what the book leaves to other books.",
+          "kept_in": [
+            "decision",
+            "leaves-to-others"
+          ]
+        },
+        {
+          "promise": "Explain how to read the book's evidence: the kinds of statement, the material behind them and how current it is.",
+          "kept_in": [
+            "evidence",
+            "draws-on",
+            "living-journal"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "When Eva Janssen's order at Kestrel & Pine, a fictional outdoor brand, is confirmed, her part is to wait, while several of the merchant's systems must turn that confirmation into the right parcel on the promised day.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva Janssen's order at the fictional Kestrel & Pine: a €199 Ridgewalker jacket and two €18 pairs of socks, €235 paid through iDEAL at 21:14 on 13 April 2027, order #1072455.",
+            "shows": "A confirmation is the point where the shopper's part ends and the work of several systems begins.",
+            "source": "Kestrel & Pine scenario ledger (fictional)"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The shop's confirmation promises a product, a price, stock, a delivery date and a return on the strength of other systems' answers, so checkout can succeed while committing the merchant to a promise it cannot keep.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Pricing supplies the amount, the warehouse supplies stock, the carrier helps determine delivery and finance records payment and any refund; the page taking the order depends on their answers.",
+            "shows": "If one answer is wrong or out of date, the promise is made anyway."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The confirmation and the systems behind it.",
+          "introduces": "The five promises, and which system supplies the fact behind each.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "On Black Friday 2026 the same shop oversold 1,340 units while every component system stayed up, because the handoffs between them failed the customer.",
+        "function": "example",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The jacket sold out at 19:40, but channels kept selling for up to two hours from old stock copies; 1,340 units oversold.",
+            "shows": "The failure sat in the handoffs between systems, not inside any one of them.",
+            "source": "Kestrel & Pine scenario ledger (fictional)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "A checkout that can succeed on an out-of-date answer.",
+          "introduces": "One day on which it did, at scale.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The book follows Eva's order from discovery to delivery, exchange and accounting to explain, for readers new to commerce architecture, who should own each fact, how other systems learn about changes and what to do when they disagree, with choices that evolve as Kestrel & Pine grows; it can be read in order or entered from a decision.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Handoffs that failed while every system stayed up.",
+          "introduces": "The three questions the book answers, the order it follows, the merchant whose growth changes the answers, the reader it is written for and the two ways of reading it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "who",
+      "heading": "Who This Book Is For",
+      "controlling_idea": "The book is for newcomers to commerce architecture, asks only general software knowledge of them, explains its vocabulary where it is needed and speaks in the voice of an advising architect.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Fixes the reader the thesis names, and what the book may assume of them."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Four facts about the reader and the text addressed to them: who they are, what they bring, how the gap in vocabulary is filled, and the voice addressing them; the voice comes last because it is a promise about the text, not about the reader."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The book announced in the opening, and its callout's promise to say who it is for.",
+        "introduces": "The readers by role, what they must already know and who is speaking to them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "The book is for readers new to commerce architecture who have just joined a retailer, brand or wholesaler, a commerce software vendor, an agency or consultancy, or a leadership role.",
+          "function": "description",
+          "organization": "classification"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The reader should recognize an API, a database, a message queue and a web page, and needs no commerce experience.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The newcomers by role.",
+            "introduces": "What they are expected to know already and what not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Each chapter explains the terms and mechanisms its decisions need, and the glossary collects the definitions.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "SKU, system of record and idempotency, each glossed in one clause on this page.",
+              "shows": "The practice is shown at work: a term is defined at the point of use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "No commerce experience is required.",
+            "introduces": "How the commerce vocabulary is supplied instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The book speaks as an architect who advises growing merchants, and the author's judgement is given in the first person with its reasons and the conditions under which it would change.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Who the reader is.",
+            "introduces": "Who is speaking, and how the speaker's own judgement is marked.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "argument",
+      "heading": "The Argument: A Promise-Keeping Machine",
+      "controlling_idea": "A commerce platform is the whole set of systems that make and keep promises to a customer, most failures are a promise one system made and another could not keep, and architecture answers three questions for every promise.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "States the book's claim in full: the definition, the failure it predicts and the discipline that follows."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The definition comes first because the job (promise here, keep there) is stated in its terms; the claim about failures needs the handoff; the three questions come last because they answer the failures."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Eva's five promises and the Black Friday handoffs from the opening.",
+        "introduces": "The definition of a commerce platform that makes those two stories one argument.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "In this book a commerce platform is the whole set of systems that make and keep promises to a customer, not a product one subscribes to, licenses or assembles.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The list of systems the definition takes in, from the storefront, catalog and pricing to the warehouse, the carriers, the ERP and the data warehouse.",
+              "shows": "How wide the definition is: no single product on the list is the platform."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The platform makes promises in one place and keeps them in another, and the handoff between the two can be late, lost, duplicated or misread.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The platform as a set of systems.",
+            "introduces": "Its job, and the handoff where the job can fail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Most commerce failures are a promise one system made and another could not keep, so the book's central claim is about joins, not components.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Black Friday oversell: a storefront promising from a two-hour-old copy.",
+              "shows": "A late copy broke a stock promise.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            },
+            {
+              "kind": "scenario",
+              "what": "The Three-Status Order: Delivered on the platform, In picking in the warehouse and Not invoiced in the ERP for six days.",
+              "shows": "Three honest systems were describing three different objects.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            },
+            {
+              "kind": "scenario",
+              "what": "The Double Refund: 212 returns refunded twice.",
+              "shows": "Two systems were each entitled to refund the same return.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: a storefront hands the shopper a promise ticket that the warehouse, carrier, payment provider and ledger must keep; a torn envelope marks where it breaks.",
+              "shows": "The claim in one picture: promises made in one place, kept in another, broken at a join."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Handoffs that can be late, lost, duplicated or misread.",
+            "introduces": "The central claim, with three Kestrel & Pine incidents as instances.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Architecture is the discipline of answering three questions for every promise: who may make it, how the others learn of it, and what happens when they disagree.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three questions, what each means in practice, and where the book answers it first (boundaries-and-systems-of-record, integration-styles, events-consistency-and-reconciliation).",
+              "shows": "Each question is a concrete decision with a chapter behind it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Failures at the joins.",
+            "introduces": "The three questions that address them, and the chapter that first answers each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-patterns",
+      "heading": "The Failure Patterns",
+      "controlling_idea": "Commerce platforms break promises through sixteen recurring patterns in four families, which travel in chains that usually start at the joins; the next page unpacks them.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Gives the claim about broken promises its recurring forms, by name only and directly after the claim, so the next page has something to unpack."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The claim that most failures are a promise one system made and another could not keep, and the three questions that address it.",
+        "introduces": "The named, recurring forms those broken promises take.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "form": "list",
+          "controlling_idea": "Commerce platforms break promises through recurring patterns that each looked reasonable when chosen; the next page unpacks sixteen of them, and this page gives only their names in four families (truth, integration, platform and change, governance) as an index.",
+          "function": "description",
+          "organization": "classification"
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The patterns travel in chains that usually start at the joins, Kestrel & Pine's incidents are instances of them, and every chapter names the patterns it works on, so the list can be used as an index.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A Spaghetti Junction of unowned connectors breeds Messages in a Bottle, which breed Phantom Stock and Boomerangs.",
+              "shows": "A chain that starts with integration ends as wrong facts."
+            },
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's Black Friday 2026 met The Phantom Stock in the two-hour-old copy and The First Snowfall in a stock chain that met real load for the first time on the day.",
+              "shows": "The opening's incident is two named patterns at once.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Sixteen names in four families.",
+            "introduces": "How one pattern breeds another, and how chapters use the names.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Four Scale Stages, and Why Every Chapter Compares Them",
+      "controlling_idea": "The right architecture depends on the shape of the business, so the book follows one merchant as it grows and every chapter compares its decision across four scale stages.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Argues that there is no single right answer, and names the four stages the answers are sorted by."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim and its table, then the rule for reading the table, then why the comparison is repeated in every chapter; the reason comes last because it needs the stages to be named."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The three questions and the failure patterns, which are the same for every merchant.",
+        "introduces": "What differs: the right answers, which change with the size and shape of the merchant.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "The questions are the same for every merchant but the right answers are not: the right architecture for a merchant with one shop is the wrong one for a group of brands in six countries and the reverse, which is why the book follows one merchant as it grows and compares its decisions across four scale stages.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Starting, Growing, Omnichannel and Group, each with a rough revenue band, a typical shape and the years Kestrel & Pine spent in it (2016–2018, 2019–2022, 2023 to now, not yet).",
+              "shows": "The stages are recognizable shapes of business, and the running merchant has passed through three of them."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The shape of the business decides the stage; the revenue bands are illustrative markers, not thresholds.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A €15 million brand with stores, wholesale and two countries already has Omnichannel problems.",
+              "shows": "A merchant inside the Growing revenue band can have the next stage's shape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The revenue bands in the table.",
+            "introduces": "Shape, not revenue, as what decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Every chapter in the main body of the book compares the stages, because the most common mistake in commerce architecture is a design that was right two stages ago or will be right two stages from now.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's 2026 troubles are mostly Growing-stage designs, such as an hourly stock sync built for fewer channels, still running under Omnichannel load.",
+              "shows": "The mistake is a once-right design kept past its stage.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Stages decided by shape.",
+            "introduces": "The stage table in every chapter and the mistake it guards against.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kestrel-and-pine",
+      "heading": "Kestrel & Pine",
+      "controlling_idea": "Kestrel & Pine is a fictional €48 million omnichannel brand whose incidents and Waypoint program run through every chapter, a composite to be read for its equivalents in the reader's own business.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Introduces in outline the one merchant whose growth the book follows, directly after the stages it grows through and before the sections that rely on its 2027 story."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "What the merchant is, then its landscape and costs, then the program that answers them, then how to read the whole example; the reading advice comes last because it applies to all three."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The one merchant the stage table follows from 2016 to now, and its 2026 troubles.",
+        "introduces": "The merchant itself: fictional, its size, landscape, incidents and the program that changes its architecture during 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "The merchant in the stage table is Kestrel & Pine, a fictional brand, founded in Arnhem in 2016, that earns €48 million in 2026 across online, wholesale, stores and marketplaces, the shape of the Omnichannel stage.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€27 million online across the Netherlands, Belgium and Germany, €12 million wholesale, €6 million in stores, €3 million through marketplaces; 1,100 wholesale accounts, six stores, three marketplaces (bol, Amazon.de, Zalando).",
+              "shows": "Four channels of very different size, the shape of an Omnichannel-stage merchant.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Its landscape of thirteen systems and 34 integrations holds orders and product content in four places each with no shared management, and its recurring incidents expose the cost.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About €96,000 from overselling, €19,400 refunded twice and €14,200 deducted for pallet labels that did not match shipment notices.",
+              "shows": "Each cost comes from a fact held in more than one place.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The merchant's channels.",
+            "introduces": "The systems behind them and what their disagreements cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Noor Visser, the reader's stand-in, joins in January 2027 and in March launches Waypoint, a €1.1 million program that decides ownership first, buys the missing central systems second and keeps the hosted platform; its changes land later in 2027, after Eva's order.",
+          "function": "description",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Waypoint: the warehouse owns physical stock, an order management system becomes the one order record, a PIM owns product content, integrations get owners, contracts and reconciliation, and the company stays on its hosted platform; eight decisions, W1 to W8, canonical.",
+              "shows": "The program is the book's claim applied: ownership before products.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The landscape and its costs.",
+            "introduces": "The person who meets them and the program that answers them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Kestrel & Pine is a composite of patterns common among growing omnichannel brands, not a disguise for any company, introduced in full on its own page, so when Noor decides the reader should ask what the equivalent would be in their own business.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The merchant and its program.",
+            "introduces": "Its status as a composite, and how to use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "journey",
+      "heading": "The Order's Journey as the Spine",
+      "controlling_idea": "The book is organized around the journey of one order at Kestrel & Pine, Eva's jacket, whose facts never change.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives the organizing line of the first of the two ways to read the book, in the order one order happens, before the table of parts that follows it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The merchant and its 2027 program.",
+        "introduces": "The one order at that merchant whose journey organizes the book.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "At that merchant the book is organized around the journey of one order, Eva's jacket, whose canonical facts never change.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ordered Tuesday 13 April 2027 at 21:14, picked and packed at the Duiven warehouse on Wednesday, delivered by PostNL on Thursday 15 April, exchanged for a size L through the returns portal on Monday 19 April.",
+              "shows": "The order is fixed, so every chapter can refer to the same dates.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "organization",
+      "heading": "How the Book Is Organized",
+      "controlling_idea": "The eleven parts follow the order's journey and each answers one question; Part I carries the vocabulary the rest needs, the chapters share one shape, and Part IX runs the journey whole.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Lays out the whole reading path the thesis says to follow in order, with the reason for its order given first."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole layout, then how it maps onto the journey, then the one part it rests on, then the shape of a chapter, then the one part that departs from that shape; Part IX comes last because it retells the step-by-step parts."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The order's journey.",
+        "introduces": "The layout that follows from it: every part, the question it answers and the shape of a chapter.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The book's eleven parts follow that journey: with three preface pages, an appendix tutorial and four reference pages around them, each part asks one question.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fourteen rows from Preface to Reference: the question each section answers and the chapters it holds.",
+              "shows": "A reader can list the parts' subjects in order from one table."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Parts II to V follow the order in sequence, Part VI is about the arrows between systems, and a short paragraph near the top of each chapter says which step of Eva's order the reader is looking at.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table of parts.",
+            "introduces": "How the parts map onto the order's journey, in a figure, and how each chapter signals its place on it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: Eva's order crosses Parts II to V in the order it happens; Part VI covers the arrows between them; Parts VII to XI step back.",
+              "shows": "The parts are positions on one path."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Part I is the one part not to skip, because it introduces the vocabulary, the capability map and the entity–owner table that every later chapter points back to.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The parts and their place on the journey.",
+            "introduces": "The one part every other part depends on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Every chapter in Parts II to VIII answers the same five questions, opens with a scene at Kestrel & Pine and ends with take-aways, design-review questions and sources.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The parts.",
+            "introduces": "The shape of a chapter inside them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Where Parts II to V take the journey a step at a time, each of Part IX's four journeys runs one Kestrel & Pine story with fixed dates whole and twice, through the January 2027 architecture before Waypoint and the late-2027 one after it, so a reader who learns best from a whole example can read one early.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's order, her exchange, the Bergzicht Outdoor chain's spring reorder by EDI and Black Friday, each run through the late-2027 architecture and the January 2027 one.",
+              "shows": "The dates stay fixed; what changes is whether the promises matched them.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Chapters of one shape, each showing one step.",
+            "introduces": "Part IX, whose four journeys run a story whole, and when to read one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "decision",
+      "heading": "Start With the Decision in Front of You",
+      "controlling_idea": "A reader with a decision already on the desk can enter the book from a routing table instead of reading the parts in order, and has the toolkit's templates as working aids.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives the second way to read the book that the thesis names."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The parts as a learning path for a first reading.",
+        "introduces": "Entry by decision, for a reader who cannot read in order first.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "If a decision is already on the desk, the reader finds the matching row, reads the chapter to start with, follows the others if more is needed, and returns to Part I when a term or an owner is unclear.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve decisions (replatforming, overselling, an order management system, a PIM, prices, refunds, marketplaces, wholesale and EDI, integrations, architecture style, Black Friday, apps and agents), each with a chapter to start with and up to three to read next.",
+              "shows": "Each common decision has a named entry point."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Overselling starts with the inventory chapter, not the storefront or the marketplace connector, because the fix is deciding which system owns stock, not making the copies faster.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The overselling row, which starts with inventory-and-availability.",
+              "shows": "The table routes by cause, the ownership of a fact, not by where the failure shows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The routing table.",
+            "introduces": "One row whose starting chapter is not where the symptom appears.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The toolkit's sixteen working templates are the book's working aids, and the reader should start with the template that changes the decision they face this week.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A reader with a decision on the desk.",
+            "introduces": "The working templates that help carry the decision out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The advice and its table, then one row that shows how the table routes, then the aids to use once a chapter is found; the aids come last because they serve a decision already located."
+      }
+    },
+    {
+      "id": "leaves-to-others",
+      "heading": "What the Book Leaves to Others",
+      "controlling_idea": "Three neighboring subjects appear only where they touch commerce architecture, and each has a book of its own in the collection.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Marks where the book's subject stops, directly after the routing table, so a reader does not look here for what another book covers."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The decisions the routing table sends to a chapter of this book.",
+        "introduces": "Three neighboring subjects the book deliberately leaves to other books.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "Payments and ledgers in depth, running a marketplace and the internals of AI agents appear only where they touch commerce architecture, and each is the subject of another book in the collection (RECONCILED, LISTED, Architecting Agentic Systems).",
+          "function": "context",
+          "organization": "classification"
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "heading": "How to Read the Evidence",
+      "controlling_idea": "Every chapter keeps six kinds of statement apart, dates its company and regulatory claims, and sorts its conclusions into three tiers, so the reader can tell how much weight each sentence carries.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows how the book lets a newcomer tell fact from judgement, illustration and assumption."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The kinds of statement first, with the two confusions; then the dating rule with its three public cases; then the tiers of conclusion. The tiers come last because they sort conclusions built from the six kinds."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The reader now knows where in the book to go and where its subject stops.",
+        "introduces": "How to weigh what they find in a chapter.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Every chapter keeps six kinds of statement apart, because architecture writing becomes unreliable when facts, habits, guesses, opinions, examples and estimates blur into one voice.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Documented fact, industry practice, reference-architecture inference, recommendation, illustration and assumption, each with what it is and how to recognize it.",
+              "shows": "Each kind has a visible mark the reader can look for."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Two distinctions are easy to lose: a Kestrel & Pine figure is an illustration, not an industry benchmark, and a recommendation that sounds like a fact is still a recommendation.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The 24% item return rate at Kestrel & Pine.",
+              "shows": "A fictional figure can look like a benchmark."
+            },
+            {
+              "kind": "example",
+              "what": "\"The warehouse is the system of record for physical stock.\"",
+              "shows": "A recommendation can be phrased like a fact and still has reasons and exceptions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The six kinds.",
+            "introduces": "The two pairs most often confused.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Claims carry dates because an undated claim quietly goes stale: Zalando described replacing a design in March 2025, and vendor interfaces change on published dates.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "In March 2025 Zalando's engineering blog described replacing a price-and-stock event stream, which could fall up to 30 minutes behind during Cyber Week, with a synchronous read API.",
+              "shows": "A chapter describing the earlier design without its date would teach the opposite lesson.",
+              "source": "Zalando Engineering, 2025"
+            },
+            {
+              "kind": "fact",
+              "what": "On 3 November 2026 bol announced that its Offers API v10 stops on 1 February 2027.",
+              "shows": "An interface a merchant depends on has an end date.",
+              "source": "bol partner platform, 2026"
+            },
+            {
+              "kind": "fact",
+              "what": "Shopify releases a new API version every quarter.",
+              "shows": "Change is on a calendar, not an exception.",
+              "source": "Shopify API versioning documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The documented fact, written with its year in the sentence.",
+            "introduces": "Why the year is there.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Laws run on a timetable too, so every company and regulatory claim carries its date, evidence older than about three years is flagged, and announced features are kept apart from generally available ones.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The EU rule that a price reduction must be shown against the lowest price of the previous 30 days has applied since 28 May 2022.",
+              "shows": "A legal requirement has a date from which it binds.",
+              "source": "Directive (EU) 2019/2161"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Company designs and vendor interfaces with dates.",
+            "introduces": "Laws with dates of application, and the rule the book draws from all three.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Every chapter ends its argument with take-aways split into three tiers (established, depends on context, the author's synthesis), so the reader can tell how much weight each conclusion carries.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Established, depends on context and the author's synthesis, each with what it holds and how to use it.",
+              "shows": "Each tier comes with an instruction for the reader."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Statements sorted by kind inside a chapter.",
+            "introduces": "Conclusions sorted by weight at its end, under the subheading 'Three tiers of take-away'.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draws-on",
+      "heading": "What the Book Draws On",
+      "controlling_idea": "The book rests on public dated sources, verified research briefs and domain models used only as maps; it is vendor-neutral and uses no internal material.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Says what stands behind the book's statements, so that a documented fact can be trusted as public and an illustration as fiction."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The kinds of statement, among them documented facts and illustrations.",
+        "introduces": "The material those statements were built from.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "The book uses three kinds of material and no others: public dated sources, verified research briefs, and domain models used as research maps only.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Productscape domain models in the author's sibling repository, inferred from public product behavior and mapped to chapters in domain-coverage.",
+              "shows": "They are models, not descriptions of any company, and nothing in them is used as a fact about a vendor."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The book is vendor-neutral: it recommends architectures, names Kestrel & Pine's systems by role, and presents real companies only as dated cases with their sources.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Shopify, Amazon, Zalando, and commercetools and Shopware with the composable movement, each a dated case chapter.",
+              "shows": "Real companies show what was decided, why and at what size; none is presented as the answer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Material that is public and dated.",
+            "introduces": "The same restraint applied to products and companies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Nothing in the book comes from confidential documents or inside knowledge of any company; where the public record cannot supply a situation, it uses Kestrel & Pine.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the book uses.",
+            "introduces": "What it never uses, and what stands in instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The material used, then the stance toward vendors and real companies, then what is excluded and what stands in for it; the exclusion comes last because it leads to the fictional merchant."
+      }
+    },
+    {
+      "id": "living-journal",
+      "heading": "A Living Journal",
+      "controlling_idea": "The book is a living journal with a stated research cut-off, a visible spec behind every chapter and an author who answers for it.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "States the limits of the book's evidence: how current it is, what it was written against and who is responsible."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "How current the facts are, what each chapter was written against, then how the writing was done; responsibility is stated last so that it covers all three."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Public, dated sources as the book's material.",
+        "introduces": "The date up to which they were checked, the visible spec behind each chapter, and how the book was made.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The book is a living journal whose research cut-off is 7 November 2026, so a time-sensitive fact should be checked at the source before being relied on.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The Kestrel & Pine story is set in 2027, a year after the cut-off, and uses the real dates published by November 2026 where it touches them.",
+              "shows": "The fiction does not invent real-world dates."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Every chapter links to the specification it was written against, including its open questions, so the book should be read as current thinking with its limits stated.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A book that is revised.",
+            "introduces": "The spec behind each chapter as a visible statement of its limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The author developed the book through AI-mediated authoring, setting the concept, structure, chapter contracts and arguments and reviewing the result, and is responsible for its content, judgements and errors.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The specs chapters were written against.",
+            "introduces": "Who wrote the contracts, what AI tools did and who answers for the text.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Go Next",
+    "synthesis": "The parts, the routing table, the stage comparison and the kinds of statement are four ways of asking one question of a promise: which system makes it, which system keeps it, and how far the answer holds for a business of the reader's shape. Whether the reader goes on in order or jumps from a decision, every chapter is about one of Eva's five promises and about which system keeps it.",
+    "so_what": "The reader can open any chapter, in order or from the routing table, and ask of it which promise it is about and which system keeps that promise; that question comes before the question of which product to buy.",
+    "callback": {
+      "to": "Eva's order from the opening and the five promises the shop made when it confirmed it.",
+      "how": "The promises return as five words (this jacket, at this price, in stock, on Thursday, returnable), and the reader can now see them as the index to every chapter."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Read on in order (the sixteen patterns, then Kestrel & Pine, then Part I with the journey of an order), or use the routing table and come back to Part I when a term is unclear; either way keep Eva's five promises in mind."
+    },
+    "hand_off": {
+      "to": "where-commerce-platforms-go-wrong",
+      "relationship": "elaboration",
+      "carries_over": "The claim that a failure is a promise one system made and another could not keep, the four scale stages, and the bare list of sixteen pattern names in four families.",
+      "introduces": "The next page unpacks each of the sixteen patterns."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The argument, the merchant, the layout and the evidence rules.",
+      "introduces": "The next step for each of the two kinds of reader, and the one question to carry into every chapter.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p45",
+        "controlling_idea": "A reader going in order turns next to the patterns page, then to Kestrel & Pine, then to Part I, and a reader with a decision uses the routing table and returns to Part I when a term is unclear.",
+        "function": "recommendation"
+      },
+      {
+        "id": "p46",
+        "controlling_idea": "Either way every chapter is about one of Eva's five promises and which system keeps it: the parts, the routing table, the stage comparison and the kinds of statement are ways of asking that one question, and it comes before the question of which product to buy.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The two ways of going on.",
+          "introduces": "What both have in common: Eva's five promises as the question to ask of every chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The sixteen failure patterns in depth.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    },
+    {
+      "topic": "Kestrel & Pine's full profile, systems and incidents.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "Any chapter's argument beyond one line; the templates and the definitions.",
+      "covered_in": [
+        "toolkit",
+        "glossary"
+      ]
+    },
+    {
+      "topic": "Payments and ledgers in depth, running a marketplace, and the internals of AI agents: handed off through the allowed sibling permalinks.",
+      "covered_in": [
+        "payments-fundamentals (RECONCILED)",
+        "liquidity-and-network-effects (LISTED)",
+        "tool-ecosystems-and-mcp (Architecting Agentic Systems)"
+      ]
+    },
+    {
+      "topic": "Any mention of the private source journal or its brief."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Revisit the routing table once reviewers report which decisions readers actually bring.",
+    "For the author: the journal spec's outcome asks for 'Kestrel & Pine in one paragraph'; the page gives it four paragraphs (p34–p37). Cutting to one paragraph would remove the author's figures, so it was not done; either the page is cut or the outcome in journal-spec.json is reworded (for example 'in outline').",
+    "For the author: AC-4's expected answer (journal spec) lists the opening's topics in the old order and does not name the failure patterns, what the book leaves to others or how current the evidence is; the roadmap now announces all twelve sections in their new order. If AC-4 is to be judged against the full roadmap, its expected answer needs updating in journal-spec.json.",
+    "For the author: the toolkit paragraph moved to 'Start With the Decision in Front of You' and the heading 'Kestrel & Pine and the Toolkit' became 'Kestrel & Pine'. Revert if the published heading must stay.",
+    "For the author (journal spec): round 1's two flow readers both could not use the bare list of sixteen pattern names and skimmed it. The list is required by the journal spec's outcome ('the names of the sixteen failure patterns in four families') and role ('gives the pattern names ... so the next two pages have something to unpack'), so it stays; the page now says the names are an index. Decide whether this page should name only the patterns it uses and leave the full list to the next page; that needs journal-spec.json changed first.",
+    "For the author: the merchant's profile now stands after the scale stages, ahead of the journey and the layout. AC-4's expected answer (journal spec) still lists the merchant last.",
+    "Flow rubric, not acted on: the paragraph on the advising architect's voice (p08) could stand next to the author's note (p44).",
+    "Flow rubric (third run, after the reorder: sound with notes), not acted on: 'hosted platform' in p36 uses 'platform' in the product sense that p09 rules out; p21's 'five questions' follows the argument's 'three questions' without a different name; the one-paragraph journey section (p14) could be merged into 'How the Book Is Organized' as its opening, which both flow readers of round 2 also said; the toolkit could be named where the reference pages are listed.",
+    "Draft check, round 3 (escalated, 16 pass, 15 fail of which 5 minor): the ten blocking findings were fixed in the page afterwards without a fourth round, so check-report.json is stale and the fixes are unchecked: p18 no longer cites part numbers before the table (the one finding at fault in the spec); p16 restates the three questions; p36 says Waypoint's changes land after Eva's order and that chapters cite its eight decisions as W1 to W8; p38 opens on the decision; 'channels', 'old stock copies', 'key', 'replatforming' and 'reconciliation' are reworded or glossed. Run the draft check again before accepting the spec.",
+    "Draft check, remaining for the author (one reader each, or remarks): the opening callout is one long sentence; 'Recommendation' as a kind of statement is not related to the tiers 'Depends on context' and 'The author's synthesis'; the twenty-system sentence of p09 and the chain sentence of p41 were re-read; '2023 to now' and the 2027 setting are explained only in 'A Living Journal'; 'capability map', 'entity–owner table', 'this collection' and 'verified research briefs' are not explained; 'One row starts somewhere you might not expect' did not surprise any reader; the opening does not signal the dated public sources that AC-4's expected answer names; transitions into p04, the argument section, p12 and p43 are only implicit.",
+    "For the author: the page is at the 4,500-word limit; each gloss added needed a cut. Raising length.max_words would allow the glosses left out."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on three flow findings at fault in the spec, each reported by both flow readers; the author pre-approved taking such recommendations. (1) The merchant's section moves from the end to directly after the scale stages, which in turn follow the failure patterns, because its 2027 story was needed from the journey section on. (2) The journey paragraph (p14) now precedes the table of parts, so the reason for the order of the rows is read first; the paragraph mapping parts to the journey (p15, with Figure 2) and the Part IX paragraph (p22) follow the table in 'How the Book Is Organized'. (3) The sixteen pattern names stay, as the journal spec requires, and the paragraph says they are an index. The glossary sentence is cut from the toolkit paragraph (p38), which the rubric and both flow readers found repeated. After round 2 (no new spec fault; the pattern list remains): draft faults fixed in the named units; on both rubric runs' note the dating rule is no longer repeated in the living-journal paragraph (p42), which keeps the cut-off and 'check the source'; p22 says Parts II to V, as p15 does. After round 3 (the last): p18 drops its parenthesis citing Parts II to VIII, the one finding at fault in the spec, and the draft faults are fixed in the page without a further round.",
+      "rejected": [
+        "Dropping pattern names from this page: the journal spec's outcome and role require all sixteen.",
+        "Leaving the merchant last and adding its timeline to the opening: both readers named the section's position."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Order of ideas changed: the failure patterns follow the argument; the table of parts ('How the Book Is Organized') precedes the journey and the stages, which cite parts by number; the paragraph on Part IX's journeys moves into the journey section; the one-line paragraph on different answers by size (old p13) is merged into the opening of the stages section and Figure 1 attached to the central claim; the toolkit paragraph moves to the decision section and the merchant's heading becomes 'Kestrel & Pine'; what the book leaves to others follows the routing table; the living-journal section joins the evidence group; the two paragraphs of dated interface changes (old p27, p28) are merged; the conclusion becomes two paragraphs, directions and then a synthesis with the callback. The roadmap in the opening callout announces every section in order, the fourth opening paragraph names the audience and the two ways of reading, Kestrel & Pine is called fictional where first used, and EDI, WMS and PIM are glossed on first use. Every transition_in whose predecessor changed is rewritten. Intent, thesis, role and acceptance criteria are unchanged. Second rubric run (sound with notes): the merchant's stage is named in p34, p41 no longer says chapters 'open' by naming patterns (p21 says they open with a scene), the flow labels and the declared reason are corrected.",
+      "rejected": [
+        "Keeping the published order and removing the part numbers from the journey and stages sections: Figure 2's caption cites the parts.",
+        "Moving the merchant's profile next to the scale stages: AC-4's expected answer puts the merchant after the evidence rules, and the evidence rules say what an illustration is.",
+        "Cutting Kestrel & Pine to one paragraph: it would remove the author's figures; left as an open question.",
+        "Changing AC-4's expected answer: it is copied from the journal spec."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Spec reconstructed from the published page in its own order when spec.md was converted to spec.json: one paragraph per published unit, the opening callouts as the placement of thesis and roadmap, 'Where to Go Next' as the conclusion and 'Sources and Evidence' outside the units. Where the contract asks for something the page does not do, it is recorded as an open question and the page is left unchanged.",
+      "rejected": [
+        "Reordering the sections in the spec (for example moving the failure patterns next to the argument) and marking the page as drifted.",
+        "Describing the opening as announcing sections it does not announce."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims S1 to S5 written for the post: reader, argument, dependence on scale, how to read the book, how to weigh its statements. The sections on what the book leaves to others and on the living journal are placed under S4 and S5 as scope and limits.",
+      "rejected": [
+        "A sixth supporting claim for scope alone."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Lead built on Eva's order as five promises, so the argument is concrete before it is stated."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Part table phrased as one question per part, taken from the written part intros rather than the plan."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "\"Why claims carry dates\" uses public, dated interface changes (Zalando 2025, bol 2026, Shopify versioning) and the Omnibus 30-day rule, all already cited in chapters."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "WHY IT MATTERS callout omitted, following the book-wide change."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "where-commerce-platforms-go-wrong",
+      "contributed": "The sixteen pattern names, their four families and the chains."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "Eva's order, Kestrel & Pine's figures, incidents, Noor Visser and the Waypoint program; the four scale stages."
+    },
+    {
+      "kind": "internal",
+      "ref": "part-1 to part-11",
+      "contributed": "The question each part answers, taken from the written part introductions."
+    },
+    {
+      "kind": "internal",
+      "ref": "domain-coverage and toolkit",
+      "contributed": "The role of the Productscape models as research maps; the list of templates."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "The six kinds of statement, the three take-away tiers and the dating rules."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md",
+      "contributed": "The book's structure and the contract for this page."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando Engineering, From event-driven to API, 2025",
+      "contributed": "The example of a design replaced: event delays of up to 30 minutes during Cyber Week and the move to a synchronous read API."
+    },
+    {
+      "kind": "external",
+      "ref": "bol partner platform, 2026",
+      "contributed": "The announcement on 3 November 2026 that Offers API v10 stops on 1 February 2027."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify developer documentation, API versioning, accessed November 2026",
+      "contributed": "Quarterly API versions."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2019/2161 (Omnibus), 2019",
+      "contributed": "The 30-day prior-price rule, applied from 28 May 2022."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "After round 3 of the draft check: p18, p36 and p14 reworded; remaining findings recorded under open_questions; the check report (round 3, escalate) is stale after the final fixes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 2 of the draft check: p41 ties the incidents to their patterns, p42 confined to the cut-off, p22 and p36 reworded; rubric and reader notes not acted on recorded under open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 1 of the draft check: sections reordered to who, argument, failure-patterns, stages, kestrel-and-pine, journey, organization, decision, leaves-to-others, evidence, draws-on, living-journal; p15 and p22 move to 'organization'; roadmap, flow and transitions rewritten; p38 without the glossary. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Order of ideas improved on the flow rubric's notes, taken without review at the author's request: twelve sections regrouped (claim; moving through the book; trust; the merchant), p13 merged into p16 and p28 into p27, conclusion split into p45 and p46, roadmap and transitions rewritten. The check report is stale; index.md is revised to match. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json, reconstructed from the published page in its own order; intent, thesis and role copied from the journal spec; success criteria rewritten as outcomes (AC-6 to AC-8) or dropped; the open question about replacing the mermaid journey diagram is closed, since the visual pass of 2026-11-07 redrew it as an illustration. Status back to draft until the author accepts it. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 1 mermaid diagram as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: \"a ledger story\" now reads as a Kestrel & Pine story. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 4500
+  }
+}
