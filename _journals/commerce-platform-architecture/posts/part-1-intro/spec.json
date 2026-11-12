@@ -1,0 +1,575 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-1",
+  "journal": "commerce-platform-architecture",
+  "part": "part-1",
+  "title": "Part I — COMMERCE: What a Commerce Platform Is",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-1-intro/index.md, 451 words, ten units) and its former spec.md, then reordered the same day (see decision_log); the page was revised to match. One spec paragraph per unit of the page; the KEY POINTS callout and the three figures are evidence of the paragraph they stand with (Figure 3 with the roadmap, p04).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part I answers five questions in order: what happens to an order, who sells what to whom, what the parts are, who owns each fact, and what the market sells."
+      ],
+      "can_do": [
+        "Pick the Part I chapter that answers the decision in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture in their first weeks at a merchant, a vendor or an agency (engineers, product managers and leaders) who have read the preface and are about to start Part I, or who arrive with one decision in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "The preface's claim that a commerce platform is the set of systems that make and keep promises (introduction).",
+        "Kestrel & Pine in outline: a fictional outdoor brand, its thirteen systems, its incidents, Noor Visser and the Waypoint program (meet-kestrel-and-pine)."
+      ],
+      "does_not_know": [
+        "Shop platform, as the book's name for the hosted product that runs the webshop (defined in journey-of-an-order).",
+        "Writer, capability, record and copy, scale stage, platform category: each is owned by a Part I chapter and is only named or glossed in a clause here.",
+        "Eva's order as the journey's worked example."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+        "expected": "Order journey; business models; capability map; ownership of facts; platform landscape."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given two decisions, the reader names the Part I chapter that answers each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Two decisions are in front of you: (a) your webshop and your warehouse show different stock for the same item, and you must decide which number is right; (b) a vendor proposes replacing your shop software. Using only this page: which chapter of this part do you open for each, and why?",
+        "expected": "(a) boundaries-and-systems-of-record, the chapter that assigns an authoritative owner to each fact and separates records from copies; (b) commerce-platform-landscape, the chapter that compares platform categories and their operating costs and tests two rebuild proposals."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say why the order's journey comes first and the platform landscape last.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: why does this part start with the chapter that follows one order, and end with the chapter on what the market sells?",
+        "expected": "The order's journey is the concrete case of the part's claim and gives the steps the later chapters build on; each answer is the vocabulary the next question needs; products can be judged only once the jobs are mapped and the owners of facts are named."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What is a commerce platform, before any technology is chosen?",
+    "claim": "A commerce platform is the whole set of systems that make and keep promises to a customer, and nearly every commerce failure is a promise one system made and another could not keep.",
+    "disputed_by": "The everyday meaning of 'commerce platform' as the product a merchant buys to run its web shop.",
+    "so_what": "A merchant that treats the platform as one product looks for failures inside that product and replaces it; a merchant that sees the set of systems looks at the joins and fixes ownership.",
+    "how_why": "The storefront makes the promises in seconds while the warehouse, carrier, payment provider and finance system keep them over days, each from its own copy of the facts.",
+    "supporting_claims": [
+      {
+        "id": "P1-1",
+        "claim": "An order is a chain of promises handed from system to system, and it breaks at the handoffs."
+      },
+      {
+        "id": "P1-2",
+        "claim": "Who sells what to whom decides which promises are made and therefore which systems are needed."
+      },
+      {
+        "id": "P1-3",
+        "claim": "The platform is a map of capabilities, each owning one kind of fact, and no vendor covers the whole map."
+      },
+      {
+        "id": "P1-4",
+        "claim": "For each fact exactly one system must be the record; every other value is a copy."
+      },
+      {
+        "id": "P1-5",
+        "claim": "Buying a platform moves the integration work to a different owner; it does not remove it."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis and the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the five chapter paragraphs, in the part's reading order"
+      }
+    ],
+    "rationale": "The page opens on one shopper's order as the hook, to which the closing returns, and then narrows from the part's claim, to the one company the claim is tested on, to the five questions that take that company apart, to one paragraph per chapter, and ends on what the five answers add up to and where to start. The company stands before the chapter list because the chapter paragraphs name its cases and its Waypoint program, and each introduces its own person (Eva, Noor Visser) in a clause; the five questions stand directly before the list because they are the principle that orders it; the reading advice comes last because a reader can choose a chapter only after seeing what each one decides. Put the list first and Kestrel & Pine and Waypoint arrive unexplained; put the five questions before the company and they have nothing to be asked of; put the advice first and it points at chapters the reader has not met."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A shopper places one order, but the warehouse, carrier, payment provider and finance team each have work to do before it is complete."
+    },
+    "bridge": {
+      "from_reader_world": "The reader's experience as a shopper: one click, one confirmation, one order.",
+      "to_topic": "The merchant's side of that order, where the storefront's promises about product, price, stock, delivery and returns depend on answers from other systems; hence the question of what a commerce platform is."
+    },
+    "thesis_statement": {
+      "text": "Part I argues that a commerce platform is the whole set of systems that make and keep those promises, and that nearly every failure is a promise one system made and another could not keep. The product a merchant buys to run its webshop is one of those systems.",
+      "placement": "KEY POINTS bullet 1 and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "paragraph p04",
+      "promises": [
+        {
+          "promise": "Five chapters answer five questions in order: what happens to an order, who sells what to whom, what the parts of a platform are, who owns each fact, and what the market sells.",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "One order placed by a shopper is finished only when the warehouse, the carrier, the payment provider and the finance team have each done their work, so the storefront's promises depend on systems the shopper never sees.",
+        "function": "example",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "One order: the storefront promises product, price, stock, delivery and returns; the warehouse, carrier, payment provider and finance team have work to do before it is complete.",
+            "shows": "The promise is made in one place and kept in others, which is the situation the part's claim explains."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: a ticket of promises carried from the online shop to a warehouse, a delivery van, a payment terminal and a ledger.",
+            "shows": "The storefront writes the promises in seconds; the other systems have to honour them over days."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Part I's claim: a commerce platform is the whole set of systems that make and keep those promises, of which the product bought to run the webshop (the shop platform) is only one, and nearly every failure is a promise one system made and another could not keep; so the part covers the business before the technology.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 2: the order's journey as a chain of promises, the storefront making them early and the other systems keeping them late.",
+            "shows": "Every arrow is a handoff that can be late, lost, duplicated or misread, which is where the claim locates failures."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The one order and the storefront's promises that other systems must keep.",
+          "introduces": "The claim the part draws from it, the name 'shop platform' for the product that is only one of those systems, and the scope of the part: business jobs, their owners and the software supporting them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The part tests the claim on Kestrel & Pine, a fictional outdoor brand whose thirteen systems hold orders and product data in four places each and let six writers change warehouse stock, and whose Waypoint program starts by deciding who owns what.",
+        "function": "example",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Kestrel & Pine (fictional): €48 million revenue in 2026, thirteen systems, 34 integrations, 41 apps; orders and product data each in four places; six writers of warehouse stock; Waypoint begins in March 2027.",
+            "source": "_research/scenario-ledger.md; meet-kestrel-and-pine",
+            "shows": "One merchant in which facts have several holders and no agreed owner: the claim's kind of failure, in numbers the chapters reuse."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The claim that failures are promises one system made and another could not keep.",
+          "introduces": "The one company on which every chapter of the part tests it, with the term 'writer' glossed in a clause.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Part I examines that company with five questions in a fixed order (what happens to an order, who sells what to whom, what the parts are, who owns each fact, what the market sells), one chapter each, because each answer is the vocabulary the next question needs.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Kestrel & Pine's landscape and its unowned facts.",
+          "introduces": "The five questions the part asks of it, in order, and the reason for the order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 3: the five questions of Part I in reading order.",
+            "shows": "Each answer is the vocabulary the next question needs, and together they are the reasoning behind Kestrel & Pine's 2027 decisions."
+          }
+        ]
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters decides one question and tests the answer on one Kestrel & Pine case, and each builds on the chapter before it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P1-1",
+          "P1-2",
+          "P1-3",
+          "P1-4",
+          "P1-5"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one of the part's five supporting claims, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "p05 to p07: one order, then every way of selling, then the whole map"
+          }
+        ],
+        "rationale": "The part's own reading order. The journey names the steps that the business models vary; the models say what a merchant must be able to do, which the capability map lays out; the map names the facts whose ownership the fourth chapter assigns; and only with jobs mapped and owners named can the reader judge what the market sells. Move the landscape chapter earlier and products are compared before the reader knows what they must do."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The five questions in order.",
+        "introduces": "One paragraph per chapter: the question in bold, what the chapter does with it and its Kestrel & Pine case.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Chapter 1 follows one purchase through thirteen steps, and its two orders show the normal path and why one status word cannot describe an order.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P1-1"
+            ],
+            "how": "Introduces the chapter that shows an order as a chain of handoffs."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's jacket order (the normal path) and another order marked delivered, in picking and uninvoiced at once.",
+              "shows": "The chapter works on concrete orders, and one of them cannot be explained by a single status."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Chapter 2 shows that the systems a merchant needs follow from the shape of its business: the same journey needs different pricing, payment and fulfillment depending on who buys and through which channel, and the chapter names four such shapes as scale stages.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P1-2"
+            ],
+            "how": "Introduces the chapter that ties the systems needed to who sells what to whom."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "One jacket sold to a consumer, a shop, a marketplace customer or a store visitor.",
+              "shows": "The product is constant, so the differences in systems come from the buyer and the channel."
+            },
+            {
+              "kind": "fact",
+              "what": "Four scale stages, from Starting to Group; a merchant moves between them by adding channels, locations and brands, not by passing a revenue figure.",
+              "source": "commerce-business-models",
+              "shows": "The stages are named cases of the same point: the shape of the business, not its size, decides the systems."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The thirteen steps of the journey, which stay the same.",
+            "introduces": "What changes around them with the buyer and the sales channel.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Chapter 3 maps the jobs a merchant must perform, which the book calls capabilities, before any software is chosen, and placing Kestrel & Pine's systems on that map exposes missing capabilities and overlapping writers.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P1-3"
+            ],
+            "how": "Introduces the chapter that draws the platform as a map of capabilities."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Head of Engineering Noor Visser places Kestrel & Pine's systems against the jobs.",
+              "shows": "The map is a working tool: it shows what is missing and where several writers overlap."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ways of selling, which say what a merchant must be able to do.",
+            "introduces": "The jobs themselves, laid out as a map before any software is chosen.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Chapter 4 assigns one authoritative owner to each fact, which the map alone cannot do when two systems hold the same fact and disagree.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P1-4"
+            ],
+            "how": "Introduces the chapter that separates the record of a fact from its copies."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Six competing answers about Kestrel & Pine's stock, resolved in the worked example; systems meaning different things by 'order'.",
+              "shows": "Disagreement between systems is the normal case the chapter resolves."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The capability map, which says which job should hold a fact.",
+            "introduces": "What the map cannot settle: two systems holding the same fact and disagreeing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Chapter 5 comes last, once jobs are mapped and owners named: it compares seven platform categories and their operating costs, and two proposals to rebuild Kestrel & Pine's webshop end in keeping the shop platform and adding the missing capabilities.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P1-5"
+            ],
+            "how": "Introduces the chapter that shows a product moves integration work and does not remove it."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Two rebuild proposals tested against Kestrel & Pine's actual problems; the company keeps its shop platform and adds missing capabilities.",
+              "shows": "A new product would not have solved problems of ownership."
+            },
+            {
+              "kind": "fact",
+              "what": "Seven platform categories, with dated evidence through 2026.",
+              "source": "commerce-platform-landscape",
+              "shows": "The comparison rests on dated public evidence, sourced in that chapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The jobs mapped and the owners of facts named.",
+            "introduces": "What the market sells to do those jobs, and what it costs to operate.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What the Five Answers Add Up To, and Where to Begin",
+    "synthesis": "The five answers are one line of reasoning: each is the vocabulary the next question needs, and together they are the reasoning behind Kestrel & Pine's 2027 decisions. Its problems were facts nobody owned, at the handoffs between systems, which no replacement product would have fixed.",
+    "so_what": "A reader who has the five answers looks for a failure at the handoffs between systems and asks who owns the fact, before asking which product to buy.",
+    "callback": {
+      "to": "The shopper's one order of the opening (p01), whose promises the storefront makes and other systems keep.",
+      "how": "The order is now the thread of the part: its promises are kept or broken by systems the shopper never sees, and the first chapter follows it through them."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Read the five chapters in order; with one decision in hand, open the chapter that answers it; otherwise begin with the order's journey."
+    },
+    "hand_off": {
+      "to": "journey-of-an-order",
+      "relationship": "example",
+      "carries_over": "The part's claim that a commerce platform is the set of systems that make and keep promises.",
+      "introduces": "One order followed through thirteen steps, as the concrete case of that claim."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five chapters and what each decides.",
+      "introduces": "What the five answers amount to together, and how to read them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p10",
+        "controlling_idea": "The five answers are one line of reasoning that explains the decisions of Kestrel & Pine's Waypoint program in 2027: its problems were facts without an owner, which no replacement product would have fixed, as the shopper's one order shows once it is followed past the storefront.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p11",
+        "controlling_idea": "A reader with one decision in hand can start at the chapter that answers it; everyone else reads the chapters in order, because each answer builds on the one before, beginning with the order's journey, the concrete case of the part's claim.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The five answers as one line of reasoning.",
+          "introduces": "How to read them: in order, or from the chapter a decision points to, starting with one order followed through thirteen steps.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any chapter's content; the page summarizes and does not re-argue.",
+      "covered_in": [
+        "journey-of-an-order",
+        "commerce-business-models",
+        "commerce-capability-map",
+        "boundaries-and-systems-of-record",
+        "commerce-platform-landscape"
+      ]
+    },
+    {
+      "topic": "The Waypoint decisions in detail.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "The failure patterns' definitions.",
+      "covered_in": [
+        "where-commerce-platforms-go-wrong"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Draft-check round 3 (escalate, budget spent): two failures, both in p06 (the business-models paragraph) and both the draft's fault: the unifying idea (the shape of the business decides the systems) was not stated, and 'four such business shapes' pointed back at the four buyers. Fixed after the round without a further check: the idea is now stated in the first sentence and the stages are introduced as the shape growing. The check report is therefore stale; a re-check should confirm p06.",
+    "Round 3 minor points, not failed: KEY POINTS bullet 3 is dense (both flow readers re-read it); p11's reason for reading in order sits in its second sentence; the 'therefore' in p02 is thin. Left for the author. Two others were fixed with p06: 'shop' for a wholesale buyer, and 'the number' before stock was named.",
+    "Flow rubric (2026-11-12, sound with notes), note not taken: the dependency between chapters is stated five times (p04, the chapter section, p09 'comes last, once the jobs are mapped and the owners named', p10, p11); the reader suggested cutting the clause from p09 and shortening p11. Kept, because AC-3 asks the reader to say why the landscape comes last and p09's clause is its transition. For the author: cut it if the repetition reads heavy.",
+    "Flow rubric, minor note not taken: 'thirteen systems' (p03) and 'thirteen steps' (p05) invite a false link. Both are the ledger's and chapter 1's numbers.",
+    "For the author (format): the closing heading 'Where to Begin' is new to this page; the other ten part intros still end the chapter list with 'Begin with [[…]].' and have no closing section. Decide whether they follow when they are converted."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 2 (escalate: 13 passed, 4 failed; one failure at fault in the spec), under the author's standing approval: p06's idea was double (the buyer and channel, 'and also' the scale stages); it is now one idea, the shape of the business decides the systems, with the scale stages as its named cases. Figure 3 moves beside the roadmap paragraph (p04), which lists the five questions it draws: both flow readers asked for this in both rounds, which outweighs the earlier objection to three figures in the opening. p11 addresses the reader with one decision first and everyone else second, so the two pieces of advice no longer overlap. Draft: the three-status order rephrased; record glossed in KEY POINTS; the 41 apps placed on the shop platform.",
+      "rejected": [
+        "Dropping the scale stages from the page: 'scale stage' is part of the vocabulary the part's role promises.",
+        "A paragraph of its own for the scale stages: the list has one paragraph per chapter."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1 (escalate: 14 passed, 4 failed; one failure at fault in the spec), under the author's standing approval: the closing heading 'Where to Begin' announced only the reading advice (p11), and both flow readers found the synthesis (p10) misplaced under it; the heading is now 'What the Five Answers Add Up To, and Where to Begin'. p06 says what a scale stage is. The synthesis says 'handoffs', the page's word, where it said 'joins'. Draft: KEY POINTS bullet 3 glosses capabilities and shop platform; scale stages glossed from chapter 2 (Starting to Group; channels, locations and brands); Waypoint introduced as the improvement program.",
+      "rejected": [
+        "Moving Figure 3 beside the roadmap paragraph (one flow reader): three figures would stand in the first four paragraphs.",
+        "Splitting the closing into two headed sections: too much apparatus for two paragraphs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. Taken: the declared reason now names the opening order as the hook and gives the break for swapping p03 and p04; Eva and the rebuild proposals are introduced in a clause where they appear; 'the 2027 decisions' are tied to the Waypoint program p03 introduced; 'landscape' is kept for chapter 5's market and no longer used for Kestrel & Pine's systems; 'four scale stages' without the article. No unit was moved.",
+      "rejected": [
+        "Cutting the 'comes last' clause from p09 and shortening p11 (see open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis (question, claim, disputed_by, so_what, how_why) and its five supporting claims P1-1 to P1-5 unchanged; each chapter paragraph introduces the chapter that argues one of them. Intent outcome, AC-1 and role are copied from the post entry; hook from the part's opening.",
+      "rejected": [
+        "Writing a separate thesis for the page from its question ('What does Part I argue, and in what order should its chapters be read?'): it would restate the part's claim and add a claim about reading order that the journal spec does not make."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). The seven success criteria were inventories and are not carried as criteria: three KEY POINTS then <br> (house format, kept on the page); a lead of 2 to 4 paragraphs that names Kestrel & Pine as fictional once (now paragraphs p01 to p04); one or two mermaid diagrams (obsolete since the figures were redrawn as illustrations on 2026-11-07); the format of the chapter list (kept on the page; its outcome is AC-1 and the new AC-2); numbers matching the ledger (checked at conversion, see changelog; not a reader outcome); 500 to 900 words (now length.max_words 900); a one-line Sources and Evidence (apparatus, kept). The old Audience line ('leave knowing the five questions in order, and why the order's journey comes first') became AC-3. The open question about generated illustrations was answered by the visual pass of 2026-11-07 and is closed.",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order of ideas changed from the published page. (1) The opening paragraph is split: the one order (p01), then the part's claim stated in prose (p02); it was stated only in the KEY POINTS and the excerpt. (2) Kestrel & Pine (p03) moves before the roadmap (p04), so that the five questions stand directly before the chapter list they order. (3) Figure 2 (the chain of promises) moves from after the Kestrel & Pine paragraph to the claim it illustrates. (4) The page gets a short closing under a new heading, 'Where to Begin': a synthesis with Figure 3 (p10) and the reading advice (p11). The advice 'start with the decision you need' moves there from the roadmap, next to 'Begin with journey-of-an-order', which it used to contradict from six paragraphs away. (5) The roadmap gives the five questions and the reason for their order instead of a one-line summary of each chapter, which the list repeats.",
+      "rejected": [
+        "Keeping 'Begin with [[journey-of-an-order]].' as the last line of the chapter list with no closing section: the schema requires a conclusion, and the page had no place that said what the five chapters add up to.",
+        "Putting Figure 3 after the roadmap: three figures would stand in the first four paragraphs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Terms: chapter 1 now calls the hosted product 'the shop platform' and keeps 'commerce platform' for the whole set of systems. The page follows: p02 names the shop platform as one of the systems, and Kestrel & Pine 'keeps its shop platform'. 'Platform categories' stays for chapter 5's subject, as in the journal spec. 'Four growth stages' becomes 'four scale stages' (the book's term) and 'purchase thresholds' becomes 'revenue thresholds' (chapter 2: stages are defined by shape, not revenue). 'Writer' is glossed where it first appears, from chapter 4's definition.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 shows the part as five questions in reading order rather than Kestrel & Pine's systems, because commerce-capability-map already draws the systems and the intro's job is orientation. (Carried from spec.md; after the visual pass this figure is Figure 3.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns rather than two, because Part I's chapters address the Truth family (Phantom Stock, Schrödinger's Order) and the platform-and-change family (Spaghetti Junction, Giant's Boots) in roughly equal measure. (Carried from spec.md; the FAILURE PATTERNS block it refers to was dropped on 2026-11-08.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-1 and its post entry part-1)",
+      "contributed": "Intent, AC-1 and role (post entry); thesis, supporting claims and opening hook (part); the transitions between the five chapters; chapter 1's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "journey-of-an-order, commerce-business-models, commerce-capability-map, boundaries-and-systems-of-record, commerce-platform-landscape",
+      "contributed": "The chapters summarized, in their words and numbers; 'shop platform' and 'writer' as defined in chapters 1 and 4."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The fictional facts."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md (Part I contracts) and _research/INTRO-BRIEF.md",
+      "contributed": "Shape and length of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 3: escalate (16 pass, 2 fail, both in p06, fault draft). Cheap fixes applied to the draft afterwards with no further round, so check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 2: escalate (13 pass, 4 fail). Spec: p06 made one idea, Figure 3 moved to p04, p11 reworded. Draft revised in the same units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 1: escalate (14 pass, 4 fail). Closing heading changed in the spec; three local fixes in the draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec) and reordered the page; status draft. Numbers checked against the ledger and the chapters at conversion: €48 million, thirteen systems, 34 integrations, 41 apps, four places, six writers, March 2027, thirteen steps, four scale stages, six answers about stock, seven categories, two proposals. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: described the February 2027 pitches per consistency ruling 13. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and part introduction. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 900,
+    "target_words": 650
+  }
+}
