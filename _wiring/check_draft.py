@@ -42,10 +42,10 @@ from pathlib import Path
 import outcome_specs as osp
 
 
-def locate(post_dir):
+def locate(post_dir, need_spec=True):
     post_dir = Path(post_dir).resolve()
     spec, draft = post_dir / osp.POST_SPEC, post_dir / "index.md"
-    for f in (spec, draft):
+    for f in ((spec, draft) if need_spec else (draft,)):
         if not f.is_file():
             sys.exit(f"missing {f}")
     journal_dir = next((p for p in post_dir.parents if (p / "config.yaml").is_file()), None)
@@ -63,7 +63,7 @@ def rel(path):
 
 
 def cmd_units(post_dir):
-    _dir, _spec, draft, _journal = locate(post_dir)
+    _dir, _spec, draft, _journal = locate(post_dir, need_spec=False)  # also used to reconstruct a spec
     parsed = osp.parse_draft(draft.read_text(encoding="utf-8"))
     out = []
     for region in parsed["regions"]:

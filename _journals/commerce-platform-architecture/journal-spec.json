@@ -5,7 +5,7 @@
   "id": "commerce-platform-architecture",
   "title": "ORDERED: Architecting Commerce Platforms",
   "status": "draft",
-  "revised": "2026-11-11",
+  "revised": "2026-11-12",
   "basis": "Worked example, reconstructed after the fact from PLAN.md, config.yaml, the introduction, the Part I pages and the closing lines of Parts X and XI. The journal level and every part are specified; posts are specified in full for Part I only and at outline level elsewhere (folder, title and question taken from PLAN.md). Part theses for Parts II to XI are derived from the plan and the section descriptions, not from a reading of those chapters, and need the author's confirmation.",
   "intent": {
     "outcome": {
@@ -204,6 +204,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Chapter 1 (journey-of-an-order): thesis claim reworded by the author's decision after it failed the thesis rubric; it now answers its question (what has to happen, in which systems) before saying where an order breaks, and drops 'nearly every commerce failure'. The last clause is limited to breaks in the chain between systems, since failures inside one system also exist."
+    },
     {
       "date": "2026-11-11",
       "change": "Reconstructed from the published book as the worked example for the outcome-specs proposal. Status draft."
@@ -441,7 +445,7 @@
           },
           "thesis": {
             "question": "What has to happen, in which systems, for one online order to be found, bought, paid, shipped, delivered, returned and accounted for?",
-            "claim": "An order is a chain of promises rather than a database row: each of its thirteen steps hands it to a different system, and nearly every commerce failure is a handoff message that arrived late, was lost, was duplicated or was misread.",
+            "claim": "For one order to be found, bought, paid, shipped, delivered, returned and accounted for, thirteen steps must each complete in a system that keeps its own copy of the order and learns of changes only by message; the order is therefore a chain of promises between systems, and a break in that chain is a message that arrived late, was lost, was duplicated or was misread.",
             "disputed_by": "The view that an order is one record with one status, and that failures are bugs inside the system that holds it.",
             "so_what": "If failures live in handoffs, a merchant looks for them between systems and gives each handoff an owner, instead of replacing the system that reported the symptom.",
             "how_why": "Each system holds its own copy of the order and learns of changes only by message; money, goods and returns move through separate states, so one status word cannot be true in every system at once."
