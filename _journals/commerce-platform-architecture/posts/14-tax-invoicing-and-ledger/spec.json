@@ -94,14 +94,6 @@
     "severity": "minor",
     "probe": "A Dutch consumer pays €60.50 for a jacket, price including VAT at the standard rate. Using only this chapter: what are the net amount and the VAT?",
     "expected": "Net €50.00 and VAT €10.50: the price includes 21% VAT, so the net is the gross divided by 1.21."
-   },
-   {
-    "id": "AC-7",
-    "statement": "The conclusion performs Part III's closing: it says what the part's four chapters show together (one problem, not four), why that matters before any product is bought, and returns to the part opening's shopper who has paid while the order still reads unpaid.",
-    "check": "custom",
-    "method": "rubric",
-    "severity": "minor",
-    "expected": "A conclusion paragraph names the part's incidents as one problem (a fact first known by a system the merchant does not control, reaching the others by message, with agreement only where there is one home, one writer, a key and a comparison), gives the rules-before-purchases so-what, and calls back to the paid-but-unpaid shopper of the part opening."
    }
   ]
  },
@@ -151,14 +143,14 @@
    },
    {
     "pattern": "chronological",
-    "applies_to": "vat to reconciliation: the documents in the order an order produces them (tax at checkout, invoice at dispatch, ledger entries, the monthly match)"
+    "applies_to": "vat to example: the documents in the order an order produces them (tax at checkout, invoice at dispatch, ledger entries, the monthly match), then one order run through all of them"
    },
    {
     "pattern": "comparison",
     "applies_to": "choices and stages"
    }
   ],
-  "rationale": "Sanne's close comes first so every term arrives as part of the answer to her two questions. What the shop owes finance comes next because it names the documents and their owners, which every later section uses. VAT precedes tax at checkout and at invoice because the two moments apply the rules VAT supplies; tax at invoicing leads into the invoice, which must be understood as a legal document before the e-invoice, its structured form, and before the ledger, which is posted from it. Reconciliation follows the ledger because it proves the entries agree with the money. The choices come after all the rules because each choice is a way of applying them, and the stages after the choices because they say which answer fits when. The worked example comes after the choices so that it can show the recommended answers at work (before them, its daily batch, per-shipment invoice and refund-versus-credit-note job would be remedies with no names), and the failures come last because each is read against the rule that prevents it. Moving the owner table after VAT would leave the tax, invoice and ledger sections referring to owners not yet named; moving the invoice after the ledger would post entries from a document the reader has not met; moving reconciliation before the ledger would match entries that have not been explained."
+  "rationale": "Sanne's close comes first so every term arrives as part of the answer to her two questions. What the shop owes finance comes next because it names the documents and their owners, which every later section uses. VAT precedes tax at checkout and at invoice because the two moments apply the rules VAT supplies; tax at invoicing leads into the invoice, which must be understood as a legal document before the e-invoice, its structured form, and before the ledger, which is posted from it. Reconciliation follows the ledger because it proves the entries agree with the money. The worked example follows reconciliation, while the ledger and mismatch tables are fresh, so that their rows get figures: Eva's order runs through the frozen tax basis, the invoice at dispatch, the entries, the payout and the refund-versus-credit-note job, and Ardennes Trail Co.'s through the reverse charge and Peppol. The choices come after the example because each choice is a way of applying the rules the two orders showed at work, and the stages after the choices because they say which answer fits when. The failures come last because each is read against the rule that prevents it. Moving the owner table after VAT would leave the tax, invoice and ledger sections referring to owners not yet named; moving the invoice after the ledger would post entries from a document the reader has not met; moving reconciliation before the ledger would match entries that have not been explained; moving the example after the choices and stages (the earlier order) left the ledger and reconciliation tables abstract for two sections, as readers in two rounds reported."
  },
  "introduction": {
   "hook": {
@@ -210,16 +202,16 @@
      ]
     },
     {
-     "promise": "Compare the choices and say how they change with scale.",
+     "promise": "Work Eva's order and Ardennes Trail Co.'s Peppol invoice through.",
      "kept_in": [
-      "choices",
-      "stages"
+      "example"
      ]
     },
     {
-     "promise": "Work Eva's order and Ardennes Trail Co.'s Peppol invoice through, then list what goes wrong.",
+     "promise": "Compare the choices and say how they change with scale, then list what goes wrong.",
      "kept_in": [
-      "example",
+      "choices",
+      "stages",
       "wrong"
      ]
     }
@@ -285,7 +277,7 @@
    },
    {
     "id": "p05",
-    "controlling_idea": "The chapter starts from Sanne de Wit's April close, says what the shop owes finance, explains VAT and the two moments tax is computed, treats the invoice and the e-invoice, shows the ledger entries and the reconciliation, compares the choices and the scale stages, works Eva's order and a Belgian wholesale invoice over Peppol through and ends with what goes wrong; its evidence is EU and national tax rules, payment-provider and ERP documentation and Kestrel & Pine's month-end.",
+    "controlling_idea": "The chapter starts from Sanne de Wit's April close, says what the shop owes finance, explains VAT and the two moments tax is computed, treats the invoice and the e-invoice, shows the ledger entries and the reconciliation, works Eva's order and a Belgian wholesale invoice over Peppol through, compares the choices and the scale stages and ends with what goes wrong; its evidence is EU and national tax rules, payment-provider and ERP documentation and Kestrel & Pine's month-end.",
     "function": "transition",
     "evidence": [
      {
@@ -308,7 +300,7 @@
   {
    "id": "scene",
    "heading": "Setting the Scene at Kestrel & Pine: Sanne's April Close",
-   "controlling_idea": "Sanne de Wit's April 2027 close has four payment routes to reconcile, two unresolved winter incidents and a new Peppol obligation, and it leads her to ask which system may issue an invoice and how the orders, payouts and bank can be proved to agree every month.",
+   "controlling_idea": "Sanne de Wit's April 2027 close has four payment routes to reconcile, two winter incidents that show what the close must catch and a new Peppol obligation, and it leads her to ask which system may issue an invoice and how the orders, payouts and bank can be proved to agree every month.",
    "function": "example",
    "advances_thesis": {
     "supports": [
@@ -359,7 +351,7 @@
      "transition_in": {
       "relationship": "contrast",
       "carries_over": "The four routes of the routine close.",
-      "introduces": "The first of two unresolved incidents.",
+      "introduces": "The first of two winter incidents that show what the close must catch.",
       "form": "sentence",
       "placement": "start_of_this"
      }
@@ -504,7 +496,7 @@
   {
    "id": "vat",
    "heading": "VAT in Plain Words",
-   "controlling_idea": "Five facts about VAT decide the rate on a sale: rates differ by country and category, prices are stored tax-inclusive or tax-exclusive, cross-border consumer sales are taxed at the destination, business sales to another EU country are reverse-charged, and the United States has state sales tax instead.",
+   "controlling_idea": "Four facts about VAT decide the rate on a sale (rates differ by country and category, prices are stored tax-inclusive or tax-exclusive, cross-border consumer sales are taxed at the destination, business sales to another EU country are reverse-charged), and the United States, with state sales tax instead, is the contrast.",
    "function": "definition",
    "advances_thesis": {
     "supports": [
@@ -514,7 +506,7 @@
    },
    "flow": {
     "pattern": "grouping",
-    "rationale": "The five facts are parallel; rate and basis come first because the cross-border and business rules change which rate and basis apply, and the US comes last as the contrast that explains tax engines."
+    "rationale": "The four facts are parallel; rate and basis come first because the cross-border and business rules change which rate and basis apply, and the US comes last as the contrast that explains tax engines."
    },
    "transition_in": {
     "relationship": "elaboration",
@@ -526,7 +518,7 @@
    "paragraphs": [
     {
      "id": "p15",
-     "controlling_idea": "Five facts about VAT carry the chapter.",
+     "controlling_idea": "The right tax rests on four facts about VAT and one contrast.",
      "function": "transition"
     },
     {
@@ -621,7 +613,7 @@
     },
     {
      "id": "p21",
-     "controlling_idea": "The United States has no VAT but state sales taxes that a remote seller must collect above a state's threshold since Wayfair, across thousands of jurisdictions, which is why tax engines exist.",
+     "controlling_idea": "The United States has no VAT but state sales taxes that a remote seller must collect above a state's threshold since Wayfair, across thousands of jurisdictions, which is why tax engines exist. A Dutch merchant that opens a US storefront inherits all of this on day one.",
      "function": "comparison",
      "evidence": [
       {
@@ -683,7 +675,7 @@
      "evidence": [
       {
        "kind": "source",
-       "what": "Stripe Tax: proportional allocation and the highest rate.",
+       "what": "Stripe Tax: proportional allocation (split by the lines' amounts) and the highest rate (all of it at the cart's highest rate).",
        "shows": "There are documented methods, and the choice affects later credit notes."
       }
      ],
@@ -882,7 +874,7 @@
     },
     {
      "id": "p32",
-     "controlling_idea": "The mandate dates differ per country: Belgium from 1 January 2026, German receipt since 2025 and issuing from 2027 or 2028, a Dutch plan for 1 July 2030 and ViDA's cross-border reporting from 1 July 2030.",
+     "controlling_idea": "The mandate dates differ per country: Belgium from 1 January 2026, German receipt since 2025 and issuing from 2027 or 2028, a Dutch plan for 1 July 2030 and ViDA's cross-border reporting from 1 July 2030. For Kestrel & Pine the German issuing dates, the next to arrive, light the Long Fuse.",
      "function": "evidence",
      "evidence": [
       {
@@ -923,7 +915,7 @@
   {
    "id": "ledger",
    "heading": "From Order to Ledger: What Gets Posted",
-   "controlling_idea": "The ERP posts standard entries from documents, and three accounting rules sit under them: revenue counts when control passes (at Kestrel & Pine, at delivery), a right of return is a liability, and gift cards are liabilities until redeemed.",
+   "controlling_idea": "The ERP posts from documents under three accounting rules: revenue counts when control passes (at Kestrel & Pine at delivery, with a month-end cut-off for an invoice issued at dispatch), which shapes the standard entries for a consumer order; a right of return is a liability; gift cards are liabilities until redeemed.",
    "function": "explanation",
    "advances_thesis": {
     "supports": [
@@ -932,8 +924,8 @@
     "how": "Shows the postings from documents and the rules that decide when revenue counts."
    },
    "flow": {
-    "pattern": "large_to_small",
-    "rationale": "The entries first, then the rules that govern them; the cut-off follows the revenue rule because it is that rule applied to an invoice issued at dispatch."
+    "pattern": "small_to_large",
+    "rationale": "The revenue rule and the cut-off first, then the entries they shape, then the two liability rules: the entries table posts revenue on an invoice issued at dispatch, which reads as the recognition point unless the revenue rule and the cut-off have been stated (both readers of rounds 2 and 3 re-read the table for this reason); the liability rules follow the table, where its credit-note and gift-card rows have been seen (both round-4 readers found them out of place between the revenue rule and the table)."
    },
    "transition_in": {
     "relationship": "sequence",
@@ -945,27 +937,15 @@
    "paragraphs": [
     {
      "id": "p34",
-     "controlling_idea": "The general ledger records every transaction as a debit and a credit, and the ERP posts a consumer order's invoice, payout, credit note, chargeback and gift-card sale as standard entries from documents; the invoice posts revenue at dispatch and a month-end cut-off aligns it with the revenue rule below.",
+     "controlling_idea": "The general ledger records every transaction as a debit and a credit, and the ERP posts to it from documents, not events, under three accounting rules.",
      "function": "definition",
      "evidence": [
       {
-       "kind": "table",
-       "what": "Journal entries for invoice at dispatch, payout, credit note, chargeback, gift card sold.",
-       "shows": "Every entry comes from a document or a payout report."
+       "kind": "reasoning",
+       "what": "Definition of the general ledger and double entry; the documents-not-events rule from the owner table.",
+       "shows": "The reader knows what a ledger is before the rules and entries."
       }
      ]
-    },
-    {
-     "id": "p35",
-     "controlling_idea": "Three accounting rules sit under the table.",
-     "function": "transition",
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The entries.",
-      "introduces": "The rules that decide their timing and nature.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
     },
     {
      "id": "p36",
@@ -980,7 +960,7 @@
      ],
      "transition_in": {
       "relationship": "sequence",
-      "carries_over": "The announcement of three rules.",
+      "carries_over": "The announcement of three accounting rules.",
       "introduces": "The first: when revenue counts.",
       "form": "sentence",
       "placement": "start_of_this"
@@ -1026,6 +1006,25 @@
      }
     },
     {
+     "id": "p35",
+     "controlling_idea": "Under the revenue rule, a consumer order paid through a PSP posts standard entries (invoice at dispatch, payout, credit note, chargeback, gift-card sale); the invoice row posts revenue at dispatch and the cut-off moves undelivered parcels into the next month.",
+     "function": "evidence",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The revenue rule and the cut-off.",
+      "introduces": "The standard entries they shape.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     },
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Journal entries for invoice at dispatch, payout, credit note, chargeback, gift card sold.",
+       "shows": "Every entry comes from a document or a payout report, and the gift card and credit note follow the liability rules."
+      }
+     ]
+    },
+    {
      "id": "p39",
      "controlling_idea": "A right of return is a liability: with a 19% order return rate, expected refunds are estimated at period end.",
      "function": "claim",
@@ -1039,8 +1038,8 @@
      ],
      "transition_in": {
       "relationship": "sequence",
-      "carries_over": "The first rule and its consequences.",
-      "introduces": "The second rule.",
+      "carries_over": "The revenue rule and the entries table, whose credit-note row reverses a sale.",
+      "introduces": "The second rule: expected returns are a liability.",
       "form": "sentence",
       "placement": "start_of_this"
      }
@@ -1120,6 +1119,12 @@
        "kind": "table",
        "what": "What does not match, why, and how to catch it (five rows).",
        "shows": "Each mismatch has a cause and a check."
+      },
+      {
+       "kind": "case",
+       "what": "Table row restored: four payout feeds (online PSP, terminal provider, marketplaces, B2B receivables), one reconciliation job per feed with one owner (W5, Waypoint's integration standard).",
+       "shows": "Sanne's four payment routes each need their own match and owner.",
+       "source": "Kestrel & Pine scenario ledger (tax-invoicing-and-ledger line: four payout feeds)"
       }
      ],
      "transition_in": {
@@ -1153,127 +1158,6 @@
    ]
   },
   {
-   "id": "choices",
-   "heading": "The Choices",
-   "controlling_idea": "Three decisions shape the handoff (where tax is computed, where the invoice is issued, how the ledger learns), each with a simplest, usual and scaled answer, and the usual answer fits Kestrel & Pine's stage.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "S2",
-     "S3",
-     "S4"
-    ],
-    "how": "Turns the rules into choices a merchant makes and recommends one per row."
-   },
-   "flow": {
-    "pattern": "comparison",
-    "rationale": "Three decisions on the same three answers, then the recommendation; the table needs all three decisions named first."
-   },
-   "transition_in": {
-    "relationship": "problem_solution",
-    "carries_over": "The rules for tax, invoices, entries and the match.",
-    "introduces": "The decisions a merchant makes to apply them.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p44",
-     "controlling_idea": "Three decisions shape the handoff, each with three realistic answers.",
-     "function": "transition"
-    },
-    {
-     "id": "p45",
-     "controlling_idea": "Tax can be computed in the shop platform's rate tables, in a tax engine called from checkout and invoicing (necessary for the United States), or in the ERP at invoicing only, which is wrong for a consumer shop.",
-     "function": "comparison",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "The announcement of three decisions.",
-      "introduces": "The first: where tax is computed.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p46",
-     "controlling_idea": "The invoice can be issued by the shop platform, the ERP, or an invoicing service in front of several ERPs where some countries run state clearance.",
-     "function": "comparison",
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "Where tax is computed.",
-      "introduces": "The second decision: where the invoice is issued.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p47",
-     "controlling_idea": "The ledger can learn from one posting per paid order, from documents in a daily idempotent batch, or from summary journals with detail in a sub-ledger.",
-     "function": "comparison",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Simplest, usual and scaled answer per decision, with risks.",
-       "shows": "Sets the options side by side on the same criteria."
-      }
-     ],
-     "transition_in": {
-      "relationship": "sequence",
-      "carries_over": "Where the invoice is issued.",
-      "introduces": "The third decision: how the ledger learns.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p48",
-     "controlling_idea": "The author recommends the usual answer in each row for a merchant at Kestrel & Pine's stage, including a job that lists orders that should have been invoiced and were not, the job whose absence left the Three-Status Order uninvoiced.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "conclusion_summary",
-      "carries_over": "The three decisions and their answers.",
-      "introduces": "The recommended answer for this merchant.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "stages",
-   "heading": "Across Scale Stages: When It Fits and When It Limits",
-   "controlling_idea": "The shape of the handoff (documents, identifiers, one issuer, one match) does not change with scale; the number of feeds and legal entities does, and with it whether anyone can still match by eye.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "S1",
-     "S5"
-    ],
-    "how": "Shows that the documents and the match are constant and only their number grows."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The recommended answers.",
-    "introduces": "How the answers change from stage to stage.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p49",
-     "controlling_idea": "The shape of the handoff does not change with scale, only the number of feeds and legal entities, and Kestrel & Pine's answer is Waypoint's integration standard W5: finance by daily batch with a reconciliation job per flow.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Four stages: typical, necessary, warning signs.",
-       "shows": "What grows is the count of feeds and entities, not the shape."
-      }
-     ]
-    }
-   ]
-  },
-  {
    "id": "example",
    "heading": "Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice",
    "controlling_idea": "Eva's order and Ardennes Trail Co.'s wholesale order show every rule at work: the tax basis frozen on the order, an invoice per shipment at dispatch, a payout matched on the batch reference, a credit note for the exchange, and a reverse-charge Peppol invoice with the buyer reference.",
@@ -1293,7 +1177,7 @@
    },
    "transition_in": {
     "relationship": "example",
-    "carries_over": "The rules and the recommended answers.",
+    "carries_over": "The rules for tax, invoices, entries and the match, just stated in the ledger and mismatch tables.",
     "introduces": "Two orders worked through with them.",
     "form": "sentence",
     "placement": "start_of_this"
@@ -1460,6 +1344,127 @@
    ]
   },
   {
+   "id": "choices",
+   "heading": "The Choices",
+   "controlling_idea": "Three decisions shape the handoff (where tax is computed, where the invoice is issued, how the ledger learns), each with a simplest, usual and scaled answer, and the usual answer fits Kestrel & Pine's stage.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "Turns the rules into choices a merchant makes and recommends one per row."
+   },
+   "flow": {
+    "pattern": "comparison",
+    "rationale": "Three decisions on the same three answers, then the recommendation; the table needs all three decisions named first."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "The rules the two orders followed.",
+    "introduces": "The decisions a merchant makes about where to apply them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p44",
+     "controlling_idea": "Each rule the two orders followed leaves a merchant a decision about where to apply it: three decisions shape the handoff, each with three realistic answers.",
+     "function": "transition"
+    },
+    {
+     "id": "p45",
+     "controlling_idea": "Tax can be computed in the shop platform's rate tables, in a tax engine called from checkout and invoicing (necessary for the United States), or in the ERP at invoicing only, which is wrong for a consumer shop.",
+     "function": "comparison",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The announcement of three decisions.",
+      "introduces": "The first: where tax is computed.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "The invoice can be issued by the shop platform, the ERP, or an invoicing service in front of several ERPs where some countries run state clearance.",
+     "function": "comparison",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Where tax is computed.",
+      "introduces": "The second decision: where the invoice is issued.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p47",
+     "controlling_idea": "The ledger can learn from one posting per paid order, from documents in a daily idempotent batch, or from summary journals with detail in a sub-ledger.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Simplest, usual and scaled answer per decision, with risks.",
+       "shows": "Sets the options side by side on the same criteria."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Where the invoice is issued.",
+      "introduces": "The third decision: how the ledger learns.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "The author recommends the usual answer in each row for a merchant at Kestrel & Pine's stage, including a job that lists orders that should have been invoiced and were not, the job whose absence left the Three-Status Order uninvoiced.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The three decisions and their answers.",
+      "introduces": "The recommended answer for this merchant.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "stages",
+   "heading": "Across Scale Stages: When It Fits and When It Limits",
+   "controlling_idea": "The shape of the handoff (documents, identifiers, one issuer, one match) does not change with scale; the number of feeds and legal entities does, and with it whether anyone can still match by eye.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S5"
+    ],
+    "how": "Shows that the documents and the match are constant and only their number grows."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The recommended answers.",
+    "introduces": "How the answers change from stage to stage.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p49",
+     "controlling_idea": "The shape of the handoff does not change with scale, only the number of feeds and legal entities, and Kestrel & Pine's answer is Waypoint's integration standard W5: finance by daily batch with a reconciliation job per flow.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four stages: typical, necessary, warning signs.",
+       "shows": "What grows is the count of feeds and entities, not the shape."
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "wrong",
    "heading": "When It Goes Wrong",
    "controlling_idea": "Five failures recur (tax that differs, the invoice that never came, the invoice that came twice, the mandate discovered late, and the refund that doubled with the payout that does not match), and each is detected by a list or job and recovered by a document, never an edit.",
@@ -1477,7 +1482,7 @@
    },
    "transition_in": {
     "relationship": "contrast",
-    "carries_over": "The two orders that went right.",
+    "carries_over": "The two orders that went right (Eva's and Ardennes Trail Co.'s).",
     "introduces": "What goes wrong and how it is detected.",
     "form": "sentence",
     "placement": "start_of_this"
@@ -1567,7 +1572,7 @@
   "paragraphs": [
    {
     "id": "p63",
-    "controlling_idea": "The payout that reached the bank smaller than what the customer paid is explained when each order leaves documents with identifiers: the ERP alone issues invoices and credit notes per shipment, the payout report lists the fees and refunds, and the order number and batch reference let the monthly match show where every euro went, which is why the shop owes finance those facts and identifiers; that answers Sanne's two questions.",
+    "controlling_idea": "The payout that reached the bank smaller than what the customer paid is explained when each order leaves documents with identifiers: the ERP alone issues invoices and credit notes per shipment, the payout report lists the fees and refunds, and the order number and batch reference let the monthly match show where every euro went; that answers Sanne's two questions.",
     "function": "synthesis",
     "evidence": [
      {
@@ -1731,17 +1736,79 @@
  ],
  "modalities": [],
  "open_questions": [
-  "Belgian VAT rates rest on PwC's summary because the FPS Finance page served a captcha; a reviewer with access should confirm the 21/12/6/0 structure. (carried over)",
-  "Avalara's sales-order versus sales-invoice document semantics were stated as inference in the first draft because the developer pages did not render; the published chapter now says only that 'tax engines are commonly used the same way'. Replace with a citation if one can be fetched. (carried over)",
-  "The chapter states that marketplaces may collect VAT as deemed supplier only as a warning sign; the rule's scope belongs to marketplaces-and-channel-integration and should be checked there. (carried over)",
-  "Whether Kestrel & Pine's PSP fee and payout delay should become canonical ledger facts for commerce-payments is for that writer; this chapter records them as assumptions, as the ledger does. (carried over)",
-  "The journal spec assigns Part III's closing to this chapter and the published chapter had only a hand-off to Part IV. Paragraphs p68 and p69 were added to the spec and the prose to perform it (synthesis across the four chapters, so-what, callback to the part opening's paid-but-unpaid order, take-away). They add no figure; the author should check their wording against the Part III introduction once that page has been through the same pass.",
-  "The next page, the Part IV introduction (part-4), is still at `outline` in the journal spec and has no transition_in of its own; the hand-off (p70) uses the part's transition_in (sequence: the order record and the payment taken, then the physical work that has to match the record). That is enough to write the hand-off but gives no hook to hand to; revisit p70 when Part IV is brought to full detail.",
-  "Flow rubric notes not taken (two runs, both 'sound with notes'; the author decides): (a) merge the one-paragraph 'Across Scale Stages' section into 'The Choices' (kept: the stage table and its heading are the house record shape in every chapter); (b) fold the announcing sentences ('Five facts about VAT carry the chapter', 'Three properties follow', 'Three accounting rules sit under the table', 'Three decisions shape the handoff') into the paragraphs after them (kept: they are short and tell the reader how many items follow); (c) merge 'Kestrel & Pine's clothing and equipment carry the standard rate everywhere' into the rates paragraph (kept: the rates table sits between them); (d) cut the gift-card paragraph, which no later section uses (kept: gift cards are a ledger rule the journal spec's outcome does not name but Part II established as a liability); (e) the 'Established' list names the e-invoicing dates although the Belgian reach for a non-Belgian supplier is hedged and the Dutch date is a plan (kept: the list item states each date as its source does; the author may move it to 'Depends on context'); (f) 'intra-EU sales listing' in the Ardennes Trail Co. example has no gloss (left: glossing it would state a filing rule the chapter's sources do not state); (g) the recommendation in The Choices mentions 'Kestrel & Pine's stage' before the stage table (kept: the stages were introduced in Part I).",
-  "Draft check after round 3 (escalate: 19 passed, 19 failed; 8 major, 11 minor). Fixed after the round without another check: Figure 5 moved beside the payout paragraph (p53); 'When It Goes Wrong' opens from the two orders; 'finality' now matches the table's 'How consistent'; VAT defined once (p03); the PIM comparison in p66 dropped; the part close's remedies marked as coming from across the part; 'committed document' reworded. Still failing: (a) spec, both readers: the entries table (p34) posts revenue at dispatch before the revenue rule and the cut-off (p36-p38) explain it; p34 now says so in one sentence, but reordering the ledger section (rules before the table) is the author's call; (b) spec, both readers: the worked example comes after the choices and the stage table, so the ledger and reconciliation tables stay abstract for several sections; moving 'Eva's Order in the Books' to follow the reconciliation section is the candidate, and the author decides; (c) draft, corroborated: 'marketplace VAT booked as if the merchant collected it' in the stage table is never explained, and explaining it needs the marketplace deemed-supplier rule this chapter's sources do not state (see the open question on marketplaces); (d) minor single-reader points: 'receivable while defended' and the 'highest rate' allocation are unexplained; Choices and the stage table overlap and Choices restates the invoice-issuer rule; the 'unresolved' incidents in the scene against the February fix of the Double Refund; the gift-card paragraph has no case; the US counted among 'facts about VAT'; why Germany's dates light the Long Fuse.",
-  "The published chapter had no paragraph stating the thesis, no roadmap announcing every section, and no conclusion paragraph that answers the opening; p04, p05 and p63 were added, built only from statements the chapter already makes."
+  "Needs the author (rule 10): p23, the mixed-rate allocation paragraph, was found detached by both round-4 readers (Kestrel & Pine's goods all carry the standard rate and Eva's shipping is free); one reader suggested moving it beside the tax-inclusive fact in 'VAT in Plain Words' or dropping it, the other proposed no move. The fact needed: whether the chapter keeps allocation as a general rule (and where), given that it decides what a one-line credit note is worth.",
+  "Needs the author (rule 10): round-4 single-reader minors left open: what 'freeze' means against 'the invoice is right by definition' (kept for comparison, not used); whether the German issuing dates reach a Dutch seller (no cited source says; the Long Fuse sentence may need a hedge or a cut); 'three definitions of revenue' in the stage table is unexplained; Kestrel & Pine's stage is not named before the recommendation in The Choices."
  ],
  "decision_log": [
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 4 (escalate: 155 passed, 20 failed; round 4 is past the revision budget), the cheap, plainly right fixes were made without another round: W5's content given at its first use in the restored row ('W5: finance by daily batch, a reconciliation job per flow'); the Ardennes Trail Co. invoice carries the buyer reference 'which the portal now asks for', so it reads as the invoice after the April rejection; the Belgian scope hedge now follows the sentence saying what Kestrel & Pine does; the owner table's future-OMS aside reads 'or an order management system (OMS) once there is one'; Eva's split states 'net is gross ÷ 1.21'; and (rule 3, the same move asked by both round-4 readers) the two liability rules (p39, p40) move after the entries table, whose lead now reads 'Under the revenue rule'. To hold 6,500 words: the tax-flow table's lead shortened, 'Beyond the routine,' and 'The companion book' dropped (agent additions). 6,499 words.",
+   "rejected": [
+    "Starting a fifth round.",
+    "Cutting the mixed-rate allocation paragraph (p23) on one round's evidence: it supports S2 and no reader proposed the same move; left for the author."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the worked example 'Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice' moves from after the stage table to right after Reconciliation, the move both flow readers of round 3 asked for (round 2 readers found the ledger tables abstract for the same reason). The roadmap (p05), the example's opener, The Choices' opener (p44) and the opener of When It Goes Wrong are rewritten for the new neighbours; the flow rationale says why.",
+   "rejected": [
+    "Keeping the example after the choices so that it shows the recommended answers (the earlier rationale): readers in two rounds lost the ledger tables' meaning for two sections."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) in the ledger section the three accounting rules (p36 to p40, the revenue rule and the cut-off first) now come before the entries table, which becomes the section's last paragraph (p35: 'Those rules shape the standard entries...'); p34 keeps the ledger definition and announces the three rules. Both round-3 flow readers (and both round-2 readers) asked for the revenue rule and the cut-off before the table. The section's flow is small_to_large.",
+   "rejected": [
+    "Keeping the table first with a one-sentence warning (round 3 shows readers still re-read it).",
+    "Moving only the cut-off before the table: it depends on the revenue rule."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 2) the stage table's warning sign 'marketplace VAT booked as if the merchant collected it' is cut: explaining it needs the EU marketplace deemed-supplier rule, which none of the chapter's cited sources states. The open question on the rule's scope closes with it.",
+   "rejected": [
+    "Glossing the deemed-supplier rule without a cited source.",
+    "Leaving the clause unexplained (a corroborated known_before_new failure)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 5) the author's 'Four payout feeds' row is restored to the mismatch table (ledger-backed: Sanne reconciles four payout feeds), with W5 glossed there at its first use in the chapter (rule 6), and the author's 'A Dutch merchant that opens a US storefront inherits all of this on day one.' is restored to the US paragraph. To hold 6,500 words (6,498 after the resolution), agent additions were cut first (rule 4), then repetition: the stage paragraph's table read-out sentence, 'This is why the shop owes finance those facts and identifiers.' (p63), 'This chapter's answer about invoices and the books' shortened to 'This chapter closes Part III.' (p68), shorter wording in the thesis paragraph (p04) and p14a, the W5 gloss in The Choices (now at the restored row), the ERP gloss in the roadmap (ERP is glossed in Part I), and 'This is the first of two failures in the invoice itself' back to the author's 'The next two failures are in the invoice itself.'",
+   "rejected": [
+    "Leaving both cut for length: the page holds them within 6,500 words once agent additions are trimmed."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 7) AC-7 (rubric: the conclusion performs Part III's closing), added by the conversion, is dropped: it is a rubric, not a cold-reader probe. AC-6 (split a tax-inclusive total), a cold-reader probe that passed in rounds 1, 2 and 3, is kept. The part closing itself stays: the journal spec assigns it to this chapter.",
+   "rejected": [
+    "Keeping AC-7 as a minor criterion."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1) the scene no longer calls the two winter incidents 'unresolved': the ledger dates the Double Refund's fix (read-only console, one refund writer, daily refund reconciliation) to February 2027, before the April close; the incidents are now what the close must catch.",
+   "rejected": [
+    "Keeping 'unresolved' (contradicts the ledger and p43)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 6) single-reader terms from round 3 glossed at first use: 'a receivable while defended' becomes 'a receivable while the merchant contests it'; Stripe Tax's two allocation methods are described (split by the lines' amounts, or all at the cart's highest rate); the VAT section announces 'four facts about VAT and one contrast' so the US is not counted as a VAT fact; the Long Fuse paragraph says the German issuing dates are the next to arrive. 'Committed document' was already reworded after round 3.",
+   "rejected": [
+    "Leaving the terms unexplained."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1, rule 2, record) the carried-over open questions are closed: Belgian rates stay on PwC's summary, which the page cites and labels secondary (rule 2); the tax-engine two-step sentence is the author's published statement and the cited TaxJar API reference separates the tax calculation from the order transaction recorded for reporting (rule 2); the PSP fee and payout delay stay labelled assumptions, as the ledger records them (rule 1); the Part III closing (p68, p69) was checked against the Part III introduction's current text: the paid-but-unpaid shopper, the warehouse and support, the four systems and the four rules agree, and the case list follows the journal spec's closing; the Part IV introduction is now at full detail with transition_in 'sequence' (the order record and payment taken, then the physical work that must match it), which p70 already expresses and which hands to its pick-and-pack hook; the round-3 failures are settled by the decisions above.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rules 3, 8, 10) single-reader or rubric-only notes not taken: merging 'Across Scale Stages' into 'The Choices' and the overlap between them (one reader; house headings stay, rule 8); The Choices restating the invoice-issuer rule (one reader); folding the announcing sentences; merging the standard-rate sentence into the rates paragraph; cutting the gift-card paragraph (it supports S4, so rule 3 does not cut it); moving the e-invoicing dates out of 'Established' (each date is stated as its source states it, rule 2); a gloss for 'intra-EU sales listing' (would state a filing rule no cited source states, rule 2); the stage mention in The Choices before the stage table (stages known from Part I).",
+   "rejected": []
+  },
   {
    "date": "2026-11-12",
    "decision": "Converted spec.md to spec.json (auto mode). Intent outcome, the five acceptance criteria, the thesis and role are copied unchanged from the journal spec. Two criteria were added, both minor, for the author to keep or drop: AC-6 (split a tax-inclusive total, the intent's can_do that no journal criterion tests) and AC-7 (the conclusion performs Part III's closing). The old success criteria were inventories and are not carried over: the opener format, the table list and the date-and-source list describe contents; 'every term defined' is covered by the standard known_before_new check; the Eva and Ardennes figures are kept by the ledger. The word limit stays at the old spec's 6,500 words.",
@@ -1849,6 +1916,14 @@
   }
  ],
  "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Confirming round 4 (escalate: 155 passed, 20 failed, 12 major including 2 spec faults; 8 minor). Post-round fixes: W5 content at first use; Ardennes invoice tied to the portal's fix; Belgian hedge after the practice; OMS aside generic; net = gross ÷ 1.21; liability rules after the entries table. 6,499 words. The check report is stale against these edits."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Escalation resolved under the author's standing instruction: worked example moved after Reconciliation; ledger section reordered (rules, then the entries table); marketplace-VAT clause cut; 'Four payout feeds' row and US storefront sentence restored; W5 glossed at the row; scene incidents no longer 'unresolved'; glosses for the chargeback receivable, Stripe's allocation methods, the VAT 'four facts and one contrast' and the Long Fuse's German dates; AC-7 dropped; open questions closed. Then one confirming draft-check round (round 4)."
+  },
   {
    "date": "2026-11-12",
    "change": "Round 3 (escalate: 19 passed, 19 failed, 8 major of which 2 spec faults). Closing fixes without another round: Figure 5 moved to p53 (spec evidence moved with it); 'When It Goes Wrong' opener; 'consistency' in p22; VAT defined once in p03; p66 no longer compares with the PIM; p69 'across the part'; p22 'recorded calculation'. 6,495 words (limit 6,500). Remaining failures are listed in open_questions. The check report is stale against these edits."

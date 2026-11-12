@@ -173,7 +173,7 @@
           ]
         },
         {
-          "promise": "Name the three ways a shopper finds a product and the vocabulary of search.",
+          "promise": "Name the vocabulary of search and the three ways a shopper finds a product.",
           "kept_in": [
             "three-ways"
           ]
@@ -382,16 +382,21 @@
       },
       "flow": {
         "pattern": "prerequisite_order",
-        "rationale": "The three ways, then the terms, then the evidence: the research is read in the terms just defined, and the terms name parts of the three ways."
+        "rationale": "The terms, then the three ways, then the evidence: the table of the three ways uses the terms, and the research is read in both."
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "One company's failing search.",
-        "introduces": "The general ways a shopper finds a product and the words used to describe them.",
+        "carries_over": "One company's failing search, told in the words of search.",
+        "introduces": "Those words in plain language, then the general ways a shopper finds a product.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "The vocabulary of discovery is the search index, indexing, relevance, ranking, facet, merchandising rule, synonym set, typo tolerance and personalization; the zero-result rate is defined with the search report.",
+          "function": "definition"
+        },
         {
           "id": "p10",
           "controlling_idea": "Discovery is whatever connects a shopper's need to the roughly 17,000 of Kestrel & Pine's 26,000 variants that are active at any time, and it takes three forms: search, navigation and recommendations.",
@@ -402,16 +407,11 @@
               "what": "Three ways of finding: what the shopper does, what the system needs and who tunes it.",
               "shows": "Search and navigation both need indexed text and attributes; recommendations need behavior data and product relations."
             }
-          ]
-        },
-        {
-          "id": "p11",
-          "controlling_idea": "The vocabulary of discovery is the search index, indexing, relevance, ranking, facet, merchandising rule, synonym set, typo tolerance, personalization and the zero-result rate.",
-          "function": "definition",
+          ],
           "transition_in": {
             "relationship": "elaboration",
-            "carries_over": "The three ways and the things each needs.",
-            "introduces": "A plain definition of each term the table used.",
+            "carries_over": "The terms just defined, among them the search index and facets.",
+            "introduces": "The three ways a shopper uses them to find a product.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -430,7 +430,7 @@
           ],
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "The vocabulary and Kestrel & Pine's failing queries.",
+            "carries_over": "The three ways and Kestrel & Pine's failing queries.",
             "introduces": "Public research showing the same pattern across large retail sites.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -588,17 +588,29 @@
           "id": "p18",
           "controlling_idea": "A full rebuild must stay available with either approach, because a new language or a new attribute can require recreating the whole index; the new index is built beside the live one and takes over when it is complete.",
           "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Requirements per interaction (search query, attribute change, price change in a promotion, stock change at peak, full rebuild): freshness, consistency, latency, availability.",
-              "shows": "Each kind of change has its own freshness and failure behavior; the product page and the availability service remain the truth."
-            }
-          ],
           "transition_in": {
             "relationship": "additional_support",
             "carries_over": "The two ways of feeding.",
             "introduces": "The third operation both need: rebuilding everything.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18a",
+          "controlling_idea": "Each interaction with the index, from a query to a full rebuild, has its own freshness, latency and failure behavior, and in all of them the product page and the availability service stay the truth.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Requirements per interaction (search query, attribute change, price change in a promotion, stock change at peak, full rebuild): freshness, consistency, latency, behavior when it fails.",
+              "shows": "Each kind of change has its own freshness and failure behavior; the product page and the availability service remain the truth."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The ways the index is fed and rebuilt.",
+            "introduces": "All interactions with the index side by side.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -916,8 +928,8 @@
       },
       "transition_in": {
         "relationship": "sequence",
-        "carries_over": "What search and reviews need from the data.",
-        "introduces": "The products a merchant can run them on.",
+        "carries_over": "The data search needs, described in the sections so far.",
+        "introduces": "The four kinds of search product a merchant can run on it.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1021,7 +1033,7 @@
             },
             {
               "kind": "scenario",
-              "what": "Kestrel & Pine sits in the third row with second-row tooling.",
+              "what": "Kestrel & Pine has third-row needs and still runs the platform's built-in search, the first row's tooling.",
               "shows": "A merchant that grew faster than its systems.",
               "source": "Kestrel & Pine scenario ledger (illustrative)"
             }
@@ -1138,9 +1150,9 @@
         "rationale": "Three failures of the feeds, two of the data on top, then reviews, wholesale visibility, a retired query interface and the outage."
       },
       "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "A plan that worked, and the mechanisms of the earlier sections.",
-        "introduces": "The ways search fails in operation, each recovered with one of those mechanisms.",
+        "relationship": "cause_effect",
+        "carries_over": "The mechanisms of the earlier sections.",
+        "introduces": "The ways search fails when one of them is missing, each recovered by putting it back.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1259,8 +1271,8 @@
   ],
   "conclusion": {
     "heading": "What to Take Away",
-    "synthesis": "The jacket nobody could find, the 'in stock' that was two hours old, the rule that outlived its campaign and the review that lost its order are one kind of fault: the results page showed something its sources did not support, while the engine worked as built. The three conditions that prevent it (the words and attributes are loaded, each feed is as fresh as the statement shown from it, and the fastest fact is asked of its owner at query time) are each owned outside the search team: by the catalog, by the pricing and availability services, by the reviews app.",
-    "so_what": "The first money goes to product attributes and a stock feed, not to a search vendor: Kestrel & Pine's zero-result rate fell from 9.4% to 4.1% with the engine it already had.",
+    "synthesis": "The jacket nobody could find, the 'in stock' that was two hours old, the rule that outlived its campaign and the review that lost its order are one kind of fault: the results page showed something its sources did not support, while the engine worked as built. Three conditions prevent the first two (the words and attributes are loaded, each feed is as fresh as the statement shown from it, and the fastest fact is asked of its owner at query time); owners and end dates on rules and an order link kept by the merchant prevent the other two. None of this is owned by the search team: it sits with the catalog, the pricing and availability services and the reviews app.",
+    "so_what": "The first money goes to synonyms, product attributes and a stock feed, not to a search vendor: in the illustration Kestrel & Pine's zero-result rate falls from 9.4% to 4.1% by Q4 2027 with the engine it already had.",
     "callback": {
       "to": "The waterproof jacket whose rating existed only in a spreadsheet.",
       "how": "The reader can now say why no ranking algorithm could have found it and what does: the attribute in a system the index reads, and a synonym for the word shoppers type."
@@ -1285,12 +1297,12 @@
     "paragraphs": [
       {
         "id": "p51a",
-        "controlling_idea": "The jacket hidden in a spreadsheet, the stale 'in stock', the rule that outlived its campaign and the review without its order are one fault, a results page showing what its sources do not support, and the three conditions that prevent it are owned outside the search team, so the first money goes to attributes and a stock feed, not to an engine.",
+        "controlling_idea": "The jacket hidden in a spreadsheet, the stale 'in stock', the rule that outlived its campaign and the review without its order are one fault, a results page showing what its sources do not support; three conditions prevent the first two and owned, dated data the others, none of it owned by the search team, so the first money goes to attributes and a stock feed, not to an engine.",
         "function": "synthesis",
         "evidence": [
           {
             "kind": "reasoning",
-            "what": "The opening's jacket set against the chapter's three conditions; Kestrel & Pine's zero-result rate from 9.4% to 4.1% with the same engine.",
+            "what": "The opening's jacket set against the chapter's three conditions; Kestrel & Pine's zero-result rate falling from 9.4% to 4.1% by Q4 2027 (illustrative) with the same engine.",
             "shows": "The reader can now say why no ranking algorithm could have found the jacket and what did."
           }
         ]
@@ -1410,21 +1422,106 @@
   ],
   "modalities": [],
   "open_questions": [
-    "The FTC fake-reviews rule's effective date (reported as 21 October 2024) could not be read from the Federal Register in research; the chapter cites only the 14 August 2024 announcement.",
-    "Kestrel & Pine's reviews app is unnamed and its export format invented; if a later chapter (extensibility-and-app-ecosystems) inventories the 41 apps, it should list the reviews app and the pre-order app consistently with this chapter.",
-    "Whether store associates should query the same search service (endless aisle) is asserted here as an Omnichannel need; stores-and-omnichannel should confirm or qualify it.",
-    "Review data has no owning chapter in Part II (the part's flow rubric raised this). The introduction (p03) now says so and that this chapter covers reviews itself, with the reviews app as the holder of the order link. The author decides whether the journal spec should name an owner for review data (for example in the part thesis, which lists 'review data' among the facts the index copies).",
-    "The published chapter stated the thesis's second condition (a feed refreshed at least as often as the statement shown from it can change) only through the freshness table. Paragraph p15a was added to state it, by reference to the pricing chapter's rule for copies; the author may prefer other wording.",
-    "The published conclusion had no paragraph that set the chapter's answer against its opening. Paragraph p51a was added (synthesis, so-what and the return to the waterproof jacket); its wording is the reviser's, built only from the chapter's own facts.",
-    "Flow rubric note not taken: merge 'Across Scale Stages' (one paragraph and a table) into 'The Choices'. Kept as its own section because every chapter of the book has it under that heading, and the scale stages are known from chapter 2, so 'a Group-stage answer' in the choices is not a forward reference.",
-    "Second flow rubric note not taken: trim the assortment-leak failure (p50) against the wholesale rule (p27), and merge the first bullet of the author's synthesis (p54) into the new opening paragraph of the conclusion (p51a), which says the same. Both are the author's published text and were left as they are.",
-    "Flow rubric note taken in part: move 'Measuring search' (p41) next to the vocabulary. The zero-result rate is now defined in the vocabulary paragraph (p11) as well as in the report table; the other measures stay in 'In Practice', next to the vendor's counting rules.",
-    "Second flow rubric note not taken: the rule 'measure before buying' (p36) comes before 'Measuring search' (p41). The zero-result rate is defined in p07 and p11; the counting rules stay with the vendor documentation.",
-    "Third flow rubric run (sound with notes), notes not taken: move the specialist-app advice of the reviews section (p31) into 'The Choices'; add 'search service' and 'query time' to the vocabulary paragraph (p11); say earlier what navigation falls back on when the search service is down (p51 gives it only as a recovery); merge the first bullet of the author's synthesis (p54) into p51a; give the one-paragraph stage section a second paragraph or fold it into the choices. None changes the order; each touches the author's published text.",
-    "Round 2 left minor findings (one reader each) that were not fixed within the 6,500-word limit: terms used without a gloss ('company location', 'volume tier', 'standalone prices', 'Modular Catalog', 'collections', 'inverted index', 'ranking model', 'holdouts', 'composable', 'click position' before its gloss in 'In Practice'); vendor names (Algolia, Elasticsearch, OpenSearch) cited before 'The Choices' introduces them; and the vocabulary paragraph (p11) still follows the table that uses its terms. A sentence of 'approximate nearest-neighbor retrieval' and the LISTED [[ranking]] pointer in the facets paragraph were cut for length (the introduction keeps the [[ranking]] link). The author decides whether to raise the limit for glosses.",
-    "Round 3 ended ESCALATE (16 passed, 25 failed, 15 of them minor). Two remaining blocking findings are the spec's: the vocabulary paragraph (p11) follows the three-ways table (p10) that uses its terms, and both flow readers met the terms first (the author may put p11 before p10 or move the table into p11); and the interactions table is attached to the full-rebuild paragraph (p18) with a 'shows' that is a claim about all interactions, so the outliner read two ideas (the author may move the table to its own paragraph or to p15a). Fixed after round 3 without a further round: the opening of 'The Choices' ('that data' had no antecedent), the opening of 'When It Goes Wrong', the tense of the 4.1% result in the opening, 'half' against the three fixes in the choices, the table column that reused 'availability' for uptime (now 'When it fails'), a sentence saying what the hybrid-search vendor dates show, and the subheading now names recommendations. Left as they are: a B2B integration used as the example of scheduled sync before wholesale is introduced (p16); the readers' minor points (the WMS-ERP chain sentence, 'second-row tooling', 'a Group is limited by ownership', the three conditions listed in the reverse of the subsections' order, the limits repeated in 'In Practice', the conclusion counting the merchandising rule and the lost review link under the three conditions); unglossed terms (conversion, click position before its gloss, shopping feeds, composable, holdouts)."
+    "Pending the journal-spec step (rule 9 is not this post's): thesis.so_what says Kestrel & Pine's zero-result rate 'fell' to 4.1% after synonyms and 'one product attribute'; in the scene (March-April 2027) the attribute arrives in Q3 2027 and the 4.1% is the illustration's Q4 2027 figure. The page now states it as the illustration's figure.",
+    "Needs the author, or a later pass under rule 3: in round 4 both flow readers found the later subsections of 'The Index as a Copy' (relevance, recommendations and AI retrieval, wholesale) unclear under that heading, one proposing a section of their own; and both asked for 'Measuring search' (p41) to come before or inside 'The Choices', where the rule 'measure before buying' (p36) uses it (judged a spec fault). Both are moves of whole units across sections, not cheap fixes, and were not made without a further check round. Fact needed: whether the author accepts a new section heading and moving p41 out of 'In Practice'."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Confirming round 4 (escalate: 16 passed, 47 failed, 32 minor). The conclusion's so-what (spec fault, both flow readers) now gives the 4.1% as the illustration's Q4 2027 figure and names synonyms first, matching the scene and the ledger (rule 1). The cheap draft faults that both readers reported were fixed afterwards without another round: the roadmap no longer repeats the vocabulary's definitions, 'the illustration', Black Friday Oversell tied to the Phantom Stock, the p15a rule sentence and 'that rule', the Amazon six years, behavior signals placed in the ranking model, 'plan, last', the opening of 'When It Goes Wrong', 'So no ranking algorithm', the reviews section's opening, the wholesale subsection's link to the in-index decision, click-through rate and 'plan-gated' glossed.",
+      "rejected": [
+        "A fifth round",
+        "Leaving the projection stated as done"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Minor round-3 findings fixed in the prose: the WMS-ERP-platform chain told in order, 'second-row tooling' corrected to the built-in search of the first row (rule 1: the ledger says built-in search), 'a Group is limited by' who owns shared relevance, 'the first design' named as Algolia's, Prime Video 'reframed' stated plainly, the plan's cost in the present tense, 'an attribute and a synonym did' set on the timeline; the three conditions listed in the reverse of the subsections' order left as is (one reader, minor).",
+      "rejected": [
+        "Another reader round for minor points"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Flow rubric notes not taken (merge stages into choices, trim p50 against p27, merge p54 into p51a, move p31 into choices, extend the vocabulary, say earlier what navigation falls back on): no two readers asked for any of them, and each touches the author's text (rules 3 and 4).",
+      "rejected": [
+        "Making any of the moves"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Reviser's wording of p15a and p51a kept, since no reader faulted p15a and p51a is trimmed only where a reader found its claim too broad (the conclusion now says the three conditions prevent the jacket and the stale stock, owned and dated data the other two) (rule 3).",
+      "rejected": [
+        "Restoring the published conclusion without p51a"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Review data: this chapter covers reviews, as the published introduction now says; naming an owner in the journal spec belongs to the journal-spec step (outside this post).",
+      "rejected": [
+        "Holding the question for the author"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Store associates querying one search service stays as the author's published stage-table text (rule 2: keep what the published page says); stores-and-omnichannel is not edited here.",
+      "rejected": [
+        "Cutting it as unconfirmed"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Reviews app: the ledger names it only as one of the 41 apps that invites after delivery; the page says the same and stays unnamed (rule 1).",
+      "rejected": [
+        "Naming an app the ledger does not name"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: FTC rule: the page states only the 14 August 2024 announcement its source supports, with no effective date (rule 2).",
+      "rejected": [
+        "Adding the reported 21 October 2024 date without a source"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Restored the author's cut clauses 'it is not the catalog, and it is always slightly behind it' (p11) and Baymard 'benchmarks large retail sites against its own guidelines' (p12) (rules 2 and 5). Elasticsearch's recommendation of approximate nearest-neighbor retrieval for production (p23) and the LISTED [[ranking]] sentence in the facets paragraph stay cut: with the glosses of rule 6 the page is at 6,490 of 6,500 words after cutting the agents' additions (rules 4 and 5); the introduction keeps the [[ranking]] link.",
+      "rejected": [
+        "Leaving all cut clauses out",
+        "Cutting the author's figures to make room"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Glosses added at first use for conversion, click position (moved from 'In Practice' to its first use in the stage table), shopping feeds, composable, holdouts, company location, volume tier, standalone prices, collections, inverted index, ranking model, Algolia, Elasticsearch, OpenSearch and Constructor (rule 6), paid for within 6,500 words by cutting the agents' own additions and repeated limits in p39 (rule 4), including the vocabulary's repeat of the zero-result rate, which the search report's table already defines.",
+      "rejected": [
+        "Leaving terms unglossed",
+        "Raising the 6,500-word limit"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The Algolia example of scheduled sync (p16) now says it is a vendor integration for wholesale stores and that vendor integrations lag too, because both flow readers asked whether the point was B2B-specific (rule 3); vendor names glossed at first use as kinds of product (rule 2).",
+      "rejected": [
+        "Replacing the example with an unsourced one"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The interactions table moved from the full-rebuild paragraph (p18) to a new one-sentence paragraph (p18a) that states what it shows, because the outliner read p18 as two ideas (rule 3, spec fault); 58 paragraphs.",
+      "rejected": [
+        "Attaching the table to p15a",
+        "Leaving p18 with two ideas"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Vocabulary paragraph (p11) moved before the three-ways paragraph and table (p10), because both flow readers met the table's terms before their definitions (rule 3); p12 now follows the table, as a round-3 reader also asked; roadmap and transitions rewritten.",
+      "rejected": [
+        "Moving the table into the vocabulary paragraph",
+        "Leaving the order and the glossary sentence that admits it"
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Round 2 (revise): the paragraph that opens 'In Practice' (p37a) no longer says that Kestrel & Pine's plan uses the documented limits as well as the measures, because the plan uses none of the limits and both flow readers looked for one; it now says the plan is built on the measures. The plan paragraph (p42) no longer retells the three fixes or the fall from 9.4% to 4.1%, which the opening and the conclusion already give; its evidence entry is changed to match. Taken under the brief's pre-approval to change paragraph ideas and transitions; the author asked for the pass to run without review.",
@@ -1532,6 +1629,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 4 (escalate: 16 passed, 47 failed, 15 major, 32 minor; blockers pass). Conclusion so-what corrected; cheap corroborated draft fixes applied afterwards; two order moves recorded in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction: p11 before p10; interactions table moved to new p18a; p37 scenario, p51a and the conclusion synthesis, two section transitions and the roadmap updated; every open question settled and logged. Index revised to match; glosses and restored author clauses within 6,500 words."
+    },
     {
       "date": "2026-11-12",
       "change": "Round 3 (escalate: 16 passed, 25 failed, 15 of them minor; two blocking failures at fault in the spec, p11 and p18). Cheap fixes applied afterwards without another round: openings of 'The Choices' and 'When It Goes Wrong', tense of the 4.1% result, 'most' for 'half' in the choices, the table column renamed 'When it fails', a sentence on what the hybrid-search dates show, the subheading. Remaining findings recorded in open_questions. The pass was resumed after a usage-limit stop; round 2 was rerun with fresh readers."

@@ -86,13 +86,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -283,12 +276,12 @@
         },
         {
           "id": "p06",
-          "controlling_idea": "In 2026 the warehouse management system sent counts to the ERP every 15 minutes, the ERP (which also keeps what the stock is worth in the books) copied them to the shop platform hourly, and the platform copied them hourly to the marketplace connector.",
+          "controlling_idea": "In 2026 the warehouse management system sent counts to the ERP every 15 minutes, the ERP (which also keeps what the stock is worth in the books) copied them to the shop platform hourly, and the platform copied them on to the marketplace connector on its own schedule.",
           "function": "description",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "WMS to ERP every 15 minutes, ERP to shop platform hourly, shop platform to marketplace connector hourly.",
+              "what": "WMS to ERP every 15 minutes, ERP to shop platform hourly, shop platform to marketplace connector on a further schedule (the ledger's per-hop intervals are not all listed, because they add up to more than the ledger's 'up to two hours').",
               "shows": "Stock reached each channel as a copy of a copy, each on its own clock.",
               "source": "Kestrel & Pine scenario ledger"
             }
@@ -303,7 +296,7 @@
         },
         {
           "id": "p07",
-          "controlling_idea": "A sale on one channel therefore reached the other channels only after picking and the scheduled updates, up to two hours later.",
+          "controlling_idea": "A storefront sale lowered only the shop platform's own count; the warehouse's count and the marketplaces' sales reached the platform, and storefront sales reached the marketplaces, only through the scheduled chain, so each channel went on selling units another had sold, and a sale took up to two hours to reach every channel.",
           "function": "cause_effect",
           "evidence": [
             {
@@ -355,7 +348,7 @@
         },
         {
           "id": "p09",
-          "controlling_idea": "Two things made it worse: the order queue to the warehouse backed up for four hours, and three of the shop platform's 41 apps could write inventory, one of which had already caused two weeks of phantom reservations in March 2026.",
+          "controlling_idea": "Two things made it worse: the order queue to the warehouse backed up for four hours, and three of the shop platform's 41 apps could write inventory, one of which had already caused two weeks of wrong stock figures in March 2026.",
           "function": "cause_effect",
           "evidence": [
             {
@@ -482,8 +475,20 @@
           }
         },
         {
+          "id": "p15",
+          "controlling_idea": "Each number has an owner except the derived one: the warehouse owns on hand, the order-taking system owns committed, and nobody should own 'available', because it is a computation; most oversells begin when a system stores it as a fact and lets another overwrite it.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The numbers, the formula and the vendors' practice, ending with Shopify's sum.",
+            "introduces": "Who owns which number, and why the derived one has no owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p14a",
-          "controlling_idea": "On 5 August 2026 Shopify moved some holds from reserved to committed, so an integration that subtracted reserved in its own calculation changed behavior without a code change: the meaning of a stock state can move under the systems that read it.",
+          "controlling_idea": "Owning a number includes owning its meaning: on 5 August 2026 Shopify moved some holds from reserved to committed, so an integration that subtracted reserved in its own calculation got a different answer without a code change.",
           "function": "example",
           "evidence": [
             {
@@ -494,21 +499,9 @@
             }
           ],
           "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "Shopify's states and their sum.",
-            "introduces": "A dated change to what one state means.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p15",
-          "controlling_idea": "Each number has an owner except the derived one: the warehouse owns on hand, the order-taking system owns committed, and nobody should own 'available', because it is a computation; most oversells begin when a system stores it as a fact and lets another overwrite it.",
-          "function": "claim",
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The numbers, the formula and the vendors' practice.",
-            "introduces": "Who owns which number, and why the derived one has no owner.",
+            "relationship": "elaboration",
+            "carries_over": "The rule that the warehouse owns on hand and the order-taking system owns committed.",
+            "introduces": "That the owner also controls what a state means, shown by a dated change at Shopify.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -528,7 +521,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "The claim that the moment is a choice, the vendors' configuration as evidence, the three moments compared, then what the published window means at peak: the comparison table needs the vendors' modes, and the window is the cost of the row most merchants choose."
+        "rationale": "The claim that the moment is a choice, the vendors' configuration as evidence, the three moments compared, then what the published window means at peak: the comparison table needs the vendors' modes, and the window is the cost of the row most merchants choose. The section ends with the backorder and the pre-order, which extend the question of when a unit is promised to units not yet on hand; both flow readers of round 3 asked for it here."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -545,7 +538,7 @@
         },
         {
           "id": "p17",
-          "controlling_idea": "Three vendors show the range: commercetools offers three inventory modes per cart and publishes a delay of up to 10 seconds, Adobe Commerce reserves when an order is submitted, and Shopify commits at order creation; a vendor's 'reserve' at order creation is what this chapter calls committing.",
+          "controlling_idea": "Three vendors show the range: commercetools offers three inventory modes per cart and publishes a delay of up to 10 seconds, Adobe Commerce reserves when an order is submitted, and Shopify commits at order creation.",
           "function": "evidence",
           "evidence": [
             {
@@ -570,7 +563,7 @@
           "evidence": [
             {
               "kind": "table",
-              "what": "Three moments (add to cart, order creation, allocation at fulfillment) against protects, costs and fits.",
+              "what": "Three moments (add to cart, order creation, allocation at fulfillment) against protects, costs and fits; order creation is the default in Adobe Commerce and Shopify and one of commercetools' modes (commercetools' own default is no inventory tracking).",
               "shows": "The reader can pick a moment from the kind of sale: scarce-stock drops, ordinary selling, wholesale and backorders."
             },
             {
@@ -603,6 +596,26 @@
             "relationship": "emphasis",
             "carries_over": "The 'window of seconds' in the order-creation row.",
             "introduces": "What that window is worth at 38 orders a minute.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A backorder and a pre-order promise stock that is not on hand, which is legitimate only if the incoming quantity is tracked and the date is honest.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Article 18: delivery within 30 days unless agreed otherwise.",
+              "shows": "An open-ended backorder is a legal risk as well as a service one.",
+              "source": "Directive 2011/83/EU"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three moments, each of which promises a unit that is on hand.",
+            "introduces": "Two cases that promise a unit not yet on hand: the backorder and the pre-order.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -665,7 +678,7 @@
         },
         {
           "id": "p21",
-          "controlling_idea": "A channel is a place where a promise is made, availability is published per channel, and one physical pool may be promised to several channels at once; three consequences follow.",
+          "controlling_idea": "A channel is a place where a promise is made, availability is published per channel, and one physical pool may be promised to several channels at once; several locations and channels together have three consequences.",
           "function": "definition",
           "transition_in": {
             "relationship": "contrast",
@@ -734,26 +747,6 @@
             "relationship": "additional_support",
             "carries_over": "The first two rules.",
             "introduces": "The third rule: an advance claim on the pool for a wholesale customer.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p25",
-          "controlling_idea": "A backorder and a pre-order promise stock that is not on hand, which is legitimate only if the incoming quantity is tracked and the date is honest.",
-          "function": "definition",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Directive 2011/83/EU, Article 18: delivery within 30 days unless agreed otherwise.",
-              "shows": "An open-ended backorder is a legal risk as well as a service one.",
-              "source": "Directive 2011/83/EU"
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The three consequences, all about stock that is on hand.",
-            "introduces": "Two cases that promise stock that is not.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -868,7 +861,7 @@
         },
         {
           "id": "p31",
-          "controlling_idea": "Public documentation shows both ends and a middle: Shopify polls a fulfillment service hourly, Picqer offers a stock-changed webhook, and Microsoft's Business Central sync compares before it sends.",
+          "controlling_idea": "Public documentation shows both ends and a middle: Shopify polls a fulfillment service hourly, Picqer offers a stock-changed webhook, and Microsoft's sync between Business Central (an ERP product) and Shopify compares before it sends.",
           "function": "evidence",
           "evidence": [
             {
@@ -1044,7 +1037,7 @@
         },
         {
           "id": "p38",
-          "controlling_idea": "The comparison favors the availability service on lag, writers and buffers, yet the author would keep platform stock until another system starts taking orders or counting stock, and then assign owners for physical and committed stock before building the connector, because a connector without that agreement copies two incompatible answers.",
+          "controlling_idea": "The comparison favors the availability service on lag, writers and buffers, but that does not make it every merchant's first step: the author would keep platform stock until another system starts taking orders or counting stock, and then assign owners for physical and committed stock before building a connector between the two, because a connector without that agreement copies two incompatible answers.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "cause_effect",
@@ -1091,8 +1084,8 @@
         "relationship": "elaboration",
         "carries_over": "'Each is right for a stage' and the conditions for moving on.",
         "introduces": "The same advice laid out stage by stage, with warning signs.",
-        "form": "phrase",
-        "placement": "start_of_this"
+        "form": "sentence",
+        "placement": "end_of_previous"
       },
       "paragraphs": [
         {
@@ -1206,7 +1199,7 @@
         },
         {
           "id": "p47",
-          "controlling_idea": "Had W1 existed on 27 November 2026, the oversell would have shrunk from 1,340 units to the few that pass through the marketplace's own push interval: no availability design reaches zero, and the goal is a window seconds wide and a deliberate buffer.",
+          "controlling_idea": "Had W1 existed on 27 November 2026, the oversell would have shrunk from 1,340 units to the few marketplace sales made after the buffer was used up and before the marketplace processed the zero: no availability design reaches zero, and the goal is a window seconds wide and a deliberate buffer.",
           "function": "analysis",
           "transition_in": {
             "relationship": "conclusion_summary",
@@ -1493,21 +1486,84 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "The Shopify changelog adding `safety_stock`, `damaged` and `quality_control` (2023) could not be fetched; the chapter says so. Re-verify when the page is available.",
-    "The ASCM/APICS ATP definition is paraphrased as industry practice, not quoted; replace with a quotation if the dictionary becomes fetchable.",
-    "The illustrative per-channel buffers (3 marketplace, 1 storefront) and the 790/550 channel split of the Oversell are ledger additions of this chapter; later chapters (marketplaces, peak-day journey) should reuse rather than restate them.",
-    "The stock chain's hops as the ledger gives them (WMS to ERP every 15 minutes, ERP to shop platform hourly, shop platform to connector hourly) add up to 2 hours 15 minutes, more than the stated 'up to two hours'. This is an open ledger question and was not resolved here: the chapter keeps the published wording ('up to two hours') in the scene, Figure 1's caption, the failure-pattern callout and Cause 1. The author decides in the ledger first.",
-    "The journal spec assigns Part II's closing to this chapter and the published chapter had no such paragraph. Paragraph p54a was added to the spec and the prose to perform it (synthesis, so-what, callback to the part opening's product page, take-away). It names the five incidents as the journal spec's closing does and adds no figure. The author should check its wording against the Part II introduction once that page has been through the same pass.",
-    "The next page, the Part III introduction (part-3), is still at `outline` in the journal spec and has no transition_in of its own; the hand-off uses the transition_in of the part (sequence: the catalog's facts, then the step at which they are fixed into an order and money is taken). That is enough to write the hand-off but gives no hook to hand to; revisit p54 when Part III is brought to full detail.",
-    "The published chapter had no conclusion paragraph that synthesizes and returns to the opening; p50a was added, built only from statements the chapter already makes.",
-    "Flow rubric, first run (sound with notes), notes not taken. (a) The scene's four-hour order queue is not among the three causes of the worked example; it is answered by the 'counting system outage' row of the failure table, and was left there. (b) Merge the vendor table paragraph (p13) with Shopify's arithmetic (p14): kept apart, because p14 sets up the dated change in p14a. (c) Cut the inventory valuation paragraph (p25a) as a boundary remark: kept, it is the author's text and says which stock number the commerce side should not hold. (d) The one-paragraph stages section repeats the three constants: kept, the stage table is the book's house format. (e) The 'Where we are in the order's journey' paragraph (p04) interrupts the line from the claim to the roadmap: it is a fixed element of every chapter and was placed before the roadmap, as in chapters 1 and 2. (f) The vendor paragraph p17 gives no documented example of allocation at fulfillment; none is in the sources, so none was added. (g) The lag of the three hops is restated in the choices (p35) and the worked example (p44): kept, each is one clause.",
-    "Flow rubric, second run (sound with notes), notes not taken. (a) Move the Walmart account (p32) to the one-paragraph stages section: kept with the other public examples of events against scheduled sync. (b) Shorten the stock-master option (p35) to a pointer back to the scene: kept as the author wrote it. (c) The first reconciliation is dated May 2027, after the January 2027 reconstruction that opens the scene; both dates are the ledger's, and the worked example is told from after W1.",
-    "Flow rubric, third run (sound with notes), notes not taken: move the Walmart account (p32) to the stages section (asked a second time; kept with the public examples of events and scheduled sync); merge the signpost paragraph p43 into the first cause (kept: it now carries the link from the stages to the worked example); 'allocation' at fulfillment is used in the promised section before the locations section sets the wholesale sense against it; the marketplace's own push interval in the replay (p47) is given only in the requirements table.",
-    "Round 1 of the draft check, single-reader findings left as they are: the four-hour queue backlog is not placed on the scene's timeline; the scene says three apps could write inventory and gives a March incident, not what the apps did on the evening (the ledger says nothing about the evening); the timeline's 'about 20:30' row follows the '20:00-21:00' row; the failure-pattern callout says 'The Secret Agent' where the scene says 'the App That Wrote Stock'; terms met in a callout or table before their definition (reservation windows, wholesale allocations, backorder, sourcing), 'planned receipts' and 'single-period', and Business Central, which is named without saying what it is (no statement about a real product was added).",
-    "Round 3 of the draft check (2026-11-12, escalate: 16 passed, 23 failed) left these for the author. Spec faults, corroborated by both flow readers: the backorder and pre-order paragraph (p25) reads as an orphan at the end of the locations section (moving it beside 'Incoming' or into the moment-of-promise section was rejected twice in the decision log; the author decides); the Shopify relabeling paragraph (p14a) reads as a detour between the vendor arithmetic and the ownership rule. Draft faults not fixed because they need more than a cheap edit inside the 6,500-word limit: the scene does not say why the storefronts went on selling after their own count fell (other channels' sales and the warehouse count reached them only through the hourly chain); 'phantom reservations' in the scene is used before 'reserved' is defined; the replay says the marketplace buffer pulls the listing before the shelf empties yet a handful still oversells, without saying where the handful comes from; the recommendation's turn to first person after the table. Single-reader findings recorded as minor: three time frames in the scene opening; 'allocates it to a pick' in the promised section; the eventual-consistency slogan before its definition; the switch from chapter to part in the closing; sourcing placed under channels; terms used before they are explained (wholesale allocations, cut-off times and split-shipment limits, 'commit atomically' in the table, Business Central, NEXT). No statement about a real product was added to gloss Business Central, ZEOS or NEXT."
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 7) AC-6 (known_before_new), added by the conversion from the old spec.md and not in the journal spec, is dropped; AC-1 to AC-5 come from the journal spec and stay. The terms it raised were glossed where they fit (rule 6).",
+      "rejected": [
+        "Keeping AC-6 for the author to decide."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 4 (escalate: 16 passed, 19 failed, all draft faults; round 4 is past the revision budget), cheap fixes only, no further round: the scene's three-flow sentence split; the scene says what the stock-writing apps did on the evening (the warehouse feed was not the only writer, and with the connector's sync they used about half the platform's API budget, per the ledger's multi-tenancy line); 'Four of them, the three apps and the hourly sync'; 'kept extending the slow copying chain' in 2023; '(option 2)' dropped; the replay's handful 'outran even the buffer'; the stages section's transition moves to the end of the Trade-offs paragraph (placement end_of_previous), because the section opens with its table. To stay at 6,500 words: the timeline lead shortened, the known iPaaS gloss and a repeated sentence of the part closing cut.",
+      "rejected": [
+        "A lead sentence above the stage table (it adds a unit the spec does not have).",
+        "A fifth round."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1) the stock chain no longer lists all three per-hop intervals, which add up to 2 h 15 min against the ledger's 'up to two hours': the scene keeps WMS to ERP every 15 minutes and ERP to platform hourly (the timeline uses both), the platform-to-connector copy is 'on its own schedule' and the 21:05 row says 'the next scheduled' run; 'up to two hours' stays in the callout, the scene, Figure 1's caption and Cause 1.",
+      "rejected": [
+        "Keeping all three intervals beside 'up to two hours'.",
+        "Changing 'up to two hours' to 'over two hours' (the ledger does not say so)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 2) Business Central, ZEOS and NEXT get kind-of-thing glosses only: 'Business Central, its [Microsoft's] ERP product', 'ZEOS, Zalando's fulfillment service', 'NEXT, a British fashion retailer' (the last two from the cited Zalando release); no claim about them is added.",
+      "rejected": [
+        "Leaving the names unglossed.",
+        "Describing ZEOS's offer beyond the cited release."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 2) the vendor-default claim checked against the cited sources: commercetools' Carts API gives the cart's inventoryMode a default of 'None' (no tracking), so order creation is not its default. The moments table now reads 'the default in Adobe Commerce and Shopify, and one of commercetools' modes', and the Established bullet says the same instead of 'the platforms default to reserve-on-order'.",
+      "rejected": [
+        "'The default in the three platforms above' (unsupported for commercetools).",
+        "Restoring the published 'all four platforms' (unsupported for SAP and commercetools)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the backorder and pre-order paragraph (p25) moves to the end of 'When a Unit Becomes Promised', the move both round-3 flow readers asked for first; it opens 'All three moments promise units on hand; two cases promise units not yet there.' The Directive 2011/83/EU sentence, cited in Sources, is kept (rule 2).",
+      "rejected": [
+        "Keeping p25 at the end of the locations section.",
+        "Cutting it (it carries a cited legal statement).",
+        "Placing it beside 'Incoming' in the five-numbers list."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the Shopify relabeling paragraph (p14a), found a detour before the ownership rule by readers in rounds 2 and 3, moves after the ownership rule (p15) to close the five-numbers section, as round-3 reader B asked, opening 'The owner of a number also controls what it means.' The table now leads straight to the rule. Its cited content is kept (rule 2).",
+      "rejected": [
+        "Cutting it (its source is cited).",
+        "Moving it to 'When It Goes Wrong' (asked by one reader in one round only)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 6 and draft fixes) 'phantom reservations' becomes 'wrong stock figures' in the scene and the failure table, so 'reserved' is not used before its definition; the scene says why each channel kept selling (each count fell only with its own sales; the rest arrived through the chain); the intro says 'units set aside for wholesale customers'; 'allocates it to a pick' becomes 'picks it'; 'commit atomically (all or nothing)' in the table; eventual consistency is defined before the slogan; the third vendor 'reserve' warning (in p17) is cut, the table and p13 keep theirs; the replay says where the remaining handful comes from; the recommendation opens 'That does not make it every merchant's first step' and names the connector as option 2's.",
+      "rejected": [
+        "Defining 'reserved' in the scene.",
+        "Restructuring the scene into event order (one reader)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rules 4 and 5) length held at 6,500 by cutting agent additions: the component-table read-out sentence (p26), the roadmap's long service clause, the part closing's restated remedy list, the expanded buffer sentence in p27, the timeline lead and the reconciliation lead in Cause 3. Author sentences cut for length: 'small, published and honest' and 'any of which could contain a Ridgewalker' are restored; 'That is not zero.' stays cut (no room, and the bold sentence after it says the same); the published intro sentence 'This chapter explains when stock becomes committed...' stays replaced by the roadmap, which carries it. 'single-period' and 'planned receipts' were replaced for readers' terms, not cut for length, and stay replaced.",
+      "rejected": [
+        "Cutting the author's figures or examples.",
+        "Exceeding the 6,500-word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1, rule 2, record) the remaining open questions are closed: the Shopify held-back states are supported by the cited developer documentation's quoted sum (the 2023 changelog is not cited and the page no longer refers to it); the ATP definition stays a paraphrase labelled industry practice, with no ASCM source cited; the 790/550 split and the 3/1 buffers are in the ledger's inventory-and-availability line; the part closing (p54a) was checked against the Part II introduction, which opens on the same product page; Part III is now at full detail in the journal spec and the hand-off validates; p50a, the flow-rubric notes not taken and the round-1 single-reader findings are decisions already recorded in this log and the changelog."
+    },
     {
       "date": "2026-11-12",
       "decision": "Resumed after a usage-limit stop. Before round 2 the round-1 faults still present in the draft were fixed, and two spec faults were changed under the pre-approval for order and paragraph ideas: the valuation remark leaves the ownership paragraph (p15), where two readers in each of two rounds stumbled on it, and becomes a clause of the ERP gloss in the scene (p06); the channel paragraph (p21) now announces the backorder and pre-order case (p25) so it is not an unannounced fourth rule. Draft fixes: the 790/550 split is of units; vendors' 'reserve' at order creation is tied to this chapter's 'committed'; the second sense of 'allocation' is spelled out against the first; the cause paragraphs no longer imply the scene named three causes; the May 2027 reconciliation is presented as later evidence of drift; the lesson of the failure table matches its detection column; the component table's columns are read out.",
@@ -1661,6 +1717,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 4 (escalate: 16 passed, 19 failed; 10 major draft faults, 9 minor single-reader findings). Cheap fixes applied afterwards; the stages transition placement changed to end_of_previous. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction (rules 1-7): stock chain no longer lists hops that add up to more than 'up to two hours'; vendor default narrowed to Adobe Commerce and Shopify after checking commercetools' Carts API; Business Central, ZEOS and NEXT glossed; p25 moved to the end of the promised section and p14a after p15; the round-3 draft faults fixed; two author phrases restored; trimmed to 6,497 words. Open questions emptied into the decision log. Confirming draft-check round 4 follows."
+    },
     {
       "date": "2026-11-12",
       "change": "Round 3 (escalate: 16 passed, 23 failed; two spec faults, the rest draft faults and minor single-reader findings). After the last round, cheap fixes without another round: the vendors' 'reserve' note moved to the end of p17; the moments table says 'the three platforms above' instead of four; p49 names the two rows detected by a variance; cycle counting is no longer re-defined as new in p42; the recommendation (p38) says 'a connector between them'; the roadmap (p03) names the label, the cart check and the commitment instead of 'all three uses'; the part closing (p54a) starts from this chapter's answer about stock. Small trims kept the chapter at 6,499 words (limit 6,500). Remaining failures are listed in open_questions. The check report is stale against these edits."

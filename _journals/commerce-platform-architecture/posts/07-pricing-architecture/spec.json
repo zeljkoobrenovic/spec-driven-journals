@@ -85,13 +85,6 @@
     "severity": "blocker"
    },
    {
-    "id": "AC-6",
-    "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-    "check": "known_before_new",
-    "method": "rubric",
-    "severity": "minor"
-   },
-   {
     "id": "AC-7",
     "statement": "Given a merchant with consumer and wholesale prices, the reader names the arrangement the chapter recommends, the assumptions it rests on and when a separate pricing service is the better answer.",
     "check": "custom",
@@ -247,18 +240,6 @@
     }
    },
    {
-    "id": "p03",
-    "controlling_idea": "The previous chapter gave every product attribute one owner and left the price out, because the price changes more often than a description, carries legal weight in Europe and is copied into more systems than any other fact about the product.",
-    "function": "context",
-    "transition_in": {
-     "relationship": "contrast",
-     "carries_over": "The product described once and owned per attribute, with price left out of the ownership table.",
-     "introduces": "The price as a fact with a different cadence, legal weight and more copies.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   },
-   {
     "id": "p03a",
     "controlling_idea": "In Eva's order the price is the €199 she sees on the product page, pays at checkout and has frozen on order #1072455, which the invoice and any later refund must use.",
     "function": "context",
@@ -272,8 +253,20 @@
     ],
     "transition_in": {
      "relationship": "example",
-     "carries_over": "The price as a fact copied into many systems.",
-     "introduces": "Its place in the order the book follows.",
+     "carries_over": "The rule that selects a price for a sale, with an owner.",
+     "introduces": "Its place in the order the book follows: Eva's price, recorded on the order.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "The previous chapter gave every product attribute one owner and left the price out, because the price changes more often than a description, carries legal weight in Europe and is copied into more systems than any other fact about the product.",
+    "function": "context",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "The price recorded on Eva's order, which must outlast a change to the price list.",
+     "introduces": "Why the previous chapter left the price out of its one-owner-per-attribute table: the price changes more often, carries legal weight and has more copies.",
      "form": "sentence",
      "placement": "start_of_this"
     }
@@ -296,7 +289,7 @@
   {
    "id": "scene",
    "heading": "Setting the Scene at Kestrel & Pine: The Price Drift",
-   "controlling_idea": "The Price Drift was one copy of a price whose restoring update failed without an error, in a landscape where one jacket had eleven prices in seven places and no rule said which was the source of which.",
+   "controlling_idea": "The Price Drift was one copy of a price whose restoring update failed without an error, in a landscape where the jacket's price was held in many places and no rule said which was the source of which.",
    "function": "example",
    "advances_thesis": {
     "supports": [
@@ -402,12 +395,12 @@
     },
     {
      "id": "p10",
-     "controlling_idea": "Noor Visser's April 2027 inventory found the Ridgewalker's price in seven places as eleven prices, with no rule saying which was the source of which, which is the failure pattern the Price Nobody Can Explain.",
+     "controlling_idea": "Noor Visser's April 2027 inventory found the Ridgewalker's price in the ERP, the shop platform, the marketplace connector and a spreadsheet, with no rule saying which was the source of which, which is the failure pattern the Price Nobody Can Explain.",
      "function": "evidence",
      "evidence": [
       {
        "kind": "scenario",
-       "what": "Three market lists and four B2B lists in the shop platform; wholesale, contract and consumer lists in the ERP; a channel price per marketplace in the connector; dates in a spreadsheet.",
+       "what": "The ERP's wholesale, contract and German consumer lists (the German list copied into the shop platform's DE list); the shop platform's NL and BE lists and one wholesale list per country; a channel price per marketplace and a campaign calendar in the connector; dates in a spreadsheet.",
        "shows": "The drift was not one bad connector but a landscape without a declared source per price.",
        "source": "This chapter's illustration"
       }
@@ -415,7 +408,7 @@
      "transition_in": {
       "relationship": "time",
       "carries_over": "The drift as one failed copy, repaired in October 2026.",
-      "introduces": "Six months later, the count of all places that held the jacket's price, which showed the cause was wider than one connector.",
+      "introduces": "Six months later, the list of every place that held the jacket's price, which showed the cause was wider than one connector.",
       "form": "sentence",
       "placement": "start_of_this"
      }
@@ -564,7 +557,7 @@
   },
   {
    "id": "tax",
-   "heading": "Tax, Markets and Currencies: Why €199 Is Three Different Prices",
+   "heading": "Tax, Markets and Currencies",
    "controlling_idea": "A stored price must say whether it includes tax and in which currency policy it was set, because the same shelf price yields different net amounts by country.",
    "function": "explanation",
    "advances_thesis": {
@@ -736,7 +729,7 @@
     },
     {
      "id": "p26",
-     "controlling_idea": "The pricing system must therefore keep an effective-dated price history per SKU, market and channel and answer the 30-day question when a reduction is published, which a merchant with prices in seven places cannot do reliably.",
+     "controlling_idea": "The pricing system must therefore keep an effective-dated price history per SKU, market and channel and answer the 30-day question when a reduction is published, which a merchant with prices in many places cannot do reliably.",
      "function": "analysis",
      "transition_in": {
       "relationship": "cause_effect",
@@ -1063,7 +1056,7 @@
     },
     {
      "id": "p44",
-     "controlling_idea": "The tax basis and the 30-day history do not change with scale while the number of sources and copies does, and the source decision changes at the Growing stage, when the ERP arrives, and again only at the Group stage, if several brands share a pricing service.",
+     "controlling_idea": "The tax basis and the 30-day history do not change with scale while the number of sources and copies does, and the source decision changes at the Growing stage, when the ERP arrives, and again only at the Group stage, if several brands share a pricing service; Kestrel & Pine's 2027 split is the Growing-stage decision made late.",
      "function": "analysis",
      "transition_in": {
       "relationship": "conclusion_summary",
@@ -1114,7 +1107,7 @@
      "evidence": [
       {
        "kind": "source",
-       "what": "Shopify B2B catalogs with 'up to 3 active catalog assignments' below Plus; commercetools 100 embedded or 50,000 standalone prices per variant.",
+       "what": "Shopify B2B catalogs with 'up to 3 active catalog assignments' below Plus, its enterprise plan; commercetools 100 embedded prices (stored on the variant) or 50,000 standalone prices (stored separately) per variant.",
        "shows": "The count of prices is large enough that vendors state ceilings for it.",
        "source": "Shopify Help Center and commercetools documentation, accessed November 2026"
       }
@@ -1198,7 +1191,7 @@
     },
     {
      "id": "p51",
-     "controlling_idea": "On the day of Eva's order the same jacket is priced in seven places, each with a stated tax basis, source and path.",
+     "controlling_idea": "On the day of Eva's order the same jacket is priced in every place that holds it, each with a stated tax basis, source and path.",
      "function": "example",
      "evidence": [
       {
@@ -1522,28 +1515,96 @@
  ],
  "modalities": [],
  "open_questions": [
-  "The ledger gives no per-unit contract price for Bergzicht Outdoor, and the spring reorder's €19,860 for 240 units does not divide into list prices; the chapter states only that Bergzicht buys on a seasonal contract price list. journey-wholesale-order should set the per-SKU contract prices and append them to the ledger.",
-  "The German VAT rate (19%) is stated from general knowledge as of November 2026, not from a fetched official page; a reviewer may wish to add a citation to the Commission's VAT rates page.",
-  "The Bundeskartellamt's 5 February 2026 prohibition is under appeal; if it is overturned or confirmed, the sentence that says its finality is not stated must change.",
-  "Whether the shop platform keeps a queryable price history or only exports change events is left as an assumption; the chapter says both are acceptable if something keeps the history.",
-  "Consistency ruling 3 settles the direction of the wholesale price flow (the ERP owns wholesale and contract prices and publishes them by event to the OMS and the B2B catalogs; no storefront reads the ERP). The chapter follows it; the earlier open question about erp-and-back-office-integration is kept here only as a pointer to that ruling.",
-  "Flow rubric note not taken: the recommendation's first assumption (the shop platform holds price lists per market and customer group with validity windows and a history) is made in 'Trade-offs' and the vendors' documented limits come two sections later in 'In Practice'. Moving them earlier would contradict the order AC-4 expects; the author may prefer a pointer or a change to AC-4 in the journal spec.",
-  "Flow rubric note not taken: 'Trade-offs' is a section of one paragraph and a table; the rubric suggested folding it into 'The Choices'. Kept as published.",
-  "The published closing of 'When It Goes Wrong' said every failure ends in a reconciliation of copies against their source; the section's own detections for the undercutting repricer (a floor) and two moments of selection (a test) do not. The spec and chapter now say four of five; the author should confirm the count and wording.",
-  "Flow rubric notes not taken (second run): merge p46 into p45 in 'In Practice'; name the comparison criteria before the arrangements are described, or split the recommendation paragraph (p42) from the table.",
-  "Flow rubric, third run (sound with notes), not taken: give the daily comparison its own paragraph in 'How the Pieces Fit Together' (it is in the thesis but is first described in the failure section); split 'Who may change a price' into its own section; merge 'Trade-offs' with the stages section.",
-  "Both flow readers of round 1 could not reproduce 'One jacket, eleven prices, seven places' from the lists in the same paragraph (three market lists and four B2B lists in the shop platform, the ERP's lists, a channel price per marketplace, a spreadsheet of dates). The ledger does not give the breakdown. The author should either give the count's breakdown or change the count; the same 'seven places' is used in the European-rules section and the stage table.",
-  "Both flow readers of round 1 looked for a third price under the heading 'Why €199 Is Three Different Prices' and found two net amounts (€164.46 at 21% in the Netherlands and Belgium, €167.23 at 19% in Germany). The heading is the author's and was not changed.",
-  "Both flow readers of round 1 proposed moving 'What the platforms document' next to the selection rule in 'What a Price Is Made Of'. AC-4's expected answer in the journal spec places platform documentation after the choices, so the subsection stays and is reframed as the test of the recommendation's first assumption. If the author prefers the move, AC-4 changes first.",
-  "Round 2 found the €95 floor in the 13 April table equal to the €95 wholesale price, which a reader took for a slip; the floor is the chapter's illustration (from the €58 landed cost plus fees). The author may prefer a different illustrative floor.",
-  "Round 2: the scene's weekly POS file (2026) and the per-flow table's daily, effective-dated file (2027 design) are both right but nothing says the cadence changed; the ledger does not date the change.",
-  "Round 3 (escalate): both flow readers again could not reproduce 'One jacket, eleven prices, seven places' from the inventory in the same paragraph (third round running). Only the author can give the breakdown or a different count; the ledger has none.",
-  "Round 3: both readers looked for a third price under the heading 'Why €199 Is Three Different Prices' and found two net amounts (NL and BE share 21%). The heading is the author's; reword it or name the three amounts.",
-  "Round 3: both readers found the bridge from product-information (p03) out of place between the opening prescription (p02) and the journey box; both suggest moving it to the start of the opening prose or next to the roadmap. Spec order; the author decides.",
-  "Round 3, one reader each (minor, not acted on): the stage judgement ('again only at the Group stage') against Kestrel & Pine changing its source at the Omnichannel stage; whether the PRICING_HEALTH notification is still allowed after the 2026 prohibition and how a 2026 parity warning fits clauses deleted in 2013; whether the shop platform's 2026 DE list was a copy of the ERP's; 'catalog assignment', 'Plus plan' and embedded versus standalone prices unexplained.",
-  "After round 3 the chapter says the shop platform's lists 'held' the first assumption and points to the Black Friday test for the history half; whether the shop platform keeps a queryable history is still the open assumption above."
+  "Needs the author: whether Amazon's Buy Box notice (`PRICING_HEALTH`, an offer 'ineligible for the Featured Offer because its price is uncompetitive') is part of the 'price control mechanisms' the Bundeskartellamt prohibited on 5 February 2026, and so how a 2026 parity warning fits clauses deleted in 2013 (one round-3 reader, minor). The fact needed: the decision's text on which Amazon mechanisms it covers."
  ],
  "decision_log": [
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after round 4 of the draft check (escalate: 17 passed, 7 failed, 4 blocking, all draft-fault), the declared transitions into p03a and p03 are written instead of moving the product-information bridge again (rule 3 would allow the move both flow readers asked for, but the judge ruled that the spec's order works once its transitions are written, and the bridge was already moved once in this resolution): p03a now opens 'The rule selects €199 for Eva', and p03 contrasts 'such a recorded price' with the attributes product-information gave one owner each. Also fixed: 'the ERP partner's connector' renamed 'the ERP connector' as in the scene (corroborated); the minors 'Many prices ... were not the fault; a missing rule was', the 'lists half / history half' sentence restated as price lists and price history, and Kestrel & Pine named an Omnichannel-stage merchant. One word cut ('either') to stay at 6,500. Glosses for EDI, iPaaS, Giant's Boots and the like (rule 6) do not fit within the limit and stay out; the judge ruled them known to the audience from Part I. No further round run.",
+   "rejected": [
+    "Moving the product-information bridge before Eva's order again.",
+    "A fifth check round.",
+    "Adding glosses beyond the 6,500-word limit."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'One jacket, eleven prices, seven places' (rule 1): the ledger gives no count or breakdown, so the April 2027 inventory now names the places the ledger supports (the ERP's wholesale, contract and German consumer lists, the German list copied into the shop platform's DE list, the shop platform's NL and BE lists and one wholesale list per country, the connector's channel prices and campaign calendar, the spreadsheet's dates) and ends 'One jacket, many copies of its price, no rule ...'; 'seven places' in the European-rules section and the stage table become 'many' and 'several'; 'Eleven prices' in p11 becomes 'Many prices'; the Bergzicht list in the shop platform and the POS file's source, which the ledger does not state, are dropped. Also settles the round-3 minor on which list fed which.",
+   "rejected": [
+    "Inventing a breakdown that adds up to eleven and seven.",
+    "Keeping the count as the author's."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Heading 'Tax, Markets and Currencies: Why €199 Is Three Different Prices' (rule 8): readers in rounds 1 and 3 found two net amounts, not three, so the heading is the shorter form 'Tax, Markets and Currencies'.",
+   "rejected": [
+    "Naming a third amount to fit the heading."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The €95 marketplace floor in the 13 April table (rule 1): the ledger states only that floors are set per product group from the ERP's landed costs, so the figure is dropped and the cell reads 'floor set from the €58 landed cost plus fees'.",
+   "rejected": [
+    "A different illustrative floor figure."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Weekly POS file in 2026 against the daily file of the 2027 design (rule 1): the ledger states no 2026 cadence and does not say what fed the 2026 tills, so the scene no longer says 'weekly' (the stores kept €199, as the ledger states) and the 13 April table says 'effective-dated price file via the iPaaS', as the ledger does; the per-flow table's daily file is the chapter's generic requirement and stays.",
+   "rejected": [
+    "Adding a sentence dating a cadence change the ledger does not record."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Bridge from product-information (p03) (rule 3): both round-3 flow readers found it out of place between p02 and the journey box and proposed moving it next to the roadmap or to the start; it now follows Eva's order (p03a) and precedes the roadmap, and the transitions into p03a and p03 are rewritten.",
+   "rejected": [
+    "Moving it before the opening hook, which would displace the intriguing-example opening."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Moving 'What the platforms document' next to the selection rule (rule 3): asked by both round-1 readers, but the subsection was reframed in round 1 as the test of the recommendation's first assumption and no reader in rounds 2 or 3 asked again, and AC-4's expected order belongs to the journal spec; not moved.",
+   "rejected": [
+    "Moving it and changing AC-4."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Flow-rubric notes not taken in three runs (fold Trade-offs into The Choices or into the stages; merge p46 into p45; name criteria before the arrangements; own paragraph for the daily comparison; split 'Who may change a price') (rule 3): each came from one rubric run, not two independent readers; the published order stays.",
+   "rejected": [
+    "Making the moves on one rubric's word."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Facts the old open questions held (rule 1 and rule 2): Bergzicht's per-unit contract prices stay unstated, as the ledger leaves them; 19% German VAT stands because the ledger states it; the Bundeskartellamt sentence keeps what its cited overview says (finality not stated); the shop platform's history is stated as 'keeps (or exports)', no more than the ledger supports; consistency ruling 3 is followed; 'Most of these are found the same way' replaces any count of reconciled failures.",
+   "rejected": [
+    "Keeping these as open questions."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Glosses (rule 6): Plus as Shopify's enterprise plan, catalog assignments as catalogs assigned to business buyers, embedded (stored on the variant) and standalone (stored separately) prices, and W5 as 'W5, Waypoint's integration standards' at first use; the stage judgement gains one sentence saying Kestrel & Pine is making the Growing-stage decision late (round-3 minor).",
+   "rejected": [
+    "Leaving the round-3 minors unglossed."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Criteria added by agents (rule 7): AC-6 (known_before_new) is dropped; AC-7 (cold reader) passed in every round on record and stays; AC-4 and AC-5 stay.",
+   "rejected": [
+    "Keeping AC-6."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Length (rules 4 and 5): limit 6,500 words; after the fixes the page is cut back by removing agents' additions (the publication date of Directive 98/6/EC, 'Head of Engineering', a shorter cross-link to the scale stages, shorter wording in the inventory and p11). Figure 3's caption, briefly shortened, is the author's and is restored. The author's sentences cut by earlier passes ('Marketplace commissions affect what the merchant keeps ...', '... or a genuine price change can be advertised as a misleading saving', '... so a campaign file cannot quietly restore an obsolete price', 'because the rules that bound them change on regulators' dates') stay cut: the page has no room within the limit, and their content is carried by p25, p34 and p28.",
+   "rejected": [
+    "Exceeding the limit to restore them."
+   ]
+  },
   {
    "date": "2026-11-12",
    "decision": "Round 1 of the draft check escalated on spec faults (12 passed, 26 failed, 10 of them blocking; auto mode, changes to order, paragraph ideas and transitions pre-approved, intent, thesis, role and acceptance criteria untouched). Spec changes: the bridge paragraph held two ideas and is two units (p03 the contrast with the product chapter, p03a Eva's order); Figure 3, the two-source picture, moves from the engine-and-copies paragraph (p30) to the April 2027 decision (p48), and p29 says its examples come from the design the following sections argue for, because both flow readers found the chosen arrangement shown before the choices; 'What the platforms document' (p45) is now the test of the recommendation's first assumption and no longer a general check, because both readers could not say why it stood there; p55 and the section idea no longer promise a recovery for every failure; p61 says most failures are found by a comparison, not four of five; p44 says the source decision changes at the Growing stage and again only at the Group stage, which the stage table shows; p16 calls the SAP and Adobe cases the same behaviour, not opposites; p10's transition carries the six-month step to the April 2027 inventory. 67 paragraphs.",
@@ -1655,6 +1716,14 @@
   }
  ],
  "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Round 4 (escalate: 17 passed, 7 failed, 4 blocking). Cheap draft-fault fixes applied after the round without another check (see decision_log): intro transitions into Eva's order and the product-information bridge, ERP connector naming, three minor flow sentences. 6,500 words."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Escalation resolved by rule (see decision_log): inventory count replaced by the places, section heading shortened, €95 floor and weekly POS cadence dropped, product-information bridge moved after Eva's order, glosses added, AC-6 dropped, open questions reduced to one that needs the author; then one confirming draft-check round."
+  },
   {
    "date": "2026-11-12",
    "change": "Round 3 (escalate: 17 passed, 12 failed, 5 blocking). Cheap fixes applied after the last round without another check: a clause saying what the Long Fuse is, the vendor check concluded for the lists and pointed to the Black Friday test for the history, the net price named in the one-net-price alternative; three cuts to stay within 6,500 words. Remaining items in open_questions. check-report.json is therefore stale."

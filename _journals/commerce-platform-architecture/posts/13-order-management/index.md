@@ -24,19 +24,19 @@ logo: "assets/images/13-order-management/logo.jpeg"
 > * **The Message in a Bottle** — one shipment confirmation, sent once and trusted, turned a two-parcel order into a delivered one.
 
 <br>
-A customer orders a jacket and socks, but the jacket ships first. The warehouse knows which items left; the payment provider knows what was paid; support needs to explain when the socks will arrive. If those facts remain separate, a single 'shipped' status can mislead both the customer and the team handling the order.
+In December 2026 a customer of Kestrel & Pine, the fictional outdoor brand, ordered a fleece and socks, and the fleece shipped first. The warehouse knew which item had left; the payment provider knew what was paid; support had to explain when the socks would arrive. The shop's status page said "Delivered". One status word for an order whose parts moved separately misled both the customer and the team handling the order.
 
 The merchant needs one record that brings those facts together: what was bought, at what price, where it goes and when it is due. That record keeps money, goods and returns apart, with the goods status held per parcel, so the order reads "delivered" only when every parcel has arrived. While one channel creates orders and one location ships them, the shop platform can hold that record. Adding marketplaces, wholesale, stores and warehouses creates more orders and copies elsewhere. Once two of four conditions hold (several channels create orders, several locations fulfill them, promises depend on the location, or service agents cannot see one order across systems), an **order management system (OMS)** should hold it instead, because it can route lines between locations and answer a customer's question about a parcel.
 
-**Where we are in the order's journey.** Eva buys a jacket and socks from Kestrel & Pine, the fictional outdoor brand. Order #1072455 is created at 21:14 on 13 April 2027, and Eva pays through iDEAL, the Dutch bank-transfer method; seconds later the payment provider's webhook marks it paid ([[commerce-payments]]). This chapter is about the order from "paid" onward, through delivery and, after she exchanges the jacket for a larger size, the replacement jacket's dispatch on 22 April; Figure 5 traces Eva's order through the design the chapter arrives at. [[cart-and-checkout]], [[warehouse-and-fulfillment]] and [[returns-and-exchanges]] cover those operations.
+**Where we are in the order's journey.** Eva buys a jacket and socks from Kestrel & Pine. Order #1072455 is created at 21:14 on 13 April 2027, and Eva pays through iDEAL, the Dutch bank-transfer method; seconds later the payment provider's webhook marks it paid ([[commerce-payments]]). In April 2027 the shop platform is still her order's home: the OMS takes storefront orders only from 13 October 2027. [[cart-and-checkout]], [[warehouse-and-fulfillment]] and [[returns-and-exchanges]] cover those operations.
 
-Before Eva's order, the chapter starts from an older one with another customer: Kestrel & Pine's December 2026 Three-Status Order, a fleece and socks about which different systems gave different answers. It then describes what an order record holds and why its number matters, the separate states it moves through and how the customer's status is computed from them, how edits, holds and cancellations change those states, and how routing decides which location ships which line. It then asks when every channel's orders need one home and which system it should be, describes the OMS, and compares four homes for the order by trade-off and scale stage. It ends with Kestrel & Pine's chosen design at work, its requirements and the Three-Status Order replayed through it, and with the ways order integrations fail. The evidence is the Kestrel & Pine case and the documentation of the platform and OMS vendors.
+This chapter follows the order from "paid" onward, but through an older case, the opening's order #1052877, which the company calls the Three-Status Order because different systems gave different answers about it. From that case the chapter describes what an order record holds and why its number matters, the separate states it moves through and how the customer's status is computed from them, how edits, holds and cancellations change those states, and how routing decides which location ships which line. It then describes the OMS, asks when every channel's orders need one home and which system it should be, and compares four homes for the order by trade-off and scale stage. It ends with Kestrel & Pine's chosen design at work, its requirements and the Three-Status Order replayed through it, and with the ways order integrations fail. The evidence is the Kestrel & Pine case and the documentation of the platform and OMS vendors.
 
 ## Setting the Scene at Kestrel & Pine: Order #1052877
 
-In the first week of December 2026, a customer ordered a Trailhead fleece (€119) and a pair of merino hiking socks (€18) on the Dutch storefront: order **#1052877**, €137. The fleece was picked and shipped from Duiven on Monday 7 December. The socks were short in their pick location and waited for replenishment from bulk stock, so the warehouse management system (**the WMS**, the software that runs picking, packing and shipping) kept the order open as a second pick.
+The opening's order, **#1052877**, was placed in the first week of December 2026 on the Dutch storefront: a Trailhead fleece (€119) and a pair of merino hiking socks (€18), €137. The fleece was picked and shipped from Duiven on Monday 7 December. The socks were short in their pick location (the shelf pickers take from) and waited for replenishment from bulk stock (the reserve kept elsewhere in the warehouse), so the warehouse management system (**the WMS**, the software that runs picking, packing and shipping) kept the order open as a second pick, a later pick for the missing line.
 
-The agency's shipment-confirmation integration could not represent a partial shipment. When the fleece left, it marked the whole shop platform order fulfilled and attached that parcel's tracking number. PostNL delivered it on 8 December, triggering the *Delivered* status and email: one confirmation, sent once and trusted, the Message in a Bottle.
+The shipment-confirmation integration built by the agency, Kestrel & Pine's outside storefront and apps agency, could not represent a partial shipment. When the fleece left, it marked the whole shop platform order fulfilled and attached that parcel's tracking number. PostNL delivered it on 8 December, triggering the *Delivered* status and email: one confirmation, sent once and trusted, the Message in a Bottle.
 
 Meanwhile, the **enterprise resource planning system (ERP)** waited for the warehouse's "order complete" message before invoicing. With the socks still unpicked, it showed *Not invoiced*. The WMS showed *In picking*. Each system exposed a different part of the situation.
 
@@ -56,11 +56,11 @@ Noor and CEO Mara Lindqvist made the remedy decision W2 of **Waypoint**, the com
 
 ## What an Order Record Holds
 
-The home W2 asks for holds the order record, and an order is more than a list of items. Stripped to what every downstream system needs, the record has six parts.
+The home W2 asks for holds the order record, and an order is more than a list of items. Stripped to what every downstream system needs, the record has six parts, and as the table shows, each is read most by different people, so one record serves the warehouse, finance, the carrier, service and the customer at once.
 
 | Part | What it holds | Who reads it most |
 | --- | --- | --- |
-| **Header** | Order number, channel, customer reference, placed-at time, currency, market, legal seller | Everyone |
+| **Header** | Order number, channel, customer reference, placed-at time, currency, market (the country storefront), legal seller (the company that sells) | Everyone |
 | **Lines** | Each SKU (a stock-keeping unit, one sellable variant), quantity, frozen unit price, discounts allocated, tax | Warehouse, finance |
 | **Money** | Payment method, authorization and capture references from the payment service provider (**PSP**, the company that takes the payment), amounts paid, refunded, owed | Finance, service |
 | **Promises** | Delivery address and method, the promised date, pickup store if any | Warehouse, carrier, service |
@@ -75,25 +75,25 @@ The order number is the one thing every system, the customer and the carrier lab
 
 ## Several State Machines on One Record
 
-The record's money, goods and returns parts each move through states. A **state machine** is a fixed set of states an object can be in and the allowed moves between them. The mistake behind the Three-Status Order was to assume an order has one. It has at least three, the money, goods and returns status lines of Part I, beside the order's own lifecycle (open, complete, canceled), and the platforms say so in their own documentation.
+The record's money, goods and returns parts each move through states. A **state machine** is a fixed set of states an object can be in and the allowed moves between them. The mistake behind the Three-Status Order was to assume an order has one. It has four: the money, goods and returns status lines of Part I, plus the order's own lifecycle (open, complete, canceled), and the platforms say so in their own documentation.
 
 Shopify keeps three status families on one order (help center, n.d., accessed November 2026). The *order status* is Open, Archived or Canceled. The *payment status* has eight values, from Authorized and Paid to Partially refunded, Refunded, Voided (which "releases the hold on the customer's payment method", distinct from canceling) and Expired. The *fulfillment status* has six: Unfulfilled, In progress, On hold, Scheduled, Partially fulfilled, Fulfilled.
 
-Below the order, each *fulfillment order* (the instruction to one location to ship a group of lines) has seven statuses of its own plus a request status for the handshake with the warehouse (developer docs, n.d.).
+Below the order, each *fulfillment order* (the instruction to one location to ship a group of lines) has seven statuses of its own plus a request status for the handshake with the warehouse: the order system requests fulfillment, the warehouse accepts or rejects it, and once it has accepted, a cancellation becomes a request the warehouse must approve (developer docs, n.d.).
 
-commercetools, a second platform, separates the same machines: it keeps an `OrderState` (Open, Confirmed, Complete, Cancelled), a `ShipmentState` with eight values including *Partial* ("items in the Order are shipped in more than one shipment") and *Backorder*, and a `PaymentState`; a fourth field can point to a custom state machine, with transitions left unvalidated when "an external system runs the workflow" (API docs, n.d., accessed November 2026). Its return items carry two further states each, so returns get machines of their own, the last row of the table below.
+commercetools, a second platform, separates the same machines: it keeps an `OrderState` (Open, Confirmed, Complete, Cancelled), a `ShipmentState` with eight values including *Partial* ("items in the Order are shipped in more than one shipment") and *Backorder*, and a `PaymentState`; a fourth field can point to a custom state machine, with transitions left unvalidated when "an external system runs the workflow" (API docs, n.d., accessed November 2026). Its return items carry a shipment state and a payment state of their own, so returns get machines of their own, the last row of the table below.
 
 | Machine | Typical states | Lives at | Who moves it |
 | --- | --- | --- | --- |
 | **Order lifecycle** | Open, confirmed, complete, canceled | The order | The order system |
 | **Money** | Authorized, paid, partially refunded, refunded, voided | The order | The PSP's events |
 | **Goods** | Requested, accepted, in progress, shipped, delivered, canceled, incomplete | Each fulfillment order (shipment), not the order | The warehouse and the carrier |
-| **Return** | Requested, received, graded, refunded or exchanged | Each return | The returns portal and the warehouse |
+| **Return** | Requested, received, graded (inspected for resale), refunded or exchanged | Each return | The returns portal and the warehouse |
 
 ![Diagram: The goods state machine lives on each fulfillment order, not on the order](assets/images/13-order-management/fig01-goods-state-machine-lives-each-fulfillment.jpeg)
 **Figure 2:** *The goods state machine lives on each fulfillment order, not on the order: a two-parcel order has two of these, and "delivered" is true only when both reach the last state.*
 
-The order-level words a customer sees ("Delivered", "Shipped") are summaries computed from the machines below, and two rules keep the summary honest. **"Fulfilled" is not "delivered"** unless the carrier's events are fed back; both Shopify's and commercetools' models leave that gap for the merchant to close ([[shipping-and-delivery]]). And **the summary of a split order is the state of its least-advanced shipment**, which is the rule the agency's flow lacked: with it, #1052877 would have read "Partially delivered: 1 of 2 parcels", with the second parcel still in preparation. Without these rules, a one-word "Delivered" claims less than readers assume, as the table shows.
+The order-level words a customer sees ("Delivered", "Shipped") are summaries computed from the machines below, and two rules keep the summary honest. **"Fulfilled" is not "delivered"** unless the carrier's events are fed back; both Shopify's and commercetools' models leave that gap for the merchant to close ([[shipping-and-delivery]]). And **the summary of a split order is the state of its least-advanced shipment**, which is the rule the agency's flow lacked: with it, #1052877 would have read "Partially delivered: 1 of 2 parcels", with the second parcel still in preparation. Without these rules, a one-word "Delivered" says less than it seems to, as the table shows.
 
 | What "Delivered" on the order says | What it does **not** say |
 | --- | --- |
@@ -105,7 +105,7 @@ The order-level words a customer sees ("Delivered", "Shipped") are summaries com
 
 An order is edited, held or canceled far more often than newcomers expect: wrong size, wrong address, a line out of stock, a fraud hold, a customer who changed their mind. Each change is a transaction against the money, goods and stock commitments, not a form update.
 
-**Edits.** Changing a size, quantity or address changes work other systems may already have accepted. Before committing an edit, establish whether fulfillment can still change and whether the amount paid needs adjustment. Shopify handles this through a provisional *calculated order*, followed by a committed edit, and allows changes only to unfulfilled lines (developer documentation, n.d., accessed November 2026). After a warehouse accepts the work, cancellation becomes a request it must approve. Send every accepted change to the warehouse, finance and availability records as well: a size corrected only in the storefront can still be shipped incorrectly.
+**Edits.** Changing a size, quantity or address changes work other systems may already have accepted. Before committing an edit, establish whether fulfillment can still change and whether the amount paid needs adjustment. Shopify handles this through a provisional *calculated order*, followed by a committed edit, and allows changes only to unfulfilled lines (developer documentation, n.d., accessed November 2026). After a warehouse accepts the work, an edit can no longer be applied directly: it becomes a cancellation request the warehouse must approve, plus a new order. Send every accepted change to the warehouse, finance and availability records as well: a size corrected only in the storefront can still be shipped incorrectly.
 
 **Holds.** A hold stops fulfillment without canceling: a fraud review, an address check, a customer's request. The stock stays committed; Shopify documents that an order on hold keeps its inventory reserved while fulfillment waits.
 
@@ -115,7 +115,7 @@ An order is edited, held or canceled far more often than newcomers expect: wrong
 
 Once an order can be fulfilled from more than one location, it can become more than one fulfillment order, each with its own goods state, and three decisions appear that a single-warehouse merchant never makes. **Sourcing** is choosing which location fulfills which line. **Routing** is the rule set that makes that choice. A **split shipment** is one order shipped in more than one parcel, usually from more than one location or at more than one time.
 
-Platforms route by simple rules. Adobe Commerce ships source priority (work through a configured list) and distance priority (the nearest source to the shipping address), per its documentation updated 20 August 2026. Shopify assigns lines to a location through fulfillment orders, and the assigned location may change only while the fulfillment order is still open, scheduled or on hold. These rules know about stock and geography. They do not know about capacity, cut-off times (the latest order time for a given dispatch), carrier cost, marketplace fees or a maximum number of parcels.
+Platforms route by simple rules. Adobe Commerce, another commerce platform, ships source priority (work through a configured list of sources, its word for stock locations) and distance priority (the nearest source to the shipping address), per its documentation updated 20 August 2026. Shopify assigns lines to a location through fulfillment orders, and the assigned location may change only while the fulfillment order is still open, scheduled or on hold. These rules know about stock and geography. They do not know about capacity, cut-off times (the latest order time for a given dispatch), carrier cost, marketplace fees or a maximum number of parcels.
 
 Order management vendors describe what the fuller decision looks like, and the descriptions are worth reading as a specification rather than as marketing. Kibo's routing API (documentation, n.d., accessed November 2026) returns a *suggestion* built from *candidates*, "a single, possible way to fulfill an item or group of items", logs why locations were considered or rejected, and "does not create shipments or deduct inventory"; when only part of a shipment is in stock, "the remaining unavailable quantity is automatically placed into a new child shipment for re-routing". Fluent Commerce's split logic "analyses inventory and costs across split scenarios, aiming to fulfil the maximum number of items while using the minimum number of shipments", and merchants may "enforce a maximum allowable cost or number of shipments for any given order" (documentation, n.d., accessed November 2026). Manhattan says an OMS assigns each order "to the fulfillment center that can meet the promise most profitably" (n.d., accessed November 2026).
 
@@ -126,28 +126,9 @@ The business trade-off inside a split is concrete. Shipping the fleece now and t
 
 A **backorder**, a line accepted for a unit that is out of stock but expected, is a split in time rather than space, and needs the same honesty: a date from [[inventory-and-availability]]'s incoming quantities, and a message.
 
-## Many Channels, One Record
-
-Several fulfillment locations multiply the connections between systems, which this chapter calls the joins; several channels creating orders multiply them again. Kestrel & Pine's orders begin in four systems. Storefront and B2B (business-to-business) portal orders are created by the shop platform. Marketplace orders are pulled by the marketplace connector. Bergzicht's EDI orders land in the ERP, and 38% of wholesale orders are keyed into the ERP by hand. Store sales are POS receipts. Each source has its own connector to the warehouse, its own path to the books and its own status vocabulary. That is the Spaghetti Junction, the normal result of adding one channel at a time.
-
-When does that junction need one record of its own? The rule I use: **at least two of these four**. Several fulfillment locations. Several channels creating orders. Promises that depend on location (click-and-collect, ship-from-store). Service agents who cannot see one order across systems. One of them can be handled by the platform plus a connector; two make the joins between systems the problem. Kestrel & Pine has had all four since 2023.
-
-![A four-card checklist with two cards ticked leading to a hub-and-spoke order management system.](assets/images/13-order-management/13-two-of-four-oms-rule.jpeg)
-**Figure 4:** *An OMS becomes the order hub once two of four conditions hold: several locations, several channels, location-based promises, or service that cannot see one order.*
-
-The alternative to the junction is one order hub: every channel's order is created in one system, with one state model and one number family, and that system drives the warehouse and informs the books. Which system that should be is the real question, with three honest candidates among the systems a merchant already runs or can buy; a fourth, building one's own, is weighed with the choices below.
-
-| The order lives in | What it is good at | What it lacks | Common at |
-| --- | --- | --- | --- |
-| **The platform** | The customer-facing record: account history, status page, checkout context, returns through its API | Orders from channels the platform did not sell through; routing beyond priority and distance; service view across systems | Starting and Growing |
-| **The ERP** | The financial record: invoice, credit note, receivable, cost; wholesale order entry | Customer-facing state; parcel-level goods state; speed (the ERP runs batches); the ERP partner becomes the integration owner | Growing merchants with strong wholesale |
-| **An OMS** | The operational record: every channel, one state model, routing and splits, holds and edits, the service view | The checkout (stays on the platform) and the books (stay in the ERP); it is a third system to integrate | Omnichannel and Group |
-
-Fluent Commerce states the boundary plainly on its own site: "your ERP stays the system of record" for finance, while the OMS decides where orders go and writes back (n.d., accessed November 2026). The three records are not rivals; they are three truths about the same order, and the design decision is which system owns which truth and how the others are told ([[boundaries-and-systems-of-record]] owns the general idea).
-
 ## The OMS as a Product
 
-The third candidate, the OMS, needs a closer look. An **order management system** takes orders from every channel, decides which location fulfills each line, tracks each order through fulfillment, delivery and returns, and gives service agents one view. **Orchestration** is its job of sequencing those steps across systems. The vendors describe the same shape: Manhattan lists inventory visibility across sources, promise dates at checkout, sourcing, "end-to-end fulfillment execution and tracking" and post-purchase changes (n.d., accessed November 2026); Kibo lists "distributed order orchestration across every store, warehouse, and vendor" with rules such as fewest shipments, lowest cost or closest distance (n.d.); IBM Sterling lists ship from store, in-store pickup and a call-center add-on "for complex order modifications" (n.d.).
+The order management vendors quoted on routing sell a product of their own. An **order management system** takes orders from every channel, decides which location fulfills each line, tracks each order through fulfillment, delivery and returns, and gives service agents one view. **Orchestration** is its job of sequencing those steps across systems. The vendors describe the same shape: Manhattan lists inventory visibility across sources, promise dates at checkout, sourcing, "end-to-end fulfillment execution and tracking" and post-purchase changes (n.d., accessed November 2026); Kibo lists "distributed order orchestration across every store, warehouse, and vendor" with rules such as fewest shipments, lowest cost or closest distance (n.d.); IBM Sterling lists ship from store, in-store pickup and a call-center add-on "for complex order modifications" (n.d.).
 
 What the OMS owns, and what it leaves alone, is the point.
 
@@ -158,11 +139,30 @@ What the OMS owns, and what it leaves alone, is the point.
 | **Routing** | Choose locations, decide splits, create fulfillment orders | The sourcing decision | Picking |
 | **Orchestration** | Drive the money, goods and return machines from events; request, accept, cancel with the warehouse | The order's state | The warehouse's internal states |
 | **Service view and edits** | One screen per order across channels; edits validated against state | Edits and holds | Refund execution (the PSP), invoice (the ERP) |
-| **Events out** | Status events to the platform (customer history), the ERP (invoice triggers), notifications, the data warehouse | Nothing; it publishes | Anything it did not change |
+| **Events out** | Status events to the platform (customer history), the ERP (invoice triggers), notifications, the data warehouse (the analytics database) | Nothing; it publishes | Anything it did not change |
+
+## Many Channels, One Record
+
+An OMS earns its place where systems must be joined. Several fulfillment locations multiply the connections between systems, which this chapter calls the joins; several channels creating orders multiply them again. Kestrel & Pine's orders begin in four systems. Storefront and B2B (business-to-business) portal orders are created by the shop platform. Marketplace orders are pulled by the marketplace connector. EDI orders from Bergzicht Outdoor, the wholesale customer that orders over EDI, land in the ERP, and 38% of wholesale orders are keyed into the ERP by hand. Store sales are POS receipts. Each source has its own connector to the warehouse, its own path to the books and its own status vocabulary. That is the Spaghetti Junction, the normal result of adding one channel at a time.
+
+When does that junction need one record of its own? The rule I use: **at least two of these four**. Several fulfillment locations. Several channels creating orders. Promises that depend on location (click-and-collect, where the customer picks up in a store; ship-from-store, where a store sends the parcel). Service agents who cannot see one order across systems. One of them can be handled by the platform plus a connector; two make the joins between systems the problem. Kestrel & Pine has had all four since 2023.
+
+![A four-card checklist with two cards ticked leading to a hub-and-spoke order management system.](assets/images/13-order-management/13-two-of-four-oms-rule.jpeg)
+**Figure 4:** *An OMS becomes the order hub once two of four conditions hold: several locations, several channels, location-based promises, or service that cannot see one order.*
+
+The alternative to the junction is one order hub: every channel's order is created in one system, with one state model and one number family, and that system drives the warehouse and informs the books. Which system that should be is the real question, with three honest candidates among the systems a merchant already runs or can buy: the platform, the ERP and the OMS just described; a fourth, building one's own, is weighed with the choices below.
+
+| The order lives in | What it is good at | What it lacks | Common at |
+| --- | --- | --- | --- |
+| **The platform** | The customer-facing record: account history, status page, checkout context, returns through its API | Orders from channels the platform did not sell through; routing beyond priority and distance; service view across systems | Starting and Growing |
+| **The ERP** | The financial record: invoice, credit note (the document that reverses an invoice), receivable (what a customer owes), cost; wholesale order entry | Customer-facing state; parcel-level goods state; speed (the ERP runs batches); the ERP partner (the firm that implements and runs the ERP) becomes the integration owner | Growing merchants with strong wholesale |
+| **An OMS** | The operational record: every channel, one state model, routing and splits, holds and edits, the service view | The checkout (stays on the platform) and the books (stay in the ERP); it is a third system to integrate | Omnichannel and Group |
+
+The three records are not rivals; they are three truths about the same order, and the design decision is which system owns which truth and how the others are told ([[boundaries-and-systems-of-record]] owns the general idea). Fluent Commerce states that boundary plainly on its own site: "your ERP stays the system of record" for finance, while the OMS decides where orders go and writes back (n.d., accessed November 2026).
 
 ## The Choices
 
-Four homes are possible: the three candidates above and a service the merchant builds itself. **1. The platform's order is the record.** The platform creates and holds every order; marketplace apps and a POS from the same vendor create orders in it; a 3PL (a third-party logistics provider, a warehouse that ships for the merchant) or WMS connector reads them and writes fulfillments back. Shopify's own features, fulfillment orders with a request-and-accept handshake, holds, edits, returns and multi-location assignment, cover this well; what its documentation does not describe is rule-based sourcing on cost, capacity or cut-off, and that absence is the limit (an inference from the documentation, not a vendor statement).
+**1. The platform's order is the record.** The first of four homes, the three candidates above and a service the merchant builds itself, needs no new system: the platform creates and holds every order; marketplace apps and a POS from the same vendor create orders in it; a 3PL (a third-party logistics provider, a warehouse that ships for the merchant) or WMS connector reads them and writes fulfillments back. Shopify's own features, fulfillment orders with a request-and-accept handshake, holds, edits, returns and multi-location assignment, cover this well; what its documentation does not describe is rule-based sourcing on cost, capacity or cut-off, and that absence is the limit (an inference from the documentation, not a vendor statement).
 
 **2. The ERP as the order hub.** Every channel's order is created in the ERP, which drives the warehouse and the books. Attractive where wholesale dominates and the ERP already holds most orders, and where the ERP partner is strong. The costs are speed (ERPs run in batches), a customer-facing state the ERP cannot show, and a hub owned by the finance system's vendor. [[erp-and-back-office-integration]] works through the hub debate.
 
@@ -204,14 +204,14 @@ The shape of the record does not change with scale: an order has lines, money, p
 
 ### Kestrel & Pine, worked: W2 and the order that had three statuses
 
-Waypoint W2 is being implemented through 2027, seam by seam ([[replatforming-and-migration]] describes the method). The OMS shadow-copied all orders in August, ran in parallel from 1 to 14 September (differences on about 1.4% of orders in the first week, mostly status mapping and timing, illustrative), took marketplace orders on 15 September, storefront orders on 13 October, paused for a change freeze around Black Friday, and takes EDI and manual wholesale orders on 8 December; the old order paths retire in January 2028. From then on every order, whatever its channel, is created in the OMS by an event keyed on its order number, gets a number from one family continuing the platform's sequence, and keeps the channel's own id as a reference.
+Waypoint W2 is implemented through 2027, seam by seam, one order source or connection at a time ([[replatforming-and-migration]] describes the method). The OMS shadow-copies all orders in August 2027 (keeps its own copy without acting on it), runs in parallel from 1 to 14 September (differences on about 1.4% of orders in the first week, mostly status mapping and timing, illustrative), takes marketplace orders on 15 September and storefront orders on 13 October, pauses for a change freeze (no releases) around Black Friday, and takes EDI and manual wholesale orders on 8 December; the old order paths retire in January 2028. From then on every order, whatever its channel, is created in the OMS by an event keyed on its order number, gets a number from one family continuing the platform's sequence, and keeps the channel's own id as a reference.
 
-Under W2, each interaction with the OMS has its own freshness, consistency, speed and fallback. Only order creation and edits must be exact and immediate; the invoice trigger may run in a daily batch, provided it is idempotent per shipment. The figures are the author's illustrative targets for an Omnichannel merchant of Kestrel & Pine's size, not Kestrel & Pine's records. Figure 5 shows how Eva's order would run once storefront orders pass through the OMS.
+Under W2, each interaction with the OMS has its own freshness, consistency, speed and fallback. Only order creation and edits must be exact and immediate; the invoice trigger may run in a daily batch, provided it is idempotent per shipment. The figures are the author's illustrative targets for an Omnichannel merchant of Kestrel & Pine's size, not Kestrel & Pine's records. Figure 5 shows how an order like Eva's would run once storefront orders pass through the OMS.
 
 | Interaction | How fresh | How consistent | How fast | If the OMS is down |
 | --- | --- | --- | --- | --- |
 | Order creation from a channel event | Seconds after confirmation | Exactly one order per order number | Under 2 s end to end *(assumption)* | Events queue; the platform's checkout keeps working; nothing is lost |
-| Fulfillment order to the WMS | Before the next wave release; minutes at peak | Exactly one pick list per fulfillment order | Minutes | The WMS continues on what it has |
+| Fulfillment order to the WMS | Before the next wave release (the warehouse's next batch of pick lists); minutes at peak | Exactly one pick list per fulfillment order | Minutes | The WMS continues on what it has |
 | Status event back to the storefront and service | Seconds to a minute | Per shipment, never collapsed to one word | Under 1 min *(assumption)* | The customer sees the last known state, dated |
 | Edit or cancellation | Now | Validated against the goods state; propagated to WMS and ERP | Under 2 s *(assumption)* | Refuse the edit rather than apply it in one system only |
 | Invoice trigger to the ERP | Per shipment, at dispatch ([[tax-invoicing-and-ledger]] sets the rule) | Idempotent per shipment id | Daily batch is acceptable | Resume from the last acknowledged shipment |
@@ -227,7 +227,7 @@ Support can now see both parcels. The customer still waits for the socks; that s
 
 ## When It Goes Wrong
 
-Even under that design, order updates are delivered as messages, as the order-number rule anticipated, and repeating a message must not repeat the order or shipment it describes. That is why the order record needs to recognize a retry even when all connected systems are working. Shopify's CTO described 13 billion webhooks for 2021 (a historical figure, from a 20 January 2022 engineering post), and Shopify warns that an app may receive a webhook more than once. The same recovery requirement applies to a smaller merchant. The table lists eight ways order integrations fail, the duplicate among them.
+Even under that design, order updates are delivered as messages, as the order-number rule anticipated, and repeating a message must not repeat the order or shipment it describes. So the order record must recognize a retry even when all connected systems are working. Shopify's CTO described 13 billion webhooks for 2021 (a historical figure, from a 20 January 2022 engineering post), and Shopify warns that an app may receive a webhook more than once. The same recovery requirement applies to a smaller merchant. The table lists eight ways order integrations fail, the duplicate among them.
 
 | Failure | What it looks like | Detection | Recovery |
 | --- | --- | --- | --- |
@@ -244,7 +244,7 @@ Most rows end the same way: an identity on every message, a state machine that r
 
 ## What to Take Away
 
-Go back to the order of the opening, whose jacket shipped before the socks, as the fleece of #1052877 did. It should have read "Partially delivered: 1 of 2 parcels", and the customer should have been told "two parcels" when the order split. Each fact behind that sentence is first known by a different system: the payment provider, the warehouse for each parcel, the carrier, later the returns portal. Only one record that keeps those status lines apart, and is the one place every channel's order is created, can put them together. Which system holds that record follows from who has to answer the customer's question about the second parcel.
+Go back to the opening's order, #1052877, whose fleece shipped before the socks. It should have read "Partially delivered: 1 of 2 parcels", and the customer should have been told "two parcels" when the order split. Each fact behind that sentence is first known by a different system: the payment provider, the warehouse for each parcel, the carrier, later the returns portal. Only one record that keeps those status lines apart, and is the one place every channel's order is created, can put them together. Which system holds that record follows from who has to answer the customer's question about the second parcel.
 
 **Established.**
 
@@ -276,7 +276,7 @@ Go back to the order of the opening, whose jacket shipped before the socks, as t
 8. Which daily reconciliation compares orders and shipments across the platform, the hub, the warehouse and the ERP, and who reads it?
 9. If the order hub is down for an hour, can checkout continue, and how are the missed events replayed?
 
-Under W2, Eva's order would have one home, one number, its goods status held per shipment and a warehouse that has accepted the work. Because the record knows each shipment, each shipment can produce its own invoice. The next chapter follows the money and the paperwork that this record generates: the tax it carries, the invoice each shipment produces and the entries those documents post in the books. Continue with [[tax-invoicing-and-ledger]].
+Under W2, an order like #1052877 would have one home, one number, its goods status held per shipment and a warehouse that has accepted the work. Because the record knows each shipment, each shipment can produce its own invoice. The next chapter follows the money and the paperwork that this record generates: the tax it carries, the invoice each shipment produces and the entries those documents post in the books. Continue with [[tax-invoicing-and-ledger]].
 
 ## Sources and Evidence
 

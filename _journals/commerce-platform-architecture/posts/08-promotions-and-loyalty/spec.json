@@ -81,13 +81,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -373,7 +366,7 @@
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The definition, then its seven types, then what all the types have in common, then what is excluded: the exclusion makes sense only once the reader knows what a promotion is. Paid membership closes the section as the last thing that looks like a promotion and is not (moved here in round 2: both readers found it a detour inside the stored-value section)."
+        "rationale": "The definition, then its seven types, then what all the types have in common, then what is excluded: the exclusion makes sense only once the reader knows what a promotion is. Paid membership was cut after failing in four placements."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -457,26 +450,6 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
-        },
-        {
-          "id": "p29",
-          "controlling_idea": "Paid membership programs are often confused with loyalty points and are neither a promotion nor stored value: a membership is a subscription with its own revenue line, which the promotion engine reads as an eligibility condition.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Amazon's 2025 annual report: subscription services net sales of $49.6 billion, Prime benefits as 'effective worldwide marketing tools'; Target's FY2025 report on Target Circle 360.",
-              "shows": "Large retailers report membership as subscription revenue, not as a discount or a points balance, and a benefit such as 'orders over $35' is an eligibility condition; the draft says so after the quotations.",
-              "source": "Amazon Form 10-K (filed February 2026); Target Form 10-K, fiscal 2025"
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The instruments that look like promotions and are not.",
-            "introduces": "Paid membership, one more thing often confused with loyalty, which is a subscription read as an eligibility condition.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
         }
       ]
     },
@@ -494,7 +467,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The five parts in the order a discount passes through them, then the moments at which the parts are used, then the discount's path after the order with one worked case. The table of moments follows the five parts directly, because it is about those parts; placed after the refund it made two readers step back upstream (round 2). The worked allocation and the refund close the section, and the stored-value section opens by contrasting money paid back with money owed before any order."
+        "rationale": "The five parts in the order a discount passes through them, then the discount's path after the order with one worked case. The worked allocation and the refund close the section, and the stored-value section opens by contrasting money paid back with money owed before any order. The table of six moments was cut (it failed in both positions tried); its one distinction, that only code and stored-value redemption must be strongly consistent, is a sentence of the code ledger."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -523,7 +496,7 @@
           "evidence": [
             {
               "kind": "source",
-              "what": "Shopify evaluates product, then order, then shipping discounts (the order that took the Stacking Bug's jacket from €199 to €159.20 to €143.28), and calculates two combined percentage order discounts on the original subtotal (10% plus 20% on €100 gives €70); commercetools gives each cart discount a sortOrder, a stacking mode and discount groups; Adobe Commerce has rule priority and 'Discard subsequent rules'.",
+              "what": "Shopify evaluates product, then order, then shipping discounts (the order that took the Stacking Bug's jacket from €199 to €159.20 to €143.28); commercetools gives each cart discount a sortOrder, a stacking mode and discount groups; Adobe Commerce has rule priority and 'Discard subsequent rules'.",
               "shows": "Three independent products arrive at promotions as data with a declared order and a stop rule.",
               "source": "Shopify Help Center, commercetools docs, Adobe Experience League (accessed November 2026)"
             }
@@ -558,7 +531,7 @@
         },
         {
           "id": "p16",
-          "controlling_idea": "The code ledger: every code has a usage record that must be strongly consistent at redemption, so that two checkouts cannot both take the last use.",
+          "controlling_idea": "The code ledger: every code has a usage record that must be strongly consistent at redemption, so that two checkouts cannot both take the last use; redemption reads the live record while most of the rest can be a cached copy.",
           "function": "explanation",
           "evidence": [
             {
@@ -566,6 +539,12 @@
               "what": "Adobe generates single-use codes in batches with usage caps.",
               "shows": "A platform treats capped single-use codes as the basic defense against code sharing.",
               "source": "Adobe Experience League (accessed November 2026)"
+            },
+            {
+              "kind": "reasoning",
+              "what": "Code redemption reads the live record; the product page's estimate, publication and analytics can be cached copies with a known delay.",
+              "shows": "Strong consistency is needed in two places, not everywhere.",
+              "source": "Author's synthesis; boundaries-and-systems-of-record"
             }
           ],
           "transition_in": {
@@ -617,41 +596,8 @@
           }
         },
         {
-          "id": "p19",
-          "controlling_idea": "Promotions are evaluated at six moments, and each moment has its own requirements for freshness, consistency, latency and availability.",
-          "function": "comparison",
-          "organization": "classification",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Six interactions (product page strike-through price, cart evaluation, code redemption, stored-value redemption, promotion publication, analytics) by freshness, consistency, latency and availability; latency figures labelled assumptions.",
-              "shows": "Only some interactions need a final, consistent answer; the page may show an estimate and must not block.",
-              "source": "Author's synthesis"
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The five parts, just described.",
-            "introduces": "The six moments at which the parts are used, and what each moment needs.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p20",
-          "controlling_idea": "Only the two interactions that behave like money, code redemption and stored-value redemption, must be strongly consistent; everything else can be a cached copy with a known delay. Stored value is treated in its own section after the discount's path to the books.",
-          "function": "analysis",
-          "transition_in": {
-            "relationship": "conclusion_summary",
-            "carries_over": "The table of interactions.",
-            "introduces": "The one distinction to take from it: the two rows that behave like money hold the truth, and the rest are copies (eventually consistent, glossed in place).",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p21",
-          "controlling_idea": "A discount leaves the order in three documents, the invoice, the credit note and the ledger, and each reads the net price per line, which makes allocation a tax matter as well.",
+          "controlling_idea": "A discount leaves the order in three documents, the invoice, the credit note and the general ledger, and each reads the net price per line, which makes allocation a tax matter as well.",
           "function": "explanation",
           "evidence": [
             {
@@ -662,7 +608,7 @@
           ],
           "transition_in": {
             "relationship": "sequence",
-            "carries_over": "The net price written to each order line by the fifth part, after the table of moments.",
+            "carries_over": "The net price written to each order line by the fifth part.",
             "introduces": "The three documents that read it after the order: invoice, credit note and ledger.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -760,7 +706,15 @@
             "introduces": "The accounting standards that say so and what they require to be recorded.",
             "form": "sentence",
             "placement": "start_of_this"
-          }
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "IFRS 15 and ASC 606: a gift-card sale is a contract liability; breakage is estimated and recognized 'in proportion to the pattern of exercised rights'; PwC's revenue guide adds that breakage not expected is recognized only when redemption becomes remote, and that amounts due under unclaimed-property law are a liability, not revenue; material rights defer revenue.",
+              "shows": "The accounting rules decide what the ledger must record.",
+              "source": "PwC Viewpoint, Revenue guide 7.4; IFRS Foundation IFRS 15 page; IFRScommunity summary of B44-B47"
+            }
+          ]
         },
         {
           "id": "p27",
@@ -954,8 +908,8 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "For Kestrel & Pine the moment has arrived for the stores (a separate POS), will arrive for the B2B portal if wholesale promotions start, and never arrives for marketplaces. Kestrel & Pine does not buy an engine for the stores: the platform's own POS is evaluated in 2028 under decision W4, which would put the stores under the platform's promotions.",
-              "shows": "The rule gives a different answer per channel of one merchant, and says what Kestrel & Pine does about the channel where the moment has arrived.",
+              "what": "For Kestrel & Pine the moment has arrived for the stores (a separate POS), will arrive for the B2B portal if wholesale promotions start, and never arrives for marketplaces. Kestrel & Pine has not bought an engine: decision W4 keeps it on the platform and evaluates the platform's own POS in 2028.",
+              "shows": "The rule gives a different answer per channel of one merchant; the page states what W4 records and no outcome of the 2028 evaluation.",
               "source": "Kestrel & Pine scenario ledger (illustrative)"
             }
           ],
@@ -989,24 +943,45 @@
       },
       "paragraphs": [
         {
-          "id": "p38",
-          "controlling_idea": "Across the four stages the engine changes little; what grows is the number of systems that must agree on the result and the money the stored-value ledger holds, so Kestrel & Pine's order is ownership and allocation first, a cross-channel balance second and a loyalty program last.",
-          "function": "analysis",
-          "organization": "classification",
+          "id": "p37a",
+          "controlling_idea": "The rule for choosing depends on how many systems must agree, and that number changes with the scale stage, so the table shows per stage what is typical, what becomes necessary and what warns that the arrangement is being outgrown.",
+          "function": "transition",
           "evidence": [
             {
               "kind": "table",
               "what": "Four stages (Starting, Growing, Omnichannel, Group), each with what is typical, what becomes necessary and the warning signs of outgrowing the approach.",
               "shows": "The necessary items grow with channels and legal entities, not with the number of rules.",
               "source": "Author's synthesis"
-            },
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four options and the rule for choosing.",
+            "introduces": "What is typical, necessary and a warning sign at each of the four scale stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Across the four stages the engine changes little; what grows is the number of systems that must agree on the result and the money the stored-value ledger holds, so Kestrel & Pine's order is ownership and allocation first, a cross-channel balance second and a loyalty program last.",
+          "function": "analysis",
+          "organization": "classification",
+          "evidence": [
             {
               "kind": "scenario",
               "what": "Kestrel & Pine at stage 3: three channels with their own discounts, two gift-card pools, about €227,000 outstanding.",
               "shows": "It has the agreement problem acutely and the ledger problem mildly, which sets its order of work.",
               "source": "Kestrel & Pine scenario ledger (illustrative)"
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table of four stages.",
+            "introduces": "The judgement drawn from it and Kestrel & Pine's order of work.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
         }
       ]
     },
@@ -1114,7 +1089,7 @@
           "evidence": [
             {
               "kind": "table",
-              "what": "Five rows (20% off outerwear, welcome code 10%, free shipping over €75, the store promotion, marketplace deals) with type, order, what each combines with, stop and owner; the welcome code never combines with the outerwear discount, and the shipping threshold is on the discounted subtotal and stated on the product page. Rows 1 and 2 form one group in which only the larger saving applies (as commercetools' discount groups do), and free shipping is checked after both; the text says so before the table.",
+              "what": "Five rows (20% off outerwear, welcome code 10%, free shipping over €75, the store promotion, marketplace deals) with type, order, what each combines with, stop and owner, as the published chapter gave them: the outerwear discount stops further discounts, the welcome code never combines with it (the better one applies), and the shipping threshold is on the discounted subtotal and stated on the product page.",
               "shows": "Each of the three 2026 faults has a row or a column that prevents it.",
               "source": "Kestrel & Pine scenario ledger (illustrative)"
             }
@@ -1163,8 +1138,8 @@
         "how": "Shows what breaks when a clause of the thesis is missing: an unowned stacking rule, two computations of one discount, a missing allocation, an unchecked balance."
       },
       "flow": {
-        "pattern": "chronological",
-        "rationale": "Six failures along a promotion's life: the combination when the campaign starts, the estimate against the cart, the code and the stored-value debit at checkout, the refund after the order, and the copies when the promotion ends. Read in this order the list works as a timeline a team can walk through before a campaign; in any other order the reader has to work out when each failure can occur."
+        "pattern": "grouping",
+        "rationale": "Six parallel failures, each the absence of something an earlier section established (an owned stop rule, one computation of the discount, a consistent code ledger, an idempotent stored-value debit, the allocation, a published end). The list opens with unintended stacking because it is the 2026 failure the plan just answered; no timeline is claimed, because round-3 readers found the list only partly follows a promotion's life."
       },
       "transition_in": {
         "relationship": "contrast",
@@ -1402,22 +1377,100 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "The IFRS 15 breakage paragraphs (B44–B47) are cited through PwC's ASC 606 guide and a secondary IFRS summary; the standard's own text was not readable in research. A reviewer with access should confirm the wording.",
-    "Whether Kestrel & Pine's 2028 POS evaluation (W4) should make a cross-channel stored-value balance a selection criterion is raised here but decided nowhere yet; stores-and-omnichannel or build-buy-or-assemble may want to pick it up.",
-    "Loyalty program mechanics (tiers, earn and burn rates, partner points) are deliberately thin; if the book later adds a loyalty case, this chapter's liability rules are the place to link from.",
-    "Flow rubric note not taken: 'Across Scale Stages' is one paragraph and a table, and its judgement overlaps the choices; the rubric would merge it into 'The Choices'. Kept because every chapter of the book has the section. The author decides.",
-    "Flow rubric note not taken: 'the discount comes back twice' in 'When It Goes Wrong' brings a second case (a gift-card purchase refunded to the card and to the payment method) that no earlier section prepares. A clause in the stored-value design rules would prepare it.",
-    "Both round-1 flow readers found the dated examples of 'In Practice' far from the points they support (the prior-price rule from the price, abuse from eligibility and the code ledger, holdouts from the events). The journal spec's AC-4 expects the section after the choices, so it stays and now opens with a paragraph saying what it adds. Moving the examples needs a journal-spec change, which is the author's.",
-    "The 2027 plan table now reads rows 1 and 2 as one best-saving group, with free shipping checked after both, which makes 'Stop' agree with 'the customer gets the larger of the two discounts'. The ledger gives the plan only in outline; the author should confirm this reading.",
-    "The note on sources for the IFRS 15 and ASC 606 rules (PwC; IFRS 15 B44–B47 cited second-hand) moved from the body to the Sources and Evidence list in round 2; the author may prefer it back in the body as a footnote.",
-    "Paid membership has now failed in three places with two readers each time: between the liability claim and its accounting (round 1), after the design rules (round 2) and at the end of 'What a Promotion Is' (round 3, 'a long aside to reach a one-line point'). Moving it again will not settle it; the author should cut it to one sentence (for example under 'Eligibility and identity') or drop the Amazon and Target filings.",
-    "The table of six interactions (p19–p20) has failed in both positions: after the refund (round 2: readers stepped back upstream) and directly after the five parts (round 3: it interrupts the fifth part, and 'Back to the fifth part' marks the jump). Round-3 readers both proposed putting it after the invoice-and-refund subsection again, with its gift-card row before stored value is explained. The author decides; one option is to split it, keeping the code and gift-card rows for the stored-value section.",
-    "Round 3 found that the failures in 'When It Goes Wrong' only loosely follow a promotion's life, though the flow rationale says they do. The opening sentence (p43a) no longer claims that order; the section's flow rationale and order still do, and the author should either reorder the failures or restate the principle.",
-    "Round 3: 'Across Scale Stages' opens on its table with no sentence carrying over the four options and the rule for choosing (declared transition). A one-sentence opening would add a unit and take the chapter over its 6,500-word limit (6,494 now); the author decides whether to add a paragraph to the spec and cut words elsewhere.",
-    "Minor findings left from round 3 (one reader or terms reader only): €15 per order next to €15.92 per jacket in the incident table; the Shopify €70-not-€72 exception next to the compounding Stacking Bug; €200,000 in the Starbucks paragraph before Kestrel & Pine's €227,000; 'about a sixth' of margin without a base; Noor's January 2027 start against a November 2026 incident; unexplained terms (stacking and ledger in KEY POINTS before their definitions, breakage in the Figure 7 caption, IFRS and IFRIC not spelled out, FY, theme, staging copy, effective-dated, identity signal, incrementality, revenue uplift, metadata)."
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round (round 4, escalate: 68 passed, 21 failed, 13 major), its cheap fixes were applied without a further round. Paid membership, which both readers again found out of place as one sentence in p15 (fourth placement), is cut with the Amazon and Target filings and their Sources entries (rule 3). The Shopify order-discount exception, an agent addition both readers found a detour, is cut (rules 2 and 3). The code-ledger ending no longer mentions gift cards or the unsupported 'because'. The IFRIC 13 history is reduced to 'in force since 2018' (rule 3; both readers). Glosses added for the Price Drift, Waypoint, the pre-order app incident, Daniel Okafor's role, syndicated field, Familiar Stranger and Stars, and the €101.20 base stated (rule 6, ledger facts only). Eva's hypothetical code is announced in the introduction.",
+      "rejected": [
+        "A fifth round.",
+        "Moving membership into the stored-value section, where round 1 already failed it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-6 (known_before_new), added by the conversion beyond the journal spec's criteria and not a cold-reader probe, is dropped (rule 7); the glosses it prompted stay in the chapter.",
+      "rejected": [
+        "Keeping AC-6 as a minor criterion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Paid membership (p29) failed in three placements (rounds 1-3, both readers each time) and supports no supporting claim beyond the eligibility point: reduced to one sentence under 'Eligibility and identity' (p15), keeping the Amazon and Target filings as a citation and dropping their figures and quotations (rule 3); the published clause 'and a liability for benefits paid for but not yet delivered' stays cut with it.",
+      "rejected": [
+        "a fourth placement; dropping the filings from Sources"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The table of six interactions (p19-p20) failed in both positions tried (round 2 after the refund, round 3 after the five parts): cut, and its one distinction (only code and stored-value redemption must be strongly consistent; the rest can be cached) reduced to one sentence of the code ledger (p16) (rule 3). The strike-through-price gloss it carried moves to the prior-price paragraph.",
+      "rejected": [
+        "moving it back after the refund (round 2's position); splitting it"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'When It Goes Wrong' restated as grouping (parallel failures, opening with the one the 2027 plan answers) instead of a timeline the list only partly follows; no reorder (rule 3: readers objected to the announced principle, not asking for one move).",
+      "rejected": [
+        "reordering the six failures along a lifecycle"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'Across Scale Stages' gets the declared opening sentence as a new unit p37a carrying the table; the length now allows it after the two rule-3 cuts (rule 4).",
+      "rejected": [
+        "merging the section into the choices (rule 8: house heading and section stay)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The 2027 plan's inferred stop rule (rows 1 and 2 as one best-saving group, free shipping after both) removed with its explanatory sentence; the Stop and Combines-with cells return to the published chapter's values, since the ledger gives the plan only as 'owner, order of evaluation and stop rule' (rule 1).",
+      "rejected": [
+        "keeping the agent's reading"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The inference that the 2028 POS evaluation would put the stores under the platform's promotions is removed; p37 states only what the ledger's W4 line records: Kestrel & Pine stays on the platform and evaluates the platform's own POS in 2028 (rule 1).",
+      "rejected": [
+        "keeping 'the removal of the second system'"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The sourcing note on IFRS 15 B44-B47 (cited second-hand) stays in Sources, where round 2 moved it after it broke the argument in both body placements (rule 3); the PwC statements an agent cut from the body (breakage not expected is recognized only when redemption becomes remote; unclaimed-property amounts are a liability) are restored to the accounting paragraph, because PwC is cited in Sources (rule 2).",
+      "rejected": [
+        "the note back in the body"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Open question on confirming IFRS 15 B44-B47 against the standard's text: the page's statements are supported by its cited sources and the Sources entry discloses the second-hand citation, so nothing on the page changes (rule 2).",
+      "rejected": [
+        "holding the question for a reviewer"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Open questions on a cross-channel balance as a 2028 POS selection criterion and on thin loyalty mechanics: the page keeps the published sentence on the shared balance service and the published scope; neither adds anything the ledger does not state (rules 1 and 2).",
+      "rejected": [
+        "raising either in this chapter"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Flow-rubric notes not taken earlier (merging scale stages into the choices; preparing the gift-card double refund; moving the dated examples): none was reported by two readers asking for the same move, and round 3's readers found 'In Practice' and the scale stages clear (rules 3 and 8).",
+      "rejected": [
+        "acting on single-source notes"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Round-3 minor findings fixed with clause-length glosses and small rewordings within the limit (rule 6): stacking and ledger glossed in KEY POINTS, breakage named after its gloss in the Figure 7 caption, IFRS and IFRIC expanded, theme, staging copy, effective-dated, identity signal, incrementality and revenue uplift glossed, PwC introduced in the body, 'metadata' replaced, W4 and W5 glossed at first use; '(about €15 per affected order)' dropped as arithmetic the ledger does not state (rule 1); the base of 'about a sixth' given; Noor's later review dated; the Shopify €70 exception tied to the Stacking Bug; the €200,000 figure replaced by a pointer to Kestrel & Pine's own pools; the code-ledger 'reason' sentence and the introduction's obligation sentence reworded.",
+      "rejected": [
+        "a new round for single-reader points"
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Round 2 of the draft check (auto mode; changes to order, paragraph ideas and transitions pre-approved; intent, thesis, role and acceptance criteria untouched) escalated on six spec faults, each reported by both flow readers or by the judge. Taken: the table of moments (p19–p20) moved directly after the five parts; the sourcing note (p26) moved out of the body into Sources and Evidence; paid membership (p29) moved to the end of 'What a Promotion Is'; Shopify's per-order code limit moved from the code ledger (p16) to the built-in option (p33); the VAT example's book made a hypothetical trail guide; p37 says Kestrel & Pine leaves the stores to the 2028 POS evaluation under W4 instead of buying an engine (from the ledger's W4 line). Transitions rewritten where a move invalidated them. A one-sentence opening paragraph (p43a) added to 'When It Goes Wrong' so that the declared contrast with the 2027 plan is stated at the boundary."
@@ -1507,8 +1560,8 @@
     },
     {
       "kind": "external",
-      "ref": "Starbucks, Amazon and Target FY2025 10-Ks; PwC Viewpoint on unexercised rights; IFRS Foundation IFRS 15 page",
-      "contributed": "Liabilities, breakage, membership."
+      "ref": "Starbucks FY2025 10-K; PwC Viewpoint on unexercised rights; IFRS Foundation IFRS 15 page",
+      "contributed": "Liabilities and breakage."
     },
     {
       "kind": "external",
@@ -1517,6 +1570,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 4 (escalate: 68 pass, 21 fail; 13 major, of which 10 corroborated flow points and 2 at fault in the spec, both on the membership sentence). Cheap fixes applied afterwards: membership and the Shopify exception cut, code-ledger ending and accounting paragraph simplified, glosses added. check-report.json is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved by the author's standing instruction: membership reduced to a sentence in p15, the interaction table cut to a sentence in p16 (p19, p20, p29 removed), scale-stages opening p37a added, failure list restated as grouping, the 2027 plan and the stores decision restricted to the ledger, PwC statements restored to p25, round-3 minor findings fixed; open questions emptied."
+    },
     {
       "date": "2026-11-12",
       "change": "Pass resumed after a usage-limit stop. Round 2 run with fresh readers (escalate: 17 passed, 26 failed, 13 major of which 6 at fault in the spec); spec reordered as logged and the chapter revised to match. Round 3 (escalate: 85 passed, 26 failed, 6 major: membership and the interaction table still out of place, the accounting sentence, the stores decision, the failure order, the scale-stages opening). After round 3: the accounting sentence split, the stores decision stated as removing the second system, the claimed order of failures dropped from p43a; the rest recorded in open questions."

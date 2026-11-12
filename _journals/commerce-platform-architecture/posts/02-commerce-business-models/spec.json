@@ -1,1531 +1,1609 @@
 {
- "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
- "spec_version": "0.1",
- "kind": "post",
- "id": "commerce-business-models",
- "journal": "commerce-platform-architecture",
- "part": "part-1",
- "title": "Who Sells What to Whom: Business Models and the Economics That Shape Architecture",
- "status": "draft",
- "revised": "2026-11-12",
- "basis": "Reconstructed from the published chapter (posts/02-commerce-business-models/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter does not yet do what the spec asks are listed under open_questions.",
- "intent": {
-  "outcome": {
-   "know": [
-    "The commerce business models and what each changes: who captures the order, sets the price, is the legal seller, holds the stock and ships.",
-    "The four scale stages (Starting, Growing, Omnichannel, Group), defined by shape."
-   ],
-   "believe": [
-    "Systems follow from the business model and its unit economics, not from the technology."
-   ],
-   "can_do": [
-    "Place their own company in a business model and a scale stage, and say which numbers pull hardest on its architecture."
-   ]
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-business-models",
+  "journal": "commerce-platform-architecture",
+  "part": "part-1",
+  "title": "Who Sells What to Whom: Business Models and the Economics That Shape Architecture",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/02-commerce-business-models/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter does not yet do what the spec asks are listed under open_questions.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The commerce business models and what each changes: who captures the order, sets the price, is the legal seller, holds the stock and ships.",
+        "The four scale stages (Starting, Growing, Omnichannel, Group), defined by shape."
+      ],
+      "believe": [
+        "Systems follow from the business model and its unit economics, not from the technology."
+      ],
+      "can_do": [
+        "Place their own company in a business model and a scale stage, and say which numbers pull hardest on its architecture."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the product manager, analyst or consultant who has to turn a business plan into system requirements, and the engineer who has only ever seen one business line. Leaders deciding whether business lines or brands should share a stack get the trade-off and its conditions.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people and its 2026 incidents, in outline (meet-kestrel-and-pine), and the names of the failure patterns (where-commerce-platforms-go-wrong).",
+        "From journey-of-an-order: the thirteen steps of an order, promise and handoff, the three status lines, what a system is, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the seven systems at Kestrel & Pine, the names of the four scale stages, and PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and availability service."
+      ],
+      "does_not_know": [
+        "The model names: B2C, D2C, wholesale, B2B e-commerce, B2B2C, marketplace selling and operating, omnichannel, subscription.",
+        "Seller of record, GMV, EDI-type sales, VAT, punchout, parity rules, repricing, tenancy, POS, OMS, PIM, ASN.",
+        "Commerce finance vocabulary: conversion rate, cart abandonment, average order value, gross margin, landed cost, contribution, interchange, chargeback, customer acquisition cost.",
+        "Scale stage as a shape; the three arrangements (one stack, a stack per line, a shared core with line-specific edges)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a short description of a merchant, the reader assigns it a scale stage and justifies the choice by channels, locations and brands, not by revenue.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand sells online in two countries, has opened three stores and has just started on one marketplace. Which stage is it in, and what told you?",
+        "expected": "Growing, near the transition to Omnichannel, argued from its channels and stock locations."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given one way of selling, the reader says who captures the order, who sets the price, who is the seller of record, who holds the stock and who ships.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand lists its jacket on someone else's marketplace and sends each order from its own warehouse. Using only this chapter: who captures the order, who sets the price, who is the seller of record, who holds the stock and who ships?",
+        "expected": "The marketplace captures the order (the seller imports it); the seller sets the price, under the marketplace's parity rules; the seller (the brand) is the seller of record; the seller holds the stock; the seller ships."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given two of a merchant's numbers, the reader names the part of the architecture each pulls on.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant finds that 24% of the items it sells online come back and that its busiest hour carries about 41 times the traffic of an average hour. Using only this chapter: which parts of its systems do these two numbers say must be strongest, and why?",
+        "expected": "The return rate pulls on the reverse flow (restocking, refunding and crediting across systems), which must be designed, not bolted on; the peak pulls on capacity of the whole chain, every integration included, not only the storefront."
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a merchant with several lines, the reader says which of the three arrangements the chapter recommends and what is shared and what is kept per line.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant runs its web shop and a small wholesale line on one system. A second system has now started writing prices that the first one also writes. Using only this chapter: what does the author recommend, and what would be shared between the lines and what kept separate?",
+        "expected": "Move to a shared core with line-specific edges: the facts every line shares (product, price list, stock, order record) are owned once; the promises that differ per line stay at the edges (consumer checkout, B2B portal, till, marketplace listing). Not a stack per line."
+      }
+    ]
   },
-  "audience": {
-   "who": "Readers new to commerce architecture; most of all the product manager, analyst or consultant who has to turn a business plan into system requirements, and the engineer who has only ever seen one business line. Leaders deciding whether business lines or brands should share a stack get the trade-off and its conditions.",
-   "already_knows": [
-    "What buying something online is like from the shopper's side.",
-    "Roughly what an API, a database and a queue are.",
-    "Kestrel & Pine, its people and its 2026 incidents, in outline (meet-kestrel-and-pine), and the names of the failure patterns (where-commerce-platforms-go-wrong).",
-    "From journey-of-an-order: the thirteen steps of an order, promise and handoff, the three status lines, what a system is, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the seven systems at Kestrel & Pine, the names of the four scale stages, and PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and availability service."
-   ],
-   "does_not_know": [
-    "The model names: B2C, D2C, wholesale, B2B e-commerce, B2B2C, marketplace selling and operating, omnichannel, subscription.",
-    "Seller of record, GMV, EDI-type sales, VAT, punchout, parity rules, repricing, tenancy, POS, OMS, PIM, ASN.",
-    "Commerce finance vocabulary: conversion rate, cart abandonment, average order value, gross margin, landed cost, contribution, interchange, chargeback, customer acquisition cost.",
-    "Scale stage as a shape; the three arrangements (one stack, a stack per line, a shared core with line-specific edges)."
-   ]
+  "thesis": {
+    "question": "Why do a D2C brand, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems, and why do a merchant's needs change as it grows?",
+    "claim": "They need different systems because a business model decides who captures the order, sets the price, is the legal seller, holds the stock and ships: a merchant needs a system for each promise it keeps itself and a connection for each it leaves to a partner. Growth changes the need by shape, not revenue: each added channel, stock location, country or brand adds systems holding copies of the same orders and stock.",
+    "disputed_by": "The view that commerce is one problem with one best platform, and that merchants differ only in size.",
+    "so_what": "A merchant that copies the architecture of a company with a different model or shape buys problems it does not have and leaves its own unsolved.",
+    "how_why": "A promise needs a system that can keep it: the legal seller must issue invoices and refunds, the stock holder must keep availability true, the shipper must book carriers and report tracking. Who holds each role therefore sets which systems a merchant runs and which partner systems it connects to, and each copy added by growth is one more join that must be kept in step.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Lines that sell the same product ask different things of the systems, because each carries a different business obligation."
+      },
+      {
+        "id": "S2",
+        "claim": "The business models are distinct in ways that can be defined and counted, and a merchant usually runs several at once."
+      },
+      {
+        "id": "S3",
+        "claim": "A business model is a decision about who makes and keeps each promise of an order, and those answers decide what the systems must do."
+      },
+      {
+        "id": "S4",
+        "claim": "Each number in the unit economics of an order, the peak included, pulls on a different part of the platform."
+      },
+      {
+        "id": "S5",
+        "claim": "A scale stage is a shape of business, set by channels, stock locations, countries and brands, and each transition adds joins between systems."
+      },
+      {
+        "id": "S6",
+        "claim": "What the lines share should be owned once and what differs kept at the edges; lines forced together or kept apart without that fail in ways particular to each model."
+      }
+    ]
   },
-  "acceptance_criteria": [
-   {
-    "id": "AC-1",
-    "statement": "Given a short description of a merchant, the reader assigns it a scale stage and justifies the choice by channels, locations and brands, not by revenue.",
-    "check": "custom",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "A brand sells online in two countries, has opened three stores and has just started on one marketplace. Which stage is it in, and what told you?",
-    "expected": "Omnichannel (or moving from Growing to Omnichannel), argued from channels and stock locations."
-   },
-   {
-    "id": "AC-2",
-    "statement": "Given one way of selling, the reader says who captures the order, who sets the price, who is the seller of record, who holds the stock and who ships.",
-    "check": "custom",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "A brand lists its jacket on someone else's marketplace and sends each order from its own warehouse. Using only this chapter: who captures the order, who sets the price, who is the seller of record, who holds the stock and who ships?",
-    "expected": "The marketplace captures the order (the seller imports it); the seller sets the price, under the marketplace's parity rules; the seller (the brand) is the seller of record; the seller holds the stock; the seller ships."
-   },
-   {
-    "id": "AC-3",
-    "statement": "Given two of a merchant's numbers, the reader names the part of the architecture each pulls on.",
-    "check": "custom",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "A merchant finds that 24% of the items it sells online come back and that its busiest hour carries about 41 times the traffic of an average hour. Using only this chapter: which parts of its systems do these two numbers say must be strongest, and why?",
-    "expected": "The return rate pulls on the reverse flow (restocking, refunding and crediting across systems), which must be designed, not bolted on; the peak pulls on capacity of the whole chain, every integration included, not only the storefront."
-   },
-   {
-    "id": "AC-4",
-    "statement": "Given a merchant with several lines, the reader says which of the three arrangements the chapter recommends and what is shared and what is kept per line.",
-    "check": "custom",
-    "method": "cold_reader",
-    "severity": "major",
-    "probe": "A merchant runs its web shop and a small wholesale line on one system. A second system has now started writing prices that the first one also writes. Using only this chapter: what does the author recommend, and what would be shared between the lines and what kept separate?",
-    "expected": "Move to a shared core with line-specific edges: the facts every line shares (product, price list, stock, order record) are owned once; the promises that differ per line stay at the edges (consumer checkout, B2B portal, till, marketplace listing). Not a stack per line."
-   },
-   {
-    "id": "AC-5",
-    "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-    "check": "known_before_new",
-    "method": "rubric",
-    "severity": "major"
-   }
-  ]
- },
- "thesis": {
-  "question": "Why do a D2C brand, a wholesaler, a retailer with stores, a marketplace seller and a marketplace operator need different systems?",
-  "claim": "A business model is a decision about who makes which promise, so the systems a merchant needs follow from who captures the order, sets the price, is the legal seller, holds the stock and ships, and its scale stage is defined by that shape rather than by revenue.",
-  "disputed_by": "The view that commerce is one problem with one best platform, and that merchants differ only in size.",
-  "so_what": "A merchant that copies the architecture of a company with a different model or shape buys problems it does not have and leaves its own unsolved.",
-  "how_why": "Each unit-economics number pulls on a different part of the platform (conversion on checkout, returns on the reverse flow, the peak day on capacity), and each added channel or location turns the joins between systems into the problem.",
-  "supporting_claims": [
-   {
-    "id": "S1",
-    "claim": "Lines that sell the same product ask different things of the systems, because each carries a different business obligation."
-   },
-   {
-    "id": "S2",
-    "claim": "The business models are distinct in ways that can be defined and counted, and a merchant usually runs several at once."
-   },
-   {
-    "id": "S3",
-    "claim": "A business model is a decision about who makes and keeps each promise of an order, and those answers decide what the systems must do."
-   },
-   {
-    "id": "S4",
-    "claim": "Each number in the unit economics of an order, the peak included, pulls on a different part of the platform."
-   },
-   {
-    "id": "S5",
-    "claim": "A scale stage is a shape of business, set by channels, stock locations, countries and brands, and each transition adds joins between systems."
-   },
-   {
-    "id": "S6",
-    "claim": "What the lines share should be owned once and what differs kept at the edges; lines forced together or kept apart without that fail in ways particular to each model."
-   }
-  ]
- },
- "role": {
-  "contribution": "Explains why the same journey needs different systems for different merchants, and defines the four scale stages every later chapter compares against.",
-  "supports": [
-   "P1-2"
-  ]
- },
- "flow": {
-  "pattern": "prerequisite_order",
-  "additional_patterns": [
-   {
-    "pattern": "grouping",
-    "applies_to": "in-practice and when-it-goes-wrong: parallel findings and parallel incidents"
-   },
-   {
-    "pattern": "problem_solution",
-    "applies_to": "when-it-goes-wrong then choices: the incidents, then the arrangement that prevents them"
-   }
+  "role": {
+    "contribution": "Explains why the same journey needs different systems for different merchants, and defines the four scale stages every later chapter compares against.",
+    "supports": [
+      "P1-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "in-practice and when-it-goes-wrong: parallel findings and parallel incidents"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "when-it-goes-wrong then choices: the incidents, then the arrangement that prevents them"
+      }
+    ],
+    "rationale": "The scene gives four different requests and so poses the question of what the lines share. The models come next because the requests cannot be compared until the lines have names. The public record follows the definitions directly, as readers in two rounds asked: its findings confirm the definitions while they are fresh, refer back to the table's figures instead of repeating them, and establish marketplace operating as a different business before the promise table and the recommendation rely on it. The promise table follows because it needs the model names as its columns, and the economics follow it directly because a number means nothing until the reader knows whose promise it pays for; the worked example applies promises and numbers to one jacket, and the peak closes the numbers as the one no single order shows. The stages come after the models and numbers because a stage is defined by how many models, channels and locations a merchant runs; before them 'three or four models on one stock' would name things the reader has not met. The stages end on the hubs the Omnichannel stage makes necessary, and the incidents follow because they are what that stage costs when the hubs are missing; their opening sentence says what merchants now compete on. The incidents come directly before the choices: they are the problem the three arrangements answer. The choices come last because they are the chapter's answer and need everything before them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A brand's web shop sells a jacket to a shopper; its wholesale team sells the same jacket to a retail chain. Software built for the first sale can accept the second order yet fail to meet its conditions."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone can picture the same product sold to a person and to a shop.",
+      "to_topic": "The two sales carry different obligations (an agreed price, a delivery date and a return right against a contract price, labeled pallets and a readable invoice), and so do selling on a marketplace and running one: the differences are the business models."
+    },
+    "thesis_statement": {
+      "text": "A business model decides who makes which promise (who captures the order, sets the price, is the legal seller, holds the stock and ships), and the systems follow from which promises the merchant keeps itself and which it leaves to a partner; growth changes the need by shape, not revenue, because each added channel, stock location, country or brand adds systems holding copies of the same orders and stock.",
+      "placement": "KEY POINTS callout, first and third bullets; paragraph p02 states the premise in prose"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03",
+      "promises": [
+        {
+          "promise": "Start from what the people running Kestrel & Pine's four lines asked of technology.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the business models, check them against the public record, and show who keeps which promise in each.",
+          "kept_in": [
+            "models",
+            "in-practice",
+            "promise-chain"
+          ]
+        },
+        {
+          "promise": "Follow the money an order earns and costs, through one jacket in three lines and through the peak.",
+          "kept_in": [
+            "unit-economics",
+            "worked-example",
+            "seasonality"
+          ]
+        },
+        {
+          "promise": "Define the four scale stages: how a business changes shape as it grows, and what that adds to its systems.",
+          "kept_in": [
+            "stages"
+          ]
+        },
+        {
+          "promise": "Show how the lines failed over facts they shared and nobody owned, and answer what four lines should share and what must stay separate.",
+          "kept_in": [
+            "when-it-goes-wrong",
+            "choices"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A brand sells the same jacket to a shopper and to a retail chain, and software built for the first sale can accept the second order yet fail its conditions, because the chain may require a contract price, labeled pallets and an invoice its systems can read.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "One jacket sold by the web shop to a shopper and by the wholesale team to a retail chain.",
+            "shows": "The same product and a similar-looking order carry different conditions, which is the chapter's subject in one case."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Marketplace sellers and operators carry yet other obligations; orders that look alike differ because each way of selling decides who captures the order, sets the price, is the legal seller, holds the stock and ships, so a merchant needs a system for each promise it keeps itself and a connection for each it leaves to a partner, and growth changes that need by shape, not revenue.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "The two sales of one jacket and their different conditions.",
+          "introduces": "Two further cases, selling on a marketplace and operating one, and the general point that similar orders differ in obligation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Eva's jacket from the previous chapter is a consumer purchase; the same jacket also leaves Kestrel & Pine, the fictional outdoor brand, by a wholesale reorder, a marketplace order or a store sale, and these are the company's four business lines, each needing a different route from order to payment and delivery.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Orders that look alike and carry different obligations.",
+          "introduces": "The four routes one jacket takes out of the running example's company, its four business lines.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from what the people running the four lines asked of technology, defines the business models, checks them against the public record and shows who keeps which promise in each, follows the money an order earns and costs through one jacket in three lines and through the peak, defines the four scale stages as how a business changes shape and what that adds to its systems, shows how the lines failed over facts they shared and nobody owned, and ends on the practical question of what four business lines should share and what must stay separate.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Kestrel & Pine's four business lines.",
+          "introduces": "The order in which the chapter takes them and the practical question it ends on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: One Jacket, Four Ways to Sell It",
+      "controlling_idea": "Asked what they needed from technology, the people who run Kestrel & Pine's four lines each named a different obligation, so the task is to find what the lines can share and what each must keep.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows in one company that lines selling the same product ask different things of the systems."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The accounts, the question, the answers, then what the answers have in common: the reader hears the requests before being told they are different obligations."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "One jacket leaving the company by four routes.",
+        "introduces": "The company's four lines in figures and what the people running them asked for.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In February 2027 Noor Visser and the finance director reviewed the accounts before proposing Waypoint: €48.0 million of 2026 revenue from four lines that share one warehouse and one catalog.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "2026 revenue €48.0 million at 54% gross margin: €27.0 million online, €12.0 million wholesale, €6.0 million through six stores, €3.0 million through three marketplaces; one warehouse in Duiven, 3,400 products.",
+              "shows": "The four lines are real businesses of different size that already share stock and catalog.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Noor then asked the people who run the four lines what they needed from technology in 2027.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The review of the four lines' accounts.",
+            "introduces": "The question put to the people who run them.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The storefront and marketplace manager asked for completed checkouts, credible delivery dates and fresher marketplace stock, while the wholesale lead asked for correct contract prices, fewer hand-typed orders and an end to chargebacks, the deductions a retailer takes from an invoice when a delivery breaks its rules.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "38% of wholesale orders were still typed from email into the ERP.",
+              "shows": "The wholesale line's need is of a different kind from the consumer line's.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The question Noor asked.",
+            "introduces": "The answers of the two people who sell.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Operations asked that pallets and parcels stop competing for the same pickers and that the web shop see store stock, and finance asked for one definition of an order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Daniel Okafor's and Sanne de Wit's requests.",
+              "shows": "Even the functions shared by all lines feel the lines' differences.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The answers of the two selling leads.",
+            "introduces": "The answers of the two people who serve every line.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Each request exposed a different business obligation, so Noor's proposal had to identify the facts the four lines could share and the rules each needed to keep.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four sets of requests.",
+            "introduces": "What they have in common, and the task that follows: separate shared facts from line-specific rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "models",
+      "heading": "The Business Models, Defined by the People Who Report Them",
+      "controlling_idea": "The model names have exact definitions in statistics and annual reports, and a merchant usually runs several models at once.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Gives each model a definition that can be counted, so the later sections can say what each one changes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four lines and their different requests.",
+        "introduces": "The names of the business models those lines are instances of, with exact definitions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Marketing uses the model names loosely, while statistics agencies and annual reports define them precisely because they have to count something, and their definitions distinguish nine models.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine models (B2C, D2C, wholesale, B2B e-commerce, B2B2C, marketplace selling, marketplace operating, omnichannel, subscription), each with a working definition and the report or agency that uses it.",
+              "shows": "Each name can be tied to a definition somebody counts by, so the names can be used exactly.",
+              "source": "Eurostat (February 2026); VF, Columbia, Zalando, Amazon and Target annual reports (2026)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: nine small scenes, one per model.",
+              "shows": "Each model is a different answer to who sells, to whom and through whose channel, and a merchant usually runs several."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Three terms in the table need plain words: the seller of record is the party that legally sells to the customer, GMV is the value of orders passing through a platform including what it does not keep, and EDI-type sales are orders received as structured messages between systems.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify's 2025 annual report defines GMV as 'the total dollar value of orders facilitated through our platform' net of refunds; Amazon states it is not the seller of record for third-party sales.",
+              "shows": "The terms are the companies' own, used where money and liability are reported.",
+              "source": "Shopify and Amazon annual reports (February 2026)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the invoice links shopper and seller, a GMV stack with a small fee kept, EDI at 11.07% against web sales at 8.39%.",
+              "shows": "Each of the three terms in one picture.",
+              "source": "Eurostat, 2024 data"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table of definitions.",
+            "introduces": "The three terms in it that a newcomer has not met.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The models are not exclusive: Kestrel & Pine's four lines run four models (D2C through web shop and stores, wholesale, marketplace selling, and omnichannel where stores and web shop share stock and orders), and most merchants that have outgrown a single channel run at least two.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's four lines.",
+              "shows": "Running several models at once is the normal case, which is why sharing becomes the question.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Nine models defined one by one.",
+            "introduces": "That a merchant runs several of them together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: What the Public Record Says",
+      "controlling_idea": "Annual reports and official statistics confirm that the models differ in ways an architecture has to serve, and that one of them, marketplace operating, is a different business.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Checks the definitions against what companies and agencies publish, directly after them, and establishes marketplace operating as a different business before the promise table and the recommendation rely on it."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One finding per model: stores, the direct channel, marketplace operating, and business ordering last. Figures already in the definitions table are referred back to, not repeated."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The models by definition, and the four Kestrel & Pine runs.",
+        "introduces": "What annual reports and official statistics say the differences mean at full scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32a",
+          "controlling_idea": "The definitions come from reports and the four lines from one fictional company; the same reports and official statistics show what the differences mean at full scale, in four findings.",
+          "function": "transition"
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "For a retailer with stores, the stores are still the larger channel, and the architecture must treat them as one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Online sales were 13.5% of German retail (2025) and 17.1% of US retail in the second quarter of 2026; Target's stores fulfilled 97.6% of its merchandise sales, including digital orders.",
+              "shows": "Most sales still pass through stores, and a large retailer fulfils digital orders from them.",
+              "source": "HDE Online-Monitor (2026); US Census Bureau (August 2026); Target annual report (March 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The announcement of four findings from the public record.",
+            "introduces": "The first: stores as the larger channel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "A brand's mix of direct and wholesale sales moves from year to year, so the platform must serve both without a replatform each time.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "NIKE Direct revenue of $17.7 billion against $18.8 billion a year earlier, 'primarily driven by a decrease in traffic'; VF's direct-to-consumer share is 44%.",
+              "shows": "The direct share is not a one-way trend.",
+              "source": "Nike annual report (July 2026); VF annual report (May 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Stores as a channel in the record.",
+            "introduces": "The direct channel in the record, and that its share can fall.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Marketplace operating is a different business, built around sellers, listings, fees and payouts, which is why this book leaves it to other chapters and another book.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Amazon's $172.2 billion from seller services (in the definitions table); Marketplace Pulse's estimate of the third-party share of Amazon's units and GMV; Zalando's partner business at 32.1% of its GMV.",
+              "shows": "An operator's revenue and liability sit with other sellers' orders.",
+              "source": "Amazon and Zalando annual reports (2026); Marketplace Pulse (February 2026, analyst estimate)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Models a brand runs itself.",
+            "introduces": "The one model a brand should not take as its pattern.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Business ordering runs on two routes, the web shop and structured messages sent from the buyer's system, and the message route is the larger, so a wholesale architecture has to consider both.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Forrester's 2022 forecast expected US B2B e-commerce to reach about $3 trillion by 2027 and tracked EDI separately at about a fifth of all US B2B transactions; US and EU figures are measured differently; the Eurostat comparison is in the models table.",
+              "shows": "The message route is large enough to be counted on its own.",
+              "source": "Forrester (2022); Eurostat (February 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The consumer-facing models in the record.",
+            "introduces": "The business-to-business route in the record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "promise-chain",
+      "heading": "What Each Model Changes in the Promise Chain",
+      "controlling_idea": "A business model is a decision about who makes and keeps each promise of an order, and those answers decide what the systems must do.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "States the chapter's definition of a business model and shows, promise by promise, how the answers differ per model."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole table, with clause-length glosses of its new terms in the cells, then fuller definitions of three of them, then the two rows that matter most: the reader cannot weigh a row before the words in it are plain."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The models by definition and in the public record.",
+        "introduces": "What a model means for the systems: who makes and keeps each promise an order carries.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "A business model is a decision about who makes and keeps each of the promises an order carries, and the answers, shown for the four models Kestrel & Pine runs and for the marketplace operator, decide what its systems must do.",
+          "function": "claim",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven promises (who captures the order, sets the price, is seller of record, holds the stock, ships, handles returns, invoices) across five models, with the architectural consequence of each model in the last row.",
+              "shows": "Reading down a column gives one model's answers; reading the last row gives what those answers demand of the systems.",
+              "source": "Author's synthesis"
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Three terms in the table need more than the short glosses in its cells: punchout, repricing and a marketplace's fulfillment program.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The promise table.",
+            "introduces": "The three words in it that need more than a cell gloss.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Two rows deserve emphasis: who captures the order decides where the order record is born, and who holds the stock decides how many locations the availability calculation must cover.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: Kestrel & Pine's four lines capture orders in four systems and draw on one stock and one profit-and-loss statement.",
+              "shows": "The lines share the stock and the money and do not share the promise.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The rows of the promise table.",
+            "introduces": "The two rows with the largest consequences for systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "unit-economics",
+      "heading": "The Unit Economics of an Order",
+      "controlling_idea": "Each number in the unit economics of an order pulls on a different part of the platform.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Ties each metric to the part of the architecture where it is won or lost."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Who makes which promise, per model.",
+        "introduces": "What keeping those promises earns and costs per order, and where each number presses on the systems.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "How much money one order makes decides which promises a merchant can afford, and each number in that calculation pulls on a different part of the architecture.",
+          "function": "claim",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight metrics (conversion rate, cart abandonment, average order value, gross margin, return rate, shipping cost and threshold, payment fees, customer acquisition cost), each with a plain definition, a dated public benchmark, Kestrel & Pine's 2026 figure and the part of the platform it pulls on.",
+              "shows": "Every number has a place in the architecture where it is won or lost.",
+              "source": "Littledata, Baymard, NRF, Coresight, annual reports, Regulation (EU) 2015/751, vendor price pages; Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Two of the numbers that look like design and finance matters are architecture matters: the reasons shoppers abandon carts are failures of a system to make a promise early and keep it, and payment fees depend on which provider the platform lets the merchant use.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "At €27 million of online revenue the gap between 1.9% and 1.4% plus a fixed fee is six figures a year.",
+              "shows": "A fee difference that sounds small is a platform decision worth making deliberately.",
+              "source": "List prices in the table; Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table of metrics.",
+            "introduces": "The two rows a newcomer is most likely to file under another department.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked-example",
+      "heading": "The Same Jacket in Three Lines: A Worked Example",
+      "controlling_idea": "One jacket sold through three lines is three businesses with three sets of promises.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Works the promises and the numbers through one product, so the reader sees both differ by line."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The metrics one by one.",
+        "introduces": "One jacket's numbers in three lines.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "One Ridgewalker jacket, worked through the online, wholesale and marketplace lines, earns a different contribution (what is left of the price after the costs that come with each unit sold) in each and asks different things of the platform; the store line, which carries no parcel and no return parcel per order, is left out.",
+          "function": "example",
+          "organization": "illustration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "One unit through three lines: price, net revenue, landed cost €58, gross profit, fees, shipping, returns, marketing, an illustrative contribution of about €79, €36 and €62, and what each line needs from the platform; assumptions are marked.",
+              "shows": "The same product is three different businesses once the costs of each line's promises are counted.",
+              "source": "Kestrel & Pine scenario ledger; assumptions labelled in the table"
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Read across, the table explains why the people Noor asked wanted different things: one jacket is three businesses with three sets of promises, and the architecture has to serve all three without pretending they are the same.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one jacket travelling to a consumer, a retailer and a marketplace, earning about €79, €36 and €62.",
+              "shows": "The three contributions side by side, each with its own promises."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The worked table.",
+            "introduces": "What it explains about the requests in the opening scene.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "seasonality",
+      "heading": "Seasonality and the Peak",
+      "controlling_idea": "The peak is the last of the numbers: the load the whole chain of systems must be designed for, and the date that sets the calendar for change.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Adds the one number the metrics table does not hold, the one that pulls on capacity; the conclusion and the questions use it."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The numbers of one order, per line.",
+        "introduces": "The number no single order shows: how orders bunch in time, which pulls on capacity.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "Every consumer model has a peak, and the peak is the load the systems must be designed for.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "US e-commerce was 18.3% of retail sales in the fourth quarter of 2025 against 15.8% in the third; $44.2 billion of US online spending in Cyber Week 2025 with $16 million a minute at the peak; Shopify $14.6 billion over the Black Friday weekend with $5.1 million a minute.",
+              "shows": "The peak is visible in national statistics and in vendors' own figures, per minute.",
+              "source": "US Census Bureau (August 2026); Adobe Analytics (December 2025); Shopify (December 2025)"
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Kestrel & Pine's own peak was smaller and no gentler: at 38 orders a minute the shop platform held, and the stock sync chain and the warehouse queue behind it did not.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Black Friday week 2026: 31,000 online orders, 10.6% of the year's; a peak hour of 2,300 orders, 38 a minute, at about 41 times an average hour's traffic; the Black Friday Oversell followed.",
+              "shows": "The part that failed at peak was the chain behind the storefront.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The peak in public figures.",
+            "introduces": "The running example's peak and which part of the chain failed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22a",
+          "controlling_idea": "Two architectural facts come out of the peak: capacity is a property of the whole chain, every integration included, and the peak sets the calendar for change.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Hobbycraft postponed a website relaunch because 'we felt it was too risky to launch the website in peak trading'.",
+              "shows": "Merchants plan changes around the peak.",
+              "source": "Retail Week (February 2013)"
+            },
+            {
+              "kind": "scenario",
+              "what": "Bergzicht's spring reorder in April.",
+              "shows": "Wholesale has its own seasons, set by retailers' buying calendars.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What failed at Kestrel & Pine's peak.",
+            "introduces": "The two facts an architect takes from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim with public figures, Kestrel & Pine's own peak, then the two architectural facts the case shows."
+      }
+    },
+    {
+      "id": "stages",
+      "heading": "The Four Scale Stages",
+      "controlling_idea": "A scale stage is a shape of business, not a revenue band, and each transition adds joins between systems until the joins are the problem.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Defines the four stages by shape and shows what each makes necessary."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The definition, the running example's path, outside confirmation from vendors' price lists, then the second question the stages raise, when the hub systems arrive: what public sources say and the author's judgement. The section ends on the hubs that the Omnichannel stage makes necessary, which is where the next section's incidents sit."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "One merchant's models and numbers at one moment.",
+        "introduces": "How the shape of the business changes as it grows, in four stages.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "A scale stage is a shape of business, described by how many channels create orders, how many locations hold stock, how many countries and brands are served and who runs the technology; revenue bands are only rough markers.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages (Starting, Growing, Omnichannel, Group) with typical size, shape, models run, what becomes necessary and the warning signs of outgrowing each.",
+              "shows": "Each stage is recognisable by its shape and by what it makes necessary.",
+              "source": "Kestrel & Pine scenario ledger; author's synthesis"
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Kestrel & Pine passed through the first three stages, and its 2027 problems live in the Omnichannel stage, where three or four models share one stock and one catalog and the joins between a dozen systems become the business.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Starting in 2016–2018, Growing in 2019–2022, Omnichannel from 2023.",
+              "shows": "The company's path follows the shapes, not a revenue line.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: each stage transition adds a channel or a location and a join between systems.",
+              "shows": "The hubs arrive at the Omnichannel stage because the joins outnumber the boxes there."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four stages.",
+            "introduces": "Where the running example stands and why its problems belong to that stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Vendors confirm the stages in their price lists: the fee cliffs and feature gates in the tiers map the decisions the vendor expects at each size; Shopware's cliff comes early, and in the author's reading the step to a multi-year contract comes at about the Growing-to-Omnichannel transition.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify from Basic at €28 a month to Plus 'from €2,100', with the third-party gateway fee falling from 2% to 0.2%; Shopware free until €1 million of GMV a year, then 'from €600' a month, priced on GMV; most Shopify merchants on its two smallest plans while most GMV comes from Plus and enterprise.",
+              "shows": "Vendors price by the same steps the chapter calls stages.",
+              "source": "Shopify and Shopware pricing pages (n.d., accessed November 2026); Shopify annual report 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The stages as defined and as Kestrel & Pine lived them.",
+            "introduces": "Outside confirmation from vendors' price lists.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Public sources give no revenue threshold for buying an order, product or warehouse management system; they point to the work instead: scattered content, slow channel launches, several sales channels and stock locations.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Akeneo's signs that a PIM is needed; practitioner guides for order management systems.",
+              "shows": "Vendors themselves describe triggers in terms of work, not revenue.",
+              "source": "Akeneo (n.d., accessed November 2026); OMS vendor guidance"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What vendors' price lists mark: sizes and the decisions expected at each.",
+            "introduces": "What no public source marks: a revenue threshold for the three hub systems; the sources point to the work instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The author's judgement is to consider a PIM when a third channel brings another content format, an OMS when orders need allocation across a second stock location and a WMS when warehouse work outgrows the ERP's stock module, as reasons to investigate and not thresholds.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Waypoint adds a PIM, an OMS and availability management at Kestrel & Pine's Omnichannel stage.",
+              "shows": "The running example adds the hubs at the stage the triggers predict.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The lack of a public threshold.",
+            "introduces": "The author's own triggers, labelled as judgement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-it-goes-wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Kestrel & Pine's lines share facts (a price, an order, a stock figure, a refund) that more than one system holds and nobody owns, each line has failed there in its own way, and every failure was found and repaired the same way.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows the cost of leaving the shared facts unowned, in four incidents."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Four incidents in the same shape (a fact held in two places, a difference somebody noticed), then what they share: the common remedy is only visible after all four."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Omnichannel stage, where the joins between systems become the problem.",
+        "introduces": "Where Omnichannel merchants now compete in a slow market, and Kestrel & Pine's losses there: four incidents over facts that several systems hold and nobody owns.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "At the Omnichannel stage the joins become the problem, and with online growth in single digits merchants compete on margin, returns and operations; Kestrel & Pine has been losing money at those joins: its lines share facts that more than one system holds and nobody owns, and each line has failed there in its own way.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Dutch online consumer spending €35.7 billion in 2025, down 1%; German online goods sales €83.1 billion, up 3.2%.",
+              "shows": "Growth is in single digits, so merchants compete on margin, returns and operations.",
+              "source": "Thuiswinkel Markt Monitor (March 2026); bevh (January 2026)"
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The Price Drift: two lines sold one jacket at two prices for nine days because a price-list sync failed silently, and a marketplace noticed before the merchant did.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "October 2026: €179 on the German storefront against €199 elsewhere for nine days; 410 orders, about €8,200 of margin and a price-parity warning.",
+              "shows": "A price with more than one owner drifts, and a marketplace's parity rule turns the drift into a penalty.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that models fail where they share systems.",
+            "introduces": "The first case, a price shared by channels.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Wholesale on a consumer platform: over a third of wholesale orders are born in a system the consumer line never sees, and the documents that leave with the goods are the same kind of gap: the retailer compared the pallet labels with the despatch advice, found they did not match and deducted the difference, a promise no consumer system knows how to make.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "62% of wholesale orders through the platform's B2B features and 38% keyed into the ERP; the ASN Chargeback of Q3 2026, €14,200 deducted by Bergzicht.",
+              "shows": "A wholesale promise fails on systems built for consumer orders.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The price case.",
+            "introduces": "The wholesale case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The store as an afterthought: store stock never reached the platform, so a click-and-collect pilot promised items the store had already sold.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Store Stock Mirage: 37 items promised in December 2026 by the Utrecht pilot.",
+              "shows": "A store's stock is invisible to the channel that could sell it unless a system carries it there.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The wholesale case.",
+            "introduces": "The store case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Returns bolted on: a 24% return rate is a fact of the business model, and two tools that could each refund without seeing the other refunded 212 returns twice, found by finance at month-end from two credits per order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Double Refund of January 2027: 212 returns refunded by the returns portal and again by hand in the PSP's console; Sanne de Wit found them at month-end from two credits per order in the ERP.",
+              "shows": "A reverse flow added on top of the systems, not designed across them, pays out twice.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The store case.",
+            "introduces": "The returns case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "In every case the failure was found by comparing two copies of the same fact, twice by an outsider before the company itself, and repaired the same way: decide who owns the fact and make the others consumers of it.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four cases.",
+            "introduces": "What they share in detection and recovery.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices: One Stack, Many Stacks or a Shared Core",
+      "controlling_idea": "A merchant with several models can run one stack, a stack per line or a shared core with line-specific edges, and should own the shared facts once from the moment the joins start to cost money.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Answers the chapter's practical question: what the lines share is owned once, what differs stays at the edges."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The three arrangements in the order a merchant meets them, then the author's choice: the recommendation needs all three described first."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Four incidents with one remedy: decide who owns each fact.",
+        "introduces": "The three ways to arrange systems for several models, and the one that owns shared facts once.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "A stack is the set of systems a business line runs on, and a merchant running several business models has three realistic ways to arrange its stacks, each right somewhere.",
+          "function": "claim"
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "One stack for every line is the simplest to run and the cheapest to integrate, and it fits until one line's promises do not fit the platform's model.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three arrangements.",
+            "introduces": "The first, with where it fits and where it limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "A stack per line gives each line the best fit for its promises at the cost of the joins: four order records, four prices and four stock figures.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine in January 2027; the Price Drift and the Store Stock Mirage of the previous section and the Three-Status Order of the previous chapter began here.",
+              "shows": "The incidents the reader has just seen are the cost of this arrangement.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "One shared stack.",
+            "introduces": "The opposite arrangement and its cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A shared core with line-specific edges owns the facts every line shares once, in the hub systems the Omnichannel stage makes necessary, and makes the promises that differ at the edges; it costs more systems and discipline, and pays only once the joins have become the problem.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: one stack, a stack per line with tangled joins, a shared core with an edge per line.",
+              "shows": "The three arrangements differ in where the joins are."
+            },
+            {
+              "kind": "table",
+              "what": "The three arrangements compared on number of order records, fit of each line's promises, integration load, typical stage, warning sign and Kestrel & Pine's years in each, which follow the ledger's stage years (one stack while Starting, 2016–2018; a stack per line from the separate till system of 2019 to 2026; Waypoint from 2027).",
+              "shows": "The same criteria applied to all three make the trade visible.",
+              "source": "Author's synthesis; Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The joins that a stack per line multiplies.",
+            "introduces": "The arrangement that owns shared facts once.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The author's recommendation is to stay on one stack as long as every line's promises fit it, to move to a shared core the moment a second system starts writing a fact the shop platform also writes, never to choose a stack per line on purpose, and not to copy a marketplace operator, whose different business the public record showed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison of the three arrangements.",
+            "introduces": "The author's choice among them and its conditions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
   ],
-  "rationale": "The scene gives four different requests and so poses the question of what the lines share. The models come next because the requests cannot be compared until the lines have names; the promise table follows the definitions because it needs the model names as its columns. The public record follows the promise table directly: four of its five findings confirm the definitions, and read five sections later they would send the reader back to figures already forgotten; it also establishes marketplace operating as a different business long before the recommendation warns against copying it. The economics follow because a number means nothing until the reader knows whose promise it pays for; the worked example applies promises and numbers to one jacket, and the peak closes the numbers as the one no single order shows; placed before the metrics it would be a load with nothing to weigh it against. The stages come after the models and numbers because a stage is defined by how many models, channels and locations a merchant runs; before them 'three or four models on one stock' would name things the reader has not met. The stages end on the slowed market, which says where merchants now compete, and the incidents follow directly because that is where they sit. The incidents come directly before the choices: they are the problem the three arrangements answer, and told after the choices they would re-derive the remedy the recommendation has already given. The choices come last because they are the chapter's answer and need everything before them: put first, 'a shared core' would be a shape with no reason; put before the incidents, 'the joins cost money' would be asserted and not shown."
- },
- "introduction": {
-  "hook": {
-   "type": "intriguing_example",
-   "content": "A brand's web shop sells a jacket to a shopper; its wholesale team sells the same jacket to a retail chain. Software built for the first sale can accept the second order yet fail to meet its conditions."
-  },
-  "bridge": {
-   "from_reader_world": "Anyone can picture the same product sold to a person and to a shop.",
-   "to_topic": "The two sales carry different obligations (an agreed price, a delivery date and a return right against a contract price, labeled pallets and a readable invoice), and so do selling on a marketplace and running one: the differences are the business models."
-  },
-  "thesis_statement": {
-   "text": "A business model is a decision about who makes which promise; the systems follow from that, not from the technology, and scale stages are defined by shape, not revenue.",
-   "placement": "KEY POINTS callout, first and third bullets; paragraph p02 states the premise in prose"
-  },
-  "roadmap": {
-   "placement": "IN THIS CHAPTER callout and paragraph p03",
-   "promises": [
-    {
-     "promise": "Start from what the people running Kestrel & Pine's four lines asked of technology.",
-     "kept_in": [
-      "scene"
-     ]
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The models, the numbers and the stages answer one question from three sides: what the lines of a business can share. They can share facts (the product, the price list, the stock, the order record) and cannot share promises, and a stage is the count of promises a merchant makes at once; so the same table that tells the models apart also says which facts need one owner and when.",
+    "so_what": "A merchant that has filled in who makes which promise for each line, and measured its numbers, can say where its architecture must be strong and can refuse an architecture copied from a company with a different model or shape.",
+    "callback": {
+      "to": "The jacket sold by the web shop to a shopper and by the wholesale team to a retail chain, where software built for the first sale failed the conditions of the second.",
+      "how": "The reader can now say what that software lacked: the two sales can share the product, the price list, the stock and the order record, and each needs its own promises kept at its own edge."
     },
-    {
-     "promise": "Explain the business models, by definition and by who makes which promise, and check both against the public record.",
-     "kept_in": [
-      "models",
-      "promise-chain",
-      "in-practice"
-     ]
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Fill in the who-makes-which-promise table for each line, measure the numbers nobody has measured, and take the eight questions to the business."
     },
-    {
-     "promise": "Follow the money an order earns and costs, through one jacket in three lines and through the peak.",
-     "kept_in": [
-      "unit-economics",
-      "worked-example",
-      "seasonality"
-     ]
+    "hand_off": {
+      "to": "commerce-capability-map",
+      "relationship": "sequence",
+      "carries_over": "The business models and unit economics, which say what a platform must do.",
+      "introduces": "The parts a platform is made of and what each one owns."
     },
-    {
-     "promise": "Define the four scale stages.",
-     "kept_in": [
-      "stages"
-     ]
-    },
-    {
-     "promise": "Show how the lines failed over facts they shared and nobody owned, and answer what four lines should share and what must stay separate.",
-     "kept_in": [
-      "when-it-goes-wrong",
-      "choices"
-     ]
-    }
-   ]
-  },
-  "paragraphs": [
-   {
-    "id": "p01",
-    "controlling_idea": "A brand sells the same jacket to a shopper and to a retail chain, and software built for the first sale can accept the second order yet fail its conditions, because the chain may require a contract price, labeled pallets and an invoice its systems can read.",
-    "function": "context",
-    "organization": "illustration",
-    "evidence": [
-     {
-      "kind": "scenario",
-      "what": "One jacket sold by the web shop to a shopper and by the wholesale team to a retail chain.",
-      "shows": "The same product and a similar-looking order carry different conditions, which is the chapter's subject in one case."
-     }
-    ]
-   },
-   {
-    "id": "p02",
-    "controlling_idea": "Marketplace sellers and marketplace operators carry yet other obligations, so orders that look alike can create very different obligations.",
-    "function": "claim",
     "transition_in": {
-     "relationship": "additional_support",
-     "carries_over": "The two sales of one jacket and their different conditions.",
-     "introduces": "Two further cases, selling on a marketplace and operating one, and the general point that similar orders differ in obligation.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p04",
-    "controlling_idea": "Eva's jacket from the previous chapter is a consumer purchase; the same jacket also leaves Kestrel & Pine, the fictional outdoor brand, by a wholesale reorder, a marketplace order or a store sale, and these are the company's four business lines, each needing a different route from order to payment and delivery.",
-    "function": "context",
-    "transition_in": {
-     "relationship": "example",
-     "carries_over": "Orders that look alike and carry different obligations.",
-     "introduces": "The four routes one jacket takes out of the running example's company, its four business lines.",
-     "form": "phrase",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p03",
-    "controlling_idea": "The chapter starts from what the people running the four lines asked of technology, explains the business models by definition and by who makes which promise and checks both against the public record, follows the money an order earns and costs through one jacket in three lines and through the peak, defines the four scale stages, shows how the lines failed over facts they shared and nobody owned, and ends on the practical question of what four business lines should share and what must stay separate.",
-    "function": "transition",
-    "transition_in": {
-     "relationship": "sequence",
-     "carries_over": "Kestrel & Pine's four business lines.",
-     "introduces": "The order in which the chapter takes them and the practical question it ends on.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   }
-  ]
- },
- "sections": [
-  {
-   "id": "scene",
-   "heading": "Setting the Scene at Kestrel & Pine: One Jacket, Four Ways to Sell It",
-   "controlling_idea": "Asked what they needed from technology, the people who run Kestrel & Pine's four lines each named a different obligation, so the task is to find what the lines can share and what each must keep.",
-   "function": "context",
-   "advances_thesis": {
-    "supports": [
-     "S1"
-    ],
-    "how": "Shows in one company that lines selling the same product ask different things of the systems."
-   },
-   "flow": {
-    "pattern": "chronological",
-    "rationale": "The accounts, the question, the answers, then what the answers have in common: the reader hears the requests before being told they are different obligations."
-   },
-   "transition_in": {
-    "relationship": "example",
-    "carries_over": "One jacket leaving the company by four routes.",
-    "introduces": "The company's four lines in figures and what the people running them asked for.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p05",
-     "controlling_idea": "In February 2027 Noor Visser and the finance director reviewed the accounts before proposing Waypoint: €48.0 million of 2026 revenue from four lines that share one warehouse and one catalog.",
-     "function": "context",
-     "organization": "narration",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "2026 revenue €48.0 million at 54% gross margin: €27.0 million online, €12.0 million wholesale, €6.0 million through six stores, €3.0 million through three marketplaces; one warehouse in Duiven, 3,400 products.",
-       "shows": "The four lines are real businesses of different size that already share stock and catalog.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ]
-    },
-    {
-     "id": "p06",
-     "controlling_idea": "Noor then asked the people who run the four lines what they needed from technology in 2027.",
-     "function": "transition",
-     "transition_in": {
-      "relationship": "time",
-      "carries_over": "The review of the four lines' accounts.",
-      "introduces": "The question put to the people who run them.",
-      "form": "word",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p07",
-     "controlling_idea": "The storefront and marketplace manager asked for completed checkouts, credible delivery dates and fresher marketplace stock, while the wholesale lead asked for correct contract prices, fewer hand-typed orders and an end to chargebacks, the deductions a retailer takes from an invoice when a delivery breaks its rules.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "38% of wholesale orders were still typed from email into the ERP.",
-       "shows": "The wholesale line's need is of a different kind from the consumer line's.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The question Noor asked.",
-      "introduces": "The answers of the two people who sell.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p08",
-     "controlling_idea": "Operations asked that pallets and parcels stop competing for the same pickers and that the web shop see store stock, and finance asked for one definition of an order.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Daniel Okafor's and Sanne de Wit's requests.",
-       "shows": "Even the functions shared by all lines feel the lines' differences.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The answers of the two selling leads.",
-      "introduces": "The answers of the two people who serve every line.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p09",
-     "controlling_idea": "Each request exposed a different business obligation, so Noor's proposal had to identify the facts the four lines could share and the rules each needed to keep.",
-     "function": "claim",
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The four sets of requests.",
-      "introduces": "What they have in common, and the task that follows: separate shared facts from line-specific rules.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "models",
-   "heading": "The Business Models, Defined by the People Who Report Them",
-   "controlling_idea": "The model names have exact definitions in statistics and annual reports, and a merchant usually runs several models at once.",
-   "function": "definition",
-   "advances_thesis": {
-    "supports": [
-     "S2"
-    ],
-    "how": "Gives each model a definition that can be counted, so the later sections can say what each one changes."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The four lines and their different requests.",
-    "introduces": "The names of the business models those lines are instances of, with exact definitions.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p10",
-     "controlling_idea": "Marketing uses the model names loosely, while statistics agencies and annual reports define them precisely because they have to count something, and their definitions distinguish nine models.",
-     "function": "definition",
-     "organization": "classification",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Nine models (B2C, D2C, wholesale, B2B e-commerce, B2B2C, marketplace selling, marketplace operating, omnichannel, subscription), each with a working definition and the report or agency that uses it.",
-       "shows": "Each name can be tied to a definition somebody counts by, so the names can be used exactly.",
-       "source": "Eurostat (February 2026); VF, Columbia, Zalando, Amazon and Target annual reports (2026)"
-      },
-      {
-       "kind": "figure",
-       "what": "Figure 1: nine small scenes, one per model.",
-       "shows": "Each model is a different answer to who sells, to whom and through whose channel, and a merchant usually runs several."
-      }
-     ]
-    },
-    {
-     "id": "p11",
-     "controlling_idea": "Three terms in the table need plain words: the seller of record is the party that legally sells to the customer, GMV is the value of orders passing through a platform including what it does not keep, and EDI-type sales are orders received as structured messages between systems.",
-     "function": "definition",
-     "evidence": [
-      {
-       "kind": "quotation",
-       "what": "Shopify's 2025 annual report defines GMV as 'the total dollar value of orders facilitated through our platform' net of refunds; Amazon states it is not the seller of record for third-party sales.",
-       "shows": "The terms are the companies' own, used where money and liability are reported.",
-       "source": "Shopify and Amazon annual reports (February 2026)"
-      },
-      {
-       "kind": "figure",
-       "what": "Figure 2: the invoice links shopper and seller, a GMV stack with a small fee kept, EDI at 11.07% against web sales at 8.39%.",
-       "shows": "Each of the three terms in one picture.",
-       "source": "Eurostat, 2024 data"
-      }
-     ],
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The table of definitions.",
-      "introduces": "The three terms in it that a newcomer has not met.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p12",
-     "controlling_idea": "The models are not exclusive: Kestrel & Pine runs four at once, and most merchants that have outgrown a single channel run at least two.",
-     "function": "claim",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Kestrel & Pine's four lines.",
-       "shows": "Running several models at once is the normal case, which is why sharing becomes the question.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "Nine models defined one by one.",
-      "introduces": "That a merchant runs several of them together.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "promise-chain",
-   "heading": "What Each Model Changes in the Promise Chain",
-   "controlling_idea": "A business model is a decision about who makes and keeps each promise of an order, and those answers decide what the systems must do.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "S3"
-    ],
-    "how": "States the chapter's definition of a business model and shows, promise by promise, how the answers differ per model."
-   },
-   "flow": {
-    "pattern": "large_to_small",
-    "rationale": "The whole table, its unfamiliar words, then the two rows that matter most: the reader cannot weigh a row before the words in it are plain."
-   },
-   "transition_in": {
-    "relationship": "elaboration",
-    "carries_over": "The models by name and definition.",
-    "introduces": "What each model changes in the promises an order carries.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p13",
-     "controlling_idea": "A business model is a decision about who makes and keeps each of the promises an order carries, and the answers, shown for the four models Kestrel & Pine runs and for the marketplace operator, decide what its systems must do.",
-     "function": "claim",
-     "organization": "classification",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Seven promises (who captures the order, sets the price, is seller of record, holds the stock, ships, handles returns, invoices) across five models, with the architectural consequence of each model in the last row.",
-       "shows": "Reading down a column gives one model's answers; reading the last row gives what those answers demand of the systems.",
-       "source": "Author's synthesis"
-      }
-     ]
-    },
-    {
-     "id": "p14",
-     "controlling_idea": "Five terms in the table need plain definitions: punchout, parity rules, repricing, tenancy and a marketplace's fulfillment program.",
-     "function": "definition",
-     "transition_in": {
-      "relationship": "elaboration",
-      "carries_over": "The promise table.",
-      "introduces": "The four words in it that a newcomer has not met.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p15",
-     "controlling_idea": "Two rows deserve emphasis: who captures the order decides where the order record is born, and who holds the stock decides how many locations the availability calculation must cover.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "figure",
-       "what": "Figure 3: Kestrel & Pine's four lines capture orders in four systems and draw on one stock and one profit-and-loss statement.",
-       "shows": "The lines share the stock and the money and do not share the promise.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "emphasis",
-      "carries_over": "The rows of the promise table.",
-      "introduces": "The two rows with the largest consequences for systems.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "in-practice",
-   "heading": "In Practice: What the Public Record Says",
-   "controlling_idea": "Annual reports and official statistics confirm that the models differ in ways an architecture has to serve, and that one of them, marketplace operating, is a different business.",
-   "function": "evidence",
-   "advances_thesis": {
-    "supports": [
-     "S2",
-     "S3"
-    ],
-    "how": "Checks the definitions and the promise table against what companies and agencies publish, before the chapter turns to money."
-   },
-   "flow": {
-    "pattern": "grouping",
-    "rationale": "One finding per model in the order the chapter defined them: stores, the direct channel, marketplace operating, and business ordering last."
-   },
-   "transition_in": {
-    "relationship": "additional_support",
-    "carries_over": "The models by definition and by who makes which promise.",
-    "introduces": "What annual reports and official statistics say about the same models, while the definitions are fresh.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p32a",
-     "controlling_idea": "The models and the promise table so far come from definitions and one fictional company; annual reports and official statistics show the same differences at full scale, in four findings.",
-     "function": "transition"
-    },
-    {
-     "id": "p33",
-     "controlling_idea": "For a retailer with stores, the stores are still the larger channel, and the architecture must treat them as one.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "Online sales were 13.5% of German retail (2025) and 17.1% of US retail in the second quarter of 2026; Target's stores fulfilled 97.6% of its merchandise sales, including digital orders.",
-       "shows": "Most sales still pass through stores, and a large retailer fulfils digital orders from them.",
-       "source": "HDE Online-Monitor (2026); US Census Bureau (August 2026); Target annual report (March 2026)"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The announcement of five findings from the public record.",
-      "introduces": "The first: stores as the larger channel.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p34",
-     "controlling_idea": "A brand's mix of direct and wholesale sales moves from year to year, so the platform must serve both without a replatform each time.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "NIKE Direct revenue of $17.7 billion against $18.8 billion a year earlier, 'primarily driven by a decrease in traffic'; VF's direct-to-consumer share is 44%.",
-       "shows": "The direct share is not a one-way trend.",
-       "source": "Nike annual report (July 2026); VF annual report (May 2026)"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "Stores as a channel in the record.",
-      "introduces": "The direct channel in the record, and that its share can fall.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p35",
-     "controlling_idea": "Marketplace operating is a different business, built around sellers, listings, fees and payouts, which is why this book leaves it to other chapters and another book.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "Amazon earned $172.2 billion from seller services in 2025 and is not the seller of record for third-party sales; Zalando's partner business was 32.1% of its GMV.",
-       "shows": "An operator's revenue and liability sit with other sellers' orders.",
-       "source": "Amazon and Zalando annual reports (2026); Marketplace Pulse (February 2026, analyst estimate)"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "Models a brand runs itself.",
-      "introduces": "The one model a brand should not take as its pattern.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p36",
-     "controlling_idea": "Business ordering runs on two routes, the web shop and structured messages sent from the buyer's system, and the message route is the larger, so a wholesale architecture has to consider both.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "Forrester's 2022 forecast expected US B2B e-commerce to reach about $3 trillion by 2027 and tracked EDI separately at about a fifth of transactions; the Eurostat comparison is in the models table.",
-       "shows": "The message route is large enough to be counted on its own.",
-       "source": "Forrester (2022); Eurostat (February 2026)"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The consumer-facing models in the record.",
-      "introduces": "The business-to-business route in the record.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "unit-economics",
-   "heading": "The Unit Economics of an Order",
-   "controlling_idea": "Each number in the unit economics of an order pulls on a different part of the platform.",
-   "function": "analysis",
-   "advances_thesis": {
-    "supports": [
-     "S4"
-    ],
-    "how": "Ties each metric to the part of the architecture where it is won or lost."
-   },
-   "transition_in": {
-    "relationship": "cause_effect",
-    "carries_over": "Who makes which promise, as defined and as the public record confirms.",
-    "introduces": "What keeping those promises earns and costs per order, and where each number presses on the systems.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p17",
-     "controlling_idea": "How much money one order makes decides which promises a merchant can afford, and each number in that calculation pulls on a different part of the architecture.",
-     "function": "claim",
-     "organization": "classification",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Eight metrics (conversion rate, cart abandonment, average order value, gross margin, return rate, shipping cost and threshold, payment fees, customer acquisition cost), each with a plain definition, a dated public benchmark, Kestrel & Pine's 2026 figure and the part of the platform it pulls on.",
-       "shows": "Every number has a place in the architecture where it is won or lost.",
-       "source": "Littledata, Baymard, NRF, Coresight, annual reports, Regulation (EU) 2015/751, vendor price pages; Kestrel & Pine scenario ledger"
-      }
-     ]
-    },
-    {
-     "id": "p18",
-     "controlling_idea": "Two of the numbers that look like design and finance matters are architecture matters: the reasons shoppers abandon carts are failures of a system to make a promise early and keep it, and payment fees depend on which provider the platform lets the merchant use.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "reasoning",
-       "what": "At €27 million of online revenue the gap between 1.9% and 1.4% plus a fixed fee is six figures a year.",
-       "shows": "A fee difference that sounds small is a platform decision worth making deliberately.",
-       "source": "List prices in the table; Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "emphasis",
-      "carries_over": "The table of metrics.",
-      "introduces": "The two rows a newcomer is most likely to file under another department.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "worked-example",
-   "heading": "The Same Jacket in Three Lines: A Worked Example",
-   "controlling_idea": "One jacket sold through three lines is three businesses with three sets of promises.",
-   "function": "example",
-   "advances_thesis": {
-    "supports": [
-     "S3",
-     "S4"
-    ],
-    "how": "Works the promises and the numbers through one product, so the reader sees both differ by line."
-   },
-   "transition_in": {
-    "relationship": "example",
-    "carries_over": "The metrics one by one.",
-    "introduces": "One jacket's numbers in three lines.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p19",
-     "controlling_idea": "One Ridgewalker jacket, worked through the online, wholesale and marketplace lines, earns a different contribution (what is left of the price after the costs that come with each unit sold) in each and asks different things of the platform; the store line, which carries no parcel and no return parcel per order, is left out.",
-     "function": "example",
-     "organization": "illustration",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "One unit through three lines: price, net revenue, landed cost €58, gross profit, fees, shipping, returns, marketing, an illustrative contribution of about €79, €36 and €62, and what each line needs from the platform; assumptions are marked.",
-       "shows": "The same product is three different businesses once the costs of each line's promises are counted.",
-       "source": "Kestrel & Pine scenario ledger; assumptions labelled in the table"
-      }
-     ]
-    },
-    {
-     "id": "p20",
-     "controlling_idea": "Read across, the table explains why the people Noor asked wanted different things: one jacket is three businesses with three sets of promises, and the architecture has to serve all three without pretending they are the same.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "figure",
-       "what": "Figure 4: one jacket travelling to a consumer, a retailer and a marketplace, earning about €79, €36 and €62.",
-       "shows": "The three contributions side by side, each with its own promises."
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The worked table.",
-      "introduces": "What it explains about the requests in the opening scene.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "seasonality",
-   "heading": "Seasonality and the Peak",
-   "controlling_idea": "The peak is the last of the numbers: the load the whole chain of systems must be designed for, and the date that sets the calendar for change.",
-   "function": "analysis",
-   "advances_thesis": {
-    "supports": [
-     "S4"
-    ],
-    "how": "Adds the one number the metrics table does not hold, the one that pulls on capacity; the conclusion and the questions use it."
-   },
-   "transition_in": {
-    "relationship": "additional_support",
-    "carries_over": "The numbers of one order, per line.",
-    "introduces": "The number no single order shows: how orders bunch in time, which pulls on capacity.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p21",
-     "controlling_idea": "Every consumer model has a peak, and the peak is the load the systems must be designed for.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "US e-commerce was 18.3% of retail sales in the fourth quarter of 2025 against 15.8% in the third; $44.2 billion of US online spending in Cyber Week 2025 with $16 million a minute at the peak; Shopify $14.6 billion over the Black Friday weekend with $5.1 million a minute.",
-       "shows": "The peak is visible in national statistics and in vendors' own figures, per minute.",
-       "source": "US Census Bureau (August 2026); Adobe Analytics (December 2025); Shopify (December 2025)"
-      }
-     ]
-    },
-    {
-     "id": "p22",
-     "controlling_idea": "Kestrel & Pine's own peak was smaller and no gentler: at 38 orders a minute the shop platform held, and the stock sync chain and the warehouse queue behind it did not.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Black Friday week 2026: 31,000 online orders, 10.6% of the year's; a peak hour of 2,300 orders, 38 a minute, at about 41 times an average hour's traffic; the Black Friday Oversell followed.",
-       "shows": "The part that failed at peak was the chain behind the storefront.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The peak in public figures.",
-      "introduces": "The running example's peak and which part of the chain failed.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p22a",
-     "controlling_idea": "Two architectural facts come out of the peak: capacity is a property of the whole chain, every integration included, and the peak sets the calendar for change.",
-     "function": "analysis",
-     "evidence": [
-      {
-       "kind": "quotation",
-       "what": "Hobbycraft postponed a website relaunch because 'we felt it was too risky to launch the website in peak trading'.",
-       "shows": "Merchants plan changes around the peak.",
-       "source": "Retail Week (February 2013)"
-      },
-      {
-       "kind": "scenario",
-       "what": "Bergzicht's spring reorder in April.",
-       "shows": "Wholesale has its own seasons, set by retailers' buying calendars.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "What failed at Kestrel & Pine's peak.",
-      "introduces": "The two facts an architect takes from it.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ],
-   "flow": {
-    "pattern": "assertion_evidence_reasoning",
-    "rationale": "The claim with public figures, Kestrel & Pine's own peak, then the two architectural facts the case shows."
-   }
-  },
-  {
-   "id": "stages",
-   "heading": "The Four Scale Stages",
-   "controlling_idea": "A scale stage is a shape of business, not a revenue band, and each transition adds joins between systems until the joins are the problem.",
-   "function": "definition",
-   "advances_thesis": {
-    "supports": [
-     "S5"
-    ],
-    "how": "Defines the four stages by shape and shows what each makes necessary."
-   },
-   "flow": {
-    "pattern": "assertion_evidence_reasoning",
-    "rationale": "The definition, the running example's path, outside confirmation from vendors' price lists, then the second question the stages raise, when the hub systems arrive (what public sources say and the author's judgement), and last the slowed market, because it says what merchants at these stages now compete on, which is where the next section's incidents sit."
-   },
-   "transition_in": {
-    "relationship": "time",
-    "carries_over": "One merchant's models and numbers at one moment.",
-    "introduces": "How the shape of the business changes as it grows, in four stages.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p23",
-     "controlling_idea": "A scale stage is a shape of business, described by how many channels create orders, how many locations hold stock, how many countries and brands are served and who runs the technology; revenue bands are only rough markers.",
-     "function": "definition",
-     "organization": "classification",
-     "evidence": [
-      {
-       "kind": "table",
-       "what": "Four stages (Starting, Growing, Omnichannel, Group) with typical size, shape, models run, what becomes necessary and the warning signs of outgrowing each.",
-       "shows": "Each stage is recognisable by its shape and by what it makes necessary.",
-       "source": "Kestrel & Pine scenario ledger; author's synthesis"
-      }
-     ]
-    },
-    {
-     "id": "p24",
-     "controlling_idea": "Kestrel & Pine passed through the first three stages, and its 2027 problems live in the Omnichannel stage, where three or four models share one stock and one catalog and the joins between a dozen systems become the business.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Starting in 2016–2018, Growing from 2019, Omnichannel from 2023.",
-       "shows": "The company's path follows the shapes, not a revenue line.",
-       "source": "Kestrel & Pine scenario ledger"
-      },
-      {
-       "kind": "figure",
-       "what": "Figure 5: each stage transition adds a channel or a location and a join between systems.",
-       "shows": "The hubs arrive at the Omnichannel stage because the joins outnumber the boxes there."
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The four stages.",
-      "introduces": "Where the running example stands and why its problems belong to that stage.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p25",
-     "controlling_idea": "Vendors confirm the stages in their price lists: a merchant moves from a self-service plan to a negotiated contract at about the Growing-to-Omnichannel transition, the fee cliffs and feature gates in the tiers map the decisions the vendor expects at each size, and because the vendor counts GMV where the merchant counts orders, its roadmap is written for that metric.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "Shopify from Basic at €28 a month to Plus 'from €2,100', with the third-party gateway fee falling from 2% to 0.2%; Shopware free until €1 million of GMV a year, then 'from €600' a month, priced on GMV; most Shopify merchants on its two smallest plans while most GMV comes from Plus and enterprise.",
-       "shows": "Vendors price by the same steps the chapter calls stages.",
-       "source": "Shopify and Shopware pricing pages (n.d., accessed November 2026); Shopify annual report 2025"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The stages as defined and as Kestrel & Pine lived them.",
-      "introduces": "Outside confirmation from vendors' price lists.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p26",
-     "controlling_idea": "Public sources give no revenue threshold for buying an order, product or warehouse management system; they point to the work instead: scattered content, slow channel launches, several sales channels and stock locations.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "source",
-       "what": "Akeneo's signs that a PIM is needed; practitioner guides for order management systems.",
-       "shows": "Vendors themselves describe triggers in terms of work, not revenue.",
-       "source": "Akeneo (n.d., accessed November 2026); OMS vendor guidance"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "What vendors' price lists mark: sizes and the decisions expected at each.",
-      "introduces": "What no public source marks: a revenue threshold for the three hub systems; the sources point to the work instead.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p27",
-     "controlling_idea": "The author's judgement is to consider a PIM when a third channel brings another content format, an OMS when orders need allocation across a second stock location and a WMS when warehouse work outgrows the ERP's stock module, as reasons to investigate and not thresholds.",
-     "function": "recommendation",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "Waypoint adds a PIM, an OMS and availability management at Kestrel & Pine's Omnichannel stage.",
-       "shows": "The running example adds the hubs at the stage the triggers predict.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The lack of a public threshold.",
-      "introduces": "The author's own triggers, labelled as judgement.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p37",
-     "controlling_idea": "Online growth has normalized to single digits, so merchants at the Growing and Omnichannel stages now compete on margin, returns and operations rather than on traffic.",
-     "function": "evidence",
-     "evidence": [
-      {
-       "kind": "statistic",
-       "what": "Dutch online consumer spending of €35.7 billion in 2025, down 1%; German online goods sales of €83.1 billion, up 3.2%.",
-       "shows": "Two national series both show single-digit movement.",
-       "source": "Thuiswinkel Markt Monitor (March 2026); bevh (January 2026)"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The stages and what each makes necessary.",
-      "introduces": "The market in which the stages are now climbed, and what merchants in them compete on.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "when-it-goes-wrong",
-   "heading": "When It Goes Wrong",
-   "controlling_idea": "Kestrel & Pine's lines share facts (a price, an order, a stock figure, a refund) that more than one system holds and nobody owns, each line has failed there in its own way, and every failure was found and repaired the same way.",
-   "function": "example",
-   "advances_thesis": {
-    "supports": [
-     "S6"
-    ],
-    "how": "Shows the cost of leaving the shared facts unowned, in four incidents."
-   },
-   "flow": {
-    "pattern": "grouping",
-    "rationale": "Four incidents in the same shape (a fact held in two places, a difference somebody noticed), then what they share: the common remedy is only visible after all four."
-   },
-   "transition_in": {
-    "relationship": "example",
-    "carries_over": "Merchants at these stages compete on margin, returns and operations.",
-    "introduces": "Kestrel & Pine's own losses there: four incidents over facts that several systems hold and nobody owns.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p38",
-     "controlling_idea": "Kestrel & Pine has been losing money on margin, returns and operations: its lines share facts that more than one system holds and nobody owns, and each line has failed there in its own way.",
-     "function": "claim"
-    },
-    {
-     "id": "p39",
-     "controlling_idea": "The Price Drift: two lines sold one jacket at two prices for nine days because a price-list sync failed silently, and a marketplace noticed before the merchant did.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "October 2026: €179 on the German storefront against €199 elsewhere for nine days; 410 orders, about €8,200 of margin and a price-parity warning.",
-       "shows": "A price with more than one owner drifts, and a marketplace's parity rule turns the drift into a penalty.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The claim that models fail where they share systems.",
-      "introduces": "The first case, a price shared by channels.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p40",
-     "controlling_idea": "Wholesale on a consumer platform: over a third of wholesale orders are born in a system the consumer line never sees, and when the retailer compared the pallet labels with the despatch advice and found they did not match, it deducted the difference: a promise no consumer system knows how to make.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "62% of wholesale orders through the platform's B2B features and 38% keyed into the ERP; the ASN Chargeback of Q3 2026, €14,200 deducted by Bergzicht.",
-       "shows": "A wholesale promise fails on systems built for consumer orders.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The price case.",
-      "introduces": "The wholesale case.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p41",
-     "controlling_idea": "The store as an afterthought: store stock never reached the platform, so a click-and-collect pilot promised items the store had already sold.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "The Store Stock Mirage: 37 items promised in December 2026 by the Utrecht pilot.",
-       "shows": "A store's stock is invisible to the channel that could sell it unless a system carries it there.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The wholesale case.",
-      "introduces": "The store case.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p42",
-     "controlling_idea": "Returns bolted on: a 24% return rate is a fact of the business model, and two tools that could each refund without seeing the other refunded 212 returns twice.",
-     "function": "example",
-     "evidence": [
-      {
-       "kind": "scenario",
-       "what": "The Double Refund of January 2027: 212 returns refunded by the returns portal and again by hand in the PSP's console.",
-       "shows": "A reverse flow added on top of the systems, not designed across them, pays out twice.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "additional_support",
-      "carries_over": "The store case.",
-      "introduces": "The returns case.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p43",
-     "controlling_idea": "In every case the failure was found by comparing two copies of the same fact, twice by an outsider before the company itself, and repaired the same way: decide who owns the fact and make the others consumers of it.",
-     "function": "synthesis",
-     "transition_in": {
       "relationship": "conclusion_summary",
-      "carries_over": "The four cases.",
-      "introduces": "What they share in detection and recovery.",
+      "carries_over": "The recommendation: one stack while it fits, then a shared core with line-specific edges.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
       "form": "sentence",
       "placement": "start_of_this"
-     }
-    }
-   ]
-  },
-  {
-   "id": "choices",
-   "heading": "The Choices: One Stack, Many Stacks or a Shared Core",
-   "controlling_idea": "A merchant with several models can run one stack, a stack per line or a shared core with line-specific edges, and should own the shared facts once from the moment the joins start to cost money.",
-   "function": "comparison",
-   "advances_thesis": {
-    "supports": [
-     "S6"
-    ],
-    "how": "Answers the chapter's practical question: what the lines share is owned once, what differs stays at the edges."
-   },
-   "flow": {
-    "pattern": "comparison",
-    "rationale": "The three arrangements in the order a merchant meets them, then the author's choice: the recommendation needs all three described first."
-   },
-   "transition_in": {
-    "relationship": "problem_solution",
-    "carries_over": "Four incidents with one remedy: decide who owns each fact.",
-    "introduces": "The three ways to arrange systems for several models, and the one that owns shared facts once.",
-    "form": "sentence",
-    "placement": "start_of_this"
-   },
-   "paragraphs": [
-    {
-     "id": "p28",
-     "controlling_idea": "A stack is the set of systems a business line runs on, and a merchant running several business models has three realistic ways to arrange its stacks, each right somewhere.",
-     "function": "claim"
     },
-    {
-     "id": "p29",
-     "controlling_idea": "One stack for every line is the simplest to run and the cheapest to integrate, and it fits until one line's promises do not fit the platform's model.",
-     "function": "description",
-     "transition_in": {
-      "relationship": "example",
-      "carries_over": "The three arrangements.",
-      "introduces": "The first, with where it fits and where it limits.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p30",
-     "controlling_idea": "A stack per line gives each line the best fit for its promises at the cost of the joins: four order records, four prices and four stock figures.",
-     "function": "description",
-     "evidence": [
+    "paragraphs": [
       {
-       "kind": "scenario",
-       "what": "Kestrel & Pine in January 2027; the Price Drift and the Store Stock Mirage of the previous section and the Three-Status Order of the previous chapter began here.",
-       "shows": "The incidents the reader has just seen are the cost of this arrangement.",
-       "source": "Kestrel & Pine scenario ledger"
-      }
-     ],
-     "transition_in": {
-      "relationship": "contrast",
-      "carries_over": "One shared stack.",
-      "introduces": "The opposite arrangement and its cost.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
-    },
-    {
-     "id": "p31",
-     "controlling_idea": "A shared core with line-specific edges owns the facts every line shares once, in the hub systems the Omnichannel stage makes necessary, and makes the promises that differ at the edges; it costs more systems and discipline, and pays only once the joins have become the problem.",
-     "function": "description",
-     "evidence": [
-      {
-       "kind": "figure",
-       "what": "Figure 6: one stack, a stack per line with tangled joins, a shared core with an edge per line.",
-       "shows": "The three arrangements differ in where the joins are."
+        "id": "p43a",
+        "controlling_idea": "The jacket sold to a shopper and to a retail chain can share one product record, price list, stock and order record, and cannot share the promise each sale makes; so Kestrel & Pine's four lines share the facts and keep their edges, and the stage, a shape and not a revenue figure, says when owning the facts once starts to pay.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's two sales set against the chapter's answer.",
+            "shows": "The reader can now say what the software built for the first sale lacked for the second: not the facts, the promises."
+          }
+        ]
       },
       {
-       "kind": "table",
-       "what": "The three arrangements compared on number of order records, fit of each line's promises, integration load, typical stage, warning sign and Kestrel & Pine's years in each.",
-       "shows": "The same criteria applied to all three make the trade visible.",
-       "source": "Author's synthesis; Kestrel & Pine scenario ledger"
+        "id": "p44",
+        "form": "list",
+        "controlling_idea": "Established: the models are defined operationally by those who report them and a merchant usually runs several, business electronic ordering is mostly by structured message, and each number in an order's economics is measurable against a public benchmark.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, sorted by how settled they are, starting with what the public record establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p45",
+        "form": "list",
+        "controlling_idea": "Depends on context: whether one stack can serve several lines, whether a merchant has reached the Omnichannel stage, and whether payment fees are worth negotiating.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the public record settles.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p46",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: a business model is the answer to 'who makes which promise', and the unit-economics table is a map of where the architecture must be strong.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p47",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader apply the chapter to their own company's lines, numbers, stage and vendor.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "controlling_idea": "The models and the numbers say what a commerce platform must do, not yet what its parts are; the next chapter lays out the capability map.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The business models and unit economics, which say what a platform must do.",
+          "introduces": "The parts a platform is made of and what each one owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
       }
-     ],
-     "transition_in": {
-      "relationship": "problem_solution",
-      "carries_over": "The joins that a stack per line multiplies.",
-      "introduces": "The arrangement that owns shared facts once.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The capability map and the suite versus best-of-breed question.",
+      "covered_in": [
+        "commerce-capability-map"
+      ]
     },
     {
-     "id": "p32",
-     "controlling_idea": "The author's recommendation is to stay on one stack as long as every line's promises fit it, to move to a shared core the moment a second system starts writing a fact the shop platform also writes, never to choose a stack per line on purpose, and not to copy a marketplace operator, whose different business the public record showed.",
-     "function": "recommendation",
-     "transition_in": {
-      "relationship": "cause_effect",
-      "carries_over": "The comparison of the three arrangements.",
-      "introduces": "The author's choice among them and its conditions.",
-      "form": "sentence",
-      "placement": "start_of_this"
-     }
+      "topic": "The system-of-record decision per fact.",
+      "covered_in": [
+        "boundaries-and-systems-of-record"
+      ]
+    },
+    {
+      "topic": "The platform vendors and their pricing models in depth.",
+      "covered_in": [
+        "commerce-platform-landscape"
+      ]
+    },
+    {
+      "topic": "The mechanics of each model's systems: B2B accounts, contract prices and approvals; EDI; marketplace listings, orders and fees; POS and omnichannel fulfillment; promotions and loyalty.",
+      "covered_in": [
+        "b2b-commerce",
+        "edi-and-e-invoicing",
+        "marketplaces-and-channel-integration",
+        "stores-and-omnichannel",
+        "commerce-promotions"
+      ]
+    },
+    {
+      "topic": "The scale-stage transitions as decisions (what to change when); build, buy or assemble and replatforming; peak engineering.",
+      "covered_in": [
+        "commerce-scaling-stages",
+        "build-buy-or-assemble",
+        "replatforming-and-migration",
+        "peak-load-and-reliability"
+      ]
+    },
+    {
+      "topic": "Marketplace operating as a business (liquidity, ranking, regulation); the Amazon and Zalando cases.",
+      "covered_in": [
+        "LISTED",
+        "case-amazon",
+        "case-zalando"
+      ]
     }
-   ]
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved: 'In Practice' stays directly after the definitions. Round 3's readers asked for that position and round 4's readers asked for the old one; when readers in successive rounds ask for opposite moves, the current position stands.",
+      "rejected": [
+        "Moving it back after the promise chain."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-1's expected answer changed in the journal spec first and copied here (rule 1).",
+      "rejected": [
+        "Keeping an expected answer the ledger does not support."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 4 (ESCALATE: 14 passed, 11 failed), its cheap draft fixes were applied without a further round: p18's topic sentence names the common idea; p38 opens from the Omnichannel joins before the market figures; p12 maps the four lines onto the four models; 'treat them as one' now 'as a channel'; 'order management decision' now 'a decision about where each order is fulfilled'; the Forrester sentence simplified; p02 no longer repeats KEY POINT 1 word for word. To stay within 6,500 words, the agent-added stage sentence in p23 (repeating p02 and KEY POINT 3) was cut and the Shopware sentence shortened (rule 4). The public-record placement is left to the author (rule 10).",
+      "rejected": [
+        "A fifth round.",
+        "Moving the public-record section back after the promise chain, which round 3's readers had failed."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the page is revised to the new thesis: KEY POINTS bullets 1 and 3, p02 (the premise in prose), the p03 roadmap, the p23 stage definition (each addition brings systems holding copies of the same orders and stock) and the excerpt. To stay within 6,500 words, agents' additions and repetition were cut: the table-scope sentences of p13, the question in p17, the parity-rule and tenancy definitions of p14 (now glossed in the cells), the list of examples in the first 'Established' bullet, and 'for the newcomer' (rule 4).",
+      "rejected": [
+        "Cutting the author's figures or examples."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the open notes of earlier passes are closed: the worked example's per-order costs and Amazon's 15% fee stay as labelled assumptions with correct sums (rule 2); no technology-spend benchmark is given (rule 1); the peak keeps its section, the author's-synthesis list stays apart from p43a, the hub paragraphs stay in the stages and store economics stay untabulated, as decided earlier; the round 2 single-reader notes (p37's place, early or late adoption of the shared core) are not acted on beyond the p37 move, since no second reader asked (rule 3).",
+      "rejected": [
+        "Keeping them in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the round 3 single-reader points are fixed in the draft: Forrester's 'about a fifth' now says of all US business-to-business transactions and that US and EU figures are measured differently; the plan-to-contract step is labelled as the author's reading and Shopware's €1 million cliff as an early one; the wholesale incident links hand-keyed orders and labels as the same kind of gap; the Double Refund says Sanne found it at month-end from two credits per order (ledger, commerce-payments line) (rule 1).",
+      "rejected": [
+        "Leaving them as minor findings."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-5 (known_before_new as a major rubric criterion) is dropped; AC-2, AC-3 and AC-4 are kept because their cold-reader probes passed in rounds 1, 2 and 3 (rule 7).",
+      "rejected": [
+        "Keeping AC-5 at major severity."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: seller of record, punchout, parity rules and tenancy get clause-length glosses in the table cells where they are first used; p14 now defines punchout, repricing and the fulfillment program more fully (rule 6).",
+      "rejected": [
+        "Moving p11 and p14 ahead of their tables, which renumbers figures and separates the definitions from the reports they come from."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the slowed-market paragraph (p37) was found out of place after the stages in rounds 2 and 3 and as a public-record finding in round 1; it is reduced to the opening sentence of 'When It Goes Wrong' (p38), where the incidents need it, keeping both cited figures (rules 3 and 2).",
+      "rejected": [
+        "Cutting it entirely, which would drop two cited figures.",
+        "Keeping it as the last paragraph of the stages."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the sentence on reading a vendor's roadmap for the metric it was written for is cut; it was found out of place in the promise chain, the stages and the public record and supports no supporting claim (rule 3). The author's earlier sentence 'for the vendor, the product is a tenancy' stays cut for the same reason (rule 5 yields to rule 3).",
+      "rejected": [
+        "Giving it a paragraph of its own.",
+        "Moving it again."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'In Practice: What the Public Record Says' moves to directly after the definitions, as both round 3 flow readers proposed; its figures already in the definitions table (Target 97.6%, Amazon $172.2 billion and seller of record, VF 44%) are referred back to or dropped from the section, not repeated; LISTED is introduced there; the promise chain and the economics are now adjacent (rule 3).",
+      "rejected": [
+        "Cutting the section: it supports S2 and S3 and two readers asked for a move, not a cut.",
+        "Folding it into the models section, which would remove a house heading (rule 8)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the comparison table's Kestrel & Pine row follows the ledger: one stack 2016–2018 (Starting), a stack per line 2019–2026 (from the separate till system of 2019; Growing and Omnichannel), Waypoint from 2027; the typical stage of a stack per line reads 'Growing by accident, often kept into Omnichannel' (rule 1).",
+      "rejected": [
+        "Keeping 2021–2026, which leaves 2019–2020 in no arrangement and has no ledger support."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the stage table and AC-1 follow the ledger (Starting 2016–2018, Growing 2019–2022, Omnichannel from 2023; Growing = two or three channels, first store or wholesale); the chapter now says 'Growing in 2019–2022'. AC-1's expected answer is left as the journal spec has it and the alignment is noted for the journal-spec step (rule 1).",
+      "rejected": [
+        "Changing the stage table so that the probe brand reads as Omnichannel, which the ledger does not support.",
+        "Editing AC-1 in the post spec only, which would leave it out of step with the journal spec."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 of the draft check escalated on one spec fault: both flow readers found the vendor's-view paragraph (p16) out of place in the public record and wanted it beside the vendors' price lists, where round 1 had found it a detour that supported no claim. Merged: its point (the vendor counts GMV, the merchant counts orders, so read a vendor's roadmap for the metric it was written for) closes the price-list paragraph p25, and p16 is no longer a unit. Pre-approved change to paragraph ideas; 50 paragraphs.",
+      "rejected": [
+        "Moving p16 back to the stages as its own paragraph, which round 1 had failed.",
+        "Cutting the point."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on spec faults (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author, intent, thesis, role and acceptance criteria untouched). Both flow readers found the public record's position unclear after the stages, so 'In Practice' now follows the promise chain and its market finding (p37) closes the stages, where it leads into the incidents. The vendor's-view paragraph (p16) traced to no supporting claim in the stages and both readers called it a detour: it is now a finding of the public record, next to the marketplace operator, and its idea says the vendor runs a different business (S3). 'Returns across lines' (p42) named a cross-line failure the incident does not show: the idea is now 'returns bolted on'. p43 claimed detection was the same in every case against the Price Drift's own text: it now says two copies were compared, twice by an outsider first. p38 and the section idea say the failures are over facts several systems hold and nobody owns. The incident section's transition is an example, not a contrast.",
+      "rejected": [
+        "Keeping the public record after the stages.",
+        "Cutting the vendor's-view paragraph.",
+        "Softening 'every case' to 'most' without saying who detected what."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Taken: the bridge from chapter 1 (p04) precedes the roadmap (p03), which now announces every section; 'In Practice' moves to follow the stages and 'When It Goes Wrong' to precede 'The Choices', so the public record establishes marketplace operating as a different business before the recommendation warns against copying it, and the incidents are the problem the arrangements answer; the vendor's-view paragraph (p16) moves from the promise chain to the stages, next to the price lists it rests on, and the sentence it duplicated leaves p25; the peak paragraph is split into the case (p22) and the two facts it shows (p22a); chargebacks are glossed in the scene and the stage reference leaves p12; the worked example says why stores are absent; a synthesis paragraph (p43a) opens the conclusion, returns to the opening's jacket and answers the share-or-separate question. Every transition_in the moves invalidated was rewritten, and the flow rationale now says what would break. In this chapter the hosted product is 'the shop platform' and 'commerce platform' is the whole set of systems, as in chapter 1.",
+      "rejected": [
+        "Keeping the published section order.",
+        "Folding the peak into the unit-economics section.",
+        "Putting the public record last, after the recommendation."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec with one paragraph per unit of the published chapter in the published section order, so that the first structural check passed against the unchanged text and any reordering was a visible decision.",
+      "rejected": [
+        "Writing the spec with the order already changed, which would have described a chapter that does not exist."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of the former spec.md that listed contents were rewritten as reader outcomes (AC-2 to AC-5) or dropped; the 6,500-word limit is kept as length.max_words.",
+      "rejected": [
+        "Carrying the eight inventory criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Defined the models from annual reports and Eurostat, because the reader needs definitions that can be counted and checked; B2B2C is defined operationally from Zalando's partner-business description since no statistical definition exists.",
+      "rejected": [
+        "Definitions from vendor marketing."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose 'who makes which promise' as the chapter's definition of a business model, so that the chapter builds directly on journey-of-an-order and feeds boundaries-and-systems-of-record.",
+      "rejected": [
+        "A business-school treatment of the models standing apart from the book's argument."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Worked one jacket through three lines, because contribution per unit is what makes the different requests of the lines legible to a newcomer; store economics are mentioned, not tabulated, to hold the length cap.",
+      "rejected": [
+        "A whole-company profit-and-loss statement."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Folded the 'Across Scale Stages' requirement (optional in Part I) into the section that defines the stages, with the required columns (typical, becomes necessary, warning signs).",
+      "rejected": [
+        "A second stage table."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Cut the European market-size paragraph to two national series after the first draft exceeded the cap; the three series measure different things and the chapter's argument needs only 'growth has normalized'.",
+      "rejected": [
+        "Keeping all three series."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: thesis rewritten in the journal spec and copied here after it failed the thesis rubric. The question now also asks why a merchant's needs change as it grows, which the chapter argues (the scale stages); the claim says a merchant needs a system for each promise it keeps itself and a connection for each it leaves to a partner, and that growth adds systems holding copies of the same orders and stock; how_why gives the mechanism (each role needs a system that can keep its promise). Passed the rubric on the first try with a fresh reader.",
+      "rejected": [
+        "Dropping the scale-stage clause and keeping the question unchanged, which would leave the chapter's stage sections outside the thesis.",
+        "Keeping the claim and adding an antecedent for 'that shape'."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journey-of-an-order",
+      "contributed": "The promises and handoffs the models are defined against."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The four business lines, prices, margins, return rates, peak figures, the Price Drift, the ASN Chargeback, the Store Stock Mirage, the Double Refund, the scale-stage bands."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md, contract 2",
+      "contributed": "Scope, owned terms, neighbours."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-commerce-business-models.md",
+      "contributed": "Definitions, market statistics, unit economics, seasonality, vendor tiers, PIM/OMS/WMS triggers."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-checkout-payments-tax.md",
+      "contributed": "VAT rates for the worked example."
+    },
+    {
+      "kind": "external",
+      "ref": "VF, Nike, Columbia, Target, Amazon, Shopify, Warby Parker annual reports (SEC, 2026); Zalando SE Annual Report 2025",
+      "contributed": "Model definitions, margins, channel shares, GMV definition."
+    },
+    {
+      "kind": "external",
+      "ref": "Eurostat, E-commerce statistics (enterprises); US Census Bureau, Quarterly Retail E-Commerce Sales; HDE Online-Monitor; Thuiswinkel Markt Monitor; bevh",
+      "contributed": "Market shares and seasonality."
+    },
+    {
+      "kind": "external",
+      "ref": "Littledata, Baymard Institute, NRF and Happy Returns, Coresight",
+      "contributed": "Conversion, abandonment, returns."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2015/751; Stripe, Mollie, Adyen, Shopify Payments and Amazon pricing pages",
+      "contributed": "Payment and channel fees."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify and Shopware pricing pages; Akeneo and an OMS vendor guide",
+      "contributed": "Tiers and hub triggers."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Analytics and Shopify BFCM releases; Retail Week on Hobbycraft",
+      "contributed": "The peak."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 4 confirming check (escalate: 14 passed, 11 failed; one spec fault, the public-record placement, left to the author). Cheap draft fixes applied afterwards; the check report is stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved by the author's standing instruction: public record moved after the definitions; p37 cut into p38; vendor-roadmap sentence cut; comparison years and stage years from the ledger; table glosses; AC-5 dropped; page revised to the new thesis; round 3 single-reader points fixed. 49 paragraphs. Open questions closed except the AC-1 journal-spec note."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 3 (escalate: 16 passed, 17 failed). Cheap draft faults fixed afterwards without a further round; remaining findings recorded under open_questions. The check report is stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 13 passed, 18 failed): p16 merged into p25; the public record has four findings; round 2's draft faults fixed in the chapter (Forrester figure explained, worked example tied to the metrics, the ASN Chargeback sentence rewritten, LISTED introduced, the store line's model said, failure patterns named where they are addressed, fee cliffs and feature gates glossed)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 13 passed, 32 failed) resolved in the spec: sections now scene, models, promise chain, public record, unit economics, worked example, peak, stages, incidents, choices; p16 moved into the public record and p37 into the stages; ideas of p03, p06, p13, p14, p20, p28, p32a, p36, p38, p42, p43 revised; roadmap, flow rationale and the transitions of every moved unit rewritten. The chapter is revised to match and the round's draft faults fixed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Second flow run (sound with notes): p32a added to open the public-record section; p40 names the retailer's comparison; p31 ties the shared core to the hub systems; flow rationale says what would break for the peak and for the record before the incidents. 51 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes) taken: sections reordered to scene, models, promise chain, unit economics, worked example, peak, stages, public record, incidents, choices; p04 before p03; p16 moved to the stages; p22 split (p22a new); p43a added to the conclusion; roadmap, flow rationale and the transitions of every moved unit rewritten. 50 paragraphs. The chapter is revised to match."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter (48 units); record-keeping sections carried over. Status draft."
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Added two figures to 'The Business Models, Defined by the People Who Report Them': the nine models at a glance, and seller of record / GMV / EDI-type sales."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: 'Not in the ledger' cells and note rephrased so the reader is not pointed to the scenario ledger."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: corrected Shopify's Basic price (€28, €21 paid yearly), moved Germany (2022) into the Growing stage, defined punchout, parity rules, repricing, tenancy and ASN, fixed the wholesale-contribution comparison and the Double Refund attribution."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Thesis question, claim and how_why replaced from the journal spec (auto-resolved by the author's standing instruction); thesis_statement updated to match. The page's thesis statement (KEY POINTS bullets 1 and 3, p02) and roadmap (p03) need revising to the new claim."
+    }
+  ],
+  "length": {
+    "max_words": 6500
   }
- ],
- "conclusion": {
-  "heading": "What to Take Away",
-  "synthesis": "The models, the numbers and the stages answer one question from three sides: what the lines of a business can share. They can share facts (the product, the price list, the stock, the order record) and cannot share promises, and a stage is the count of promises a merchant makes at once; so the same table that tells the models apart also says which facts need one owner and when.",
-  "so_what": "A merchant that has filled in who makes which promise for each line, and measured its numbers, can say where its architecture must be strong and can refuse an architecture copied from a company with a different model or shape.",
-  "callback": {
-   "to": "The jacket sold by the web shop to a shopper and by the wholesale team to a retail chain, where software built for the first sale failed the conditions of the second.",
-   "how": "The reader can now say what that software lacked: the two sales can share the product, the price list, the stock and the order record, and each needs its own promises kept at its own edge."
-  },
-  "takeaway": {
-   "type": "course_of_action",
-   "content": "Fill in the who-makes-which-promise table for each line, measure the numbers nobody has measured, and take the eight questions to the business."
-  },
-  "hand_off": {
-   "to": "commerce-capability-map",
-   "relationship": "sequence",
-   "carries_over": "The business models and unit economics, which say what a platform must do.",
-   "introduces": "The parts a platform is made of and what each one owns."
-  },
-  "transition_in": {
-   "relationship": "conclusion_summary",
-   "carries_over": "The recommendation: one stack while it fits, then a shared core with line-specific edges.",
-   "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
-   "form": "sentence",
-   "placement": "start_of_this"
-  },
-  "paragraphs": [
-   {
-    "id": "p43a",
-    "controlling_idea": "The jacket sold to a shopper and to a retail chain can share one product record, price list, stock and order record, and cannot share the promise each sale makes; so Kestrel & Pine's four lines share the facts and keep their edges, and the stage, a shape and not a revenue figure, says when owning the facts once starts to pay.",
-    "function": "synthesis",
-    "evidence": [
-     {
-      "kind": "reasoning",
-      "what": "The opening's two sales set against the chapter's answer.",
-      "shows": "The reader can now say what the software built for the first sale lacked for the second: not the facts, the promises."
-     }
-    ]
-   },
-   {
-    "id": "p44",
-    "form": "list",
-    "controlling_idea": "Established: the models are defined operationally by those who report them, business electronic ordering is mostly by structured message, and each number in an order's economics is measurable against a public benchmark.",
-    "function": "synthesis",
-    "transition_in": {
-     "relationship": "elaboration",
-     "carries_over": "The chapter's answer in one paragraph.",
-     "introduces": "The points it rests on, sorted by how settled they are, starting with what the public record establishes.",
-     "form": "phrase",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p45",
-    "form": "list",
-    "controlling_idea": "Depends on context: whether one stack can serve several lines, whether a merchant has reached the Omnichannel stage, and whether payment fees are worth negotiating.",
-    "function": "synthesis",
-    "transition_in": {
-     "relationship": "contrast",
-     "carries_over": "What the public record settles.",
-     "introduces": "What changes with the merchant's situation.",
-     "form": "phrase",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p46",
-    "form": "list",
-    "controlling_idea": "The author's synthesis: a business model is the answer to 'who makes which promise', and the unit-economics table is a map of where the architecture must be strong.",
-    "function": "recommendation",
-    "transition_in": {
-     "relationship": "contrast",
-     "carries_over": "What is established and what depends on context.",
-     "introduces": "The author's own judgement, labelled as such.",
-     "form": "phrase",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p47",
-    "form": "list",
-    "controlling_idea": "Eight questions let the reader apply the chapter to their own company's lines, numbers, stage and vendor.",
-    "function": "recommendation",
-    "transition_in": {
-     "relationship": "cause_effect",
-     "carries_over": "The take-aways.",
-     "introduces": "Questions that apply them.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   },
-   {
-    "id": "p48",
-    "controlling_idea": "The models and the numbers say what a commerce platform must do, not yet what its parts are; the next chapter lays out the capability map.",
-    "function": "transition",
-    "transition_in": {
-     "relationship": "sequence",
-     "carries_over": "The business models and unit economics, which say what a platform must do.",
-     "introduces": "The parts a platform is made of and what each one owns.",
-     "form": "sentence",
-     "placement": "start_of_this"
-    }
-   }
-  ]
- },
- "non_goals": [
-  {
-   "topic": "The capability map and the suite versus best-of-breed question.",
-   "covered_in": [
-    "commerce-capability-map"
-   ]
-  },
-  {
-   "topic": "The system-of-record decision per fact.",
-   "covered_in": [
-    "boundaries-and-systems-of-record"
-   ]
-  },
-  {
-   "topic": "The platform vendors and their pricing models in depth.",
-   "covered_in": [
-    "commerce-platform-landscape"
-   ]
-  },
-  {
-   "topic": "The mechanics of each model's systems: B2B accounts, contract prices and approvals; EDI; marketplace listings, orders and fees; POS and omnichannel fulfillment; promotions and loyalty.",
-   "covered_in": [
-    "b2b-commerce",
-    "edi-and-e-invoicing",
-    "marketplaces-and-channel-integration",
-    "stores-and-omnichannel",
-    "commerce-promotions"
-   ]
-  },
-  {
-   "topic": "The scale-stage transitions as decisions (what to change when); build, buy or assemble and replatforming; peak engineering.",
-   "covered_in": [
-    "commerce-scaling-stages",
-    "build-buy-or-assemble",
-    "replatforming-and-migration",
-    "peak-load-and-reliability"
-   ]
-  },
-  {
-   "topic": "Marketplace operating as a business (liquidity, ranking, regulation); the Amazon and Zalando cases.",
-   "covered_in": [
-    "LISTED",
-    "case-amazon",
-    "case-zalando"
-   ]
-  }
- ],
- "modalities": [],
- "open_questions": [
-  "The worked example's per-order costs (parcel €5.50, cross-border parcel €7.50, return handling €7.50, marketing 12% and 5%, pallet share €0.60, iDEAL about €0.30) are labelled assumptions and are not in the ledger; if another chapter needs them canonically it should append them, and this chapter should then cite the ledger.",
-  "Amazon's 15% referral fee is taken from its US pricing page; the German fee schedule was not verified. The chapter labels the marketplace line's fee as an assumption of the same order; marketplaces-and-channel-integration should replace it with a verified Amazon.de figure if one is found.",
-  "No primary benchmark exists for retail technology spend as a share of revenue or for team size per stage; the chapter avoids both. The ledger's 5.4% is not presented as a benchmark.",
-  "Thesis rubric (a reader given only the thesis object, 2026-11-12): FAIL on 'answers the question'. The clause 'and its scale stage is defined by that shape rather than by revenue' answers something the question does not ask, 'that shape' has no antecedent in the claim, and how_why explains the numbers and the joins but not how who-makes-which-promise decides the systems. The thesis is copied from the journal spec and was not changed here; the author decides whether to widen the question or narrow the claim there.",
-  "Flow rubric note not taken: fold 'Seasonality and the Peak' into 'The Unit Economics of an Order' or cut it. It is kept as its own section because the KEY POINTS callout, the thesis's how_why, the author's synthesis and question 4 all use the peak; it is now announced in the roadmap and framed as the last of the numbers.",
-  "The 2026-11-07 decision to mention store economics and not tabulate them stands; the worked example now says the store line is left out, in one clause.",
-  "Second flow run (sound with notes), note not taken: merge the author's-synthesis list (p46) into the opening paragraph of the conclusion (p43a), since both synthesise. Kept apart because the three-tier take-away (established, depends on context, the author's synthesis) is the book's house format; p43a returns to the opening and p46 states the author's two judgements.",
-  "Second flow run, note not taken: the two hub paragraphs of the stages section (p26, p27) answer a second question (when the hub systems arrive) inside a section about the stages. They stay, because the hubs are what the Omnichannel stage makes necessary; p31 now says the shared core is those hub systems, which gives them their use.",
-  "Round 1 of the draft check: both flow readers could not reconcile the years in the comparison table of the three arrangements (one stack 2016–2018, a stack per line 2021–2026, Waypoint 2027–; 2019–2020 belongs to no arrangement, and the prose says the stack per line is Kestrel & Pine in January 2027) with the stage years (Growing 2019–2022, Omnichannel from 2023). The ledger gives the stage years only, so the table was left as the author wrote it; the author should set the arrangement years.",
-  "AC-1 (from the journal spec): the round 1 reader answered 'late Growing, with the Omnichannel transition next' from the stage table (two or three channels, first store) and ruled Omnichannel out because the brand has no wholesale line or own warehouse; the judge passed it on the criterion's second alternative. If the author wants 'Omnichannel' as the answer, the probe or the stage table needs changing, in the journal spec first.",
-  "Where the vendor's-view point belongs: round 1's readers called it a detour in the stages and its judge found it supported no claim there; round 2's readers found it out of place in the public record and wanted it back beside the price lists. It is now two sentences at the end of the price-list paragraph (p25), and the sentence 'for the vendor, the product is a tenancy', which stopped a reader in both rounds, is gone. The author may prefer to cut the point or give it a paragraph of its own.",
-  "Round 2, one reader each, not acted on: the slowed-market paragraph (p37) read as an afterthought at the end of the stages to one reader and as the intended bridge to the other; one reader could not tell whether the shared core is to be adopted early ('the moment a second system starts writing a fact') or late ('only pays once the joins have become the problem').",
-  "Round 3 of the draft check ended in ESCALATE (16 passed, 17 failed; the two-revision budget was spent). Its cheap draft faults were fixed afterwards without a further round (p27 now opens from the missing threshold; 'product hub', 'replatform', 'systems of record' and 'evidence age' put in plain words), so the check report is stale. What remains is listed in the next items; each is the author's to decide.",
-  "Position of 'In Practice: What the Public Record Says': round 1's readers found it unclear after the stages; in rounds 2 and 3 it follows the promise chain, and round 3's two readers found it misplaced there too (it separates the promises from the economics and repeats figures from the definitions table: Target 97.6%, Amazon $172.2 billion, VF 44%). Both proposed putting it directly after, or folding it into, the definitions section.",
-  "The slowed-market paragraph (p37, 'The stages are now climbed in a slower market') closes the stages as a bridge to the incidents; both round 3 readers read it as a digression and saw its purpose only when the next section opened. Options: open 'When It Goes Wrong' with it, or cut it.",
-  "The closing sentence of the price-list paragraph (p25), on reading a vendor's roadmap for the metric it was written for, lost both round 3 readers (roadmaps are not otherwise mentioned). It is the last trace of the former vendor's-view paragraph, which readers rejected in the promise chain, the stages and the public record; the author may cut it.",
-  "Definitions after tables: 'seller of record' is used in the models table and defined in the next paragraph (p11); punchout, parity rules and tenancy are used in the promise table and defined after it (p14). With AC-5 at major severity a round 3 reader's going back for them blocks. Options: gloss the terms in the cells, move p11 and p14 ahead of their tables, or put AC-5 under the two-reader rule as the standard check is.",
-  "Smaller points from round 3, one reader each: Forrester's 'about a fifth of transactions' reads against 'the larger of the two' and has no stated base; 'a merchant crosses from a self-service plan to a negotiated contract at about the Growing-to-Omnichannel transition' does not follow from Shopware's €1 million threshold, which falls inside the Starting band; the wholesale incident (p40) joins hand-keyed orders and the label chargeback without a link; 'in every case the failure came to light when someone compared two copies' is not shown for the double refunds (the ledger says Sanne de Wit found them at January month-end from two credits per order; the chapter does not)."
- ],
- "decision_log": [
-  {
-   "date": "2026-11-12",
-   "decision": "Round 2 of the draft check escalated on one spec fault: both flow readers found the vendor's-view paragraph (p16) out of place in the public record and wanted it beside the vendors' price lists, where round 1 had found it a detour that supported no claim. Merged: its point (the vendor counts GMV, the merchant counts orders, so read a vendor's roadmap for the metric it was written for) closes the price-list paragraph p25, and p16 is no longer a unit. Pre-approved change to paragraph ideas; 50 paragraphs.",
-   "rejected": [
-    "Moving p16 back to the stages as its own paragraph, which round 1 had failed.",
-    "Cutting the point."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Round 1 of the draft check escalated on spec faults (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author, intent, thesis, role and acceptance criteria untouched). Both flow readers found the public record's position unclear after the stages, so 'In Practice' now follows the promise chain and its market finding (p37) closes the stages, where it leads into the incidents. The vendor's-view paragraph (p16) traced to no supporting claim in the stages and both readers called it a detour: it is now a finding of the public record, next to the marketplace operator, and its idea says the vendor runs a different business (S3). 'Returns across lines' (p42) named a cross-line failure the incident does not show: the idea is now 'returns bolted on'. p43 claimed detection was the same in every case against the Price Drift's own text: it now says two copies were compared, twice by an outsider first. p38 and the section idea say the failures are over facts several systems hold and nobody owns. The incident section's transition is an example, not a contrast.",
-   "rejected": [
-    "Keeping the public record after the stages.",
-    "Cutting the vendor's-view paragraph.",
-    "Softening 'every case' to 'most' without saying who detected what."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Taken: the bridge from chapter 1 (p04) precedes the roadmap (p03), which now announces every section; 'In Practice' moves to follow the stages and 'When It Goes Wrong' to precede 'The Choices', so the public record establishes marketplace operating as a different business before the recommendation warns against copying it, and the incidents are the problem the arrangements answer; the vendor's-view paragraph (p16) moves from the promise chain to the stages, next to the price lists it rests on, and the sentence it duplicated leaves p25; the peak paragraph is split into the case (p22) and the two facts it shows (p22a); chargebacks are glossed in the scene and the stage reference leaves p12; the worked example says why stores are absent; a synthesis paragraph (p43a) opens the conclusion, returns to the opening's jacket and answers the share-or-separate question. Every transition_in the moves invalidated was rewritten, and the flow rationale now says what would break. In this chapter the hosted product is 'the shop platform' and 'commerce platform' is the whole set of systems, as in chapter 1.",
-   "rejected": [
-    "Keeping the published section order.",
-    "Folding the peak into the unit-economics section.",
-    "Putting the public record last, after the recommendation."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Reconstructed the spec with one paragraph per unit of the published chapter in the published section order, so that the first structural check passed against the unchanged text and any reordering was a visible decision.",
-   "rejected": [
-    "Writing the spec with the order already changed, which would have described a chapter that does not exist."
-   ]
-  },
-  {
-   "date": "2026-11-12",
-   "decision": "Success criteria of the former spec.md that listed contents were rewritten as reader outcomes (AC-2 to AC-5) or dropped; the 6,500-word limit is kept as length.max_words.",
-   "rejected": [
-    "Carrying the eight inventory criteria over as they were."
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "decision": "Defined the models from annual reports and Eurostat, because the reader needs definitions that can be counted and checked; B2B2C is defined operationally from Zalando's partner-business description since no statistical definition exists.",
-   "rejected": [
-    "Definitions from vendor marketing."
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "decision": "Chose 'who makes which promise' as the chapter's definition of a business model, so that the chapter builds directly on journey-of-an-order and feeds boundaries-and-systems-of-record.",
-   "rejected": [
-    "A business-school treatment of the models standing apart from the book's argument."
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "decision": "Worked one jacket through three lines, because contribution per unit is what makes the different requests of the lines legible to a newcomer; store economics are mentioned, not tabulated, to hold the length cap.",
-   "rejected": [
-    "A whole-company profit-and-loss statement."
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "decision": "Folded the 'Across Scale Stages' requirement (optional in Part I) into the section that defines the stages, with the required columns (typical, becomes necessary, warning signs).",
-   "rejected": [
-    "A second stage table."
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "decision": "Cut the European market-size paragraph to two national series after the first draft exceeded the cap; the three series measure different things and the chapter's argument needs only 'growth has normalized'.",
-   "rejected": [
-    "Keeping all three series."
-   ]
-  }
- ],
- "sources": [
-  {
-   "kind": "internal",
-   "ref": "journey-of-an-order",
-   "contributed": "The promises and handoffs the models are defined against."
-  },
-  {
-   "kind": "internal",
-   "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
-   "contributed": "The four business lines, prices, margins, return rates, peak figures, the Price Drift, the ASN Chargeback, the Store Stock Mirage, the Double Refund, the scale-stage bands."
-  },
-  {
-   "kind": "internal",
-   "ref": "PLAN.md, contract 2",
-   "contributed": "Scope, owned terms, neighbours."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-commerce-business-models.md",
-   "contributed": "Definitions, market statistics, unit economics, seasonality, vendor tiers, PIM/OMS/WMS triggers."
-  },
-  {
-   "kind": "internal",
-   "ref": "_research/brief-checkout-payments-tax.md",
-   "contributed": "VAT rates for the worked example."
-  },
-  {
-   "kind": "external",
-   "ref": "VF, Nike, Columbia, Target, Amazon, Shopify, Warby Parker annual reports (SEC, 2026); Zalando SE Annual Report 2025",
-   "contributed": "Model definitions, margins, channel shares, GMV definition."
-  },
-  {
-   "kind": "external",
-   "ref": "Eurostat, E-commerce statistics (enterprises); US Census Bureau, Quarterly Retail E-Commerce Sales; HDE Online-Monitor; Thuiswinkel Markt Monitor; bevh",
-   "contributed": "Market shares and seasonality."
-  },
-  {
-   "kind": "external",
-   "ref": "Littledata, Baymard Institute, NRF and Happy Returns, Coresight",
-   "contributed": "Conversion, abandonment, returns."
-  },
-  {
-   "kind": "external",
-   "ref": "Regulation (EU) 2015/751; Stripe, Mollie, Adyen, Shopify Payments and Amazon pricing pages",
-   "contributed": "Payment and channel fees."
-  },
-  {
-   "kind": "external",
-   "ref": "Shopify and Shopware pricing pages; Akeneo and an OMS vendor guide",
-   "contributed": "Tiers and hub triggers."
-  },
-  {
-   "kind": "external",
-   "ref": "Adobe Analytics and Shopify BFCM releases; Retail Week on Hobbycraft",
-   "contributed": "The peak."
-  }
- ],
- "changelog": [
-  {
-   "date": "2026-11-12",
-   "change": "Round 3 (escalate: 16 passed, 17 failed). Cheap draft faults fixed afterwards without a further round; remaining findings recorded under open_questions. The check report is stale."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Round 2 (escalate: 13 passed, 18 failed): p16 merged into p25; the public record has four findings; round 2's draft faults fixed in the chapter (Forrester figure explained, worked example tied to the metrics, the ASN Chargeback sentence rewritten, LISTED introduced, the store line's model said, failure patterns named where they are addressed, fee cliffs and feature gates glossed)."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Round 1 (escalate: 13 passed, 32 failed) resolved in the spec: sections now scene, models, promise chain, public record, unit economics, worked example, peak, stages, incidents, choices; p16 moved into the public record and p37 into the stages; ideas of p03, p06, p13, p14, p20, p28, p32a, p36, p38, p42, p43 revised; roadmap, flow rationale and the transitions of every moved unit rewritten. The chapter is revised to match and the round's draft faults fixed."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Second flow run (sound with notes): p32a added to open the public-record section; p40 names the retailer's comparison; p31 ties the shared core to the hub systems; flow rationale says what would break for the peak and for the record before the incidents. 51 paragraphs."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Flow rubric (sound with notes) taken: sections reordered to scene, models, promise chain, unit economics, worked example, peak, stages, public record, incidents, choices; p04 before p03; p16 moved to the stages; p22 split (p22a new); p43a added to the conclusion; roadmap, flow rationale and the transitions of every moved unit rewritten. 50 paragraphs. The chapter is revised to match."
-  },
-  {
-   "date": "2026-11-12",
-   "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter (48 units); record-keeping sections carried over. Status draft."
-  },
-  {
-   "date": "2026-11-08",
-   "change": "Added two figures to 'The Business Models, Defined by the People Who Report Them': the nine models at a glance, and seller of record / GMV / EDI-type sales."
-  },
-  {
-   "date": "2026-11-07",
-   "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures."
-  },
-  {
-   "date": "2026-11-07",
-   "change": "Final consistency pass: 'Not in the ledger' cells and note rephrased so the reader is not pointed to the scenario ledger."
-  },
-  {
-   "date": "2026-11-07",
-   "change": "Editorial review pass: corrected Shopify's Basic price (€28, €21 paid yearly), moved Germany (2022) into the Growing stage, defined punchout, parity rules, repricing, tenancy and ASN, fixed the wholesale-contribution comparison and the Double Refund attribution."
-  },
-  {
-   "date": "2026-11-07",
-   "change": "Initial spec and article."
-  }
- ],
- "length": {
-  "max_words": 6500
- }
 }

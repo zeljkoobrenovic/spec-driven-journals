@@ -43,11 +43,11 @@ To those readers the book speaks from the position of **an architect who advises
 
 ## The Argument: A Promise-Keeping Machine
 
-A commerce platform is usually described as a product you subscribe to, license or assemble. This book uses the word differently: **a commerce platform is the whole set of systems that make and keep promises to a customer**: the storefront, the catalog, pricing, promotions, search, inventory, checkout, payments, the order record, tax and invoicing, the warehouse, the carriers, the stores, the returns process, customer service, the marketplaces, the wholesale portal, the EDI links (electronic data interchange: structured orders and invoices between companies' systems), the ERP (enterprise resource planning, the system that runs finance, purchasing and the books) and the data warehouse.
+Behind Eva's promises stands what is usually called a commerce platform, described as a product you subscribe to, license or assemble. This book uses the word differently: **a commerce platform is the whole set of systems that make and keep promises to a customer**: the storefront, the catalog, pricing, promotions, search, inventory, checkout, payments, the order record, tax and invoicing, the warehouse, the carriers, the stores, the returns process, customer service, the marketplaces, the wholesale portal, the EDI links (electronic data interchange: structured orders and invoices between companies' systems), the ERP (enterprise resource planning, the system that runs finance, purchasing and the books) and the data warehouse.
 
 Seen that way, the platform's job is simple to state and hard to do. **It makes promises in one place and keeps them in another.** The storefront promises; the warehouse, the carrier, the payment provider and the finance system deliver. Between the promise and its keeping sits a handoff, a message from one system to another, and every handoff can be late, lost, duplicated or misread.
 
-That is why the book's central claim is about joins, not components: **most commerce failures are a promise one system made and another could not keep.** The Black Friday oversell was a storefront promising from a two-hour-old copy. Another Kestrel & Pine order showed *Delivered* on the platform, *In picking* in the warehouse and *Not invoiced* in the ERP for six days. The book calls that incident the Three-Status Order: three honest systems describing three different objects, a delivered parcel, an unpicked line and a missing invoice. In a third, the Double Refund, 212 returns were refunded twice, by two systems each entitled to refund the same return.
+That is why the book's central claim is about joins, not components: **most commerce failures are a promise one system made and another could not keep.** The Black Friday oversell was a storefront promising from a two-hour-old copy. Another Kestrel & Pine order showed *Delivered* on the platform, *In picking* in the warehouse and *Not invoiced* in the ERP for six days. The book calls that incident the Three-Status Order: three honest systems describing three different objects, a delivered parcel, an unpicked line and a missing invoice. In a third incident, the Double Refund, 212 returns were refunded twice, by two systems each entitled to refund the same return.
 
 ![A storefront hands the shopper a promise ticket that the warehouse, carrier, payment provider and ledger must keep; a torn envelope between two of them marks where it breaks.](assets/images/introduction/introduction-promise-ticket.jpeg)
 **Figure 1:** *A commerce platform makes promises in one place and keeps them in another, so most failures happen at a join between systems, not inside one of them.*
@@ -62,14 +62,14 @@ Architecture, in this book, is the discipline of answering three questions for e
 
 ## The Failure Patterns
 
-Commerce platforms break promises through recurring patterns, each of which looked reasonable when chosen. The next page, [[where-commerce-platforms-go-wrong]], unpacks **sixteen** of them. Here are only their names, as an index, in four families:
+Commerce platforms break promises through recurring patterns, each of which looked reasonable when chosen. The next page, [[where-commerce-platforms-go-wrong]], unpacks **sixteen** of them. Here are only their names, grouped in four families:
 
 - **Truth**, a fact with two writers or no owner: **The Phantom Stock**, **Schrödinger's Order**, **The Familiar Stranger**, **The Boomerang** and **The Price Nobody Can Explain**.
 - **Integration**, a message with no identifying key, no contract or no owner: **The Spaghetti Junction**, **The Message in a Bottle** and **The Pulled Rug**.
 - **Platform and change**, a decision copied from a bigger company or carried out all at once on a single day: **The First Snowfall**, **The Giant's Boots**, **The Burned Bridge**, **The Forked Platform** and **One Size Fits None**.
 - **Governance**, a dependency, a deadline or an actor nobody owns: **The Lynchpin**, **The Long Fuse** and **The Secret Agent**.
 
-The patterns travel in chains that usually start at the joins: a Spaghetti Junction of unowned connectors breeds Messages in a Bottle, messages sent once and trusted, which breed Phantom Stock and Boomerangs, returns refunded twice. Kestrel & Pine's Black Friday 2026 met two at once: **The Phantom Stock** in the two-hour-old copy and **The First Snowfall** in a chain of stock syncs that met real load for the first time on the day itself. The Three-Status Order was a Schrödinger's Order; the Double Refund, a Boomerang. Every chapter names the patterns it works on, so you can use the list as an index.
+The patterns travel in chains, and a chain starts at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons. A Spaghetti Junction of unowned connectors breeds Messages in a Bottle, messages sent once and trusted, which breed Phantom Stock, stock only a copy holds, and Boomerangs, returns refunded twice. Kestrel & Pine's Black Friday 2026 met two at once: **The Phantom Stock** in the two-hour-old copy and **The First Snowfall** in a chain of stock syncs that met real load for the first time on the day itself. Every chapter names the patterns it works on, so you can use the list as an index.
 
 ## Four Scale Stages, and Why Every Chapter Compares Them
 
@@ -79,28 +79,26 @@ The three questions (who may promise, how the others learn, what happens when th
 | --- | --- | --- | --- |
 | **1 — Starting** | under about €2 million revenue | One channel, a hosted platform, the founders running operations, a third-party logistics provider (3PL) or a back room | 2016–2018 |
 | **2 — Growing** | about €2–20 million | Two or three channels, a first store or wholesale line, first integrations (accounting or ERP, 3PL, a marketplace), a small team and an agency | 2019–2022 |
-| **3 — Omnichannel** | about €20–200 million | Stores, wholesale, marketplaces and several countries, an own warehouse, a dozen or more systems; the joins become the problem | 2023 to now |
+| **3 — Omnichannel** | about €20–200 million | Stores, wholesale, marketplaces and several countries, an own warehouse, a dozen or more systems; the joins become the problem | since 2023 |
 | **4 — Group** | over about €200 million, or several brands or business units | Several brands, countries or business units; platform teams; shared services against autonomy; acquisitions | not yet |
 
 The revenue bands are illustrative markers, not thresholds. **The shape of the business decides the stage**: a €15 million brand with stores, wholesale and two countries already has Omnichannel problems.
 
-Every chapter in the main body of the book has a section titled **"Across Scale Stages: When It Fits and When It Limits"**, with a table that says, for each stage, what is typical, what becomes necessary and which warning signs show you have outgrown an approach. The most common mistake in commerce architecture is not a bad design but one that was right two stages ago, or will be right two stages from now. Kestrel & Pine's 2026 troubles are mostly Growing-stage designs, such as the chain of hourly stock syncs behind the two-hour-old copy, built for fewer channels, still running under Omnichannel load. [[commerce-scaling-stages]] gathers all the stage tables in one place.
+Every subject chapter, from product information to regulation, has a section titled **"Across Scale Stages: When It Fits and When It Limits"**, with a table that says, for each stage, what is typical, what becomes necessary and which warning signs show you have outgrown an approach. The most common mistake in commerce architecture is not a bad design but one that was right two stages ago, or will be right two stages from now. Kestrel & Pine's 2026 troubles are mostly Growing-stage designs, such as the chain of hourly stock syncs behind the two-hour-old copy, built for fewer channels, still running under Omnichannel load. [[commerce-scaling-stages]] gathers all the stage tables in one place.
 
 ## Kestrel & Pine
 
-That merchant is the one the book follows. **Kestrel & Pine is fictional.** Founded in Arnhem in 2016, it earns **€48 million in 2026**: €27 million online across the Netherlands, Belgium and Germany, €12 million wholesale, €6 million in stores and €3 million through marketplaces. It serves 1,100 wholesale accounts, six stores and three marketplaces, bol, Amazon.de and Zalando: the shape of the Omnichannel stage.
+**Kestrel & Pine**, the merchant the book follows, **is fictional.** Founded in Arnhem in 2016, it earns **€48 million in 2026**: €27 million online across the Netherlands, Belgium and Germany, €12 million wholesale, €6 million in stores and €3 million through marketplaces. It serves 1,100 wholesale accounts, six stores and three marketplaces, bol, Amazon.de and Zalando: the shape of the Omnichannel stage.
 
 Its Duiven warehouse connects to a landscape of thirteen systems and 34 integrations. Orders and product content each live in four places, without shared order or product management. The recurring incidents expose the cost: about €96,000 from overselling, €19,400 refunded twice and €14,200 deducted by a wholesale customer for pallet labels that did not match shipment notices.
 
-In January 2027 **Noor Visser** joins as Head of Engineering. She is the reader's stand-in: experienced in software, new to this merchant's commerce landscape. In March 2027 she launches **Waypoint**, a €1.1 million program that decides ownership first and buys the missing central systems second: the warehouse owns physical stock, an order management system becomes the one order record, a product information management system (PIM) owns product content, integrations get owners, contracts and reconciliation, a comparison of copies, and the company **stays on its hosted platform** rather than replacing it. Its changes land later in 2027, after Eva's order. Chapters cite Waypoint's eight decisions by number, W1 to W8.
+In January 2027 **Noor Visser** joins as Head of Engineering. She is the reader's stand-in: experienced in software, new to this merchant's commerce landscape. In March 2027 she launches **Waypoint**, a €1.1 million program that decides ownership first and buys the missing central systems second: the warehouse owns physical stock, an order management system becomes the one order record, a product information management system (PIM) owns product content, integrations get owners, contracts and reconciliation (comparing copies), and the company **stays on its hosted platform** rather than replacing it. Its changes land later in 2027, after Eva's order. Chapters cite Waypoint's eight decisions by number, W1 to W8.
 
 Kestrel & Pine is a composite of patterns common among growing omnichannel brands, not a disguise for any company; [[meet-kestrel-and-pine]] introduces it in full. When Noor decides, ask what the equivalent would be in your business.
 
-## The Order's Journey as the Spine
-
-At that merchant the book is organized around **the order's journey**: the path one order takes from a shopper's search to the doorstep, back again as a return, and into the books. Eva's jacket is that order. Its canonical facts never change: ordered Tuesday 13 April 2027 at 21:14, picked and packed at Kestrel & Pine's Duiven warehouse on Wednesday, delivered by PostNL on Thursday 15 April, and exchanged for a size L through the returns portal on Monday 19 April.
-
 ## How the Book Is Organized
+
+At that merchant the book follows **the order's journey**: the path one order takes from a shopper's search to the doorstep, back again as a return, and into the books. Eva's jacket is that order. Its canonical facts never change: ordered Tuesday 13 April 2027 at 21:14, picked and packed at Kestrel & Pine's Duiven warehouse on Wednesday, delivered by PostNL on Thursday 15 April, and exchanged for a size L through the returns portal on Monday 19 April.
 
 The parts follow that journey: three preface pages, eleven parts, an appendix tutorial and four reference pages. Each part asks one question:
 
@@ -126,7 +124,7 @@ Parts II to V follow the order in the sequence it happens; Part VI is about the 
 ![Diagram: Eva's order crosses Parts II to V in the order it happens](assets/images/introduction/fig01-eva-s-order-crosses-parts-ii.jpeg)
 **Figure 2:** *Eva's order crosses Parts II to V in the order it happens; Part VI covers every arrow between them, and Parts VII to XI step back to look at the platform, the risks, the whole journey, how the decisions change with scale and four real cases.*
 
-**Part I is the one part not to skip.** It introduces the vocabulary, the capability map and the entity–owner table that every later chapter points back to.
+**Part I is the one part not to skip.** It introduces the vocabulary, the capability map of what the business must do and the entity–owner table of which system owns each fact; every later chapter points back to them.
 
 Every chapter in Parts II to VIII answers the same five questions: **what problem this solves and why it matters** (business first), **how the components work together**, **which choices exist**, **what trade-offs they introduce**, and **when the approach fits and when it limits**. It opens with a scene at Kestrel & Pine and ends with "What to Take Away", questions to ask in a design review, and its sources.
 
@@ -157,7 +155,7 @@ For the decision itself, the **[[toolkit]]** collects the book's working templat
 
 ## What the Book Leaves to Others
 
-Some decisions belong to other books. Three neighboring subjects appear only where they touch commerce architecture, and each has a book of its own in this collection:
+The routing table stops at three neighboring subjects, which appear only where they touch commerce architecture, and each has a book of its own on this site:
 
 - **Payments and ledgers in depth.** This book covers taking the money as a merchant does: authorization, capture, refunds, webhooks and the match of orders against payouts ([[commerce-payments]], [[tax-invoicing-and-ledger]]). How card networks, acquirers and double-entry ledgers work inside is the subject of *RECONCILED*, starting with [[payments-fundamentals]].
 - **Running a marketplace.** This book covers selling on marketplaces as a merchant ([[marketplaces-and-channel-integration]]). Operating one, with its two-sided economics, liquidity, ranking and trust, is the subject of *LISTED*, starting with [[liquidity-and-network-effects]].
@@ -206,7 +204,7 @@ Behind those statements the book uses three kinds of material, and no others.
 
 ## A Living Journal
 
-Public sources keep changing, so this book is a living journal and a work in progress, which I revise as I learn more through [my work](https://obren.io). Its **research cut-off is 7 November 2026**: facts were checked against public sources up to that date unless a chapter says otherwise. Check the source before relying on a time-sensitive fact. The story at Kestrel & Pine is set in 2027, a year after the cut-off, so where it touches real dates (an API retirement, a law's date of application) it uses the dates published by November 2026.
+This book is a living journal and a work in progress, which I revise as I learn more through [my work](https://obren.io). Its **research cut-off is 7 November 2026**: facts were checked against public sources up to that date unless a chapter says otherwise. Check the source before relying on a time-sensitive fact. The story at Kestrel & Pine is set in 2027, a year after the cut-off, so where it touches real dates (an API retirement, a law's date of application) it uses the dates published by November 2026.
 
 Every chapter has a "View spec" link in its byline that opens the specification it was written against, including its open questions. Read the book as current thinking with its limits stated, not as a finished text.
 
@@ -216,7 +214,7 @@ I developed the book through AI-mediated authoring: I set the concept, the struc
 
 If you read in order, turn next to [[where-commerce-platforms-go-wrong]] for the sixteen patterns, then to [[meet-kestrel-and-pine]], so that every chapter's opening scene lands in a company you know, and begin Part I with [[journey-of-an-order]]. If a decision is waiting, use the routing table above and come back to Part I when a term is unclear.
 
-Either way, keep Eva's five promises in mind: this jacket, at this price, in stock, on Thursday, returnable. Every chapter is about one of them, and about which system keeps it. The parts, the routing table, the stage comparisons and the kinds of statement are four ways of asking the same thing of a promise: which system makes it, which system keeps it, and how far the answer holds for a business of your shape. Ask that before you ask which product to buy.
+Either way, keep Eva's five promises in mind: this jacket, at this price, in stock, on Thursday, returnable. Every chapter is about one of them, and about which system keeps it. The parts, the routing table, the stage tables and the kinds of statement all ask of a promise which system makes it, which keeps it and how far the answer holds for a business of your shape. Ask that before you ask which product to buy.
 
 ## Sources and Evidence
 

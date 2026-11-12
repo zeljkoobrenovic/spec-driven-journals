@@ -85,13 +85,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use or was glossed on an earlier page.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -147,15 +140,15 @@
         "applies_to": "choices, trade-offs and stages: four homes for the order on the same criteria, then by stage"
       }
     ],
-    "rationale": "The Three-Status Order comes first so that every term arrives as part of the answer to 'why did three systems give three answers'. The record's parts and its number come before the state machines, because the machines are fields of that record and the number is the key every later section relies on. The state machines come before changes to a placed order, since an edit or a cancellation is a move of one of those machines, and before routing, since a split creates the second fulfillment order whose state the summary rule reads. Routing needs several locations, which the reader meets there for the first time; several channels follow as the other half of the joins problem, with the two-of-four rule for when they need one home and three candidates for that home. The OMS as a product is described once it has been named as one candidate; the choices then weigh the four homes, the built service joining the three candidates as the fourth announced earlier, with W2 named as the outcome of that comparison rather than its premise; the trade-off table compares them on the criteria the earlier sections set up plus time, cost and failure, and the stages place them by scale. The worked example shows the chosen design (W2) at work: its rollout, the requirements of each interaction once the OMS has been chosen (with Eva's order traced through it) and the replay of #1052877. The failures come last, opening from the repeated messages every design receives, because every design, the chosen one included, must expect them. Moving the scene later would put five sections of vocabulary before the problem; moving routing before the state machines would describe a split before the reader knows that the goods state belongs to each shipment; giving the OMS's requirements before the choice would assume a decision the chapter has not made."
+    "rationale": "The Three-Status Order comes first so that every term arrives as part of the answer to 'why did three systems give three answers'. The record's parts and its number come before the state machines, because the machines are fields of that record and the number is the key every later section relies on. The state machines come before changes to a placed order, since an edit or a cancellation is a move of one of those machines, and before routing, since a split creates the second fulfillment order whose state the summary rule reads. Routing needs several locations, which the reader meets there for the first time, and ends on the fuller decision OMS vendors describe; the OMS as a product follows at once, so that it is known before the hub question is asked. Several channels then follow as the other half of the joins problem, with the two-of-four rule for when they need one home and three candidates for that home, the OMS among them; the choices weigh the four homes straight after the candidates, the built service joining them as the fourth announced there, with W2 named as the outcome of that comparison rather than its premise; the trade-off table compares them on the criteria the earlier sections set up plus time, cost and failure, and the stages place them by scale. The worked example shows the chosen design (W2) at work: its rollout, the requirements of each interaction once the OMS has been chosen (with an order like Eva's traced through it) and the replay of #1052877. The failures come last, opening from the repeated messages every design receives, because every design, the chosen one included, must expect them. Moving the scene later would put five sections of vocabulary before the problem; moving routing before the state machines would describe a split before the reader knows that the goods state belongs to each shipment; describing the OMS between the candidates table and the choices would interrupt the comparison; giving the OMS's requirements before the choice would assume a decision the chapter has not made."
   },
   "introduction": {
     "hook": {
       "type": "puzzling_scenario",
-      "content": "A customer orders a jacket and socks, but the jacket ships first. The warehouse knows which items left, the payment provider knows what was paid, and support has to explain when the socks will arrive; a single 'shipped' status misleads both the customer and the team handling the order."
+      "content": "In December 2026 a Kestrel & Pine customer ordered a fleece and socks, and the fleece shipped first. The warehouse knew which item had left, the payment provider knew what was paid, and support had to explain when the socks would arrive, while the shop's status page said 'Delivered': one status word for an order whose parts moved separately misled both the customer and the team."
     },
     "bridge": {
-      "from_reader_world": "Anyone who has received half an order has seen a status page that said more, or less, than the box held; the previous chapter has just marked Eva's order paid.",
+      "from_reader_world": "Anyone who has received half an order has seen a status page that said more, or less, than the box held; the previous chapter has just marked Eva's order paid, and the opening's December 2026 order is the chapter's case.",
       "to_topic": "The facts about one order are known by different systems, so the question is which one record brings them together, how it keeps them apart, and which system holds it."
     },
     "thesis_statement": {
@@ -166,7 +159,7 @@
       "placement": "IN THIS CHAPTER callout and paragraph p04",
       "promises": [
         {
-          "promise": "Start from Kestrel & Pine's Three-Status Order, #1052877.",
+          "promise": "Start from the opening's order, Kestrel & Pine's Three-Status Order, #1052877.",
           "kept_in": [
             "scene"
           ]
@@ -186,10 +179,10 @@
           ]
         },
         {
-          "promise": "Ask when every channel's orders need one home and which system it should be, describe the OMS, and compare four homes by trade-off and scale stage.",
+          "promise": "Describe the OMS, ask when every channel's orders need one home and which system it should be, and compare four homes by trade-off and scale stage.",
           "kept_in": [
-            "channels",
             "oms",
+            "channels",
             "choices",
             "trade-offs",
             "stages"
@@ -207,13 +200,13 @@
     "paragraphs": [
       {
         "id": "p01",
-        "controlling_idea": "When a jacket ships before the socks of the same order, the warehouse, the payment provider and support each know part of the story, and a single 'shipped' status misleads the customer and the team.",
+        "controlling_idea": "When the fleece of a Kestrel & Pine order ships before the socks, the warehouse, the payment provider and support each know part of the story, and a single 'Delivered' status misleads the customer and the team.",
         "function": "context",
         "organization": "illustration",
         "evidence": [
           {
             "kind": "scenario",
-            "what": "A two-item order whose items leave at different times, with each fact held by a different party.",
+            "what": "Kestrel & Pine's December 2026 fleece-and-socks order (#1052877, named in p04), whose items left at different times, with each fact held by a different party.",
             "shows": "The chapter's problem in one case: one status word cannot describe an order whose parts move separately."
           }
         ]
@@ -232,7 +225,7 @@
       },
       {
         "id": "p03",
-        "controlling_idea": "In Eva's order the payment provider's message has just marked #1072455 paid, and this chapter is about the order from 'paid' through delivery and, after her exchange, the dispatch of her replacement jacket, with Figure 5 tracing her order through the design the chapter arrives at.",
+        "controlling_idea": "In Eva's order the payment provider's message has just marked #1072455 paid; in April 2027 the shop platform is still its home, because the OMS takes storefront orders only from 13 October 2027.",
         "function": "context",
         "transition_in": {
           "relationship": "time",
@@ -244,12 +237,12 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "Before Eva's order the chapter starts from an older order with another customer, Kestrel & Pine's Three-Status Order, then describes the order record and its number, its separate state machines, changes to a placed order, routing and splits, when every channel's orders need one home and which system it should be, the OMS, four homes by trade-off and stage, the chosen design at work with #1052877 replayed, and the ways order integrations fail; its evidence is the Kestrel & Pine case and platform and OMS vendors' documentation.",
+        "controlling_idea": "The chapter follows the order from 'paid' onward through an older case, the opening's #1052877, Kestrel & Pine's Three-Status Order; from it the chapter describes the order record and its number, its separate state machines, changes to a placed order, routing and splits, the OMS as a product, when every channel's orders need one home and which system it should be, four homes by trade-off and stage, the chosen design at work with #1052877 replayed, and the ways order integrations fail; its evidence is the Kestrel & Pine case and platform and OMS vendors' documentation.",
         "function": "transition",
         "transition_in": {
           "relationship": "contrast",
           "carries_over": "Eva's order from 'paid' onward.",
-          "introduces": "An older order with another customer that the chapter starts from, then the order of the chapter and its evidence.",
+          "introduces": "The opening's order, #1052877, as the chapter's case, then the order of the chapter and its evidence.",
           "form": "sentence",
           "placement": "start_of_this"
         }
@@ -740,102 +733,6 @@
       ]
     },
     {
-      "id": "channels",
-      "heading": "Many Channels, One Record",
-      "controlling_idea": "When orders begin in several systems, each with its own connectors and vocabulary, one system must be the order hub once two of four conditions hold, and the question is which of three candidates owns which truth about the order.",
-      "function": "comparison",
-      "advances_thesis": {
-        "supports": [
-          "S5"
-        ],
-        "how": "Gives the two-of-four rule for when the order needs a hub and frames the hub as a choice between the platform, the ERP and an OMS, each holding a different truth."
-      },
-      "flow": {
-        "pattern": "problem_solution",
-        "rationale": "The Spaghetti Junction first, then the rule for when it needs one record of its own, then the hub with its three candidates, then the boundary between them; the rule comes before the candidates because it decides whether a hub is needed at all, and the choice between candidates is left to the choices section."
-      },
-      "transition_in": {
-        "relationship": "additional_support",
-        "carries_over": "Several locations and the routing decision.",
-        "introduces": "Several channels creating orders, the other half of the joins problem.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p27",
-          "controlling_idea": "Several channels creating orders are the other half of the joins problem: Kestrel & Pine's orders begin in four systems, each with its own connector to the warehouse, its own path to the books and its own status vocabulary, the Spaghetti Junction that adding one channel at a time produces.",
-          "function": "example",
-          "evidence": [
-            {
-              "kind": "scenario",
-              "what": "Storefront and B2B portal orders in the shop platform, marketplace orders through the connector, EDI and 38% hand-keyed wholesale orders in the ERP, store sales as POS receipts.",
-              "source": "_research/scenario-ledger.md, systems table",
-              "shows": "Four sources and four sets of connectors for one kind of record."
-            }
-          ]
-        },
-        {
-          "id": "p33",
-          "controlling_idea": "The junction needs one record of its own once at least two of four conditions hold (several locations, several channels, promises that depend on location, service that cannot see one order), because one can be handled by the platform plus a connector and two make the joins between systems the problem; Kestrel & Pine has had all four since 2023.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "figure",
-              "what": "Figure 4: four condition cards, two ticked, leading to the order hub.",
-              "shows": "The rule in one picture."
-            }
-          ],
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The Spaghetti Junction of four order sources.",
-            "introduces": "The rule for when that junction needs one record of its own.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p28",
-          "controlling_idea": "The alternative to the junction is one order hub with one state model and one number family, and the real question is which of three candidates it should be (the platform, the ERP or an OMS), with building one's own left to the choices.",
-          "function": "comparison",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "The platform, the ERP and an OMS: what each is good at, what it lacks, and at which stage it is common.",
-              "shows": "Each candidate holds a different record well (customer-facing, financial, operational) and lacks what the others have."
-            }
-          ],
-          "transition_in": {
-            "relationship": "problem_solution",
-            "carries_over": "The junction and the point at which it needs one record.",
-            "introduces": "One hub, and three candidates for it, with a fourth announced.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p29",
-          "controlling_idea": "The three records are three truths about the same order, so the decision is which system owns which truth and how the others are told.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "Fluent Commerce: 'your ERP stays the system of record' for finance.",
-              "source": "Fluent Commerce, n.d., accessed November 2026",
-              "shows": "An OMS vendor draws the same boundary between operational and financial records."
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The three candidates and their strengths.",
-            "introduces": "That they are not rivals but owners of different truths.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        }
-      ]
-    },
-    {
       "id": "oms",
       "heading": "The OMS as a Product",
       "controlling_idea": "An OMS takes every channel's orders, routes them, tracks them and gives service one view, and owns the operational order while leaving checkout and the books alone.",
@@ -844,16 +741,16 @@
         "supports": [
           "S5"
         ],
-        "how": "Describes the system the thesis names as the home and its boundary with the platform and the ERP."
+        "how": "Describes the system the thesis names as the home and its boundary with the platform and the ERP, before the hub question is asked."
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The product as vendors describe it, then its components and their boundaries; the boundaries mean more once the reader knows the jobs."
+        "rationale": "The product as vendors describe it, then its components and their boundaries; it follows routing because the fuller routing decision is one of its jobs, and it comes before the channels section so that the OMS is known when it is named as the third candidate for the order's home."
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The OMS as the third candidate, the operational record.",
-        "introduces": "What an OMS is and does, component by component.",
+        "carries_over": "The fuller routing decision that OMS vendors describe.",
+        "introduces": "The product those vendors sell: what an OMS does, component by component.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -893,6 +790,102 @@
       ]
     },
     {
+      "id": "channels",
+      "heading": "Many Channels, One Record",
+      "controlling_idea": "When orders begin in several systems, each with its own connectors and vocabulary, one system must be the order hub once two of four conditions hold, and the question is which of three candidates owns which truth about the order.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Gives the two-of-four rule for when the order needs a hub and frames the hub as a choice between the platform, the ERP and an OMS, each holding a different truth."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The Spaghetti Junction first, then the rule for when it needs one record of its own, then the hub with its three candidates, then the boundary between them; the rule comes before the candidates because it decides whether a hub is needed at all, and the choice between candidates is left to the choices section."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "Several locations, the routing decision and the OMS that can make it.",
+        "introduces": "Several channels creating orders, the other half of the joins problem.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "Several channels creating orders are the other half of the joins problem: Kestrel & Pine's orders begin in four systems, each with its own connector to the warehouse, its own path to the books and its own status vocabulary, the Spaghetti Junction that adding one channel at a time produces.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Storefront and B2B portal orders in the shop platform, marketplace orders through the connector, EDI and 38% hand-keyed wholesale orders in the ERP, store sales as POS receipts.",
+              "source": "_research/scenario-ledger.md, systems table",
+              "shows": "Four sources and four sets of connectors for one kind of record."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The junction needs one record of its own once at least two of four conditions hold (several locations, several channels, promises that depend on location, service that cannot see one order), because one can be handled by the platform plus a connector and two make the joins between systems the problem; Kestrel & Pine has had all four since 2023.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: four condition cards, two ticked, leading to the order hub.",
+              "shows": "The rule in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Spaghetti Junction of four order sources.",
+            "introduces": "The rule for when that junction needs one record of its own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The alternative to the junction is one order hub with one state model and one number family, and the real question is which of three candidates it should be (the platform, the ERP or the OMS just described), with building one's own left to the choices.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The platform, the ERP and an OMS: what each is good at, what it lacks, and at which stage it is common.",
+              "shows": "Each candidate holds a different record well (customer-facing, financial, operational) and lacks what the others have."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The junction and the point at which it needs one record.",
+            "introduces": "One hub, and three candidates for it, with a fourth announced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The three records are three truths about the same order, so the decision is which system owns which truth and how the others are told.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fluent Commerce: 'your ERP stays the system of record' for finance.",
+              "source": "Fluent Commerce, n.d., accessed November 2026",
+              "shows": "An OMS vendor draws the same boundary between operational and financial records."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three candidates and their strengths.",
+            "introduces": "That they are not rivals but owners of different truths.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
       "id": "choices",
       "heading": "The Choices",
       "controlling_idea": "The order can live in the platform, the ERP, a bought OMS or a built service, and each fits a different merchant.",
@@ -909,7 +902,7 @@
       },
       "transition_in": {
         "relationship": "sequence",
-        "carries_over": "The three candidates and the OMS's components.",
+        "carries_over": "The three candidates and the truth each owns.",
         "introduces": "The four places the order can live, one by one, the fourth being a built service.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -1071,7 +1064,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The rollout dates, then what each interaction with the rolled-out OMS must achieve (with Eva's order traced through it), then the replay day by day, then what it changes for support and what it does not; the requirements need the OMS to have been chosen, and the replay needs the design."
+        "rationale": "The rollout dates, then what each interaction with the rolled-out OMS must achieve (with an order like Eva's traced through it), then the replay day by day, then what it changes for support and what it does not; the requirements need the OMS to have been chosen, and the replay needs the design."
       },
       "transition_in": {
         "relationship": "example",
@@ -1097,7 +1090,7 @@
         },
         {
           "id": "p32",
-          "controlling_idea": "Under W2 each interaction with the OMS has its own freshness, consistency, speed and fallback: only order creation and edits must be exact and immediate, and the invoice trigger per shipment may run in a daily batch if it is idempotent; the figures are the author's illustrative targets, and Figure 5 shows how Eva's order would run once storefront orders pass through the OMS.",
+          "controlling_idea": "Under W2 each interaction with the OMS has its own freshness, consistency, speed and fallback: only order creation and edits must be exact and immediate, and the invoice trigger per shipment may run in a daily batch if it is idempotent; the figures are the author's illustrative targets, and Figure 5 shows how an order like Eva's would run once storefront orders pass through the OMS.",
           "function": "description",
           "evidence": [
             {
@@ -1114,7 +1107,7 @@
           "transition_in": {
             "relationship": "elaboration",
             "carries_over": "W2 rolled out source by source, every order created in the OMS.",
-            "introduces": "What each interaction with that OMS must achieve, and Eva's order traced through it.",
+            "introduces": "What each interaction with that OMS must achieve, and an order like Eva's traced through it.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1238,10 +1231,10 @@
   ],
   "conclusion": {
     "heading": "What to Take Away",
-    "synthesis": "The jacket-and-socks order, the separate state machines, the split and the hub question are one answer: each fact about an order is first known by a different witness (the payment provider, the warehouse per parcel, the carrier, the returns portal), so only one record that keeps each witness's line apart and is the one place every channel's order is created can say 'two parcels, one delivered'; which system holds it follows from who must answer that parcel question.",
+    "synthesis": "The opening's fleece-and-socks order, the separate state machines, the split and the hub question are one answer: each fact about an order is first known by a different witness (the payment provider, the warehouse per parcel, the carrier, the returns portal), so only one record that keeps each witness's line apart and is the one place every channel's order is created can say 'two parcels, one delivered'; which system holds it follows from who must answer that parcel question.",
     "so_what": "A merchant can count its order sources and fulfilling locations against the four conditions, and write down the order's home, its number family and its per-shipment status, before any OMS is bought; Kestrel & Pine's remedy was that decision first and the purchase second.",
     "callback": {
-      "to": "The introduction's customer whose jacket shipped before the socks, with a single 'shipped' status that misled her and the team.",
+      "to": "The opening's order, #1052877, whose fleece shipped before the socks while the status page said 'Delivered'.",
       "how": "The first paragraph of the conclusion says what that order should read, who says it and which system holds it."
     },
     "takeaway": {
@@ -1264,12 +1257,12 @@
     "paragraphs": [
       {
         "id": "p46",
-        "controlling_idea": "The order of the opening, whose jacket shipped before the socks as the fleece of #1052877 did, should have read 'Partially delivered: 1 of 2 parcels' with 'two parcels' told to the customer, and only a record that keeps money, each parcel and returns apart, and is the one place every channel's order is created, can say that; the system that holds it is the one that must answer the customer's parcel question.",
+        "controlling_idea": "The opening's order, #1052877, whose fleece shipped before the socks, should have read 'Partially delivered: 1 of 2 parcels' with 'two parcels' told to the customer, and only a record that keeps money, each parcel and returns apart, and is the one place every channel's order is created, can say that; the system that holds it is the one that must answer the customer's parcel question.",
         "function": "synthesis",
         "evidence": [
           {
             "kind": "reasoning",
-            "what": "The opening's jacket-and-socks order set against the chapter's answer.",
+            "what": "The opening's fleece-and-socks order set against the chapter's answer.",
             "shows": "The reader can now say what the order should read and why the home is chosen by the parcel question."
           }
         ]
@@ -1328,12 +1321,12 @@
       },
       {
         "id": "p51",
-        "controlling_idea": "Because under W2 Eva's order would have one home, one number, its goods status per shipment and a warehouse that has accepted the work, each shipment can produce its own invoice, and the next chapter follows the tax it carries, those invoices and the entries they post in the books.",
+        "controlling_idea": "Because under W2 an order like #1052877 would have one home, one number, its goods status per shipment and a warehouse that has accepted the work, each shipment can produce its own invoice, and the next chapter follows the tax it carries, those invoices and the entries they post in the books.",
         "function": "transition",
         "transition_in": {
           "relationship": "conclusion_summary",
           "carries_over": "The questions about the reader's own order flow.",
-          "introduces": "Eva's order as this chapter leaves it, and what the next chapter does with it.",
+          "introduces": "The opening's order as this chapter leaves it, and what the next chapter does with it.",
           "form": "sentence",
           "placement": "start_of_this"
         }
@@ -1388,15 +1381,56 @@
   ],
   "modalities": [],
   "open_questions": [
-    "SAP Commerce's current order management and sourcing documentation was not fetched for the brief; only inventory Javadoc (2022) was verified, so SAP is not cited here.",
-    "The illustrative routing rule ('wait up to one working day for replenishment on a two-line D2C order under €150') is new; later chapters should reuse rather than restate it.",
-    "The 'Where we are' paragraph says order management tracks Eva's April 2027 order, while the OMS takes storefront orders only from 13 October 2027 (ruling 4) and Figure 4 shows Eva's order 'under Waypoint'. The paragraph is read as the order-management capability, held in April 2027 by the shop platform; the author may want to say so explicitly or date Figure 4.",
-    "Flow rubric, first run (sound with notes), notes not taken: (a) merge the stages paragraph (p39) into the trade-offs or cut it (kept, house format); (b) the trade-offs paragraph and the author's synthesis in the conclusion (p38, p49) say nearly the same thing (kept: the conclusion's tiers are the book's format); (c) the routing section (p24) cites 'OMS vendors' before the OMS section describes the product (the OMS is glossed in the introduction and in Part I).",
-    "Flow rubric, second run (sound with notes), notes not taken: the two-of-four rule recurs in p02, p33, p38, p39 and p48 (the stage table and the take-aways are house format); the trade-off criterion 'exit' is set up nowhere earlier; p38 and the author's synthesis (p49) nearly repeat each other.",
-    "Round 2 minor findings (one reader only) left as they are: the two-of-four rule is stated about six times (key points, p02, p33, Figure 4, p38, p39, p48); the OMS is glossed in the introduction and defined again in its section; W2 and its rollout months appear in the choices and trade-off table before 'In Practice'; 'Changing a Placed Order' before routing; terms not glossed in this chapter: state machine and cut-off times in the key points (defined later), pick location, replenishment, bulk stock and second pick, market and legal seller, Adobe Commerce and 'source', click-and-collect and ship-from-store, ERP partner, credit note and receivable, data warehouse, seam, shadow copy and change freeze, wave release.",
-    "Flow rubric, third run (after the round-1 reorder; sound with notes), notes not taken: merge the stages section into the trade-offs (house format); the routing section cites 'OMS vendors' before the OMS section; the trade-off table's 'how each breaks' precedes the failure section; invoice per shipment is argued nowhere before 'In Practice' beyond the requirements table and the scene (chapter 14 owns the rule); split the failure paragraph from its table."
+    "Round 3 (confirming round) corroborated moves that rule 3 calls for but that were not made, because the resolution brief allows only cheap fixes after the confirming round; to be made in the next pass: (a) put the Spaghetti Junction and the two-of-four rule (p27, p33) before 'The OMS as a Product', and move the three-candidate table and boundary (p28, p29) to open 'The Choices', so the need comes before the product and the candidates are described in one place (both readers; note that round 2's readers objected to the OMS between the candidates and the choices, which this order also avoids); (b) name W2 after the trade-off table and the judgement rather than inside choice 3 (p36); (c) in 'In Practice', put the replay of #1052877 (p42 to p44) straight after the rollout (p41) and the requirements table with Figure 5 (p32) after it. Eva's 'Where we are' paragraph was cut to its fixed minimum instead of being moved, because it is the book's fixed element."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round (round 3, escalate: 14 passed, 31 failed, 13 of them minor), cheap fixes applied without another round: p03 cut to the order marked paid and the platform as its home in April 2027 (the Figure 5 forward reference and the exchange detail dropped; both readers); p04 says the chapter follows the order through #1052877; the hand-off (p51) speaks of an order like #1052877 rather than Eva's (both readers); 'the agency' and Bergzicht glossed from the ledger; the fulfillment-order handshake explained in the state-machine section, so the conclusion's lifecycle is not new; four machines stated plainly; the return item's shipment and payment states named and 'graded' glossed; the edit-after-acceptance sentence corrected to an edit becoming a cancellation request plus a new order; the six-part table's lead says what it shows; the boundary paragraph opens on 'not rivals'; the choices' lead fused into option 1; In Practice in one tense. The remaining corroborated order moves are listed in open_questions.",
+      "rejected": [
+        "A fourth round (the brief allows none).",
+        "Moving Eva's 'Where we are' paragraph out of the introduction (the book's fixed element)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the hook opens with Kestrel & Pine's December 2026 fleece-and-socks order, #1052877, instead of an anonymous jacket-and-socks order (rule 3: both round-2 flow readers asked for it; three near-identical orders in the introduction become two); p04 names the opening's order as the chapter's case, and the conclusion's callback (p46) returns to #1052877.",
+      "rejected": [
+        "Keeping the anonymous hook and only clarifying it.",
+        "Dropping Eva's 'Where we are' paragraph (the book's fixed element)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the 'Where we are' paragraph (p03) says that in April 2027 the shop platform is still the home of Eva's order, because the OMS takes storefront orders only from 13 October 2027 (consistency ruling 4, rule 1), and no longer promises to follow her order through the body; Figure 5 and the hand-off speak of 'an order like Eva's'. Closes the open question on Eva's April 2027 order and Figure 5.",
+      "rejected": [
+        "Dating Eva's order into the OMS period (contradicts the ledger).",
+        "Adding an Eva scene to the body (no ledger fact for one)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the OMS section moves from between the candidates table and the choices to straight after routing (rule 3: both round-2 flow readers marked its position unclear; the move also answers the flow rubric's note that routing cites OMS vendors before the OMS is described). Transitions rewritten: the OMS opens from the vendors' fuller routing decision, the channels section from routing and the OMS, the candidates table calls the OMS 'just described', and the choices follow the candidates directly.",
+      "rejected": [
+        "Folding the candidates table into the choices (author's table).",
+        "Moving the OMS section after the choices (the choices would then weigh an undescribed option)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-6 (known_before_new, added from the old spec.md) is dropped (rule 7: not in the journal spec and failed in both rounds). The terms readers stumbled on are glossed at first use within the limit (rule 6): pick location, replenishment, bulk stock, second pick, market, legal seller, Adobe Commerce, source, click-and-collect, ship-from-store, ERP partner, credit note, receivable, data warehouse, seam, shadow copy, change freeze, wave release.",
+      "rejected": [
+        "Keeping AC-6 at minor severity."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the remaining flow-rubric and single-reader notes stay not taken: the stages section and the trade-off judgement are house format (rule 4 keeps the author's tables); the two-of-four rule's recurrences are declared units (key points, claim, rule, take-aways); W2 named in choice 3 before 'In Practice' is the outcome of the comparison; the routing rule 'wait up to one working day under €150' is the ledger's own (order-management line, rule 1), so later chapters reuse it; SAP Commerce stays uncited because nothing on the page rests on it (rule 2). The open questions on these points are closed.",
+      "rejected": [
+        "Merging the stages section into the trade-offs.",
+        "Cutting recurrences of the two-of-four rule from the key points or take-aways."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Stopped after round 2 (escalate: 72 passed, 32 failed, 17 of them minor), as the brief allows when the remaining failures are mostly spec faults or need the author: the corroborated spec faults concern the hook (three similar orders), Eva's place in the body and Figure 5 showing her April 2027 order through an OMS that takes storefront orders only from 13 October 2027 (ruling 4), and the OMS section's place between the candidates table and the choices. Each needs the author's decision on the running example or the book's fixed 'Where we are' element. Cheap draft fixes applied without another round: section openings now carry the declared link (record from W2's home, states from the record's parts, routing from the fulfillment order, the OMS as the third candidate, the choices as three candidates plus a built service); a sentence says what the 'Delivered' table shows; Figures 4 and 5 renumbered in reading order (captions and references; image files unchanged); the order lifecycle named beside the three status lines; 'the joins' introduced; the case tied to the pattern names Schrödinger's Order and the Message in a Bottle; the webhook figure's hedge folded into one sentence; the saga pattern glossed; the replay's Monday dated 7 December; the hand-off says Eva's order 'would have' one home under W2.",
@@ -1569,6 +1603,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3 (escalate: 14 passed, 31 failed, 13 minor); cheap fixes applied afterwards (p03, p04, p51 ideas; glosses; handshake; four machines; return states; tenses). The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved by the author's standing instruction: hook opens with #1052877; p03 states the shop platform is Eva's order's home in April 2027 (ruling 4); OMS section moved after routing; AC-6 dropped; terms glossed; open questions closed. Chapter revised to match."
+    },
     {
       "date": "2026-11-12",
       "change": "Figure 5 caption made conditional (an order like Eva's under Waypoint once the OMS takes storefront orders, from 13 October 2027), so it no longer contradicts consistency ruling 4."

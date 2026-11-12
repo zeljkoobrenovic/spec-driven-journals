@@ -88,13 +88,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -476,7 +469,7 @@
         },
         {
           "id": "p13",
-          "controlling_idea": "A card authorization is valid for about seven days and Klarna must be captured within 28, so capture on shipment is a promise with a deadline: a parcel shipped after the window leaves unpaid.",
+          "controlling_idea": "A card authorization is valid for about seven days and Klarna must be captured within 28, so capture on shipment is a promise with a deadline: a parcel shipped after the window leaves unpaid, and the only later charge is a merchant-initiated transaction, allowed only if the first payment was authenticated and flagged for it.",
           "function": "evidence",
           "evidence": [
             {
@@ -484,6 +477,12 @@
               "what": "Stripe: seven days for Visa, Mastercard, American Express and Discover for customer-initiated online payments; on expiry \"the funds are released and the payment status changes to canceled\"; Klarna 28 days at Stripe and Mollie.",
               "source": "Stripe and Mollie documentation, n.d., accessed November 2026",
               "shows": "The window runs on the issuer's clock, whatever the order's status."
+            },
+            {
+              "kind": "fact",
+              "what": "A merchant-initiated transaction is a charge the merchant triggers later without the shopper present, under an earlier agreement; it requires an SCA-authenticated first payment flagged for future use.",
+              "source": "Stripe documentation (CITs and MITs), n.d., accessed November 2026",
+              "shows": "Why a late capture depends on how the first payment was set up."
             }
           ],
           "transition_in": {
@@ -516,7 +515,7 @@
         },
         {
           "id": "p15",
-          "controlling_idea": "Cards lead across the euro area, but in each of Kestrel & Pine's three countries a different method leads, iDEAL in the Netherlands, Bancontact (which works like a card) in Belgium, PayPal and purchase on account in Germany, and each difference changes the design.",
+          "controlling_idea": "Cards lead across the euro area, but in each of Kestrel & Pine's three countries a different method leads, iDEAL in the Netherlands, Bancontact (which works like a card) in Belgium, PayPal and purchase on account in Germany, and each difference changes the design. The Netherlands row also dates the iDEAL semantics the chapter relies on: the scheme now brands itself \"iDEAL | Wero\", so they are Mollie's documented ones.",
           "function": "comparison",
           "evidence": [
             {
@@ -529,6 +528,12 @@
               "kind": "table",
               "what": "Country, dominant method, dated evidence (Dutch Payments Association 2025-02; Bancontact Payconiq Company 2025-02; EHI via Ecommerce News 2024) and what each means for the design.",
               "shows": "iDEAL has no capture and no chargeback, Bancontact follows card rules, a German 'payment' may be a 30-day receivable or a loan; the last column is the author's judgement."
+            },
+            {
+              "kind": "fact",
+              "what": "The scheme's site brands itself \"iDEAL | Wero\" as of November 2026; Mollie: instant charge, automatic capture, partial refunds for 365 days, no chargeback, 15-minute session.",
+              "source": "Currence iDEAL and Mollie documentation, n.d., accessed November 2026",
+              "shows": "Which iDEAL semantics the chapter relies on, and that they are dated."
             }
           ],
           "transition_in": {
@@ -541,7 +546,7 @@
         },
         {
           "id": "p17",
-          "controlling_idea": "Methods also cost different amounts: on a €100 sale a buy-now-pay-later payment can cost ten times an iDEAL payment, a pricing decision before it is a technical one.",
+          "controlling_idea": "Methods also cost different amounts: as an illustration from Adyen's indicative prices, on a €100 sale a Klarna payment costs some nine times an iDEAL payment, so the method mix is a pricing decision before it is a technical one.",
           "function": "evidence",
           "evidence": [
             {
@@ -556,26 +561,6 @@
             "carries_over": "Methods differ in their stages, country by country.",
             "introduces": "Methods also differ in cost.",
             "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p16",
-          "controlling_idea": "One caveat on the running example: iDEAL is changing its name under the European Payments Initiative's wallet, so the chapter relies on Mollie's documented iDEAL semantics, dated, and flags the name as in motion.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "The scheme's site brands itself \"iDEAL | Wero\" as of November 2026; Mollie: instant charge, automatic capture, partial refunds for 365 days, no chargeback, 15-minute session.",
-              "source": "Currence iDEAL and Mollie documentation, n.d., accessed November 2026",
-              "shows": "Which iDEAL semantics the chapter relies on, and that they are dated."
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "The methods' stages and costs as documented today.",
-            "introduces": "A caveat that iDEAL's own name is changing, and which semantics the chapter relies on.",
-            "form": "sentence",
             "placement": "start_of_this"
           }
         }
@@ -631,7 +616,7 @@
         },
         {
           "id": "p25",
-          "controlling_idea": "For cards 3-D Secure 2 performs the check; an exemption trades conversion for fraud liability, so the order stores the authentication result and the liability flag; and a later merchant-initiated charge is allowed only if the first payment was authenticated and flagged for it.",
+          "controlling_idea": "For cards 3-D Secure 2 performs the check; an exemption trades conversion for fraud liability, so the order stores the authentication result, the liability flag and whether the payment was flagged for a later merchant-initiated charge.",
           "function": "explanation",
           "evidence": [
             {
@@ -654,7 +639,7 @@
     {
       "id": "fraud",
       "heading": "Fraud and Card Data: Keep the Attack Out and the Card Number Out",
-      "controlling_idea": "Besides authentication, two decisions act before the payment request leaves the shop: screen attacks with a kill switch in reserve, and keep every card number out of the merchant's systems with hosted fields; and the rules behind all three are still moving.",
+      "controlling_idea": "Besides authentication, two decisions act before the payment request leaves the shop: screen attacks with a kill switch in reserve, and keep every card number out of the merchant's systems with hosted fields.",
       "function": "recommendation",
       "advances_thesis": {
         "supports": [
@@ -757,32 +742,6 @@
             "introduces": "What remains the merchant's risk, and the rule.",
             "form": "sentence",
             "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p26",
-          "controlling_idea": "The rules around authentication and fraud are still moving, so the payment design needs someone who tracks them: PSD3 and the Payment Services Regulation are agreed but not yet law, and the Instant Payments Regulation is in force and makes instant transfer a plausible checkout and refund rail.",
-          "function": "context",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Provisional agreement 27 November 2025 (European Parliament press release 21 November 2025); Council compromise texts 23 April 2026, files open on 29 October 2026; not in the Official Journal as of 7 November 2026. Regulation (EU) 2024/886: receive by 9 January 2025, send by 9 October 2025, free payee verification.",
-              "source": "European Parliament, 2025-11-21; Council of the EU, 2026-10-29; Official Journal, 2024-03-19",
-              "shows": "Which rules are coming and which already apply, with dates."
-            }
-          ],
-          "transition_in": {
-            "relationship": "emphasis",
-            "carries_over": "The rules on authentication and card data that apply today.",
-            "introduces": "That these rules are still moving: PSD3 and the Payment Services Regulation coming, instant payments in force, so the design needs someone who tracks them.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          },
-          "advances_thesis": {
-            "supports": [
-              "S5"
-            ],
-            "how": "Shows that the authentication and fraud rules the design depends on have dates and are changing, which is why the reader's questions include a regulatory calendar with an owner."
           }
         }
       ]
@@ -904,7 +863,7 @@
     {
       "id": "refunds",
       "heading": "Refunds, Cancels and Chargebacks: Money Flowing Backward",
-      "controlling_idea": "A refund is a new payment in the opposite direction, so it needs one writer and one key, which is the fix of the Double Refund; a chargeback is a backward payment the merchant does not decide.",
+      "controlling_idea": "A refund is a new payment in the opposite direction, unlike a chargeback, which the merchant does not decide; because the merchant issues refunds itself, each needs one writer and one key, which is the fix of the Double Refund.",
       "function": "claim",
       "advances_thesis": {
         "supports": [
@@ -915,7 +874,7 @@
       },
       "flow": {
         "pattern": "problem_solution",
-        "rationale": "What a refund is, then how the Double Refund happened with that knowledge, then the three-part fix, then the other backward flow: the fix cannot be understood before the reader sees a refund as a new payment."
+        "rationale": "What a refund is, then the chargeback as the backward flow the merchant does not decide, so both backward flows are together; then the Double Refund as two refunds, and the section ends on its three-part fix. The fix cannot be understood before the reader sees a refund as a new payment."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -940,6 +899,26 @@
           ]
         },
         {
+          "id": "p30",
+          "controlling_idea": "Chargebacks are the other backward flow and not the merchant's decision: the issuer reverses the payment, the dispute ratio is watched for months, and a slow refund path pushes customers to dispute instead.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: a dispute \"occurs when a cardholder questions your payment with their card issuer\", the issuer \"immediately reverses the payment\", up to 120 days; Adyen's dispute stages and auto-defense of refunded disputes; Visa's monitoring threshold lowered to 150 basis points on 1 April 2026.",
+              "source": "Stripe and Adyen documentation, n.d., accessed November 2026; Visa VAMP fact sheet, 2025-05",
+              "shows": "Disputes cost the merchant and are counted against it, which is a second reason to get refunds right."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Refunds, which the merchant issues.",
+            "introduces": "Chargebacks, the other backward flow, which it does not decide.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p28",
           "controlling_idea": "The Double Refund, drawn as a sequence, shows two writers on two paths with no shared key, so the PSP could not refuse the second request and the paths met only in the ledger.",
           "function": "example",
@@ -952,8 +931,8 @@
           ],
           "transition_in": {
             "relationship": "example",
-            "carries_over": "A refund as a new payment.",
-            "introduces": "The Double Refund seen as two such payments.",
+            "carries_over": "Refunds as backward payments the merchant issues itself, unlike chargebacks.",
+            "introduces": "The Double Refund seen as two such payments for one return.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -985,26 +964,6 @@
             "relationship": "problem_solution",
             "carries_over": "Two writers and no shared key.",
             "introduces": "The three-part fix.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p30",
-          "controlling_idea": "Chargebacks are the other backward flow and not the merchant's decision: the issuer reverses the payment, the dispute ratio is watched for months, and a slow refund path pushes customers to dispute instead.",
-          "function": "explanation",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "Stripe: a dispute \"occurs when a cardholder questions your payment with their card issuer\", the issuer \"immediately reverses the payment\", up to 120 days; Adyen's dispute stages and auto-defense of refunded disputes; Visa's monitoring threshold lowered to 150 basis points on 1 April 2026.",
-              "source": "Stripe and Adyen documentation, n.d., accessed November 2026; Visa VAMP fact sheet, 2025-05",
-              "shows": "Disputes cost the merchant and are counted against it, which is a second reason to get refunds right."
-            }
-          ],
-          "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "Refunds, which the merchant issues.",
-            "introduces": "Chargebacks, which it does not.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1224,7 +1183,7 @@
       "paragraphs": [
         {
           "id": "p46",
-          "controlling_idea": "The payment mechanism does not change with scale; the number of systems that can move money and of feeds to match does, and stage 2 is where the Double Refund happens because the first integration beyond the platform gets a PSP key.",
+          "controlling_idea": "Set against the four scale stages, the options and feeds show that the payment mechanism does not change with scale; the number of systems that can move money and of feeds to match does, and stage 2 is where the Double Refund happens because the first integration beyond the platform gets a PSP key.",
           "function": "analysis",
           "evidence": [
             {
@@ -1462,13 +1421,34 @@
         }
       },
       {
+        "id": "p26",
+        "form": "list",
+        "controlling_idea": "Still moving: the rules behind authentication, fraud and payment rails are changing, so the payment design needs someone who tracks them; PSD3 and the Payment Services Regulation are agreed but not yet law, and the Instant Payments Regulation is in force and makes instant transfer a plausible checkout and refund rail.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Provisional agreement 27 November 2025 (European Parliament press release of the same day); Council compromise texts 23 April 2026, files open on 29 October 2026; not in the Official Journal as of 7 November 2026. Regulation (EU) 2024/886: receive by 9 January 2025, send by 9 October 2025, free payee verification.",
+            "source": "European Parliament, 2025-11-27; Council of the EU, 2026-10-29; Official Journal, 2024-03-19",
+            "shows": "Which rules are coming and which already apply, with dates."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What depends on the merchant's context.",
+          "introduces": "What is not yet settled: the rules still moving, with dates.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
         "id": "p57",
         "form": "list",
         "controlling_idea": "The author's synthesis: treat payments as a problem of writers and keys before a problem of providers, and keep the order's payment vocabulary the merchant's own.",
         "function": "recommendation",
         "transition_in": {
           "relationship": "contrast",
-          "carries_over": "What is established and what depends on context.",
+          "carries_over": "What is established, what depends on context and what is still moving.",
           "introduces": "The author's own judgement, labelled as such.",
           "form": "phrase",
           "placement": "start_of_this"
@@ -1547,23 +1527,88 @@
     }
   ],
   "modalities": [],
-  "open_questions": [
-    "The Double Refund's day-by-day mechanism (support refunding in the PSP console in response to 'where is my refund' contacts between carrier delivery and inspection) is appended to the ledger as an illustration; returns-and-exchanges and journey-return-and-exchange should reuse it rather than invent a different trigger.",
-    "Kestrel & Pine's PSP fees and payout schedule are assumptions modeled on Adyen's public documentation; if a later chapter needs exact fee lines, they should be added to the ledger once.",
-    "Whether iDEAL's transition to Wero changes refund or session semantics for merchants is not documented on the scheme's site as of November 2026; revisit before the 2027 edition.",
-    "PSD3/PSR adoption and application dates should be re-checked against the Official Journal before publication.",
-    "AC-6 (every term explained before use, every acronym expanded) was carried over from the old spec's success criteria as a minor known_before_new criterion; the author may keep or drop it.",
-    "In Practice has the shop platform request Eva's iDEAL payment at 21:13 and create the order at 21:14; the ledger fixes only 21:14 for the order. The chapter keeps both times as published; the author may confirm that the request-then-create order matches cart-and-checkout.",
-    "Flow rubric note not taken: merge the one-paragraph scale-stage section into the choices or the conclusion. Kept because every chapter of the book has the stage section; its table is the paragraph's evidence.",
-    "Flow rubric note not taken: cut the Double Refund sequence paragraph (p28) to a back-reference. It is already two sentences plus Figure 4; kept.",
-    "Flow rubric note not taken: 'cards with frequent cancellations' in the Depends-on-context list is not set up earlier; left as the author's wording.",
-    "Flow rubric round 2 notes not taken: merging the iDEAL name-change paragraph (p16) into the methods table paragraph; Klarna's 28-day window (p13) is named before the methods table, now with a one-clause gloss; 'label print' and 'fulfillment hold' are introduced where used, not earlier.",
-    "Draft check ended in ESCALATE after round 3 (13 passed, 29 failed; blocking: 2 draft transitions and 7 points both flow readers reported, 4 of them spec-order faults). The author decides on the spec-order points, each raised in more than one round: (a) the PSD3/instant-payments paragraph (p26) reads as a digression wherever it sits (SCA section in rounds 1-2, end of fraud section in round 3); options are to cut it to one sentence, move it to the conclusion beside question 7, or keep it; (b) the iDEAL | Wero caveat (p16) is stranded after the costs; options are to fold it into the methods table's Netherlands row or a footnote; (c) chargebacks (p30) come after the Double Refund fix and break the backward-money thread; option is to put them before the Double Refund figure (p28); (d) merchant-initiated transactions are defined in the SCA section (p25) far from their use in capture and the expired-authorization failure; option is to define them where capture windows are explained (p13).",
-    "Draft points left after round 3 (cheap ones fixed without another round, see changelog): the scale-stage section opens on its table with no lead-in (adding one would add a unit); option 1 starts inside the bridge sentence of the choices section and the Shopify paragraph splits the list of options; Eva is not mentioned between the introduction and In Practice; 'Cancels' in the refunds heading gets only part of a bullet; terms left unglossed: state machine, network tokens, conversion, webhook signing, drop-in component, headless.",
-    "Flow rubric on the final order (sound with notes), not taken: section 2's declared large_to_small breaks at the country methods; the fulfillment order id as the capture key and the fulfillment hold first appear in In Practice and the failures; section 9 (scale stages) has one item; 'cards with frequent cancellations' in Depends on context is not set up earlier.",
-    "The PSD3/PSR provisional agreement is dated 27 November 2025 in the chapter and the research briefs, but the European Parliament press release cited for it is dated 21 November 2025 (its URL carries 20251121). The date was not changed; re-check the press release's date and what it reports before publication."
-  ],
+  "open_questions": [],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round, three points both flow readers raised were not counted by the judge because the audience already knows them from earlier chapters (Waypoint, the three status lines, the 14-person team); kept without glosses, the limit leaves no room (rules 4 and 6). Reader suggestions to move the flow table to the refunds section and to define the idempotency key earlier were met in place (a preview sentence; a gloss at first real use) rather than by moving units (rule 3 applies to moves both readers asked for; the table move would reopen the message section's order).",
+      "rejected": [
+        "Moving the requirements table to the end of the refunds section.",
+        "A fifth draft-check round."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: PSD3/instant-payments paragraph (p26), flagged out of place in every position tried (SCA section in rounds 1-2, end of the fraud section in round 3), moved whole to the conclusion as a 'Still moving' list after 'Depends on context', beside question 7's regulatory calendar; nothing cut, because it carries cited, published statements and supports S5 (rules 3 and 2). Fraud section's controlling idea no longer claims the rules are moving.",
+      "rejected": [
+        "Cutting it or reducing it to one sentence (rule 2 keeps the cited, published content and it supports S5).",
+        "Moving it back into the SCA section (already tried in rounds 1-2)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: iDEAL | Wero caveat (p16), stranded after the costs in every position tried, folded into the Netherlands row of the methods table, as both round-3 flow readers' complaint pointed; its cited content (the scheme's branding, the EPI wallet, Mollie's semantics incl. partial refunds for 365 days) is kept (rules 3 and 2). p16 removed as a unit; its evidence moved to p15.",
+      "rejected": [
+        "Keeping p16 as a separate paragraph after the costs.",
+        "A footnote (the renderer has none)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Chargebacks (p30) moved before the Double Refund figure (p28), as both round-3 flow readers asked; order now p27, p30, p28, p29; p28's transition rewritten to carry over refunds as the merchant's own backward flow, which also fixes round 3's draft transition fault at p28 (rule 3).",
+      "rejected": [
+        "Keeping chargebacks last (rejected in round 2, but both readers lost the thread there)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Merchant-initiated transactions defined in p13, where the authorization window that makes them necessary is explained, instead of at the end of p25; p25 now only says the order stores whether the payment was flagged for one (rule 3: both flow readers had forgotten the term by its use).",
+      "rejected": [
+        "Keeping the definition in the SCA section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Worked fee figures for a €100 sale kept, labelled 'As an illustration', with the conversion stated and the sums corrected: $0.13 ≈ €0.12, iDEAL ≈ €0.34, Klarna ≈ €3.11 (0.12 + 2.99), 'some nine times as much' instead of 'ten times', which the sums do not give on €100 (rule 2). In Practice's €0.30 now points to the €0.34 illustration.",
+      "rejected": [
+        "Dropping the arithmetic.",
+        "Keeping 'ten times' (not supported on a €100 sale)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: PSD3/PSR provisional agreement date: the cited European Parliament press release was fetched; it is dated 27-11-2025 01:38 and reports agreement 'on Thursday morning' (27 November 2025). The text keeps 27 November 2025, the press release is now cited as 'of that day', and the Sources entry's date is corrected from 2025-11-21 (the date in its reference number) to 2025-11-27 (rule 2: the date follows the cited source).",
+      "rejected": [
+        "Changing the agreement date to 21 November 2025."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-6 (known_before_new, carried from the old spec.md, beyond the journal spec's criteria) dropped: it failed in every round (rule 7). Its terms are still glossed at first use within the limit (rule 6): payment scheme, state machine, iDEAL in the callout, Klarna and Bancontact in the scene, receivable, conversion, webhook signing, drop-in component, headless, network tokens, edge rate limit.",
+      "rejected": [
+        "Keeping AC-6."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Draft points of round 3: the scale-stage section now opens on its judgement paragraph as a lead-in, with the table attached after it (fixes the declared phrase transition without a new unit); 'the payment scheme' glossed in the introduction; the recovery sentence in the scene names the money; the PSP acquirer hedge moved out of the definition; option 2's 'None' reconciled with the rehearsed fallback; the Card-Testing promise says where it is answered; the cards-lead sentence split (rules 3 and 6)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Points no reader pair raised are kept as published: Eva stays to the introduction, the party table and In Practice (one reader, spec fault, minor); option 1 starting inside the bridge sentence and the Shopify paragraph between options 1 and 2; the 'Refunds, Cancels and Chargebacks' heading (rule 8: house heading, not flagged in two rounds); 'cards with frequent cancellations' (author's wording) (rule 3)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Eva's payment request at 21:13 and order at 21:14 kept: the ledger fixes the order at 21:14 with payment pending before the iDEAL result, and the published 21:13 departure to the bank app does not contradict it (rule 1)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Ledger-and-assumption notes closed: the Double Refund's day-by-day mechanism and Kestrel & Pine's fee and payout assumptions follow the ledger's commerce-payments line and are labelled illustrative; iDEAL | Wero and PSD3 status are stated as of their cited dates (rules 1 and 2). Flow-rubric notes not taken in earlier rounds stay not taken: no two readers asked for them (rule 3)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Length: the moves and glosses took the draft to 6,629 words against the 6,500 limit; cut back by trimming agents' own additions (the conclusion synthesis p55a, the roadmap, the 'Where we are' refund sentence, the four-stage lead-in, the refunds and choices bridges, the fraud and message openings, the hand-off, the €0.30 note) and restoring the published 'Finance must account for all three routes'; no author's figure or example cut (rule 4). Final count 6,498. No author's sentence cut for length needed restoring (rule 5): the published sentences dropped earlier were rewritten into the current intro, not cut for length."
+    },
     {
       "date": "2026-11-12",
       "decision": "Round 2 escalated on two spec-fault flow results reported by both readers: the checks before authorization were split, and the PSD3/instant-payments paragraph was a digression inside the SCA section. Under the pre-approved latitude: the fraud and card-data section moved to follow authentication (the order of sections is now scene, PSP, SCA, fraud, message, refunds, choices, feeds, stages, practice, wrong); the PSD3/instant-payments paragraph (p26) moved to the end of that section, where it covers authentication, fraud liability and payment rails together; transitions of the fraud, message, refunds and choices sections and of p26 rewritten; the roadmap reordered. Draft faults in the named units fixed: the choices bridge sentence and a reading of the options table that reconciles option 2's 'None' with the rehearsed fallback (p36, p40), the Double Refund named once as the Boomerang's case (p06), Bancontact 'works like a card' (p15), the fee sentence split and the arithmetic worked (p17), the MIT sentence split (p25), the payment vocabulary's states named (p21), the refunds opening rewritten (p27); cheap minors: Mollie's 30 minutes called a card checkout session, W5 named, payout of 22 April's sales, orchestration and velocity rules glossed, the Card-Testing Night named in the fraud paragraph.",
@@ -1686,6 +1731,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 4 (escalate: 16 passed, 26 failed; 14 major, all draft faults, 12 minor; none of the four spec-order points recurred; AC-1 to AC-5 pass). Cheap fixes applied after the round, no further round: idempotency key glossed at the scene's root-cause sentence and the refund definition shortened; 'Six days later she will exchange the jacket' replaces the unclear refund-alternative promise and the unkept 'we follow that message' sentence; illustrative day numbers; 'nothing for settlement'; interchange defined before Interchange++ and used (at most €0.30 on €100); PSP section opens from the chapter's question; the flow table framed as a preview of four flows; the SAQ A script paragraph opens from hosted fields' limit; Adyen's dispute stages unpacked; option 2 split into what the merchant gains and must own; the stage sentence says where the risk starts; the €0.30 note matched to tax-invoicing-and-ledger; credit note glossed. 6,499 words. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction: p26 moved to the conclusion ('Still moving'), p16 folded into the methods table, chargebacks before the Double Refund figure, MIT defined at the authorization window, fee illustration labelled and corrected, PSD3 press-release date corrected to 27 November 2025, AC-6 dropped, glosses added, stages lead-in; cut back to 6,498 words. Open questions settled; confirming round to follow."
+    },
     {
       "date": "2026-11-12",
       "change": "Round 3 (escalate: 13 passed, 29 failed; blocking: 2 draft transition faults and 7 corroborated flow points, 4 of them spec-order faults; 20 minor). After the last round, cheap fixes without another round: Figure 4 named in p28's opening; the three providers named as PSPs (p11); the dollar-to-euro conversion behind the fee arithmetic stated (p17); the 22 April payout sentence made unambiguous (p50); PCI DSS expanded (p33). Remaining failures and the author's options are in open_questions. The check report is stale against these edits."

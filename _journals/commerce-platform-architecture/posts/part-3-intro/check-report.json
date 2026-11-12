@@ -1,64 +1,65 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/part-3-intro/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/part-3-intro/index.md",
-  "spec_sha": "95230ab6dc8fa168",
-  "draft_sha": "20c5a51530abeb71",
-  "run_at": "2026-11-12T16:41:22+01:00",
-  "round": 3,
+  "spec_sha": "a67dfb1ba24fb277",
+  "draft_sha": "fa3aebfbd0994d8c",
+  "run_at": "2026-11-12T21:13:31+01:00",
+  "round": 4,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Three-point preview: checkout creates the order once, later messages need separate states and keys, the order ends in documents with single writers and monthly matching"
+      "summary": "Three-point preview: checkout commits the order once, later facts arrive as unreliable messages handled with keys and separate states, and the order ends as single-issuer documents reconciled monthly",
+      "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "Opening failure: a paid order still shows unpaid, confusing warehouse and support",
+      "summary": "Opening failure: a paid order still shows as unpaid, leaving warehouse and support stuck",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Part's scope: checkout asks owners for answers, then late, unordered or duplicate messages report payment, dispatch and delivery",
-      "matched_spec_paragraph": "p02"
-    },
-    {
-      "draft_locator": "Introduction ¶3",
-      "summary": "The rules the part sets, one per owner: single creation, keyed messages and one writer, separate states, ledger from documents matched to the bank",
-      "matched_spec_paragraph": "p03"
-    },
-    {
-      "draft_locator": "Introduction ¶4",
-      "summary": "Running example: Eva's €235 order and its timeline from pending to monthly bank match",
-      "matched_spec_paragraph": "p04"
-    },
-    {
-      "draft_locator": "Introduction ¶5",
-      "summary": "Each chapter opens on a past failure of a company without a shared order record",
+      "summary": "The company lacks a shared order record; each chapter opens on one of its failures",
       "matched_spec_paragraph": "p05"
     },
     {
+      "draft_locator": "Introduction ¶3",
+      "summary": "After payment, provider, warehouse and carrier report via messages that can be late, out of order or duplicated",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "The part's rules, one per system: single order creation, keyed messages with one writer per money movement, separate order states, ledger matched to bank",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Running example timeline: Eva's €235 order from creation through payment confirmation, invoice and bank match",
+      "matched_spec_paragraph": "p04"
+    },
+    {
       "draft_locator": "Chapters in this part ¶1",
-      "summary": "Checkout chapter: coordinating dependencies and creating one order, not tied to the thank-you page",
+      "summary": "Checkout chapter preview: creating exactly one order despite retries, not depending on the thank-you page",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Chapters in this part ¶2",
-      "summary": "Payments chapter: payment lifecycle, with duplicate refunds showing need for one writer and a shared retry identifier",
+      "summary": "Payments chapter preview: payment lifecycle, with duplicate refunds showing the need for one writer and a retry identifier",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Chapters in this part ¶3",
-      "summary": "Order management chapter: shared order home with separate payment, shipment and return states / when to adopt an OMS",
+      "summary": "Order management chapter preview: one order home with separate states, handling partial completion, and when to adopt an OMS",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Chapters in this part ¶4",
-      "summary": "Tax and ledger chapter: linking orders, invoices, payouts and bank / issuer of an e-invoice must track its delivery or rejection",
+      "summary": "Tax and ledger chapter preview: linking orders, invoices, payouts and bank, with single-issuer invoice numbering, VAT split and Peppol delivery tracking",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "Where to Begin ¶1",
-      "summary": "Synthesis: provider message marks payment, look for the missing rule when systems disagree, start with checkout",
+      "summary": "Callback resolving the unpaid order (provider message marks it paid) and pointer to start with checkout",
       "matched_spec_paragraph": "p10"
     }
   ],
@@ -74,414 +75,176 @@
       "criterion": "standard",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Outline 'paid order still shows unpaid, confusing warehouse and support' matches the controlling idea.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "Outline 'checkout asks owners for answers, then late, unordered or duplicate messages report payment, dispatch and delivery' matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "finding": "Outline 'the rules the part sets, one per owner' matches the claim and roadmap.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Outline 'Eva's order and its timeline from pending to monthly bank match' matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Outline 'each chapter opens on a past failure of a company without a shared order record' matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "Outline 'checkout chapter: coordinating dependencies and creating one order, not tied to the thank-you page' matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "Outline 'payment lifecycle, duplicate refunds show need for one writer and shared retry identifier' matches.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "Outline 'shared order home with separate states / when to adopt an OMS' matches; both halves are in the controlling idea.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Outline 'linking orders, invoices, payouts and bank / e-invoice issuer tracks delivery or rejection' matches; both halves are in the controlling idea.",
-      "severity": "blocker"
-    },
-    {
-      "criterion": "standard",
-      "check": "reverse_outline_matches_spec",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Outline 'provider message marks payment, look for the missing rule, start with checkout' matches.",
       "severity": "blocker"
     },
     {
       "criterion": "standard",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "Marked two_ideas (shared home with separate states / when to add an OMS), but the spec paragraph's own controlling idea includes 'when to add an order management system (OMS)'; the paragraph does what the spec asks.",
       "severity": "major"
     },
     {
       "criterion": "standard",
-      "check": "one_controlling_idea_per_paragraph",
+      "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3/evidence/1",
       "draft_locus": "Chapters in this part ¶4",
-      "finding": "Marked two_ideas (connecting orders, invoices, payouts and bank / the issuer records delivery or rejection), but the spec paragraph's controlling idea contains both, the Peppol point as the chapter's case.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Hook: the paid-but-unpaid order is the problem P3-2 answers (facts arrive by message).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1",
-      "draft_locus": "Introduction ¶2",
-      "finding": "States P3-1 (final answers at checkout) and P3-2 (messages late, out of order, twice).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "finding": "States the part's claim (P3-1 to P3-6) as four rules with their owners.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Shows the four owners at work in time on Eva's order; supports the claim's sequence of owners.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Introduces the failures that each chapter tests a rule on; ties to the claim via the missing shared record (P3-4).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "Introduces the chapter arguing P3-1 and P3-2.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "Introduces the chapter arguing P3-2 and P3-3 (key and one writer for refunds).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "Introduces the chapter arguing P3-4.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Introduces the chapter arguing P3-3, P3-5 and P3-6.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/paragraphs/0",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Synthesis of the rules against the opening case.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/0/evidence/0",
-      "draft_locus": "Introduction ¶1",
-      "finding": "The scene itself names the three who need the fact: the warehouse cannot tell whether to dispatch, support cannot answer.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1/evidence/0",
-      "draft_locus": "Introduction ¶2",
-      "finding": "PSP and webhook glossed; the closing sentence says what the messages imply: 'may arrive late, out of order or twice'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
-      "draft_locus": "Introduction ¶3",
-      "finding": "KEY POINTS callout states the argument in three lines; the body's p02 and p03 explain each bullet (except the invoice-sequence clause, recorded under known_before_new).",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/2/evidence/1",
-      "draft_locus": "Introduction ¶3",
-      "finding": "Figure 1's caption says what it shows (one creation, one hub, ledger fed by documents, scheduled reconciliation) and p03 just before it states the same rules.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/evidence/0",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Eva's order is laid out step by step (created pending, confirmed, invoiced, matched at the close), which is the four owners in time.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/evidence/1",
-      "draft_locus": "Introduction ¶4",
-      "finding": "Figure 2's caption says what it shows: checkout creates it, the provider settles it, the order record holds it, the ledger ends it. Its placement is a flow point, recorded under flow_is_followable.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4/evidence/0",
-      "draft_locus": "Introduction ¶5",
-      "finding": "Says what the failures are for: each chapter opens on one.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
-      "draft_locus": "Chapters in this part ¶1",
-      "finding": "'shows why order creation cannot depend on the thank-you page' says what the redirect shows; the terms reader wanted the mechanism (the shopper may never come back) spelled out, a minor gap a shopper-side reader can infer.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1/evidence/0",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "'explain why a refund needs one authorized writer and an identifier shared across retries'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2/evidence/0",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "The fleece case is followed by 'The chapter shows how to represent partial completion honestly'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3/evidence/0",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "The tax split is placed 'On the invoice' and the Peppol case is followed by what it shows (the issuer records delivery or rejection).",
+      "quote": "Eva's €235 splits into €194.21 net and €40.79 value-added tax.",
+      "finding": "The tax-split numbers are stated with no sentence saying what they show; the spec's 'shows' (the invoice carries the tax split, the order ends as documents) is not given, so the figures read as a bare fact between the invoice-sequence and Peppol sentences.",
+      "fault": "draft",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/1/transition_in",
-      "draft_locus": "Introduction ¶2",
-      "finding": "cause_effect: 'Part III follows the click on \"pay\", where the catalog's facts become an order' picks up Part II's facts, and the paragraph ends on the messages that cause the opening's problem; both flow readers read it as the cause.",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
+      "verdict": "fail",
       "spec_locus": "/introduction/paragraphs/2/transition_in",
-      "draft_locus": "Introduction ¶3",
-      "finding": "cause_effect: 'So the part sets rules' answers the messages of p02.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/3/transition_in",
-      "draft_locus": "Introduction ¶4",
-      "finding": "place: 'Where we are in the order's journey.' places the rules and owners on Eva's order.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/introduction/paragraphs/4/transition_in",
-      "draft_locus": "Introduction ¶5",
-      "finding": "contrast: 'Not every Kestrel & Pine order went well.' against Eva's order that 'goes right'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/transition_in",
-      "draft_locus": "Introduction ¶5 / Chapters in this part",
-      "finding": "elaboration, end_of_previous: 'each chapter opens on one of its failures from the months before Eva's order' announces the chapter list.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/1/transition_in",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "sequence: 'then follows the pending payment' picks up the order checkout created.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/2/transition_in",
-      "draft_locus": "Chapters in this part ¶3",
-      "finding": "sequence: 'sets that money status beside the others' picks up the payments chapter's money status.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/sections/0/paragraphs/3/transition_in",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "sequence: 'Once the order's shipments are recorded' carries the order record with its shipments, as declared.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "spec_locus": "/conclusion/transition_in",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "conclusion_summary: 'Together, the chapters explain the opening's unpaid order'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/3/evidence/1",
-      "draft_locus": "Introduction ¶4",
-      "quote": "One order passes through four owners in Part III: checkout creates it, the payment provider settles it, the order record holds it, and the ledger ends it.",
-      "finding": "Both flow readers lost the thread at Figure 2: it sits after Eva's paragraph but illustrates the four owners of the rules paragraph, so it reads as repeating Figure 1 away from its text (flowA) or as being about Eva's timeline (flowB); both suggest moving it beside Figure 1. The spec places it as evidence of Eva's order and rejected moving it in round 2; either the caption ties it to Eva's order (draft) or the figure moves (spec), so the author decides.",
-      "fault": "unclear",
-      "corroborated_by": "flowB, item 1 (Figure 2 sits after the Eva paragraph but illustrates the four owners named in the rules paragraph)",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "quote": "The company still has no shared order record, and each chapter opens on one of its failures from the months before Eva's order.",
-      "finding": "Both readers re-read 'still has no shared order record' right after Eva's order 'goes right': 'still' as of when, and how did her order go right without one? The prose leaves the time and the contrast unresolved (flowB suggests 'before Eva's order').",
+      "draft_locus": "Introduction ¶2 -> Introduction ¶3",
+      "quote": "Once the click on \"pay\" turns the catalog's facts into an order, a **payment service provider (PSP)** reports the money through a **webhook**",
+      "finding": "Declared cause_effect carrying over the failures, starting with the paid order that reads unpaid: the paragraph gives the mechanism but never ties it back to the opening ('this is why the order reads unpaid'); flowB: 'it never says outright that the missing webhook is why the order looks unpaid; that link waits until the last section'. The previous-page hand-off ('the catalog's facts') is also not anchored (both flow readers).",
       "fault": "draft",
-      "corroborated_by": "flowB, item 2 ('still' as of when? ... how her order went right without one)",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4/transition_in",
+      "draft_locus": "Introduction ¶4 (figures) -> Introduction ¶5",
+      "quote": "**Where we are in the order's journey.** Eva's order, the book's running example, goes right.",
+      "finding": "Declared contrast with the failures of the months before April 2027 and the four rules: 'goes right' implies a contrast but the failures are not picked up and no contrast marker is used; both flow readers had to infer it (flowA: 'the text never says so'; flowB: 'a contrast word would help').",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Introduction ¶5 -> Chapters in this part ¶1",
+      "quote": "finance matches the payout with the bank at April's close in May.",
+      "finding": "Declared elaboration as a sentence at the end of the previous unit, carrying over the four rules and the company whose failures open the chapters: Eva's paragraph ends on the May close with no sentence leading into the chapter list; only the heading marks the turn.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/flow",
-      "draft_locus": "Introduction ¶5",
-      "quote": "Not every Kestrel & Pine order went well.",
-      "finding": "Both readers felt the return from Eva's successful order back to failures as a step backwards (flowA) or a restart that repeats the opening scene (flowB). This comes from the declared order (failure, rules, Eva's order, failures, chapters), which the spec's rationale defends; flowA proposes moving the failures line next to the opening incident. The order itself is the cause, so the author decides.",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "The company has no shared order record yet, and each chapter opens on another of its failures before April 2027.",
+      "finding": "Both flow readers mark this paragraph's position unclear: it breaks the step from the opening scene to its explanation, talks about the chapters in the middle of the setup, and 'before April 2027' has no anchor until Eva's paragraph. The difficulty comes from the declared order (p05 was moved here after round 3; the round-3 readers objected to the opposite position), so the spec has to settle where p05 goes, or whether its chapter clause belongs in the chapter list.",
       "fault": "spec",
-      "corroborated_by": "flowB, item 3 ('Not every Kestrel & Pine order went well' repeats what the opening scene already showed, so it felt briefly like a restart)",
+      "corroborated_by": "flowB item 3 ('The company has no shared order record yet… I re-read this. \"Before April 2027\" has no anchor'); also flowB item 2 marks it 'partly unclear'",
       "severity": "major"
     },
     {
@@ -490,10 +253,10 @@
       "verdict": "fail",
       "spec_locus": "/introduction/paragraphs/2",
       "draft_locus": "Introduction ¶3",
-      "quote": "So the part sets rules, one chapter for each of the order's four owners: checkout, the payment provider, the order record and finance's ledger.",
-      "finding": "Both readers paused at calling checkout (flowA: the callout says checkout owns 'none of the facts it writes') and the external payment provider (flowB) 'owners' of the order. The word clashes with the callout and with Part I's sense of an owner as the system of record for a fact; a different word (e.g. 'stations' or 'stages', as Figure 2's relay) would remove it.",
+      "quote": "Once the click on \"pay\" turns the catalog's facts into an order",
+      "finding": "'The catalog's facts' leans on Part II without saying so; flowA: 'Which \"catalog's facts\"? … I had to infer it.'",
       "fault": "draft",
-      "corroborated_by": "flowB, item 5 (calling an external provider an owner of the order made me pause)",
+      "corroborated_by": "flowB item 3 ('\"The catalog's facts\" seems to point back to an earlier part and is not explained')",
       "severity": "major"
     },
     {
@@ -502,174 +265,246 @@
       "verdict": "fail",
       "spec_locus": "/introduction/paragraphs/3",
       "draft_locus": "Introduction ¶4",
-      "quote": "initially with payment pending, like the opening's order.",
-      "finding": "flowA had to work out whether 'the opening' meant this page's first paragraph or the book's opening. One reader only.",
+      "quote": "The ledger is written from invoices and payout reports, which list the provider's transfers to the merchant, and matched with the bank monthly.",
+      "finding": "The relative clause splits 'written from…' from 'and matched with…'; flowA: 'I re-read this.'",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flowB item 3 ('Dense; the relative clause separates \"written\" from \"and matched\"; read twice')",
+      "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "The provider confirms it seconds later.",
+      "finding": "The success case is not said to contrast with the opening failure; flowA: 'The opposite of the opening scene, but the text never says so; I had to work out that the opening failure was a different order.'",
+      "fault": "draft",
+      "corroborated_by": "flowB item 3 ('\"Eva's order… goes right.\" Clear only on reflection that it contrasts with the opening failure; a contrast word would help')",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "finance matches the payout with the bank at April's close in May.",
+      "finding": "'April's close in May' made both readers pause; flowA: 'Re-read to separate April's close from May.'",
+      "fault": "draft",
+      "corroborated_by": "flowB item 3 ('\"at April's close in May\" made me pause')",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
       "draft_locus": "Chapters in this part ¶4",
-      "quote": "Once the order's shipments are recorded, [[tax-invoicing-and-ledger]] connects",
-      "finding": "flowA found the bridge from shipments to a money-and-documents chapter off, because the page has not said that invoices are issued per shipment. One reader only.",
+      "quote": "A Belgian wholesale invoice sent through Peppol, the network for structured invoices, shows why its issuer must also record its delivery or rejection.",
+      "finding": "Wholesale and invoice delivery/rejection arrive new in the last line; flowA: 'slightly out of place'.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flowB item 3 ('The Peppol sentence brings in delivery or rejection in the last line; followable but the densest spot')",
+      "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
-      "draft_locus": "Introduction callout",
-      "quote": "One writer per money movement, one invoice sequence per legal entity",
-      "finding": "flowA: the callout's 'one invoice sequence per legal entity' never comes back in the body. One flow reader only (also recorded under known_before_new).",
-      "fault": "spec",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "quote": "(a payout is its transfer of collected money to the merchant)",
-      "finding": "flowA: the parenthetical gloss slows an already long sentence. One reader only.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/conclusion/callback",
+      "spec_locus": "/conclusion/paragraphs/0",
       "draft_locus": "Where to Begin ¶1",
-      "quote": "the provider's message, not the thank-you page, marks it paid",
-      "finding": "flowB: the opening scene never mentions the thank-you page, so the closing's payoff 'only half lands'; the thank-you page first appears in the checkout chapter entry. One reader only.",
+      "quote": "Together, the chapters explain the opening's unpaid order",
+      "finding": "Both readers find 'Together' overstated: the answer comes mainly from the first two chapters; flowA: '\"Together\" overstates a little.'",
       "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "spec_locus": "/intent/audience/does_not_know/0",
-      "draft_locus": "Chapters in this part ¶2",
-      "finding": "'authorization, collection, settlement and payout' are named as the payments chapter's subject, as the spec allows ('only named here'); payout is glossed in p03.",
+      "corroborated_by": "flowB item 3 ('The answer comes mainly from the first two chapters; the opening's warehouse and support problems are never picked up again')",
       "severity": "major"
     },
     {
       "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "spec_locus": "/intent/audience/already_knows/2",
-      "draft_locus": "Introduction ¶3",
-      "finding": "'every message carries a key, so a repeat changes nothing' states what the key does; idempotency is known from Part I.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "spec_locus": "/intent/audience/does_not_know/1",
-      "draft_locus": "Chapters in this part ¶4",
-      "finding": "Peppol is glossed: 'the network for structured invoices'; PSP, webhook, payout and OMS are glossed too.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "draft_locus": "Introduction ¶4",
-      "finding": "'closes April's books in May': the terms reader judged it minor and guessable from context.",
-      "severity": "major"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "quote": "The ledger is posted from documents",
-      "finding": "'Posted' is accounting jargon (writing an entry into the ledger) and 'finance's ledger' is only a thin gloss of the ledger; the audience is new to commerce architecture and the ledger's posting rules are on does_not_know. Reported by the terms reader; no flow reader reported it.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "standard",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2/evidence/0",
+      "spec_locus": "/introduction/paragraphs/3/evidence/0",
       "draft_locus": "Introduction callout",
-      "quote": "One writer per money movement, one invoice sequence per legal entity",
-      "finding": "Neither 'invoice sequence' (the unbroken, legally required numbering) nor 'legal entity' is explained, and the body never returns to it. Reported by the terms reader in this and earlier rounds; the spec's decision log keeps the callout as the author's wording, so a fix needs the author.",
+      "quote": "It asks every owner for a final answer and creates the order exactly once, while owning none of the facts it writes.",
+      "finding": "flowA: 'Hard on first contact; nothing before the chapter list explains it.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "So the part sets rules, one chapter for each of four systems that handle the order in turn.",
+      "finding": "flowA: the rules do not map one-to-one onto the systems and the four systems are never listed in the sentence; 'I worked them out from Figure 1.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "At the payment provider, every message carries a key, so a repeat changes nothing, and each money movement has one writer.",
+      "finding": "flowB: KEY POINT 2 says every message carries a key, warehouse and carrier included; here the key is placed only at the payment provider. 'Small mismatch.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "One writer per money movement, one invoice sequence per legal entity, and a monthly match of orders, payouts and the bank.",
+      "finding": "flowA: KEY POINTS bullet 3 puts 'One writer per money movement' under documents and the ledger, while the body gives that rule to payments. 'Small mismatch.' (The callout is the author's wording.)",
       "fault": "spec",
-      "corroborated_by": "flowA, item 6 (the key point 'one invoice sequence per legal entity' never comes back in the body)",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "an identifier shared across retries",
+      "finding": "flowA: terminology shift from 'every message carries a key' to 'an identifier shared across retries'; 'I paused to check whether these are the same thing.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/evidence/2",
+      "draft_locus": "Introduction ¶4 (Figure 2)",
+      "quote": "the ledger is fed by documents, not events",
+      "finding": "flowB: 'a contrast the body never sets up.' flowA separately found the two back-to-back figures partly overlapping ('Why two figures back to back that partly overlap is unclear'); flowB found them 'a little heavy, but not confusing', so not the same point.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "Eva's payment redirect to her bank's app shows why order creation cannot depend on the thank-you page.",
+      "finding": "flowB: the thank-you page first appears here; 'the opening scene never mentioned it, so the close's answer rests on a thread that only appears here.' (The decision log declined adding it to the opening for length.)",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Chapters in this part ¶4",
+      "quote": "Invoices are numbered in one unbroken sequence per legal entity, a company billing in its own name, so only one system may issue them.",
+      "finding": "flowB: 'The gloss in the middle gets in the way of the cause-and-effect; re-read.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "So the order keeps separate states for money, parcels and returns, and every message carries a key.",
+      "finding": "Terms reader: 'key' is used in KEY POINTS before the rules paragraph says what it does, is never tied to Part I's idempotency, and the later 'identifier shared across retries' is never said to be the same key.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 3 ('Terminology shift: \"every message carries a key\" vs \"an identifier shared across retries\". I paused to check whether these are the same thing.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "One writer per money movement, one invoice sequence per legal entity, and a monthly match of orders, payouts and the bank.",
+      "finding": "Terms reader: 'invoice sequence per legal entity' and 'payouts' are used in KEY POINTS before they are explained (payout in ¶4, legal entity and the unbroken sequence only in Chapters ¶4). No flow reader reported them unexplained; payout is glossed in the draft as the spec asks.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The ledger is written from invoices and payout reports, which list the provider's transfers to the merchant, and matched with the bank monthly.",
+      "finding": "Terms reader: 'the ledger' (also a station in Figures 1 and 2) is never said to be finance's book of accounts and is not in already_knows. No flow reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "Introduction ¶4 (Figure 1 caption); Chapters in this part ¶2",
+      "quote": "the payment provider settles it",
+      "finding": "Terms reader: 'settlement' and 'collection' are not glossed and 'settles' in Figure 1's caption cannot be followed yet. Both are on does_not_know and the draft never gives them; the spec says they are 'only named here' and its own Figure 1 evidence uses 'settles', so the draft follows the spec.",
+      "fault": "spec",
+      "corroborated_by": "does_not_know[0] ('Authorization, collection and settlement as stages of a payment … only named here'); the draft never gives them",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "finance matches the payout with the bank at April's close in May.",
+      "finding": "Terms reader: month-end close is accounting jargon not in already_knows; '\"April's close in May\" reads like a contradiction.'",
+      "fault": "draft",
+      "corroborated_by": "flowA item 3 ('Re-read to separate April's close from May') and flowB item 3 ('\"at April's close in May\" made me pause')",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "spec_locus": "/introduction/hook",
-      "draft_locus": "Introduction ¶1",
-      "finding": "Opens on a puzzling scenario (a paid order that reads unpaid), as the spec's hook declares; no placeholder, restated question, dictionary, 'dawn of man' or book report.",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "spec_locus": "/conclusion",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Does not open with 'in conclusion', adds no new subtopic or evidence; it answers the opening and gives a course of action.",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "spec_locus": "/conclusion",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "'Together, the chapters explain the opening's unpaid order: the provider's message, not the thank-you page, marks it paid' is stated by no chapter paragraph; 'When systems disagree, look first for the missing rule' is the so-what.",
       "severity": "major"
     },
     {
       "criterion": "standard",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "spec_locus": "/conclusion/callback",
-      "draft_locus": "Where to Begin ¶1",
-      "finding": "Returns to p01's paid order that reads unpaid and says what marks it paid. (flowB notes the thank-you page was not in the opening scene; recorded as a minor flow point.)",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "spec_locus": "/introduction/roadmap",
-      "draft_locus": "Introduction",
-      "finding": "The cold reader of the introduction named the four chapters in order (checkout creating the order once despite retries; payment provider with keys and one writer per money action; the order record with separate states for money, parcels and returns; the ledger posted from documents with a monthly match of orders, payouts and the bank), the evidence (Kestrel & Pine failures, Eva's order, diagrams) and the tone. The payment stages are not in the introduction units, so their absence is expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "spec_locus": "/intent/acceptance_criteria/1",
-      "draft_locus": "whole page",
-      "finding": "The reader explained the webhook (server-to-server, may arrive late or twice) and that only the provider's message marks the order paid, and said the order needs separate states for money, shipments and returns in the order record and a key on every message so a repeat changes nothing. Matches expected.",
       "severity": "minor"
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "spec_locus": "/intent/acceptance_criteria/2",
-      "draft_locus": "Chapters in this part",
-      "finding": "The reader sent (a) to commerce-payments (one authorized writer, shared identifier, 212 refunds) and (b) to order-management (separate shipment states, partial completion, fleece before socks). Matches expected.",
       "severity": "minor"
     }
   ]

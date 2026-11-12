@@ -84,13 +84,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -135,14 +128,14 @@
     "additional_patterns": [
       {
         "pattern": "problem_solution",
-        "applies_to": "scene to pim: a launch with no owner for product content, then the model, the ownership rule and the system that carries it out"
+        "applies_to": "scene to choices: a launch with no owner for product content, then the model, the ownership rule and the arrangements that give the content row an owner"
       },
       {
         "pattern": "comparison",
         "applies_to": "choices, trade-offs and stages: four arrangements, their conditions, and the stage at which each fits"
       }
     ],
-    "rationale": "The scene comes first because it shows the cost of copies with no owner before any term is defined. The product model follows because ownership is decided per piece, and the pieces (identifiers, attributes, mappings, translations) need names first. Ownership precedes the PIM because the PIM is only the system that the ownership table names for one row; described first, it would be a tool with no job. The flow requirements stand inside the PIM section, after enrichment and syndication are defined; one section earlier they used both words undefined. The choices, trade-offs and stages come after the PIM section because three of the four arrangements are defined by what they lack compared with it, and the test for a PIM needs all four on the table. The public documentation and Kestrel & Pine's W3 follow the recommendation because W3 is the recommendation carried out; before it, W3 would be a sequence of steps with no reason for their order. Trade-offs precede the stages because the stage table applies the test for a PIM that the trade-offs section states. The public documentation stands with W3, after the judgement, as the evidence and the application of it. The failures come last because they are what remains to detect once an owner exists, and the pulled rug needs the channels' documented, changing rules before it. If the definitions came before the scene, the reader would not yet have the case that shows why they matter."
+    "rationale": "The scene comes first because it shows the cost of copies with no owner before any term is defined. The product model follows because ownership is decided per piece, and the pieces (identifiers, attributes, mappings, translations) need names first. Ownership leaves the content row without an owner at Kestrel & Pine; the choices, trade-offs and stages follow it because they answer whether that row needs a PIM, and readers in three check rounds wanted that question settled before the PIM's workings. The PIM section follows as how the fourth arrangement works once it is chosen; the flow requirements and the channels' documented refusals stand inside it, after enrichment and syndication are defined and before the three rules that rest on them. Kestrel & Pine's W3 follows the rules because W3 is the rules carried out. The failures come last because they are what remains to detect once an owner exists, and the pulled rug needs the channels' documented, changing rules before it. If the definitions came before the scene, the reader would not yet have the case that shows why they matter."
   },
   "introduction": {
     "hook": {
@@ -174,13 +167,7 @@
           ]
         },
         {
-          "promise": "Show how the pieces fit together when a PIM is one of them.",
-          "kept_in": [
-            "pim"
-          ]
-        },
-        {
-          "promise": "Compare four ways to arrange product data, with their trade-offs and the scale stage at which each fits.",
+          "promise": "Compare four ways to arrange product data, with their trade-offs by scale stage and the test for when a PIM is needed.",
           "kept_in": [
             "choices",
             "trade-offs",
@@ -188,7 +175,13 @@
           ]
         },
         {
-          "promise": "End with what platforms and channels document, what Kestrel & Pine decides, and how product data fails.",
+          "promise": "Show how the pieces fit together with a PIM and what channels document.",
+          "kept_in": [
+            "pim"
+          ]
+        },
+        {
+          "promise": "End with what Kestrel & Pine decides and how product data fails.",
           "kept_in": [
             "in-practice",
             "when-it-goes-wrong"
@@ -237,7 +230,7 @@
       },
       {
         "id": "p04",
-        "controlling_idea": "The chapter goes from one season launch at Kestrel & Pine to what a product is made of, who should own each field and how the pieces fit with a PIM, then compares four arrangements by trade-off and scale stage, and ends with the public documentation, Kestrel & Pine's decision and the ways product data fails.",
+        "controlling_idea": "The chapter goes from one season launch at Kestrel & Pine to what a product is made of and who should own each field, then compares four arrangements by trade-off and scale stage with the test for a PIM, shows how the pieces fit with a PIM and what channels document, and ends with Kestrel & Pine's decision and the ways product data fails.",
         "function": "transition",
         "transition_in": {
           "relationship": "sequence",
@@ -469,6 +462,26 @@
           }
         },
         {
+          "id": "p09a",
+          "controlling_idea": "Do not split a product to fit a platform's cap on variants, because a split damages search, feeds and analytics for years after the cap is lifted; the caps are recent and moving (Shopify from 100 to 2,048, commercetools 100 or 10,000 by catalog model).",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify: 100 variants historically; new product APIs supporting 2,048 shipped in API version 2024-04; 2,048 for all merchants from 15 October 2025, with a warning that apps not on those APIs 'may have a downgraded or broken experience'. commercetools: Classic 100; Modular Catalog, generally available 29 September 2026, up to 10,000.",
+              "shows": "The cap is a fact of the platform that changes, while a split made to fit it stays in the catalog.",
+              "source": "Shopify changelog, 15 October 2025; commercetools release notes, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The grid of variants under one product, as Figure 2 draws it.",
+            "introduces": "How many variants a platform lets one product hold, and the lasting cost of splitting a product to fit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p14",
           "form": "list",
           "controlling_idea": "Other product shapes (a bundle, a digital good, a gift card) and other platforms' names for the grid (a configurable product) keep the same rule: every item that can be sold keeps its own identity.",
@@ -484,28 +497,8 @@
           ],
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "The rule that identifiers are assigned once and never reused.",
-            "introduces": "Four other shapes of product in which the rule still holds.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p09a",
-          "controlling_idea": "Do not split a product to fit a platform's cap on variants, because a split damages search, feeds and analytics for years after the cap is lifted; the caps are recent and moving (Shopify from 100 to 2,048, commercetools 100 or 10,000 by catalog model).",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Shopify: 100 variants historically, 2,048 for all merchants from 15 October 2025. commercetools: Classic 100; Modular Catalog, generally available 29 September 2026, up to 10,000.",
-              "shows": "The cap is a fact of the platform that changes, while a split made to fit it stays in the catalog.",
-              "source": "Shopify changelog, 15 October 2025; commercetools release notes, 2026"
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The grid of variants under one product.",
-            "introduces": "How many variants a platform lets one product hold, and the lasting cost of splitting a product to fit.",
+            "carries_over": "The rule that identifiers are assigned once and never reused, and the grid they label.",
+            "introduces": "Four other shapes of product in which the rule still holds, each with one concern of its own.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -685,191 +678,6 @@
       ]
     },
     {
-      "id": "pim",
-      "heading": "How the Pieces Fit Together With a PIM",
-      "controlling_idea": "With a PIM as the owner of content, three rules about ownership make the arrangement work: one direction per attribute, whole products published on a schedule, and every channel's answer returned to the owner.",
-      "function": "explanation",
-      "advances_thesis": {
-        "supports": [
-          "S2",
-          "S3"
-        ],
-        "how": "Turns the ownership table into flows: where each value is written, how it reaches the channels and how a channel's refusal comes back."
-      },
-      "flow": {
-        "pattern": "prerequisite_order",
-        "rationale": "The terms and the vendors' agreement on them first, with the picture, then what each flow in the picture requires, then the rules that meet the requirements. The flow table before the definitions would use 'enrichment' and 'syndication' undefined."
-      },
-      "transition_in": {
-        "relationship": "problem_solution",
-        "carries_over": "Kestrel & Pine's product content with four producers and no system of record.",
-        "introduces": "The system the table names for that row, a PIM, and the rules that make it an owner.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p21",
-          "controlling_idea": "A PIM, the system the ownership table names for product content, is the editorial system where product data is created, enriched, translated and approved before it is published; enrichment, syndication, feed and structured data are the four terms its work is described in.",
-          "function": "definition",
-          "evidence": [
-            {
-              "kind": "reasoning",
-              "what": "Each term is defined in one sentence in the paragraph.",
-              "shows": "The reader has the vocabulary the flow table and the three rules use."
-            }
-          ]
-        },
-        {
-          "id": "p23",
-          "controlling_idea": "The vendors agree on what a PIM is, a central place that collects, enriches and distributes product information, and none gives a testable threshold for when it pays off.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "Akeneo: 'a system or solution that helps businesses manage, centralize, and distribute product information'; Pimcore: an 'open core platform for Product Experience Management'.",
-              "shows": "The vendors' definitions match the chapter's, and neither says when a merchant needs one.",
-              "source": "Akeneo and Pimcore, accessed November 2026"
-            },
-            {
-              "kind": "figure",
-              "what": "Figure 3: the ERP creates the item and keeps its cost, the PIM owns what a shopper reads, every channel consumes, and rejections flow back to the owner.",
-              "shows": "The whole arrangement in one picture, which the flow table and the rules then go through."
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The chapter's own definition of a PIM.",
-            "introduces": "Two vendors' definitions, what they leave unanswered, and the arrangement in one picture.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p24",
-          "controlling_idea": "The four flows of product data (the new season into the ERP, enrichment into the PIM, publication to the storefront and search, syndication to marketplaces and feeds) differ in how fresh, how consistent, how fast and how available they must be.",
-          "function": "comparison",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Four flows by freshness, consistency, speed and availability need.",
-              "shows": "The flows cannot share one mechanism: identity is exact and batched, enrichment runs at human speed, publication is whole-product and timed, syndication is asynchronous with a report."
-            }
-          ],
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The arrows in Figure 3.",
-            "introduces": "The four flows they stand for and what each requires.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p25",
-          "controlling_idea": "Two requirements stand out: content tolerates lag but demands completeness, and syndication is asynchronous, so the architecture must expect a 'no' to arrive after the 'sent'.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "bol's documentation says an upload report may take an hour; Google disapproves a product with an incorrect GTIN.",
-              "shows": "Two channels document that the answer comes later and can be a refusal.",
-              "source": "bol Retailer API documentation and Google Merchant Center help, accessed November 2026"
-            }
-          ],
-          "transition_in": {
-            "relationship": "conclusion_summary",
-            "carries_over": "The flow table.",
-            "introduces": "The two requirements in it that shape the design.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p26",
-          "controlling_idea": "Three design rules meet these requirements, and they are rules about ownership, not about the tool.",
-          "function": "transition",
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The two requirements and the picture in Figure 3.",
-            "introduces": "Three rules that meet them.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p27",
-          "controlling_idea": "Rule 1: each attribute flows in one direction, from the one system that may change it, and a connector's direction setting carries out that decision but cannot make it.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "quotation",
-              "what": "Microsoft, Business Central Shopify connector: 'decide which system is the system of record for product data'; 'If you manage item names, descriptions, and pricing in Business Central, choose the To Shopify direction. If your merchandising team maintains product content in Shopify ... choose From Shopify'.",
-              "shows": "A vendor documents ownership direction as a setting chosen per field before the sync is configured.",
-              "source": "Microsoft Learn, 16 October 2026"
-            }
-          ],
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "The announcement of three rules.",
-            "introduces": "The first: one direction per attribute.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p28",
-          "controlling_idea": "Rule 2: publish whole products on a schedule, not single fields on change, because content changes constantly during a season build and nobody wants half-enriched products on the storefront; a whole-product publication also keeps the visible page, the structured data and the feeds saying the same thing.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Waypoint's integration standard (W5): products move 'by scheduled publication' while stock, orders and prices move by events.",
-              "shows": "The running example applies the rule.",
-              "source": "Kestrel & Pine scenario ledger"
-            },
-            {
-              "kind": "source",
-              "what": "commercetools' staged and current data; Shopify's productSet mutation for when 'an external system is the source of truth'.",
-              "shows": "Two platforms provide a whole-product, atomic publication.",
-              "source": "commercetools and Shopify developer documentation, accessed November 2026"
-            },
-            {
-              "kind": "figure",
-              "what": "Figure 4: loose fields dripping onto a shelf one by one against complete product boxes arriving together on a date.",
-              "shows": "The difference between publishing fields on change and products on a schedule."
-            }
-          ],
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "Rule 1.",
-            "introduces": "The second rule: whole products, on a schedule.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p29",
-          "controlling_idea": "Rule 3: every channel's answer comes back to the owner, through an outbox per channel, a validation step before sending and a rejection report that becomes a task for a person.",
-          "function": "recommendation",
-          "evidence": [
-            {
-              "kind": "case",
-              "what": "Without the loop, bol's 140 declined variants are a line in a report nobody reads.",
-              "shows": "The scene's rejection is what the rule exists for.",
-              "source": "Kestrel & Pine scenario ledger (illustrative)"
-            }
-          ],
-          "transition_in": {
-            "relationship": "sequence",
-            "carries_over": "Rule 2.",
-            "introduces": "The third rule: the channel's answer returns to the owner.",
-            "form": "phrase",
-            "placement": "start_of_this"
-          }
-        }
-      ]
-    },
-    {
       "id": "choices",
       "heading": "The Choices",
       "controlling_idea": "There are four realistic ways to arrange product data, and each is right for some merchant.",
@@ -878,23 +686,23 @@
         "supports": [
           "S4"
         ],
-        "how": "Places the PIM as one of four arrangements, so that the test for needing one has alternatives to choose between."
+        "how": "Sets out the four arrangements, the PIM among them, so that the test for needing one has alternatives to choose between before the PIM's workings are described."
       },
       "flow": {
         "pattern": "small_to_large",
         "rationale": "From the arrangement every merchant starts with to the one that needs the most organization; the order is also the order in which Kestrel & Pine met them."
       },
       "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "The arrangement with a PIM.",
-        "introduces": "The three arrangements without one, and the PIM as the fourth.",
+        "relationship": "problem_solution",
+        "carries_over": "Kestrel & Pine's product-content row with four copies and no system of record (the Spaghetti Junction).",
+        "introduces": "The four ways to give that row an owner, three of them without a PIM.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p30",
-          "controlling_idea": "The arrangement with a PIM just described is one of four realistic ways to arrange product data; the other three do without one.",
+          "controlling_idea": "Kestrel & Pine's content row needs an owner, and there are four realistic ways to arrange product data, three of them without a PIM.",
           "function": "transition"
         },
         {
@@ -943,7 +751,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "Fourth, a PIM as the system of record for content, with the ERP keeping identity and cost: Waypoint's W3, whose conditions the trade-offs section states.",
+          "controlling_idea": "Fourth, a PIM as the system of record for content, with the ERP keeping identity and cost; the PIM runs enrichment (adding the content channels need beyond the ERP's) through a workflow of approvals and per-channel completeness, and syndication (publishing to each channel in its format and under its rules): Waypoint's W3, whose conditions the trade-offs section states.",
           "function": "description",
           "transition_in": {
             "relationship": "sequence",
@@ -1087,33 +895,108 @@
       ]
     },
     {
-      "id": "in-practice",
-      "heading": "In Practice",
-      "controlling_idea": "Public documentation confirms that channels validate and reject on their own schedule, and Kestrel & Pine's W3 applies the chapter's rules in a fixed order: ownership, direction, loop, migration.",
-      "function": "evidence",
+      "id": "pim",
+      "heading": "How the Pieces Fit Together With a PIM",
+      "controlling_idea": "With a PIM as the owner of content, the flows have different requirements, the channels document how they validate and reject, and three rules about ownership make the arrangement work: one direction per attribute, whole products published on a schedule, and every channel's answer returned to the owner.",
+      "function": "explanation",
       "advances_thesis": {
         "supports": [
-          "S3",
-          "S2"
+          "S2",
+          "S3"
         ],
-        "how": "Supplies the dated public evidence for channel validation, and shows the ownership table, the direction rule and the rejection loop carried out for one company."
+        "how": "Turns the ownership table into flows: where each value is written, how it reaches the channels and how a channel's refusal comes back."
       },
       "flow": {
-        "pattern": "grouping",
-        "rationale": "The public documentation first, then the company: the reader sees that the constraints are real before seeing one merchant work within them. Inside W3 the order is the order of the work: the table, the direction, the loop, then the migration."
+        "pattern": "prerequisite_order",
+        "rationale": "The terms and the vendors' agreement on them first, with the picture, then what each flow in the picture requires, then the channels' documented rules as the evidence for the asynchronous 'no', then the rules that meet the requirements. The flow table before the definitions would use 'enrichment' and 'syndication' undefined; the channels' evidence before Rule 3 because the rule rests on it."
       },
       "transition_in": {
-        "relationship": "additional_support",
-        "carries_over": "Rule 3's expectation that a channel's 'no' arrives after the 'sent'.",
-        "introduces": "What channels document about the rules that produce the 'no', and what one company does.",
+        "relationship": "sequence",
+        "carries_over": "The test for when a PIM is needed and the stage at which it is typical.",
+        "introduces": "How the pieces fit together once a PIM owns the content row.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
+          "id": "p21",
+          "controlling_idea": "Once the test says a PIM is needed, it takes the content row of the ownership table as the editorial system where product data is created, enriched, translated and approved before it is syndicated; besides feeds it publishes structured data, the last term its work is described in (enrichment and syndication were glossed at the fourth choice, feed in the failure-pattern callout).",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Structured data is defined in one sentence; the PIM's role is restated without a third definition.",
+              "shows": "The reader has the vocabulary the flow table and the three rules use."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The vendors agree on what a PIM is, a central place that collects, enriches and distributes product information, and none gives a testable threshold for when it pays off, so the producer-and-consumer test is the author's own.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Akeneo: 'a system or solution that helps businesses manage, centralize, and distribute product information'; Pimcore: an 'open core platform for Product Experience Management'.",
+              "shows": "The vendors' definitions match the chapter's, and neither says when a merchant needs one.",
+              "source": "Akeneo and Pimcore, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the ERP creates the item and keeps its cost, the PIM owns what a shopper reads, every channel consumes, and rejections flow back to the owner.",
+              "shows": "The whole arrangement in one picture, which the flow table and the rules then go through."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The chapter's own definition of a PIM.",
+            "introduces": "Two vendors' definitions, what they leave unanswered, and the arrangement in one picture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The four flows of product data (the new season into the ERP, enrichment into the PIM, publication to the storefront and search, syndication to marketplaces and feeds) differ in how fresh, how consistent, how fast and how available they must be.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four flows by freshness, consistency, speed and availability need.",
+              "shows": "The flows cannot share one mechanism: identity is exact and batched, enrichment runs at human speed, publication is whole-product and timed, syndication is asynchronous with a report."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The arrows in Figure 3.",
+            "introduces": "The four flows they stand for and what each requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Two requirements stand out: content tolerates lag but demands completeness, and syndication is asynchronous, so the architecture must expect a 'no' to arrive after the 'sent'.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The flow table.",
+            "introduces": "The two requirements in it that shape the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p42",
-          "controlling_idea": "Public documentation shows how many rules can produce the 'no' that Rule 3 expects: channels validate and reject, so a record that looks complete in the merchant's shop can still be rejected by a channel that checks its own required fields, identifiers and media rules.",
-          "function": "claim"
+          "controlling_idea": "The channels' own documentation shows how many rules can produce that 'no': each channel validates and rejects against its own required fields, identifiers and media rules.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The asynchronous 'no' that the architecture must expect.",
+            "introduces": "What the channels document about the rules that produce it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         },
         {
           "id": "p43",
@@ -1122,7 +1005,7 @@
           "evidence": [
             {
               "kind": "fact",
-              "what": "Google Merchant Center: required id, title, description, link, image_link, price, availability; an incorrect GTIN is disapproved; a 500 x 500 pixel image minimum from 31 January 2027. bol: an EAN for every product, two mandatory enrichment levels, products offline without a required CE marking, a data model updated 'daily'.",
+              "what": "Google Merchant Center: required id, title, description, link, image_link, price, availability (in_stock, out_of_stock, preorder or backorder; an out-of-stock item must still show its price on its landing page); an incorrect GTIN is disapproved; a 500 x 500 pixel image minimum from 31 January 2027. bol: an EAN for every product, an upload report that may take an hour, two mandatory enrichment levels, products offline without a required CE marking, a data model updated 'daily'.",
               "shows": "Both channels document refusal, and both change their rules on their own dates.",
               "source": "Google Merchant Center help and bol Retailer API documentation, accessed November 2026"
             }
@@ -1136,13 +1019,122 @@
           }
         },
         {
-          "id": "p44",
-          "controlling_idea": "Kestrel & Pine's W3, the decision from the opening scene, is a bought PIM, and the chapter reads it as a sequence of four steps with illustrative dates.",
+          "id": "p26",
+          "controlling_idea": "Three design rules meet these requirements, and they are rules about ownership, not about the tool.",
           "function": "transition",
           "transition_in": {
-            "relationship": "contrast",
-            "carries_over": "What vendors and channels document.",
-            "introduces": "What Kestrel & Pine does about it under W3.",
+            "relationship": "cause_effect",
+            "carries_over": "The two requirements, the channels' documented refusals and the picture in Figure 3.",
+            "introduces": "Three rules that meet them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Rule 1: each attribute flows in one direction, from the one system that may change it, and a connector's direction setting carries out that decision but cannot make it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Microsoft, Business Central Shopify connector: 'decide which system is the system of record for product data'; 'If you manage item names, descriptions, and pricing in Business Central, choose the To Shopify direction. If your merchandising team maintains product content in Shopify ... choose From Shopify'.",
+              "shows": "A vendor documents ownership direction as a setting chosen per field before the sync is configured.",
+              "source": "Microsoft Learn, 16 October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announcement of three rules.",
+            "introduces": "The first: one direction per attribute.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Rule 2: publish whole products on a schedule, not single fields on change, because content changes constantly during a season build and nobody wants half-enriched products on the storefront; a whole-product publication also keeps the visible page, the structured data and the feeds saying the same thing.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Waypoint's integration standard (W5): products move 'by scheduled publication' while stock, orders and prices move by events.",
+              "shows": "The running example applies the rule.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "source",
+              "what": "commercetools' staged and current data; Shopify's productSet mutation for when 'an external system is the source of truth'.",
+              "shows": "Two platforms provide a whole-product, atomic publication.",
+              "source": "commercetools and Shopify developer documentation, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: loose fields dripping onto a shelf one by one against complete product boxes arriving together on a date.",
+              "shows": "The difference between publishing fields on change and products on a schedule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Rule 1.",
+            "introduces": "The second rule: whole products, on a schedule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Rule 3: every channel's answer comes back to the owner, through an outbox per channel, a validation step before sending and a rejection report that becomes a task for a person.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Without the loop, bol's 140 declined variants are a line in a report nobody reads.",
+              "shows": "The scene's rejection is what the rule exists for.",
+              "source": "Kestrel & Pine scenario ledger (illustrative)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Rule 2.",
+            "introduces": "The third rule: the channel's answer returns to the owner.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Kestrel & Pine's W3 applies the chapter's rules in a fixed order: ownership, direction, loop, migration.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Shows the ownership table, the direction rule and the rejection loop carried out for one company."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The order of the work: the table, the direction, the loop, then the migration, then what it changed against the scene."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The three rules a PIM works by.",
+        "introduces": "Kestrel & Pine's W3 as those rules carried out.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "Kestrel & Pine's W3, the decision from the opening scene, is a bought PIM working by the three rules, and the chapter reads it as a sequence of four steps with illustrative dates.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three rules.",
+            "introduces": "W3, a bought PIM working by them.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1547,16 +1539,8 @@
   ],
   "modalities": [],
   "open_questions": [
-    "The chapter assigns logistic attributes (weight, dimensions, customs code) to the ERP; warehouse-and-fulfillment may prefer the WMS to measure and own them at first receipt. Reconcile when that chapter is revised.",
-    "The PIM go-live sequence follows the ledger line appended by replatforming-and-migration (loaded July 2027 with 1,900 conflicting variants resolved, DE storefront first consumer in August, NL/BE and the connector in September); this chapter adds only that Spring/Summer 2028 is the first season built in the PIM, and both lines should be kept in step if either chapter changes.",
-    "Flow rubric, first run (2026-11-12, sound with notes). Taken: the vendors' definitions now follow the PIM definition directly (p23 before p22); the one-sentence opening of The Choices is merged into the first option; a sentence on variant limits is added where the variant is defined (p09); the W3 introduction (p44) no longer restates the scene. Not taken: (a) 'system of record', the Group stage, the failure-pattern names and W8 were called forward references; all are established in Part I, and W8 is glossed again in the text. (b) 'feeds' is used in the ownership section before the PIM section defines 'feed'; the ownership table would need a gloss in a table cell. (c) The 'depends on context' take-away on logistic attributes and the eighth question on AI agents rest on one table row and one clause each; they are the author's and were kept. (d) Trade-offs and Across Scale Stages declare no section flow of their own (two paragraphs each).",
-    "Flow rubric, second run (2026-11-12, sound with notes). Taken: the paragraph on keeping page, structured data and feeds aligned (p22) now follows the flow requirements. Not taken: (a) move the vendors' definitions (p23) to the head of Trade-offs, where 'no vendor gives a threshold' meets the author's threshold; kept in the PIM section because Figure 3 hangs on that paragraph and it completes the definition. (b) Cut or move the list of four product shapes (p14), which no later item uses. (c) Swap p02 and p03 in the introduction. (d) The stages section does not visibly apply the producer-and-consumer test. (e) The conclusion's opening paragraph (p57) and the author's-synthesis list (p60) partly restate each other; the three-tier take-away is the book's house format.",
-    "Flow rubric, third run after the move (2026-11-12, sound with notes; no change of order followed). Notes not taken: none of the three rules visibly meets the alignment requirement of p22; merge the announcement of the rules (p26) into Rule 1; the pulled rug is found by reading a channel's notices, so the shared remedy of p56 (a scheduled comparison) fits it only in part; 'outbox' and 'group id' need a gloss (the text glosses the outbox in Rule 3 and names item_group_id in In Practice).",
-    "GS1's own site blocked fetching; the GTIN format facts rest on a GS1 support article and an encyclopaedia page. A reviewer with access to the GTIN Management Standard could replace the secondary citation.",
-    "Draft check rounds 2 and 3 (2026-11-12), for the author: both flow readers in rounds 1, 2 and 3 found the PIM section (how it works) arriving before The Choices and Trade-offs (whether to have one). The spec keeps the order because three arrangements are defined by what they lack against the PIM; moving The Choices and Trade-offs before the PIM section is the alternative. Not changed without the author.",
-    "Draft check rounds 2 and 3, for the author: both flow readers want 'What the channels document' (p42-p43) moved up beside Rule 3 or Requirements per flow, which already cite bol's upload report and Google's GTIN disapproval; In Practice now carries over Rule 3's 'no', but the evidence still comes late and partly repeats. Moving it, or cutting the repetition in Requirements per flow, is the author's decision.",
-    "Round 3, one reader: the product-shapes list (p14) mixes three other shapes with one synonym for the grid (configurable product); a sentence before the list, or dropping Adobe's configurable product, would separate them.",
-    "Round 3, one reader: 'n.d.' (no date) in the in-text citations is never expanded; this is the book-wide citation convention and was left as is."
+    "Needs the author: the Deprecated Endpoint (p55) is the ledger's only marketplace-API incident, but it is a stock incident used as the example of a content failure; both round-4 flow readers found it off-topic. Keep it, or replace it with an illustrative content case the ledger does not record?",
+    "Needs the author: p48 bundles the consumer-by-consumer migration and the PIM as W8's prerequisite; the round-4 outliner read two ideas. Split into two paragraphs (one more unit), or keep W8 as one closing clause?"
   ],
   "decision_log": [
     {
@@ -1646,6 +1630,71 @@
     {
       "date": "2026-11-12",
       "decision": "Round 3 preparation (author asked for checker notes to be taken without review): Trade-offs opens with a paragraph that reads the table (new p35b, the table moved to it from p36); Google's availability values dropped from the lifecycle paragraph (p16), which both round-2 flow readers read as stock, not lifecycle; In Practice now carries over Rule 3's expected 'no' instead of 'the judgement above'; the variant-limits paragraph (p09a) leads with its point and drops the API version and the warning to apps. Not taken (author's decision): moving The Choices and Trade-offs before the PIM section, and moving 'What the channels document' up beside Rule 3; both were raised by both readers in rounds 1 and 2."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Logistic attributes (weight, dimensions) stay with the ERP, as the scenario ledger's W3 line records (rule 1); a WMS-owned variant in warehouse-and-fulfillment would have to follow the ledger, not this chapter.",
+      "rejected": [
+        "Leaving the question open for the warehouse chapter's revision."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: The PIM go-live sequence (July 2027 load, 1,900 conflicting variants, DE in August, NL/BE and the connector in September, Spring/Summer 2028 first season) is the ledger's, in both its product-information and replatforming lines (rule 1); nothing to reconcile.",
+      "rejected": [
+        "Keeping it as an open question."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Moved The Choices, Trade-offs and Across Scale Stages before the PIM section (rule 3: both flow readers asked for it in rounds 1, 2 and 3). Rewritten transitions: the Choices open from the empty content row; the PIM section opens from the test; the vendor paragraph points back to the test; option 4 no longer uses 'enrichment' and 'syndication' before they are defined, nor does the Omnichannel row of the stage table; the roadmap (p04 and its promises) follows the new order.",
+      "rejected": [
+        "Keeping the PIM section first because three arrangements are defined by what they lack against it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Moved 'What the channels document' (p42, p43) from In Practice into the PIM section after the flow requirements and before the three rules (rule 3: both flow readers in rounds 2 and 3; evidence before the rule it supports). p25's duplicate of the bol and Google evidence is cut; bol's one-hour upload report moves into p43. In Practice is now W3 alone, and its 'What the channels document' and W3 subheadings go.",
+      "rejected": [
+        "Leaving the evidence in In Practice.",
+        "Cutting only the repetition in Requirements per flow."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Restored three public vendor statements an earlier pass removed (rule 2, each cited in Sources): Shopify's API version 2024-04 and its warning to apps (p09a, Shopify changelog); Google's availability values and the rule that an out-of-stock item still shows its price (in p43 beside the other Google fields, not in the lifecycle paragraph where round-2 readers read it as stock).",
+      "rejected": [
+        "Leaving them cut.",
+        "Restoring the availability values to the lifecycle paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Dropped AC-6 (known_before_new), a criterion added beyond the journal spec's that failed in every round (rule 7). Glossed 'n.d.' at first use (rule 6).",
+      "rejected": [
+        "Keeping AC-6."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Settled the remaining notes: the product-shapes list (p14) already opens by separating other shapes from other platforms' names for the grid; the GS1 citation stays as cited (rule 2, the page's statements are supported by its Sources); the flow-rubric notes not taken were each raised by one run only, and rule 3 moves only what two readers or two rounds asked for (the PIM-before-choices note they share is taken above).",
+      "rejected": [
+        "Keeping them in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Glossed enrichment and syndication at the fourth choice (p34), where the PIM's workflow and publication are first described, and dropped their separate definitions from p21 (rule 6; both round-3 flow readers asked for the PIM vocabulary earlier).",
+      "rejected": [
+        "Keeping the definitions only in How the Pieces Fit Together."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: After round 4: moved the variant-limits paragraph (p09a) before the other product shapes (p14), so the grid material stays together (rule 3: both round-4 flow readers, and a round-3 flow reader, asked for it); p14's lead-in now says each shape keeps the identifier rule and adds one concern. p21 no longer re-defines the PIM or the feed (both flow readers). The stages section opens by reconciling 'the stage does not decide' with the stage table (both flow readers; the transition check). Cheap wording fixes from corroborated or plainly right findings: p03 gives one reason for the chapter's place; p04's roadmap follows the body's order and names the evidence (AC-4); p12 'change every season'; p15 names the countries and languages (ledger: NL, BE in Dutch and French, DE); p28 'staged and published' as in p16; p45 names the chapter that set March's table; p23's MDM/PLM gloss; p57 'ownership keeps them rare'.",
+      "rejected": [
+        "Leaving the corroborated flow findings for another round."
+      ]
     }
   ],
   "sources": [
@@ -1708,6 +1757,10 @@
   "changelog": [
     {
       "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction: choices, trade-offs and stages moved before the PIM section; the channels' documentation moved beside the three rules; three cited vendor statements restored; AC-6 dropped; open questions settled. (AI-mediated session) Confirming round (round 4) readers ran: reverse outline, intro reader, three probe readers, two flow readers; the judge could not be started (concurrent-agent limit), so the round was not finalized and check-report.json stays stale. Cheap fixes applied from points both flow readers raised: the codes-first sentence in p03, EDI expanded at first use, the Black Friday Oversell glossed, the forward reference to the stage table cut from the recommendation, the PIM tied to the scene's definition, the Deprecated Endpoint framed as stale data, March's ownership table named, and the conclusion's callback worded as the hook's case."
+    },
+    {
+      "date": "2026-11-12",
       "change": "Pass resumed after a usage-limit stop. Round 2 (fresh readers): escalate, 14 passed, 19 failed (7 corroborated flow findings, 3 of them spec order). Spec: variant limits moved after the product shapes, The Choices lead-in split (p30), Trade-offs opened by a paragraph reading the table (p35b), Google availability dropped from lifecycle, In Practice carries over Rule 3. Draft: glosses (agency, Shopify, Zalando, staged data, data warehouse, product master), plainer variant-limits paragraph, callback and pulled-rug wording. Round 3: escalate, 14 passed, 15 failed (two corroborated spec-order findings left to the author). Cheap fixes applied after round 3 (transitions into ownership and the conclusion, W8 set up, PIM not redefined, glosses for attribute, asynchronous, Merchant Center); the round-3 report is therefore stale. (AI-mediated session)"
     },
     {
@@ -1733,6 +1786,10 @@
     {
       "date": "2026-11-07",
       "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round-4 draft check: p09a moved before p14; p21 trimmed to structured data; enrichment and syndication glossed at p34; two questions for the author."
     }
   ],
   "length": {

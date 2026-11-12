@@ -30,9 +30,9 @@ Kestrel & Pine, the fictional outdoor brand used here, must do this for 293,000 
 
 **Where we are in the order's journey.** The previous chapter left Eva's €235 order with one home, one number and its goods status per shipment. From dispatch onward each shipment produces financial records: an invoice, a payout from the payment provider and ledger entries, followed by any return adjustments. Finance reconciles those records and reports the value-added tax (VAT), Europe's consumption tax, charged at every sale and reclaimed by business buyers, in the Dutch VAT return.
 
-This chapter's answer is that an order reaches the books through documents, not events. The tax is computed from three facts the shop owns, under rates kept in one place for every channel. One system per legal entity issues an invoice for each shipment at dispatch, never edits it and corrects it only with a credit note. The ledger is posted from those documents and from the payment provider's payout reports. The shop owes finance the facts and identifiers these documents need, so that a monthly match of invoices, payouts and bank lines can explain each difference.
+This chapter's answer is that an order reaches the books through documents, not events. The tax is computed from three facts the shop owns, under rates kept in one place for every channel. One system per legal entity issues an invoice for each shipment at dispatch, never edits it and corrects it only with a credit note. The ledger is posted from those documents and the payout reports. The shop owes finance the facts and identifiers these documents need, so that a monthly match of invoices, payouts and bank lines can explain each difference.
 
-The chapter starts from Sanne de Wit's April close and her two questions. It then covers what the shop owes finance, VAT and the two moments tax is computed, the invoice and the e-invoice, the entries posted in the enterprise resource planning system (ERP), which holds the books, and the matching of invoices, payouts and the bank. It compares the choices and the scale stages, follows Eva's order and a Belgian wholesale invoice sent over **Peppol**, a network for exchanging structured invoices, into the books, and ends with what goes wrong. The evidence is EU and national tax rules, payment-provider and ERP documentation, and Kestrel & Pine's month-end. Further detail sits in [[commerce-payments]], [[edi-and-e-invoicing]], [[erp-and-back-office-integration]], [[payments-to-ledger]] and [[designing-financial-ledgers]].
+The chapter starts from Sanne de Wit's April close and her two questions, then covers what the shop owes finance, VAT and the two moments tax is computed, the invoice and the e-invoice, the entries the ERP posts to the books, and the matching of invoices, payouts and the bank. It follows Eva's order and a Belgian wholesale invoice sent over **Peppol**, a network for exchanging structured invoices, into the books, compares the choices and the scale stages, and ends with what goes wrong. The evidence is EU and national tax rules, payment-provider and ERP documentation, and Kestrel & Pine's month-end. Further detail sits in [[commerce-payments]], [[edi-and-e-invoicing]], [[erp-and-back-office-integration]], [[payments-to-ledger]] and [[designing-financial-ledgers]].
 
 ## Setting the Scene at Kestrel & Pine: Sanne's April Close
 
@@ -43,11 +43,11 @@ Finance Director Sanne de Wit closes April 2027 in the second week of May. Four 
 - Three marketplaces pay on different schedules after commission.
 - **1,100 wholesale accounts** pay invoices on 30-day terms. Some pay short, twice or with references the ERP cannot match.
 
-Beyond the routine of the four routes, two winter incidents remain unresolved. January's **Double Refund** sent **€19,400** twice across **212 returns**, once through the portal and again through support. The ERP's credit notes, the documents that correct an invoice after a return, were correct; nobody compared them with the actual refunds.
+Two winter incidents show what the close must catch. January's **Double Refund** sent **€19,400** twice across **212 returns**, once through the portal and again through support. The ERP's credit notes, the documents that correct an invoice after a return, were correct; nobody compared them with the actual refunds.
 
 December's **Three-Status Order**, #1052877, showed *Delivered* while the ERP waited six days to invoice. The warehouse could not report "order complete" until missing socks were replenished. No report flagged the dispatched fleece as uninvoiced.
 
-A third thing is new. Since 1 January 2026, businesses established in Belgium must exchange invoices with each other as structured electronic documents over the Peppol network. The sources this book relies on do not settle whether that obligation reaches a supplier with no Belgian establishment ([[edi-and-e-invoicing]] reads the scope). Kestrel & Pine's Belgian business customers expect a Peppol invoice all the same, so since then its ERP has sent them one through its EDI provider.
+A third thing is new. Since 1 January 2026, businesses established in Belgium must exchange invoices with each other as structured electronic documents over the Peppol network. Kestrel & Pine's Belgian business customers expect a Peppol invoice, so since then its ERP has sent them one through its EDI provider. The sources this book relies on do not settle whether the obligation itself reaches a supplier with no Belgian establishment ([[edi-and-e-invoicing]] reads the scope).
 
 In April Ardennes Trail Co., a wholesale customer in Namur, rejected an invoice because the buyer reference it had asked for was missing. Sanne asks Noor Visser, the Head of Engineering, two questions: **which system is allowed to issue an invoice, and how do we prove, every month, that the orders, the payouts and the bank agree without reading them one by one?**
 
@@ -59,7 +59,7 @@ A handful of documents carry those outcomes, and each has one owner. This is the
 
 | Document | Created when | Owner (system of record) | References |
 | --- | --- | --- | --- |
-| **Order** | Checkout completes | The shop platform (from Q4 2027 at Kestrel & Pine, the order management system, OMS) | Cart, payment reference |
+| **Order** | Checkout completes | The shop platform, or an order management system (OMS) once there is one | Cart, payment reference |
 | **Tax calculation** | At checkout (estimate) and at invoicing (final) | The tax engine or rate table; recorded on the order and the invoice | Ship-to address, product tax category, customer status |
 | **Invoice** | At dispatch of each shipment (goods) or at order (digital goods) | The ERP, one numbering sequence per legal entity | Order number, shipment id |
 | **Credit note** | When a return is accepted or an invoice is wrong | The ERP, same sequence family | The invoice it corrects |
@@ -69,11 +69,11 @@ A handful of documents carry those outcomes, and each has one owner. This is the
 
 Two rules follow from the table and carry the rest of the chapter. **The shop does not issue invoices**: it issues order confirmations, which look like invoices to a consumer and are not; the ERP issues the legal document. **Nothing posts to the ledger from a webhook**: payment events update the order; the ledger is fed from documents, in batches, with identifiers that let every entry be traced back.
 
-What the shop owes finance is therefore the facts and identifiers those documents need. It owes the tax basis frozen on the order, a shipment confirmation that carries the shipment id, the buyer references an e-invoice must carry, the order number passed to the PSP, and refunds from one writer.
+What the shop owes finance is therefore the facts and identifiers those documents need: the tax basis frozen on the order, a shipment confirmation that carries the shipment id, the buyer references an e-invoice must carry, the order number passed to the PSP, and refunds from one writer.
 
 ## VAT in Plain Words
 
-The first outcome, the right tax, rests on five facts about VAT.
+The first outcome, the right tax, rests on four facts about VAT and one contrast.
 
 **Rates differ by country and by product category.** EU law sets a minimum standard rate of 15% and lets each Member State apply reduced rates to listed categories (European Commission VAT rates page, n.d., accessed November 2026). Kestrel & Pine's three markets:
 
@@ -91,11 +91,11 @@ Kestrel & Pine's clothing and equipment carry the standard rate everywhere.
 
 **Business sales to another EU country carry no VAT.** With a valid customer VAT number, checked in the EU's VIES service, the seller charges 0% and the buyer accounts for the VAT in its own return, the **reverse charge** (Your Europe cross-border VAT page, n.d., accessed November 2026). The invoice states both VAT numbers and the reverse-charge mention. Ardennes Trail Co.'s order, below, is this case.
 
-**The United States is the contrast.** There is no VAT; each state levies its own sales tax, and since *South Dakota v. Wayfair* (21 June 2018) a state may require a remote seller to collect it once sales into the state pass a threshold (South Dakota's was $100,000 or 200 transactions), regardless of physical presence, a link called **economic nexus**. Rates vary by state, county and city, which is why **tax engines** exist: Avalara's product page claims rules across "12,000+ U.S. sales and use tax jurisdictions" (n.d., accessed November 2026).
+**The United States is the contrast.** There is no VAT; each state levies its own sales tax, and since *South Dakota v. Wayfair* (21 June 2018) a state may require a remote seller to collect it once sales into the state pass a threshold (South Dakota's was $100,000 or 200 transactions), regardless of physical presence, a link called **economic nexus**. Rates vary by state, county and city, which is why **tax engines** exist: Avalara's product page claims rules across "12,000+ U.S. sales and use tax jurisdictions" (n.d., accessed November 2026). A Dutch merchant that opens a US storefront inherits all of this on day one.
 
 ## Tax at Checkout and Tax at Invoice
 
-The tax a shopper sees at checkout is a **promise**, computed from the ship-to address, the product category and the customer's status at that moment. The tax that matters legally is the one on the **invoice**, computed when the supply happens, which for goods is dispatch. Between the two, a line may be removed, an order split or a rate changed on 1 January. The order system has two honest options: re-run the determination at invoicing and treat the checkout figure as an estimate, or freeze the checkout result as the tax basis on the order and reconcile any difference explicitly. It must never let the two drift silently. Recomputing suits a merchant whose addresses and baskets change before dispatch; freezing suits a consumer shop that ships whole orders within a day. Kestrel & Pine freezes the checkout result on the order and lists any difference at invoicing. Tax engines are commonly used in the same two steps: a calculation at checkout that records nothing, and a recorded calculation at invoicing. The table compares the two flows on freshness, consistency, speed and fallback.
+The tax a shopper sees at checkout is a **promise**, computed from the ship-to address, the product category and the customer's status at that moment. The tax that matters legally is the one on the **invoice**, computed when the supply happens, which for goods is dispatch. Between the two, a line may be removed, an order split or a rate changed on 1 January. The order system has two honest options: re-run the determination at invoicing and treat the checkout figure as an estimate, or freeze the checkout result as the tax basis on the order and reconcile any difference explicitly. It must never let the two drift silently. Recomputing suits a merchant whose addresses and baskets change before dispatch; freezing suits a consumer shop that ships whole orders within a day. Kestrel & Pine freezes the checkout result on the order and lists any difference at invoicing. Tax engines are commonly used in the same two steps: a calculation at checkout that records nothing, and a recorded calculation at invoicing. The table compares the two flows.
 
 | Flow | How fresh | How consistent | How fast | If it is down |
 | --- | --- | --- | --- | --- |
@@ -105,7 +105,7 @@ The tax a shopper sees at checkout is a **promise**, computed from the ship-to a
 ![Diagram: Three facts the shop owns and one set of rules it should not own decide the tax, once as a promise at checkout and once as the legal amount on the invoice](assets/images/14-tax-invoicing-and-ledger/fig01-three-facts-shop-owns-one-set.jpeg)
 **Figure 1:** *Three facts the shop owns and one set of rules it should not own decide the tax, once as a promise at checkout and once as the legal amount on the invoice.*
 
-When a cart mixes rates, the shipping charge and any basket-wide discount must be split across lines; Stripe Tax documents two methods, proportional allocation and the highest rate. Discount allocation is as much a tax problem as a promotions problem ([[commerce-promotions]]): it decides what the credit note for one returned line is worth.
+When a cart mixes rates, the shipping charge and any basket-wide discount must be split across lines; Stripe Tax documents two methods: split in proportion to the lines' amounts, or taxed at the cart's highest rate. Discount allocation is as much a tax problem as a promotions problem ([[commerce-promotions]]): it decides what the credit note for one returned line is worth.
 
 ## The Invoice as a Legal Document
 
@@ -131,29 +131,29 @@ Invoices are kept for years: seven for basic records in the Netherlands (Belasti
 
 An **e-invoice** is an invoice issued, transmitted and received as structured data (XML) that the receiver's software can process; a PDF by e-mail is not one. The European standard EN 16931 defines what it contains; **Peppol** is the open network through which a business reaches any other participant, each side connecting through its own accredited **access point** (OpenPeppol, n.d., accessed November 2026). Credit notes travel the same way.
 
-The dates are the requirement, and they differ per country. Belgium made structured e-invoices mandatory for domestic business-to-business transactions from 1 January 2026, over Peppol (einvoice.belgium.be, 18 September 2024). Germany has required every business to be able to *receive* e-invoices since 1 January 2025 and phases in the obligation to *issue* them from 2027, or 2028 for issuers with prior-year turnover up to €800,000 (Federal Ministry of Finance FAQ, accessed November 2026). The Netherlands has no domestic mandate; the cabinet announced on 11 September 2026 that it intends one from 1 July 2030. The EU's ViDA package, adopted in March 2025, requires digital reporting based on e-invoicing for cross-border business transactions from 1 July 2030 (European Commission, accessed November 2026). For Kestrel & Pine the Long Fuse, a mandate noticed only when it bites, is now lit by the German issuing dates. [[edi-and-e-invoicing]] owns the formats and the mandates; [[commerce-regulation]] owns the calendar.
+The dates are the requirement, and they differ per country. Belgium made structured e-invoices mandatory for domestic business-to-business transactions from 1 January 2026, over Peppol (einvoice.belgium.be, 18 September 2024). Germany has required every business to be able to *receive* e-invoices since 1 January 2025 and phases in the obligation to *issue* them from 2027, or 2028 for issuers with prior-year turnover up to €800,000 (Federal Ministry of Finance FAQ, accessed November 2026). The Netherlands has no domestic mandate; the cabinet announced on 11 September 2026 that it intends one from 1 July 2030. The EU's ViDA package, adopted in March 2025, requires digital reporting based on e-invoicing for cross-border business transactions from 1 July 2030 (European Commission, accessed November 2026). For Kestrel & Pine the Long Fuse, a mandate noticed only when it bites, is now lit by the German issuing dates, the next to arrive. [[edi-and-e-invoicing]] owns the formats and the mandates; [[commerce-regulation]] owns the calendar.
 
 What matters here is ownership. An e-invoice has a transmission status (sent, delivered, rejected by the receiver's validator) that a PDF never had, so the system that issues the invoice must also hold that status and the archive. At Kestrel & Pine that is the ERP; Ardennes Trail Co.'s rejection was a missing buyer reference (Peppol's BT-10 field) that the B2B portal never asked for, a checkout change rather than a finance one.
 
 ## From Order to Ledger: What Gets Posted
 
-A **ledger** (the general ledger) is the book of accounts in which every transaction is recorded twice, as a debit and a credit, so that the books always balance. The ERP posts from documents, not from events. For a consumer order paid through a PSP the standard entries are these (account names vary by company). The invoice row posts revenue at dispatch; a month-end cut-off, below, moves undelivered parcels to the next month.
-
-| Event | Debit | Credit |
-| --- | --- | --- |
-| Invoice at dispatch | Accounts receivable, PSP (gross) | Revenue (net), VAT payable |
-| PSP payout received | Bank (net); payment fees (expense) | Accounts receivable, PSP (gross) |
-| Credit note after a return, refund deducted from a later payout | Revenue (reversal), VAT payable (reversal) | Accounts receivable, PSP |
-| Chargeback | Dispute expense (or a receivable while defended), dispute fee | Accounts receivable, PSP |
-| Gift card sold | Bank or PSP receivable | Gift-card liability (no revenue yet) |
-
-Three accounting rules sit under the table.
+A **ledger** (the general ledger) is the book of accounts in which every transaction is recorded twice, as a debit and a credit, so that the books always balance. The ERP posts from documents, not from events, under three accounting rules.
 
 **Revenue is recognized when control of the goods passes to the customer, not when the order is placed or paid.** IFRS 15, effective from 1 January 2018, recognizes revenue when a performance obligation is satisfied, which for goods is the transfer of control, in practice dispatch or delivery depending on the terms (IFRS Foundation, n.d., accessed November 2026).
 
 Kestrel & Pine recognizes consumer revenue at delivery and wholesale revenue at delivery to the customer's shop or distribution center; "shipped" is the operational milestone, not the accounting one.
 
 Because the invoice is issued at dispatch, finance makes a cut-off adjustment at month end that moves parcels invoiced but not yet delivered into the next month: an order shipped on 30 April and delivered on 3 May is May revenue on an April invoice. This is why the shop's "sales today" dashboard and the ledger never agree to the euro ([[commerce-data-and-analytics]]).
+
+Under the revenue rule, a consumer order paid through a PSP posts these standard entries (account names vary by company). The invoice row posts revenue at dispatch; the cut-off moves undelivered parcels to the next month.
+
+| Event | Debit | Credit |
+| --- | --- | --- |
+| Invoice at dispatch | Accounts receivable, PSP (gross) | Revenue (net), VAT payable |
+| PSP payout received | Bank (net); payment fees (expense) | Accounts receivable, PSP (gross) |
+| Credit note after a return, refund deducted from a later payout | Revenue (reversal), VAT payable (reversal) | Accounts receivable, PSP |
+| Chargeback | Dispute expense (or a receivable while the merchant contests it), dispute fee | Accounts receivable, PSP |
+| Gift card sold | Bank or PSP receivable | Gift-card liability (no revenue yet) |
 
 **A right of return is a liability.** With a 19% order return rate, Kestrel & Pine expects one order in five to come back in part; under IFRS 15 the expected refunds are a liability estimated at period end (the author's reading of the standard).
 
@@ -179,42 +179,13 @@ Stripe's payout reconciliation report (n.d., accessed November 2026) lists "ever
 | A refund in the bank with no credit note | Someone refunded in the PSP console (the Double Refund) | A daily job listing PSP refunds without a matching credit note |
 | A credit note with no refund | The return was accepted but the refund call failed | The same job, in the other direction |
 | A failed refund returning weeks later | Adyen notes refunds can fail after acceptance; Stripe says the money returns in up to 30 days | A refund state on the order that is not terminal until the PSP says so |
+| Four payout feeds | Online PSP, terminal provider, marketplaces, B2B receivables | One reconciliation job per feed, one owner (W5: finance by daily batch, a reconciliation job per flow) |
 
-The Double Refund is the table's third row. The fix had two parts: one writer for refunds (the returns portal, through the shop platform; the ownership rule from [[returns-and-exchanges]]), and a daily comparison of PSP refunds against credit notes, a reconciliation job in the sense of [[events-consistency-and-reconciliation]]. The companion book RECONCILED's [[traceability-and-reconciliation]] treats the discipline in full.
-
-## The Choices
-
-Each rule so far leaves the merchant a decision about where to apply it. Three decisions shape the handoff, each with three realistic answers.
-
-**Where is tax computed?** In the shop platform's rate tables, in a **tax engine** (Avalara, Vertex, TaxJar and others) called from checkout and invoicing, necessary for the United States, or in the ERP at invoicing only, which is wrong for a consumer shop that must show the final price.
-
-**Where is the invoice issued?** By the shop platform, by the ERP, or by an invoicing service in front of several ERPs, the Group answer where some countries run **state clearance** (the tax authority's platform must accept an invoice before it is valid, as in Italy and Poland).
-
-**How does the ledger learn?** From one posting per paid order, from documents in a daily idempotent batch (the rule of W5, Waypoint's integration standard, at Kestrel & Pine), or from summary journals with the detail in a **sub-ledger**, a detailed book of every order whose totals feed the general ledger ([[designing-financial-ledgers]]).
-
-| Decision | Simplest answer and its risk | Usual answer and its risk | Scaled answer |
-| --- | --- | --- | --- |
-| Tax computed | Shop platform rate tables; a rate maintained in four places, one per channel | Tax engine or one rate service behind every channel; cost per call | Engine plus nexus tracking per entity |
-| Invoice issued | The shop platform; a second numbering authority once the ERP exists | The ERP, one sequence per legal entity; connector failures hide invoices | An invoicing service in front of several ERPs |
-| Ledger fed | Posting per order on payment; revenue before dispatch, duplicates on retry | Documents in a daily idempotent batch; a failed batch must be noticed | Summary journals plus a sub-ledger; detail outside the general ledger |
-
-The author's recommendation for a merchant at Kestrel & Pine's stage is the usual answer in each row: destination rates maintained once, invoices and credit notes from the ERP only, documents posted in a daily idempotent batch with a job that lists the orders that should have been invoiced and were not. The Three-Status Order was six days of *Not invoiced* because that last job did not exist.
-
-## Across Scale Stages: When It Fits and When It Limits
-
-The shape of the handoff does not change with scale: documents, identifiers, one issuer, one match. What changes is the number of feeds and legal entities, and whether anyone can still do the match by eye. Kestrel & Pine's answer is W5: finance moves by daily batch, with a reconciliation job per flow. The table shows the feeds and entities growing stage by stage.
-
-| Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |
-| --- | --- | --- | --- |
-| **1 — Starting** (under about €2M) | The shop platform's tax tables and tax-inclusive home-market prices; the shop platform's invoice or an accounting package fed by order export; one PSP payout feed matched by the bookkeeper | Gap-free, immutable invoice numbers; the order number passed to the PSP | The €10,000 OSS threshold crossed without noticing; invoices edited after issue |
-| **2 — Growing** (€2M–€20M) | OSS registration; destination rates per market; an ERP or accounting system as the invoice's system of record, fed by a connector; VIES checks and reverse-charge invoices for business customers | The connector idempotent per shipment and per return; invoices at dispatch, not at payment; a daily job for orders not invoiced; refunds from one writer | Month-end takes a week; refunds reconciled by hand; revenue posted before dispatch; the first Peppol request from a Belgian customer |
-| **3 — Omnichannel** (€20M–€200M) | Four payout feeds (online PSP, terminals, marketplaces, B2B); invoicing out of the shop entirely, one sequence per legal entity across every channel; a tax engine or one rate service behind every channel; Peppol from the ERP | A reconciliation job per feed with a named owner; order-level matching or a sub-ledger so the general ledger stays readable; a regulatory calendar for three countries' mandates | The Double Refund; three definitions of "revenue"; marketplace VAT booked as if the merchant collected it |
-| **4 — Group** | Several legal entities and countries, some with state clearance systems; US nexus tracking; an invoicing service in front of several ERPs; a finance data pipeline consuming PSP reporting APIs | The order-to-ledger contract versioned and tested like any integration; one chart-of-accounts mapping per entity; intercompany invoices for stock moved between entities | Each brand's shop computes VAT its own way; month-end depends on one spreadsheet; an acquisition brings a second numbering authority |
-
+The Double Refund is the table's third row. The fix had two parts: one writer for refunds (the returns portal, through the shop platform; the ownership rule from [[returns-and-exchanges]]), and a daily comparison of PSP refunds against credit notes, a reconciliation job in the sense of [[events-consistency-and-reconciliation]]. RECONCILED's [[traceability-and-reconciliation]] treats the discipline in full.
 
 ## Eva's Order in the Books, and Ardennes Trail Co.'s Peppol Invoice
 
-Two orders show the rules at work. **Eva's jacket.** Order #1072455, placed Tuesday 13 April 2027 at 21:14 on the Dutch storefront: a Ridgewalker jacket at €199 and two pairs of merino socks at €18, €235 in all, free shipping, paid by iDEAL (the Dutch bank-transfer method most online shoppers there use). Dutch consumer prices include 21% VAT, so the tax basis frozen on the order at checkout is:
+Two orders show the rules at work. **Eva's jacket.** Order #1072455, placed Tuesday 13 April 2027 at 21:14 on the Dutch storefront: a Ridgewalker jacket at €199 and two pairs of merino socks at €18, €235 in all, free shipping, paid by iDEAL (the Dutch bank-transfer method most online shoppers there use). Dutch consumer prices include 21% VAT, so net is gross ÷ 1.21, and the tax basis frozen on the order at checkout is:
 
 | Line | Gross | Net | VAT (21%) |
 | --- | --- | --- | --- |
@@ -236,15 +207,45 @@ The exchange: on 19 April Eva asks through the returns portal to exchange the ja
 
 **Ardennes Trail Co.'s invoice.** On Wednesday 21 April 2027 Ardennes Trail Co. (fictional), an outdoor shop in Namur, Belgium, orders 40 Ridgewalker jackets at the wholesale price of €95 through the B2B (business-to-business) portal, €3,800 excluding VAT *(illustrative order, at Kestrel & Pine's wholesale price)*; it ships from Duiven by bpost. The portal validates its Belgian VAT number in VIES; the order is an intra-EU business supply, so the VAT line is 0% with the reverse-charge mention, and payment is on 30-day terms, so no PSP is involved.
 
-The ERP issues the invoice at dispatch on 23 April from the same Dutch sequence, with both VAT numbers, the buyer reference (BT-10) and the order number, and sends it as a Peppol BIS Billing 3.0 invoice (Peppol's standard invoice format) through the EDI provider's access point, recording the delivery receipt.
+The ERP issues the invoice at dispatch on 23 April from the same Dutch sequence, with both VAT numbers, the buyer reference (BT-10), which the portal now asks for, and the order number, and sends it as a Peppol BIS Billing 3.0 invoice (Peppol's standard invoice format) through the EDI provider's access point, recording the delivery receipt.
 
 The entry is debit trade receivable €3,800, credit revenue €3,800 (April revenue once bpost delivers), no VAT; the receivable is due 23 May and is cleared when the bank transfer arrives quoting the invoice number. The Dutch VAT return reports the supply in the intra-EU sales listing.
 
+## The Choices
+
+Each rule the two orders followed leaves a merchant a decision about where to apply it. Three decisions shape the handoff, each with three realistic answers.
+
+**Where is tax computed?** In the shop platform's rate tables, in a **tax engine** (Avalara, Vertex, TaxJar and others) called from checkout and invoicing, necessary for the United States, or in the ERP at invoicing only, which is wrong for a consumer shop that must show the final price.
+
+**Where is the invoice issued?** By the shop platform, by the ERP, or by an invoicing service in front of several ERPs, the Group answer where some countries run **state clearance** (the tax authority's platform must accept an invoice before it is valid, as in Italy and Poland).
+
+**How does the ledger learn?** From one posting per paid order, from documents in a daily idempotent batch (W5 at Kestrel & Pine), or from summary journals with the detail in a **sub-ledger**, a detailed book of every order whose totals feed the general ledger ([[designing-financial-ledgers]]).
+
+| Decision | Simplest answer and its risk | Usual answer and its risk | Scaled answer |
+| --- | --- | --- | --- |
+| Tax computed | Shop platform rate tables; a rate maintained in four places, one per channel | Tax engine or one rate service behind every channel; cost per call | Engine plus nexus tracking per entity |
+| Invoice issued | The shop platform; a second numbering authority once the ERP exists | The ERP, one sequence per legal entity; connector failures hide invoices | An invoicing service in front of several ERPs |
+| Ledger fed | Posting per order on payment; revenue before dispatch, duplicates on retry | Documents in a daily idempotent batch; a failed batch must be noticed | Summary journals plus a sub-ledger; detail outside the general ledger |
+
+The author's recommendation for a merchant at Kestrel & Pine's stage is the usual answer in each row: destination rates maintained once, invoices and credit notes from the ERP only, documents posted in a daily idempotent batch with a job that lists the orders that should have been invoiced and were not. The Three-Status Order was six days of *Not invoiced* because that last job did not exist.
+
+## Across Scale Stages: When It Fits and When It Limits
+
+The shape of the handoff does not change with scale: documents, identifiers, one issuer, one match. What changes is the number of feeds and legal entities, and whether anyone can still do the match by eye. Kestrel & Pine's answer is W5: finance moves by daily batch, with a reconciliation job per flow.
+
+| Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |
+| --- | --- | --- | --- |
+| **1 — Starting** (under about €2M) | The shop platform's tax tables and tax-inclusive home-market prices; the shop platform's invoice or an accounting package fed by order export; one PSP payout feed matched by the bookkeeper | Gap-free, immutable invoice numbers; the order number passed to the PSP | The €10,000 OSS threshold crossed without noticing; invoices edited after issue |
+| **2 — Growing** (€2M–€20M) | OSS registration; destination rates per market; an ERP or accounting system as the invoice's system of record, fed by a connector; VIES checks and reverse-charge invoices for business customers | The connector idempotent per shipment and per return; invoices at dispatch, not at payment; a daily job for orders not invoiced; refunds from one writer | Month-end takes a week; refunds reconciled by hand; revenue posted before dispatch; the first Peppol request from a Belgian customer |
+| **3 — Omnichannel** (€20M–€200M) | Four payout feeds (online PSP, terminals, marketplaces, B2B); invoicing out of the shop entirely, one sequence per legal entity across every channel; a tax engine or one rate service behind every channel; Peppol from the ERP | A reconciliation job per feed with a named owner; order-level matching or a sub-ledger so the general ledger stays readable; a regulatory calendar for three countries' mandates | The Double Refund; three definitions of "revenue" |
+| **4 — Group** | Several legal entities and countries, some with state clearance systems; US nexus tracking; an invoicing service in front of several ERPs; a finance data pipeline consuming PSP reporting APIs | The order-to-ledger contract versioned and tested like any integration; one chart-of-accounts mapping per entity; intercompany invoices for stock moved between entities | Each brand's shop computes VAT its own way; month-end depends on one spreadsheet; an acquisition brings a second numbering authority |
+
+
 ## When It Goes Wrong
 
-Not every order goes as Eva's did. **The tax that differs.** The invoice VAT differs from the checkout VAT because the address, the lines or the rate changed in between. Compare the order's frozen tax basis with the invoice at posting and list the differences. The invoice is right by definition; if the customer was promised a lower gross price, the difference is a commercial discount, not a tax correction.
+Not every order goes as Eva's and Ardennes Trail Co.'s did. **The tax that differs.** The invoice VAT differs from the checkout VAT because the address, the lines or the rate changed in between. Compare the order's frozen tax basis with the invoice at posting and list the differences. The invoice is right by definition; if the customer was promised a lower gross price, the difference is a commercial discount, not a tax correction.
 
-**The invoice that never came.** This is the first of two failures in the invoice itself. The invoice waits for a trigger that does not arrive: an "order complete" message that a short pick prevents (the Three-Status Order), or a connector batch that fails on one order and continues with the rest. The order is *Delivered* in the shop platform and *Not invoiced* in the ERP for days. Detect it with a daily list of shipped orders older than one day with no invoice, the single most valuable report in this chapter; recover by invoicing the listed shipments, which requires the trigger to be idempotent per shipment.
+**The invoice that never came.** The next two failures are in the invoice itself. The invoice waits for a trigger that does not arrive: an "order complete" message that a short pick prevents (the Three-Status Order), or a connector batch that fails on one order and continues with the rest. The order is *Delivered* in the shop platform and *Not invoiced* in the ERP for days. Detect it with a daily list of shipped orders older than one day with no invoice, the single most valuable report in this chapter; recover by invoicing the listed shipments, which requires the trigger to be idempotent per shipment.
 
 **The invoice that came twice.** The connector retried after a timeout and the ERP created two invoices for one order. Detect it as two invoices referencing one order number; recover with a credit note against the duplicate, never a deletion, because the sequence must stay gap-free; prevent it with an idempotency key per shipment on the invoice-creation call.
 
@@ -254,7 +255,7 @@ Not every order goes as Eva's did. **The tax that differs.** The invoice VAT dif
 
 ## What to Take Away
 
-Eva's payment reached the bank inside a smaller payout, net of fees and other customers' refunds, and finance can still account for every euro because each order leaves documents with identifiers. The ERP alone issues invoices and credit notes, one invoice per shipment and each credit note referencing the invoice it corrects; the payout report lists every payment, fee and refund; and the order number and the batch reference join them to the bank line. This is why the shop owes finance those facts and identifiers. That answers Sanne's two questions: the ERP issues the invoice, and the proof is the monthly match on those identifiers, backed by the two daily checks.
+Eva's payment reached the bank inside a smaller payout, net of fees and other customers' refunds, and finance can still account for every euro because each order leaves documents with identifiers. The ERP alone issues invoices and credit notes, one invoice per shipment and each credit note referencing the invoice it corrects; the payout report lists every payment, fee and refund; and the order number and the batch reference join them to the bank line. That answers Sanne's two questions: the ERP issues the invoice, and the proof is the monthly match on those identifiers, backed by the two daily checks.
 
 **Established.**
 
@@ -285,7 +286,7 @@ Eva's payment reached the bank inside a smaller payout, net of fees and other cu
 6. How many payout feeds do we reconcile, who owns each, and how long did the last close take?
 7. Which e-invoicing mandates apply to our customers by country, from which dates, and who owns the calendar?
 
-This chapter's answer about invoices and the books closes Part III. The part opened with a shopper who had paid while the order still read unpaid, a warehouse that could not tell whether to dispatch, and support that could not answer. Its four chapters each started from a Kestrel & Pine case: Eva's order created while her iDEAL payment was still pending, the Double Refund, the Three-Status Order, and Sanne's April close with its rejected Peppol invoice. They look like four problems in four systems: checkout, the payment provider, the order record and the ERP. They are one problem. After the cart, each fact about an order is first known by a system the merchant does not control, and it reaches the other systems by message.
+This chapter closes Part III. The part opened with a shopper who had paid while the order still read unpaid, a warehouse that could not tell whether to dispatch, and support that could not answer. Its four chapters each started from a Kestrel & Pine case: Eva's order created while her iDEAL payment was still pending, the Double Refund, the Three-Status Order, and Sanne's April close with its rejected Peppol invoice. They look like four problems in four systems: checkout, the payment provider, the order record and the ERP. They are one problem. After the cart, each fact about an order is first known by a system the merchant does not control, and it reaches the other systems by message.
 
 The systems therefore agree only where four rules hold: the order has one home with three status lines, every action that moves money or issues a legal document has one writer, every message carries a business key, and a scheduled comparison checks every copy against its source. Across the part, most of Kestrel & Pine's remedies are rules, not purchases: a read-only provider console, so support can no longer refund by hand, the return id as the refund's key, so a repeated request cannot pay twice, one invoice per shipment, a daily list of shipped orders without an invoice, and a decision about the order's home taken before the OMS was bought. Before any product is discussed, take one order at your own company and name the system that creates it, the one that knows whether it is paid, the one that holds its status per shipment and the one that issues its invoice, with the key and the comparison at each handoff. Start with the two daily checks.
 

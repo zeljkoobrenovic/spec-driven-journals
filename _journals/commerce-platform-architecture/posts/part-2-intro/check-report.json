@@ -1,76 +1,71 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/part-2-intro/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/part-2-intro/index.md",
-  "spec_sha": "641f4f935f4ab454",
-  "draft_sha": "2bfde815ae77c3c2",
-  "run_at": "2026-11-12T13:13:45+01:00",
-  "round": 3,
+  "spec_sha": "d300270b61a20cf6",
+  "draft_sha": "af002d2c3030f928",
+  "run_at": "2026-11-12T20:42:56+01:00",
+  "round": 4,
   "verdict": "escalate",
   "reverse_outline": [
     {
+      "draft_locator": "Introduction callout",
+      "summary": "Three takeaways: catalog facts have separate owners and change rates; channel copies need a source and reconciliation; promises are computed once and frozen",
+      "matched_spec_paragraph": "p02"
+    },
+    {
       "draft_locator": "Introduction ¶1",
-      "summary": "A product page mixes slow-changing description with fast-changing stock, so one update schedule makes it wrong about buyability",
+      "summary": "One product page mixes facts that change at very different speeds, so a single update schedule leaves it wrong",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Part II's claim: content, price, discount and stock need four owners because they change at different speeds / channels that cannot ask the owner show copies, which need a named source and scheduled comparison",
+      "summary": "One record per fact means four owners (content, price, discount, stock); search owns none and only shows copies",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Once an order is placed, its price, discount and promised unit are fixed on the order",
-      "matched_spec_paragraph": "p02a"
-    },
-    {
-      "draft_locator": "Introduction ¶4",
-      "summary": "Where the part sits in the order journey: all these facts are needed before Eva adds her jacket to the cart",
+      "summary": "Where Eva's order stands: what catalog, search, price, stock and shipping must settle before add-to-cart",
       "matched_spec_paragraph": "p03"
     },
     {
-      "draft_locator": "Introduction ¶5",
-      "summary": "The claim is tested on Kestrel & Pine cases where one fact was wrong, each chapter opening with a disagreement between copies",
+      "draft_locator": "Introduction ¶4",
+      "summary": "Each chapter opens on a Kestrel & Pine case where two copies of one fact disagreed",
       "matched_spec_paragraph": "p04"
     },
     {
-      "draft_locator": "Introduction ¶6",
-      "summary": "Roadmap: five questions, one chapter each, in an order where each builds on the earlier ones",
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the five chapter questions in order",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Chapters in this part ¶1",
-      "summary": "Product information chapter: who owns product content and identifiers, and why a PIM",
+      "summary": "Product information chapter: PIM owns content and identifiers, separating products, variants, SKUs and barcodes",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Chapters in this part ¶2",
-      "summary": "Pricing chapter: who selects a price and how channels get it, shown by the €179 German price failure",
+      "summary": "Pricing chapter: who selects prices; the €179 German error fixed by dated prices and source comparison",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Chapters in this part ¶3",
-      "summary": "Promotions chapter: how offers combine and reach invoices and refunds, shown by the Black Friday double discount / discounts are distinct from gift-card and loyalty balances the merchant owes",
+      "summary": "Promotions chapter: combining offers and carrying discounts to invoices/refunds (Black Friday stacking loss); separately, gift-card and loyalty balances kept apart",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Chapters in this part ¶4",
-      "summary": "Search chapter: the index is a maintained copy that owns no data, and fixing its inputs improves results",
+      "summary": "Search chapter: index as a maintained copy; better data and synonyms, not the engine, fix results",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "Chapters in this part ¶5",
-      "summary": "Inventory chapter: physical stock versus what may still be sold, with owners for stock and commitments, shown by the Black Friday oversell",
+      "summary": "Inventory chapter: physical stock vs sellable availability; Black Friday oversell fixed by deriving availability from stock and commitments",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What the Five Answers Add Up To, and Where to Begin ¶1",
-      "summary": "Together the answers give every fact an owner and every copy a checked source, so first ask which fact is wrong and who owns it before asking for faster sync",
+      "summary": "Synthesis: every fact gets an owner and every copy a source; diagnose by asking which fact and owner; start with product information",
       "matched_spec_paragraph": "p11"
-    },
-    {
-      "draft_locator": "What the Five Answers Add Up To, and Where to Begin ¶2",
-      "summary": "How to read the part: jump to the chapter for your decision, or read in order starting with product information",
-      "matched_spec_paragraph": "p12"
     }
   ],
   "results": [
@@ -82,186 +77,335 @@
       "finding": "sections, unit counts and unit forms match the spec"
     },
     {
-      "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 13 outline summaries state the controlling idea of the aligned spec paragraph, in the spec's order. Two summaries are thinner than the spec idea without contradicting it: the p05 summary gives the five questions and the build-on order but not the search exception; the p10 summary omits that the chapter solves the problem the search chapter leaves open.",
+      "finding": "Every outline summary matches the controlling idea of the aligned spec paragraph (p01-p11); the KEY POINTS callout matches the evidence declared for p02.",
+      "criterion": "reverse_outline_matches_spec",
       "severity": "blocker"
     },
     {
-      "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
-      "verdict": "pass",
-      "finding": "Introduction ¶2 (p02), marked two_ideas by the outliner: ruled one idea. The paragraph opens on Part I's rule (one record per fact, every other value a copy) and applies both halves of it: the records become four owners, the other values become copies with a source and a comparison. Both of the outliner's summaries are the two halves of that one rule, which is also the part's single claim.",
-      "draft_locus": "Introduction ¶2",
-      "spec_locus": "/introduction/paragraphs/1",
-      "severity": "major"
-    },
-    {
-      "criterion": "one_controlling_idea_per_paragraph",
-      "check": "one_controlling_idea_per_paragraph",
-      "verdict": "pass",
-      "finding": "Chapters in this part ¶3 (p08), marked two_ideas by the outliner: ruled one idea, narrowly. The unit describes one chapter, and the gift-card sentence is a scope note of that chapter with its reason given ('which are money the merchant owes'); it belongs to the same supporting claim, P2-3. Residual weakness, not a failure: the sentence opens with 'also' and is not tied to the bolded question; saying why the separation matters for refunds would close it.",
-      "draft_locus": "Chapters in this part ¶3",
+      "verdict": "fail",
       "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Chapters in this part ¶3",
+      "quote": "Gift-card and loyalty balances are kept apart.",
+      "finding": "The outliner needed two phrases for this unit: the Black Friday stacking case, and 'separately' the gift-card and loyalty balances. The spec lists the balances in p08's idea, but the draft states them as a bare closing sentence with no link to the discounts the paragraph is about (P2-3: they are balances the merchant owes, not discounts), so they read as a second idea. Both flow readers also asked 'kept apart from what?'.",
+      "fault": "draft",
+      "criterion": "one_controlling_idea_per_paragraph",
       "severity": "major"
     },
     {
-      "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit ties to the claim: p01 is its example, p02 and p02a state it, p03 places its four facts in the order, p04 names the cases it is tested on, p05 orders the questions; p06 to p10 introduce the chapters for P2-1 to P2-5, with P2-6 named in the pricing, search and inventory paragraphs; p11 and p12 conclude.",
+      "finding": "Each unit traces to the part thesis: p01-p02 state and illustrate the claim, p03-p05 place it and give the roadmap, p06-p10 introduce the chapters arguing P2-1 to P2-6, p11 synthesizes.",
+      "criterion": "paragraph_traces_to_thesis",
       "severity": "major"
     },
     {
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "A season entered four times motivates a **product information management system (PIM)**",
+      "finding": "The case is given without what it shows (spec: with no owner for product content each system keeps its own version). The terms reader could not tell that 'entered four times' means typed into four systems, and both flow readers said this case did not read as two copies of one fact disagreeing, which p04 promises.",
+      "fault": "draft",
       "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Each item is followed or accompanied by what it shows: the jacket example by 'Updating both on the same schedule can leave the page accurate about the product but wrong about whether it can be bought'; Figure 1 and Figure 2 by captions that say what they show; Eva's order by 'All of these facts are needed before \"add to cart\"'; the season entered four times by 'no version was the owner's, which motivates a PIM'; the €179 price by the three remedies that address it; the 2,860 orders by 'nobody owned how offers combine'; the waterproof jacket by 'correcting them improves ... search results without replacing the engine'; the oversell by 'shows the cost of delayed copies'.",
+      "finding": "Figures 1 and 2 have captions that state what they show; the KEY POINTS callout, the €179/nine days/€8,200, 2,860 orders/€52,000, waterproof jacket and 1,340-jacket cases each come with what they show.",
+      "criterion": "evidence_is_explained",
       "severity": "major"
     },
     {
-      "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "fail",
-      "finding": "Declared: additional_support, carrying over the claim about owners and copies and introducing its last step. The draft's 'One step remains' does not say what the step belongs to: the paragraph before it is not a sequence of steps, and nothing names the claim. Both flow readers stopped here (flow1: 'It was not clear what this is a step of; nothing before it was a sequence of steps'; flow2: '\"Step\" made me think of the order's thirteen steps, but it means a remaining part of the argument'). Fix: name the claim, e.g. 'The claim has one more part: once an order is placed, ...'.",
-      "spec_locus": "/introduction/paragraphs/2/transition_in",
-      "draft_locus": "Introduction ¶3",
-      "quote": "One step remains: once an order is placed, the price, the discount and the unit promised to it are fixed on that order",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶3 -> Introduction ¶4",
+      "quote": "Each chapter opens on a case at **Kestrel & Pine, the fictional outdoor brand** selling her jacket, where two copies of one fact disagreed.",
+      "finding": "The declared relationship is contrast (Eva's order needs each fact right; the cases are where one was wrong). The sentence carries over 'her jacket' but signals no contrast; it reads as a further description, not as the turn from what must be right to where it went wrong.",
       "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
       "severity": "major"
     },
     {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Chapters in this part ¶1 -> ¶2",
+      "quote": "[[pricing-architecture]] decides **who selects a price and how channels receive it**.",
+      "finding": "Declared: a sequence phrase at the start carrying over the variants the product chapter identified (prices are stored per variant). The paragraph opens with no phrase linking it to the product chapter; flow reader 2 noted that only the promotions and inventory paragraphs say why they come where they do. The decision log records the linking phrases as cut for length while the spec still declares them, so spec and draft disagree.",
+      "fault": "unclear",
       "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Chapters in this part ¶3 -> ¶4",
+      "quote": "[[commerce-search-and-discovery]] treats **the search index as a maintained copy** of product, price, stock and review data.",
+      "finding": "Declared: contrast (content, price and discount each have an owner; the index holds copies of all of them). 'A maintained copy' implies the contrast but nothing marks the turn from owners to a holder of copies; both flow readers said it was unclear why search comes fourth. The decision log records the linking phrases as cut while the spec still declares this one.",
+      "fault": "unclear",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "All other boundaries express the declared relationship and pick up the declared known information: p02 ('Part I ended on a rule ... Part II applies it to the facts a shopper reads before buying'), p03 ('Where we are in the order's journey'; see the flow result on 'these facts'), p04 ('needs each of those facts to be right ... cases in which one of those facts was wrong'), p05 ('takes those disagreements as five questions in order'), the chapter section (the question list and the order rule at the end of p05), p07 ('then establishes, per variant'), p08 ('starts from the selected price'), p10 ('solves a problem the search chapter leaves open'), the conclusion ('Together, the five answers'), p12 ('the chapter for its fact'). Weakest of these: p09's contrast is carried only by 'the index owns none of it' and does not name the owned facts of the three chapters before it; p12's cause-effect has no marker. Neither stopped a reader.",
+      "finding": "The remaining boundaries express their declared relationships: p01->p02 elaboration ('Under Part I's rule of one record per fact'), p02->p03 place ('Where we are in the order's journey'), p04->p05 sequence ('The chapters ask, in order'), p05->chapters section elaboration, p07->p08 sequence ('starts from that price'), p09->p10 sequence ('comes last'), chapters->conclusion summary ('Together, the answers').",
+      "criterion": "transition_expresses_declared_relationship",
       "severity": "major"
     },
     {
-      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Both flow readers lost the referent of 'these facts': the sentence before it (p02a) is about what happens after the order is placed, so the pointer has to reach back past it and Figure 2 to the four facts of p02. flow1: '\"these facts\" briefly seemed to point at the frozen values. I re-read both.' flow2: 'I had to look back two paragraphs to find \"these facts\".' Both name the position of p02a as the cause and give the same one reordering (move 'One step remains' to the end of the claim paragraph before Figure 2, or after Eva's paragraph / to the closing), so the difficulty comes from the declared order: an after-the-order statement stands between the four facts and the paragraph that places them before 'add to cart'. A prose-only repair exists and may be enough for the author: name the facts in p03 ('Content, price, discount and stock status are all needed before \"add to cart\"').",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "quote": "All of these facts are needed before \"add to cart\".",
+      "spec_locus": "/introduction/thesis_statement/placement",
+      "draft_locus": "Introduction callout",
+      "quote": "**A promise is computed once, in one place, and then frozen.** The price is copied to the invoice, the discount allocated to every line of the order, and the last unit committed to exactly one order.",
+      "finding": "Both flow readers found KEY POINTS bullet 3 floating: the body never returns to promises being computed once and frozen, and per-line allocation appears nowhere else. The spec declares that bullet 3 is carried by the KEY POINTS alone (p02a was cut), so the difficulty comes from the spec's content.",
       "fault": "spec",
-      "corroborated_by": "reader-flow2, item 3, second bullet ('I had to look back two paragraphs to find \"these facts\"') and item 4",
+      "corroborated_by": "flow reader 2, lost-thread item 2 (KEY POINTS bullet 3 'frozen ... allocated to every line'; body never returns to promises)",
+      "criterion": "flow_is_followable",
       "severity": "major"
     },
     {
-      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Both readers re-read the sentence: 'four' followed by 'the fourth' reads as if the fourth were one of the four. flow1: 'I had to count: the fourth of five is the exception, not one of the \"four\".' flow2: 'reads at first as a contradiction, until I worked out that the four are questions 1, 2, 3 and 5'. The order is fine; the wording hides it. Fix: say which questions, e.g. 'The fourth question concerns search, which owns none of the four facts; the other four take one fact each.'",
-      "spec_locus": "/introduction/paragraphs/5",
-      "draft_locus": "Introduction ¶6",
-      "quote": "Four questions concern the four facts; the fourth concerns search.",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Introduction callout; Chapters in this part ¶5",
+      "quote": "The €179 German price and the marketplace selling an empty shelf on Black Friday were copies nobody compared with their source.",
+      "finding": "Both readers could not be sure the 'marketplace selling an empty shelf' is the same event as 'the Black Friday oversell of 1,340 jackets'; the body never mentions a marketplace, and flow reader 2 also notes the bullet names incidents before they are met.",
       "fault": "draft",
-      "corroborated_by": "reader-flow2, item 3, fourth bullet ('I re-read this ... reads at first as a contradiction')",
+      "corroborated_by": "flow reader 2, lost-thread items 1 and 10 (KEY POINTS bullet 2 names incidents before met; marketplace vs oversell blur)",
+      "criterion": "flow_is_followable",
       "severity": "major"
     },
     {
-      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Both readers could not tell what 'its' refers to. flow1: '\"Its\" has no clear owner (the chapter's? the fact's?)'. flow2: 'I could not tell whose copies \"its\" means: the chapter's, the fact's or Kestrel & Pine's.' Fix: name the owner, e.g. 'Each chapter starts with one disagreement between two of the company's copies of a fact.'",
-      "spec_locus": "/introduction/paragraphs/4",
-      "draft_locus": "Introduction ¶5",
-      "quote": "Each chapter starts with one disagreement between its copies.",
-      "fault": "draft",
-      "corroborated_by": "reader-flow2, item 3, third bullet ('I could not tell whose copies \"its\" means')",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "One reader only (flow1): 'I parsed \"cannot shows\" twice before it resolved. Search also arrives here with no introduction, as a fifth thing in a paragraph about four.' Not reported by flow2. Fix: 'A channel that cannot ask shows a copy', and give search a clause of its own.",
       "spec_locus": "/introduction/paragraphs/1",
       "draft_locus": "Introduction ¶2",
-      "quote": "A channel that cannot shows a copy, and so does search, which owns none of the four facts.",
+      "quote": "Under Part I's rule of one record per fact, content, price, discount and stock need four owners, not one catalog: they change at different speeds.",
+      "finding": "Both readers re-read this sentence to see how the rule and the different speeds combine into the claim; the colon carries the reasoning, and discount enters though the opening paragraph showed only description and stock.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow reader 2, lost-thread item 3 (same sentence: 'colon does a lot; re-read how two reasons combine')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
     },
     {
-      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "One reader only (flow1): the callout's second case is 'never named again in those words (I assume it is the Black Friday oversell)'. The chapter list calls it 'The Black Friday oversell of 1,340 jackets' and never mentions a marketplace or an empty shelf; the AC-2 reader also listed the two as separate cases. Not reported by flow2. The spec's decision log records that the callout wording is the author's and was kept. Fix: one name for the case in both places.",
-      "spec_locus": "/introduction/paragraphs/1/evidence/0",
-      "draft_locus": "Introduction callout",
-      "quote": "The €179 German price and the marketplace selling an empty shelf were copies nobody compared with their source.",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Search owns none and shows copies.",
+      "finding": "Both readers found the sentence abrupt: search has not been mentioned before and enters in a fragment-like sentence; the search index is glossed only later, in Figure 2's caption.",
       "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 4 (same sentence: 'abrupt; new actor in fragment-like sentence')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "and her €235 basket must qualify for free shipping.",
+      "finding": "Both readers could not tie free shipping to any chapter (it is meant as the discount fact, but the promotions paragraph never mentions it); reader 2 also stopped to reconcile €235 with €199.",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 6 ('€235 vs €199 stopped to reconcile; free shipping not tied to a chapter')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/flow/rationale",
+      "draft_locus": "Introduction ¶3",
+      "quote": "**Where we are in the order's journey.** Before Eva clicks \"add to cart\" on 13 April 2027",
+      "finding": "Flow reader 1 felt the Eva paragraph, placed after Figure 2, breaks the move from the recommended shape to the roadmap and suggested moving it after the Kestrel & Pine sentence or after the opening. Flow reader 2 found its placement reasonable. The position is the spec's declared order.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
       "severity": "minor"
     },
     {
-      "criterion": "known_before_new",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Each chapter opens on a case at **Kestrel & Pine, the fictional outdoor brand** selling her jacket, where two copies of one fact disagreed.",
+      "finding": "Both readers found the promise not borne out: the season entered four times, the leftover campaign setting and the missing attributes and synonyms are not presented as two copies of one fact disagreeing. The spec intends each case as a copy disagreement (p06's evidence: each system keeps its own version), but the chapter paragraphs do not show it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 7 (same sentence: 'not borne out')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5 -> Chapters in this part",
+      "quote": "The chapters ask, in order: who owns product content and identifiers, who selects a price, how discounts combine and reach invoices and refunds, what feeds the search index, and what \"in stock\" means.",
+      "finding": "Flow reader 1 found the roadmap stated twice in a row (the five questions, then the chapter list repeating them). Flow reader 2 did not report it. The spec keeps p05 deliberately for AC-1.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Chapters in this part ¶3",
+      "quote": "Gift-card and loyalty balances are kept apart.",
+      "finding": "Both readers asked 'kept apart from what?'.",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 8 (same sentence)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/flow/rationale",
+      "draft_locus": "Chapters in this part ¶4 and ¶5",
+      "quote": "[[inventory-and-availability]] comes last and distinguishes **physical stock from what a channel may still sell**.",
+      "finding": "Both readers marked the positions of search and inventory unclear: search copies stock, yet stock comes after it, and 'comes last' is stated without a reason. The spec's section rationale gives the reason (the part ends on the unit committed at checkout, where Part III begins), but the draft no longer says it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, section notes ('unclear why search is fourth; inventory \"comes last\" stated but not explained') and lost-thread item 9",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
       "check": "known_before_new",
       "verdict": "fail",
-      "finding": "'allocated to every line' is used in the callout and nowhere explained. Discount allocation is on the audience's does_not_know list ('only named here'), and the body gives the same point in plain words ('how discounts reach invoices and refunds') without connecting them; 'line' (an order line) is not introduced on this page. A flow reader reported it: flow2, 'the key points say \"the discount allocated to every line\"; \"allocated\" and \"line\" are not explained on this page' (the reader rated it minor). Fix: plain words in the bullet, e.g. 'the discount is shared out over the items on the order'.",
-      "spec_locus": "/intent/audience/does_not_know/2",
-      "draft_locus": "Introduction callout",
-      "quote": "the discount allocated to every line",
+      "spec_locus": "/audience/does_not_know/2",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "dated prices and comparing copies with their source fix it.",
+      "finding": "'Dated prices' is never glossed, though does_not_know says effective-dated prices are glossed in a clause where the chapter list uses them. The terms reader and flow reader 1 (item 9, guessed 'effective dates') both did not understand it.",
       "fault": "draft",
-      "corroborated_by": "reader-flow2, item 3, sixth bullet ('\"allocated\" and \"line\" are not explained on this page')",
-      "severity": "major"
-    },
-    {
+      "corroborated_by": "flow reader 1, lost-thread item 9 ('dated prices' not understood); also on does_not_know and never given",
       "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
       "check": "known_before_new",
-      "verdict": "pass",
-      "finding": "All other terms are known or given where first used: SKU and GTIN appear only in plain words ('internal stock codes and global barcode identifiers'); the search index is glossed in Figure 2's caption before the roadmap uses it; PIM is spelled out; commitments are glossed ('units already promised to orders'); dated prices appear as 'prices with a start date'; reconciliation is glossed in Figure 2's caption. Each paragraph opens from something already introduced, except the two openings reported under the transition and flow checks.",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "**Every channel shows a copy, and a copy needs a source and a reconciliation.**",
+      "finding": "'Reconciliation' is used in KEY POINTS before anything explains it; the only gloss is in Figure 2's caption, and the body never introduces it (terms reader item 2).",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 5 (Figure 2 caption: 'reconciliation' new concept; body never introduces it)",
+      "criterion": "known_before_new",
       "severity": "major"
     },
     {
-      "criterion": "no_weak_introduction_pattern",
-      "check": "no_weak_introduction_pattern",
-      "verdict": "pass",
-      "finding": "None of the weak patterns: the introduction opens on a specific example (one jacket page, two facts with different speeds), states the claim and gives a roadmap.",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Chapters in this part ¶5",
+      "quote": "the remedy derives availability from owned stock and commitments (units promised to orders).",
+      "finding": "'Owned stock' is ambiguous for the reader (owned by whom, or stock with an owner?) (terms reader item 14).",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 11 ('unclear what \"owned\" stock means')",
+      "criterion": "known_before_new",
       "severity": "major"
     },
     {
-      "criterion": "no_weak_conclusion_pattern",
-      "check": "no_weak_conclusion_pattern",
-      "verdict": "pass",
-      "finding": "None of the weak patterns: it does not open with 'in conclusion', does not end on a rephrased thesis alone, adds no evidence and no new subtopic; it ends on a course of action and the hand-off to product-information.",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "the discount allocated to every line of the order",
+      "finding": "'Allocated to every line' (order lines, and why a discount is split across them) is not explained anywhere on the page (terms reader item 4).",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 2 ('did not understand ... \"allocated to every line\"')",
+      "criterion": "known_before_new",
       "severity": "major"
     },
     {
-      "criterion": "conclusion_synthesizes_and_answers_so_what",
-      "check": "conclusion_synthesizes_and_answers_so_what",
-      "verdict": "pass",
-      "finding": "States of the whole page what each chapter says of one fact (every fact an owner and a path to every channel; every copy, the search result included, a named source and a comparison), and gives the so-what: 'when a page or listing is wrong, ask first which fact is wrong and who owns it, and only then for faster synchronization'.",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1/evidence/0",
+      "draft_locus": "Introduction callout",
+      "quote": "**A promise is computed once, in one place, and then frozen.**",
+      "finding": "'Frozen' is never made concrete (terms reader item 5).",
+      "fault": "draft",
+      "corroborated_by": "flow reader 2, lost-thread item 2 ('did not understand \"frozen\"')",
+      "criterion": "known_before_new",
       "severity": "major"
     },
     {
-      "criterion": "conclusion_calls_back_to_introduction",
-      "check": "conclusion_calls_back_to_introduction",
-      "verdict": "pass",
-      "finding": "Returns to the element named in callback.to: 'the description, the price, the discount and the stock badge on the opening's product page', now seen as separate facts each with an owner.",
-      "severity": "major"
-    },
-    {
-      "criterion": "AC-1",
-      "check": "intro_predicts_content",
-      "verdict": "pass",
-      "finding": "The reader of the introduction alone named the five chapters in order and in the expected terms: who owns content and identifiers; who selects a price and how channels receive it; how discounts and offers combine and reach invoices and refunds; what feeds the search index, a copy that owns none of the facts; what 'in stock' means. For the fifth the reader gave 'what in stock means, and how the last unit is committed to exactly one order', not the expected physical stock against what a channel may still sell: the same subject, less exact. The reader also predicted the evidence (Kestrel & Pine cases, Eva's order, diagrams) and the tone.",
-      "severity": "major"
-    },
-    {
-      "criterion": "AC-2",
-      "check": "custom",
-      "verdict": "pass",
-      "finding": "The reader gave all three parts of the expected answer: the description may stay unchanged for a season while the last unit can go while the page is open; one schedule leaves the page accurate about the product and wrong about whether it can be bought; each fact needs its own owner, clock and path to every channel.",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/audience/does_not_know/2",
+      "draft_locus": "Introduction callout",
+      "quote": "and the last unit committed to exactly one order.",
+      "finding": "'Committed' is used in KEY POINTS before 'commitments (units promised to orders)' is glossed in the inventory paragraph (terms reader item 5). The gloss is given later, and no flow reader reported the term.",
+      "fault": "draft",
+      "criterion": "known_before_new",
       "severity": "minor"
     },
     {
-      "criterion": "AC-3",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Chapters in this part ¶4",
+      "quote": "Missing attributes and synonyms hid a waterproof jacket",
+      "finding": "The terms reader could only partly guess what 'attributes' and 'synonyms' mean for a search index (item 13). No flow reader reported it.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a concrete product page (intriguing example), not a placeholder, restated question, dictionary definition, 'dawn of man' or book report.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion is short, opens on synthesis ('Together, the answers'), adds no new subtopic or evidence, and ends on a course of action, not a rephrased thesis.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "It states what no single chapter paragraph states (each fact on the page gets an owner and each copy a source) and says why it matters ('When a page is wrong, ask first which fact is wrong and who owns it').",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'each fact on the opening page' returns to the product page of p01; flow reader 2 said the callback lands.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "From the introduction alone the reader named the five chapter subjects in order: product content and identifiers, price selection, how discounts combine and reach invoices and refunds, what feeds the search index, what 'in stock' means; it also predicted Kestrel & Pine cases, Eva's order and the figures as evidence, in a declarative tone. Matches the expected answer and the roadmap.",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader chose commerce-promotions for (a), citing how offers combine and how discounts reach invoices and refunds, and commerce-search-and-discovery for (b), citing the index as a maintained copy and the missing attributes and synonyms. Both match the expected answer.",
+      "finding": "The reader answered that the description can stay the same for a season while the last unit can sell out with the page open, so one schedule leaves the page right about the product and wrong about buyability, which is why each fact has its own owner and update path. Matches the expected answer.",
+      "criterion": "AC-2",
+      "severity": "minor"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "(a) commerce-promotions, for how offers combine and reach invoices and refunds (2,860 Black Friday orders); (b) commerce-search-and-discovery, the index as a maintained copy whose results depend on the attributes and synonyms fed in. Matches the expected answer.",
+      "criterion": "AC-3",
       "severity": "minor"
     }
   ]

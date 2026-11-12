@@ -18,19 +18,17 @@ logo: "assets/images/part-3-intro/logo.jpeg"
 <br>
 At Kestrel & Pine, the fictional outdoor brand, a shopper pays, but the order still appears unpaid because confirmation has not reached the shop. The warehouse cannot tell whether to dispatch it, and support cannot give a clear answer.
 
-Part III follows the click on "pay", where the catalog's facts become an order and money is taken. Checkout asks each owning system for a final answer. Afterwards a **payment service provider (PSP)** reports the money through a **webhook**, a server-to-server notification; the warehouse reports dispatch; the carrier reports delivery. These messages may arrive late, out of order or twice.
+Once the shopper clicks "pay" and checkout creates the order, a **payment service provider (PSP)** reports the money through a **webhook**, a server-to-server notification; the warehouse reports dispatch, the carrier delivery. These messages may arrive late, out of order or twice; until the PSP's message arrives, the order reads unpaid.
 
-So the part sets rules, one chapter for each of the four systems that handle the order in turn: checkout, the payment provider, the order record and finance's ledger. Checkout creates the order once despite retries. At the payment provider, every message carries a key, so a repeat changes nothing, and each action that moves money has one writing system. The order record keeps separate states for money, shipments and returns. The ledger is posted from documents, such as invoices and the provider's payout reports (a payout is its transfer of collected money to the merchant), and these are matched with the bank every month.
-
-![Diagram: The shape Part III recommends](assets/images/part-3-intro/fig01-shape-part-iii-recommends-checkout-creates.jpeg)
-**Figure 1:** *The shape Part III recommends: checkout creates the order once; the order is one hub fed by messages from the payment provider, the warehouse and the carrier; the ledger is fed by documents, not events; and a reconciliation compares orders, payouts and the bank on a schedule.*
-
-**Where we are in the order's journey.** Eva's order, the one this book follows, goes right. Her €235 jacket-and-socks cart becomes order **#1072455 at 21:14 on 13 April 2027**, initially with payment pending, like the order in the opening scene. The provider confirms it seconds later. An invoice follows on 14 April and finance matches the payout with the bank when it closes April's books in May.
+So the part sets rules, one chapter for each of four systems that handle the order in turn. Checkout creates the order once. Every message carries a key, so a repeat changes nothing, and at the payment provider each money movement has one writer. The order record keeps separate states for money, shipments and returns. Finance's ledger, its book of accounts, is written from invoices and payout reports of the provider's transfers to the merchant; every month these are matched with the bank.
 
 ![A relay of four stations, checkout, payment, order record and ledger, passing one order parcel from hand to hand.](assets/images/part-3-intro/part-3-order-relay.jpeg)
-**Figure 2:** *One order passes through four owners in Part III: checkout creates it, the payment provider settles it, the order record holds it, and the ledger ends it.*
+**Figure 1:** *One order passes through four systems in Part III: checkout creates it, the payment provider settles it, the order record holds it, and the ledger ends it.*
 
-Not every Kestrel & Pine order goes as smoothly. The company has no shared order record yet, and each chapter opens on one of its failures from the months before Eva's order.
+![Diagram: The shape Part III recommends](assets/images/part-3-intro/fig01-shape-part-iii-recommends-checkout-creates.jpeg)
+**Figure 2:** *The shape Part III recommends: checkout creates the order once; the order is one hub fed by messages from the payment provider, the warehouse and the carrier; the ledger is fed by documents, not events; and a reconciliation compares orders, payouts and the bank on a schedule.*
+
+**Where we are in the order's journey.** Unlike the opening order, Eva's, the book's running example, goes right. Her €235 jacket-and-socks cart becomes order **#1072455 at 21:14 on 13 April 2027**, with payment pending. The provider confirms it seconds later. An invoice follows on 14 April; finance matches the payout with the bank when it closes April's books in May.
 
 ## Chapters in this part
 
@@ -38,13 +36,13 @@ Not every Kestrel & Pine order goes as smoothly. The company has no shared order
 
 [[commerce-payments]] then follows the pending payment through **authorization, collection, settlement and payout**. January 2027's 212 duplicate refunds, costing €19,400, explain why a refund needs one authorized writer and an identifier shared across retries.
 
-[[order-management]] sets that money status beside the others: it gives **the order a shared home with separate payment, shipment and return states**. A fleece delivered before its socks left one customer with three contradictory statuses and eleven tickets. The chapter shows how to represent partial completion honestly, and when to add an **order management system (OMS)**.
+[[order-management]] then gives **the order a shared home with separate payment, shipment and return states**. A fleece delivered before its socks left one customer with three contradictory statuses and eleven tickets. The chapter shows how to represent partial completion honestly, and when to add an **order management system (OMS)**.
 
-Once the order's shipments are recorded, [[tax-invoicing-and-ledger]] connects **orders, invoices, payouts and the bank**. On the invoice, Eva's €235 splits into €194.21 net and €40.79 value-added tax. A Belgian wholesale invoice sent through Peppol, the network for structured invoices, shows why the system that issues an invoice must also record whether it was delivered or rejected.
+Last, [[tax-invoicing-and-ledger]] connects **orders, invoices, payouts and the bank**. Each legal entity (a company billing in its own name) numbers its invoices in one unbroken sequence, so only one system may issue them. Eva's invoice splits her €235 into €194.21 net and €40.79 value-added tax. A Belgian wholesale invoice, sent through Peppol, the network for structured invoices, shows why its issuer must also record whether it arrived or was rejected.
 
 ## Where to Begin
 
-Together, the chapters explain the opening's unpaid order: the provider's message, not the thank-you page, marks it paid. When systems disagree, look first for the missing rule: one creation, a key, one writer, separate states or the monthly match. Begin with [[cart-and-checkout]], where the relay of one order through four systems starts.
+The opening's unpaid order is now explained: the provider's message, not the thank-you page, marks it paid. Begin with [[cart-and-checkout]].
 
 ## Sources and Evidence
 

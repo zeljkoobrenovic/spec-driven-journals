@@ -14,26 +14,26 @@ logo: "assets/images/where-commerce-platforms-go-wrong/logo.jpeg"
 > **KEY POINTS:**
 >
 > * **Nearly every pattern is a promise one system made and another could not keep.** A storefront promises a unit the warehouse no longer has, a portal promises a refund the payment provider already sent, a page promises a delivery the warehouse's cut-off cannot meet. The sixteen patterns are the recurring ways the promise and its keeper come apart.
-> * **The patterns fall into four families, and the family tells you where to look.** Truth patterns are a fact with two writers; integration patterns are a message with no key, no contract or no owner; platform-and-change patterns are a decision copied from a bigger company or made on one date; governance patterns are a dependency, a deadline or an actor nobody owns.
-> * **The patterns travel in chains, and the chains start at the joins.** A Spaghetti Junction breeds Messages in a Bottle, which breed Phantom Stock, Schrödinger's Orders and Boomerangs; a Lynchpin sets up a Pulled Rug; a Giant's Boots ends as a Forked Platform or a Burned Bridge. Fixing the downstream symptom rarely holds; naming the origin usually does.
+> * **The patterns fall into four families, and the family tells you where to look.** Truth patterns are a fact with two writers (systems that may change it) or no owner; integration patterns are a message with no key (an id that marks a repeat), no contract (agreed fields and rules) or no owner; platform-and-change patterns are a decision copied from a bigger company or made on one date; governance patterns are a dependency, a deadline or an actor nobody owns.
+> * **The patterns travel in chains, which start at an unowned connector, an unwatched dependency or a decision copied without its reasons.** Fixing the downstream symptom rarely holds; naming the origin usually does.
 
 <br>
 The storefront accepts a sale, but the warehouse never receives the order. Both systems can remain available while the customer waits for a parcel nobody is preparing. Other failures follow the same shape: prices, stock or status cross a handoff (the point where one system passes a fact to the next) incorrectly. This guide names sixteen recurring patterns so you can recognize the warning signs, trace the mechanism and choose a remedy. The [[introduction]] gives the wider argument.
 
-Many patterns accumulate through reasonable local decisions: an app for a campaign, a script for a new channel or a shortcut for support. The risk becomes visible when someone examines their combined effect. Use the patterns to find that effect and assign responsibility. Finding a pattern is not finding someone to blame.
+Many patterns accumulate through reasonable local decisions: an app for a campaign, a script for a new channel or a shortcut for support. The risk shows only in their combined effect, which travels in chains from an unowned connector, an unwatched dependency or a copied decision. Find that origin and assign responsibility, not blame.
 
-Each entry gives a warning sign, mechanism, cost, remedy and reading links. Examples from **Kestrel & Pine, a fictional outdoor brand**, are invented, as are the opening quotes ([[meet-kestrel-and-pine]]). Public examples retain dates and sources; assigning one to a pattern is the author's interpretation. After the sixteen entries come the stage at which each pattern starts and hurts, the chains in which one sets off another, and three uses: a design review, a vendor demo and due diligence.
+Each entry gives a warning sign, mechanism, cost, remedy and reading links. Examples from **Kestrel & Pine, a fictional outdoor brand**, are invented, as are the opening quotes ([[meet-kestrel-and-pine]]). Public examples retain dates and sources; assigning one to a pattern is the author's interpretation. After the entries come the scale stages, the chains, and three uses: design reviews, vendor demos and due diligence.
 
 ## Sixteen Patterns to Recognize
 
-Four families organize the patterns: **truth**, disagreements over stock, orders, customers, returns and prices; **integration**, failures to exchange data reliably; **platform and change**, choices about capacity, structure and migration; and **governance**, responsibility for the systems and their changes.
+The four families of the key points come in the order a newcomer meets them: **truth** first, because customers see its symptoms in stock, orders, returns and prices; **integration**, which carries those facts; then **platform and change** and **governance**, which stay silent until an earlier pattern shows them.
 
 | Pattern | Warning sign | Family |
 | --- | --- | --- |
 | **The Phantom Stock** | Two channels sell the same last unit; "out of stock" cancellations rise in busy weeks. | Truth |
 | **Schrödinger's Order** | Support checks three systems to say where an order is, and they disagree. | Truth |
 | **The Familiar Stranger** | Nobody can say whether the store customer and the online customer are the same person, because each system counts customers its own way. | Truth |
-| **The Boomerang** | Refunds, restocking and credit notes are reconciled by hand after the return arrives, and sometimes twice. | Truth |
+| **The Boomerang** | Refunds, restocking and credit notes are matched up by hand after the return arrives, and sometimes twice. | Truth |
 | **The Price Nobody Can Explain** | The same product carries different prices in different channels, and nobody can say which system set which price or why. | Truth |
 | **The Spaghetti Junction** | Every pair of systems, sometimes every customer, has its own hand-built connector with its own owner, or none. | Integration |
 | **The Message in a Bottle** | Messages between systems are sent once and trusted; customers find the duplicates and the gaps. | Integration |
@@ -56,19 +56,19 @@ A warning sign is a prompt to look, not a verdict: **ask for the number that wou
 ![Storefront, phone and marketplace screens show a ghost jacket as in stock while the warehouse shelf beside them is empty.](assets/images/where-commerce-platforms-go-wrong/pattern-phantom-stock.jpeg)
 **Figure 1:** *The Phantom Stock: every channel sells from an aging copy of a stock number, so the shelf can be empty while the screens still say “in stock”.*
 
-**What it looks like.** The storefront's stock number is a copy of unknown age; click-and-collect promises what the store sold that afternoon.
+**What it looks like.** The storefront's stock number is a copy of unknown age; click-and-collect (buy online, collect in store) promises what the store sold that afternoon.
 
-**Why it happens.** The warehouse knows physical stock, while sales channels use copies. Scheduled updates introduce delay; extra apps and imports can change the same number. Define the authoritative source and permitted writers before trying to synchronize faster.
+**Why it happens.** The warehouse knows physical stock, while sales channels use copies. Scheduled updates introduce delay; extra apps and imports can change the same number.
 
-**What it costs.** Canceled orders, vouchers, marketplace penalties and seller ratings. Stock records are less accurate than assumed: the classic field study found 65% of about 370,000 inventory records inaccurate at one US retailer's stores (DeHoratius and Raman, *Management Science*, 2008; dated, still the field's reference). Even commercetools documents that its available quantity is eventually consistent "with a delay of up to 10 seconds" (n.d., accessed 2026-11).
+**What it costs.** Canceled orders, vouchers, marketplace penalties and seller ratings. Stock records are less accurate than assumed: the classic field study found 65% of about 370,000 inventory records inaccurate at one US retailer's stores (DeHoratius and Raman, *Management Science*, 2008; dated, still the field's reference).
 
-**At Kestrel & Pine (fictional).** The Ridgewalker jacket sells out at the Duiven warehouse at 19:40 on 27 November 2026. Stock updates pass from the warehouse management system (**WMS**) to the enterprise resource planning system (**ERP**) every 15 minutes, then hourly to the platform (the hosted shop software) and hourly to marketplaces. Sales continue for up to two hours: **1,340 units oversold**, **1,120 orders canceled or delayed**, about **€96,000 in costs**.
+**At Kestrel & Pine (fictional).** The Ridgewalker jacket sells out at the Duiven warehouse at 19:40 on 27 November 2026. Stock updates pass from the warehouse management system (**WMS**) to the enterprise resource planning system (**ERP**: finance, purchasing, invoicing) every 15 minutes, then hourly to the platform (the hosted shop software) and hourly to marketplaces. Sales continue for up to two hours: **1,340 units oversold**, **1,120 orders canceled or delayed**, about **€96,000 in costs**.
 
 December's store-pickup pilot repeats the problem: nightly store-stock updates leave **37 promised items** already sold.
 
-**In public.** Shopify's August 2026 developer changelog moved draft-order and transfer holds from its `reserved` to its `committed` inventory state (5 August 2026): the stock vocabulary changes under the apps that read it.
+**In public.** commercetools documents that its available quantity follows stock changes "with a delay of up to 10 seconds" (n.d., accessed 2026-11): even a vendor's own stock copy lags.
 
-**Remedy direction.** One writer per location's stock, changes published as events, available-to-promise (what a channel may still sell) computed in one place, copies reconciled so drift is measured. This is W1, the first of eight numbered decisions in Waypoint, Kestrel & Pine's 2027 repair program.
+**Remedy direction.** One writer per location's stock, changes published as events (messages saying what changed), available-to-promise (what a channel may still sell) computed in one place, copies reconciled (compared with their source) so drift is measured. This is W1, the first of eight decisions in Waypoint, Kestrel & Pine's 2027 repair program.
 
 **Where this book helps:** [[inventory-and-availability]] owns available-to-promise, reservations and buffers; [[boundaries-and-systems-of-record]] names the owner per fact; [[events-consistency-and-reconciliation]] measures the drift.
 
@@ -87,7 +87,7 @@ December's store-pickup pilot repeats the problem: nightly store-stock updates l
 
 **At Kestrel & Pine (fictional).** Order **#1052877** in December 2026, a fleece and a pair of socks: the fleece shipped on 7 December and the socks on 14 December after replenishment. The platform showed *Delivered* (a flow built by the merchant's web agency had marked the whole order fulfilled on the first warehouse confirmation), the WMS showed *In picking* and the ERP *Not invoiced*, for six days, while one customer opened **11 support tickets**.
 
-**In public.** Shopify's help documentation keeps separate order, payment and fulfillment status families on one order, and states that without a tracking number "no shipping updates are received" (n.d., accessed 2026-11).
+**In public.** Shopify's help documentation keeps separate order, payment and fulfillment status families on one order, and states that without a tracking number "no shipping updates are received" (n.d., accessed 2026-11): even the vendor gives one order several statuses.
 
 **Remedy direction.** One order record for every channel, with separate states for money, each shipment and returns, and a summary computed from the least-advanced shipment (Kestrel & Pine's W2).
 
@@ -100,17 +100,17 @@ December's store-pickup pilot repeats the problem: nightly store-stock updates l
 ![One shopper split into three separate customer cards held by online, store and loyalty systems, linked only by question marks.](assets/images/where-commerce-platforms-go-wrong/pattern-familiar-stranger.jpeg)
 **Figure 3:** *The Familiar Stranger: each channel keeps its own customer record, so one person becomes several strangers nobody can match.*
 
-**What it looks like.** A store cannot see an online order; a data-subject request becomes a search across nine systems.
+**What it looks like.** A store cannot see an online order; a data-subject request (a request to see or erase one's data) becomes a search across nine systems.
 
 **Why it happens.** Each channel's system has its own customer table, keyed on what it collects. Matching them is a project nobody owns, because every system works without it.
 
 **What it costs.** Duplicate marketing, blind service, and loyalty built on a wrong count. Under the GDPR a data-subject request must be answered within one month, extendable by two (Regulation (EU) 2016/679, Article 12(3), 2016); a merchant that cannot find the person in all its systems cannot meet it.
 
-**At Kestrel & Pine (fictional).** Eva Janssen, the customer this book follows, exists as an online account, a store customer in the loyalty list of the POS (point of sale, the stores' till system), a newsletter subscriber and a returns-portal contact, with no shared identifier. When she returns a jacket to the Nijmegen store, the store cannot see that she is the online Eva. In 2027 the ecommerce manager and the head of engineering agreed not to launch an online loyalty program until the customer record is unified.
+**At Kestrel & Pine (fictional).** Eva Janssen, the customer this book follows, exists as an online account, a store customer in the loyalty list of the POS (the stores' till system), a newsletter subscriber and a returns-portal contact, with no shared identifier. When she returns a jacket to the Nijmegen store, the store cannot see that she is the online Eva. In 2027 the ecommerce manager and the head of engineering agreed not to launch an online loyalty program until the customer record is unified.
 
 **In public.** Shopify's developer documentation marks its legacy customer accounts deprecated as of 26 February 2026 (accessed 2026-11): identity is a model to rebuild, not a table to keep.
 
-**Remedy direction.** A customer master with one identifier per person, written matching rules, channel records linked to it, privacy requests served from it. Loyalty comes after the match.
+**Remedy direction.** A customer master with one identifier per person, written matching rules, channel records linked to it, privacy requests served from it.
 
 **Where this book helps:** [[identity-and-master-data]] owns the customer master and matching; [[privacy-and-customer-data]] serves data-subject requests across systems; [[commerce-promotions]] explains why loyalty waits for it.
 
@@ -125,11 +125,11 @@ December's store-pickup pilot repeats the problem: nightly store-stock updates l
 
 **Why it happens.** A return touches goods, money and books, with three owners. The way back was assembled from parts, and nothing says which event releases the refund.
 
-**What it costs.** A standing cost, because returns are routine. The NRF put the 2025 US online return rate at 19.3% of online sales, with 9% of all returns fraudulent (October 2025). Stripe notes a "risk of double refund" for bank-debit methods, and Mollie "blocks duplicate refunds made in a short time frame" (both n.d., accessed 2026-11).
+**What it costs.** The NRF put the 2025 US online return rate at 19.3% of online sales, with 9% of all returns fraudulent (October 2025). Stripe notes a "risk of double refund" for bank-debit methods, and Mollie "blocks duplicate refunds made in a short time frame" (both n.d., accessed 2026-11).
 
 **At Kestrel & Pine (fictional).** Over three weeks in January 2027, **212 returns** were refunded twice: once by the returns portal through the platform's API and once by hand by support in the payment provider's console; **€19,400** went out twice, most of it recovered by asking customers to transfer it back.
 
-In the Black Friday week before, **190** returned jackets were refunded at €159.20 instead of the €143.28 actually paid, about €3,000, because the order-level discount had never been allocated to lines in the order export.
+In the Black Friday week before, a stacked discount (see The Price Nobody Can Explain) left **190** returned jackets refunded at €159.20 instead of the €143.28 actually paid, about €3,000, because the order-level discount had never been split across the order's lines in the export.
 
 **In public.** Shopify's returns documentation separates the *return* (the buyer's intent and the money) from the *reverse fulfillment order* (the warehouse's work) and names four dispositions (verdicts on a returned item), restocked, processing required, not restocked and missing (n.d., accessed 2026-11): money and stock are two records.
 
@@ -148,15 +148,15 @@ In the Black Friday week before, **190** returned jackets were refunded at €15
 
 **Why it happens.** Several roles set prices under several rules, each selling system keeps its own number, imports fail silently, and promotion settings outlive their campaign.
 
-**What it costs.** Margin, parity penalties and regulatory exposure: since 28 May 2022 the EU's Omnibus rules require any price-reduction announcement to show the "prior price", the lowest price in at least the 30 days before the reduction (Directive (EU) 2019/2161, 2019), and the Dutch regulator ACM announced supervision of those rules from 1 January 2023 (6 December 2022).
+**What it costs.** Margin, parity penalties (a marketplace's sanctions when another channel is cheaper) and regulatory exposure: since 28 May 2022 the EU's Omnibus rules require any price-reduction announcement to show the "prior price", the lowest price in at least the 30 days before the reduction (Directive (EU) 2019/2161, 2019), and the Dutch regulator ACM announced supervision of those rules from 1 January 2023 (6 December 2022).
 
-**At Kestrel & Pine (fictional).** In October 2026 the German storefront sold the Ridgewalker jacket at **€179** for **nine days** while the marketplace listing and the stores charged €199: the restore row of a campaign import had failed in an agency script that logged the error and reported success. **410 orders**, about **€8,200** of margin lost, a price-parity warning from a marketplace.
+**At Kestrel & Pine (fictional).** In October 2026 the German storefront sold the Ridgewalker jacket at **€179** for **nine days** while the marketplace listing and the stores charged €199: the row restoring the price in a campaign import had failed in an agency script that logged the error and reported success. **410 orders**, about **€8,200** of margin lost, a price-parity warning from a marketplace.
 
-In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on **2,860** orders because a combination setting from an October campaign had never been reverted: about **€52,000** in all.
+In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on **2,860** orders because a combination setting from an October campaign had never been reverted: about **€52,000** in all, including The Boomerang's wrong refunds.
 
-**In public.** No public incident is cited; the public record is the law. The Omnibus rule (2022) and ACM's supervision (2023) make a 30-day price history per SKU (stock-keeping unit, one sellable variant) and channel a legal requirement.
+**In public.** No incident is cited; the rules above make a 30-day price history per SKU (stock-keeping unit, one sellable variant) and channel a requirement.
 
-**Remedy direction.** One owner per price kind, price events with effective dates, campaigns as data, a 30-day price history, promotions with an evaluation order and stop rule, daily reconciliation, prices frozen on the order.
+**Remedy direction.** One owner per price kind, price events with effective dates, campaigns as dated records, a 30-day price history, promotions applied in a fixed order, with combination rules, daily reconciliation, prices frozen on the order.
 
 **Where this book helps:** [[pricing-architecture]] owns price ownership, price lists and the price history; [[commerce-promotions]] owns stacking rules and line-level allocation; [[marketplaces-and-channel-integration]] handles parity and channel price rules.
 
@@ -173,7 +173,7 @@ In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on
 
 **What it costs.** Undiagnosable incidents, unplannable upgrades, and money: the MACH Alliance's own February 2026 survey of 600 enterprise technology decision-makers found 37% citing integration complexity as a primary concern (18 February 2026).
 
-**At Kestrel & Pine (fictional).** The February 2027 integration inventory counted **34 integrations**: 14 on the iPaaS (integration platform as a service, a hosted tool for data flows), 9 agency scripts, 11 vendor-built connectors or plugins; **13 had no named owner**; only 3 had a reconciliation job, none for stock or orders; **four flows wrote stock** into the platform, and the head of engineering's capability map found **six writers** of Duiven stock in all. The pre-order app that wrote inventory beside the WMS feed (March 2026) is the pattern at its smallest.
+**At Kestrel & Pine (fictional).** The January 2027 integration inventory counted **34 integrations**: 14 on the iPaaS (a hosted integration platform), 9 agency scripts, 11 vendor-built connectors or plugins; **13 had no named owner**; only 3 had a reconciliation job, none for stock or orders; **four flows wrote stock** into the platform, and **six writers** of Duiven stock existed in all. A pre-order app writing inventory beside the WMS feed (March 2026) is the pattern at its smallest.
 
 **In public.** Zalando's engineering blog described how its developer platform, built on Backstage, replaced "more than 100 disconnected interfaces" with one portal holding over 40,000 registered entities (3 August 2023): one inventory in place of the tangle.
 
@@ -190,13 +190,13 @@ In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on
 
 **What it looks like.** A retry creates a second order or refund; a dropped message leaves an order paid and never picked.
 
-**Why it happens.** Delivery is at least once, sometimes twice, late or never, and vendors say so. Shopify's documentation for webhooks (messages one system pushes to an address another has registered) says an app "might receive the same webhook more than once", and retries an unanswered webhook 8 times over 4 hours before deleting the subscription; Stripe retries for up to three days; Mollie calls a webhook ten times over 26 hours and then stops (all n.d., accessed 2026-11). Integrations assume exactly once, because on a quiet day it holds.
+**Why it happens.** Delivery is at least once, sometimes twice, late or never, and vendors say so. Shopify's documentation for webhooks (messages one system pushes to another) says an app "might receive the same webhook more than once", and retries an unanswered webhook 8 times over 4 hours before deleting the subscription; Stripe retries for up to three days; Mollie calls a webhook ten times over 26 hours and then stops (all n.d., accessed 2026-11). Integrations assume exactly once, because on a quiet day it holds.
 
-**What it costs.** Duplicates, lost orders, drifting copies and peak backlogs. Zalando's engineering blog reported that its event-driven price and stock pipeline, reprocessing payloads of which "over 90%" were unchanged, delayed events "by up to 30 minutes" during Cyber Week and left consumers with "divergent versions of product data", before it was replaced by a synchronous read API for the critical path (7 March 2025).
+**What it costs.** Duplicates, lost orders, drifting copies and peak backlogs. Zalando's engineering blog reported that its price and stock pipeline, pushing every change as an event and reprocessing messages of which "over 90%" were unchanged, delayed events "by up to 30 minutes" during Cyber Week and left the systems reading it with "divergent versions of product data"; direct queries replaced it on the critical path (7 March 2025).
 
-**At Kestrel & Pine (fictional).** On Black Friday 2026 the iPaaS flow that created orders in the WMS one at a time was throttled by the WMS vendor's rate limit; the queue backed up for **four hours**, and roughly **8,000 orders** missed the next-day delivery the storefront had promised.
+**At Kestrel & Pine (fictional).** On Black Friday 2026 the iPaaS flow that created orders in the WMS one at a time was throttled by the WMS vendor's rate limit; the messages arrived, but **four hours** late, and nothing watched their age, so roughly **8,000 orders** missed the next-day delivery the storefront had promised.
 
-**In public.** Stripe's fulfillment guide: "You can't rely on triggering fulfillment only from your checkout landing page, because it's not guaranteed customers visit that page" (n.d., accessed 2026-11). One unconfirmed signal is not enough to act on.
+**In public.** Stripe's fulfillment guide: "You can't rely on triggering fulfillment only from your checkout landing page, because it's not guaranteed customers visit that page" (n.d., accessed 2026-11).
 
 **Remedy direction.** An idempotency key (a unique token that lets the receiver ignore a repeat) from the business event on every message, a record of handled events, state fetched from its owner, a dead-letter queue (where a message waits after repeated failures), a daily reconciliation.
 
@@ -215,13 +215,13 @@ In Black Friday week a 20% outerwear discount stacked with a 10% welcome code on
 
 **What it costs.** Stale stock, seller-account strikes, chargebacks, emergency rewrites. The calendars are public: Amazon's Marketplace Web Service was "no longer available" from 1 April 2024, with all private developers told to migrate to the Selling Partner API by 31 March 2024 (SP-API changelog, 2023–2024); the partner platform of bol, a Dutch marketplace, announced on 3 November 2026 that version 10 of its Offers API would be switched off on 1 February 2027.
 
-**At Kestrel & Pine (fictional).** On 8 February 2027 the marketplace connector retired the API version a 2021 agency script used to push stock for the bol listings, announced in November 2026 to a contact who had left the agency in 2025. The script logged errors and kept running; stock to bol was stale for **two days**.
+**At Kestrel & Pine (fictional).** On 8 February 2027 the marketplace connector (the service relaying listings, orders and stock to marketplaces) retired the API version a 2021 agency script used to push bol stock; its November 2026 notice went to a contact who had left the agency in 2025. The script logged errors and kept running; stock to bol was stale for **two days**.
 
-In Q3 2026 Bergzicht Outdoor, the wholesale chain, deducted **€14,200** for despatch advices, the EDI (electronic data interchange) messages that tell a buyer what is on its way, whose pallet labels did not match what arrived.
+In Q3 2026 Bergzicht Outdoor, a retail chain buying wholesale, deducted **€14,200** for despatch advices, the EDI (electronic data interchange) messages that tell a buyer what is on its way, whose pallet labels did not match what arrived: the contract existed on Bergzicht's side only.
 
-**In public.** Shopify's API versioning policy, quarterly releases with each version supported for at least 12 months and a nine-month overlap (n.d., accessed 2026-11), is one calendar among many.
+**In public.** Shopify's changelog of 5 August 2026 moved stock held for draft orders and transfers from its `reserved` to its `committed` state, so apps reading `reserved` changed meaning without changing a line. Its versioning policy, quarterly releases each supported for at least 12 months with a nine-month overlap (n.d., accessed 2026-11), is one calendar among many.
 
-**Remedy direction.** Pinned versions and sunset dates per integration, a role mailbox for changelogs, partner cards with owners, contract tests, despatch advices generated from what was packed.
+**Remedy direction.** Pinned versions and sunset dates per integration, a role mailbox for changelogs, a card per trading partner with an owner, contract tests (automated checks of each interface), despatch advices generated from what was packed.
 
 **Where this book helps:** [[api-contracts-and-versioning]] owns versions, sunsets and contract tests; [[edi-and-e-invoicing]] owns the partner card and the despatch advice.
 
@@ -230,7 +230,7 @@ In Q3 2026 Bergzicht Outdoor, the wholesale chain, deducted **€14,200** for de
 *"It worked fine all year. Then Friday happened."*
 
 ![A storefront stands clear in a sudden snowfall while the stock-sync and order pipes behind it freeze under the snow.](assets/images/where-commerce-platforms-go-wrong/pattern-first-snowfall.jpeg)
-**Figure 9:** *The First Snowfall: the busiest day is the first time the system and its integrations meet real load, and it is usually the joins, not the storefront, that give way.*
+**Figure 9:** *The First Snowfall: the busiest day is the first time the system and its integrations meet real load, and it is usually the joins between systems, not the storefront, that give way.*
 
 **What it looks like.** The storefront holds; the stock sync and the order queue do not.
 
@@ -238,11 +238,11 @@ In Q3 2026 Bergzicht Outdoor, the wholesale chain, deducted **€14,200** for de
 
 **What it costs.** Oversells and missed promises on the day the brand is measured. Target's new site, launched in 2011 after it left Amazon's platform, crashed on 13 September 2011 under the Missoni launch and was "down most of the day", with a second 2.5-hour outage on 25 October (MPR News, 2011; dated).
 
-**At Kestrel & Pine (fictional).** Black Friday week 2026, 23–29 November: **31,000** online orders, **10.6%** of the year's; a peak hour on Friday of **2,300 orders**, 38 a minute, with storefront traffic about **41×** an ordinary hour. The platform held. The stock sync chain and the WMS connector queue did not: the oversell above, a four-hour backlog, 8,000 late orders, a stacking bug worth about €52,000.
+**At Kestrel & Pine (fictional).** Black Friday week 2026, 23–29 November: **31,000** online orders, **10.6%** of the year's; a peak hour on Friday of **2,300 orders**, 38 a minute, with storefront traffic about **41×** an ordinary hour. The platform held. The stock sync chain and the WMS connector queue did not: the oversell, the backlog and the €52,000 stacking bug above.
 
-Kestrel & Pine also had no kill switch, a setting that turns a feature off without a deploy, for guest card payments.
+Kestrel & Pine also had no kill switch, a setting that turns a feature off without a deploy, for guest card payments: on the Card-Testing Night of August 2026, 48,000 bot attempts with stolen cards hit the guest checkout and the payment provider paused the account.
 
-**In public.** Shopify's 2025 readiness post describes tests at 150% of the previous year's peak, reaching 200 million requests a minute (20 November 2025), and its Black Friday weekend peaked at $5.1 million a minute (Shopify, 2 December 2025). The platform tests and proves its own capacity; the merchant's own connectors are the merchant's to size.
+**In public.** Shopify's 2025 readiness post describes tests at 150% of the previous year's peak, reaching 200 million requests a minute (20 November 2025), and its Black Friday weekend peaked at $5.1 million a minute (2 December 2025). The merchant's own connectors are the merchant's to size.
 
 **Remedy direction.** Test the joins at a multiple of last year's peak; switches to degrade without a deploy; a dated change freeze; a named runbook.
 
@@ -255,15 +255,15 @@ Kestrel & Pine also had no kill switch, a setting that turns a feature off witho
 ![A small team stumbling inside a giant's enormous boots, beside a tall stack of vendor boxes.](assets/images/where-commerce-platforms-go-wrong/pattern-giants-boots.jpeg)
 **Figure 10:** *The Giant's Boots: copying the architecture of a company a hundred times larger brings its costs without its reasons.*
 
-**What it looks like.** A 14-person team runs a dozen composable vendors (commerce bought as separate services); a €48 million merchant builds a headless storefront (a separate application that reaches the platform only through an API). The giant's reasons are absent; the costs are not.
+**What it looks like.** A 14-person team, Kestrel & Pine's size, runs a dozen composable vendors (commerce bought as separate services); a €48 million merchant like it builds a headless storefront (a separate front end on the platform's API).
 
 **Why it happens.** The giants publish good work, and vendors sell the shape that produces the most work. "Do we have that problem" is easy to skip.
 
-**What it costs.** Cost and slower change without the benefit. The reversals are public: Segment described in 2018 growing to over 140 services, three engineers spending most of their time keeping them running, and consolidating back into one (10 July 2018; dated); an Amazon Prime Video team reported in 2023 that a serverless monitoring design supported about 5% of expected load and that one process cut cost by 90% (InfoQ, 3 May 2023; dated; the original post has been removed).
+**What it costs.** Cost and slower change without the benefit. The reversals are public: Segment described in 2018 growing to over 140 services, three engineers spending most of their time keeping them running, and consolidating back into one (10 July 2018; dated); an Amazon Prime Video team reported in 2023 that a serverless monitoring design supported about 5% of expected load and that moving to one process cut cost by 90% (InfoQ, 3 May 2023; dated; the original post has been removed).
 
-**At Kestrel & Pine (fictional).** In February 2027 the head of engineering received two pitches citing the Black Friday oversell above: an outside consultancy's composable rebuild replacing the platform (about **€3.2 million**, 18 months) and the agency's headless rebuild of the three storefronts on the current platform (about **€240,000** and nine months, plus a second runtime to operate). She declined both after measuring. Waypoint's W4, stay on the SaaS platform and surround it, is the decision not to wear the boots.
+**At Kestrel & Pine (fictional).** Avoided. In February 2027 the head of engineering received two pitches citing the Black Friday oversell above: an outside consultancy's composable rebuild replacing the platform (about **€3.2 million**, 18 months) and the agency's headless rebuild of the three storefronts on the current platform (about **€240,000** and nine months, plus a second runtime to operate). She declined both after measuring. W4, stay on the hosted platform and add what it lacks beside it, is the decision not to wear the boots.
 
-**In public.** Zalando's 2025 replacement of an event stream with a synchronous read API on its critical path (7 March 2025) is a giant narrowing a choice others copied from it.
+**In public.** Zalando's 2025 move from pushed events back to direct queries on its critical path (see The Message in a Bottle) is a giant narrowing a choice others copied from it.
 
 **Remedy direction.** Count channels, warehouses, countries, teams and facts with two writers; add a capability when a measured problem demands it.
 
@@ -280,11 +280,11 @@ Kestrel & Pine also had no kill switch, a setting that turns a feature off witho
 
 **Why it happens.** A big bang looks cheaper than running two systems, and each risk was fine in the demo.
 
-**What it costs.** Lost sales, sometimes a reversal. Finish Line switched to new e-commerce site technology on 19 November 2012 and reverted to the former platform, "which it had kept operable", 17 days later, at a cost of about $3 million in quarterly sales (Retail Dive, 8 January 2013; dated).
+**What it costs.** Lost sales, and a reversal only where a way back was kept. Finish Line switched to new e-commerce site technology on 19 November 2012 and could revert 17 days later only to the former platform "which it had kept operable", at a cost of about $3 million in quarterly sales (Retail Dive, 8 January 2013; dated).
 
-**At Kestrel & Pine (fictional).** Waypoint replaced nothing on one date. The order management system (OMS), one record for every channel's orders, came in seam by seam in 2027: a shadow copy of all orders in August, a parallel run on 1–14 September, marketplace orders on 15 September, direct-to-consumer (D2C) orders on 13 October, a change freeze around Black Friday, wholesale orders on 8 December, the old paths retired in January 2028. The product information management system (PIM) went live one storefront at a time.
+**At Kestrel & Pine (fictional).** Avoided by plan: the order management system (OMS), one record for every channel's orders, comes in seam by seam (one flow of orders at a time) through 2027: a shadow copy of all orders in August, a parallel run on 1–14 September, marketplace orders on 15 September, direct-to-consumer (D2C) orders on 13 October, a change freeze around Black Friday, wholesale orders on 8 December, the old paths retired in January 2028. The product information management system (PIM) goes live one storefront at a time.
 
-**In public.** Target's 2011 launch weeks before its holiday season, and its two outages (MPR News, 2011; see The First Snowfall), is a date chosen against the calendar. The record shows the timing and the outages, not whether a way back existed; Finish Line, above, kept one.
+**In public.** Target's 2011 launch, weeks before its holiday season and followed by two crashes (see The First Snowfall), is a date chosen against the calendar.
 
 **Remedy direction.** Migrate by seams, keep the old path operable until the new one has run a peak, run in parallel, rehearse rollback, design exit in at purchase.
 
@@ -307,7 +307,7 @@ Kestrel & Pine also had no kill switch, a setting that turns a feature off witho
 
 The **41 installed apps**, of which 22 were installed by the agency, 6 are unused and 3 wrote inventory, are the smaller fork: the April 2027 app governance rule gives every app a named owner and takes away the right to write stock.
 
-**In public.** No case beyond the sunset calendars above is cited; they show when a fork stops working, not what one cost a merchant.
+**In public.** No merchant's cost is cited; the sunset calendars above show only when a fork stops working.
 
 **Remedy direction.** Upgradeability with an owner; supported extension points only; a register of customizations and apps; upgrades budgeted as routine.
 
@@ -324,13 +324,13 @@ The **41 installed apps**, of which 22 were installed by the agency, 6 are unuse
 
 **Why it happens.** The decision is made on cost, and the operational differences are invisible in the business case.
 
-**What it costs.** Sharing: slower change, one brand's peak degrading another. Separation: duplicated contracts and integrations. No public figure is cited for either.
+**What it costs.** Sharing: slower change, one brand's peak degrading another. Separation: duplicated contracts and integrations.
 
-**At Kestrel & Pine (fictional).** Three regional storefronts share **one tenant**. They share a catalog, warehouse, season and €199 jacket price, so the arrangement fits.
+**At Kestrel & Pine (fictional).** Not met. Three regional storefronts share **one tenant**. They share a catalog, warehouse, season and €199 jacket price, so the arrangement fits.
 
 A second brand, fourth country or revenue near €200 million would trigger a review. None is planned for 2027–2028. The company defers the group-sharing decision to 2029 rather than choosing a structure before knowing the requirements.
 
-**In public.** Zalando completed its acquisition of ABOUT YOU on 11 July 2025 as a dual-brand consumer business "with shared logistics and payment infrastructure", with group synergies targeted at around €100 million a year (corporate.zalando.com, 11 July 2025). This is a sharing decision, not a failure; no public case of the failure is cited.
+**In public.** Zalando completed its acquisition of ABOUT YOU on 11 July 2025 as a dual-brand consumer business "with shared logistics and payment infrastructure", with group synergies targeted at around €100 million a year (corporate.zalando.com, 11 July 2025). A sharing decision; no public failure is cited.
 
 **Remedy direction.** Decide sharing per capability: share what has scale economics and the same rules (payments, logistics), keep apart what differs by brand, and write the benefit as a number first.
 
@@ -349,9 +349,9 @@ A second brand, fourth country or revenue near €200 million would trigger a re
 
 **What it costs.** Outages as long as one person's absence, and programs that end on the vendor's date: Shopify sold its logistics business to Flexport in a deal that closed on 6 June 2023 (Shopify; dated), and Zalando's Connected Retail program, through which physical shops sold branch stock on its platform, ends by the end of June 2027 (TextilWirtschaft, 24 April 2026).
 
-**At Kestrel & Pine (fictional).** The EDI mappings for Bergzicht Outdoor, worth €2.1 million a year, were built in 2025 by one external consultant; when despatch advices and pallet labels disagreed, the fix waited on him. The ERP partner's platform-to-ERP connector was undocumented and could be retired only after the lead integration engineer wrote its contract in Q3 2027. The February 2027 ownership map found **5 integrations with no named owner**, among them the scripts behind the stale bol stock and the nine-day German price above.
+**At Kestrel & Pine (fictional).** The EDI mappings for Bergzicht Outdoor, worth €2.1 million a year, were built in 2025 by one external consultant; when despatch advices and pallet labels disagreed, the fix waited on him. In April 2027, after the ownership map had assigned the rest, **5 integrations still had no named owner**, among them the scripts behind the stale bol stock and the nine-day German price above. The ERP partner's platform-to-ERP connector was undocumented and could be retired only after the lead integration engineer wrote its contract in Q3 2027.
 
-**In public.** Connected Retail's end (announced April 2026, effective June 2027) is a channel retired by the platform that owned it.
+**In public.** Connected Retail is a channel retired by the platform that owned it.
 
 **Remedy direction.** An ownership map for every system, integration and app; contracts in the merchant's hands; a second person per mapping; exit cost assessed at purchase.
 
@@ -366,15 +366,15 @@ A second brand, fourth country or revenue near €200 million would trigger a re
 
 **What it looks like.** Finance learns of a mandate from a newsletter; the storefront has never had an accessibility audit.
 
-**Why it happens.** Rules land per topic and per country, nobody in a 14-person team reads the Official Journal, and each rule arrives without an owner.
+**Why it happens.** Rules land per topic and per country, nobody in a 14-person team like Kestrel & Pine's reads the Official Journal, and each rule arrives without an owner.
 
-**What it costs.** Fines, blocked invoices, emergency prices. The dates are public: Belgium's structured B2B e-invoicing obligation applied from 1 January 2026, announced 18 September 2024, with fines of €1,500, €3,000 and €5,000 for lacking the technical means (einvoice.belgium.be); the European Accessibility Act applied to e-commerce services from 28 June 2025 (Directive (EU) 2019/882); requirements 6.4.3 and 11.6.1 of PCI DSS, the card industry's security standard, on payment-page scripts became mandatory on 31 March 2025; Germany has required businesses to receive e-invoices since 1 January 2025.
+**What it costs.** Fines, blocked invoices, emergency prices. The dates are public: Belgium's structured business-to-business (B2B) e-invoicing obligation applied from 1 January 2026, announced 18 September 2024, with fines of €1,500, €3,000 and €5,000 for lacking the technical means (einvoice.belgium.be); the European Accessibility Act applied to e-commerce services from 28 June 2025 (Directive (EU) 2019/882); requirements 6.4.3 and 11.6.1 of PCI DSS, the card industry's security standard, on payment-page scripts became mandatory on 31 March 2025 (PCI Security Standards Council); Germany has required businesses to receive e-invoices since 1 January 2025 (Federal Ministry of Finance).
 
-**At Kestrel & Pine (fictional).** The fuse was caught once: e-invoices have gone to Belgian business customers over Peppol (a European network for structured electronic invoices) since January 2026, issued and numbered in the ERP through the EDI provider as access point.
+**At Kestrel & Pine (fictional).** The fuse was caught once: e-invoices have gone to Belgian business customers over Peppol (a European e-invoice network) since January 2026, issued and numbered in the ERP through the EDI provider as access point (the gateway to the Peppol network).
 
-The 2027 regulatory calendar, kept by the head of engineering with the finance director, turns each remaining rule (accessibility of the three storefronts and the checkout widgets, the Dutch e-invoicing plan for 2030, packaging rules, the product passport) into a dated requirement with an owner.
+The 2027 regulatory calendar, kept by the head of engineering with the finance director, turns each remaining rule (accessibility of the three storefronts and the checkout widgets, the Dutch e-invoicing plan for 2030, packaging rules, the EU's digital product passport) into a dated requirement with an owner.
 
-**In public.** The Belgian mandate, announced September 2024 for January 2026: fifteen months of notice, then fines.
+**In public.** The Belgian mandate gave fifteen months of notice, then fines.
 
 **Remedy direction.** A regulatory calendar with a named owner, listing each rule's countries, date and systems; vendor conformance as a procurement item.
 
@@ -389,17 +389,17 @@ The 2027 regulatory calendar, kept by the head of engineering with the finance d
 
 **What it looks like.** Scripts and apps share one admin's API key and write beside the official feeds.
 
-**Why it happens.** Apps are easy to add, hard to see and broadly permitted by default; AI agents arrive through the same door with more autonomy: Visa reported 31 issuers and 4 merchants live with agent-initiated transactions in Europe (2 July 2026), and the agent protocols (Agentic Commerce Protocol releases through April 2026; Universal Commerce Protocol, launched 11 January 2026) carry an identity and a mandate for the agent.
+**Why it happens.** Apps are easy to add, hard to see and broadly permitted by default; AI agents arrive through the same door with more autonomy: Visa reported 31 card issuers and 4 merchants live with payments started by AI agents in Europe (2 July 2026).
 
 **What it costs.** Phantom stock, price drift and, at worst, a compromised checkout: Sansec reported on 25 June 2024 that the `cdn.polyfill.io` script, embedded by more than 100,000 sites, had been sold in February 2024 and was injecting malware (Sansec, 2024).
 
 **At Kestrel & Pine (fictional).** In March 2026 a pre-order app adjusted inventory in the platform while the WMS feed also wrote it: two weeks of phantom reservations on **600 variants**. The October 2026 price script above is the same kind of writer.
 
-Waypoint's answer is W5 (every writer named) and W8 (agent readiness, not agents: accurate product data, availability and order status by API first, no shopper-facing AI agent in 2027).
+Waypoint's answer is W5 (every integration with a named owner) and W8 (agent readiness, not agents: accurate product data, availability and order status by API first, no shopper-facing AI agent in 2027).
 
 **In public.** Polyfill.io (June 2024) is checkout code changing hands unseen.
 
-**Remedy direction.** Every writing actor with an owner, its own credentials and stated rights; least privilege; human approval over a threshold; a person at the gate for AI agents.
+**Remedy direction.** Every writing actor with an owner, its own credentials and stated rights; least privilege; human approval over a threshold; a person at the gate for AI agents, whose protocols (OpenAI and Stripe's Agentic Commerce Protocol; Google's Universal Commerce Protocol, January 2026) already give each agent an identity and a mandate.
 
 **Where this book helps:** [[extensibility-and-app-ecosystems]] owns app governance and permissions; [[commerce-security]] covers API keys and script monitoring; [[ai-and-agentic-commerce]] covers agents, mandates and W8.
 
@@ -426,33 +426,33 @@ The four scale stages ([[commerce-scaling-stages]]) run from Starting (one chann
 | The Long Fuse | Platform defaults, per country | **Born**: second country, first B2B mandate | **Hurts**: many rules, many countries | Compliance function |
 | The Secret Agent | Apps with wide permissions | **Born**: scripts and apps that write | **Hurts**: six writers of stock | Agents at scale |
 
-Kestrel & Pine starts 2027 with ten incidents on record, most of them met above. Its April 2027 stage map traces most of the ten to Growing-stage designs still running in 2026.
+Kestrel & Pine enters Waypoint (March 2027) with ten incidents on record, all met above. Its April 2027 stage map traces eight of the ten to Growing-stage designs still running in 2026.
 
 ![Four steps labeled Starting, Growing, Omnichannel and Group: seeds planted on Growing grow into a thorny vine and a bill on Omnichannel.](assets/images/where-commerce-platforms-go-wrong/where-commerce-platforms-go-wrong-born-and-paid.jpeg)
 **Figure 17:** *Most failure patterns are born at the Growing stage and paid for at the Omnichannel stage.*
 
 ## How the Patterns Reinforce Each Other
 
-The stage table treats each pattern alone. In practice one sets up the next, in three chains, and a repair holds where a chain starts.
+The stage table treats each pattern alone. In practice one sets up the next, in three chains that cut across the families, and a repair holds where a chain starts.
 
-**The integration chain.** A Spaghetti Junction produces Messages in a Bottle, and those produce the Phantom Stock, Schrödinger's Order, the Boomerang and, through a price import, the Price Nobody Can Explain. The First Snowfall makes all of them visible in one evening.
+**The integration chain.** It starts at connectors nobody owns: a Spaghetti Junction produces Messages in a Bottle, and those produce the Phantom Stock, Schrödinger's Order, the Boomerang and, through a price import, the Price Nobody Can Explain. The First Snowfall, a platform pattern, makes all of them visible in one evening.
 
-**The governance chain.** It starts with something nobody owns. A Lynchpin sets up the Pulled Rug: nobody reads the calendar for a flow nobody owns. The Secret Agent is a Lynchpin with write access; the Long Fuse is a deadline with no owner.
+**The governance chain.** It too starts with something nobody owns: a dependency nobody watches. A Lynchpin sets up the Pulled Rug, an integration pattern: nobody reads the calendar for a flow nobody owns. The same absence lets a Secret Agent write unseen and a Long Fuse burn down unread.
 
-**The platform chain.** This one starts with a copied decision: the Giant's Boots lead to the Forked Platform or the Burned Bridge.
+**The platform chain.** This one starts with a copied decision: the Giant's Boots lead to the Forked Platform or the Burned Bridge. One Size Fits None is the same unmeasured decision at Group scale.
 
 ![Diagram: The patterns travel in chains](assets/images/where-commerce-platforms-go-wrong/fig01-patterns-travel-chains-integration-chain-runs.jpeg)
 **Figure 18:** *The patterns travel in chains: the integration chain runs from the Spaghetti Junction through the Message in a Bottle to phantom stock, undecidable orders and double refunds; the governance chain runs from the Lynchpin to the Pulled Rug and the Secret Agent; the platform chain runs from the Giant's Boots to the fork or the burned bridge; the First Snowfall amplifies whatever is already there.*
 
-**The identity thread.** The Familiar Stranger runs under all three chains.
+**The identity thread.** The Familiar Stranger runs under all three chains, because nobody owns the customer match.
 
-Sorted by cause, eight of the ten incidents are a fact with two writers; two are what the outside world does to a landscape nobody watches. So Waypoint decides ownership first, then adds the hubs (an OMS for orders, a PIM for product content), then makes the copies trustworthy, and keeps the platform.
+Kestrel & Pine's incidents start at such origins: unowned scripts, an app writing stock, one EDI consultant. So Waypoint decides ownership first (W5), then adds the hubs (W2, an OMS for orders; W3, a PIM for product content), then makes the copies trustworthy, and keeps the platform (W4).
 
 ## Using the Patterns
 
-The catalog, the stage table and the chains say one thing: a failure shows somewhere other than where it began. A pattern born at one stage is paid for at the next, and a wrong refund or stock figure ends a chain that began at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons. So the remedy is rarely a new platform; it is ownership, contracts and reconciliation.
+The catalog, the stage table and the chains say one thing: a promise is broken somewhere other than where it was made, a stage later or at the end of a chain. So the remedy is rarely a new platform; it is ownership, contracts and reconciliation.
 
-Take the sale this page opened with, which the storefront accepted and the warehouse never received. It now has a name, a Message in a Bottle, and a place to look: upstream, for a Spaghetti Junction connector with no owner. Each decision behind that connector was reasonable when made, so ask who owns the join now, not who is to blame. Three situations give you the chance to ask it.
+The sale this page opened with now has a name, a Message in a Bottle, and a place to look: upstream, for a connector nobody owns. Each decision behind it was reasonable, so ask who owns it now, not who is to blame, and ask before an incident does, in three situations.
 
 **In design reviews.** Walk one order through the design with the step table of [[journey-consumer-order]] and ask at every handoff which pattern could occur and what prevents it.
 

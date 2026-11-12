@@ -87,13 +87,6 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-6",
-        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "minor"
       }
     ]
   },
@@ -142,14 +135,14 @@
     "additional_patterns": [
       {
         "pattern": "problem_solution",
-        "applies_to": "scene to wrong: three requests, then the calls, rules and worked example that answer Daniel's and Sanne's"
+        "applies_to": "scene to wrong: three requests, then the calls, rules, worked example and variants that answer Daniel's and Sanne's"
       },
       {
         "pattern": "comparison",
-        "applies_to": "abandoned to stages: Milan's requests; four options on the same criteria, the dated case for the restriction, then the fit by stage"
+        "applies_to": "abandoned to stages: Milan's requests; four options on the same criteria, the dated case, the fit by stage, then the rule they support"
       }
     ],
-    "rationale": "The three requests come first so every term arrives as part of an answer. Cart, checkout and order are defined before the calls because the calls fill the order. The calls come before the clocks because the clocks limit how long the orchestration may hold its state, and the detour in the payment step is where the two rules come from. Guest checkout, wallets and business buyers follow the rules because they change the steps the calls sit in, and each is read against the call table. Eva's checkout comes after all of these because it uses every call and both rules on one order, and it answers Daniel's request; the failures follow it because each failure is a broken call or rule just seen working. The last four sections answer Milan's requests: abandoned carts first, because they use the shopper's clock, the calls made on the cart and the degradation ladder from the failures; then the four ways to run checkout, then Shopify's dated withdrawal, which explains why the author's rule picks sanctioned extensions, and then the stage table, which uses the options and the warning signs from the failures and places Kestrel & Pine. Putting the options before the failures (the published order) split the orchestration half in two and asked the reader to judge extension points before seeing what they must not break; putting Eva's checkout before the calls would show answers without their owners."
+    "rationale": "The three requests come first so every term arrives as part of an answer. Cart, checkout and order are defined before the calls because the calls fill the order. The calls come before the clocks because the clocks limit how long the orchestration may hold its state, and the detour in the payment step is where the two rules come from. Eva's checkout follows the clocks directly because it puts every call and both rules on one order and answers Daniel's request; guest checkout, wallets and business buyers come after it because each changes the steps of a checkout the reader has just seen whole. The failures follow because each is a broken call or rule already seen working, whoever the buyer. The last four sections answer Milan's requests: abandoned carts first, because they use the shopper's clock, the calls made on the cart and the degradation ladder from the failures; then the four ways to run checkout, then Shopify's dated withdrawal as the evidence; then the stage table, which uses the options and the warning signs from the failures and places Kestrel & Pine, and ends with the author's rule drawn from all three. Evidence comes before the rule because no section declares assertion-evidence for it. Putting the options before the failures (the published order) split the orchestration half in two; putting Eva's checkout before the calls would show answers without their owners."
   },
   "introduction": {
     "hook": {
@@ -187,6 +180,12 @@
           ]
         },
         {
+          "promise": "Work Eva's checkout through step by step.",
+          "kept_in": [
+            "eva"
+          ]
+        },
+        {
           "promise": "Look at guest checkout, express wallets and business buyers, which change the steps but not the calls.",
           "kept_in": [
             "guest-wallets",
@@ -194,9 +193,8 @@
           ]
         },
         {
-          "promise": "Work Eva's checkout through step by step, then the five ways checkout fails.",
+          "promise": "List the five ways checkout fails.",
           "kept_in": [
-            "eva",
             "wrong"
           ]
         },
@@ -259,11 +257,11 @@
       },
       {
         "id": "p03",
-        "controlling_idea": "The chapter starts from three requests about Kestrel & Pine's checkout, separates cart, checkout and order, lists what checkout calls and how fresh each answer must be, follows the clocks and the detour to the bank that decide how the order is created once, looks at guest checkout, wallets and business buyers, works Eva's checkout through, lists the ways checkout fails, and ends with abandoned carts, four ways to run checkout, Shopify's dated withdrawal of editable checkout and the fit by scale stage; its evidence is Kestrel & Pine's incidents, vendor documentation, Baymard's research and Shopify's changelog.",
+        "controlling_idea": "The chapter starts from three requests about Kestrel & Pine's checkout, separates cart, checkout and order, lists what checkout calls and how fresh each answer must be, follows the clocks and the detour to the bank that decide how the order is created once, works Eva's checkout through, looks at guest checkout, wallets and business buyers, lists the ways checkout fails, and ends with abandoned carts, four ways to run checkout, Shopify's dated withdrawal of editable checkout and the fit by scale stage; its evidence is Kestrel & Pine's incidents, vendor documentation, Baymard's research and Shopify's changelog.",
         "function": "transition",
         "transition_in": {
           "relationship": "sequence",
-          "carries_over": "Eva's order created at 21:14 with the payment pending.",
+          "carries_over": "Eva's order #1072455, created at 21:14 with the payment pending.",
           "introduces": "The order in which the chapter explains how that happens and who may change it, and the kinds of evidence it uses.",
           "form": "sentence",
           "placement": "start_of_this"
@@ -702,6 +700,122 @@
       ]
     },
     {
+      "id": "eva",
+      "heading": "Eva's Checkout, Step by Step",
+      "controlling_idea": "Eva's checkout shows every call with its answer, creates the order before the bank's answer and lets the webhook mark it paid, and exposes two weaknesses, the stock copy and the static delivery date, whose fix lies in the systems that answer.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Applies the calls and the two rules to the running order and answers Daniel's question."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The full call sequence, then the three details that carry the design, then the opening question answered. It follows the clocks directly because it applies the calls and both rules to the running order before the variants change the steps."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The two rules: the order created once, keyed on the cart and the payment, and marked paid by the provider's webhook.",
+        "introduces": "Eva's checkout, with every call and both rules on one order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Eva's checkout, from add to cart at 21:09 to confirmation at 21:14, calls pricing, promotions, tax, the address book, the delivery-date extension and the payment provider, and each answer is written into the order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven steps from 21:09 to 21:14 with what checkout calls and what it writes: €199 and 2 × €18, €235, free shipping, net €194.21, VAT €40.79, iDEAL, order #1072455.",
+              "shows": "The reader sees the call sequence and each frozen answer for one real-sized order.",
+              "source": "scenario-ledger.md, Eva's jacket; journey-consumer-order line"
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The order exists before the payment confirmation arrives, and a repeated notification creates no second order or payment.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The step table.",
+            "introduces": "The first of three details that carry the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Stock is still a weakness in April 2027: checkout reads the platform's hourly copy fed from the ERP and the WMS, the chain that oversold 1,340 jackets on Black Friday.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Black Friday Oversell, 1,340 units.",
+              "shows": "Shows the cost of a stale availability answer.",
+              "source": "scenario-ledger.md, incident 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first detail.",
+            "introduces": "The second: where the availability answer comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The delivery date is also a static rule: Eva is promised Wednesday 14 April and receives the parcel on Thursday 15 April.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: Eva's checkout creates the order once before the bank's answer and lets the webhook move it to paid.",
+              "shows": "Summarizes the worked example."
+            },
+            {
+              "kind": "fact",
+              "what": "Promised 14 April, delivered 15 April.",
+              "shows": "Shows a promise checkout wrote from a rule no system keeps.",
+              "source": "scenario-ledger.md, Eva's jacket and warehouse rhythm"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The second detail.",
+            "introduces": "The third: where the delivery date comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Daniel's question is answered: checkout trusted the availability answer from the platform's copy, so the fix is in who answers that call, not in checkout: under Waypoint, Kestrel & Pine's 2027 architecture program, the availability service of W1, the decision that makes the WMS the owner of stock.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "27 November 2026 at 19:40 the WMS knew the Ridgewalker was gone; the platform's copy was up to two hours old.",
+              "shows": "Places the fault in the system that answered.",
+              "source": "scenario-ledger.md, incident 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The stale stock answer in Eva's order.",
+            "introduces": "The answer to Daniel's request from the opening.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
       "id": "guest-wallets",
       "heading": "Guest, Account and the Express Wallets",
       "controlling_idea": "Guest checkout and express wallets remove steps the shopper sees, but every call behind them is still made, now under a stricter clock.",
@@ -717,16 +831,16 @@
         "rationale": "Two step-removing variants side by side, then what neither removes."
       },
       "transition_in": {
-        "relationship": "elaboration",
-        "carries_over": "The forced account as one of the shopper's reasons to leave.",
-        "introduces": "Two ways to remove steps: guest checkout and express wallets.",
+        "relationship": "contrast",
+        "carries_over": "Eva, a signed-in shopper.",
+        "introduces": "Guest checkout, which needs no account, and express wallets, which remove typing.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p25",
-          "controlling_idea": "Guest checkout lets a shopper buy without an account while the order still holds the details needed to fulfil it, and linking a later account to the guest order is an identity-matching problem.",
+          "controlling_idea": "Guest checkout lets a shopper buy without an account, removing a registration step without losing the details needed to fulfil the order, and linking a later account to the guest order is an identity-matching problem.",
           "function": "definition",
           "evidence": [
             {
@@ -853,122 +967,6 @@
       ]
     },
     {
-      "id": "eva",
-      "heading": "Eva's Checkout, Step by Step",
-      "controlling_idea": "Eva's checkout shows every call with its answer, creates the order before the bank's answer and lets the webhook mark it paid, and exposes two weaknesses, the stock copy and the static delivery date, whose fix lies in the systems that answer.",
-      "function": "example",
-      "advances_thesis": {
-        "supports": [
-          "S2",
-          "S3"
-        ],
-        "how": "Applies the calls and the two rules to the running order and answers Daniel's question."
-      },
-      "flow": {
-        "pattern": "assertion_evidence_reasoning",
-        "rationale": "The full call sequence, then the three details that carry the design, then the opening question answered."
-      },
-      "transition_in": {
-        "relationship": "contrast",
-        "carries_over": "The business buyer's checkout.",
-        "introduces": "Back to the consumer: Eva's checkout with every system it calls.",
-        "form": "sentence",
-        "placement": "start_of_this"
-      },
-      "paragraphs": [
-        {
-          "id": "p50",
-          "controlling_idea": "Eva's checkout, from add to cart at 21:09 to confirmation at 21:14, calls pricing, promotions, tax, the address book, the delivery-date extension and the payment provider, and each answer is written into the order.",
-          "function": "example",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Seven steps from 21:09 to 21:14 with what checkout calls and what it writes: €199 and 2 × €18, €235, free shipping, net €194.21, VAT €40.79, iDEAL, order #1072455.",
-              "shows": "The reader sees the call sequence and each frozen answer for one real-sized order.",
-              "source": "scenario-ledger.md, Eva's jacket; journey-consumer-order line"
-            }
-          ]
-        },
-        {
-          "id": "p51",
-          "controlling_idea": "The order exists before the payment confirmation arrives, and a repeated notification creates no second order or payment.",
-          "function": "analysis",
-          "transition_in": {
-            "relationship": "elaboration",
-            "carries_over": "The step table.",
-            "introduces": "The first of three details that carry the design.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p52",
-          "controlling_idea": "Stock is still a weakness in April 2027: checkout reads the platform's hourly copy fed from the ERP and the WMS, the chain that oversold 1,340 jackets on Black Friday.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "case",
-              "what": "The Black Friday Oversell, 1,340 units.",
-              "shows": "Shows the cost of a stale availability answer.",
-              "source": "scenario-ledger.md, incident 1"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The first detail.",
-            "introduces": "The second: where the availability answer comes from.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p53",
-          "controlling_idea": "The delivery date is also a static rule: Eva is promised Wednesday 14 April and receives the parcel on Thursday 15 April.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "figure",
-              "what": "Figure 5: Eva's checkout creates the order once before the bank's answer and lets the webhook move it to paid.",
-              "shows": "Summarizes the worked example."
-            },
-            {
-              "kind": "fact",
-              "what": "Promised 14 April, delivered 15 April.",
-              "shows": "Shows a promise checkout wrote from a rule no system keeps.",
-              "source": "scenario-ledger.md, Eva's jacket and warehouse rhythm"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The second detail.",
-            "introduces": "The third: where the delivery date comes from.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p54",
-          "controlling_idea": "Daniel's question is answered: checkout trusted the availability answer from the platform's copy, so the fix is in who answers that call, the availability service of Waypoint decision W1, not in checkout.",
-          "function": "analysis",
-          "evidence": [
-            {
-              "kind": "case",
-              "what": "27 November 2026 at 19:40 the WMS knew the Ridgewalker was gone; the platform's copy was up to two hours old.",
-              "shows": "Places the fault in the system that answered.",
-              "source": "scenario-ledger.md, incident 1"
-            }
-          ],
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The stale stock answer in Eva's order.",
-            "introduces": "The answer to Daniel's request from the opening.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        }
-      ]
-    },
-    {
       "id": "wrong",
       "heading": "When It Goes Wrong",
       "controlling_idea": "Checkout failures fall into five kinds (duplicate order, lost outcome, stale answer, slow or failed dependency, attack), each with its own detection, recovery and prevention.",
@@ -986,15 +984,15 @@
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "The two weaknesses Eva's checkout exposed.",
-        "introduces": "The full set of ways checkout fails.",
+        "carries_over": "The variants, which change the steps a buyer sees but not the calls.",
+        "introduces": "The ways those calls fail, whoever the buyer.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p55",
-          "controlling_idea": "Checkout failures cluster into five kinds.",
+          "controlling_idea": "Whoever the buyer, the calls fail in the same ways, and checkout failures cluster into five kinds.",
           "function": "transition"
         },
         {
@@ -1106,8 +1104,8 @@
       },
       "transition_in": {
         "relationship": "sequence",
-        "carries_over": "The five ways checkout fails, the last of which answers Sanne's question.",
-        "introduces": "Milan's first request, fewer abandoned carts, and the business measure behind it.",
+        "carries_over": "Milan's requests from the opening, the ones still open after the failures.",
+        "introduces": "His first request, fewer abandoned carts, and the business measure behind it.",
         "form": "sentence",
         "placement": "start_of_this"
       },
@@ -1174,11 +1172,11 @@
         "supports": [
           "S5"
         ],
-        "how": "Sets the four options side by side on the same criteria and gives the author's rule."
+        "how": "Sets the four options side by side on the same criteria; the author's rule follows Shopify's lessons and the stage table."
       },
       "flow": {
         "pattern": "comparison",
-        "rationale": "Four options in order of increasing merchant responsibility on the same criteria, then the rule."
+        "rationale": "Four options in order of increasing merchant responsibility, compared on the same criteria in one table. The rule they lead to comes at the end of the stage section, after Shopify's timeline and the stage table, its evidence."
       },
       "transition_in": {
         "relationship": "sequence",
@@ -1255,18 +1253,6 @@
             "form": "sentence",
             "placement": "start_of_this"
           }
-        },
-        {
-          "id": "p35",
-          "controlling_idea": "The author's rule: take the most restricted option that still gives the two or three changes the business needs, through sanctioned extension points, because every freedom taken is a page kept working at peak, under card rules and through every release.",
-          "function": "recommendation",
-          "transition_in": {
-            "relationship": "conclusion_summary",
-            "carries_over": "The four options compared.",
-            "introduces": "The author's rule for choosing among them.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
         }
       ]
     },
@@ -1293,15 +1279,15 @@
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "The rule to customize only through sanctioned extension points.",
-        "introduces": "Why platforms make that the only way, shown by the clearest dated record.",
+        "carries_over": "Option 2, which gives the merchant only what the platform allows.",
+        "introduces": "How a hosted platform decides and moves that boundary, shown by the clearest dated record.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p36",
-          "controlling_idea": "A hosted platform can restrict where merchants put checkout code, and Shopify's dated changes are the clearest public record of that boundary moving.",
+          "controlling_idea": "Option 2 gives the merchant only what the platform allows: a hosted platform decides where merchants put checkout code, which gives the vendor more control over upgrades and payment-page behaviour and limits what an agency can change, and Shopify's dated changes are the clearest public record of that boundary moving.",
           "function": "claim"
         },
         {
@@ -1436,19 +1422,19 @@
         "supports": [
           "S5"
         ],
-        "how": "Maps the options to the scale stages and places Kestrel & Pine: a stage-3 merchant running a stage-2 checkout whose calls Waypoint changes."
+        "how": "Maps the options to the scale stages, places Kestrel & Pine (a stage-3 merchant running a checkout typical of stage 2) and ends with the author's rule."
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The options and the lessons from Shopify.",
-        "introduces": "The same advice laid out by scale stage, with Kestrel & Pine's place in it and the answer to Milan's two requests.",
+        "carries_over": "The options, Shopify's lessons and the author's rule.",
+        "introduces": "The same advice laid out by scale stage in a table, with Kestrel & Pine's place in it and the answer to Milan's two requests.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p49",
-          "controlling_idea": "Kestrel & Pine is a stage-3 merchant running a stage-2 checkout, whose delivery date and gift wrap come as two sanctioned extensions rather than a script, and Waypoint keeps that checkout but changes what it calls: the availability service answers at order creation (W1) and the OMS receives every order (W2).",
+          "controlling_idea": "Kestrel & Pine is a stage-3 merchant running a stage-2 checkout, whose delivery date and gift wrap come as two sanctioned extensions rather than a script, and Waypoint keeps that checkout (W4, stay on the platform and surround it) but changes what it calls: the availability service answers at order creation (W1) and the OMS receives every order (W2, one order record); the chapter's advice holds at every stage, and what changes is how many systems stand behind each call.",
           "function": "analysis",
           "evidence": [
             {
@@ -1469,8 +1455,24 @@
               "source": "scenario-ledger.md, cart-and-checkout line"
             }
           ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The author's rule, drawn from the four options, Shopify's three lessons and the fit by stage: take the most restricted option that still gives the two or three changes the business needs, through sanctioned extension points, because every freedom taken is a page kept working at peak, under card rules and through every release.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The options, Shopify's lessons and the stage table with Kestrel & Pine's place in it.",
+            "introduces": "The author's rule for choosing among the options.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         }
-      ]
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Kestrel & Pine's place and the stage table first, then the author's rule drawn from all the evidence before it (options, Shopify's lessons, stages)."
+      }
     }
   ],
   "conclusion": {
@@ -1631,16 +1633,72 @@
   ],
   "modalities": [],
   "open_questions": [
-    "Draft check stopped after round 2 (escalate), as the brief allows when the blocking failures are mostly order questions for the author. Two corroborated flow findings are at fault in the spec's order and need the author's decision: (a) the author's rule (p35) comes before its evidence, Shopify's timeline (p36 to p44); both round-2 flow readers would put the timeline before the four options or before the rule; (b) guest checkout, wallets and the business buyer sit between the clocks and Eva's worked example, which both readers would move up to follow the clocks directly, with the variants after it. Neither was changed here: (a) reverses the published argument (options, rule, then why), and (b) undoes the variant-then-example order the chapter rubric accepted twice.",
-    "Remaining after the closing fixes (the check report is stale against them): the stage section still opens on its table, with the sentence that carries over the options after it, because a lead sentence before the table would be a second unit (p49); the known_before_new terms reported once only (card schemes, Klarna, receivable, purchase-order number, Admin API, price-parity warnings, the 40-minute account pause, disputes, composable, Shopify Plus, additional scripts, WebAssembly, web pixels, Bancontact, synchronously, the platform's rate table, reference-architecture view) are left for a sharpen pass within the word limit; the abandonment reasons appear in the shopper's clock (p19) and again in the abandoned-carts section (p29a). Waypoint and W1, W2 and W4 are glossed only by name: both flow readers in both rounds stumbled on them, although the audience knows them from Part I; the author may want a one-clause gloss at first mention.",
-    "Flow rubric, second run, notes not taken: the option paragraphs (p31, p33) use card-security scope before the PCI DSS payment-page rule is explained (p43), though p31 glosses PCI DSS; the 'Established' list (p61) does not repeat the freshness point; the abandonment reasons appear in the shopper's clock (p19) and are used again in the abandoned-carts section (p29).",
-    "Flow rubric, first run, notes not taken: (a) the author's rule (p35) cites 'card rules' before the PCI DSS payment-page requirement is explained in the Shopify section (p43); kept, since the option table already names PCI DSS scope and the Shopify section is the rule's evidence. (b) 'Phantom Stock' (p16a) is used as a name; it is one of the failure patterns the reader knows from Part I and is listed in the chapter's opening callout.",
-    "Shopify's 13 August 2024 date comes from the February 2023 changelog; the current developer page says only that in-checkout `checkout.liquid` is unsupported. A reviewer should confirm no later Shopify post changed the date.",
-    "The chapter states (as an illustration) that Kestrel & Pine added two sanctioned checkout extensions in 2027; the ledger records this (cart-and-checkout line) so extensibility-and-app-ecosystems and journey-consumer-order can reuse it.",
-    "Whether Kestrel & Pine's platform creates the order before or after the iDEAL result is a reference-architecture choice the chapter makes for the example; it is recorded in the ledger (cart-and-checkout line) so the journeys agree.",
-    "The journal spec no longer calls checkout 'the most protected part' of a commerce platform. The front-matter excerpt still asked that question; it was changed to the journal spec's question. The section heading 'How Protected Checkout Is' was kept (it does not claim a superlative); the author may want a plainer heading."
+    "Needs the author: both round-3 flow readers asked to move the shopper's-patience evidence (p19, Baymard's abandonment reasons) out of 'The Clock and the Detour' into 'Abandoned Carts and the Business Metric', where p29a repeats its three fixes. Rule 3 calls for the move, but it leaves the clock section with one clock and its first sentence ('two clocks') false; the earlier rubric rejected it twice. The one fact needed: whether the shopper's patience stays a 'clock'."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) after the confirming round (round 3, escalate), the author's rule (p35) moves once more, from the end of Shopify's section to the end of the stage section after its table, because both round-3 flow readers asked for it after the stage table; it now opens from the options, the lessons and the stages, and says 'the author's rule' instead of a sudden 'my'. Round-3 cheap draft fixes applied without another round: Noor named as head of engineering; the Mollie and authorization sentences unnested; Eva's extensions no longer called the answer to Milan's requests; the stock chain stated as the ledger states it (up to two hours behind) without the hourly and 15-minute hops; Sanne's first request said to be answered differently from how she put it, and 'one of the two' named; the €96,000 tied to the Black Friday Oversell as the incident behind the Phantom Stock; the Visa sentence says what it shows; the stage paragraph split and 'stage-2 checkout' made explicit; the roadmap opens from Eva's order; the conclusion opens from the kept checkout; 'authentication detour' in the freshness table replaced by the bank detour; the first rule's label made an imperative; 'hosted checkout' glossed in Eva's section; 'plan-tier gate' glossed.",
+      "rejected": [
+        "Another check round.",
+        "Moving the shopper's-patience evidence (p19) into the abandoned-carts section now: both round-3 readers asked for it (rule 3), but it removes one of the two clocks the section is built on and was rejected twice on that ground; left for the author (open question)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the author's rule (p35) moves after its evidence, to the end of Shopify's section after the three lessons, because both round-2 flow readers asked for the timeline before the rule and the choices section's flow is comparison, not assertion-evidence; the Shopify section now opens from option 2 and the rule opens from the options and the lessons; the stage paragraph's carry-over names the rule.",
+      "rejected": [
+        "Moving the whole Shopify section before the four options (it would introduce commercetools' timeout and the agency's script before the options that explain them).",
+        "Keeping the rule before its evidence."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) Eva's checkout moves directly after the clocks, before guest checkout, wallets and the business buyer, because both round-2 flow readers asked for it; Eva's opening now picks up the two rules, the guest section opens from Eva having signed in, and the failures open from the variants ('whoever the buyer'); roadmap and promises reordered.",
+      "rejected": [
+        "Keeping the variants between the clocks and the worked example.",
+        "Moving the variants after the failures."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rules 5 and 2) restored the author's sentences cut for length: 'That gives the vendor more control over upgrades and payment-page behavior, while limiting the changes an agency can make' (p36), 'This removes a registration step without losing the information needed to fulfill the purchase' and the Baymard 2026 ranking of forced account creation as the fourth-largest reason (p25, source cited), and 'The chapter's advice holds at every stage; what changes is how many systems stand behind each call' (p49). Room was made by cutting the agents' own additions: the conclusion synthesis (p61a) tightened, lead-in phrases in the abandoned-carts, choices, wallets and Eva sections, a doubled statement in p53, an unsourced 'card networks now watch merchants for them' (p60) and the restatement of the extensions in p49. Not restored: 'The sequence and recovery behavior determine whether the promise survives a delay or failure' (intro), which was replaced by the thesis paragraph, not cut for length; 'Shopify's changes show how that boundary can move over time', whose content p36 keeps.",
+      "rejected": [
+        "Exceeding 6,500 words to keep every agent addition.",
+        "Cutting the author's figures or examples."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 6) Waypoint and its decisions glossed at first use: Waypoint as Kestrel & Pine's 2027 architecture program and W1 as the decision that makes the WMS the owner of stock (p54); W4 'stay on the platform and surround it' and W2 'one order record for every channel' (p49). Terms the round-2 terms reader stumbled on glossed in a clause where they fit: card schemes, Klarna, reference-architecture view, the platform's stored tax rates, purchase-order number, receivable, Admin API, price-parity warnings, the PSP's 40-minute account pause, composable, Shopify Plus, additional scripts, WebAssembly, web pixels, Bancontact and 'synchronously'; 'orchestrated' replaced by 'coordinated' before orchestration is defined. 'disputes' left unglossed for length.",
+      "rejected": [
+        "Leaving Waypoint terms to Part I."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 7) AC-6 (known_before_new), added beyond the journal spec, is dropped; AC-1 to AC-5 come from the journal spec and stay.",
+      "rejected": [
+        "Keeping AC-6 as a minor rubric criterion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 8) the heading 'How Protected Checkout Is: Shopify's Timeline, 2023–2026' stays: no reader in two rounds found it out of step with its section, and it reasserts no superlative about checkout (the journal spec's 'most protected part' is gone, and the excerpt follows the journal spec's question).",
+      "rejected": [
+        "Renaming the heading without a two-round reader finding."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3, draft fix) the stage section's paragraph now comes before its table, so the section opens on its carry-over sentence and the table is that paragraph's evidence; the open question about a second unit is settled.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rules 1 and 2) the remaining open questions are settled: Shopify's 13 August 2024 date follows its cited source, the February 2023 changelog; the two 2027 extensions and the order created before the iDEAL result are recorded in the ledger's cart-and-checkout line and stay as written; the flow-rubric notes not taken were each reported by one reader only and stay as notes in the earlier decision log.",
+      "rejected": []
+    },
     {
       "date": "2026-11-12",
       "decision": "Round 2 (escalate) closed without a third round: of the blocking failures, two are order questions for the author (open_questions) and the rest were cheap draft fixes applied after the round: the calls section opens from the order as a promise; the Baymard step count says what it shows; the clocks open from the orchestration's short-lived state; the roadmap's last sentence is split; the extensions in Eva's checkout are named as the 2027 answer to Milan's requests; the long card-testing sentence is split; 'the second table', the orchestration lead-in, 'signed webhook', Business Central as an ERP, Shopify as a platform, 'Customer records' and 'Ridgewalker' made explicit. Five sentences were cut to stay within 6,500 words: a remark on what restriction gives the vendor (p36), the registration-step sentence (p25), 'the chapter's advice holds at every stage' (p49), and two lead-in phrases.",
@@ -1774,6 +1832,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction: Eva's checkout moved after the clocks; the author's rule moved after Shopify's three lessons; the stage paragraph placed before its table; the author's three cut sentences restored; Waypoint, W1, W2, W4 and the terms readers stumbled on glossed; AC-6 dropped; agents' additions cut to stay within 6,500 words; open questions settled. Status draft. Draft check round 3 (confirming): escalate (16 passed, 31 failed, 16 of them minor). Afterwards the author's rule moved after the stage table (both round-3 readers) and the round's cheap draft fixes applied; the check report is stale against them."
+    },
     {
       "date": "2026-11-12",
       "change": "Round 2 (escalate: 19 passed, 32 failed after aggregation; 6 corroborated flow findings, 2 of them spec order, plus 4 draft majors; AC-1 to AC-5 pass) and closing fixes without a third round; 6,489 words. The check report is stale. Round 1 (escalate: 103 passed, 33 failed, 12 of them minor; two spec faults) resolved: p57/p60 ideas, p29 split into p29 and p29a, p23, p45 and p61 ideas revised; transitions into the Introduction thesis, the wallets, the abandoned carts, the Shopify section and the stage section written into the prose; roadmap matches the order; draft faults fixed. 67 paragraphs. Flow rubric run 2 (sound with notes): p61a returns to the three requests; stage idea names its table. Prose revised to match the spec unit for unit (6,220 words). Flow rubric run 1 (sound with notes) taken: abandoned carts moved after the failures; W1 reminder in p54; Sanne's and Milan's requests closed in p60 and p49; stage section narrowed. Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over. The part rubric's notes taken: tax inputs named (p16); choices, Shopify's timeline and scale stages moved after the failures; roadmap, 'Where we are', thesis paragraph and conclusion synthesis revised or added; p16a split out; p36 and p37 merged. Status draft."

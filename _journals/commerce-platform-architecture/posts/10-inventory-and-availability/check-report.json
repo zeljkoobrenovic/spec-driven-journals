@@ -1,325 +1,325 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/10-inventory-and-availability/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/10-inventory-and-availability/index.md",
-  "spec_sha": "6619235c3288d408",
-  "draft_sha": "7418b9db3bb201cf",
-  "run_at": "2026-11-12T15:59:52+01:00",
-  "round": 3,
+  "spec_sha": "b8787382e6a7c4f6",
+  "draft_sha": "ad60562395f077bd",
+  "run_at": "2026-11-12T20:44:59+01:00",
+  "round": 4,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Chapter promise: what 'in stock' means, who computes it, and why Kestrel & Pine oversold 1,340 jackets.",
+      "summary": "Chapter promise: meaning of in stock, who computes it, the 1,340-jacket oversell",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Key points: in stock is a derived promise, oversells come from multiple writers and lag, and one availability service publishes per-channel figures.",
+      "summary": "Key points: availability is derived, oversells come from multiple writers and lag, one availability service with per-channel buffers",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Failure patterns addressed: Phantom Stock, First Snowfall and Secret Agent.",
+      "summary": "Failure patterns addressed: Phantom Stock, First Snowfall, Secret Agent",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "Two channels selling the last jacket at once need a shared way to decide which sale gets it.",
+      "summary": "Two channels selling the last unit need a shared way to commit it",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "A shelf count is not enough; availability must combine commitments, holds and reservations before a sale.",
+      "summary": "Shelf count is not enough; availability must combine several stock facts",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Places availability in Eva's journey: the stock label, cart check and checkout commitment.",
+      "summary": "Place in the order journey: availability feeds the badge, cart check and checkout commit",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Roadmap of the chapter from the Black Friday Oversell to options, remedy, failures and count accuracy.",
+      "summary": "Roadmap of the chapter and its evidence",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶1",
-      "summary": "Noor asks Ruben and Daniel to reconstruct the Oversell, which they draw as a chain.",
+      "summary": "Post-mortem reconstruction of the Black Friday Oversell begins",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶2",
-      "summary": "The stock chain: WMS to ERP every 15 minutes, ERP to platform hourly, platform to marketplace connector hourly.",
+      "summary": "The stock sync chain: WMS to ERP to platform to marketplace connector",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶3",
-      "summary": "Storefront sales updated the platform at once, but other channels learned of them up to two hours later.",
+      "summary": "Each channel learned of others' sales only via the chain, up to two hours late",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶4",
-      "summary": "Timeline of the Ridgewalker deal and the 1,340 oversold units split between storefronts and marketplaces.",
+      "summary": "Ridgewalker deal timeline and the 1,340 oversold units by channel",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5",
-      "summary": "Two aggravators: a four-hour order-queue backlog to the WMS, and apps that could write inventory (the earlier App That Wrote Stock).",
+      "summary": "Aggravating factors: WMS order queue backlog and apps that wrote inventory",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶6",
-      "summary": "The CEO's question and Noor's answer (W1): nobody owned the number and nothing carried changes fast enough.",
+      "summary": "CEO's question and Noor's answer (W1): no owner of the number, no fast change path",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶1",
-      "summary": "Defines the five stock numbers: on hand, committed, reserved, held back and incoming.",
+      "summary": "Definitions of on hand, committed, reserved, held back and incoming",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶2",
-      "summary": "Available-to-promise is derived from those numbers, introducing the formula.",
+      "summary": "Available-to-promise as the derived sellable number and its formula",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶3",
-      "summary": "Table aligning four vendors' stock vocabularies, noting 'reserved' often means committed.",
+      "summary": "Mapping of four vendors' stock vocabularies, with the 'reserved' naming caveat",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶4",
-      "summary": "Shopify's documentation confirms the on-hand arithmetic and its POS added on-hand and unavailable states.",
+      "summary": "Shopify's documented on-hand arithmetic / Shopify POS adding on-hand and unavailable states in 2023",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶5",
-      "summary": "Shopify's 2026 relabeling of reserved to committed shows stock-state meanings can shift under integrations.",
-      "matched_spec_paragraph": "p14a"
-    },
-    {
-      "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶6",
-      "summary": "Ownership rule: warehouse owns on hand, order system owns committed, nobody stores available.",
+      "summary": "Ownership rule: warehouse owns on hand, order system owns committed, nobody owns available",
       "matched_spec_paragraph": "p15"
     },
     {
+      "draft_locator": "What \"In Stock\" Means: Five Numbers, Not One ¶6",
+      "summary": "Owner controls meaning: Shopify's 2026 reserved-to-committed change broke integrations",
+      "matched_spec_paragraph": "p14a"
+    },
+    {
       "draft_locator": "When a Unit Becomes Promised: Reservations and Allocations ¶1",
-      "summary": "When a unit leaves available (cart, order, fulfillment) is a configurable business choice.",
+      "summary": "Timing of when a unit leaves available is a configurable business choice",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "When a Unit Becomes Promised: Reservations and Allocations ¶2",
-      "summary": "How commercetools, Adobe Commerce and Shopify each handle reservation timing, including commercetools' 10-second lag.",
+      "summary": "How commercetools, Adobe Commerce and Shopify reserve or commit stock",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "When a Unit Becomes Promised: Reservations and Allocations ¶3",
-      "summary": "Table comparing what each promise moment protects and costs.",
+      "summary": "Costs and protections of reserving at cart, order or fulfillment",
       "matched_spec_paragraph": "p17a"
     },
     {
       "draft_locator": "When a Unit Becomes Promised: Reservations and Allocations ¶4",
-      "summary": "Even a 10-second consistency window can oversell at peak; ask vendors for theirs.",
+      "summary": "Even a 10-second consistency window can oversell at peak; ask vendors for theirs",
       "matched_spec_paragraph": "p18"
     },
     {
+      "draft_locator": "When a Unit Becomes Promised: Reservations and Allocations ¶5",
+      "summary": "Backorders and pre-orders promise incoming stock and carry legal delivery limits",
+      "matched_spec_paragraph": "p25"
+    },
+    {
       "draft_locator": "Many Locations, Many Channels ¶1",
-      "summary": "Kestrel & Pine's stock sits in several locations, bringing in new concepts.",
+      "summary": "Kestrel & Pine's stock spread across warehouse, stores and marketplace fulfillment",
       "matched_spec_paragraph": "p19"
     },
     {
       "draft_locator": "Many Locations, Many Channels ¶2",
-      "summary": "Defines a location, with the marketplace warehouse as an external location needing its own buffer.",
+      "summary": "Definition of a location, with the marketplace warehouse as hardest case",
       "matched_spec_paragraph": "p20"
     },
     {
       "draft_locator": "Many Locations, Many Channels ¶3",
-      "summary": "Defines a channel; availability is published per channel from shared pools.",
+      "summary": "Definition of a channel; availability published per channel from shared pools",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "Many Locations, Many Channels ¶4",
-      "summary": "Per-channel buffers, largest for marketplaces where oversells cost most, set as a business choice.",
+      "summary": "Per-channel buffers, largest for marketplaces, as a business setting",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "Many Locations, Many Channels ¶5",
-      "summary": "Sourcing which location fulfils a line is a separate decision that grows into OMS territory.",
+      "summary": "Sourcing which location fulfills is a separate decision that grows into the OMS",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "Many Locations, Many Channels ¶6",
-      "summary": "Wholesale needs advance allocations, a second sense of the word, held by an OMS.",
+      "summary": "Wholesale allocations set stock aside in advance and belong to order management",
       "matched_spec_paragraph": "p24"
     },
     {
-      "draft_locator": "Many Locations, Many Channels ¶7",
-      "summary": "Backorders and pre-orders promise stock not yet on hand and carry a 30-day legal limit.",
-      "matched_spec_paragraph": "p25"
-    },
-    {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶1",
-      "summary": "The availability service separates counting, ordering and deriving, linked by stock events, a queue and reconciliation, with one writer per number.",
+      "summary": "Separating counting, ordering and availability, linked by stock events, queue and reconciliation",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶2",
-      "summary": "W1 as a diagram: systems of record per location, a bought OMS module, per-channel buffers and reconciliation.",
+      "summary": "W1 as architecture: systems of record per location and a bought availability service",
       "matched_spec_paragraph": "p27"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶3",
-      "summary": "Table of illustrative freshness requirements per interaction.",
+      "summary": "Freshness requirements differ by interaction",
       "matched_spec_paragraph": "p28"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶4",
-      "summary": "Only checkout needs a synchronous atomic commit; elsewhere eventual consistency suffices.",
+      "summary": "Only checkout needs synchronous atomic commit; elsewhere eventual consistency",
       "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶5",
-      "summary": "Events describe changes applied as ordered, deduplicated deltas, while snapshot syncs can erase commitments.",
+      "summary": "Events as deltas versus snapshot syncs that erase commitments",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶6",
-      "summary": "Public examples from hourly polling (Shopify) to webhooks (Picqer) to diff-based sync (Business Central).",
+      "summary": "Public examples from hourly polling to webhooks to diff-based sync",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "How the Pieces Fit: The Availability Service ¶7",
-      "summary": "Walmart's event backend shows the same design at scale: one ordered stream per item and store.",
+      "summary": "Walmart's ordered per-item-store event stream at group scale",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "The Choices ¶1",
-      "summary": "Introduces four ways to compute availability, each fitting a stage.",
+      "summary": "Four ways to compute availability, each fitting a stage",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "The Choices ¶2",
-      "summary": "Option 1: the platform's own stock, fine with one location and one order taker.",
+      "summary": "Option 1: the platform's own stock",
       "matched_spec_paragraph": "p34"
     },
     {
       "draft_locator": "The Choices ¶3",
-      "summary": "Option 2: ERP or WMS master with periodic sync, common but structurally laggy.",
+      "summary": "Option 2: ERP or WMS master with periodic sync and its structural lag",
       "matched_spec_paragraph": "p35"
     },
     {
       "draft_locator": "The Choices ¶4",
-      "summary": "Option 3: an event-driven availability service, bought or built, costing integration work and discipline.",
+      "summary": "Option 3: event-driven availability service, bought or built",
       "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "The Choices ¶5",
-      "summary": "Option 4: a fulfillment provider's shared pool, such as ZEOS, trading control for simplicity.",
+      "summary": "Option 4: a fulfillment provider's shared stock pool",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Trade-offs ¶1",
-      "summary": "Table comparing the four options on lag, writers, buffers, cost and failure mode.",
+      "summary": "Five comparison dimensions for the four options",
       "matched_spec_paragraph": "p38a"
     },
     {
       "draft_locator": "Trade-offs ¶2",
-      "summary": "Keep platform stock until another system counts or takes orders, then agree owners before building connectors.",
+      "summary": "Service wins on paper, but stay on platform stock and agree owners before a connector",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "Trade-offs ¶3",
-      "summary": "Adopt an availability service when two complexity conditions hold (as Kestrel & Pine did in 2023), and a provider pool suits provider-dominant sellers.",
+      "summary": "When to adopt an availability service or a provider pool",
       "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
-      "summary": "Across scale stages the invariants stay; Omnichannel merchants must arrange them deliberately.",
+      "summary": "Invariants across scale stages and who provides them",
       "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "In Practice ¶1",
-      "summary": "The reconstruction reveals three causes of the Oversell, each answered by W1.",
+      "summary": "Three causes of the Oversell, each answered by W1",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "In Practice ¶2",
-      "summary": "Cause 1, lag by design, replaced by stock events through the iPaaS.",
+      "summary": "Cause 1: lag by design, replaced by stock events",
       "matched_spec_paragraph": "p44"
     },
     {
       "draft_locator": "In Practice ¶3",
-      "summary": "Cause 2, six writers, replaced by one named writer per state and apps losing inventory rights.",
+      "summary": "Cause 2: several writers, replaced by one writer per state",
       "matched_spec_paragraph": "p45"
     },
     {
       "draft_locator": "In Practice ¶4",
-      "summary": "Cause 3, no buffer and no reconciliation, fixed with per-channel buffers and weekly reconciliation that found 2.3% drift.",
+      "summary": "Cause 3: no buffer or reconciliation, now added",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "In Practice ¶5",
-      "summary": "Replaying the evening with W1 shrinks the oversell to a handful; the goal is a narrow window and deliberate buffer.",
+      "summary": "Replaying the Oversell with W1: a handful of oversells, not zero",
       "matched_spec_paragraph": "p47"
     },
     {
       "draft_locator": "When It Goes Wrong ¶1",
-      "summary": "Table of recurring stock-integration failures with detection and recovery.",
+      "summary": "Recurring stock integration failures with detection and recovery",
       "matched_spec_paragraph": "p48"
     },
     {
       "draft_locator": "When It Goes Wrong ¶2",
-      "summary": "Every stock integration needs a reconciliation job because delivery is never guaranteed (W5).",
+      "summary": "Reconciliation jobs are mandatory because delivery is unreliable",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "When It Goes Wrong ¶3",
-      "summary": "Reconciliation cannot fix wrong counts, and research shows inventory records are often inaccurate.",
+      "summary": "The count itself is often wrong, per inventory record research",
       "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "When It Goes Wrong ¶4",
-      "summary": "Cycle counting and safety buffers control count accuracy.",
+      "summary": "Cycle counting and buffers as controls for count accuracy",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "What to Take Away ¶1",
-      "summary": "Callback to the opening: one owner per fact, one derivation, atomic checkout commit, decided in writing.",
+      "summary": "Callback to the opening: ownership and one commit decide the last jacket",
       "matched_spec_paragraph": "p50a"
     },
     {
       "draft_locator": "What to Take Away ¶2",
-      "summary": "Established findings: separated stock numbers, configurable promise timing, inaccurate counts and at-least-once delivery.",
+      "summary": "Established findings on stock states, commit timing and count error",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "What to Take Away ¶3",
-      "summary": "Context-dependent guidance on platform stock, periodic sync, reserve-on-cart and buy versus build.",
+      "summary": "Context-dependent guidance on each option",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "What to Take Away ¶4",
-      "summary": "Author's synthesis: decide stock ownership in writing first and size buffers from measured error and lag.",
+      "summary": "Author's synthesis: decide stock ownership in writing and size buffers from measurement",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Eight questions to probe ownership, writers, promise timing, propagation, buffers, reconciliation and outages.",
+      "summary": "Eight diagnostic questions about stock ownership, timing, buffers and reconciliation",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "Questions to Ask ¶2",
-      "summary": "Part II's five incidents are one problem: systems using values they did not own, unchecked.",
+      "summary": "Part II's five incidents are one problem of unowned values",
       "matched_spec_paragraph": "p54a"
     },
     {
       "draft_locator": "Questions to Ask ¶3",
-      "summary": "The shared remedy (one writer, declared path, reconciliation) and an exercise to list owners per fact, starting with stock.",
+      "summary": "Common three-part remedy across Part II / exercise to list owners and paths for your own facts",
       "matched_spec_paragraph": "p54b"
     },
     {
       "draft_locator": "Questions to Ask ¶4",
-      "summary": "Hand-off to Part III: Eva's committed jacket moves into cart, checkout and payment.",
+      "summary": "Hand-off to Part III: cart, checkout and payment",
       "matched_spec_paragraph": "p54"
     }
   ],
@@ -335,235 +335,170 @@
       "criterion": "AC-5",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 60 aligned outline summaries state the controlling idea of their spec paragraph in spec order; the three callouts map to none. Minor omissions (the outliner's summary of Introduction ¶2 leaves out the scheduled-copying clause) do not change the idea.",
+      "finding": "All 60 aligned outline summaries state the controlling idea of their spec paragraph in spec order (p01 through p54); the three intro callouts match nothing, as expected.",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5 (flagged two_ideas): the queue backlog and the apps that wrote inventory are the 'two things that made it worse' that spec p09 joins as one idea.",
-      "severity": "major"
-    },
-    {
-      "criterion": "one_controlling_idea_per_paragraph",
-      "check": "one_controlling_idea_per_paragraph",
-      "verdict": "pass",
-      "finding": "Trade-offs ¶3 (flagged two_ideas): the two-of-four test and the provider-pool sentence are one idea, when to move beyond platform stock and to which option; spec p39's transition_in introduces both ('when to go further, to a separate service, and when a provider's pool suits'). The controlling_idea itself does not name the provider pool, which the author may want to add.",
+      "finding": "Two units flagged. 'Five Numbers ¶4' (Shopify arithmetic plus the 2023 POS states): the spec's p14 evidence names both facts as one quotation showing a vendor publishes the arithmetic, so one idea. 'Questions to Ask ¶3' (shared remedy plus the reader's list): the spec's p54b joins them with 'so', so one idea.",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit ties to a supporting claim through its section: the scene to S4; the five numbers and the dated Shopify relabeling to S1; the moments to S2; locations and the service to S3/S4/S2; choices, trade-offs and stages to S3/S4; the worked example to S4/S5; the failures and count accuracy to S5. The conclusion and Part II closing synthesise them.",
+      "finding": "Every body unit traces to a supporting claim through its section's advances_thesis (S1 five numbers, S2 moment of promise incl. backorders, S3 locations/service/choices/stages, S4 scene, events and causes, S5 failures and count accuracy); conclusion units restate S1-S5 and the part synthesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "finding": "The spec says p09's evidence shows that 'the number had more than one writer' on the evening; the draft describes only the March 2026 incident and never says what the apps (or the four-hour backlog) did to the Black Friday figures, so the evidence is not tied to what it is meant to show.",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5",
+      "quote": "Two things made it worse. ... And three of the shop platform's 41 installed apps could write inventory. One, a pre-order app, had already caused the App That Wrote Stock in March 2026",
+      "fault": "draft",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Every table, figure and quotation has a sentence or caption saying what it shows: the timeline ('shows how long each channel sold after the shelf was empty'), Figures 1-5 by their captions, the vendor table ('this is not one platform's idea'), the moments table ('protects something different and costs something different'), the component table ('each number has exactly one writer'), the requirements table ('The checkout row carries the design'), the trade-off table ('only the availability service combines...'), the stage table (the constants paragraph), the failure table (the reconciliation paragraph), and the Shopify, Picqer, Walmart, ZEOS and DeHoratius-Raman evidence each with its point or caveat.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "All other declared transitions are expressed at their boundaries and pick up their carries_over, e.g. 'A shelf count alone cannot answer the question', 'Noor's \"number\" is five numbers and a calculation', 'Everything above assumes one shelf and one shop', 'Those stale copies stay usable only if changes reach them', 'The availability service of the previous section is one of four...', 'Kestrel & Pine is the Omnichannel merchant that had not arranged these things', 'Even the remedy lets some oversells through', 'A reconciliation ... cannot tell whether the count itself is right'. The hand-off picks up the catalog's facts ('the product, the price, the discount and the available unit are fixed into an order and money is taken') in sequence.",
+      "finding": "All other tables (timeline, vendor vocabulary, three moments, components, requirements per interaction, trade-offs, scale stages, failures), Figures 1-5 and quotations (Shopify, commercetools, ZEOS, Walmart/Confluent, Shopify webhooks, DeHoratius and Raman) carry a caption or an adjacent sentence saying what they show.",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "fail",
-      "finding": "p54a is declared conclusion_summary carrying over 'this chapter's answer about stock'. The draft jumps from question 8 of a numbered list straight to the Part, with no sentence that picks up the chapter's stock answer before widening to the five chapters; it also sits under the 'Questions to Ask' heading.",
-      "spec_locus": "/conclusion/paragraphs/5",
-      "draft_locus": "Questions to Ask ¶2",
-      "quote": "8. What happens to checkout if the availability service is down for ten minutes? / This chapter closes Part II. The part opened with a product page...",
+      "finding": "The section opens directly with the stage table; no phrase at the start picks up 'each is right for a stage' or the conditions for moving on from Trade-offs, and the only prose ('The approach changes with scale...') comes after the table and does not refer back. The declared elaboration (form phrase, start_of_this) is not expressed at the boundary.",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits (opening table)",
+      "quote": "| Stage | What is typical | What becomes necessary | Warning signs the approach is outgrown |",
       "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other section, paragraph, conclusion and hand-off boundaries express their declared relationship and pick up the carried-over item (e.g. 'Noor's \"number\" is five numbers', 'Everything above assumes one shelf and one shop', 'Those stale copies stay usable only if changes reach them', 'Even the remedy lets some oversells through', 'This chapter's answer about stock closes Part II', 'Eva's jacket is in stock ... The next part follows that click').",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "pass",
-      "finding": "Both flow readers describe the declared order: the incident first, then the vocabulary built from the simple case outward (numbers, moment of promise, locations and channels), the service, the options compared and by stage, the incident replayed, the failures. No section's position is unclear to either; both say the section order works ('The overall section order works and I would not change it').",
+      "finding": "Organising principle: both readers describe problem first, then concepts in prerequisite order (numbers, timing, locations/channels), then the service, then options compared and by stage, then the worked case and the failures, matching prerequisite_order with problem_solution and comparison; no section's position was unclear to either. Material points follow as separate results.",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Both readers lost the thread at the backorder/pre-order paragraph, which promises against incoming stock and has nothing to do with locations or channels. The spec places p25 in the locations section and its decision log rejected moving it; the difficulty comes from that order.",
-      "spec_locus": "/sections/3/paragraphs/6",
-      "draft_locus": "Many Locations, Many Channels ¶7",
-      "quote": "Reader A #9: \"This paragraph sits at the end of 'Many Locations, Many Channels', but it has nothing to do with locations or channels... It felt like an orphan where it is.\"",
-      "fault": "spec",
-      "corroborated_by": "reader-flow-b #11",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "The Shopify relabeling paragraph reads as a detour between the vendor arithmetic and the ownership rule; both readers lost the line from the table to the rule. The spec puts p14a before p15.",
-      "spec_locus": "/sections/1/paragraphs/4",
-      "draft_locus": "What \"In Stock\" Means: Five Numbers, Not One ¶5",
-      "quote": "Reader B #7: \"It reads as a digression... I lost the line from the table to the rule for a moment.\"",
-      "fault": "spec",
-      "corroborated_by": "reader-flow-a #6",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "The terminology warning that a vendor's 'reserve' at order creation is this chapter's 'commit' interrupts the three-vendor run between commercetools and Adobe Commerce; spec p17 places it after the vendors' settings.",
-      "spec_locus": "/sections/2/paragraphs/1",
-      "draft_locus": "When a Unit Becomes Promised: Reservations and Allocations ¶2",
-      "quote": "Reader A #7: \"This sentence interrupts the three-vendor list between commercetools and Adobe Commerce. I read it as part of the commercetools description and then had to step back.\"",
+      "finding": "Both readers stopped at the aggravating-factors paragraph: it says 'made it worse' but never says how the apps or the backlog changed the Black Friday evening, so Cause 2 later cannot be traced back to the scene.",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5",
+      "quote": "Reader A item 5: \"The paragraph opens with 'Two things made it worse', but it never says how the apps made the Black Friday Oversell worse. It only describes an earlier incident in March. I lost the causal link.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b #6",
+      "corroborated_by": "reader-flow-b item 5",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "The moments table calls order creation 'the default in all four platforms above' right after a paragraph that discussed three vendors; readers had to look back for the fourth (SAP), whose reservation timing is never discussed.",
-      "spec_locus": "/sections/2/paragraphs/2",
-      "draft_locus": "When a Unit Becomes Promised: Reservations and Allocations ¶3",
-      "quote": "Reader B #9: \"'All four' sends the reader back to the earlier vocabulary table to find the fourth (SAP), whose reservation timing was never discussed.\"",
-      "fault": "draft",
-      "corroborated_by": "reader-flow-a #8",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "Why a storefront sale reaches other channels only 'after picking', and why the storefronts went on selling after their own count fell, is implied, not stated; both readers re-read the chain paragraph.",
+      "finding": "Both readers had to re-read the sentence carrying three flows joined by an ambiguous 'as'.",
       "spec_locus": "/sections/0/paragraphs/2",
       "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶3",
-      "quote": "Reader A #3: \"If storefront sales reduced the platform's own count immediately, why did the storefronts not stop selling? ... the reader has to infer...\"",
+      "quote": "Reader A item 3: \"The warehouse's count and marketplace sales reached the platform only through the chain, as storefront sales reached the marketplaces ... I had to re-read this. The word 'as' can mean 'in the same way as' or 'while'\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b #4",
+      "corroborated_by": "reader-flow-b item 2",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "'Phantom reservations' is used loosely in the scene before 'reserved' is given its precise meaning in the next section; both readers could not tell whether these were reservations in the later sense.",
-      "spec_locus": "/sections/0/paragraphs/4",
-      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5",
-      "quote": "Reader B #5: \"This uses 'reservations' before the chapter defines the word... it is not clear whether these phantom reservations were that or something looser.\"",
+      "finding": "Both readers had to hold two meanings of 'reserved' (and of 'allocation') at once: the chapter defines reserved as a pre-order claim, then three vendors use it for committed, the moments table says reserve-on-order commits, and Shopify's change moves draft-order units (the chapter's own example of reserved) to committed without comment.",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "What \"In Stock\" Means: Five Numbers, Not One ¶3; When a Unit Becomes Promised ¶3 (table)",
+      "quote": "Reader A item 6: \"Note that three of the four say 'reserved' or 'reservation' for what this chapter calls committed ... This reversal forced me to go back over the table, and the warning is easy to miss.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-a #5",
+      "corroborated_by": "reader-flow-b item 7",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "'All three uses' opening the roadmap refers back to uses named in passing in the 'Where we are' paragraph; both readers had to look back to find them.",
-      "spec_locus": "/introduction/paragraphs/3",
-      "draft_locus": "Introduction ¶4",
-      "quote": "Reader B #2: \"I had to look back to find the 'three uses'. They are ... named in the previous paragraph almost in passing.\"",
+      "finding": "Both readers found the dense vendor paragraph hard to hold: three vendors, three modes and the 10-second window are packed in, and the window is only picked up two units later, so readers looked back to find it.",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "When a Unit Becomes Promised: Reservations and Allocations ¶2",
+      "quote": "Reader A item 8: \"The 10-second window is introduced inside a dense paragraph about three vendors. It is only picked up after the table and Figure 3 ... I had to look back to find what window was meant.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-a #2",
+      "corroborated_by": "reader-flow-b item 9",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "The replay says the marketplace buffer pulled the listing before the shelf emptied, yet a handful still oversells; where the remainder comes from is not stated.",
-      "spec_locus": "/sections/8/paragraphs/4",
-      "draft_locus": "In Practice ¶5",
-      "quote": "Reader A #13: \"If the buffer pulls the listing before the shelf is empty, it is unclear why any marketplace oversell remains.\"",
+      "finding": "Both readers felt the verdict came before the comparison: the service section states W1 bought as an OMS module, so The Choices and Trade-offs read as after-the-fact justification. The spec's rationale says the choices should 'say what it was chosen over', but the Choices opening frames the service as 'not the right one for every merchant' rather than as a check on W1.",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "The Choices ¶1",
+      "quote": "Reader A item 15: \"The service was presented earlier as Waypoint decision W1, already bought, so the four options and the trade-offs read as a justification after the decision rather than a choice I was weighing.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b #14",
+      "corroborated_by": "reader-flow-b item 13",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "'Two rows are detected by a variance' does not name the two rows; both readers scanned the Detection column to find them.",
-      "spec_locus": "/sections/9/paragraphs/1",
-      "draft_locus": "When It Goes Wrong ¶2",
-      "quote": "Reader B #15: \"Which two? I had to scan the table's Detection column.\"",
+      "finding": "Both readers had to recount 'six writers' against 'the first four' and found 'four ways' clashing with 'six writers'.",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "quote": "Reader A item 12: \"I had to count the list again to match 'six' and 'the first four'. 'Four ways' then seemed to clash with 'six writers'.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-a #14",
+      "corroborated_by": "reader-flow-b item 14",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Cycle counting is bolded and defined as new in the last failures paragraph although the stage table already glossed it and the failure table used it; 'the integration mechanisms discussed above' is vague.",
-      "spec_locus": "/sections/9/paragraphs/3",
-      "draft_locus": "When It Goes Wrong ¶4",
-      "quote": "Reader A #15: \"Bolding and defining the term here, as if new, made me wonder whether it meant something different.\"",
+      "finding": "Both readers were unsure how 'met that test in 2023 but built the slow copying chain instead' fits the stage table, which shows the chain already existing in the Growing stage (2019-2022).",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Trade-offs ¶3",
+      "quote": "Reader B item 12: \"'Built ... instead' in 2023 made me wonder whether the chain was built in 2023 or only extended then.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b #16",
+      "corroborated_by": "reader-flow-a item 16",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "The recommendation turns abruptly: 'Even so' and the shift to first-person advice, with 'the connector' lacking a clear antecedent; both readers re-read the passage.",
-      "spec_locus": "/sections/6/paragraphs/1",
-      "draft_locus": "Trade-offs ¶2",
-      "quote": "Reader B #12: \"There is a sudden shift to first person and to advice. 'The connector' has no clear antecedent... Re-read once.\"",
-      "fault": "draft",
-      "corroborated_by": "reader-flow-a #12",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "Single reader: the scene opens in January 2027 in the present tense under a heading dated 27 November 2026, then switches to past tense; three time frames for one incident.",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶1",
-      "quote": "Reader B #3: \"I briefly lost my place in time: is this the evening itself or the review?\"",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "Single reader: 'allocates it to a pick' is a new use of 'allocate' after 'Committed (also allocated)'; the clash is acknowledged only two sections later.",
-      "spec_locus": "/sections/2/paragraphs/0",
-      "draft_locus": "When a Unit Becomes Promised: Reservations and Allocations ¶1",
-      "quote": "Reader B #8: \"The draft acknowledges the clash itself ... but only two sections later. By then I had already tripped on it.\"",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "Single reader: the bolded slogan uses 'eventual consistency' before the next sentence defines it.",
-      "spec_locus": "/sections/4/paragraphs/3",
-      "draft_locus": "How the Pieces Fit: The Availability Service ¶4",
-      "quote": "Reader A #10: \"I read the slogan, was unsure, and found the definition in the next sentence.\"",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "finding": "Single reader: the switch from this chapter to the whole Part straight after the numbered questions is sudden, and the next paragraph partly repeats the takeaways.",
+      "finding": "Both readers found the Part II close, placed under 'Questions to Ask' with no break, read as a second ending or as part of the questions.",
       "spec_locus": "/conclusion/paragraphs/5",
       "draft_locus": "Questions to Ask ¶2",
-      "quote": "Reader A #16: \"The change in scope from this chapter to the whole Part is sudden.\"",
+      "quote": "Reader B item 15: \"The Part II close ... sits under the 'Questions to Ask' heading, directly after the numbered questions, with no heading or break of its own. It reads as if it were still part of the questions.\"",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-a item 18",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "One reader could not reconcile the buffer pulling the listing before the shelf emptied with sales 'after the buffer was used up'.",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "Reader A item 13: \"If the buffer pulls the listing before the shelf is empty, I could not see how sales happen 'after the buffer was used up'. I re-read this twice.\"",
       "fault": "draft",
       "severity": "minor"
     },
@@ -571,33 +506,61 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "Single reader: 'Three consequences follow' closes the channel definition, but the second consequence (sourcing) follows from several locations, not channels.",
-      "spec_locus": "/sections/3/paragraphs/2",
-      "draft_locus": "Many Locations, Many Channels ¶3",
-      "quote": "Reader B #10: \"The second consequence, 'Sourcing is a separate decision', follows from having several locations, not several channels.\"",
+      "finding": "One reader stumbled on the timeline rows being out of time order (20:00-21:00 before about 20:30) and read the 2,300 orders as Ridgewalker sales.",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶4 (timeline table)",
+      "quote": "Reader B item 4: \"the row '20:00–21:00 | Peak hour: 2,300 orders, 38 per minute' sits before the row 'about 20:30 | ERP sends stock to the platform (hourly run)', so the rows are not strictly in time order.\"",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "'Reservation' / 'reservation windows' (KEY POINTS) and 'phantom reservations' (scene) are used before 'reserved' is defined in the five-numbers section; 'reserved' and reserve-on-cart are on does_not_know. Both flow readers reported the same term.",
-      "spec_locus": "/sections/0/paragraphs/4",
-      "draft_locus": "Setting the Scene at Kestrel & Pine: Friday 27 November 2026, 19:40 ¶5",
-      "quote": "two weeks of phantom reservations on about 600 variants",
+      "finding": "One reader found the first-person recommendation with '(option 2)' ambiguous: adopt option 2, or set conditions before it.",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "quote": "Reader A item 11: \"'(option 2)' made me check whether the advice was to adopt option 2 or to set conditions before it. It is the second, but I had to re-read.\"",
       "fault": "draft",
-      "corroborated_by": "reader-flow-a #5; reader-flow-b #5",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "finding": "'Wholesale allocations' is used in the introduction and explained only in the locations section ('allocation for a customer' is on does_not_know); explained later, so not corroborated.",
+      "finding": "One reader found the Shopify August 2026 redefinition out of place after the ownership rule; the spec places it there as an elaboration of ownership.",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What \"In Stock\" Means: Five Numbers, Not One ¶6",
+      "quote": "Reader A item 7: \"This one turns to a vendor redefining its terms, which is closer to an API-contract point, and the link 'also controls what it means' is weak.\"",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "finding": "One reader found the 'chain of scheduled updates' sentence at the end of intro ¶2 unprepared; the spec's p02 bundles it into the paragraph's claim.",
       "spec_locus": "/introduction/paragraphs/1",
       "draft_locus": "Introduction ¶2",
-      "quote": "others are held back as buffers, damaged goods or wholesale allocations",
+      "quote": "Reader B item 1: \"this last sentence suddenly brings in a 'chain of scheduled updates' that nothing before it has set up. It makes sense only after the Setting the Scene section.\"",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is explained at or near first use in the body (the five numbers, ATP, reserve-on-cart/order, allocation at fulfillment, location, per-channel buffer, sourcing, wholesale allocation, backorder, pre-order, valuation, stock event, snapshot vs change, synchronous, atomic, eventual consistency, cycle counting, record inaccuracy). Waypoint W1/W2/W5, the App That Wrote Stock, Duiven and the iPaaS are covered by already_knows.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'Reservation window' appears in the KEY POINTS before 'reserved' or any window is explained (the consistency window is on does_not_know); it is explained later in When a Unit Becomes Promised.",
+      "spec_locus": "/introduction/thesis_statement",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "quote": "Several systems writing the same stock number, periodic copying instead of events, and reservation windows let two channels sell the same last unit.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -605,10 +568,21 @@
       "criterion": "AC-6",
       "check": "known_before_new",
       "verdict": "fail",
-      "finding": "'Cut-off times', 'carrier cost' and 'split-shipment limits' are named as what moves sourcing to an OMS and never explained.",
+      "finding": "Shopify, commercetools, Adobe Commerce and SAP Commerce are used as table columns and cited throughout without being identified as commerce platform products; they are not in already_knows.",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "What \"In Stock\" Means: Five Numbers, Not One ¶3 (vendor table)",
+      "quote": "The vendors' own vocabularies show that this is not one platform's idea. The table aligns four of them",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "finding": "'Line' (one product row of an order) is used in the commercetools paragraph and the sourcing rule without being defined; not in already_knows.",
       "spec_locus": "/sections/3/paragraphs/4",
       "draft_locus": "Many Locations, Many Channels ¶5",
-      "quote": "The moment sourcing needs capacity, cut-off times, carrier cost or split-shipment limits, the decision moves to an order management system",
+      "quote": "Once a line can be fulfilled from more than one location, someone must decide which.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -616,32 +590,10 @@
       "criterion": "AC-6",
       "check": "known_before_new",
       "verdict": "fail",
-      "finding": "'Commit atomically' appears in the requirements table before the next paragraph explains an atomic commit (on does_not_know); explained one paragraph later, so not corroborated.",
+      "finding": "'Cache'/'cached' carries the freshness argument of the requirements table (the badge reads a cached figure) but is never explained and is not in already_knows.",
       "spec_locus": "/sections/4/paragraphs/2",
-      "draft_locus": "How the Pieces Fit: The Availability Service ¶3",
-      "quote": "Commit atomically; the last unit goes to exactly one order",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "finding": "Business Central is named without saying what it is (an ERP), so the reader cannot tell what is being synchronised with Shopify.",
-      "spec_locus": "/sections/4/paragraphs/5",
-      "draft_locus": "How the Pieces Fit: The Availability Service ¶6",
-      "quote": "Microsoft's inventory sync between Business Central and Shopify (documented 14 October 2026) is the careful middle",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "finding": "NEXT is never introduced (a retailer whose orders ZEOS fulfils); ZEOS can only be inferred from the option heading.",
-      "spec_locus": "/sections/5/paragraphs/4",
-      "draft_locus": "The Choices ¶5",
-      "quote": "Zalando's ZEOS announced in November 2024 that it would fulfill most of NEXT's continental-European direct-to-consumer orders",
+      "draft_locus": "How the Pieces Fit: The Availability Service ¶3 (requirements table)",
+      "quote": "Per-channel available, cached | Served from the storefront's cache",
       "fault": "draft",
       "severity": "minor"
     },
@@ -649,56 +601,56 @@
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens on a puzzling scenario (two buyers, one jacket), then the claim and a roadmap; none of the weak patterns.",
+      "finding": "Opens on a puzzling scenario (two buyers, one jacket), states the claim, places the chapter in Eva's order and gives a specific roadmap; none of the weak patterns.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "The conclusion opens on the callback, synthesises, sorts claims by how settled they are and hands off; the figures in 'Established' restate body findings rather than add new evidence, and the Part II closing is declared by the spec. None of the weak patterns.",
+      "finding": "Opens with a callback, then sorts findings by how settled they are, gives questions, closes the part and hands off; the established bullets summarise body findings rather than add new evidence, and the part close is the spec's declared synthesis, not a new subtopic.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "Matches spec synthesis and so_what: 'None of this needs a faster copy. It needs a written decision about who writes each number, how a change travels and what compares the copies', the five incidents as 'one problem', the three-part remedy, the list the reader can make 'before any purchase is discussed', and that none of the remedies replaces the shop platform.",
+      "finding": "p50a states what no single section states (one counted fact, one writer per claim, one place deriving, one commit; 'None of this needs a faster copy') and the so-what that the decision can be made before any product is bought; p54a-p54b give the part synthesis (one problem, three-part remedy, no platform replaced) and the list the reader can write, starting with stock.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "What to Take Away ¶1 returns to 'the web shopper and the store customer of the opening' and says what decides which gets the jacket; Questions to Ask ¶2 returns to the part opening's product page with a description, a price and a stock badge.",
+      "finding": "p50a returns to 'the web shopper and the store customer of the opening' and says what decides who gets the jacket; p54a returns to the part opening's product page with description, price and stock badge changing at different speeds.",
       "severity": "major"
     },
     {
       "criterion": "AC-4",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The intro reader lists the sections in the spec's order (Oversell, numbers, moment of promise, locations and channels, the service with events against copies, four options with trade-offs and stages, the Oversell replayed, failures, the count checked against a study) and the evidence (the Oversell, vendor documentation, a study of inventory records).",
+      "finding": "The intro reader predicted every roadmap item in order (Oversell; numbers; moment of promise; locations and channels; service with writers, interaction needs, events vs copies; four options, trade-offs, stages; worked Oversell; failures; count checked against a study) and the evidence (the Oversell, vendor documentation, one inventory-accuracy study), matching AC-4's expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader answers 4 (10 - 3 - 1 - 2), names it available-to-promise and treats it as derived, not a count.",
+      "finding": "Reader answered 4 (10 - 3 - 1 - 2) and named it available-to-promise, a derived figure, as expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader names several writers, scheduled copying, the commit window, no buffer, no reconciliation and a wrong count; says a five-minute copy shortens the lag but leaves the other causes; gives one writer per state, events, per-channel buffers, an atomic commit and reconciliation as the remedy.",
+      "finding": "Reader named several writers, scheduled copying, snapshot overwrite, the commit window, no buffer, no reconciliation and a wrong count; said a five-minute interval shrinks but does not remove the causes, and gave the remedy (one writer per state, events, per-channel buffers in one service, atomic commit, reconciliation), as expected.",
       "severity": "major"
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Reader says checkout (order creation) must ask and wait with an atomic commit, and that the listing badge, add to cart, marketplace push and click-and-collect may lag.",
+      "finding": "Reader said only checkout at order creation must ask the service and wait with an atomic commit, and that the listing badge, add to cart, marketplace push and click-and-collect may read a slightly stale copy, as expected.",
       "severity": "minor"
     }
   ]

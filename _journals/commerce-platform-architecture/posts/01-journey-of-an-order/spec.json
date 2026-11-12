@@ -130,7 +130,7 @@
         "applies_to": "joins: four failure modes in the same shape"
       }
     ],
-    "rationale": "The scene poses the problem (no shared map) and names the systems, so that no later section uses one the reader has not met; the steps, the two words, the entities and the status lines are the vocabulary the walk needs, in that order: the steps table shows promises made and kept, so the two words are defined directly after it; the entities come next because a handoff is a message about them; and the status lines come last because they need the difference between an order and a shipment. The walk supplies the arrows the failure analysis points at; the requirements each handoff must meet open the failure analysis, because their table rests on handoffs the reader has only now seen; the two failure sections sit together, the four modes first and the per-step table second, because the table applies the modes and their two remedies and would repeat them if it stood apart; public evidence comes after the reader has seen the handoffs and how they fail, because before that its warnings about repeated and out-of-order messages would answer a question the reader has not yet asked; the scale stages come last because they add no new idea, only more of the same handoffs, and before the failure sections the reader could not say what multiplies. Putting the walk first would stop every sentence for a definition; putting the failure analysis first would name incidents on arrows the reader has not yet seen. One incident, the Three-Status Order, is told before the walk on purpose: it is the evidence that one status word fails, it needs only the systems named in the scene and the difference between an order and a shipment, and the failure analysis later refers back to it in a line instead of retelling it."
+    "rationale": "The scene poses the problem (no shared map) and names the systems, so that no later section uses one the reader has not met; the steps, the two words, the entities and the status lines are the vocabulary the walk needs, in that order: the steps table shows promises made and kept, so the two words are defined directly after it; the entities come next because a handoff is a message about them; and the status lines come last because they need the difference between an order and a shipment. The walk supplies the arrows the failure analysis points at; the failure analysis opens with the four ways a message fails, one incident each, and then states the requirements each handoff must meet, which the incidents have just shown being missed; the two failure sections sit together, the four modes first and the per-step table second, because the table applies the modes and their two remedies and would repeat them if it stood apart; public evidence, gathered in one section and not spread through the earlier ones, comes after the reader has seen the handoffs and how they fail, because before that its warnings about repeated and out-of-order messages would answer a question the reader has not yet asked; the scale stages come last because they add no new idea, only more of the same handoffs, and before the failure sections the reader could not say what multiplies. Putting the walk first would stop every sentence for a definition; putting the failure analysis first would name incidents on arrows the reader has not yet seen. One incident, the Three-Status Order, is told before the walk on purpose: it is the evidence that one status word fails, it needs only the systems named in the scene and the difference between an order and a shipment, and the failure analysis later refers back to it in a line instead of retelling it."
   },
   "introduction": {
     "hook": {
@@ -139,7 +139,7 @@
     },
     "bridge": {
       "from_reader_world": "Anyone who has waited for a parcel, or been asked where one is, knows an order from the outside as one thing with one status.",
-      "to_topic": "Inside the merchant it is about a dozen steps across several systems, joined by handoffs that each have to carry a promise another system can keep."
+      "to_topic": "Inside the merchant it is thirteen steps across several systems, joined by handoffs that each have to carry a promise another system can keep."
     },
     "thesis_statement": {
       "text": "An order is thirteen steps, each completed in a system that keeps its own copy and learns of changes only by message: a chain of promises between systems, in which a break is a message that arrived late, was lost, was duplicated or was misread.",
@@ -201,7 +201,7 @@
       },
       {
         "id": "p02",
-        "controlling_idea": "An order passes through about a dozen steps and several systems, and each handoff between them must carry a promise another system can keep.",
+        "controlling_idea": "An order passes through thirteen steps and several systems, and each handoff between them must carry a promise another system can keep.",
         "function": "claim",
         "transition_in": {
           "relationship": "elaboration",
@@ -330,14 +330,14 @@
         },
         {
           "id": "p24a",
-          "controlling_idea": "The boxes in the four drawings are seven systems, a system being any software or outside company's service that takes part in handling an order: six hold a copy (the shop platform, the payment provider, the warehouse system, the ERP, the carrier and the returns portal), and the seventh, the integration platform, carries the messages between them and keeps none.",
+          "controlling_idea": "The boxes in the four drawings come down to seven systems on the order's path, a system being any software or outside company's service that takes part in handling an order; the company runs more, and a few appear in the failure stories. Six keep their own record of the order or of their part of it (the shop platform, the payment provider, the warehouse system, the ERP, the carrier and the returns portal), and the seventh, the integration platform, carries the messages between them and keeps none.",
           "function": "context",
           "organization": "classification",
           "evidence": [
             {
               "kind": "scenario",
               "what": "Kestrel & Pine's systems, each with a one-clause gloss of what it does: platform (takes the order), payment provider (collects the money), warehouse management system (picks and ships), ERP (books and stock ledger), carrier (delivers and reports tracking), returns portal (accepts return requests), integration platform (iPaaS, carries messages).",
-              "shows": "The reader has a fixed cast, so 'six copies in six systems' at the end of the walk is a count they can check.",
+              "shows": "The reader has a fixed cast for the walk, and is told that other systems exist, so the marketplace connector and an agency script in the failure stories are not a surprise.",
               "source": "Kestrel & Pine scenario ledger"
             }
           ],
@@ -444,7 +444,7 @@
       "paragraphs": [
         {
           "id": "p14",
-          "controlling_idea": "Two words carry the book's argument, and this chapter owns their definitions.",
+          "controlling_idea": "The table and the introduction have already used two words for the pairing, promise and handoff, and this section defines them because they carry the book's argument.",
           "function": "transition"
         },
         {
@@ -558,7 +558,7 @@
       },
       "flow": {
         "pattern": "assertion_evidence_reasoning",
-        "rationale": "The claim, its plain-words reading, the vendors that confirm it, then the incident: the reader meets the vendors' denser detail already knowing what the lines are, and the incident already knowing why it happened."
+        "rationale": "The claim, its plain-words reading with the goods line drawn, then the incident: the reader meets the incident already knowing what the lines are. The vendors' versions of the same lines are gathered with the other public evidence in 'In Practice'."
       },
       "transition_in": {
         "relationship": "additional_support",
@@ -588,26 +588,6 @@
             "relationship": "elaboration",
             "carries_over": "The claim that an order has three status lines.",
             "introduces": "What that means in plain words, and the goods line on its own.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
-          "id": "p20",
-          "controlling_idea": "The major platforms keep separate status families on one order.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "source",
-              "what": "Shopify: order, payment and fulfillment status families. commercetools: OrderState, PaymentState, ShipmentState and per-item return states.",
-              "shows": "Two independent vendors separate the same three lines, and neither's 'fulfilled' means delivered.",
-              "source": "Shopify and commercetools documentation, n.d., accessed November 2026"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The three lines in plain words.",
-            "introduces": "How two shop platform vendors model the same lines.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -658,7 +638,7 @@
     {
       "id": "evas-jacket",
       "heading": "Eva's Jacket, System by System",
-      "controlling_idea": "Followed step by step, one order ends up as six copies in six systems, each correct about its own part.",
+      "controlling_idea": "Followed step by step, one order ends up as several copies in several systems, each correct about its own part.",
       "function": "example",
       "advances_thesis": {
         "supports": [
@@ -734,7 +714,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Three lines, PostNL at €0, €235 including 21% Dutch VAT, six payment methods offered.",
+              "what": "The jacket and two pairs of socks, free shipping, €235 including 21% Dutch VAT, several payment methods offered.",
               "shows": "Checkout is an orchestration of other systems' answers.",
               "source": "Kestrel & Pine scenario ledger"
             }
@@ -859,7 +839,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Exchange for size L requested Monday 19 April; PostNL return label issued; platform told to expect a return and create a new order.",
+              "what": "Exchange for size L requested Monday 19 April; PostNL return label issued; platform told to expect a return and an exchange for size L.",
               "shows": "A fifth system now makes promises others must keep.",
               "source": "Kestrel & Pine scenario ledger"
             },
@@ -880,7 +860,7 @@
         },
         {
           "id": "p34",
-          "controlling_idea": "Step 12: the warehouse receives and grades the return, the platform closes it, and the held exchange order ships the same day.",
+          "controlling_idea": "Step 12: the warehouse receives and grades the return, the platform closes it, and the exchange order for size L ships the same day.",
           "function": "example",
           "organization": "process",
           "evidence": [
@@ -928,7 +908,7 @@
         },
         {
           "id": "p36",
-          "controlling_idea": "Set side by side, what each system knew at each moment explains why the four colleagues drew four pictures.",
+          "controlling_idea": "Set side by side, what each system that held the order knew at each moment (the carrier, which knew only the parcel, left out) explains why the four colleagues drew four pictures.",
           "function": "analysis",
           "evidence": [
             {
@@ -948,7 +928,7 @@
         },
         {
           "id": "p37",
-          "controlling_idea": "Six systems hold six copies of the order, each correct about its part, and the open question is which copy to believe when two disagree.",
+          "controlling_idea": "Each system holds its own copy of the order, or of its part, each correct about that part, and the open question is which copy to believe when two disagree.",
           "function": "claim",
           "transition_in": {
             "relationship": "cause_effect",
@@ -963,7 +943,7 @@
     {
       "id": "joins",
       "heading": "Why the Joins Are Where Things Break",
-      "controlling_idea": "Every handoff has requirements, a message between systems can miss them in only four ways (late, lost, duplicated, misread), and all four have happened at Kestrel & Pine.",
+      "controlling_idea": "A message between systems can fail in only four ways (late, lost, duplicated, misread), all four have happened at Kestrel & Pine, and each failure missed a requirement the business had set for that handoff.",
       "function": "analysis",
       "advances_thesis": {
         "supports": [
@@ -974,40 +954,20 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "The requirements a handoff must meet come first, now that the walk has shown the handoffs; then four failure modes in the same shape, one incident each; then the remedies that cover all four."
+        "rationale": "The four failure modes first, in the same shape, one incident each, because they are the simple part and their incidents are then known when the requirements table names them; then the requirements each handoff must meet, which the incidents showed being missed; then the remedies that cover all four."
       },
       "transition_in": {
         "relationship": "cause_effect",
-        "carries_over": "Six correct copies joined by messages.",
-        "introduces": "What those messages have to guarantee, and the ways they fail to.",
+        "carries_over": "Copies of the order in several systems, joined by messages.",
+        "introduces": "The ways those messages fail.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
-          "id": "p17",
-          "controlling_idea": "Each handoff in the walk carries requirements the business sets, usually without writing them down: how fresh, how consistent, how fast, and what happens when the receiver is down.",
-          "function": "claim",
-          "evidence": [
-            {
-              "kind": "table",
-              "what": "Freshness, consistency, speed and availability targets for the main handoffs of a consumer order; targets illustrative.",
-              "shows": "The requirements can be written per handoff in one line each; every merchant has these rows, written down or not.",
-              "source": "Author's judgement, labelled illustrative"
-            }
-          ]
-        },
-        {
           "id": "p38",
-          "controlling_idea": "Every arrow in the walk is a message, as is every arrow like it elsewhere in the company, and a message can go wrong in only four ways.",
-          "function": "claim",
-          "transition_in": {
-            "relationship": "cause_effect",
-            "carries_over": "The requirements each handoff has to meet.",
-            "introduces": "The only four ways a message can fail to meet them.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
+          "controlling_idea": "Every arrow in the walk is a message, as is every arrow like it elsewhere in the company, and a message can go wrong in only four ways, all of which have happened at Kestrel & Pine.",
+          "function": "claim"
         },
         {
           "id": "p39",
@@ -1090,20 +1050,40 @@
           }
         },
         {
+          "id": "p17",
+          "controlling_idea": "Each of those failures missed a requirement the business sets for a handoff, usually without writing it down: how fresh, how consistent, how fast, and what happens when the receiver is down.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Freshness, consistency, speed and availability targets for the main handoffs of a consumer order; targets illustrative.",
+              "shows": "The requirements can be written per handoff in one line each; every merchant has these rows, written down or not.",
+              "source": "Author's judgement, labelled illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four failures, each at one handoff of the walk.",
+            "introduces": "The requirements each handoff must meet, which those failures missed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p43",
           "controlling_idea": "The field's answer is two ideas: idempotency, so a repeated message has no second effect whoever sends it, and reconciliation, so two systems' copies are compared and the late, the lost and the misread show up as differences.",
           "function": "definition",
           "evidence": [
             {
-              "kind": "source",
-              "what": "A client sends an idempotency key with each request, and a retry with the same key returns the saved result.",
-              "shows": "The mechanism is documented and in production at a payment provider.",
-              "source": "Stripe documentation, n.d., accessed November 2026"
+              "kind": "scenario",
+              "what": "The first weekly stock reconciliation, May 2027: 2.3% of active variants differed between the WMS and the shop platform.",
+              "shows": "A comparison of two copies finds differences no error message reported.",
+              "source": "Kestrel & Pine scenario ledger"
             }
           ],
           "transition_in": {
             "relationship": "problem_solution",
-            "carries_over": "The four ways a message fails.",
+            "carries_over": "The four ways a message fails and the requirements they miss.",
             "introduces": "The two ideas that contain them.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1161,7 +1141,7 @@
     {
       "id": "in-practice",
       "heading": "In Practice: What the Public Record Says",
-      "controlling_idea": "Vendor documentation and regulation describe the journey's handoffs precisely: each is a message that can be delayed or repeated, and responsibility passes only when the receiver accepts it.",
+      "controlling_idea": "Vendor documentation and regulation describe the journey's handoffs precisely: each is a message that can be delayed or repeated, responsibility passes only when the receiver accepts it, and the order's three status lines are kept apart; the chapter's vendor evidence is gathered here.",
       "function": "evidence",
       "advances_thesis": {
         "supports": [
@@ -1173,7 +1153,7 @@
       },
       "flow": {
         "pattern": "chronological",
-        "rationale": "The evidence follows the journey's own order: payment, warehouse, carrier, the law's deadlines, the books."
+        "rationale": "The evidence follows the journey's own order: payment, warehouse, the order record's status families (whose 'fulfilled' is not 'delivered'), the carrier's tracking, the law's deadlines, the books."
       },
       "transition_in": {
         "relationship": "additional_support",
@@ -1185,12 +1165,12 @@
       "paragraphs": [
         {
           "id": "p44",
-          "controlling_idea": "Vendor documentation and regulation describe the journey's steps with precision.",
+          "controlling_idea": "Vendor documentation and regulation describe the journey's steps with precision, and this section gathers that public record in the journey's order.",
           "function": "transition"
         },
         {
           "id": "p45",
-          "controlling_idea": "The vendors confirm what the walk showed, that the payment result reaches the shop as a separate message, and add that the message may arrive more than once (duplicated) or after a newer one (late).",
+          "controlling_idea": "The vendors confirm what the walk showed, that the payment result reaches the shop as a separate message, and add that the message may arrive more than once (duplicated) or after a newer one (late); the same providers document the payment details the walk relied on and the idempotency key.",
           "function": "evidence",
           "evidence": [
             {
@@ -1210,6 +1190,18 @@
               "what": "Mollie's webhook carries only a payment identifier and no status.",
               "shows": "The receiver must fetch the state itself, so a forged call cannot mark an order paid.",
               "source": "Mollie documentation, n.d., accessed November 2026"
+            },
+            {
+              "kind": "source",
+              "what": "iDEAL as an instant charge, captured automatically, with no chargeback and a 15-minute session timeout.",
+              "shows": "The walk's step 5 rests on the provider's own description.",
+              "source": "Mollie documentation, n.d., accessed November 2026"
+            },
+            {
+              "kind": "source",
+              "what": "A client sends an idempotency key with each request, and a retry with the same key returns the saved result.",
+              "shows": "The mechanism is documented and in production at a payment provider.",
+              "source": "Stripe documentation, n.d., accessed November 2026"
             }
           ],
           "transition_in": {
@@ -1222,7 +1214,7 @@
         },
         {
           "id": "p47",
-          "controlling_idea": "The vendors confirm that a handoff needs acceptance: a warehouse must accept an order before it is responsible for it, after acceptance a cancellation needs its agreement, and a refusal is an answer within the handoff, not a fifth way for a message to fail.",
+          "controlling_idea": "The vendors confirm that a handoff needs acceptance: a warehouse must accept an order before it is responsible for it, after acceptance a cancellation needs its agreement, and since the warehouse may also refuse, a refusal is an answer within the handoff, not a fifth way for a message to fail.",
           "function": "evidence",
           "evidence": [
             {
@@ -1236,6 +1228,26 @@
             "relationship": "similarity",
             "carries_over": "The payment handoff, where the receiver must be ready for a repeated message.",
             "introduces": "The warehouse handoff, where the receiver must accept the message before it is responsible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The major shop platforms keep separate status families on one order, which match the book's money, goods and returns lines, and neither's 'fulfilled' means delivered.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify: order, payment and fulfillment status families. commercetools: OrderState, PaymentState, ShipmentState and per-item return states.",
+              "shows": "Two independent vendors separate the same three lines, and neither's 'fulfilled' means delivered.",
+              "source": "Shopify and commercetools documentation, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The warehouse handoff and its fulfillment.",
+            "introduces": "How two shop platform vendors record the order's status lines that these handoffs move.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -1260,7 +1272,7 @@
           ],
           "transition_in": {
             "relationship": "additional_support",
-            "carries_over": "The warehouse handoff.",
+            "carries_over": "The vendors' 'fulfilled', which is not 'delivered'.",
             "introduces": "The carrier's messages back.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -1493,15 +1505,128 @@
   ],
   "modalities": [],
   "open_questions": [
-    "The chapter uses the canonical mechanism for the Three-Status Order (a two-parcel order and an integration flow with no notion of partial shipment, recorded by customer-service-and-notifications); if that changes, the 'One Order, Three Status Lines' section must follow.",
-    "The exchange flow assumes the exchange order for size L is created at request time and held until the return is inspected; returns-and-exchanges may prefer 'create on inspection'. Both match the ledger's dates; the book should pick one.",
-    "The January 2027 whiteboard scene is a local detail not in the ledger; later chapters may reuse it but need not.",
-    "Published chapter against this spec, conclusion: it returns to Noor's notebook (the scene) rather than to the introduction's three records; the spec's callback names the four drawings, which the scene and the introduction share.",
-    "The count of systems: the chapter now says seven systems appear in the walk and six hold a copy (platform, payment provider, warehouse system, ERP, carrier, returns portal), with the integration platform holding none; the per-system table shows five and a sentence accounts for the carrier. The author should confirm this reading against the ledger. Separately, the FAILURE PATTERNS callout says the storefront's stock number is up to two hours old, while the walk gives an hour and a quarter for the storefront and two hours for the marketplaces.",
-    "This chapter now calls the hosted product 'the shop platform' and keeps 'commerce platform' for the whole set of systems. Other chapters say 'the platform' for the product; the book should settle on one usage.",
-    "Round 3 of the draft check ended in ESCALATE (the two-revision budget was spent). Its draft faults were fixed afterwards without a further round, so the check report is stale. Left for the author: 'In Practice' was marked partly unclear in position by both flow readers because vendor evidence already appears in the status-lines and joins sections; the marketplace connector and the agency script appear after the cast was fixed at seven systems; 'not a fifth way for a message to fail' answers a question one reader had not asked; 'the Card-Testing Night' is named with no more than '40 minutes'."
+    "Needs the author: this chapter calls the hosted product 'the shop platform' and keeps 'commerce platform' for the whole set of systems (kept, as instructed); the ledger and the other chapters say 'the platform'. One fact settles it: which term the book uses for the hosted product.",
+    "Needs the author: in the round-4 confirming check both flow readers asked for 'Promises and Handoffs' to come before 'The Journey in Thirteen Steps' (rule 3 would make the move), which reverses the author's second-review decision to put it after the steps; one fact settles it: whether that decision stands.",
+    "Needs the author: both round-4 flow readers marked 'When It Goes Wrong at Each Step' partly unclear after the remedies, but proposed different moves (A: merge into the joins section before the remedies; B: put it before the joins section); rule 3 does not apply. Also corroborated and not changed: the 'Where we are in the order's journey' paragraph (both readers would move Eva's introduction to the end of the scene; it is the book's house element), step 6 correcting the order of steps 5 and 6, the status-lines subsection breaking the journey order of 'In Practice', and the steps table's last column naming functions rather than systems."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the round-4 confirming check (ESCALATE), cheap fixes applied: callout says the storefront's stock can be more than an hour old (rule 1, matches the walk); 'thirteen steps' in the introduction in place of 'about a dozen'; the Three-Status Order is tied to Schrödinger's Order and its name explained as three readings of the goods line; 'the carrier PostNL' without a comma; the requirements table's Double Refund cell names the manual second path; forward reference to 'Accepting warehouse work' removed; false causal 'So' fixed; payout and event glossed at first use (rule 6); 'This chapter owns their definitions' replaced by a sentence that acknowledges the earlier uses; the 'do not map one to one' sentence, which both readers stumbled on, removed (it was an agent addition).",
+      "rejected": [
+        "A further check round.",
+        "Making section moves after the confirming round without checking them."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the count of systems follows rule 1: the seven systems are kept because the cast paragraph lists all seven, but 'six of the seven hold a copy of every order' and 'six systems, six copies' are dropped (the ledger counts no copies, the returns portal holds only returned orders and the carrier only the parcel); the cast says each keeps its own record of the order or of its part, the per-system table is introduced as the systems that held the order with the carrier left out, and the KEY POINTS bullet says the same.",
+      "rejected": [
+        "Keeping 'six copies' and adding the carrier as a sixth column.",
+        "Dropping the count of seven as well."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the stock chain follows rule 1: the 'Late' paragraph no longer gives the marketplace hop an interval (the ledger's hops sum to more than its 'up to two hours'); it says the marketplaces got the figure one hop later and kept selling for up to two hours, as the ledger states; the FAILURE PATTERNS callout now says the number can be up to two hours old.",
+      "rejected": [
+        "Listing all three hop intervals.",
+        "Stating an hour and a quarter for the marketplaces as well."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: both round-3 flow readers asked for the four failure modes before the requirements table in the joins section; made, superseding that part of the round-1 decision that the table opens the failure analysis. p38 now opens the section, p17 follows the four incidents with a sentence saying the four ways cut across the requirements, and the transitions were rewritten.",
+      "rejected": [
+        "Keeping the table first, as the round-1 decision placed it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: both round-3 flow readers marked 'In Practice' partly unclear because vendor evidence also sat in earlier sections, and both proposed gathering it there; the Shopify and commercetools status-family paragraph (p20) moves into 'In Practice' after the warehouse paragraph, the Stripe idempotency-key sentence and the Mollie attribution for iDEAL move into its payment paragraph, and the opener says the section gathers the record.",
+      "rejected": [
+        "Keeping the vendor paragraph in the status-lines section.",
+        "Leaving the citations where they were and only rewording the opener."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the marketplace connector and the agency script appearing after the cast was fixed: the cast paragraph now says the company runs more systems than the seven on Eva's path and that a few appear in the failure stories (rule 6, a clause where the reader stumbled).",
+      "rejected": [
+        "Adding the connector to the cast as an eighth system."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'not a fifth way for a message to fail' is kept, because the author's second-review decision frames a refusal as part of the handoff; it is reworded to follow from the warehouse's ability to refuse, so it answers a question the paragraph has just raised.",
+      "rejected": [
+        "Dropping the sentence."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 6: 'the Card-Testing Night' gets a clause at first use: bots trying stolen card numbers, after which the PSP paused the account for 40 minutes (ledger, problem 8).",
+      "rejected": [
+        "Removing the name."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 8: the heading 'Across Scale Stages' is already the short form and stays.",
+      "rejected": [
+        "A longer heading."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1: the exchange order for size L is no longer said to be created at request time and held; the page states only what the ledger states (exchange requested 19 April, shipped 22 April after inspection). The open question on 'create at request' versus 'create on inspection' is closed for this chapter.",
+      "rejected": [
+        "Keeping 'created and held'.",
+        "Choosing 'create on inspection' without a ledger fact."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1: the Three-Status Order follows the ledger's mechanism (customer-service-and-notifications, order-management); the note that the section must follow any change is removed, since the ledger is never edited.",
+      "rejected": [
+        "Keeping the note as an open question."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the January 2027 whiteboard scene is consistent with the ledger (Noor Visser joined in January 2027) and stays a local detail; closed.",
+      "rejected": [
+        "Adding it to the ledger."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the conclusion's callback to Noor's notebook and the four drawings passed conclusion_calls_back_to_introduction in all three rounds; no change; closed.",
+      "rejected": [
+        "Rewriting the conclusion to return to the three records."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1: 'The cart held three lines' becomes the jacket and the two pairs of socks (the ledger gives no line count; a reader could not tell why it was three), and the fulfillment order's 'lines' becomes 'items'.",
+      "rejected": [
+        "Defining an order line."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 6: glosses added where round-3 readers stumbled: handoff at its first use in the introduction, reserving money (authorization), and 'distance sale' and 'posting' replaced by plain words.",
+      "rejected": [
+        "Leaving the terms to later chapters."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 7: all acceptance criteria are kept: AC-1 and AC-2 come from the journal spec, AC-4 (intro_predicts_content) and AC-5 (reverse_outline_matches_spec) are kept by rule, and AC-3, an agent-added cold-reader probe, passed in all three rounds.",
+      "rejected": [
+        "Dropping AC-3."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "After the round 1 draft check escalated on five spec faults, the author took the recommended changes: the handoff-requirements table moves to open the failure analysis, after the walk; the paragraph naming the systems moves to the scene and defines 'system'; the hosted product is called the shop platform and 'commerce platform' is kept for the whole set; the per-step summary claims most, not all, detections and recoveries; the scale section's heading is shortened to 'Across Scale Stages'.",
@@ -1637,6 +1762,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round-4 confirming check (ESCALATE); cheap fixes applied to p02, p14, p17, p22, p24a, p28, p29, the steps and requirements tables and the failure table; remaining corroborated order points recorded as open questions for the author."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation of round 3 auto-resolved under the author's standing instruction: joins section reordered (four ways, then requirements, then remedies); p20 and the Stripe and Mollie citations gathered in 'In Practice'; counts of copies and the marketplace hop interval dropped per the ledger; cast paragraph, p27, p33, p34, p36, p37, p45, p47 revised; open questions settled except the book-wide name of the hosted product."
+    },
     {
       "date": "2026-11-12",
       "change": "After round 3: in the status-lines section the plain-words paragraph (p21) now precedes the vendor paragraph (p20), as both flow readers proposed; p11 and p43 reworded; the round's draft faults fixed in the chapter."

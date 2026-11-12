@@ -89,47 +89,15 @@
         "check": "reverse_outline_matches_spec",
         "method": "reverse_outline",
         "severity": "blocker"
-      },
-      {
-        "id": "AC-7",
-        "statement": "A reader who meets a pattern name in any later chapter finds the same name, warning sign and family on this page: the sixteen equal the style guide's table, in its order.",
-        "check": "custom",
-        "method": "deterministic",
-        "severity": "major"
-      },
-      {
-        "id": "AC-8",
-        "statement": "A reader who checks any Kestrel & Pine figure on this page against the scenario ledger finds the same figure there.",
-        "check": "custom",
-        "method": "rubric",
-        "severity": "major",
-        "probe": "List every Kestrel & Pine number on the page (units, euros, orders, days, counts of integrations and apps) and compare each with _research/scenario-ledger.md. Which differ?",
-        "expected": "None differ; among them 1,340 units, €96,000, 37 items, 600 variants, 11 tickets, 212 returns, €19,400, €179 for nine days, 410 orders, €8,200, €52,000, €14,200, two days, 34 integrations, 13 and 5 without owner, 41 apps, €240,000."
-      },
-      {
-        "id": "AC-9",
-        "statement": "For every public example the reader can tell who published it and when, and is told when a source is older than about three years.",
-        "check": "custom",
-        "method": "rubric",
-        "severity": "major",
-        "probe": "For each public example on the page: is a publisher and a date (or 'n.d., accessed') given where the example is used, and is a source older than about three years marked as dated?",
-        "expected": "Every example carries a publisher and a date; the 2008, 2011, 2013 and 2018 sources are marked as dated."
-      },
-      {
-        "id": "AC-10",
-        "statement": "Every commerce term and system abbreviation the page uses is explained in one clause where it first appears, so the page can be read before Part I.",
-        "check": "known_before_new",
-        "method": "rubric",
-        "severity": "major"
       }
     ]
   },
   "thesis": {
     "question": "In which recurring ways do commerce platforms fail, and what do the failures have in common?",
-    "claim": "Commerce platforms fail in sixteen recurring patterns in four families (a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns), and what the patterns have in common is that each grew from decisions that were reasonable one at a time and that they travel in chains that start at the joins between systems.",
+    "claim": "Commerce platforms fail in sixteen recurring patterns in four families: a fact with two writers or no owner; a message with no key, contract or owner; a decision copied from a bigger company or made on one date; a dependency, deadline or actor nobody owns. Each grew from locally reasonable decisions, and they travel in chains starting at an unowned connector, an unwatched dependency or a decision copied without its reasons.",
     "disputed_by": "The view that each commerce incident is a separate defect or a single bad decision in the system that showed the symptom, to be fixed in that system or by replacing it.",
-    "so_what": "Faced with an incident, the reader names the pattern, looks upstream along its chain for the connector, writer or dependency without an owner, and assigns that; a fix applied where the symptom appeared will have to be made again.",
-    "how_why": "Each app, script and connector was the fastest way to meet one need, and the risk shows only in their combined effect. Connectors without owners send messages that are trusted to arrive once; late, lost and duplicated messages leave stale stock, conflicting statuses and double refunds; the peak day shows them all in one evening. Of Kestrel & Pine's ten incidents, eight are a fact with two writers.",
+    "so_what": "Faced with an incident, the reader names the pattern, looks upstream along its chain for the connector, dependency or copied decision that nobody owns, and assigns an owner there; a fix applied where the symptom appeared will have to be made again.",
+    "how_why": "Each app, script and connector was the fastest way to meet one need, and the risk shows only in their combined effect. Connectors without owners send messages that are trusted to arrive once; late, lost and duplicated messages leave stale stock, conflicting statuses and double refunds. A decision copied from a bigger company brings that company's costs without its reasons, and a dependency nobody watches changes without warning. Kestrel & Pine's own stage map traces eight of its ten incidents to Growing-stage designs still running in 2026.",
     "supporting_claims": [
       {
         "id": "S1",
@@ -145,7 +113,7 @@
       },
       {
         "id": "S4",
-        "claim": "The patterns travel in chains that start at the joins between systems, so a repair holds at the origin of a chain and not at its last symptom."
+        "claim": "The patterns travel in chains that start at an unowned connector, an unwatched dependency or a decision copied without its reasons, so a repair holds at the origin of a chain and not at its last symptom."
       }
     ]
   },
@@ -179,7 +147,7 @@
       "to_topic": "Inside the merchant each is a price, a stock figure or a status that crossed a handoff incorrectly, and the ways that happens recur often enough to be named."
     },
     "thesis_statement": {
-      "text": "Nearly every pattern is a promise one system made and another could not keep. The sixteen fall into four families that tell you where to look, they accumulate through reasonable local decisions, and they travel in chains that start at the joins.",
+      "text": "Nearly every pattern is a promise one system made and another could not keep. The sixteen fall into four families that tell you where to look, they accumulate through reasonable local decisions, and they travel in chains that start at an unowned connector, an unwatched dependency or a decision copied without its reasons.",
       "placement": "KEY POINTS callout (bullets 1 to 3) and paragraph p02"
     },
     "roadmap": {
@@ -221,7 +189,7 @@
       },
       {
         "id": "p02",
-        "controlling_idea": "Many patterns accumulate from decisions that were each reasonable locally, so the risk shows only in their combined effect, and finding a pattern is a way to assign responsibility, not to find someone to blame.",
+        "controlling_idea": "Many patterns accumulate from decisions that were each reasonable locally, so the risk shows only in their combined effect, which travels in chains from an unowned connector, an unwatched dependency or a copied decision; finding that origin assigns responsibility, not blame.",
         "function": "claim",
         "transition_in": {
           "relationship": "cause_effect",
@@ -283,7 +251,7 @@
       "paragraphs": [
         {
           "id": "p04",
-          "controlling_idea": "Four families organize the sixteen patterns: truth, integration, platform and change, and governance.",
+          "controlling_idea": "The four families of the KEY POINTS (defined there by what has gone wrong) come in the order a newcomer meets them: truth first, because customers see its symptoms in stock, orders, returns and prices; integration, which carries those facts; then platform and change and governance, which stay silent until an earlier pattern shows them.",
           "function": "definition",
           "organization": "classification",
           "evidence": [
@@ -351,7 +319,7 @@
         },
         {
           "id": "p08",
-          "controlling_idea": "The warehouse knows the physical stock while the channels sell from scheduled copies that extra apps and imports can also change, so the source and its permitted writers have to be defined before the sync is made faster.",
+          "controlling_idea": "The warehouse knows the physical stock while the channels sell from scheduled copies that extra apps and imports can also change.",
           "function": "cause_effect",
           "advances_thesis": {
             "supports": [
@@ -377,12 +345,6 @@
               "what": "65% of about 370,000 inventory records were inaccurate at one US retailer's stores.",
               "shows": "Even the record the copies are taken from is often wrong, so the copies cannot be better.",
               "source": "DeHoratius and Raman, Management Science, 2008 (dated)"
-            },
-            {
-              "kind": "source",
-              "what": "commercetools documents its available quantity as eventually consistent \"with a delay of up to 10 seconds\".",
-              "shows": "A vendor states in writing that its stock figure lags.",
-              "source": "commercetools API documentation, n.d., accessed 2026-11"
             }
           ],
           "transition_in": {
@@ -435,14 +397,14 @@
         },
         {
           "id": "p12",
-          "controlling_idea": "Shopify's August 2026 changelog moved two kinds of hold from one inventory state to another, which shows that the stock vocabulary itself changes under the apps that read it.",
+          "controlling_idea": "commercetools documents that its available quantity follows stock changes with a delay of up to 10 seconds: even a vendor's own copy of stock lags behind the record.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "source",
-              "what": "Draft-order and transfer holds moved from the `reserved` to the `committed` inventory state on 5 August 2026.",
-              "shows": "A reader of a stock figure can be wrong without any message failing, because the figure's meaning changed.",
-              "source": "Shopify developer changelog, 2026-08-05"
+              "what": "commercetools documents its available quantity as following stock changes \"with a delay of up to 10 seconds\".",
+              "shows": "A vendor states in writing that its stock figure is a copy that lags, which is the pattern's mechanism.",
+              "source": "commercetools API documentation, n.d., accessed 2026-11"
             }
           ],
           "transition_in": {
@@ -455,7 +417,7 @@
         },
         {
           "id": "p13",
-          "controlling_idea": "The remedy is one writer per location's stock, changes published as events, available-to-promise computed in one place and copies reconciled so that drift is measured, which is the first decision (W1) of Kestrel & Pine's Waypoint program.",
+          "controlling_idea": "The remedy is one writer per location's stock, changes published as events (messages saying what changed), available-to-promise computed in one place and copies reconciled (compared with their source) so that drift is measured, which is the first decision (W1) of Kestrel & Pine's Waypoint program.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "problem_solution",
@@ -578,7 +540,7 @@
         },
         {
           "id": "p20",
-          "controlling_idea": "Shopify's own documentation keeps order, payment and fulfillment status as separate families on one order.",
+          "controlling_idea": "Shopify's own documentation keeps order, payment and fulfillment status as separate families on one order, so even the vendor models one order with several statuses.",
           "function": "evidence",
           "evidence": [
             {
@@ -736,7 +698,7 @@
         },
         {
           "id": "p29",
-          "controlling_idea": "The remedy is a customer master with one identifier per person, written matching rules and channel records linked to it, with loyalty after the match.",
+          "controlling_idea": "The remedy is a customer master with one identifier per person, written matching rules, channel records linked to it and privacy requests served from it.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "problem_solution",
@@ -860,7 +822,7 @@
         },
         {
           "id": "p35a",
-          "controlling_idea": "In the Black Friday week before, 190 returned jackets were refunded at a price nobody had paid, because the order-level discount had never been allocated to the lines.",
+          "controlling_idea": "In the Black Friday week before, a stacked discount (told under The Price Nobody Can Explain) left 190 returned jackets refunded at a price nobody had paid, because the order-level discount had never been allocated to the lines.",
           "function": "example",
           "evidence": [
             {
@@ -1032,6 +994,12 @@
               "what": "A 20% outerwear discount stacked with a 10% welcome code on 2,860 orders, about €52,000 in all.",
               "shows": "A promotion setting that outlived its campaign cost more than the price drift.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
+            },
+            {
+              "kind": "scenario",
+              "what": "About €52,000 in all, including the €3,000 of wrong refunds told under The Boomerang (consistency ruling 9; €43,000 is the margin share only and is never given as the total).",
+              "shows": "One figure for one bug wherever it appears on the page.",
+              "source": "Kestrel & Pine scenario ledger (fictional)"
             }
           ],
           "transition_in": {
@@ -1162,12 +1130,12 @@
         },
         {
           "id": "p52",
-          "controlling_idea": "Kestrel & Pine's February 2027 inventory counted 34 integrations, of which 13 had no named owner and only 3 had a reconciliation job.",
+          "controlling_idea": "Kestrel & Pine's January 2027 integration inventory counted 34 integrations, of which 13 had no named owner and only 3 had a reconciliation job (consistency ruling 16).",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "14 on the iPaaS, 9 agency scripts, 11 vendor connectors or plugins; none of the reconciliations covered stock or orders; four flows wrote stock into the platform and six writers of Duiven stock were found in all; the pre-order app of March 2026 is the pattern at its smallest.",
+              "what": "14 on the iPaaS, 9 agency scripts, 11 vendor connectors or plugins; none of the reconciliations covered stock or orders; four flows wrote stock into the platform and six writers of Duiven stock existed in all; a pre-order app (March 2026, told under The Secret Agent) is the pattern at its smallest.",
               "shows": "The inventory is the document that turns the warning sign into numbers: owners, reconciliations and writers.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
@@ -1293,7 +1261,7 @@
           "evidence": [
             {
               "kind": "case",
-              "what": "Zalando's event-driven price and stock pipeline reprocessed payloads of which \"over 90%\" were unchanged, delayed events \"by up to 30 minutes\" in Cyber Week and left \"divergent versions of product data\", and was replaced by a synchronous read API on the critical path.",
+              "what": "Zalando's price and stock pipeline pushed every change as an event and reprocessed messages of which \"over 90%\" were unchanged; it delayed events \"by up to 30 minutes\" in Cyber Week, left the systems reading it with \"divergent versions of product data\", and was replaced on the critical path by an API the readers query directly (the event-pipeline vocabulary is put in plain words).",
               "shows": "A well-resourced company met late messages and drifting copies at peak and changed the design.",
               "source": "Zalando Engineering, 2025-03-07"
             }
@@ -1308,7 +1276,7 @@
         },
         {
           "id": "p60",
-          "controlling_idea": "On Black Friday 2026 the flow that created Kestrel & Pine's orders in the warehouse system one at a time was throttled, and about 8,000 orders missed the promised next-day delivery.",
+          "controlling_idea": "On Black Friday 2026 the flow that created Kestrel & Pine's orders in the warehouse system one at a time was throttled; the messages arrived, but four hours late, and nothing watched their age, so about 8,000 orders missed the promised next-day delivery.",
           "function": "example",
           "evidence": [
             {
@@ -1457,7 +1425,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "8 February 2027: the marketplace connector retired the API version a 2021 agency script used to push stock to bol, a Dutch marketplace; announced in November 2026 to a contact who had left in 2025; the script logged errors and kept running.",
+              "what": "8 February 2027: the marketplace connector retired the API version a 2021 agency script used to push stock to bol, a Dutch marketplace; announced in November 2026 to a contact who had left in 2025; the script logged errors and kept running. The marketplace connector is glossed as the service that carries listings, orders and stock to the marketplaces; the announcement is its own sentence.",
               "shows": "A vendor change that was announced and still not read, with its days of stale stock.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
@@ -1472,13 +1440,13 @@
         },
         {
           "id": "p68a",
-          "controlling_idea": "In Q3 2026 the wholesale chain Bergzicht Outdoor deducted €14,200 for despatch advices whose pallet labels did not match what arrived.",
+          "controlling_idea": "In Q3 2026 the wholesale chain Bergzicht Outdoor deducted €14,200 for despatch advices whose pallet labels did not match what arrived: the contract for those messages existed on the partner's side only.",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
               "what": "€14,200 deducted; a despatch advice is glossed as the EDI (electronic data interchange) message that tells a buyer what is on its way.",
-              "shows": "The same pattern with a trading partner's document format in place of a vendor's API.",
+              "shows": "The pattern's mechanism (a contract on one side only) with a trading partner's document rules in place of a vendor's API.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
           ],
@@ -1492,9 +1460,15 @@
         },
         {
           "id": "p69",
-          "controlling_idea": "Shopify's API versioning policy is one published calendar among the many a merchant depends on.",
+          "controlling_idea": "Shopify's August 2026 changelog moved stock held for draft orders and transfers from its `reserved` to its `committed` state, changing what apps read without any change on their side, and its versioning policy is one published calendar among many.",
           "function": "evidence",
           "evidence": [
+            {
+              "kind": "source",
+              "what": "Draft-order and transfer holds moved from the `reserved` to the `committed` inventory state on 5 August 2026.",
+              "shows": "A vendor changes a definition under the integrations that read it: the rug pulled without a failed call.",
+              "source": "Shopify developer changelog, 2026-08-05"
+            },
             {
               "kind": "source",
               "what": "Quarterly releases, each version supported for at least 12 months, with a nine-month overlap.",
@@ -1512,7 +1486,7 @@
         },
         {
           "id": "p70",
-          "controlling_idea": "The remedy is pinned versions and sunset dates per integration, a role mailbox for changelogs, partner cards with owners, contract tests and despatch advices generated from what was packed.",
+          "controlling_idea": "The remedy is pinned versions and sunset dates per integration, a role mailbox for changelogs, partner cards with owners, contract tests and despatch advices generated from what was packed. Partner card and contract test are glossed in a clause each.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "problem_solution",
@@ -1615,7 +1589,7 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "23–29 November 2026: 31,000 online orders, 10.6% of the year's; a peak hour of 2,300 orders, 38 a minute; the oversell, a four-hour backlog, 8,000 late orders and a stacking bug of about €52,000, each met under an earlier pattern.",
+              "what": "23–29 November 2026: 31,000 online orders, 10.6% of the year's; a peak hour of 2,300 orders, 38 a minute; the oversell, the backlog and the stacking bug (about €52,000), each met under an earlier pattern.",
               "shows": "The evening's failures were all at the joins, and the peak made them visible together.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
@@ -1630,13 +1604,13 @@
         },
         {
           "id": "p76a",
-          "controlling_idea": "Kestrel & Pine also had no kill switch, a setting that turns a feature off without a deploy, for guest card payments.",
+          "controlling_idea": "Kestrel & Pine also had no kill switch, a setting that turns a feature off without a deploy, for guest card payments, which the Card-Testing Night of August 2026 showed: 48,000 bot attempts with stolen cards against the guest checkout, and the payment provider paused the account for 40 minutes.",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "No way to disable guest card payments without a deploy.",
-              "shows": "Besides joins that failed, the merchant had no way to degrade on purpose, which the remedy's switches answer.",
+              "what": "No way to disable guest card payments without a deploy; the Card-Testing Night (August 2026): 48,000 bot attempts, the PSP paused the account for 40 minutes.",
+              "shows": "The merchant had no way to degrade on purpose, which the remedy's switches answer; it also places the tenth incident on the page.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
           ],
@@ -1724,7 +1698,7 @@
         },
         {
           "id": "p81",
-          "controlling_idea": "A 14-person team runs a dozen composable vendors or a €48 million merchant builds a headless storefront, with the giant's costs and without its reasons.",
+          "controlling_idea": "A 14-person team of Kestrel & Pine's size runs a dozen composable vendors or a €48 million merchant like it builds a headless storefront (the merchant's figures are labeled as its own).",
           "function": "description",
           "transition_in": {
             "relationship": "elaboration",
@@ -1780,12 +1754,12 @@
         },
         {
           "id": "p84",
-          "controlling_idea": "In February 2027 Kestrel & Pine's head of engineering declined two rebuild pitches that cited the oversell, after measuring.",
+          "controlling_idea": "Kestrel & Pine avoided the pattern, and the unit says so first: in February 2027 its head of engineering declined two rebuild pitches that cited the oversell, after measuring.",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "A composable rebuild replacing the platform (about €3.2 million 18 months) and a headless rebuild of the three storefronts (about €240,000 and nine months, plus a second runtime); Waypoint's W4 is to stay on the SaaS platform and surround it.",
+              "what": "A composable rebuild replacing the platform (about €3.2 million, 18 months) and a headless rebuild of the three storefronts (about €240,000 and nine months, plus a second runtime); Waypoint's W4 is to stay on the hosted platform and add what it lacks beside it.",
               "shows": "An incident is used to sell an architecture; measuring first is what refused it.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
@@ -1800,12 +1774,12 @@
         },
         {
           "id": "p85",
-          "controlling_idea": "Zalando's own replacement of an event stream with a synchronous read API is a giant narrowing a choice that others copied from it.",
+          "controlling_idea": "Zalando's own 2025 move from pushed events back to direct queries on its critical path is a giant narrowing a choice that others copied from it.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "case",
-              "what": "Zalando replaced the event stream on its critical path with a synchronous read API.",
+              "what": "Zalando replaced the event stream on its critical path with direct queries (cross-referenced to the Message in a Bottle's cost unit).",
               "shows": "The model being copied has itself moved on.",
               "source": "Zalando Engineering, 2025-03-07"
             }
@@ -1898,13 +1872,13 @@
         },
         {
           "id": "p91",
-          "controlling_idea": "A migration with no way back costs lost sales and sometimes a reversal.",
+          "controlling_idea": "A migration on one date costs lost sales, and a reversal is possible only where a way back was kept, as Finish Line's was.",
           "function": "evidence",
           "evidence": [
             {
               "kind": "case",
               "what": "Finish Line switched e-commerce technology on 19 November 2012 and reverted 17 days later to the former platform, \"which it had kept operable\", at a cost of about $3 million in quarterly sales.",
-              "shows": "The retailer could only reverse because it had kept the old platform running, which is what the pattern omits.",
+              "shows": "The cost of a one-date switch, and that the only exit was the old platform kept running, which the pattern omits.",
               "source": "Retail Dive, 2013-01-08 (dated)"
             }
           ],
@@ -1918,7 +1892,7 @@
         },
         {
           "id": "p92",
-          "controlling_idea": "Kestrel & Pine's Waypoint program replaced nothing on one date: the order management system came in seam by seam through 2027.",
+          "controlling_idea": "Kestrel & Pine avoids the pattern by plan, and the unit says so first: the order management system comes in seam by seam (one flow of orders at a time) through 2027, so nothing is replaced on one date.",
           "function": "example",
           "evidence": [
             {
@@ -1938,14 +1912,14 @@
         },
         {
           "id": "p93",
-          "controlling_idea": "Target's 2011 launch a few weeks before its holiday season is a date chosen against the calendar, and the record cited shows the timing and the outages, not whether a way back existed.",
+          "controlling_idea": "Target launched its own site in 2011, weeks before its holiday season, and it crashed twice that autumn: a date chosen against the calendar.",
           "function": "evidence",
           "evidence": [
             {
-              "kind": "case",
-              "what": "Target's 2011 launch and its two outages, already cited under The First Snowfall; Finish Line, under the cost, is the case that kept its old platform operable.",
-              "shows": "The timing made the failure expensive; the page says what this record does not show and points to the case that does show a way back.",
-              "source": "MPR News, 2011 (dated)"
+              "kind": "source",
+              "what": "Target's 2011 launch and its two outages, already cited under The First Snowfall.",
+              "shows": "A one-date launch set weeks before peak, which is the pattern's warning sign.",
+              "source": "MPR News (AP), 2011-10-25 (dated)"
             }
           ],
           "transition_in": {
@@ -2102,7 +2076,7 @@
         },
         {
           "id": "p101",
-          "controlling_idea": "No public case of a fork is cited beyond the vendor sunset calendars, which show when a fork stops working and not what one cost a merchant.",
+          "controlling_idea": "No merchant's cost of a fork is cited; the sunset calendars above show only when a fork stops working.",
           "function": "evidence",
           "evidence": [
             {
@@ -2212,7 +2186,7 @@
         },
         {
           "id": "p108",
-          "controlling_idea": "Kestrel & Pine's three regional storefronts share one tenant, and the arrangement fits because they share a catalog, a warehouse, a season and a price.",
+          "controlling_idea": "Kestrel & Pine has not met the pattern, and the unit says so first: its three regional storefronts share one tenant, and the arrangement fits because they share a catalog, a warehouse, a season and a price.",
           "function": "example",
           "evidence": [
             {
@@ -2376,12 +2350,12 @@
         },
         {
           "id": "p117",
-          "controlling_idea": "At Kestrel & Pine three things each ran through one party: the largest wholesale partner's EDI mappings through one consultant, an undocumented connector through the ERP partner, and five integrations through nobody named.",
+          "controlling_idea": "At Kestrel & Pine three things each ran through one party: the largest wholesale partner's EDI mappings through one consultant, an undocumented connector through the ERP partner, and, in April 2027 after the ownership map had assigned the rest, five integrations through nobody named (consistency ruling 16).",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Bergzicht Outdoor, €2.1 million a year, mappings built in 2025; the ERP partner's connector was undocumented until the lead integration engineer wrote its contract in Q3 2027; the February 2027 ownership map found 5 integrations with no named owner, among them the scripts behind the stale bol stock and the nine-day German price.",
+              "what": "Bergzicht Outdoor, €2.1 million a year, mappings built in 2025; the ERP partner's connector was undocumented until the lead integration engineer wrote its contract in Q3 2027; in April 2027, after the ownership map, 5 integrations still had no named owner, among them the scripts behind the stale bol stock and the nine-day German price.",
               "shows": "Ties the unowned dependency to revenue and to two of the earlier incidents.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
@@ -2505,7 +2479,7 @@
             },
             {
               "kind": "fact",
-              "what": "The European Accessibility Act applied to e-commerce services from 28 June 2025; PCI DSS requirements 6.4.3 and 11.6.1 became mandatory on 31 March 2025; Germany has required businesses to receive e-invoices since 1 January 2025.",
+              "what": "The European Accessibility Act applied to e-commerce services from 28 June 2025; PCI DSS requirements 6.4.3 and 11.6.1 became mandatory on 31 March 2025; Germany has required businesses to receive e-invoices since 1 January 2025. The PCI dates are attributed to the PCI Security Standards Council and the German date to the Federal Ministry of Finance in the text.",
               "shows": "Several rules from several bodies landed within one year.",
               "source": "Directive (EU) 2019/882; PCI SSC; German BMF"
             }
@@ -2640,7 +2614,7 @@
         },
         {
           "id": "p131",
-          "controlling_idea": "Apps are easy to add, hard to see and broadly permitted by default, and AI agents arrive through the same door with more autonomy, as live agent-initiated payments and the agent protocols show.",
+          "controlling_idea": "Apps are easy to add, hard to see and broadly permitted by default, and AI agents arrive through the same door with more autonomy, as live agent-initiated payments show.",
           "function": "cause_effect",
           "advances_thesis": {
             "supports": [
@@ -2657,10 +2631,10 @@
           },
           "evidence": [
             {
-              "kind": "fact",
-              "what": "Visa reported 31 issuers and 4 merchants live with agent-initiated transactions in Europe; the Agentic Commerce Protocol (releases through April 2026) and the Universal Commerce Protocol (launched 11 January 2026) carry an identity and a mandate for the agent.",
-              "shows": "Agents that transact already exist, and their protocols treat identity and mandate as required.",
-              "source": "Visa, 2026-07-02; ACP repository; Google, 2026-01-11"
+              "kind": "statistic",
+              "what": "Visa reported 31 issuers and 4 merchants live with agent-initiated transactions in Europe (2 July 2026).",
+              "shows": "Agents that transact already exist.",
+              "source": "Visa UK press release, 2026-07-02"
             }
           ]
         },
@@ -2706,7 +2680,7 @@
         },
         {
           "id": "p133a",
-          "controlling_idea": "Waypoint answers by naming every writer (W5) and by preparing for AI agents without deploying one (W8).",
+          "controlling_idea": "Waypoint answers by giving every integration a named owner (W5) and by preparing for AI agents without deploying one (W8).",
           "function": "explanation",
           "transition_in": {
             "relationship": "problem_solution",
@@ -2738,7 +2712,7 @@
         },
         {
           "id": "p135",
-          "controlling_idea": "The remedy is an owner, separate credentials and stated rights for every writing actor, least privilege, human approval over a threshold and a person at the gate for AI agents.",
+          "controlling_idea": "The remedy is an owner, separate credentials and stated rights for every writing actor, least privilege, human approval over a threshold and a person at the gate for AI agents, whose protocols already carry an identity and a mandate for the agent.",
           "function": "recommendation",
           "transition_in": {
             "relationship": "problem_solution",
@@ -2746,7 +2720,15 @@
             "introduces": "The direction of the remedy, without teaching it.",
             "form": "phrase",
             "placement": "start_of_this"
-          }
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OpenAI and Stripe's Agentic Commerce Protocol (releases through April 2026) and Google's Universal Commerce Protocol (launched 11 January 2026) carry an identity and a mandate for the agent.",
+              "shows": "The remedy's identity and mandate for agents already exist in the protocols, each named with its publisher.",
+              "source": "ACP repository (OpenAI and Stripe); Google, 2026-01-11"
+            }
+          ]
         },
         {
           "id": "p136",
@@ -2797,12 +2779,12 @@
         },
         {
           "id": "p138",
-          "controlling_idea": "Kestrel & Pine starts 2027 with ten incidents on record, and its stage map traces most of them to Growing-stage designs still running in 2026.",
+          "controlling_idea": "Kestrel & Pine enters Waypoint in March 2027 with ten incidents on record, all met above, and its April 2027 stage map traces eight of the ten to Growing-stage designs still running in 2026.",
           "function": "example",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Ten incidents on record at the start of 2027, most of them met in the catalog as the fictional cases; the April 2027 stage map traces most of the ten (eight, in the ledger) to Growing-stage designs. The page says 'most' so that 'eight of the ten' has one sense on the page, the count by cause.",
+              "what": "Ten incidents on record when Waypoint starts (March 2027), all met in the catalog, the Card-Testing Night under The First Snowfall; the April 2027 stage map traces eight of the ten to Growing-stage (2019–2022) designs.",
               "shows": "The stage table's claim holds for the book's merchant.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             },
@@ -2815,7 +2797,7 @@
           "transition_in": {
             "relationship": "example",
             "carries_over": "The stage at which patterns are born and the stage at which they hurt.",
-            "introduces": "The fictional merchant's ten incidents, counted here for the first time, sorted by the stage their designs came from.",
+            "introduces": "The fictional merchant's ten incidents, all met above, sorted by the stage their designs came from.",
             "form": "sentence",
             "placement": "start_of_this"
           }
@@ -2825,7 +2807,7 @@
     {
       "id": "how-the-patterns-reinforce",
       "heading": "How the Patterns Reinforce Each Other",
-      "controlling_idea": "The patterns travel in three chains that start at the joins between systems, so a repair holds at the origin of a chain and not at its last symptom.",
+      "controlling_idea": "The patterns travel in three chains, which start at an unowned connector (integration), an unwatched dependency (governance) or a decision copied without its reasons (platform), so a repair holds at the origin of a chain and not at its last symptom.",
       "function": "cause_effect",
       "advances_thesis": {
         "supports": [
@@ -2835,7 +2817,7 @@
       },
       "flow": {
         "pattern": "grouping",
-        "rationale": "A lead paragraph states the section's claim, then one chain per paragraph. The integration chain comes first because it is the longest and ends in the truth patterns, the symptoms the reader met first in the catalog. The governance chain comes second because it starts the same way, with something nobody owns; putting the platform chain between them would separate the two chains whose origins are alike and hide that likeness. The platform chain comes third because it starts differently, with a copied decision, and is the shortest. (This is not the order of the families in the catalog, which is truth, integration, platform and change, governance.) The identity thread follows the three chains because it belongs to none of them. The merchant's incidents sorted by cause come last: the count of eight with two writers is the reason for the order of the Waypoint decisions and would mean nothing before the chains are named; it is the only 'eight of the ten' on the page: the stage section says 'most', so the phrase has one sense."
+        "rationale": "A lead paragraph states the section's claim, then one chain per paragraph. The integration chain comes first because it is the longest and ends in the truth patterns, the symptoms the reader met first in the catalog. The governance chain comes second because it starts the same way, with something nobody owns; putting the platform chain between them would separate the two chains whose origins are alike and hide that likeness. The platform chain comes third because it starts differently, with a copied decision, and is the shortest. (This is not the order of the families in the catalog, which is truth, integration, platform and change, governance.) The identity thread follows the three chains because it belongs to none of them. The merchant's incidents traced to these origins come last: they are the reason for the order of the Waypoint decisions and would mean nothing before the chains are named."
       },
       "transition_in": {
         "relationship": "cause_effect",
@@ -2847,7 +2829,7 @@
       "paragraphs": [
         {
           "id": "p138a",
-          "controlling_idea": "One pattern sets up the next, in three chains, so a repair holds where a chain starts and not where it ends.",
+          "controlling_idea": "One pattern sets up the next, in three chains that cut across the families, so a repair holds where a chain starts and not where it ends.",
           "function": "claim",
           "advances_thesis": {
             "supports": [
@@ -2858,7 +2840,7 @@
         },
         {
           "id": "p139",
-          "controlling_idea": "In the integration chain a Spaghetti Junction produces Messages in a Bottle, which produce the truth patterns, and the First Snowfall makes all of them visible in one evening.",
+          "controlling_idea": "The integration chain starts at connectors nobody owns: a Spaghetti Junction produces Messages in a Bottle, which produce the truth patterns, and the First Snowfall, a platform pattern, makes all of them visible in one evening.",
           "function": "cause_effect",
           "organization": "process",
           "transition_in": {
@@ -2871,7 +2853,7 @@
         },
         {
           "id": "p140",
-          "controlling_idea": "In the governance chain something nobody owns sets up the next failure: a Lynchpin sets up the Pulled Rug, and the Secret Agent and the Long Fuse are the same absence in an actor and a deadline.",
+          "controlling_idea": "The governance chain too starts with something nobody owns, a dependency nobody watches: a Lynchpin sets up the Pulled Rug, an integration pattern, and the same absence lets a Secret Agent write unseen and a Long Fuse burn down unread.",
           "function": "cause_effect",
           "transition_in": {
             "relationship": "sequence",
@@ -2883,7 +2865,7 @@
         },
         {
           "id": "p141",
-          "controlling_idea": "In the platform chain the Giant's Boots lead to the Forked Platform or the Burned Bridge.",
+          "controlling_idea": "The platform chain starts with a copied decision: the Giant's Boots lead to the Forked Platform or the Burned Bridge, and One Size Fits None is the same unmeasured decision at Group scale.",
           "function": "cause_effect",
           "evidence": [
             {
@@ -2902,7 +2884,7 @@
         },
         {
           "id": "p141a",
-          "controlling_idea": "The Familiar Stranger, the identity thread, runs under all three chains.",
+          "controlling_idea": "The Familiar Stranger, the identity thread, runs under all three chains, because nobody owns the customer match.",
           "function": "claim",
           "transition_in": {
             "relationship": "additional_support",
@@ -2914,20 +2896,20 @@
         },
         {
           "id": "p142",
-          "controlling_idea": "Sorted by cause, eight of Kestrel & Pine's ten incidents are a fact with two writers, which is why Waypoint decides ownership first, adds the hubs second, makes the copies trustworthy third and keeps the platform.",
+          "controlling_idea": "Kestrel & Pine's incidents start at such origins (unowned scripts, an app writing stock, one EDI consultant), which is why Waypoint decides ownership first (W5), adds the hubs (W2, W3), makes the copies trustworthy and keeps the platform (W4).",
           "function": "analysis",
           "evidence": [
             {
               "kind": "scenario",
-              "what": "Ten incidents by cause: eight a fact with two writers, two what the outside world does to a landscape nobody watches; the hubs glossed as an OMS for orders and a PIM for product content.",
-              "shows": "The chains' common origin, a fact or flow without one owner, accounts for most of one merchant's incidents and so sets the order of its remedy.",
+              "what": "The unowned bol stock script and German price-list export (among the five unowned integrations of April 2027), the pre-order app, the one EDI consultant; W5, W2 (OMS), W3 (PIM), W4.",
+              "shows": "One merchant's incidents begin where the chains begin, and that sets the order of its remedy.",
               "source": "Kestrel & Pine scenario ledger (fictional)"
             }
           ],
           "transition_in": {
             "relationship": "cause_effect",
             "carries_over": "The three chains and the thread, and the ten incidents counted in the stage section.",
-            "introduces": "The ten sorted by cause, and what that implies for the order of the repair.",
+            "introduces": "The merchant's incidents traced to the chains' origins, and what that implies for the order of the repair.",
             "form": "phrase",
             "placement": "start_of_this"
           }
@@ -2937,11 +2919,11 @@
   ],
   "conclusion": {
     "heading": "Using the Patterns",
-    "synthesis": "The catalog, the stage table and the chains say one thing: a failure shows somewhere other than where it began, in time (born at one stage, paid for at the next) and in the landscape (a refund or a stock figure at the end of a chain that began at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons).",
+    "synthesis": "The catalog, the stage table and the chains say one thing: a promise is broken somewhere other than where it was made, in time (born at one stage, paid for at the next) and in the landscape (at the end of a chain that began at a connector nobody owns, a dependency nobody watches or a decision copied without its reasons).",
     "so_what": "The remedy is rarely a new platform; it is ownership, contracts and reconciliation. Finding a pattern is not finding someone to blame, because each decision behind it was reasonable when made: the question is who owns the join now.",
     "callback": {
       "to": "The opening sale that the storefront accepted and the warehouse never received.",
-      "how": "The reader can now name it (a Message in a Bottle), look upstream for the Spaghetti Junction connector with no owner, and ask who owns that join."
+      "how": "The reader can now name it (a Message in a Bottle), look upstream for a connector with no owner, and ask who owns it now."
     },
     "takeaway": {
       "type": "course_of_action",
@@ -2963,12 +2945,12 @@
     "paragraphs": [
       {
         "id": "p147",
-        "controlling_idea": "The catalog, the stage table and the chains say one thing, that a failure shows somewhere other than where it began, so the remedy is rarely a new platform but ownership, contracts and reconciliation.",
+        "controlling_idea": "The catalog, the stage table and the chains say one thing, that a promise is broken somewhere other than where it was made (a stage later or at the end of a chain), so the remedy is rarely a new platform but ownership, contracts and reconciliation.",
         "function": "claim"
       },
       {
         "id": "p148",
-        "controlling_idea": "The sale the page opened with can now be named a Message in a Bottle and traced upstream to an unowned connector, and the question to ask there is who owns the join now, not who is to blame.",
+        "controlling_idea": "The sale the page opened with can now be named a Message in a Bottle and traced upstream to an unowned connector, and the question to ask there is who owns it now, not who is to blame, asked in three situations before an incident does.",
         "function": "analysis",
         "transition_in": {
           "relationship": "example",
@@ -3053,17 +3035,16 @@
     "Some public examples (Shopify Scripts' end date, the Visa agentic-transactions release, the bol Offers API v10 switch-off) rest on brief entries tagged VERIFIED or WIDELY REPORTED with search-snippet provenance; a reviewer should spot-check the three URLs before print.",
     "One Size Fits None has no ledger incident; the page uses the three-storefronts-in-one-tenant situation and the deferred 2029 review as a labeled illustrative scene. If multi-tenancy-and-isolation adds a canonical scene, this page should reuse it.",
     "The chapter-to-pattern links were drawn from the chapters written so far and the PLAN contracts; when the remaining chapters land, their 'Failure patterns this chapter addresses' blocks should be checked against this page's 'Where this book helps' lists.",
-    "Draft check, round 2 (2026-11-12): escalate, 13 results passed and 48 failed; the check was stopped there because the remaining blocking failures need new content, a ledger ruling, more words than the 6,500 limit allows, or a change to the journal spec. Passing: AC-1, AC-2, AC-3, AC-5, AC-6 (all 156 units match the spec in order), AC-7, one idea per paragraph, tracing to the thesis, both weak-pattern checks, and both conclusion checks. For the author to decide: (1) evidence the two flow readers found out of place or off-pattern, all chosen in the original page: the Shopify hold-state change under The Phantom Stock (reads as a Pulled Rug), the commercetools delay in a cost unit, the throttled queue as the only Message in a Bottle case (nothing is lost or duplicated), the Bergzicht deduction under The Pulled Rug (nothing changed), Finish Line and Target under The Burned Bridge (neither shows a bridge burned), the wrong-amount refund under The Boomerang before the stacking is told, the apps under The Forked Platform, and the agent protocols under The Secret Agent's mechanism; (2) the 'In public' slot has no constant job (a case, a vendor document, a repeat of the cost unit's source, or a statement that nothing is cited); (3) from The Giant's Boots on, 'At Kestrel & Pine' reports a pattern avoided, partly in a finished 2027 to 2028, without saying so first; (4) Waypoint arrives piecemeal (W1, W2, W4, W5, W8) and the page has no unit that lays the program out, nor one that lists the ten incidents, so neither count can be checked from this page and the Card-Testing Night behind the kill switch is never told; (5) the 'promise' statement of the first KEY POINTS bullet is not taken up again, the callout and the first body paragraph define the families differently, and the reason for the family order is in this spec's rationale but not on the page; (6) the governance chain is one link and two likenesses, Figure 18's caption places the Secret Agent on it and omits the Long Fuse, and the Pulled Rug and the First Snowfall sit on chains of another family without comment; (7) ledger: the February 2027 inventory has 13 integrations without an owner and the February 2027 ownership map has 5 (ledger lines integration-styles and organizing-commerce-engineering); two AC-8 readers say a later ruling dates the 5 to April 2027; the merchant's team size (14) and revenue (€48 million) are used in generic slots without a label; (8) sources: the PCI DSS and German e-invoicing dates and the two agent protocols name no publisher where they are used; (9) terms still unexplained for lack of words: reconciliation (never defined as comparing two copies), the ERP's role, seam, SaaS, parity, event, join (never tied to handoff), writer, key and contract in the callout, the hold states of the Shopify example, the event-pipeline vocabulary of the Zalando example, access point, B2B, product passport, data-subject request, click-and-collect, and the remedy shorthand (campaigns as data, stop rule, partner card, contract test); (10) the Shopify order-status example (The Schrödinger's Order, 'In public') does not say what it shows. About 150 to 200 more words would pay for (8) to (10); the limit does not allow them.",
-    "Contract problem for the author (journal spec): the thesis says the chains 'start at the joins between systems', and the KEY POINTS callout repeats it. On the page only the integration chain starts at a join (connectors); the governance chain starts at a person or vendor (a Lynchpin) and the platform chain at a copied decision (the Giant's Boots). The conclusion now names the three origins as they are ('a connector nobody owns, a dependency nobody watches or a decision copied without its reasons'). Either the thesis is reworded in the journal spec (for example 'start at something nobody owns') or the two chains are argued to be joins; thesis, S4 and the section's controlling idea were left as copied.",
-    "Two counts of eight. The ledger's stage map traces eight of the ten incidents to Growing-stage designs; the thesis says eight of the ten are a fact with two writers. Both flow readers of round 1 could not tell whether these are the same eight, and the ledger does not say. The page now says 'most of the ten' for the stage map and keeps 'eight of the ten' for the count by cause only. The count by cause is not in the ledger (it comes from the journal spec and the merchant page); the author should confirm it and say whether the stage map's eight may return.",
-    "The identity thread is one sentence ('The Familiar Stranger runs under all three chains'); the page does not say why, and One Size Fits None is placed on no chain in the prose or in Figure 18. Material for either would have to come from the author.",
-    "Public record: The Price Nobody Can Explain, The Forked Platform and One Size Fits None have no public incident; the page now says so in each 'In public' unit, and One Size Fits None also says that no public figure is cited for its cost. The Burned Bridge reuses Target and says what that record does not show. If the briefs hold a dated incident for any of the four, it should replace the disclaimer.",
-    "Terms: glossed on first use in this pass: handoff, click-and-collect, the platform, available-to-promise, reconciled, Waypoint and W1, split shipment, data-subject request, POS, disposition, SKU, iPaaS, webhook, idempotency key, dead-letter queue, outbox, chargeback (in the partner sense), EDI and despatch advice, kill switch, composable, headless, OMS, D2C, PIM, strangler pattern, PCI DSS, Peppol, the four stages, 3PL, the hubs. Not glossed, for lack of words under the 6,500 limit: eventually consistent, parity penalties, credit note, serverless, access point, synchronous read API, and the abbreviations inside the stage table (EDI, B2B).",
-    "Flow rubric, second run (2026-11-12, verdict: sound with notes), notes not acted on: (a) 'a fact with two writers' is the cause of eight incidents in p142 but the truth patterns are the end of the integration chain in p139, so a reader cannot tell whether two writers is origin or symptom; (b) the Bergzicht deduction (p68a) is a partner's document contract, while the Pulled Rug's mechanism (p66) speaks only of vendor-announced changes; (c) the Black Friday backlog is used under both The Message in a Bottle (p60) and The First Snowfall (p76), and no Kestrel & Pine case shows a lost message, which is what the conclusion's callback names; (d) the Lynchpin's quote and its 'What it looks like' say the same thing; (e) the Phantom Stock's mechanism (p08) ends with a remedy clause ahead of the remedy unit; (f) 'group-sharing decision' and 'Group-stage signals' appear in One Size Fits None before the stages are listed in the next section, and 'seam by seam' (p92) before the remedy speaks of seams; (g) the order of patterns inside a family is the style guide's and is not argued. Each needs new content or a change to the author's wording, so they are left to the author.",
-    "Length. The former spec.md asked for 7,000 to 9,000 words, while its changelog records a trim 'toward 6,500 words'. max_words stays at 6,500; the revised page is within a few words of it, so every gloss added later has to be paid for by a cut. The author should say which figure is the contract.",
-    "The stacking bug's figure: the draft-check pass changed 'about €52,000' to 'about €43,000 of margin'; this was reverted to the published €52,000, which consistency ruling 9 fixes as the canonical total (€43,000 margin plus €5,600 and €3,000)."
+    "Needs the author (round 3, escalate; spec-fault findings both flow readers reported): (a) the platform-and-change family definition ('a decision copied from a bigger company or made on one date', from the thesis) does not fit The First Snowfall or The Forked Platform, and p04's 'stay silent until an earlier pattern shows them' does not fit The First Snowfall either; the fact needed is whether the family's definition (journal spec) or the patterns' family assignment (style guide) should change. (b) Rule 3: both flow readers asked to put The Price Nobody Can Explain before The Boomerang, so the Boomerang's stacked-discount case points back instead of forward; it was not made because the brief allowed no round after the confirming one, and the order is the style guide's. (c) The Card-Testing Night sits under The First Snowfall (kill switch, ledger commerce-payments) but is an August fraud attack, not peak load; one reader suggested The Secret Agent. (d) 'Ten incidents ... all met above': both readers counted about twelve Kestrel & Pine cases (the ledger's ten plus the stacking bug and the Black Friday backlog) and could not tell which ten; the next page lists them. (e) Ledger figures that readers reconcile with difficulty: 'six days' for #1052877 (ruling 2) beside shipments on 7 and 14 December; peak '20 to 40 times' beside Kestrel & Pine's '41x'. (f) 'In public' examples readers could not connect to their pattern: Shopify legacy customer accounts (Familiar Stranger), Zalando Backstage (Spaghetti Junction), Stripe's landing-page quote (Message in a Bottle), Shopify Logistics' sale (Lynchpin), Target under The Burned Bridge, the MACH survey offered as 'money', 9% fraudulent returns under The Boomerang; each is the author's sourced choice (rule 2 keeps it), and a clause saying what each shows would cost words the 6,500 limit no longer has. (g) The identity thread and the W-number order in p142 (W5 before W1) remain asserted rather than explained."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved (rule 1): thesis how_why now uses the ledger's own 'eight of ten' (the stage map's attribution to Growing-stage designs), changed in the journal spec first and copied here.",
+      "rejected": [
+        "Keeping a count by cause that the ledger does not state."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "Stopped the draft check after round 2 (escalate, 13 passed, 48 failed) instead of running a third round. Round 2 cleared the round 1 failures that a local revision could clear (one idea per paragraph now passes; evidence and transition failures fell from 4 and 3 to 1 each; the ledger corrections held), and what remains is listed under open_questions for the author. After the round, a few cheap fixes were applied without another check: the governance chain's opening no longer says 'too' (its transition is redeclared as sequence), the closing sentence of p148 names what the three situations are a chance for, the InfoQ source is marked dated, bol is glossed at its first use. The peak-day total of about €52,000 under The First Snowfall still does not say how it relates to the €43,000 of the stacking alone. The check report of round 2 is therefore stale.",
@@ -3145,6 +3126,122 @@
       "decision": "Drew the chains diagram with twelve of the sixteen patterns, keeping under the fourteen-node rule and leaving the three governance-only patterns (One Size Fits None, The Long Fuse, The Familiar Stranger) to the prose.",
       "rejected": [
         "A diagram with all sixteen patterns."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the thesis no longer says the chains 'start at the joins between systems'. The journal spec's claim (and the part's PF-2 and claim) now say the chains start at an unowned connector, an unwatched dependency or a decision copied without its reasons, which is what the page shows for the integration, governance and platform chains and what its conclusion already says; so_what and how_why name the same three origins. S4 and the controlling idea of 'how-the-patterns-reinforce' changed to match. Passed the thesis rubric with a fresh reader.",
+      "rejected": [
+        "Arguing the governance and platform chains as joins, which the page's evidence does not support."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 9 applied downstream: the KEY POINTS third bullet, p02 and the chains section now say the chains start at an unowned connector, an unwatched dependency or a decision copied without its reasons, matching the revised thesis; p02 also takes up the 'promise' of the first KEY POINT.",
+      "rejected": [
+        "Leaving 'start at the joins' on the page."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1: 'eight of the ten incidents are a fact with two writers' is dropped from p142 because the ledger has no count by cause; p142 now traces the incidents to the chains' origins with ledger facts (the unowned bol script and German price export, the pre-order app, the one EDI consultant) and names the Waypoint decisions it orders (W5, W2, W3, W4). The stage map's 'eight of the ten' (ledger, commerce-scaling-stages) returns in p138, which is now the page's only 'eight'.",
+      "rejected": [
+        "Keeping the count by cause.",
+        "Keeping 'most of the ten' for the stage map."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1 and ruling 16: the Spaghetti Junction's inventory is dated January 2027 with 13 of 34 unowned; the Lynchpin says 5 were still unowned in April 2027, after the ownership map assigned the rest.",
+      "rejected": [
+        "Both counts dated February 2027."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 1 and ruling 9: the stacking bug is about €52,000 in all wherever it appears; the Price entry now says the total includes the €3,000 of wrong refunds told under The Boomerang, and the Boomerang's case names the stacked discount it comes from. €43,000 is never given as a total.",
+      "rejected": [
+        "Giving the €43,000 margin figure as the bug's cost."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3 (both flow readers): the Shopify hold-state change, read by both as a Pulled Rug, moves to the Pulled Rug's 'In public' unit beside the versioning policy; the commercetools delay, read by both as mechanism rather than cost, moves from the Phantom Stock's cost unit to its 'In public' unit.",
+      "rejected": [
+        "Keeping the evidence where the original page placed it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3 (both flow readers took the agent protocols for the remedy): the protocols move from The Secret Agent's mechanism to its remedy unit, each with its publisher (OpenAI and Stripe; Google).",
+      "rejected": [
+        "Keeping them in the mechanism."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 2 and rule 3, 'In public' and case units whose examples did not show their pattern: the Message in a Bottle's backlog is framed as late messages nobody watched (the pattern's 'late'); the Bergzicht deduction as a contract held on one side only (the Pulled Rug's mechanism); Finish Line's cost as a reversal possible only because a way back was kept; Target as a one-date launch weeks before peak (the disclaimer sentence cut); Schrödinger's Order's Shopify example now says what it shows; the Forked Platform's disclaimer shortened. The cited sources stay; nothing unsourced is added.",
+      "rejected": [
+        "Cutting the public examples.",
+        "Leaving the disclaimers as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: from The Giant's Boots on, a Kestrel & Pine unit that reports a pattern avoided says so first ('Avoided.', 'Avoided by plan:', 'Not met.'), and the Burned Bridge's 2027 migration is told as the plan it is in early 2027.",
+      "rejected": [
+        "Past tense for events up to January 2028."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: the Card-Testing Night (ledger incident 8) is told in the kill-switch unit, and p138 says all ten are met above; a list of the ten was drafted and cut for length (the next page lists them).",
+      "rejected": [
+        "A new unit listing the incidents, which would change the unit structure."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: p04 defines the families by fault, as the KEY POINTS do, and gives the reason for their order from the section's flow rationale; the chains section says chains cut across families and names the family of the Pulled Rug and the First Snowfall where they sit on another family's chain; the governance chain makes the Secret Agent and the Long Fuse effects of the same unowned dependency; One Size Fits None is placed on the platform chain as the same kind of decision at Group scale; the identity thread gives its reason from the Familiar Stranger's own mechanism (matching is a project nobody owns). Figure 18's caption is unchanged.",
+      "rejected": [
+        "Leaving One Size Fits None and the identity thread unexplained.",
+        "Redrawing Figure 18."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 6 within rule 4: glosses added at first use for writer, key, contract (KEY POINTS), click-and-collect, the ERP's role, event, reconciled, data-subject request, parity penalties, joins, the marketplace connector, the remedy shorthand (campaigns as dated data, evaluation order and stop rule, partner card, contract test), seam, B2B, access point and the product passport; SaaS is replaced by 'hosted'; the Zalando event-pipeline vocabulary and the Shopify hold states are put in plain words; the merchant's 14-person team and €48 million are labeled as its own; the capability map is no longer named. Not glossed for lack of room: credit note, serverless, the digital product passport. Some earlier glosses were shortened to pay for these (iPaaS, webhook, headless, POS, Peppol).",
+      "rejected": [
+        "Leaving the terms for lack of words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 4: the page had grown from the published 5,944 to 6,876 counted words; it was cut back to the 6,500 limit by removing agents' own additions and repetition first: the conclusion's synthesis and callback and the roadmap sentence shortened, the family paragraph now refers to the KEY POINTS instead of restating them, the chain examples of the third KEY POINT dropped (the chains section gives them), the 'In public' units that restated their cost unit shortened (Price, Long Fuse, Lynchpin, One Size Fits None, Burned Bridge, Forked Platform), the Boomerang's 'standing cost', the First Snowfall's recap and 'the platform tests and proves its own capacity', Stripe's 'one unconfirmed signal' gloss, the Phantom Stock mechanism's remedy clause, the Familiar Stranger's 'loyalty comes after the match' and the Giant's Boots' 'reasons absent' line (each a repeat of another unit). No author figure, example or sourced public statement was cut; the 'promise' of the first KEY POINT moved from p02 to the conclusion's synthesis. The limit stays at 6,500 words, as the brief states.",
+      "rejected": [
+        "Raising the limit to the old spec.md's 7,000 to 9,000 words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 7: acceptance criteria AC-7 to AC-10, added by the outcome pass beyond the journal spec's AC-1 to AC-6, are dropped; the facts they checked (ledger figures, publishers, glosses) were still corrected under rules 1, 2 and 6.",
+      "rejected": [
+        "Keeping the agent-added criteria."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 10 settled by rule 2 and rule 1: the open questions on public records (keep the disclaimers where no dated incident is cited), the flow rubric's notes (a, b, c settled above; d, e, f and g are the author's wording and stay), the length (6,500) and the stacking figure (ruling 9) are closed. The thesis how_why's count stays in open_questions for the journal-spec step.",
+      "rejected": [
+        "Leaving them open."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming draft-check round (round 3, escalate), cheap and plainly right fixes were applied, each paid for in words, with no further round: 'one process' reads 'moving to one process' (Prime Video); Bergzicht is introduced as 'a retail chain buying wholesale'; 'allocated to lines in the order export' reads 'split across the order's lines in the export'; 'the restore row' reads 'the row restoring the price'; Visa's issuers are 'card issuers' and the transactions 'payments started by AI agents'; the Lynchpin case tells April 2027 before Q3 2027; 'the stages' in the roadmap reads 'the scale stages'; to pay for these, the Burned Bridge case drops its restated 'nothing is replaced on one date' (the unit still opens 'Avoided by plan') and the Price entry shortens its pointer to The Boomerang.",
+      "rejected": [
+        "A fourth round of readers.",
+        "Fixes that needed more words than the limit allows."
       ]
     }
   ],
@@ -3241,6 +3338,18 @@
     {
       "date": "2026-11-07",
       "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Thesis claim, so_what and how_why replaced from the journal spec, S4, the chains section's controlling idea and thesis_statement narrowed to the three origins the page shows (auto-resolved by the author's standing instruction). The page's KEY POINTS callout, p02 and the chains section's opening still say 'start at the joins' and need revising."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction: page revised to the new thesis (chains start at an unowned connector, an unwatched dependency or a copied decision), ledger counts corrected (no count by cause; 13 in January and 5 in April 2027; €52,000 stacking total), evidence moved where both flow readers read it as another part, glosses added and paid for by cuts; AC-7 to AC-10 dropped. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Confirming draft-check round 3: escalate (13 passed, 60 failed: 44 major, 16 minor); cheap fixes applied afterwards, so check-report.json is stale; remaining author decisions listed in open_questions. (AI-mediated session)"
     }
   ],
   "length": {

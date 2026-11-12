@@ -1,275 +1,290 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/13-order-management/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/13-order-management/index.md",
-  "spec_sha": "618b933fae8919e1",
-  "draft_sha": "35a9959715db7f22",
-  "run_at": "2026-11-12T16:44:55+01:00",
-  "round": 2,
+  "spec_sha": "4b4a4f660eeb0c08",
+  "draft_sha": "a76122dfb23c6c25",
+  "run_at": "2026-11-12T21:10:13+01:00",
+  "round": 3,
   "verdict": "escalate",
   "reverse_outline": [
     {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: order record, states, routing, when an OMS is needed",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: an order has several state machines, routing is a decision, an OMS is the hub once two of four conditions hold",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Schrödinger's Order, Spaghetti Junction, Message in a Bottle",
+      "matched_spec_paragraph": null
+    },
+    {
       "draft_locator": "Introduction ¶1",
-      "summary": "A split jacket-and-socks order shows how scattered facts make one 'shipped' status misleading.",
+      "summary": "A split order was wrongly shown as 'Delivered' because it had one status word",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "The order needs one record keeping money, goods and returns apart | an OMS should hold it once two of four conditions hold.",
+      "summary": "The order needs one record with separate per-parcel states, and moves to an OMS once two of four conditions hold",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Eva's paid order is the running example; this chapter covers it from payment to the exchange's dispatch.",
+      "summary": "Eva's order places the chapter in the journey: from 'paid' onward",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Roadmap of the chapter: the old case, record, states, changes, routing, the hub choice, design and failures.",
+      "summary": "Roadmap of the chapter built around the Three-Status Order case",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶1",
-      "summary": "Order #1052877: the fleece shipped while the socks waited for replenishment in the warehouse.",
+      "summary": "Order #1052877: fleece shipped, socks held for a second pick",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶2",
-      "summary": "The integration marked the whole order fulfilled and the customer got a 'Delivered' email.",
+      "summary": "Integration marked whole order fulfilled, triggering a false 'Delivered'",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶3",
-      "summary": "The ERP showed not invoiced and the WMS in picking: each system saw a different part.",
+      "summary": "ERP and WMS each showed a different status for the same order",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶4",
-      "summary": "Eleven tickets followed; the review found no owner of the combined order view across systems.",
+      "summary": "Support tickets followed; review found no owner of the combined order view",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶5",
-      "summary": "Leadership's remedy: choose one home for every order and specify what it must explain.",
+      "summary": "Waypoint decision W2: one home for every order",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "What an Order Record Holds ¶1",
-      "summary": "An order record has six parts that every downstream system needs.",
+      "summary": "The order record's six parts",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What an Order Record Holds ¶2",
-      "summary": "Distinguishing an order from a cart, a shipment and an invoice.",
+      "summary": "Cart, order, shipment and invoice are distinct things",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "What an Order Record Holds ¶3",
-      "summary": "One order-number family across channels, used as the idempotency key for creating the order elsewhere.",
+      "summary": "Order number rules: one family across channels, used as idempotency key",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "Several State Machines on One Record ¶1",
-      "summary": "An order has at least three state machines, not one status.",
+      "summary": "An order has several state machines, not one status",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "Several State Machines on One Record ¶2",
-      "summary": "Shopify keeps separate order, payment and fulfillment status families on one order.",
+      "summary": "Shopify's three order-level status families",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "Several State Machines on One Record ¶3",
-      "summary": "Each Shopify fulfillment order has its own statuses and a warehouse request handshake.",
+      "summary": "Shopify fulfillment orders have their own statuses",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "Several State Machines on One Record ¶4",
-      "summary": "commercetools likewise separates order, shipment, payment and return states, with optional custom machines.",
+      "summary": "commercetools separates order, shipment, payment and return states",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "Several State Machines on One Record ¶5",
-      "summary": "Customer-facing status is computed: fulfilled isn't delivered, and a split order shows its least-advanced shipment.",
+      "summary": "Customer-facing status is a computed summary; rules to keep it honest",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "Changing a Placed Order ¶1",
-      "summary": "Edits, holds and cancellations are frequent and act as transactions on money, goods and stock.",
+      "summary": "Order changes are frequent and are transactions on commitments",
       "matched_spec_paragraph": "p18"
     },
     {
       "draft_locator": "Changing a Placed Order ¶2",
-      "summary": "Edits must check fulfillment and payment first, then propagate to warehouse, finance and availability.",
+      "summary": "How edits must be checked and propagated to other systems",
       "matched_spec_paragraph": "p19"
     },
     {
       "draft_locator": "Changing a Placed Order ¶3",
-      "summary": "A hold pauses fulfillment while keeping stock reserved.",
+      "summary": "Holds pause fulfillment but keep stock reserved",
       "matched_spec_paragraph": "p20"
     },
     {
       "draft_locator": "Changing a Placed Order ¶4",
-      "summary": "Cancellation after shipment becomes a return, a compensating process coordinated by the order's home.",
+      "summary": "Cancellations before vs after shipment; compensation coordinated by the order's home",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "Routing, Sourcing and Splits ¶1",
-      "summary": "Defining sourcing, routing and split shipments for multi-location fulfillment.",
+      "summary": "Definitions of sourcing, routing and split shipments",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "Routing, Sourcing and Splits ¶2",
-      "summary": "Platforms route by simple priority or distance rules that ignore capacity, cut-offs and cost.",
+      "summary": "Platforms route by simple stock/distance rules that ignore cost and capacity",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "Routing, Sourcing and Splits ¶3",
-      "summary": "OMS vendor docs (Kibo, Fluent, Manhattan) describe fuller routing and split logic as a specification.",
+      "summary": "OMS vendors describe fuller routing and split logic",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "Routing, Sourcing and Splits ¶4",
-      "summary": "Splitting is a cost decision on rates, promise and channel, and must be told to the customer.",
+      "summary": "A split is a cost decision that must also be communicated",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "Routing, Sourcing and Splits ¶5",
-      "summary": "A backorder is a split in time needing a dated promise and a message.",
+      "summary": "Backorders as splits in time needing a date and message",
       "matched_spec_paragraph": "p26"
     },
     {
-      "draft_locator": "Many Channels, One Record ¶1",
-      "summary": "Kestrel & Pine's orders start in four systems, each wired separately: the Spaghetti Junction.",
-      "matched_spec_paragraph": "p27"
-    },
-    {
-      "draft_locator": "Many Channels, One Record ¶2",
-      "summary": "Rule of thumb: two of four conditions mean the order needs its own hub.",
-      "matched_spec_paragraph": "p33"
-    },
-    {
-      "draft_locator": "Many Channels, One Record ¶3",
-      "summary": "The alternative is one order hub; the question is which system should be it.",
-      "matched_spec_paragraph": "p28"
-    },
-    {
-      "draft_locator": "Many Channels, One Record ¶4",
-      "summary": "ERP, OMS and warehouse hold different truths; the design assigns ownership of each.",
-      "matched_spec_paragraph": "p29"
-    },
-    {
       "draft_locator": "The OMS as a Product ¶1",
-      "summary": "Definition of an OMS and orchestration, with vendors describing the same capability set.",
+      "summary": "What an OMS is and does, per vendor descriptions",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "The OMS as a Product ¶2",
-      "summary": "Lead-in to what the OMS owns and what it leaves to other systems.",
+      "summary": "What the OMS owns and leaves alone",
       "matched_spec_paragraph": "p31"
     },
     {
+      "draft_locator": "Many Channels, One Record ¶1",
+      "summary": "Kestrel & Pine's four order sources form the Spaghetti Junction",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Many Channels, One Record ¶2",
+      "summary": "Rule: an order hub is needed when two of four conditions hold",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Many Channels, One Record ¶3",
+      "summary": "One order hub as the alternative; which system is the question",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Many Channels, One Record ¶4",
+      "summary": "OMS, ERP and platform hold different truths about one order",
+      "matched_spec_paragraph": "p29"
+    },
+    {
       "draft_locator": "The Choices ¶1",
-      "summary": "Option 1: the platform holds the order record, limited by lacking rule-based sourcing.",
+      "summary": "Four possible homes introduced; option 1, the platform's order, and its limit",
       "matched_spec_paragraph": "p34"
     },
     {
       "draft_locator": "The Choices ¶2",
-      "summary": "Option 2: the ERP as order hub, suited to wholesale but slow and not customer-facing.",
+      "summary": "Option 2: the ERP as order hub, and its costs",
       "matched_spec_paragraph": "p35"
     },
     {
       "draft_locator": "The Choices ¶3",
-      "summary": "Option 3: a bought OMS as hub, Kestrel & Pine's choice, with its costs.",
+      "summary": "Option 3: a bought OMS as hub, Kestrel & Pine's choice and price",
       "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "The Choices ¶4",
-      "summary": "Option 4: building one's own order service, only right when commerce is the product.",
+      "summary": "Option 4: building one's own order service, and when it fits",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Trade-offs ¶1",
-      "summary": "Lead-in to a side-by-side comparison table of the four options.",
+      "summary": "Side-by-side comparison of the four options",
       "matched_spec_paragraph": "p38a"
     },
     {
       "draft_locator": "Trade-offs ¶2",
-      "summary": "Author's verdict: platform until two conditions hold, then ERP or OMS by who answers parcel questions.",
+      "summary": "Author's judgement on when to choose each option",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
-      "summary": "Lead-in to a table of how the choice looks at four scale stages.",
+      "summary": "How the choice varies across scale stages",
       "matched_spec_paragraph": "p39a"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
-      "summary": "The record's shape stays constant with scale; the number of creating and fulfilling systems changes.",
+      "summary": "Record shape is constant; the number of systems drives the need for a hub",
       "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "In Practice ¶1",
-      "summary": "Phased 2027 rollout of the OMS by channel, with one number family and event-keyed creation.",
+      "summary": "W2 rollout timeline, and how orders are created and numbered afterward",
       "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "In Practice ¶2",
-      "summary": "Each OMS interaction has its own freshness, speed and fallback targets; only creation and edits must be immediate.",
+      "summary": "Per-interaction freshness, consistency and fallback targets under W2",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "In Practice ¶3",
-      "summary": "Replaying #1052877: the OMS waits a day, then splits and announces two parcels.",
+      "summary": "Replaying #1052877: OMS splits and announces two parcels",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "In Practice ¶4",
-      "summary": "Per-parcel status and per-shipment idempotent invoices in the replayed order.",
+      "summary": "Per-parcel status summary and per-shipment invoicing in the replay",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "In Practice ¶5",
-      "summary": "Support sees both parcels; the stock delay remains but explanation improves.",
+      "summary": "Support sees both parcels; the stock delay itself remains",
       "matched_spec_paragraph": "p44"
     },
     {
       "draft_locator": "When It Goes Wrong ¶1",
-      "summary": "Messages repeat, so the record must recognise retries; lead-in to eight integration failure modes.",
+      "summary": "Duplicate messages must not duplicate orders; failure modes table",
       "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "When It Goes Wrong ¶2",
-      "summary": "Common fix: message identity, strict state machines and daily reconciliation; a hub gives each join an owner.",
+      "summary": "Common fixes: identity, strict state machines, daily reconciliation",
       "matched_spec_paragraph": "p45"
     },
     {
       "draft_locator": "What to Take Away ¶1",
-      "summary": "Callback to the opening order: one record combining every system's facts, chosen by who answers the customer.",
+      "summary": "Callback to #1052877: one record must combine facts from many systems",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "What to Take Away ¶2",
-      "summary": "Established findings: multiple state machines, fulfillment-order contract, and the vendor-agreed OMS/ERP/warehouse boundary.",
+      "summary": "Established findings on state machines, fulfillment orders, OMS boundary",
       "matched_spec_paragraph": "p47"
     },
     {
       "draft_locator": "What to Take Away ¶3",
-      "summary": "Context-dependent points: when a hub is needed, ERP versus OMS, invoice trigger and split rules.",
+      "summary": "Context-dependent conclusions on hub choice, invoicing and splits",
       "matched_spec_paragraph": "p48"
     },
     {
       "draft_locator": "What to Take Away ¶4",
-      "summary": "Author's synthesis: choose the home by who answers parcel questions; buy the OMS rather than build.",
+      "summary": "Author's synthesis: choose the home by who answers the parcel question; buy the OMS",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Nine diagnostic questions about order home, numbering, states, edits, routing, invoicing, reconciliation and outages.",
+      "summary": "Checklist of questions to ask about one's order setup",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "Questions to Ask ¶2",
-      "summary": "Hand-off: per-shipment records lead to the next chapter on tax, invoicing and the ledger.",
+      "summary": "Recap of Eva's order under W2 and hand-off to the tax and invoicing chapter",
       "matched_spec_paragraph": "p51"
     }
   ],
@@ -285,519 +300,75 @@
       "criterion": "AC-5",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 53 outline summaries match the controlling idea of the aligned spec paragraph, in spec order. Small drift only: Many Channels ¶4 summarised as 'ERP, OMS and warehouse' truths (the draft means the platform, ERP and OMS of the table) and The OMS as a Product ¶2 summarised as a lead-in (its idea is carried by the table, as the spec declares).",
+      "finding": "All 53 aligned summaries match the controlling idea of their spec paragraph, in spec order (p01-p51, with the declared section order oms before channels); the three callouts are apparatus (null). Changing a Placed Order ¶2 matches p19 in its summary, though its sentence 'After a warehouse accepts the work, cancellation becomes a request' names cancellation where p19 says the edit becomes a request (recorded under flow, B7).",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "The Choices ¶1",
+      "quote": "Four homes are possible: the three candidates above and a service the merchant builds itself. **1. The platform's order is the record.**",
+      "finding": "The outliner needed two phrases (four homes introduced; option 1 and its limit). p34's controlling idea is option 1 only; the four-homes announcement is a section lead-in fused into the option-1 paragraph (flow reader B, item 12, also stumbled on it). The fourth option was already announced in Many Channels ¶3, so the lead-in can be cut or reduced to a clause.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Introduction ¶2 was marked two_ideas (one record with separate status lines | an OMS holds it once two of four conditions hold). Both halves are the spec's single declared controlling idea for p02, the chapter's claim (record plus its home); the paragraph keeps them as one argument. Pass.",
+      "finding": "The other units marked two_ideas hold one controlling idea as the spec declares it: Introduction ¶2 (p02 is the thesis: one record, and the OMS as its home once two of four conditions hold), In Practice ¶1 (p41 includes the rollout and 'after which every order is created in the OMS'), In Practice ¶4 (p43 joins per-parcel summary and per-shipment invoice), Questions to Ask ¶2 (p51 is the recap-and-hand-off transition).",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit traces to S1-S6 or serves the introduction/conclusion: record and number (S1), state machines and summary (S2), changes (S3), routing (S4), channels/OMS/choices/trade-offs/stages (S5), in practice (S1,S2,S5), failures (S6).",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Setting the Scene ¶1: p05 scenario: #1052877, fleece shipped 7 Dec, socks a second pick; the two-shipment situation is drawn.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Setting the Scene ¶3: p07 table: 'True of what' column states each status was honest about a different object; Figure 1 caption makes the same point.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "What an Order Record Holds ¶1: p10 table: six parts with 'Who reads it most', introduced by the lead sentence.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Several State Machines ¶2: p14 Shopify source: three status families named and enumerated.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Several State Machines ¶3: p15 Shopify fulfillment-order source: statuses below the order explained as the per-location instruction.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Several State Machines ¶4: p16 commercetools source, the four-machine table (returns pointed to as its last row) and Figure 2 (caption: delivered only when both machines reach the last state).",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Several State Machines ¶5: p17 case: #1052877 would have read 'Partially delivered: 1 of 2 parcels' under the least-advanced rule.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Changing a Placed Order ¶2-¶4: p19-p21 sources (calculated order, hold keeps inventory reserved, saga compensation) each tied to the point they support.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Routing ¶2: p23 Adobe/Shopify sources, followed by what the rules know and do not know.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Routing ¶3: p24 Kibo/Fluent/Manhattan quotations framed as 'a specification rather than marketing'; Figure 3 caption states split-now-or-wait.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Routing ¶4: p25 case: fleece now/socks later vs one late parcel, and the message nobody could send.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Many Channels ¶1-¶4: p27 scenario, p33 Figure 5, p28 candidates table (lead sentence), p29 Fluent quotation interpreted as three truths.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "The OMS as a Product ¶1-¶2: p30 vendor quotations shown to describe the same shape; p31 component table led by 'What the OMS owns, and what it leaves alone, is the point.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "The Choices ¶3: p36 cost statistic labelled illustrative and tied to the price of a third core system.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Trade-offs ¶1 / Stages ¶1-¶2: p38a and p39a tables each have a lead sentence; p38 and p39 draw the conclusions.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "In Practice ¶1-¶4: p41 rollout scenario, p32 interaction table (lead says only creation and edits must be immediate) and Figure 4, p42-p43 replay scenario.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "When It Goes Wrong ¶1-¶2: p40 webhook statistic tied to Shopify's duplicate warning; failure table read across in p45.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "What to Take Away ¶1: p46 reasoning: the opening order set against the chapter's answer.",
+      "finding": "Every unit ties to a supporting claim: scene and record to S1/S2, state machines to S2, changes to S3, routing to S4, OMS/channels/choices/trade-offs/stages to S5, In Practice to S2/S5/S6, When It Goes Wrong to S6; introduction and conclusion units are apparatus or synthesis.",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/4/evidence/1",
-      "draft_locus": "Several State Machines on One Record ¶5 (table after the paragraph)",
-      "quote": "| What \"Delivered\" on the order says | What it does **not** say |",
-      "finding": "The table has no sentence saying what it shows (that a one-word summary such as the platform's 'Delivered' claims less than readers assume). Placed right after the rules for an honest summary, a reader cannot tell whether it describes the faulty platform behaviour or the corrected one; reader-flow-b reported exactly this. Add a lead sentence.",
-      "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p02 'The merchant needs one record that brings those facts together' (problem_solution)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p03 'Where we are in the order's journey ... This chapter is about the order from \"paid\" onward' (time)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p04 'Before Eva's order, the chapter starts from an older one with another customer' (contrast)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "scene: opens on the Three-Status Order the roadmap promised (example)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p06 'could not represent a partial shipment. When the fleece left, it marked...' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p07 'Meanwhile' (time, word)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p08 'Eleven tickets followed' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p09 'made the remedy decision W2' (problem_solution)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p11 'Three distinctions trip up newcomers ... A cart is not an order' (contrast)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p12 'The order number is the one thing every system ... share' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p14 'the platforms say so in their own documentation' -> 'Shopify keeps three status families' (example)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p15 'Below the order' (place)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p16 'commercetools, a second platform, separates the same machines' (similarity)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p17 'summaries computed from the machines below' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "changes: 'Each change is a transaction against the money, goods and stock commitments' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p19-p21 'Edits.' 'Holds.' 'Cancellations.' (sequence, word)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p23 'Platforms route by simple rules.' (example)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p24 'Order management vendors describe what the fuller decision looks like' (contrast)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p25 'The business trade-off inside a split is concrete.' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p26 'is a split in time rather than space, and needs the same honesty' (similarity)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "channels: 'Several locations are half of the ... problem; several channels ... are the other half' (additional_support; the unnamed term is ruled under flow/known_before_new)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p33 'When does that junction need one record of its own?' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p28 'The alternative to the junction is one order hub ... a fourth ... is weighed with the choices below' (problem_solution)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p29 'The three records are not rivals' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p31 'What the OMS owns, and what it leaves alone, is the point.' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p35-p37 '2.' '3.' '4. ... The fourth option' (sequence)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "trade-offs: 'Set side by side on the criteria of the earlier sections' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p38 'My judgement:' (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "stages: 'The same choice looks different at each of the four scale stages.' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p39 'The shape of the record does not change with scale' (conclusion_summary)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "in-practice: 'Waypoint W2 is being implemented through 2027' (example)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p32 'Under W2, each interaction with the OMS' (elaboration)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p42 'Replay #1052877 through that design.' (example)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p43 'The fleece's dispatch and delivery update its own fulfillment order' (time)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p44 'Support can now see both parcels. The customer still waits' (contrast)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "wrong: 'Even under that design, order updates are delivered as messages' (contrast)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p45 'Most rows end the same way' (conclusion_summary)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "conclusion: 'Go back to the order of the opening' (conclusion_summary)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p47-p49 'Established.' 'Depends on context.' 'The author's synthesis.' (phrase)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p50 'Questions to Ask' heading and questions applying the take-aways (cause_effect)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p51 'Eva's order now has one home, one number...' (conclusion_summary)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "hand_off: 'Because the record knows each shipment, each shipment can produce its own invoice. The next chapter follows...' (cause_effect to tax-invoicing-and-ledger)",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/1/transition_in",
+      "spec_locus": "/sections/1/paragraphs/0/evidence/0",
       "draft_locus": "What an Order Record Holds ¶1",
-      "quote": "An order is more than a list of items. Stripped to what every downstream system needs, the record has six parts.",
-      "finding": "Declared elaboration carrying over W2's 'one home for every order' and introducing what that home holds. The section follows 'choose one home for every order and specify what it must explain' with no reference to that home or to W2; the link is left to the heading.",
+      "quote": "Stripped to what every downstream system needs, the record has six parts.",
+      "finding": "The six-part table is introduced but no sentence says what it shows (spec: each part has its own readers, so the record serves warehouse, finance, carrier, service and customer at once); the next unit moves straight to the cart/order/shipment/invoice distinctions.",
       "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other evidence is explained: the scene's status table and Figure 1 ('Each system exposed a different part of the situation'); Shopify, fulfillment-order and commercetools sources and the four-machine table and Figure 2 (read by State Machines ¶5); the 'Delivered' table ('claims less than readers assume'); Adobe/Shopify routing rules ('know about stock and geography. They do not know...'); Kibo/Fluent/Manhattan quotations and Figure 3 ('worth reading as a specification', read by ¶4); OMS vendor quotations ('the vendors describe the same shape'); the OMS component table ('What the OMS owns, and what it leaves alone, is the point'); Figure 4; the candidates table and Fluent quotation ('three truths about the same order'); the €4,500 / €320,000 price; the trade-offs table (read by 'My judgement'); the stage table (read by ¶2); the requirements table and Figure 5 ('Only order creation and edits must be exact and immediate'); the webhook statistic ('The same recovery requirement applies to a smaller merchant'); the failure table (read by ¶2).",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "fail",
-      "spec_locus": "/sections/2/transition_in",
-      "draft_locus": "Several State Machines on One Record ¶1",
-      "quote": "A **state machine** is a fixed set of states an object can be in and the allowed moves between them.",
-      "finding": "Declared elaboration carrying over the record's money, goods and references parts. The section opens on a definition with no link back to those parts of the record just described.",
+      "spec_locus": "/sections/6/paragraphs/3/transition_in",
+      "draft_locus": "Many Channels, One Record ¶4",
+      "quote": "Fluent Commerce states the boundary plainly on its own site: \"your ERP stays the system of record\" for finance, while the OMS decides where orders go and writes back (n.d., accessed November 2026).",
+      "finding": "Declared: elaboration, sentence at the start of this unit, carrying over the three candidates and introducing that they are owners of different truths, not rivals. The unit opens on the Fluent quotation ('the boundary' with no antecedent) and only its second sentence ('The three records are not rivals') makes the elaboration; reorder so that sentence leads and the quotation supports it.",
       "fault": "draft",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/4/transition_in",
-      "draft_locus": "Routing, Sourcing and Splits ¶1",
-      "quote": "Once an order can be fulfilled from more than one location, three decisions appear that a single-warehouse merchant never makes.",
-      "finding": "Declared elaboration carrying over the fulfillment order and the goods state per shipment, introducing how an order becomes several fulfillment orders. The opening does not mention the fulfillment order or per-shipment state; the link to the states section is not made at the boundary.",
-      "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/transition_in",
-      "draft_locus": "The OMS as a Product ¶1",
-      "quote": "An **order management system** takes orders from every channel, decides which location fulfills each line, tracks each order through fulfillment, delivery and returns, and gives service agents one view.",
-      "finding": "Declared elaboration carrying over 'the OMS as the third candidate, the operational record'. The section restarts with a fresh definition and never says it is expanding the third row of the candidates table; both flow readers found the section's position unclear for this reason.",
-      "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/7/transition_in",
-      "draft_locus": "The Choices ¶1",
-      "quote": "**1. The platform's order is the record.** The platform creates and holds every order;",
-      "finding": "Declared sentence-form sequence carrying over the three candidates and the OMS's components and introducing the four places the order can live. The section has no transition sentence; it opens straight on option 1, so the reader is not told these are the three candidates plus the built service announced earlier (reader-flow-a: 'four choices restate the table').",
-      "fault": "draft",
+      "verdict": "pass",
+      "finding": "All other boundaries express the declared relationship and pick up the declared known information: 'The merchant needs one record that brings those facts together' (problem_solution), 'Where we are in the order's journey' with the payment webhook (time), 'The chapter's case, though, is not Eva's order' (contrast), 'could not represent a partial shipment' (cause_effect), 'Meanwhile' (time), 'Eleven tickets followed' (cause_effect), 'made the remedy decision W2' (problem_solution), 'Three distinctions trip up newcomers' (contrast), 'The order number is the one thing every system ... share' (elaboration), 'Shopify keeps' (example), 'Below the order' (place), 'commercetools, a second platform, separates the same machines' (similarity), 'are summaries computed from the machines below' (cause_effect), 'Edits.' / 'Holds.' / 'Cancellations.' (sequence), 'Platforms route by simple rules' (example), 'the fuller decision' (contrast), 'The business trade-off inside a split' (cause_effect), 'a split in time rather than space' (similarity), 'What the OMS owns' (elaboration), 'When does that junction need' (cause_effect), 'The alternative to the junction' (problem_solution), '2.' '3.' '4.' (sequence), 'My judgement' (cause_effect), 'The shape of the record does not change with scale' (conclusion_summary), 'Under W2, each interaction' (elaboration), 'Replay #1052877 through that design' (example), 'The fleece's dispatch and delivery' (time), 'The customer still waits' (contrast), 'Most rows end the same way' (conclusion_summary), 'Go back to the opening's order', 'Established.' / 'Depends on context.' / 'The author's synthesis.', and the closing 'Under W2, an order like Eva's'.",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/hook",
-      "draft_locus": "Introduction ¶1, ¶3, ¶4; What to Take Away ¶1",
-      "quote": "A customer orders a jacket and socks, but the jacket ships first.",
-      "finding": "reader-flow-a item 1: 'I count three near-identical orders. I had to re-read to decide whether the opening customer was Eva.' The anonymous hook order, Eva's jacket-and-socks order and #1052877's fleece-and-socks all appear in the introduction; the closing callback ('whose jacket shipped before the socks, as the fleece of #1052877 did') needed a re-read. The three orders are declared by the spec (hook, p03, p04, p46); round 1's fix (calling #1052877 'an older one with another customer') did not remove the confusion. Fixing it means changing the hook or merging it with #1052877.",
-      "fault": "spec",
-      "corroborated_by": "reader-flow-b, item 1",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared organisation: the opening failure case, then the record from the inside out (parts, number, state machines, changes, routing), then the system that holds it and the choice of home (prerequisite_order with problem_solution and comparison), then the design at work and its failures. Reader B marks no section unclear; reader A marks OMS as a Product (partly), Many Channels and The Choices unclear (recorded below). Not counted as material: A13 (the replay's dates, which the reader found consistent).",
       "severity": "major"
     },
     {
@@ -806,34 +377,34 @@
       "verdict": "fail",
       "spec_locus": "/introduction/paragraphs/2",
       "draft_locus": "Introduction ¶3",
-      "quote": "This chapter is about the order from \"paid\" onward, through delivery and, after she exchanges the jacket for a larger size, the replacement jacket's dispatch on 22 April; Figure 4 traces Eva's order through the design the chapter arrives at.",
-      "finding": "reader-flow-a item 2: 'Eva's order then disappears from the body ... The exchange on 22 April is never used. The framing promises a journey that the chapter does not follow.' The spec gives Eva only p03, Figure 4 (p32) and p51.",
+      "quote": "Eva buys a jacket and socks from Kestrel & Pine. Order #1072455 is created at 21:14 on 13 April 2027",
+      "finding": "A second customer, order and date arrive right after the December 2026 case, and the next paragraph says the chapter's case is not Eva's; both readers had to re-read to work out which order the chapter follows, and Eva then vanishes until In Practice. The difficulty comes from p03's placement of Eva in the introduction (the spec's order), not the prose.",
       "fault": "spec",
-      "corroborated_by": "reader-flow-b, item 2",
+      "corroborated_by": "reader-flow-b, item 1 (same point as reader-flow-a, item 1)",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/10/paragraphs/1",
-      "draft_locus": "In Practice ¶2; Questions to Ask ¶2",
-      "quote": "Figure 4 shows how Eva's order would run once storefront orders pass through the OMS.",
-      "finding": "reader-flow-a item 3: 'the migration timeline says storefront orders move to the OMS on 13 October, but Eva ordered on 13 April 2027. I had to reconcile the dates to see that Figure 4 is hypothetical.' reader-flow-b adds that the hand-off then says 'Eva's order now has one home'. The spec's p51 controlling idea asserts this for an order that predates the OMS (an open question in the spec already).",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Figure 5 shows how an order like hers will run once the OMS takes storefront orders.",
+      "finding": "A forward reference to a figure about 190 lines ahead, required by p03's controlling idea; both readers found it pointless at that position.",
       "fault": "spec",
-      "corroborated_by": "reader-flow-b, item 3",
+      "corroborated_by": "reader-flow-b, item 2 (same point as reader-flow-a, item 2)",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/5/paragraphs/1/evidence/0",
-      "draft_locus": "Many Channels, One Record ¶2 (Figure 5)",
-      "quote": "**Figure 5:** *An OMS becomes the order hub once two of four conditions hold",
-      "finding": "reader-flow-a: 'Figure 5 appears in \"Many Channels\" before Figure 4 in \"In Practice\", and the intro cites Figure 4 first.' Renumber the figures in reading order.",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "took marketplace orders on 15 September, storefront orders on 13 October, paused for a change freeze (no releases) around Black Friday, and takes EDI and manual wholesale orders on 8 December; the old order paths retire in January 2028.",
+      "finding": "Mixed tenses against the introduction's 'In April 2027 the shop platform is still her order's home' and the stage table's '2023–, now': neither reader could place 'now'. The spec's dates are consistent; the prose needs one stated vantage point and consistent tenses.",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b, item 2",
+      "corroborated_by": "reader-flow-b, item 13 (same point as reader-flow-a, item 3)",
       "severity": "major"
     },
     {
@@ -842,47 +413,127 @@
       "verdict": "fail",
       "spec_locus": "/sections/2/paragraphs/0",
       "draft_locus": "Several State Machines on One Record ¶1",
-      "quote": "It has at least three, the money, goods and returns status lines of Part I, and the platforms say so in their own documentation.",
-      "finding": "reader-flow-a: 'The sentence also says \"at least three\", but the table has four machines, with the order lifecycle added without comment.' The draft can say the three status lines sit beside the order's own lifecycle.",
+      "quote": "It has at least three, the money, goods and returns status lines of Part I, beside the order's own lifecycle (open, complete, canceled)",
+      "finding": "Three or four? The table that follows has four machines; both readers stopped here. Say plainly that the three status lines plus the order lifecycle make four machines.",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b, item 6",
+      "corroborated_by": "reader-flow-b, item 6 (same point as reader-flow-a, item 4)",
       "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Many Channels, One Record ¶1",
+      "quote": "Several fulfillment locations multiply the connections between systems, which this chapter calls the joins; several channels creating orders multiply them again.",
+      "finding": "The coined term 'the joins' arrives late and the section then speaks only of channels; 'Bergzicht's EDI orders' is named without saying who Bergzicht is. Both readers stopped on this passage.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-b, item 9 (same point as reader-flow-a, item 8)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Many Channels, One Record ¶3",
+      "quote": "Which system that should be is the real question, with three honest candidates among the systems a merchant already runs or can buy: the platform, the ERP and the OMS just described; a fourth, building one's own, is weighed with the choices below.",
+      "finding": "The candidates are described in a three-row table here, again as four options in The Choices and again in the Trade-offs table; both readers had to look back and forth. The spec's flow places the three-candidate table in Many Channels and the four homes in The Choices, so the order itself causes the repetition.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-b, item 10 (same point as reader-flow-a, item 10)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "The Choices ¶3",
+      "quote": "This is Kestrel & Pine's choice, Waypoint W2: the OMS becomes the order hub",
+      "finding": "The company's choice and its price are announced inside the option list, before the trade-offs table and the author's judgement, so the comparison reads as settled. p36's controlling idea puts the choice here, against the flow rationale's 'W2 named as the outcome of that comparison rather than its premise'.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-b, item 11 (same point as reader-flow-a, item 11)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "quote": "Under W2, each interaction with the OMS has its own freshness, consistency, speed and fallback.",
+      "finding": "The requirements table and Figure 5 (Eva's order) sit between the rollout and the replay of #1052877, so two example orders compete in one section and the replay's payoff is delayed. The spec's section flow places the requirements and Figure 5 before the replay.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-b, item 14 (same point as reader-flow-a, item 12)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "quote": "Under W2, an order like Eva's would have one home, one number, its goods status held per shipment and a warehouse that has accepted the work.",
+      "finding": "The closing returns to Eva rather than #1052877 and reopened the which-order confusion for both readers; p51 prescribes Eva.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-b, item 17 (same point as reader-flow-a, item 15)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5",
+      "draft_locus": "The OMS as a Product ¶1",
+      "quote": "Those vendors sell a product category of its own.",
+      "finding": "Reader A marks Many Channels 'unclear' and The OMS as a Product 'partly unclear': the product is described before the reader is told when one is needed; it would put Many Channels first. Reader B, with no section unclear, makes the same reordering ('Need before product: put Many Channels before The OMS as a Product'). The spec's flow rationale deliberately places the OMS first, so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-b, reordering item 2 (same point as reader-flow-a, section list and reordering item 2)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Several State Machines on One Record ¶4",
+      "quote": "Its return items carry two further states each, so returns get machines of their own, the last row of the table below.",
+      "finding": "'Two further states each' is opaque (reader A, item 5).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Several State Machines on One Record ¶5",
+      "quote": "Without these rules, a one-word \"Delivered\" claims less than readers assume, as the table shows.",
+      "finding": "Reader A had to stop and reverse the phrasing (item 6); 'claims more than it can support' or similar would read straight.",
+      "fault": "draft",
+      "severity": "minor"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/5/paragraphs/0",
-      "draft_locus": "Many Channels, One Record ¶1",
-      "quote": "Several locations are half of the joins problem; several channels creating orders are the other half.",
-      "finding": "reader-flow-a: '\"joins problem\" has not been named before.' The section opens on a term the chapter never set up.",
+      "draft_locus": "The OMS as a Product ¶1",
+      "quote": "Those vendors sell a product category of its own.",
+      "finding": "'Order hub', 'the order's home' and 'OMS' are used interchangeably before 'hub' is defined in Many Channels; reader A checked whether they were three different things (item 7).",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b, item 5",
-      "severity": "major"
+      "severity": "minor"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/6",
-      "draft_locus": "The OMS as a Product (between Many Channels ¶4 and The Choices ¶1)",
-      "quote": "a fourth, building one's own, is weighed with the choices below.",
-      "finding": "reader-flow-a: 'The table lists three options, then a whole OMS section intervenes, then four choices restate the table. I had to hold the candidates across the interruption.' Both readers mark the OMS section's position unclear. The order (candidates table, OMS section, choices) is declared by the spec, and folding the candidates table into the choices was rejected in the decision log.",
-      "fault": "spec",
-      "corroborated_by": "reader-flow-b, item 10 and section 2 (OMS placement 'unclear')",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction",
-      "draft_locus": "Failure-patterns callout; Setting the Scene ¶4",
-      "quote": "**Schrödinger's Order** — three systems each held an honest status of a different object and nobody held the order's.",
-      "finding": "reader-flow-a: 'The top callout names \"Schrödinger's Order\" and \"The Message in a Bottle\", but the body never uses those names. It calls the case the \"Three-Status Order\", and I had to map the names myself.' One clause in the scene (or the failure table) linking the case to the pattern names fixes it.",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Many Channels, One Record ¶2",
+      "quote": "The rule I use: **at least two of these four**.",
+      "finding": "Sudden first person, and the rule has already been stated in the introduction and KEY POINTS (reader A, item 9).",
       "fault": "draft",
-      "corroborated_by": "reader-flow-b, item 8",
-      "severity": "major"
+      "severity": "minor"
     },
     {
       "criterion": "flow_is_followable",
@@ -890,31 +541,19 @@
       "verdict": "fail",
       "spec_locus": "/sections/11/paragraphs/0",
       "draft_locus": "When It Goes Wrong ¶1",
-      "quote": "The figure is from 2021 and only illustrates the volume behind Shopify's warning that an app may receive a webhook more than once.",
-      "finding": "reader-flow-a: 'This is a short detour. The sentence that follows hedges the figure, which signals that it barely belongs.' The hedged aside interrupts the duplicate-message point.",
-      "fault": "draft",
-      "corroborated_by": "reader-flow-b, item 12",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/4/evidence/1",
-      "draft_locus": "Several State Machines on One Record ¶5 (table)",
-      "quote": "| What \"Delivered\" on the order says | What it does **not** say |",
-      "finding": "reader-flow-b: 'I could not tell at first whether it describes the faulty platform behaviour or the corrected one.'",
-      "fault": "draft",
+      "quote": "Shopify's CTO described 13 billion webhooks for 2021 (a historical figure, from a 20 January 2022 engineering post)",
+      "finding": "Reader A found the statistic out of place: it does not bear on the duplicate point (item 14). The spec's evidence prescribes it; the prose could tie it to duplicates more directly.",
+      "fault": "unclear",
       "severity": "minor"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/thesis/supporting_claims/4",
-      "draft_locus": "Key points; Introduction ¶2; Many Channels ¶2; Figure 5; Stages ¶2; Depends on context",
-      "quote": "Once two of four conditions hold (several channels create orders, several locations fulfill them, promises depend on the location, or service agents cannot see one order across systems)",
-      "finding": "reader-flow-b: 'The two-of-four rule is stated in the key points, the intro, Many Channels, the Figure 5 caption, the scale-stage closing line and Depends on context. The repetition is heavy.' The recurrences are declared by the spec (p02, p33, p38, p39, p48).",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "From that case the chapter describes what an order record holds and why its number matters, the separate states it moves through",
+      "finding": "The roadmap sentence lists about ten items, too many to keep in mind (reader B, item 3); p04 prescribes the full list.",
       "fault": "spec",
       "severity": "minor"
     },
@@ -922,10 +561,10 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/0",
-      "draft_locus": "The OMS as a Product ¶1",
-      "quote": "An **order management system** takes orders from every channel",
-      "finding": "reader-flow-b: 'The OMS is defined twice: in bold in the intro and again in The OMS as a Product.'",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶2",
+      "quote": "The agency's shipment-confirmation integration could not represent a partial shipment.",
+      "finding": "The chapter never says who 'the agency' is (reader B, item 4).",
       "fault": "draft",
       "severity": "minor"
     },
@@ -933,10 +572,10 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/7/paragraphs/2",
-      "draft_locus": "The Choices ¶3; Trade-offs table",
-      "quote": "Months (Kestrel & Pine: August to December 2027)",
-      "finding": "reader-flow-b: Choice 3 announcing Kestrel's decision and the trade-off row's rollout dates 'both come before the comparison is made', and before In Practice explains the rollout. Naming W2 in p36 is declared by the spec.",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶4",
+      "quote": "Other orders began in store tills, marketplace connectors and electronic trading-partner feeds.",
+      "finding": "Out of place in the review paragraph; pays off five sections later (reader B, item 5). p08 prescribes it.",
       "fault": "spec",
       "severity": "minor"
     },
@@ -944,144 +583,54 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/10/paragraphs/2",
-      "draft_locus": "In Practice ¶3",
-      "quote": "When the socks remain unavailable on Monday, the OMS creates two fulfillment orders",
-      "finding": "reader-flow-b: 'I could not work out which Monday the one-day wait ends on' (the order was placed in the first week and the fleece shipped Monday 7 December).",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3",
-      "draft_locus": "Changing a Placed Order (section position)",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Changing a Placed Order ¶2",
       "quote": "After a warehouse accepts the work, cancellation becomes a request it must approve.",
-      "finding": "reader-flow-b marks the section's position before Routing 'unclear': it relies on warehouse acceptance, which routing and fulfillment orders explain more fully. reader-flow-a found it 'placed reasonably', so not corroborated.",
-      "fault": "spec",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/5/paragraphs/0",
-      "draft_locus": "Many Channels, One Record ¶1",
-      "quote": "Several locations are half of the joins problem",
-      "finding": "'Joins problem' is used as if established and never defined (it recurs in ¶2 and in When It Goes Wrong). Not on already_knows.",
-      "fault": "draft",
-      "corroborated_by": "reader-flow-a item 3 and reader-flow-b item 5 (both report the term as not named before)",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/3",
-      "draft_locus": "Changing a Placed Order ¶4",
-      "quote": "the vocabulary of the saga pattern that [[events-consistency-and-reconciliation]] explains",
-      "finding": "'The saga pattern's vocabulary' is on does_not_know. 'Compensation' is defined, but the saga pattern itself is only named and deferred to another chapter, never given here.",
-      "fault": "draft",
-      "corroborated_by": "spec does_not_know ('the saga pattern's vocabulary'); never explained in the draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction",
-      "draft_locus": "Key points, bullets 1 and 2",
-      "quote": "**An order is one record with several state machines, not one status.**",
-      "finding": "'State machine' (on does_not_know) and 'cut-off times' are used in the callout before the body defines them (Several State Machines ¶1; Routing ¶2). Both are defined later, so not corroborated.",
+      "finding": "A cancellation sentence inside Edits, using 'acceptance' as if known (reader B, item 7). p19 says the edit becomes a request once the warehouse has accepted the work; the draft names the wrong change.",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Setting the Scene ¶1",
-      "quote": "The socks were short in their pick location and waited for replenishment from bulk stock, so the warehouse management system (**the WMS**, ...) kept the order open as a second pick.",
-      "finding": "Warehouse terms 'pick location', 'replenishment', 'bulk stock' and 'second pick' are unexplained (reader-terms item 4).",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Routing, Sourcing and Splits ¶1",
+      "quote": "Once an order can be fulfilled from more than one location, it can become more than one fulfillment order",
+      "finding": "The opening case was a split in time, not across locations, yet the trade-off paragraph reuses fleece and socks; only the backorder sentence names what happened (reader B, item 8).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/0",
-      "draft_locus": "What an Order Record Holds, table, Header row",
-      "quote": "currency, market, legal seller",
-      "finding": "'Market' and 'legal seller' are unexplained (reader-terms item 6, minor).",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "The Choices ¶1",
+      "quote": "Four homes are possible: the three candidates above and a service the merchant builds itself. **1. The platform's order is the record.**",
+      "finding": "The section lead-in and option 1 run together in one paragraph (reader B, item 12).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/1",
-      "draft_locus": "Routing, Sourcing and Splits ¶2",
-      "quote": "Adobe Commerce ships source priority (work through a configured list) and distance priority (the nearest source to the shipping address)",
-      "finding": "The text does not say that Adobe Commerce is a platform or that a 'source' is a location (reader-terms item 8).",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "Even under that design, order updates are delivered as messages, as the order-number rule anticipated, and repeating a message must not repeat the order or shipment it describes. That is why the order record needs to recognize a retry",
+      "finding": "The back-reference reaches far and 'That is why' did not follow (reader B, item 15).",
       "fault": "draft",
       "severity": "minor"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/5/paragraphs/1",
-      "draft_locus": "Many Channels, One Record ¶2",
-      "quote": "Promises that depend on location (click-and-collect, ship-from-store).",
-      "finding": "'Click-and-collect' and 'ship-from-store' are given as examples and not defined (reader-terms item 9, minor).",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/5/paragraphs/2",
-      "draft_locus": "Many Channels, One Record, table, ERP row",
-      "quote": "the ERP partner becomes the integration owner",
-      "finding": "'ERP partner' (the ERP's implementation partner), and 'credit note' and 'receivable' in the same row, are unexplained (reader-terms item 10).",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/1",
-      "draft_locus": "The OMS as a Product, table, Events out row",
-      "quote": "notifications, the data warehouse",
-      "finding": "'The data warehouse' is unexplained and can be confused with the physical warehouse (reader-terms item 11).",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/10/paragraphs/0",
-      "draft_locus": "In Practice ¶1",
-      "quote": "Waypoint W2 is being implemented through 2027, seam by seam",
-      "finding": "'Seam', 'shadow-copied' and 'change freeze' are unexplained here (reader-terms item 12).",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/10/paragraphs/1",
-      "draft_locus": "In Practice ¶2, interaction table",
-      "quote": "Before the next wave release; minutes at peak",
-      "finding": "'Wave release' is unexplained (reader-terms item 13).",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "quote": "The fulfillment order, with a request, accept or reject, in-progress, shipped and cancellation-request lifecycle, is the documented contract",
+      "finding": "Listed as established, but the body never set out that lifecycle (reader B, item 16).",
       "fault": "draft",
       "severity": "minor"
     },
@@ -1089,57 +638,110 @@
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens on a puzzling scenario (jacket ships before the socks) and states the claim; no dictionary opening, throat-clearing or 'in today's world' pattern.",
+      "finding": "Opens on the declared puzzling scenario (the fleece-and-socks order marked 'Delivered'); none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
-      "verdict": "pass",
-      "finding": "The conclusion opens on a callback with the answer, then sorts take-aways by how settled they are and turns them into questions; it is not a bare restatement of the sections.",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "quote": "The fulfillment order, with a request, accept or reject, in-progress, shipped and cancellation-request lifecycle, is the documented contract between order management and the warehouse",
+      "finding": "The conclusion supplies a lifecycle the body never gave (the body says only 'seven statuses of its own plus a request status'); flow reader B (item 16) noticed. Either set the lifecycle out in State Machines ¶3 or drop the list here; p47 asks only that the fulfillment order is the documented contract.",
+      "fault": "draft",
+      "weak_pattern": "body_evidence_in_conclusion",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "What to Take Away ¶1 joins the witnesses (payment provider, warehouse per parcel, carrier, returns portal) into one answer and names how the home is chosen; the author's synthesis and the nine questions turn it into action (name the order's home, its number family, per-shipment status). The spec's line that Kestrel & Pine's remedy was 'the decision first and the purchase second' is not said explicitly; not enough to fail.",
+      "finding": "¶1 states what no section states alone: each fact behind 'Partially delivered: 1 of 2 parcels' is first known by a different system, so only one record that keeps the lines apart and is where every channel's order is created can say it, and the home follows from who answers the parcel question; the established / context / synthesis lists and the nine questions turn it into a course of action for the reader's company.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "'Go back to the order of the opening, whose jacket shipped before the socks' says what it should have read, what the customer should have been told and which system should hold it, as the callback declares.",
+      "finding": "¶1 returns to #1052877, whose fleece shipped before the socks, and says what it should have read, what the customer should have been told and which system holds it.",
       "severity": "major"
     },
     {
       "criterion": "AC-4",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The intro-only reader predicted all roadmap promises in order (Three-Status Order, record and number, states and the computed status, edits/holds/cancellations, routing and splits, one home and which system, the OMS, four homes by trade-off and stage, the chosen design replayed, failures) and the evidence (the Kestrel & Pine case and platform/OMS vendor documentation). It was unsure how far Eva runs through the chapter (ruled under flow).",
+      "finding": "The intro-only reader predicted the sections in order (record and number, states and computed status, edits/holds/cancellations, routing, the OMS, when channels need one home and which system, four homes by trade-off and scale stage, the chosen design with #1052877 replayed, failures), the central Three-Status Order case, and the evidence (Kestrel & Pine case, platform and OMS vendor documentation), in an explanatory, practical tone.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Answer matches expected: 'Partially delivered: 1 of 2 parcels' and 'ships in two parcels'; goods status per shipment with the least-advanced-shipment rule; the design had one status string, and no single home held the order across platform, WMS and ERP.",
+      "finding": "Matches expected: 'Partially delivered: 1 of 2 parcels' and 'ships in two parcels', the summary taken from the least-advanced shipment; the design had one status word (no per-shipment goods state) and no single home owning the order across platform, WMS and ERP.",
       "severity": "major"
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Answer matches expected: yes, two of four conditions hold (two channels, two warehouses); an OMS rather than the ERP because the hub must route between warehouses and answer consumers' parcel questions, which a batch finance system cannot. Nothing in the answer ties the decision to revenue.",
+      "finding": "Matches expected: yes, two of the four conditions hold (two channels, two warehouses), so one system must be the order's home; an OMS rather than the ERP because the hub must route between warehouses and answer a parcel question, which a batch finance system cannot. The reader did not say explicitly 'not decided by revenue', but its answer rests only on the conditions, not on size.",
       "severity": "major"
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Answer matches expected: a shipped order cannot be canceled; it becomes a return (label, receipt, inspection, refund on receipt), a compensation coordinated by the order's home; edits/cancellations are checked against the goods state.",
+      "finding": "Matches expected: a shipped order cannot be canceled; it becomes a return (label, receipt, inspection, refund on receipt), a compensation the order's home coordinates; edits and cancellations after warehouse acceptance become requests.",
       "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "fault": "draft",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Order #1052877 ¶2",
+      "quote": "The agency's shipment-confirmation integration could not represent a partial shipment.",
+      "finding": "'The agency' is used as a known actor and carries the cause of the incident, but the chapter never says who it is (the agency that built the shop platform's shipment-confirmation integration); it is not on already_knows, and it returns in State Machines ¶5 ('the rule the agency's flow lacked'). Add a short gloss at first use.",
+      "corroborated_by": "reader-flow-b, Lost the thread item 4 (never says who 'the agency' is); also reader-terms item 11",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "fault": "draft",
+      "draft_locus": "Many Channels, One Record ¶1",
+      "quote": "Bergzicht's EDI orders land in the ERP, and 38% of wholesale orders are keyed into the ERP by hand.",
+      "finding": "Bergzicht is named without saying what it is (a wholesale trading partner); it is not on already_knows (only Kestrel & Pine and its people are), and EDI is known but the partner is not. Add a reminder gloss such as 'Bergzicht, the wholesale customer that orders over EDI'.",
+      "corroborated_by": "reader-flow-a, Lost the thread item 8 and reader-flow-b, Lost the thread item 9 (Bergzicht named with no explanation or reminder); also reader-terms item 23",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "fault": "draft",
+      "draft_locus": "Changing a Placed Order ¶2",
+      "quote": "After a warehouse accepts the work, cancellation becomes a request it must approve.",
+      "finding": "Warehouse acceptance, the request-and-accept handshake of the fulfillment order, is on does_not_know (fulfillment order, cancellation request) and is used substantively here and in Cancellations ('Before acceptance, ...') before it is explained; State Machines ¶3 only mentions 'a request status for the handshake with the warehouse', and the lifecycle (request, accept or reject, in progress, shipped, cancellation request) is spelled out only in What to Take Away ¶2. Explain the handshake once in Several State Machines, where the fulfillment order is introduced.",
+      "corroborated_by": "reader-flow-b, Lost the thread item 7 ('acceptance' used as if known) and item 16 (the body never set out the fulfillment-order lifecycle); also reader-terms item 18",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "fault": "draft",
+      "draft_locus": "Several State Machines on One Record ¶4",
+      "quote": "Its return items carry two further states each, so returns get machines of their own, the last row of the table below.",
+      "finding": "The return machine is on does_not_know, but the prose never says what the 'two further states' of a return item are; the reader meets them only as unexplained labels in the table's return row (e.g. 'graded'). Name the two states and what they mean in the sentence.",
+      "corroborated_by": "reader-flow-a, Lost the thread item 5 ('two further states each' opaque); also reader-terms item 19 ('graded' never explained)",
+      "severity": "major"
     }
   ]
 }

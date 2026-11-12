@@ -48,7 +48,7 @@
         "method": "cold_reader",
         "severity": "major",
         "probe": "Using only this page: why did Kestrel & Pine oversell on Black Friday 2026, and why does its Waypoint program not replace the commerce platform?",
-        "expected": "Stock passed from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so channels sold for up to two hours after the sell-out at 19:40 (1,340 units). The platform held; the joins failed, so Waypoint names an owner per fact, adds the missing hubs and stays on the platform (W4)."
+        "expected": "Stock was copied on a schedule along a chain of four systems (warehouse system, ERP, shop platform, marketplace connector), so channels kept selling for up to two hours after the sell-out at 19:40 (1,340 units). The platform held; the joins failed, so Waypoint names an owner per fact, adds the missing hubs and stays on the platform (W4)."
       },
       {
         "id": "AC-2",
@@ -92,24 +92,6 @@
         "severity": "blocker"
       },
       {
-        "id": "AC-7",
-        "statement": "A reader who checks any Kestrel & Pine figure on the page against the scenario ledger, or one of the page's tables against another, finds no disagreement; the four business lines add up to the €48.0 million stated.",
-        "check": "custom",
-        "method": "rubric",
-        "severity": "major",
-        "probe": "Compare each figure, date and name on the page with _research/scenario-ledger.md and with the page's other tables. Quote every pair that disagrees.",
-        "expected": "No disagreeing pair; €27.0M + €12.0M + €6.0M + €3.0M = €48.0M."
-      },
-      {
-        "id": "AC-8",
-        "statement": "A reader who sees only the callouts and the lead, or only the Sources line, can tell that the company, Bergzicht Outdoor, Veluwe Capital and the people are invented, and no reader can name the vendor of any Kestrel & Pine system from the page.",
-        "check": "custom",
-        "method": "rubric",
-        "severity": "major",
-        "probe": "Is the company labeled fictional in the callouts, in the lead and in the Sources line, and does any Kestrel & Pine system carry a vendor or product name? Quote the passages.",
-        "expected": "Fictional in all three places; every system named by role (the platform, the ERP, the WMS, the POS, the PSP). Named marketplaces and carriers are real companies whose dealings with Kestrel & Pine are said to be invented."
-      },
-      {
         "id": "AC-9",
         "statement": "Given the name of an incident, the reader names the chapter that works it in full and the pattern names the page gives it.",
         "check": "custom",
@@ -131,10 +113,10 @@
   },
   "thesis": {
     "question": "Which company do the book's examples come from, and what state are its systems in?",
-    "claim": "The book's examples come from Kestrel & Pine, a fictional composite outdoor brand whose thirteen systems each work while orders, product data and stock each live in four of them with no order hub and no product hub; eight of its ten incidents are therefore the same problem, a fact with several copies and no agreed owner, which its Waypoint program answers by naming owners first, adding the missing hubs second and keeping the platform.",
+    "claim": "The examples come from Kestrel & Pine, a fictional outdoor brand with thirteen working systems: orders begin in four, product data sits in four places, warehouse stock passes along a chain of four, and no hub holds orders or products. Eight of its ten incidents are one problem, a fact with several copies and no agreed owner; its 2027 program, Waypoint, names owners first, adds the missing hubs and keeps its commerce platform.",
     "disputed_by": "The reading that a merchant with an oversell, double refunds and drifting prices has ten separate problems, or has outgrown its commerce platform and should replace it.",
     "so_what": "The reader can take each chapter's scene as one more view of a single landscape, check any figure against this page, and ask of each Waypoint decision what the equivalent ownership decision would be in their own company.",
-    "how_why": "Each system was bought for the stage the company was in and connected when the need arose. Stock is copied from the WMS to the ERP every 15 minutes, then hourly to the platform and hourly to the marketplace connector, so every channel can sell a unit for up to two hours after it left the shelf. On Black Friday the platform held and that chain did not.",
+    "how_why": "Each system was bought for the stage the company was in and connected when the need arose. Stock is copied on a schedule from the WMS through the ERP and the platform to the marketplace connector, so every channel can sell a unit for up to two hours after it left the shelf. On Black Friday the platform held and that chain did not.",
     "supporting_claims": [
       {
         "id": "S1",
@@ -182,7 +164,7 @@
       "to_topic": "This page gives the company whole and once: an invented composite whose catalog, people, systems and incidents are kept consistent, so that one architectural decision can be seen to affect the next."
     },
     "thesis_statement": {
-      "text": "Every one of Kestrel & Pine's systems works, yet orders begin in four of them, product data is kept in four places and warehouse stock is copied along a chain of four, with no hub for orders or for product data. Eight of its ten incidents are therefore one problem, a fact with several copies and no agreed owner, and the Waypoint program answers it by naming an owner for each fact first, adding the missing hubs second and keeping the platform.",
+      "text": "Every system at Kestrel & Pine works. But orders begin in four systems, product data is kept in four places and warehouse stock is copied along a chain of four, with no hub for orders or for product data. Eight of the ten incidents come from that: a fact with several copies and no agreed owner. Waypoint, the program approved in 2027, names an owner for each fact first, adds the missing hubs second and keeps the hosted commerce platform it already has.",
       "placement": "KEY POINTS callout (bullets 2 and 3) and paragraph p02"
     },
     "roadmap": {
@@ -241,6 +223,11 @@
             "kind": "fact",
             "what": "Named marketplaces and carriers are real companies; their dealings with Kestrel & Pine are invented.",
             "shows": "Says where the fiction ends, so that no real company's conduct is read from the page."
+          },
+          {
+            "kind": "fact",
+            "what": "'The platform' on this page and in every chapter means one product, the hosted commerce platform that runs the storefronts and checkout, not the whole set of systems the book calls a commerce platform.",
+            "shows": "Fixes the narrow sense before the claim uses it, so 'keeps the platform' is not read against the book's wide sense."
           }
         ]
       },
@@ -378,7 +365,7 @@
     {
       "id": "growth",
       "heading": "How Kestrel & Pine Grew, 2016–2027",
-      "controlling_idea": "Each scale stage Kestrel & Pine passed through left behind a system chosen for that stage, and since 2023 it has had more than a dozen of them to join.",
+      "controlling_idea": "Each scale stage Kestrel & Pine passed through left behind a system chosen for that stage, and by 2027 it has thirteen of them to join.",
       "function": "cause_effect",
       "advances_thesis": {
         "supports": [
@@ -415,7 +402,7 @@
         },
         {
           "id": "p09",
-          "controlling_idea": "The shape of the business, not its revenue, decides the stage: Kestrel & Pine became Omnichannel in 2023, when it had stores, wholesale, marketplaces, three countries and its own warehouse at the same time, and its problems now live in the joins between more than a dozen systems.",
+          "controlling_idea": "The shape of the business, not its revenue, decides the stage: Kestrel & Pine became Omnichannel in 2023, when it had stores, wholesale, marketplaces, three countries and its own warehouse at the same time, and its problems now live in the joins between its thirteen systems.",
           "function": "explanation",
           "evidence": [
             {
@@ -453,7 +440,7 @@
       },
       "transition_in": {
         "relationship": "elaboration",
-        "carries_over": "The dozen systems the history left behind.",
+        "carries_over": "The thirteen systems the history left behind.",
         "introduces": "What all of them hold data about: products, variants and SKUs.",
         "form": "sentence",
         "placement": "start_of_this"
@@ -689,7 +676,7 @@
           "evidence": [
             {
               "kind": "table",
-              "what": "Measure and 2026 value: 293,000 online D2C orders (about 800 a day); 43,000 marketplace orders; 9,400 wholesale orders; 118,000 store transactions; about 17,000 active variants of 26,000; 336,000 parcels plus 9,400 wholesale shipments and 1.9 million units from Duiven; 72,000 return parcels, item return rate 24%, order return rate 19% on D2C, 28% of returns exchanges, 61% resold as new; Black Friday week 31,000 D2C orders, 10.6% of the year's; peak hour Friday 27 November 20:00–21:00, 2,300 orders, 38 per minute, traffic about 41 times an average hour; delays at peak: stock shown to shoppers up to two hours old, orders queued up to four hours before reaching the warehouse.",
+              "what": "Measure and 2026 value: 293,000 online D2C orders (about 800 a day); 43,000 marketplace orders; 9,400 wholesale orders; 118,000 store transactions; about 17,000 active variants of 26,000; 336,000 parcels plus 9,400 wholesale shipments and 1.9 million units from Duiven; 72,000 return parcels, item return rate 24%, order return rate 19% on D2C, 28% of returns exchanges, 61% resold as new; Black Friday week 31,000 D2C orders, 10.6% of the year's; peak hour Friday 27 November 20:00–21:00, 2,300 orders, 38 per minute, traffic about 41 times an average hour; delays at peak: stock shown to shoppers up to two hours old, orders queued up to four hours before reaching the warehouse, because the WMS vendor's rate limit throttled the flow that created them there.",
               "shows": "One table holds every load figure, so a chapter's sizing argument can be checked against it; the counts of apps and integrations, which describe the systems, are in the landscape table.",
               "source": "Kestrel & Pine scenario ledger"
             }
@@ -843,7 +830,7 @@
           "evidence": [
             {
               "kind": "figure",
-              "what": "Figure 1, the January 2027 landscape: four channels create orders in four different systems, stock travels from the WMS to the ERP to the platform to the marketplace connector in quarter-hourly and hourly hops, and no system holds all orders or all product data.",
+              "what": "Figure 1, the January 2027 landscape: four channels create orders in four different systems, stock travels from the WMS to the ERP to the platform to the marketplace connector on a schedule, and no system holds all orders or all product data.",
               "shows": "The two gaps and the stock chain are visible in one picture."
             }
           ],
@@ -863,8 +850,8 @@
           "evidence": [
             {
               "kind": "scenario",
-              "what": "The WMS tells the ERP every 15 minutes; the ERP tells the platform every hour; the platform tells the connector every hour; the connector tells the marketplaces. A sale at Duiven can take up to two hours to reach Amazon.de, and in that time every channel believes it can still sell the unit.",
-              "shows": "The delay is the sum of scheduled copies, each working as designed.",
+              "what": "The WMS passes its number on a schedule to the ERP, the ERP to the platform, the platform to the connector, and the connector to the marketplaces: four systems, each holding its own copy. A sale at Duiven can take up to two hours to reach Amazon.de, and in that time every channel believes it can still sell the unit.",
+              "shows": "The delay comes from scheduled copies, each working as designed.",
               "source": "Kestrel & Pine scenario ledger"
             },
             {
@@ -1343,21 +1330,20 @@
   ],
   "modalities": [],
   "open_questions": [
-    "Chapters may append canonical facts to the ledger after this page was written (for example illustrative latencies, team details, 2027 peak-plan numbers); a review pass should fold additions that matter book-wide back into this page.",
-    "The timeline fixes a few dates the ledger gives only by 'since' year (the agency in 2017, the iPaaS and the connector in 2021, Ruben Alves in 2022); they are consistent with the ledger's 'Since' columns but a reviewer should confirm no chapter needs them earlier.",
-    "For the author (contract): the thesis and KEY POINTS say 'thirteen systems'. The ledger uses the number (additions for commerce-capability-map and commerce-scaling-stages) but never lists the thirteen. The page now counts them from its own landscape table: eleven rows that name a system, plus the stores' terminal provider and the BI tool. Confirm that this is the intended count, or say how thirteen is counted.",
-    "For the author (contract): the thesis says orders, product data and stock 'each live in four' systems. The page supports four for orders (platform, connector, ERP, POS) and for product data (platform, ERP, spreadsheets, connector; the spreadsheets are not one of the thirteen systems). For stock the body now says what it can support: warehouse stock is copied along a chain of four (WMS, ERP, platform, connector). Store stock in the POS and the stock at the marketplace's fulfillment program are further holders, so 'stock in four' is true of Duiven stock only; the ledger's own addition speaks of 'six systems each holding a stock number for the Ridgewalker jacket'. The KEY POINTS callout now says 'warehouse stock is copied along a chain of four'. Changing the wording of the thesis would be a journal-spec change.",
-    "For the author (fact): the page now names the 'other two' incidents as the Card-Testing Night and the Deprecated Endpoint. The ledger and the patterns page say only 'eight' and 'two'; the naming is inferred (the other eight each have a fact in two or more systems: stock, status, refund, price, shipment contents, stock, stock, identity). Confirm, or name the two.",
     "For the author (contract): AC-5 fixes the opening at 'the two callouts and the three paragraphs before the first heading', so the pick-up of the patterns page, the thesis and the roadmap share three paragraphs; p01 carries both the pick-up and the kind of fiction.",
     "Flow rubric (second run, sound with notes), not acted on: p21 and p22 both announce the two missing systems, and p27 repeats 'every system works' from p21; the rubric would have p22 open directly on what the two systems would do. Kept, because p22's first sentence is the author's and names the two gaps as the explanation.",
     "Flow rubric (second run), not acted on: the section-level reasons for at-a-glance and landscape describe their order without saying what would break if two paragraphs swapped.",
-    "For the author (ledger): the stock chain's hops, as the ledger gives them (WMS to ERP every 15 minutes, ERP to platform hourly, platform to connector hourly), add up to two and a quarter hours before the connector's own push, against the ledger's 'up to two hours'. Both flow readers of rounds 1 and 2 stopped on the arithmetic. The page repeats the ledger; the ledger would have to say which hops the two hours cover.",
-    "For the author (ledger): the ten incidents keep the ledger's numbers, which follow no order a reader can see (not date, not cost, not the eight/two split), incident 9 has no date, and incidents 3 and 10 are dated after Noor's arrival although the section is headed 'The Problems Kestrel & Pine Starts 2027 With'. The page now says so in the lead sentence; a reordering or a new heading is the author's and the ledger's to make.",
-    "For the author: 'EDI partner card' (W6) is glossed on the page as 'a written record of what that partner requires'; the ledger does not define the term. Confirm or correct the gloss.",
-    "Draft check, round 3 (last round; verdict escalate, 17 passed, 15 failed, of which 5 blocking and 10 minor). Blocking and at fault in the spec or the ledger, left for the author: (1) the stock chain's hops exceed 'up to two hours' (see the ledger question above); (2) the four-hour queue at peak is given without a cause on this page: the ledger says only that the WMS connector queue backed up and orders reached the warehouse late, and the cause (the WMS vendor's rate limit) is on the patterns page, not in the ledger's baseline. Blocking and at fault in the draft, fixed after the round without a re-check: 'a dozen systems' against thirteen; what 'first, then' orders in the Waypoint paragraph; the order of the three sizes in the conclusion.",
-    "Draft check, round 3, minor findings (one reader each) not acted on: 'authorizations', 'credit note', 'price-parity warning' and 'fulfillment' are never explained; 'the platform' is used in its narrow sense (the hosted commerce platform) and never set against the book's wide sense of a commerce platform, which chapter 1 settles by calling the product 'the shop platform'; how the 2027 stories 'test' Waypoint is not shown on this page; the conclusion does not say in words that any figure can be checked against this page (the spec's so_what), which the judge passed narrowly."
+    "Needs the author: Figure 1's artwork labels the stock hops ('stock every 15 min', 'stock hourly' twice), which add up to more than the 'up to two hours' the text and the ledger state; the text and caption no longer list the hops (rule 1). Settling it needs one fact: either the ledger says which hops the two hours cover, or the figure is regenerated without interval labels.",
+    "Needs the author (round 4, corroborated, fault spec): (1) p02 repeats KEY POINTS bullets 2 and 3 almost word for word; p02 is the author's paragraph and the KEY POINTS carry the thesis by the spec's placement, so one of the two would have to be shortened by the author's decision. (2) EDI, iPaaS, GTIN, Peppol and click-and-collect are glossed in the growth table and again at their later section; removing the second glosses is a spec change to the one-row-per-year decision. Minor, one reader each, fault spec: 'three places' plus a fourth copy (ledger wording); 336,000 parcels from Duiven against 40% of German marketplace units fulfilled by the marketplace (ledger figures); PostNL counted among Figure 3's seven systems; incident 1 retells Figure 2; the 'platform' definition sits in p01 before any system."
   ],
   "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: AC-1's expected answer changed in the journal spec first and copied here (rule 1).",
+      "rejected": [
+        "Keeping an expected answer the ledger does not support."
+      ]
+    },
     {
       "date": "2026-11-12",
       "decision": "After the round 2 draft check (escalate), under the author's standing approval: the count of thirteen systems is made after the landscape table (p22) and not announced before it (p21); p12 returns to the ledger's wording for product data (three places and a fourth copy, four copies in all); p20 says the 41 times is storefront traffic; p27 says that two of the ten incidents date from Noor's first weeks and that the incidents keep the ledger's numbers; p41 dates the 2027 stories between Waypoint's approval and the arrival of its hubs.",
@@ -1425,6 +1411,109 @@
       "rejected": [
         "Forcing it under The Secret Agent."
       ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: counts in the thesis follow the ledger (rule 1). 'Thirteen systems' stays: the ledger's additions for commerce-capability-map and commerce-scaling-stages both state thirteen; the page's own way of counting them is consistent with that and needs no ruling. 'Stock in four' is replaced by what the ledger supports: orders begin in four systems (platform, connector, ERP, POS), product data is kept in four places (three, plus the connector's copy) and warehouse stock is copied along a chain of four (WMS, ERP, platform, connector), as the page's KEY POINTS already say. The claim also glosses Waypoint as the 2027 program and says 'its commerce platform'. how_why keeps the ledger's 'up to two hours' without listing the hop intervals, which add up to more (rule 1). The first rewrite failed the rubric on the unexplained 'Waypoint'; the second passed.",
+      "rejected": [
+        "'Stock in six', from the March 2027 review, which counts the marketplace's fulfillment program and is not the January 2027 baseline the page describes.",
+        "Dropping the system count."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the KEY POINTS and p02 follow the new thesis (rule 9 done in the journal spec): thirteen systems, orders begin in four systems, product data sits in four places, warehouse stock passes along a chain of four, Waypoint glossed as the 2027 program. p02 is the author's paragraph of 2026-11-12 and is unchanged; the spec's thesis_statement text now quotes it.",
+      "rejected": [
+        "Rewording p02 to the thesis claim word for word."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the stock chain is described without hop intervals wherever the page listed them (p24, Figure 1's caption, p24's evidence); it says 'on a schedule' and 'up to two hours', as the ledger states (rule 1). p24 also says what the four counts: four systems, each holding its own copy.",
+      "rejected": [
+        "Keeping the ledger's 15-minute and hourly hops, which sum to more than two hours.",
+        "Changing 'up to two hours'."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the four-hour queue at peak keeps its figure and gains the cause the ledger states in its warehouse-and-fulfillment and journey-peak-day additions: the WMS vendor's rate limit throttled the flow that created orders in the WMS (rule 1).",
+      "rejected": [
+        "Dropping the four-hour queue.",
+        "Leaving it unexplained, which both flow readers of round 3 stopped on."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the growth section no longer says 'more than a dozen systems' in 2023, a count the ledger gives only for the stage in general; it says the company has thirteen systems to join by 2027, as the ledger states (rule 1).",
+      "rejected": [
+        "'A dozen' or 'more than a dozen' tied to 2023."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the ten incidents keep the ledger's numbers, names and dates, checked line by line against the ledger's 2027-situation list (incident 9 undated, as in the ledger); the lead sentence's statement that they keep the numbers chapters cite stays (rule 1).",
+      "rejected": [
+        "Renumbering by date.",
+        "A new section heading."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the 'other two' incidents stay named as the Card-Testing Night (8) and the Deprecated Endpoint (10). The ledger states 'eight of the ten' without naming them, but its own incident lines support the split: 1 to 7 and 9 each describe one fact held or written in two or more systems, 8 is filed as a trust failure and 10 as a contract broken by an outside vendor (rule 1).",
+      "rejected": [
+        "Dropping the names and keeping only the count."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: 'EDI partner card' (W6) is glossed from the ledger's edi-and-e-invoicing addition, which defines it: a record per trading partner of its identifiers, message and mapping versions, internal owner and compliance rules (rules 1 and 6).",
+      "rejected": [
+        "The earlier gloss 'a written record of what that partner requires', which the ledger does not state."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the growth table stays one row per year. The 2026-11-07 decision to collapse it to one row per stage is superseded by the round 1 decision of 2026-11-12, taken because each cell then glosses only one or two terms (rule 8 and the decision log).",
+      "rejected": [
+        "One row per scale stage."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: glosses added at first use for the terms single readers of round 3 stumbled on, within the word limit: 'the platform' in its narrow sense (p01), fulfillment (p07), price-parity warning, declined authorizations (incidents 4 and 8) and credit note (p34) (rule 6).",
+      "rejected": [
+        "Leaving them unexplained."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the open questions on chapters appending to the ledger and on 'since'-year dates are settled by rule 1: the page follows the ledger as it stands, and the dates it fixes agree with the ledger's 'Since' columns.",
+      "rejected": [
+        "Keeping them open for a reviewer."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: agent-added criteria: AC-7 (ledger agreement) and AC-8 (fictional labeling, role names) are rubrics added by an agent and are dropped; AC-9 and AC-10, cold-reader probes that passed in every recorded round, are kept (rule 7). Ledger agreement is still enforced by rule 1.",
+      "rejected": [
+        "Keeping AC-7 and AC-8 as checks."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: two of the author's sentences cut by earlier passes are restored, since the page holds them within 6,500 words: 'Terms are explained locally, with links to the chapters that examine them.' (end of p03) and 'This page supplies the full reference; individual chapters repeat the facts their examples need.' (p42). The other differences from the published page are rewordings or moves, not cuts; no statement about a real company, law or product was removed or added without its source (rules 2 and 5).",
+      "rejected": [
+        "Leaving them cut."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming draft check (round 4, escalate), its cheap and plainly right fixes were applied to index.md without a further round: the thirteen-system count reworded (corroborated), the incident-numbering clause rewritten (corroborated), W1 names the OMS that W2 adds and the Waypoint lead says the numbers are not the priority (corroborated), the queue cause and 'a unit that leaves the shelf' made plain, 'each section' for 'each part', Pieter Smit named in the Bergzicht reorder, Eva's late delivery tied to the static promise, the volumes table said to repeat the first four counts, glosses for canonical ledger, carriers, gross margin, state model and shopper-facing AI agent, and the conclusion states the spec's so-what in one sentence. The report is therefore stale.",
+      "rejected": [
+        "A fifth round.",
+        "Leaving the corroborated draft faults."
+      ]
     }
   ],
   "sources": [
@@ -1490,6 +1579,18 @@
     {
       "date": "2026-11-07",
       "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Thesis claim and how_why replaced from the journal spec (auto-resolved by the author's standing instruction): counts now match the ledger, Waypoint is glossed, how_why no longer lists hop intervals. The page's thesis statement (KEY POINTS, p02) should be checked against the new claim; the hop intervals on the page and in AC-1's expected answer remain the open ledger question."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's standing instruction (RESOLVE rules 1, 6, 8): KEY POINTS to the new thesis, stock-chain hops removed, queue cause from the ledger, 'thirteen' for 'more than a dozen', partner-card gloss from the ledger, glosses for terms readers stumbled on; open questions settled or marked 'needs the author'."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Confirming draft check, round 4: escalate (157 pass, 28 fail: 6 corroborated flow points, 1 conclusion so-what, 21 minor). Cheap draft fixes applied afterwards; report stale; spec-fault points recorded under open questions."
     }
   ],
   "length": {

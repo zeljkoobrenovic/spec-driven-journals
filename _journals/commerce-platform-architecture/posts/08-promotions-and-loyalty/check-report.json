@@ -1,65 +1,65 @@
 {
   "spec": "_journals/commerce-platform-architecture/posts/08-promotions-and-loyalty/spec.json",
   "draft": "_journals/commerce-platform-architecture/posts/08-promotions-and-loyalty/index.md",
-  "spec_sha": "3c52112b1d5a02c6",
-  "draft_sha": "031d95534c02529d",
-  "run_at": "2026-11-12T16:04:18+01:00",
-  "round": 3,
+  "spec_sha": "555a3e5d602ed01f",
+  "draft_sha": "bf143c0fcd79f3dd",
+  "run_at": "2026-11-12T20:45:21+01:00",
+  "round": 4,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Chapter goals: modeling promotions, where discounts are computed, how they reach invoice/refund/books",
+      "summary": "Chapter goals: modeling promotions, where the discount is computed, how it reaches invoice, refund and books",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Key points: cart-time rule evaluation, per-line allocation, stored value as liability",
+      "summary": "Key points: cart-time evaluation, per-line allocation, stored value as liability",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Failure patterns addressed: unexplainable price, boomerang refund, first snowfall",
+      "summary": "Failure patterns addressed: unexplainable price, double refund of discount, peak-week rule collision",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "Returned jacket after a welcome code: refund depends on how the discount was shared",
+      "summary": "Returned-jacket refund puzzle shows a discount needs a shared recorded calculation",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Offers interact before payment, so rules must define allowed combinations",
+      "summary": "Offers interact before payment, so rules must declare which combinations apply",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Gift cards and points are balances owed, not discounts",
+      "summary": "Gift cards and points are owed balances, not discounts",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Chapter's place in the order journey / Eva's code-free order still triggers a free-shipping promotion",
+      "summary": "Place in the order journey and Eva's no-code order qualifying for free shipping",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Introduction ¶5",
-      "summary": "Roadmap of the chapter and its evidence",
+      "summary": "Roadmap of the chapter, its evidence and related chapters",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶1",
-      "summary": "Three Black Friday 2026 promotions Kestrel & Pine configured",
+      "summary": "The three Black Friday 2026 promotions configured",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶2",
-      "summary": "Leftover combination setting let discounts stack, costing about €52,000",
+      "summary": "Leftover combination setting let discounts stack; cost of the week in three ways",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶3",
-      "summary": "Three faults behind the incident: stacking, shipping threshold, unallocated discount",
+      "summary": "Three root causes of the incident and the lesson that an unreconstructable price has no owner",
       "matched_spec_paragraph": "p08"
     },
     {
@@ -69,23 +69,18 @@
     },
     {
       "draft_locator": "What a Promotion Is, and What It Touches ¶2",
-      "summary": "Promotion shapes table: order discounts must be allocated to lines",
+      "summary": "Table of promotion shapes; order discounts must be allocated to lines",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "What a Promotion Is, and What It Touches ¶3",
-      "summary": "Promotions affect price (prior-price rule), margin and the books",
+      "summary": "Promotions touch price (EU prior-price rule), margin and the books",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "What a Promotion Is, and What It Touches ¶4",
-      "summary": "Gift cards, store credit and points are owed value, treated separately",
+      "summary": "Gift cards, store credit and points are owed value, not promotions",
       "matched_spec_paragraph": "p12"
-    },
-    {
-      "draft_locator": "What a Promotion Is, and What It Touches ¶5",
-      "summary": "Paid memberships are subscriptions, read by the engine as an eligibility attribute",
-      "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶1",
@@ -94,67 +89,57 @@
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶2",
-      "summary": "Promotion definitions with declared evaluation order and stop rule across vendors",
+      "summary": "Promotion definitions with declared evaluation order and stop rule, across three vendors",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶3",
-      "summary": "Eligibility depends on customer identity; e-mail-based first-order check fails",
+      "summary": "Eligibility depends on customer identity; paid memberships as eligibility attributes",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶4",
-      "summary": "Code usage ledger must be strongly consistent at redemption",
+      "summary": "Code ledger must be strongly consistent at redemption; other data may be cached",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶5",
-      "summary": "Cart evaluation; late conditions mean the product page only shows an estimate",
+      "summary": "Cart evaluation returns per-line discounts; product page can only estimate",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶6",
-      "summary": "Writing per-line net prices to the order / emitting promotion events",
+      "summary": "Writing per-line net prices and emitting promotion events",
       "matched_spec_paragraph": "p18"
     },
     {
       "draft_locator": "How the Pieces Fit Together ¶7",
-      "summary": "Six moments of use with different requirements",
-      "matched_spec_paragraph": "p19"
-    },
-    {
-      "draft_locator": "How the Pieces Fit Together ¶8",
-      "summary": "Code and stored-value redemption must be strongly consistent; rest can be cached",
-      "matched_spec_paragraph": "p20"
-    },
-    {
-      "draft_locator": "How the Pieces Fit Together ¶9",
-      "summary": "Discount flows to invoice, credit note and ledger; allocation is also a tax issue",
+      "summary": "Discount flows into invoice, credit note and general ledger; allocation as tax problem",
       "matched_spec_paragraph": "p21"
     },
     {
-      "draft_locator": "How the Pieces Fit Together ¶10",
-      "summary": "Worked allocation of a hypothetical 10% code on Eva's order",
+      "draft_locator": "How the Pieces Fit Together ¶8",
+      "summary": "Lead-in to worked allocation table on Eva's order with hypothetical code",
       "matched_spec_paragraph": "p22"
     },
     {
-      "draft_locator": "How the Pieces Fit Together ¶11",
-      "summary": "Correct refund vs Black Friday over-refund from skipped allocation (Boomerang)",
+      "draft_locator": "How the Pieces Fit Together ¶9",
+      "summary": "Refund uses net line price; Black Friday over-refunds came from skipped allocation",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶1",
-      "summary": "Gift cards, store credit and points are balance-sheet liabilities",
+      "summary": "Defines gift cards, store credit, points as balance-sheet liabilities",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶2",
-      "summary": "IFRS 15/ASC 606 treatment: deferred revenue, breakage, material rights",
+      "summary": "IFRS 15/ASC 606 treatment: deferred revenue, breakage estimation, material-right points",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶3",
-      "summary": "Starbucks figures illustrate stored-value liability at scale",
+      "summary": "Starbucks figures illustrate stored-value liability and breakage at scale",
       "matched_spec_paragraph": "p27"
     },
     {
@@ -164,82 +149,87 @@
     },
     {
       "draft_locator": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶5",
-      "summary": "Kestrel & Pine's separate online and store gift-card pools and balances",
+      "summary": "Kestrel & Pine's two separate gift-card pools and monthly reconciliation",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶6",
-      "summary": "Online loyalty deferred until cross-channel customer identity exists",
+      "summary": "Online loyalty deferred until cross-channel identity; shared balance service as later goal",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "The Choices ¶1",
-      "summary": "Four ways to run promotions introduced",
+      "summary": "Four ways to run promotions announced",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "The Choices ¶2",
-      "summary": "Platform built-in promotions and their limits",
+      "summary": "Option 1: platform built-in promotions and their limits",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "The Choices ¶3",
-      "summary": "Platform plus app: a second writer of the price",
+      "summary": "Option 2: platform plus app, which becomes a second price writer",
       "matched_spec_paragraph": "p34"
     },
     {
       "draft_locator": "The Choices ¶4",
-      "summary": "Dedicated cross-channel promotion engine and its cost",
+      "summary": "Option 3: dedicated cross-channel promotion engine and its cost",
       "matched_spec_paragraph": "p35"
     },
     {
       "draft_locator": "The Choices ¶5",
-      "summary": "Hard-coded rules as absence of design / comparison table of the four options",
+      "summary": "Option 4: hard-coded rules as absence of design; comparison table intro",
       "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "The Choices ¶6",
-      "summary": "Author's rule for when to leave platform promotions; governance first for Kestrel & Pine",
+      "summary": "Author's rule for when to leave platform promotions; governance as cheapest fix",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
-      "summary": "Scale changes how many systems must agree and stored-value size, not the engine",
+      "summary": "Scale-stage table of typical, necessary and warning signs",
+      "matched_spec_paragraph": "p37a"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Scale changes system count and stored-value size, not the engine; Kestrel & Pine's priorities",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "In Practice ¶1",
-      "summary": "Bridge: outside sources on what promotions must record, then the 2027 plan",
+      "summary": "Bridge to outside demands: law, abuse, measurement, then the 2027 plan",
       "matched_spec_paragraph": "p38a"
     },
     {
       "draft_locator": "In Practice ¶2",
-      "summary": "EU prior-price rule and enforcement require a 30-day price history",
+      "summary": "EU prior-price rule, Dutch enforcement and need for effective-dated price history",
       "matched_spec_paragraph": "p39"
     },
     {
       "draft_locator": "In Practice ¶3",
-      "summary": "Promotion abuse is an identity problem; track usage per identity signal",
+      "summary": "Promotion abuse forms and identity-based usage checks",
       "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "In Practice ¶4",
-      "summary": "Measuring incrementality needs holdout groups and records of offers made",
+      "summary": "Measuring incrementality requires holdouts and recording offers",
       "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "In Practice ¶5",
-      "summary": "Black Friday 2027 plan: owners, evaluation order, stop rules, staging test",
+      "summary": "Black Friday 2027 promotion plan with owners, order and staging test",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "In Practice ¶6",
-      "summary": "Lasting fixes: allocated net price in exports and two-person approval of settings",
+      "summary": "Lasting fixes: allocated net price in exports and approval for setting changes",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "When It Goes Wrong ¶1",
-      "summary": "Bridge to failure modes in promotion lifecycle order",
+      "summary": "Intro to residual failure modes with detection and recovery",
       "matched_spec_paragraph": "p43a"
     },
     {
@@ -249,57 +239,57 @@
     },
     {
       "draft_locator": "When It Goes Wrong ¶3",
-      "summary": "Estimate and final price disagree: detection and recovery",
+      "summary": "Page estimate disagreeing with cart total",
       "matched_spec_paragraph": "p45"
     },
     {
       "draft_locator": "When It Goes Wrong ¶4",
-      "summary": "Leaked or guessed codes: detection and recovery",
+      "summary": "Leaked or guessed codes",
       "matched_spec_paragraph": "p47"
     },
     {
       "draft_locator": "When It Goes Wrong ¶5",
-      "summary": "Stored value debited twice or not at all: detection and recovery",
+      "summary": "Stored value debited twice or not at all",
       "matched_spec_paragraph": "p48"
     },
     {
       "draft_locator": "When It Goes Wrong ¶6",
-      "summary": "Discount refunded twice: detection and recovery",
+      "summary": "Discount given back twice on refunds",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "When It Goes Wrong ¶7",
-      "summary": "Expired promotion persisting in copies: detection and recovery",
+      "summary": "Stale promotion copies after a promotion ends",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "What to Take Away ¶1",
-      "summary": "Synthesis: incidents stem from unrecorded numbers; ownership and recording prevent them",
+      "summary": "Callback: all incidents stem from numbers not recorded where the next system reads; governance prevents them",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "What to Take Away ¶2",
-      "summary": "Established findings",
+      "summary": "Established findings list",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "What to Take Away ¶3",
-      "summary": "Context-dependent recommendations",
+      "summary": "Context-dependent judgments list",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "What to Take Away ¶4",
-      "summary": "Author's synthesis: governance first, net line price as primary price",
+      "summary": "Author's synthesis: governance and net line price as primary",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Ten questions to ask about a promotion setup",
+      "summary": "Ten diagnostic questions on promotion architecture",
       "matched_spec_paragraph": "p54"
     },
     {
       "draft_locator": "Questions to Ask ¶2",
-      "summary": "Hand-off to the search and discovery chapter",
+      "summary": "Hand-off to the search chapter",
       "matched_spec_paragraph": "p55"
     }
   ],
@@ -315,880 +305,765 @@
       "criterion": "AC-5",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 56 aligned outline summaries match the controlling idea of their spec paragraph (p01-p55, including p29 under 'What a Promotion Is', p38a and p43a bridges), in the spec's order; the three extra outline entries are the IN THIS CHAPTER, KEY POINTS and FAILURE PATTERNS callouts, which the spec names as the placement of the thesis statement and roadmap and which carry no spec paragraph.",
-      "severity": "blocker"
+      "severity": "blocker",
+      "finding": "All 53 body units' outline summaries match the controlling idea of their aligned spec paragraph, in spec order (p01..p55, including p47, p48 before p46 as the spec orders them). The three introduction callouts match no spec paragraph and are correctly unmatched (null); they are the KEY POINTS / IN THIS CHAPTER callouts the spec's thesis_statement and roadmap place there."
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Introduction ¶4 (p04): the spec paragraph deliberately holds the chapter's place in the order's journey and Eva's free-shipping promotion; the draft frames both under 'Where we are in the order's journey' and ties Eva back with 'That is a promotion too'.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "Outliner marked two ideas (place in the order's journey; Eva's no-code order). Judged one idea: Eva's order is the illustration of 'what may be subtracted from that price at checkout' (free shipping is a promotion too), exactly as the spec's p04 controlling idea joins them."
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "severity": "major",
+      "finding": "The paragraph carries two ideas: eligibility depends on customer identity (first order by e-mail, the Familiar Stranger), and a paid membership is a customer attribute read as an eligibility condition, backed by two annual reports. The spec's p15 controlling idea itself joins both, and the spec's flow rationale moved the membership sentence here deliberately, so the draft follows its contract; both flow readers (A5, B4) also found the membership aside out of place.",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together ¶3",
+      "quote": "A paid membership (Prime-style: a fee for delivery and other benefits, which Amazon's 2025 annual report counts as subscription revenue and Target's describes as a paid membership) is read the same way",
+      "fault": "spec"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "How the Pieces Fit Together ¶6 (p18): the spec's 'Allocation and events' idea holds both outputs; the draft states the frame: 'The final step writes the result where later systems read it, in two forms: a net price on each order line, and an event.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "one_controlling_idea_per_paragraph",
-      "check": "one_controlling_idea_per_paragraph",
-      "verdict": "pass",
-      "finding": "The Choices ¶5 (p36): the spec attaches the four-option comparison table to p36 as its evidence ('hard-coded rules fit nobody'); the draft states that frame: 'the last row shows that hard-coded rules fit no stage'. Thin but deliberate.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "Outliner marked two ideas (the rule for leaving platform promotions; governance as cheapest fix). Judged one recommendation: when to change arrangement and what to do until then, as the spec's p37 controlling idea states it in one sentence."
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "introduction: every unit traces to a supporting claim; p01-p03 state the three clauses (allocation, combination rules, stored value as owed); p04-p05 place the chapter and announce it.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "scene: every unit traces to a supporting claim; p06-p08 support S1 and S3: unowned combination setting, threshold computed differently, unallocated discount refunded back.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "what-a-promotion-is: every unit traces to a supporting claim; p09-p12 give S2's vocabulary and set stored value apart (S4); p29 ties membership to S2 as an eligibility condition.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "pieces: every unit traces to a supporting claim; p13-p18 carry S2 (data, order, stop rule) and S3 (computed once in the cart, allocated); p19-p20 the consistency of code and stored-value redemption; p21-p23 the line-level documents and refund (S3).",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "stored-value: every unit traces to a supporting claim; p24-p31 carry S4: liability, accounting rules, Starbucks filing, ledger design rules, Kestrel & Pine's pools and deferred loyalty.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "choices: every unit traces to a supporting claim; p32-p37 carry S5 and end on governance (S1).",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "scale-stages: every unit traces to a supporting claim; p38 carries S5: what grows is the number of systems that must agree and the ledger's size.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "in-practice: every unit traces to a supporting claim; p39-p41 carry S6 (price history, identity, offers recorded); p42-p43 apply S1 and S3 to the 2027 plan.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "when-it-goes-wrong: every unit traces to a supporting claim; p44-p49 each show a missing clause (S1, S3, S4) with detection and recovery.",
-      "severity": "major"
-    },
-    {
-      "criterion": "paragraph_traces_to_thesis",
-      "check": "paragraph_traces_to_thesis",
-      "verdict": "pass",
-      "finding": "conclusion: every unit traces to a supporting claim; p50-p54 synthesise and apply S1-S6; p55 is the hand-off.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "Every unit ties to a supporting claim: scene to S1/S3, definitions and pieces to S2/S3, stored value to S4, choices and scale stages to S5 (and S1 via governance), in-practice to S6/S1/S3, failures to S1/S3/S4; the conclusion synthesizes S1-S6. No unit wanders off-thesis (local asides such as the IFRIC 13 history are sentence-level and recorded under flow)."
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Scene: the cost table is followed by ¶3 naming the fault behind each row; Figure 1's caption says the combination setting caused the staircase.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "Explained: the incident table (three costs, then diagnosed in the next paragraph), Figure 1, the promotion-type table ('Read the last column'), the Ridgewalker margin, Figure 5, the three vendor sources ('One idea, three vendors'), Amazon/Target, Adobe batch codes, the Adobe quotation ('That is why the product page can only show an estimate'), commercetools distribution, the VAT example, Eva's allocation table (refund €179.10; 'the missing step is the Net line price column'), Starbucks figures, the Shopify store-credit quotation, both choice and scale tables, ACM's worked example, Ravelin, Gubela et al., and the 2027 plan table ('Two changes matter more than the table'). One gap recorded separately (p39 €179)."
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "What a Promotion Is: Figure 2 caption ties each word to its effect; the promotion-type table is introduced with 'Read the last column...'; Figure 3 and 4 captions state what they show; the Ridgewalker margin example is tied to 'disappears silently when promotions combine'; the Amazon and Target quotations are followed by 'Both retailers report membership as a paid service... a promotion engine checks'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "How the Pieces Fit Together: Shopify/commercetools/Adobe sources end in 'One idea, three vendors'; the Adobe checkout quotation is followed by 'That is why the product page can only show an estimate'; commercetools allocation by 'each line then carries its net price'; the interactions table by 'Two rows behave like money'; the VAT example by 'makes allocation a tax problem'; Eva's allocation table and Figure 6 by the €179.10 refund and the Boomerang.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Stored value: Figure 7 caption, the IFRS/ASC quotation, the Starbucks figures ('the obligation has the same shape') and the Shopify store-credit quotation ('models it that way') are each explained.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "Choices and scale stages: the comparison table is introduced with how to read it; the scale-stage table is followed by 'The judgement' paragraph.",
-      "severity": "major"
-    },
-    {
-      "criterion": "evidence_is_explained",
-      "check": "evidence_is_explained",
-      "verdict": "pass",
-      "finding": "In Practice: the ACM example and fines end in 'For architecture this means...'; Ravelin's 53% is qualified as directional; Gubela et al. are followed by 'Redemption rate is not incrementality'; the 2027 plan table is preceded by the group and threshold explanation and followed by the two lasting changes. The €179 strike-through figure relies on the Price Drift from an earlier chapter.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p02 (/introduction/paragraphs/1): additional_support: 'Offers can also interact before payment.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p03 (/introduction/paragraphs/2): contrast: 'Gift cards and loyalty points are not discounts.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p04 (/introduction/paragraphs/3): example: 'Her basket is the one in the opening example... That is a promotion too: checkout must evaluate it and record the result.' (the link sits mid-paragraph, after the journey sentence).",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p05 (/introduction/paragraphs/4): sequence: 'The chapter starts with... It then... After that... and last'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "scene (/sections/0): example: the heading and the roadmap sentence just before ('The chapter starts with Kestrel & Pine's Black Friday Stacking Bug') carry the turn from the introduced problem to the incident.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p07 (/sections/0/paragraphs/1): contrast: 'The welcome code was not meant to combine... But the shop platform's discount combination setting still allowed both.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p08 (/sections/0/paragraphs/2): cause_effect: 'Three things went wrong, and the chapter returns to each.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "what-a-promotion-is (/sections/1): elaboration: 'In plain words, a promotion is...' defines the words (stacking, allocation, net price) the incident used.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p10 (/sections/1/paragraphs/1): elaboration: 'The table lists the shapes every platform supports'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p11 (/sections/1/paragraphs/2): conclusion_summary: 'Every row touches three things the business cares about.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p12 (/sections/1/paragraphs/3): contrast: 'Some things that look like promotions are not.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p29 (/sections/1/paragraphs/4): contrast: 'One more thing is often confused with loyalty points and is neither a promotion nor stored value.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "pieces (/sections/2): elaboration: 'A promotion system has five parts... The diagram shows them around the decision that matters'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p14 (/sections/2/paragraphs/1): elaboration: '### The five parts' then '**Promotion definitions.**' as the first part.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p15 (/sections/2/paragraphs/2): sequence: '**Eligibility and identity.**' as the next labelled part.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p16 (/sections/2/paragraphs/3): sequence: '**The code ledger.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p17 (/sections/2/paragraphs/4): sequence: '**Evaluation in the cart.**' takes the cart's lines and applies the promotions.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p18 (/sections/2/paragraphs/5): sequence: '**Allocation and events.** The final step writes the result'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p19 (/sections/2/paragraphs/6): elaboration: 'The five parts are used at six moments'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p20 (/sections/2/paragraphs/7): conclusion_summary: 'Two rows behave like money'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p21 (/sections/2/paragraphs/8): sequence: 'Back to the fifth part: the net price it writes to each line is then read outside the order.' expresses exactly the declared carry-over (flow cost recorded under flow_is_followable).",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p22 (/sections/2/paragraphs/9): example: 'Here is the allocation on Eva's order'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p23 (/sections/2/paragraphs/10): cause_effect: 'When Eva returns the jacket, the refund is €179.10'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "stored-value (/sections/3): contrast: 'A refund gives back what was paid for goods. Some value is owed to the customer before any goods change hands.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p25 (/sections/3/paragraphs/1): elaboration: 'For gift cards, store credit and points, the accounting is settled and drives the data model.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p27 (/sections/3/paragraphs/2): example: 'Starbucks' FY2025 annual report... shows what this means at scale'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p28 (/sections/3/paragraphs/3): cause_effect: 'Four design rules follow'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p30 (/sections/3/paragraphs/4): example: the subheading 'Kestrel & Pine's stored value in 2027' and the closing monthly reconciliation pick up the design rules.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p31 (/sections/3/paragraphs/5): additional_support: 'Stores have a loyalty list; the online shop has no loyalty program' parallels the split gift-card pools; the reason (no shared customer recognition across channels) is the same separation.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "choices (/sections/4): sequence: heading 'The Choices' and 'A merchant can run promotions in four ways' follow the description of what the system must do.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p33 (/sections/4/paragraphs/1): elaboration: '**The platform's built-in promotions.**' as the first way.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p34 (/sections/4/paragraphs/2): sequence: '**The platform plus a promotion or loyalty app.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p35 (/sections/4/paragraphs/3): sequence: '**A dedicated promotion engine shared across channels.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p36 (/sections/4/paragraphs/4): contrast: 'It is not a design but the absence of one.' with the fourth option.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p37 (/sections/4/paragraphs/5): conclusion_summary: 'My rule:' after the comparison table.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
       "verdict": "fail",
-      "spec_locus": "/sections/5",
-      "draft_locus": "Across Scale Stages: When It Fits and When It Limits (section opening)",
-      "quote": "| Stage | What is typical | What becomes necessary | Warning signs of outgrowing the approach |",
-      "finding": "The spec declares an elaboration transition sentence at the start of the section, carrying over the four options and the rule for choosing and introducing what is typical, necessary and a warning sign per stage. The draft opens the section directly with the table; no sentence picks up the options or says what the table adds. The link is made only afterwards ('The judgement: ...').",
+      "severity": "major",
+      "finding": "The running-example evidence of p39 (spec: 'the rule applied to the running example') gives a figure without saying where it comes from: the reader is not told what the Price Drift did to the Ridgewalker's price or why €179 is the lowest price of the prior 30 days. Both flow readers could not follow it (A11, B12).",
+      "spec_locus": "/sections/6/paragraphs/1/evidence/1",
+      "draft_locus": "In Practice ¶2",
+      "quote": "Had Kestrel & Pine's Price Drift run into November, the German strike-through price for the Ridgewalker would legally have been €179, not €199.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p02: 'Offers can also interact before payment' adds a second way promotions go wrong (additional support), carrying over the discount of p01.",
+      "spec_locus": "/introduction/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p03: 'Gift cards and loyalty points are not discounts' expresses the declared contrast with discounts.",
+      "spec_locus": "/introduction/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p04: Relationship expressed by 'Her basket is the one in the opening example': Eva's order as an instance; the paragraph places promotions after price selection.",
+      "spec_locus": "/introduction/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p05: 'The chapter starts with ... It then ...' sets out the sequence.",
+      "spec_locus": "/introduction/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into scene (p06, example): The section heading 'The Black Friday Stacking Bug' and the roadmap's 'The chapter starts with Kestrel & Pine's Black Friday Stacking Bug' carry the incident in as the example of two valid discounts combining; the first sentence itself sets the scene without restating it, which is acceptable at a section boundary.",
+      "spec_locus": "/sections/0/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p07: 'was not meant to combine ... But the ... setting still allowed both' expresses the contrast with the three promotions as configured.",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p08: 'Three things went wrong' turns the three costs into their causes (cause and effect).",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into what-a-promotion-is (p09, elaboration): 'In plain words, a promotion is ...' signals the elaboration of the words the incident used (stacking, allocation).",
+      "spec_locus": "/sections/1/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p10: 'The table lists the shapes ...' elaborates the definition into types.",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p11: 'Every row touches three things' summarizes across the types.",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p12: 'Some things that look like promotions are not' expresses the contrast.",
+      "spec_locus": "/sections/1/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into pieces (p13, elaboration): 'A promotion system has five parts' builds the just-defined vocabulary into a system; carry-over is implicit but the elaboration is clear.",
+      "spec_locus": "/sections/2/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p14: Bold label 'Promotion definitions.' elaborates the first of the five parts.",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p15: Label 'Eligibility and identity.' moves to the second part (sequence).",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p16: Label 'The code ledger.' moves to the third part (sequence).",
+      "spec_locus": "/sections/2/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p17: Label 'Evaluation in the cart.' moves to the fourth part, taking definitions, eligibility and codes as inputs.",
+      "spec_locus": "/sections/2/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p18: Label 'Allocation and events.' plus 'The final step writes the result' expresses sequence.",
+      "spec_locus": "/sections/2/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p21: 'The net price the fifth part writes to each line is then read outside the order' carries over the net price and introduces the three documents.",
+      "spec_locus": "/sections/2/paragraphs/6/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p22: 'Here is the allocation on Eva's order' introduces the example of allocation.",
+      "spec_locus": "/sections/2/paragraphs/7/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p23: 'When Eva returns the jacket, the refund is €179.10' follows from the net line prices (cause and effect) and ties back to the 190 over-refunds.",
+      "spec_locus": "/sections/2/paragraphs/8/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into stored-value (p24, contrast): 'A refund gives back what was paid for goods. Some value is owed to the customer before any goods change hands.' carries over the refund and expresses the contrast.",
+      "spec_locus": "/sections/3/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p25: 'For gift cards, store credit and points, the accounting is settled' elaborates the liabilities.",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p27: 'Starbucks' FY2025 annual report ... shows what this means at scale' introduces the example.",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p28: 'Four design rules follow' expresses cause and effect from the accounting.",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p30: Kestrel & Pine's own pools are an instance of the design rules (monthly reconciliation of two exports); relationship expressed, carry-over light.",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p31: The deferred loyalty program adds a second consequence of separate systems; carry-over implicit via stores vs online.",
+      "spec_locus": "/sections/3/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into choices (p32, sequence): 'A merchant can run promotions in four ways' under 'The Choices' moves from how the system must work to how to obtain it; the pivot is carried by the heading rather than a carry-over phrase, acceptable.",
+      "spec_locus": "/sections/4/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p33: Label 'The platform's built-in promotions.' elaborates the first of the four ways.",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p34: Label 'The platform plus a promotion or loyalty app.' with 'what the platform does not model' moves to the second way.",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p35: Label 'A dedicated promotion engine' moves to the third way.",
+      "spec_locus": "/sections/4/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p36: 'It is not a design but the absence of one' expresses the contrast with the three designed options.",
+      "spec_locus": "/sections/4/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p37: 'My rule:' draws the rule for choosing from the options (conclusion/summary).",
+      "spec_locus": "/sections/4/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into scale-stages (p37a, elaboration): 'That rule depends on how many systems must agree' carries over the rule for choosing and elaborates it by stage.",
+      "spec_locus": "/sections/5/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p38: 'The judgement:' draws the conclusion from the stage table.",
+      "spec_locus": "/sections/5/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into in-practice (p38a, additional_support): 'The sections so far described promotions from inside the merchant. Three dated public sources now show what the outside asks' carries over the model and introduces outside support.",
+      "spec_locus": "/sections/6/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p39: Label 'The prior-price rule turns promotions into a data requirement' gives the first of the three outside demands named in p38a.",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p40: 'Promotion abuse is an identity problem' adds the second demand.",
+      "spec_locus": "/sections/6/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p41: 'Incrementality ... needs a holdout' adds the third demand.",
+      "spec_locus": "/sections/6/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p42: 'For Black Friday 2027 Milan and Noor wrote the promotion plan' answers the 2026 incident (problem/solution).",
+      "spec_locus": "/sections/6/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p43: 'Two changes matter more than the table' expresses emphasis.",
+      "spec_locus": "/sections/6/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into when-it-goes-wrong (p43a, contrast): 'A written plan prevents the 2026 bug; it does not stop promotions from going wrong' carries over the plan and expresses the contrast.",
+      "spec_locus": "/sections/7/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p44: Label 'Unintended stacking.' opens the list of failures; relationship (sequence, first failure) expressed by p43a and the label.",
+      "spec_locus": "/sections/7/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p45: Label 'Estimate and final disagree.' adds a second failure.",
+      "spec_locus": "/sections/7/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p47: Label 'Codes leak or are guessed.' adds a failure at redemption.",
+      "spec_locus": "/sections/7/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p48: Label 'Stored value debited twice, or not at all.' adds a failure of the debit at checkout ('A checkout retried').",
+      "spec_locus": "/sections/7/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p46: 'After the order, a return refunds the list price' marks the move to after the order (sequence).",
+      "spec_locus": "/sections/7/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p49: 'A promotion ends but a copy does not' marks the end of the promotion's life (sequence).",
+      "spec_locus": "/sections/7/paragraphs/6/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into conclusion (p50, conclusion_summary): 'The chapter opened with a shopper ...' expresses the summary relationship by returning to the opening; the six failures are not picked up explicitly, but the declared introduction (the opening's return answered) is there.",
+      "spec_locus": "/conclusion/paragraphs/0 (section transition_in)"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p51: Label 'Established.' elaborates the chapter's answer with what is settled.",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p52: Label 'Depends on context.' contrasts with what is established.",
+      "spec_locus": "/conclusion/paragraphs/2/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p53: Label 'The author's synthesis.' adds the author's labelled judgement.",
+      "spec_locus": "/conclusion/paragraphs/3/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p54: Under the 'Questions to Ask' heading the list applies the take-aways (sequence); no lead-in sentence, relationship carried by the heading.",
+      "spec_locus": "/conclusion/paragraphs/4/transition_in"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Boundary into p55: 'Product content, price and discount now each have a named owner. The next chapter turns to a system that owns none' expresses the declared contrast.",
+      "spec_locus": "/conclusion/paragraphs/5/transition_in"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Post level: both flow readers describe the declared order (incident first, then vocabulary, mechanism, stored value by contrast, choices and scale, outside evidence and the 2027 plan, failures last), agreeing with prerequisite_order with problem_solution and grouping inside; neither marks any section's position unclear and both rate the chapter 'fairly easy' and say no section reordering is needed. The lost-thread points they report are recorded below, one result each."
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "finding": "Eva is introduced as using no code, then the worked allocation gives her a hypothetical 10% code; both readers stopped to work out which version of the basket applies. The spec's order is fine; the prose does not announce that the code will be added later for the calculation.",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4; How the Pieces Fit Together ¶8",
+      "quote": "Her basket is the one in the opening example, but she uses no code: her €199 jacket and two €18 pairs of socks total €235.",
       "fault": "draft",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "in-practice (/sections/6): additional_support: 'The sections so far described promotions from inside the merchant. Three dated public sources now show...'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p39 (/sections/6/paragraphs/1): example: '**The prior-price rule turns promotions into a data requirement.**' as the first of the three named demands.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p40 (/sections/6/paragraphs/2): additional_support: '**Promotion abuse is an identity problem.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p41 (/sections/6/paragraphs/3): additional_support: '**Incrementality needs a holdout.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p42 (/sections/6/paragraphs/4): problem_solution: the 2027 plan states owners, order and stop rules and the cart-computed threshold, answering the 2026 faults (subheading 'Kestrel & Pine's Black Friday 2027 plan').",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p43 (/sections/6/paragraphs/5): emphasis: 'Two changes matter more than the table, because they outlast one campaign.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "when-it-goes-wrong (/sections/7): contrast: 'A written plan prevents the 2026 bug; it does not stop promotions from going wrong.'",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p44 (/sections/7/paragraphs/1): sequence: '**Unintended stacking.**' as the first failure.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p45 (/sections/7/paragraphs/2): additional_support: '**Estimate and final disagree.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p47 (/sections/7/paragraphs/3): additional_support: '**Codes leak or are guessed.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p48 (/sections/7/paragraphs/4): additional_support: '**Stored value debited twice, or not at all.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p46 (/sections/7/paragraphs/5): sequence: 'After the order, a return refunds the list price'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p49 (/sections/7/paragraphs/6): sequence: '**A promotion ends but a copy does not.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "conclusion (/conclusion): conclusion_summary: 'The chapter opened with a shopper...' returns to the opening and states the answer.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p51 (/conclusion/paragraphs/1): elaboration: '**Established.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p52 (/conclusion/paragraphs/2): contrast: '**Depends on context.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p53 (/conclusion/paragraphs/3): additional_support: '**The author's synthesis.**'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p54 (/conclusion/paragraphs/4): sequence: heading 'Questions to Ask' applies the take-aways.",
-      "severity": "major"
-    },
-    {
-      "criterion": "transition_expresses_declared_relationship",
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "pass",
-      "finding": "p55 (/conclusion/paragraphs/5): contrast: 'Product content, price and discount now each have a named owner. The next chapter turns to a system that owns none of those facts'.",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "pass",
-      "finding": "Post level: both readers state the ordering principle (incident, vocabulary, mechanism, stored value by contrast, choices and scale, outside evidence and plan, failures, synthesis) and say the headings follow the roadmap; scene, stored-value, choices, scale stages, In Practice and the conclusion are reported clear by both. Overall 'fairly easy' (A) and 'easy' (B).",
-      "severity": "major"
+      "corroborated_by": "flow-B: B6 (\"Here is the allocation on Eva's order, had she used a 10% code (she did not ...)\" made me stop and work out which scenario applies)"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/4",
-      "draft_locus": "What a Promotion Is, and What It Touches ¶5",
-      "quote": "One more thing is often confused with loyalty points and is neither a promotion nor stored value.",
-      "finding": "Both readers found the paid-membership paragraph a detour: a long aside with Amazon and Target figures that ends 'the architectural point is small' (A3: 'This whole paragraph felt out of place'; B5: 'I read a long aside to reach a one-line point'). The spec moved it here in round 2 from the stored-value section, where readers also found it a detour, and requires the two filings as evidence; the difficulty comes from the paragraph's placement and load, not its wording. Second placement to fail; escalate.",
-      "fault": "spec",
-      "corroborated_by": "reader B, item B5 (reader A, item A3)",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/8",
-      "draft_locus": "How the Pieces Fit Together ¶9",
-      "quote": "Back to the fifth part: the net price it writes to each line is then read outside the order.",
-      "finding": "Both readers report that the interactions table interrupts the fifth part before its path to the invoice and refund is followed, so the text has to step back (A5: 'The \"Back to\" told me I had been taken away from the thread'; B7: 'The table interrupts the five parts before their story is finished'). A4 adds that the table relies on gift-card redemption before the stored-value section. The spec fixed this order in round 2 (table directly after the five parts); both readers now propose moving the table after the invoice-and-refund subsection, so the fault is the declared order.",
-      "fault": "spec",
-      "corroborated_by": "reader B, item B7 (reader A, items A4 and A5)",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/1",
-      "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶2",
-      "quote": "Under IFRS 15, the international accounting standard for revenue (issued May 2014, effective from 1 January 2018, replacing IFRIC 13, an earlier interpretation on loyalty programs) and its US twin ASC 606 (Accounting Standards Codification Topic 606), the sale of a gift card is a contract liability",
-      "finding": "Both readers had to re-read the accounting sentence: four parentheticals sit between the subject and the claim (A7: 'I had to re-read to find the subject and verb'; B8: 'The main claim... is buried under four nested parentheticals'). The spec's order is fine; the sentence construction obscures it. State the claim first and move the dates and IFRIC 13 out of the main clause.",
-      "fault": "draft",
-      "corroborated_by": "reader B, item B8 (reader A, item A7)",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/5",
-      "draft_locus": "The Choices ¶6",
-      "quote": "Kestrel & Pine does not buy an engine for the stores: it evaluates the platform's own POS in 2028 under decision W4, which would put the stores under the platform's promotions.",
-      "finding": "Both readers met an apparent contradiction: the rule says the moment has arrived for the stores, and the next sentence says the company does not act on it (A9; B10: 'for one sentence the rule and the decision seemed to disagree'). The resolution (a platform POS removes the second system) is present but not signalled; the prose should say the alternative to an engine is to remove the second system.",
-      "fault": "draft",
-      "corroborated_by": "reader B, item B10 (reader A, item A9)",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/7/paragraphs/0",
-      "draft_locus": "When It Goes Wrong ¶1",
-      "quote": "These failures still happen, in the order of a promotion's life.",
-      "finding": "Both readers checked the announced order against the list and found it only partly holds: 'Estimate and final disagree' begins on the product page, before cart-time stacking, and leaking happens before redemption (A12; B13: 'the announced principle made me look for an order that is only partly there'). The order and the lifecycle claim are both the spec's (flow rationale of when-it-goes-wrong and p43a), so the spec's order or its stated principle needs to change.",
-      "fault": "spec",
-      "corroborated_by": "reader B, item B13 (reader A, item A12)",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶2 (table)",
-      "quote": "Margin given away beyond the plan (about €15 per affected order)",
-      "finding": "Reader A (A2) paused over why the per-order figure is €15 when the row above gives €15.92 per jacket; the table does not say that not every affected order held a jacket. One reader only.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/1",
-      "draft_locus": "How the Pieces Fit Together ¶2",
-      "quote": "two percentage *order* discounts are both taken from the original subtotal, so 10% plus 20% on €100 gives €70, not €72.",
-      "finding": "Reader A (A6) stopped to reconcile this exception with the compounding Stacking Bug arithmetic just given; the draft does not say the incident combined a product and an order discount, so the exception does not apply. One reader only.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/2",
-      "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶3",
-      "quote": "Starbucks is a coffee chain, but the obligation has the same shape for a merchant with €200,000 outstanding.",
-      "finding": "Reader A (A8) could not tell whether €200,000 is a new figure or a rounding of Kestrel & Pine's €186,000 + €41,000 given two paragraphs later. One reader only.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/introduction/paragraphs/2",
-      "draft_locus": "Introduction ¶3",
-      "quote": "They create a different obligation: track the balance customers can still spend.",
-      "finding": "Reader B (B1) re-read this: the obligation is owed to the customer, but the sentence makes it the merchant's bookkeeping task. One reader only.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
+      "severity": "major",
+      "finding": "'The Price Drift' is named as if known and never explained in this chapter, so the comparison does not land.",
       "spec_locus": "/sections/0/paragraphs/2",
       "draft_locus": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶3",
-      "quote": "Noor Visser, Head of Engineering since January 2027, put the incident next to the Price Drift of October 2026 and drew the same conclusion",
-      "finding": "Reader B (B2) paused over who drew the conclusion and when, since Noor joined after the November 2026 incident; the Price Drift itself is an earlier-chapter reference. One reader only.",
+      "quote": "Noor Visser, who became Head of Engineering in January 2027, later put the incident next to the Price Drift of October 2026 and drew the same conclusion",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B1 (the Price Drift is never explained in this chapter, so the comparison does not work)"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/2",
-      "draft_locus": "What a Promotion Is, and What It Touches ¶3",
-      "quote": "but gave up about a sixth of its planned Black Friday unit margin",
-      "finding": "Reader B (B3) had to compute the planned margin (€159.20 − €58) to check 'a sixth'; the base is not stated. One reader only.",
+      "severity": "major",
+      "finding": "The exception sits in the middle of the paragraph's point (one declared order, three vendors) and ends by saying it does not matter; both readers re-read it to check whether it changed the €143.28 arithmetic. Reader A also notes the sentence quietly implies the shop platform is Shopify. The exception is in the spec's evidence, but the prose places and frames it as a detour.",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "quote": "Its help center (accessed November 2026) adds one exception: two percentage *order* discounts are both taken from the original subtotal, so 10% plus 20% on €100 gives €70, not €72; the Stacking Bug combined a product and an order discount, so the exception did not apply.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B3 (this aside sits in the middle of the paragraph's main point and ends by saying it does not matter; re-read it)"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
+      "severity": "major",
+      "finding": "The paid-membership aside interrupts the identity point and is never used again; both readers found it out of place. The spec's p15 controlling idea and its flow rationale place the membership sentence here, so the difficulty comes from the spec's placement, not the prose.",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together ¶3",
+      "quote": "A paid membership (Prime-style: a fee for delivery and other benefits, which Amazon's 2025 annual report counts as subscription revenue and Target's describes as a paid membership) is read the same way",
+      "fault": "spec",
+      "corroborated_by": "flow-B: B4 (this digression about paid memberships interrupts the identity point)"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "finding": "Both readers re-read the end of the code-ledger paragraph: it brings in gift-card redemption before the stored-value section and compresses the consistency idea (A6); B adds that 'Because that record can be trusted' does not explain why capped single-use codes defend against sharing. The prose obscures a point the spec states plainly.",
       "spec_locus": "/sections/2/paragraphs/3",
       "draft_locus": "How the Pieces Fit Together ¶4",
-      "quote": "It is the one part of a promotion engine that behaves like a bank account, and the reason bulk-generated single-use codes with usage caps (Adobe generates them in batches) are the baseline defense against code sharing.",
-      "finding": "Reader B (B6) re-read this: 'the reason' joins strong consistency and single-use codes without saying that single-use codes defend only because the usage record can be trusted. One reader only.",
+      "quote": "Code redemption and gift-card redemption are the only steps that cannot run on a copy that may lag behind the truth; everything else, from the product page's estimate to analytics, can be a cached copy with a known delay, the distinction [[boundaries-and-systems-of-record]] draws for every fact.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B5 (the causal 'Because' did not follow; gift-card redemption appears inside the code-ledger part before gift cards have been explained)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "pass",
-      "finding": "Every term on does_not_know is given in the draft (promotion, coupon code, automatic discount, eligibility, stacking, discount allocation and net price in 'What a Promotion Is' ¶1; order of evaluation and stop rule in the five parts; breakage, material right, contract liability, deferred revenue in the stored-value section; prior price, strike-through price, holdout group in place); SaaS, D2C, VAT, OMS, ERP, WMS, POS, ASC 606, ACM are expanded. The failures below are single-reader findings from the terms reader.",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/introduction/thesis_statement",
-      "draft_locus": "Introduction callout (KEY POINTS)",
-      "quote": "with a rule that says when stacking stops",
-      "finding": "'stacking' (on does_not_know) is used in the KEY POINTS, the roadmap ('Stacking Bug') and the scene's ¶3 before 'What a Promotion Is' ¶1 defines it. The incident's 'two discounts on 2,860 orders' lets a reader guess it. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/introduction/thesis_statement",
-      "draft_locus": "Introduction callout (KEY POINTS)",
-      "quote": "They are ledgers with balances that finance must reconcile to a liability account every month",
-      "finding": "'ledger' and 'liability account' are used in the KEY POINTS; 'liability' is explained only in the stored-value section, 'liability account' never, and 'ledger' is used in two senses (the accounting ledger in 'How a discount reaches the invoice and the books' and the per-card ledger) without a plain definition. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/0",
-      "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions, Figure 7 caption",
-      "quote": "every issuance, redemption, expiry and breakage estimate changes a balance per instrument in the shop platform",
-      "finding": "'breakage' (on does_not_know) appears in the Figure 7 caption one paragraph before ¶2 defines it. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
+      "severity": "major",
+      "finding": "The accounting paragraph piles history, acronyms and the unclaimed-property point on a newcomer; both readers re-read it to find the one rule that drives the data model. The IFRIC 13 history is not in the spec's evidence.",
       "spec_locus": "/sections/3/paragraphs/1",
       "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶2",
-      "quote": "replacing IFRIC 13, an earlier interpretation on loyalty programs",
-      "finding": "AC-6 asks that every acronym be expanded on first use: IFRS and IFRIC are glossed by role but never expanded, while ASC is expanded in the same sentence. Terms reader only; AC-6 is minor.",
+      "quote": "IFRS 15 was issued in May 2014, took effect on 1 January 2018 and replaced IFRIC 13, an earlier interpretation on loyalty programs by the IFRS Interpretations Committee.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B7 (packs too much accounting for a newcomer; the IFRIC 13 history adds nothing)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/4",
-      "draft_locus": "What a Promotion Is, and What It Touches ¶5",
-      "quote": "Target's FY2025 report",
-      "finding": "'FY' is not expanded on first use; it is explained only later with Starbucks' 'fiscal year ended 28 September 2025'. Terms reader only; AC-6 is minor.",
+      "severity": "major",
+      "finding": "'Waypoint' is never explained in the chapter; both readers stopped on it. A short gloss would fix it.",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶6",
+      "quote": "A shared balance service remains a goal after Waypoint, to be considered in the 2028 store-system evaluation under W4",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B9 ('Waypoint' is never explained in the chapter)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/6",
-      "draft_locus": "How the Pieces Fit Together ¶7 (table)",
-      "quote": "| Interaction | Freshness | Consistency | Latency | Availability |",
-      "finding": "The column terms latency, freshness and availability, and 'Served from cache', are not explained for a newcomer; the cells let a reader infer them. Terms reader only; AC-6 is minor.",
+      "severity": "major",
+      "finding": "The analogy rests on an earlier episode the chapter does not describe, so it gives no help to a reader of this chapter; a clause saying what went wrong would fix it.",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Choices ¶3",
+      "quote": "Kestrel & Pine's pre-order app wrote stock; a loyalty app is the same shape of risk",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B10 (refers to an earlier event that the chapter does not describe)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/4",
-      "draft_locus": "The Choices ¶5",
-      "quote": "Rules hard-coded in the theme, a script or a marketplace listing.",
-      "finding": "'theme' (the storefront's templates and front-end code) is never explained. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/5",
-      "draft_locus": "The Choices ¶6",
-      "quote": "which Shopify offers as a feature and any merchant can do in a staging copy",
-      "finding": "'staging copy' (a non-live copy of the shop for testing) is never explained; it recurs in the 2027 plan. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
-    },
-    {
-      "criterion": "AC-6",
-      "check": "known_before_new",
-      "verdict": "fail",
+      "severity": "major",
+      "finding": "The unexplained Price Drift returns and €179 appears without context; neither reader could check it.",
       "spec_locus": "/sections/6/paragraphs/1",
       "draft_locus": "In Practice ¶2",
-      "quote": "an effective-dated price history per SKU per country",
-      "finding": "'effective-dated' is not explained; the purpose clause gives only the gist. Terms reader only; AC-6 is minor.",
+      "quote": "Had Kestrel & Pine's Price Drift run into November, the German strike-through price for the Ridgewalker would legally have been €179, not €199.",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B12 (depends on the unexplained Price Drift; €179 appears without context)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/2",
-      "draft_locus": "In Practice ¶3",
-      "quote": "the defense is a usage record kept per identity signal, not per e-mail address",
-      "finding": "'identity signal' is used here and explained by example only later, in 'When It Goes Wrong' ('device, payment instrument, address'). Terms reader only; AC-6 is minor.",
+      "severity": "major",
+      "finding": "An owner in the 2027 plan table appears with no introduction or role (reader A: 'Daniel Okafor' and 'Daniel'; reader B: owner of free shipping and store promotions without a role).",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "Daniel Okafor",
       "fault": "draft",
-      "severity": "minor"
+      "corroborated_by": "flow-B: B15 ('Daniel Okafor' appears as owner of free shipping and store promotions without a role)"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/3",
-      "draft_locus": "In Practice ¶4",
-      "quote": "should be judged on revenue uplift, not conversions",
-      "finding": "'incrementality' (on does_not_know) is used in the run-in heading and explained only indirectly at the end of the paragraph; 'revenue uplift' is never glossed. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "severity": "minor",
+      "finding": "Reader A only: 'allocated' is used before it is defined in the next section; mild, partly rescued by the next paragraph.",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The Black Friday Stacking Bug ¶3; Setting the Scene ¶2 table",
+      "quote": "because the order-level 10% had not been allocated to the lines the returns portal reads",
+      "fault": "draft"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/conclusion/paragraphs/1",
-      "draft_locus": "What to Take Away ¶2",
-      "quote": "(PwC's guide; Starbucks' FY2025 annual report, its Form 10-K filing, as the worked example)",
-      "finding": "'PwC's guide' appears for the first time in the conclusion; the body never names or introduces it. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "severity": "minor",
+      "finding": "Reader A only: the Familiar Stranger pattern is named and not explained here.",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together ¶3",
+      "quote": "Promotions are one of the first places a merchant discovers it has no single customer identity: the Familiar Stranger pattern",
+      "fault": "draft"
     },
     {
-      "criterion": "AC-6",
-      "check": "known_before_new",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/conclusion/paragraphs/3",
-      "draft_locus": "What to Take Away ¶4",
-      "quote": "Treat the allocated net line price as the order's primary price and the list price as metadata",
-      "finding": "'metadata' is jargon not explained for the newcomer audience, in a line meant to be remembered. Terms reader only; AC-6 is minor.",
-      "fault": "draft",
-      "severity": "minor"
+      "severity": "minor",
+      "finding": "Reader A only: the stage names in the comparison table appear before the scale-stage section introduces them; minor, the next section supplies them.",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "The Choices ¶5",
+      "quote": "the last row shows that hard-coded rules fit no stage.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "finding": "Reader B only: had to work out that €101.20 is €159.20 less the €58 landed cost.",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "What a Promotion Is, and What It Touches ¶3",
+      "quote": "but gave up about a sixth of the margin it was planned to earn at €159.20 (€15.92 of €101.20).",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "finding": "Reader B only: 'Stars' (Starbucks' loyalty points) is not defined.",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Gift Cards, Store Credit and Points: Ledgers, Not Promotions ¶3",
+      "quote": "Stars are deferred at their estimated selling price \"as each Star is earned\"",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "finding": "Reader B only: the rule says the time for an engine has come and the next sentence says none was bought; W4 resolves it, but it reads as a contradiction at first.",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "The Choices ¶6",
+      "quote": "For Kestrel & Pine that moment has arrived for the stores (a separate POS) ... Kestrel & Pine has not bought an engine",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "finding": "Reader B only: the plan table marks the outerwear discount as evaluated first with a stop, while the welcome code row says the better one applies; the reader could not tell how 'better one applies' works with the order and stop rule. The spec's own description of the table contains both rules, so it is unclear whether the fix belongs in the spec or the table's wording.",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "Stop: Yes ... never with row 1 (the better one applies)",
+      "fault": "unclear"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "finding": "Reader B only (reader A called the placement 'mostly clear' and defensible): the dated examples support points made far earlier (prior-price rule promised in 'What a Promotion Is', abuse with eligibility, holdouts with events), leaving an open thread for about 110 lines. This follows from the spec's grouping of outside evidence in one section.",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "In Practice ¶2; What a Promotion Is ¶3",
+      "quote": "'In Practice' gives the rule and its enforcement",
+      "fault": "spec"
     },
     {
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens with the puzzling scenario the spec names (welcome code, returned jacket, 'How much should the merchant refund?'); it is not a placeholder, restated question, dictionary, 'dawn of man' or book-report opening.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "The introduction opens with the declared puzzling scenario (a returned jacket bought with a welcome code), bridges to recorded calculation, combination rules and stored value, places the chapter after pricing with Eva's order, and gives a roadmap; it is none of placeholder, restated question, dictionary, 'dawn of man' or book report."
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "'What to Take Away' does not open with 'in conclusion', is not a rephrased thesis alone or a grab bag: ¶1 synthesises, then labelled Established / Depends on context / author's synthesis lists and ten questions. Minor: 'PwC's guide' is cited for the first time in the conclusion (recorded under AC-6).",
-      "severity": "major"
+      "severity": "major",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new subtopic (the gift-card reconciliation point is the declared synthesis, not new evidence), and does not end on a rephrased thesis: it moves from the one-cause synthesis to sorted take-aways, questions and a hand-off. None of the four weak types applies."
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "¶1 states what no section states: 'The Stacking Bug's three costs had one cause: each time, a number was computed in one place and not recorded where the next system read it', extends it to stored value, and answers so-what: 'most promotion incidents can be prevented without new software, by deciding who owns each of these records and checking that it is written.'",
-      "severity": "major"
+      "severity": "major",
+      "finding": "p50 states what no single section states: the stacking, the shipping charge and the over-refund 'had one cause: each time, a number was computed in one place and not recorded where the next system read it', extended to gift-card balances; and answers so-what: 'most promotion incidents can be prevented without new software, by deciding who owns each of these records and checking that it is written.'"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "¶1 returns to the opening shopper: 'The chapter opened with a shopper who used a welcome code on a jacket and socks and returned the jacket. The refund is the jacket's net line price', and says it exists only if the discount was 'written to the order per line'.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "Returns to the declared callback: 'The chapter opened with a shopper who used a welcome code on a jacket and socks and returned the jacket. The refund is the jacket's net line price, and that price exists only if the discount was computed once, in the cart, and written to the order per line.'"
     },
     {
       "criterion": "AC-4",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The intro reader predicted the sections in order (incident, what a promotion is and touches, the five-part engine and cart-time computation, discount to invoice/refund/books with Eva's allocation and the Boomerang, stored value as ledgers, four ways and scale stages, dated examples ending with the 2027 plan, failures) and the evidence (incident, worked allocation, three platforms' documentation, accounting standards, a company filing), matching AC-4's expected; the guessed identity of the four options is a detail the introduction does not promise.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "The intro-only reader predicted every roadmap section in order (Stacking Bug; what a promotion is; five parts and where the final discount is computed; discount to invoice, refund and books with Eva's worked allocation; stored value as ledgers; four options by scale stage; dated examples and the 2027 plan; failure patterns) and the evidence (incident, worked allocation, three platforms' documentation, accounting standards, a company filing), matching the expected answer."
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader computes €179.10, not €199, with €23.50 allocated in proportion (€19.90 to the jacket, €3.60 to the socks) and says the per-line net price had to be recorded on the order at placement, where the returns tool, invoice and credit note read it. Matches expected.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "The cold reader computed €179.10, allocated €23.50 in proportion (€19.90 jacket, €3.60 socks) and said the net price per line must be written to the order at order time and carried by the export to the returns tool and ERP, matching the expected answer."
     },
     {
       "criterion": "AC-2",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader names the unowned combination setting nobody checked against the campaign plan, and before the next campaign: one owner (with second-person approval), the campaign written with order of evaluation and stop rule, one calendar ('one owner for the combination settings, one calendar'), a staging test against every active promotion, and 'governance, not software'. Matches expected.",
-      "severity": "major"
+      "severity": "major",
+      "finding": "The cold reader named the unowned combination setting not checked against the campaign plan, then gave one owner for the settings, a plan with order of evaluation and stop rule, one calendar and a test against every active promotion in staging, all before any new tool; matches the expected governance-first answer."
     },
     {
       "criterion": "AC-3",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader says a gift card is value paid in advance, so a liability the merchant owes kept as a ledger, and that finance (Sanne de Wit) reconciles the platform's stored-value balances to the liability account every month. Matches expected.",
-      "severity": "minor"
+      "severity": "minor",
+      "finding": "The cold reader said a gift card is value paid in advance and owed, a contract liability kept as a ledger, and that finance reconciles the summed balances to the liability account every month; matches expected."
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "In Practice > Dated, sourced examples, paragraph 2 (The prior-price rule turns promotions into a data requirement)",
+      "quote": "For architecture this means an effective-dated price history (each price stored with the dates it applied) per SKU per country that can answer \"lowest price in the last 30 days\" when a promotion is published, and a strike-through price (the crossed-out earlier price shown beside the reduced one) that is itself a syndicated field.",
+      "finding": "'Syndicated field' is not explained here or earlier in the chapter and is not on already_knows; a reader new to commerce does not know that syndication means sending product data out to other channels (marketplaces, feeds, stores), so the consequence — that the strike-through price must travel to every channel copy — is lost.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A11 ('\"Syndicated field\" ... is also unexplained jargon')",
+      "severity": "major"
     }
   ]
 }
