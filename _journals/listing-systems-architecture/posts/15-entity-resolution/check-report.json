@@ -1,30 +1,30 @@
 {
   "spec": "_journals/listing-systems-architecture/posts/15-entity-resolution/spec.json",
   "draft": "_journals/listing-systems-architecture/posts/15-entity-resolution/index.md",
-  "spec_sha": "114abde57b9412ce",
+  "spec_sha": "37a948920328df56",
   "draft_sha": "a3d2e0b1d4bb3319",
-  "run_at": "2026-11-12T21:53:02+01:00",
-  "round": 4,
+  "run_at": "2026-11-13T00:16:11+01:00",
+  "round": 5,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "chapter learning goals: duplicate kinds, entities, pipeline, merge policies",
+      "summary": "chapter preview: duplicate kinds, entities, pipeline, merge policies via Lyon flat",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "business cost of duplicates: inflated inventory, double alerts, agency disputes",
+      "summary": "business cost of duplicates: inflated supply, annoyed buyers and agencies",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "architectural stakes: the cluster identifier many systems depend on",
+      "summary": "the cluster identifier is a shared dependency whose errors propagate downstream",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "three key points: abuse vs legitimate duplicates, persistent entity, governed cluster ID",
+      "summary": "key points: abuse vs legitimate duplicates, durable entity, cluster ID as governed contract",
       "matched_spec_paragraph": null
     },
     {
@@ -34,17 +34,17 @@
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "normalized listings now comparable, revealing sameness + where this chapter sits relative to publication and downstream consumers",
+      "summary": "link to previous and next chapters; normalized listings reveal duplicates",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "examples of different duplicate situations that look alike but are distinct problems",
+      "summary": "duplicates come in different kinds that must not be treated as one problem",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "definitions of duplicate detection, entity resolution and canonical entity",
+      "summary": "definitions: duplicate detection, entity resolution, canonical entity",
       "matched_spec_paragraph": "p03"
     },
     {
@@ -54,102 +54,102 @@
     },
     {
       "draft_locator": "Introduction ¶5",
-      "summary": "roadmap of the chapter around four questions about the Lyon flat",
+      "summary": "chapter roadmap organized around four questions",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶1",
-      "summary": "Lyon flat arrives as three listings from three agencies with differing prices",
+      "summary": "the Lyon flat arrives as three agency listings at different prices",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶2",
-      "summary": "what buyers, alerts, reports and agencies experienced before deduplication",
+      "summary": "consequences of the triple listing for buyers, reports, valuation and agencies",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶3",
-      "summary": "scale of the problem across Hearthly France and the CEO's brief",
+      "summary": "scale of duplication at Hearthly France and the CEO's brief",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶4",
-      "summary": "existing nightly address job and Ingrid's four questions",
+      "summary": "existing address dedup job and Ingrid's four questions",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "Five Kinds of Duplicate ¶1",
-      "summary": "first question split: five kinds of duplicate introduced",
+      "summary": "introduces the five kinds of duplicate (table)",
       "matched_spec_paragraph": "p10"
     },
     {
       "draft_locator": "Five Kinds of Duplicate ¶2",
-      "summary": "look-alike cases that are not duplicates: same entity new offer, similar distinct entities",
+      "summary": "look-alikes that are not duplicates: same entity new offer, similar distinct entities",
       "matched_spec_paragraph": "p11"
     },
     {
       "draft_locator": "Five Kinds of Duplicate ¶3",
-      "summary": "shared detection but separate decisions, told apart by seller relationship and intent",
+      "summary": "rule: shared detection, separate decisions distinguished by seller relationship",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "Five Kinds of Duplicate ¶4",
-      "summary": "different legal regimes for enforcement versus presentation under DSA",
+      "summary": "abusive vs presentational duplicates fall under different legal regimes (DSA)",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "What Is the Thing? Real-World Identity by Vertical ¶1",
-      "summary": "the real-world thing being resolved differs by vertical",
+      "summary": "the resolved real-world entity differs by vertical (table)",
       "matched_spec_paragraph": "p14"
     },
     {
       "draft_locator": "What Is the Thing? Real-World Identity by Vertical ¶2",
-      "summary": "property identity outlives listings; national reference IDs stop at the building",
+      "summary": "real estate property identity and national reference data, which stop at the building",
       "matched_spec_paragraph": "p15"
     },
     {
       "draft_locator": "What Is the Thing? Real-World Identity by Vertical ¶3",
-      "summary": "Zillow as a property-first database example, matching method undisclosed",
+      "summary": "Zillow as a documented property-first database example",
       "matched_spec_paragraph": "p16"
     },
     {
       "draft_locator": "What Is the Thing? Real-World Identity by Vertical ¶4",
-      "summary": "VIN makes vehicle identity easy, with gaps and privacy caveats",
+      "summary": "vehicles resolve via VIN; hard part is missing VINs and VIN privacy",
       "matched_spec_paragraph": "p17"
     },
     {
       "draft_locator": "What Is the Thing? Real-World Identity by Vertical ¶5",
-      "summary": "goods have no entity, so don't invent one",
+      "summary": "general goods have no entity; don't invent one",
       "matched_spec_paragraph": "p18"
     },
     {
       "draft_locator": "Vertical Differences ¶1",
-      "summary": "how duplicate behavior differs across verticals",
+      "summary": "how duplicates behave differently per vertical (table)",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "Vertical Differences ¶2",
-      "summary": "stock photos cause false matches in general classifieds",
+      "summary": "stock photos cause false image matches in general classifieds",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "Vertical Differences ¶3",
-      "summary": "VIN ease tempts skipping review, causing wrong representative in auto",
+      "summary": "VIN ease tempts automotive teams to skip review, causing wrong representatives",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "The Matching Pipeline ¶1",
-      "summary": "reference matching architecture ending in a rules-based policy engine",
+      "summary": "reference matching pipeline overview ending in a rules-based policy engine",
       "matched_spec_paragraph": "p19"
     },
     {
       "draft_locator": "The Matching Pipeline ¶2",
-      "summary": "blocking keys that generate candidate pairs cheaply",
+      "summary": "blocking with multiple cheap keys to generate candidate pairs",
       "matched_spec_paragraph": "p20"
     },
     {
       "draft_locator": "The Matching Pipeline ¶3",
-      "summary": "blocking as a recall decision and its silent-miss failures",
+      "summary": "blocking is a recall decision; missing keys silently miss matches",
       "matched_spec_paragraph": "p21"
     },
     {
@@ -159,67 +159,67 @@
     },
     {
       "draft_locator": "The Matching Pipeline ¶5",
-      "summary": "probabilistic Fellegi-Sunter linkage via Splink as an explainable first scorer",
+      "summary": "probabilistic Fellegi-Sunter linkage via Splink as explainable first scorer",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "The Matching Pipeline ¶6",
-      "summary": "supervised classifiers and the OLX duplicate pipeline design",
+      "summary": "supervised classifiers and OLX's 2019 duplicate pipeline design",
       "matched_spec_paragraph": "p24"
     },
     {
       "draft_locator": "The Matching Pipeline ¶7",
-      "summary": "calibrated thresholds mapping scores to auto-link, ignore, or review",
+      "summary": "calibrated score thresholds mapping to link, ignore or review",
       "matched_spec_paragraph": "p25"
     },
     {
       "draft_locator": "The Matching Pipeline ¶8",
-      "summary": "clustering pairs into groups: chaining risk and safer consistent methods",
+      "summary": "clustering pairs: connected-components chaining vs consistency-based methods",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "The Matching Pipeline ¶9",
-      "summary": "entity registry gives stable cluster IDs with merge/split lineage",
+      "summary": "entity registry keeps stable cluster IDs with merge/split lineage",
       "matched_spec_paragraph": "p27"
     },
     {
       "draft_locator": "The Matching Pipeline ¶10",
-      "summary": "canonical entity with survivorship rules, never overwriting the listing",
+      "summary": "canonical entity with survivorship rules, not overwriting the listing",
       "matched_spec_paragraph": "p28"
     },
     {
       "draft_locator": "The Matching Pipeline ¶11",
-      "summary": "disputes and reviews stored as constraints so groupings don't revert",
+      "summary": "disputes and review decisions stored as clustering constraints",
       "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "The Matching Pipeline ¶12",
-      "summary": "cluster market state tied to listing lifecycle to avoid ghost inventory",
+      "summary": "cluster market state follows listing lifecycle to avoid Ghost Inventory",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "The Matching Pipeline ¶13",
-      "summary": "online checks at publication versus nightly batch resolution",
+      "summary": "online checks at publication vs nightly batch resolution",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "Merge Policies: What Each Audience Sees ¶1",
-      "summary": "merge policy must differ per audience rather than hide-everywhere",
+      "summary": "clusters affect each audience differently; avoid one hide-all policy",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "Merge Policies: What Each Audience Sees ¶2",
-      "summary": "search field collapsing and its count mismatches",
+      "summary": "search field collapsing and its count/facet mismatch costs",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "Merge Policies: What Each Audience Sees ¶3",
-      "summary": "options for choosing the representative listing and behaviors each rewards",
+      "summary": "options for choosing the representative listing and the behaviors each rewards",
       "matched_spec_paragraph": "p34"
     },
     {
       "draft_locator": "Merge Policies: What Each Audience Sees ¶4",
-      "summary": "representative rule as a governed, published ranking parameter",
+      "summary": "representative rule as a published, governed ranking parameter",
       "matched_spec_paragraph": "p35"
     },
     {
@@ -229,12 +229,12 @@
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶1",
-      "summary": "introducing the Lyon walkthrough and abuse case",
+      "summary": "introduces the Lyon walkthrough and abuse case",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶2",
-      "summary": "the three incoming listings",
+      "summary": "the three Lyon listings (table)",
       "matched_spec_paragraph": "p38"
     },
     {
@@ -244,42 +244,42 @@
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶4",
-      "summary": "scores of the Lyon pairs against thresholds",
+      "summary": "pair scores against Hearthly's thresholds",
       "matched_spec_paragraph": "p40"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶5",
-      "summary": "review confirms the cluster and builds the canonical record",
+      "summary": "auto-link plus reviewer confirmation forms one canonical property",
       "matched_spec_paragraph": "p41"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶6",
-      "summary": "what search, alerts and valuation show for the resolved flat",
+      "summary": "how search, alerts and valuation present the resolved flat",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶7",
-      "summary": "matcher barred from Keybridge CRM data, enforced in the data path",
+      "summary": "Keybridge data barred from matching to preserve agency trust",
       "matched_spec_paragraph": "p43"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶8",
-      "summary": "results after first quarter: fewer cards and alerts, accuracy, disputes",
+      "summary": "first-quarter results: fewer cards and alerts, precision/recall, disputes",
       "matched_spec_paragraph": "p44"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶9",
-      "summary": "same detectors block reposts and freshness gaming on Tradeyard",
+      "summary": "same detectors block reposts on Tradeyard to protect paid bumps",
       "matched_spec_paragraph": "p45"
     },
     {
       "draft_locator": "In Practice: Resolving the Lyon Apartment ¶10",
-      "summary": "stolen copies require recording link reasons, illustrated by Barcelona fraud ring",
+      "summary": "stolen copies require recording link reasons; Barcelona fraud ring",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "Trade-offs ¶1",
-      "summary": "five design decisions with conditions and costs",
+      "summary": "five key entity-resolution trade-offs (table)",
       "matched_spec_paragraph": "p47"
     },
     {
@@ -289,47 +289,47 @@
     },
     {
       "draft_locator": "Failure Modes ¶1",
-      "summary": "ten common failure modes and their fixes",
+      "summary": "ten common failure modes of entity resolution with fixes",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "The Chief Architect's View ¶1",
-      "summary": "group-level decisions prevent these failures",
+      "summary": "five group-level decisions prevent most failures",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "The Chief Architect's View ¶2",
-      "summary": "share matching machinery, keep entities vertical",
+      "summary": "share the matching machinery, keep entities per vertical",
       "matched_spec_paragraph": "p54"
     },
     {
       "draft_locator": "The Chief Architect's View ¶3",
-      "summary": "named owners per entity type",
+      "summary": "name an owner for each entity type",
       "matched_spec_paragraph": "p55"
     },
     {
       "draft_locator": "The Chief Architect's View ¶4",
-      "summary": "legal boundary on what data may be linked",
+      "summary": "decide legal boundaries of cross-source linking",
       "matched_spec_paragraph": "p56"
     },
     {
       "draft_locator": "The Chief Architect's View ¶5",
-      "summary": "representative rule governed like ranking",
+      "summary": "govern the representative rule as ranking",
       "matched_spec_paragraph": "p57"
     },
     {
       "draft_locator": "The Chief Architect's View ¶6",
-      "summary": "metrics to monitor for entity resolution health",
+      "summary": "a small set of health metrics to watch",
       "matched_spec_paragraph": "p58"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "design-review checklist questions",
+      "summary": "ten design-review questions",
       "matched_spec_paragraph": "p59"
     },
     {
       "draft_locator": "From Clean Supply to Live Supply ¶1",
-      "summary": "synthesis: define duplicates first, govern the cluster ID, answer to the CEO",
+      "summary": "synthesis: define duplicate kind first; governed cluster ID answers the brief",
       "matched_spec_paragraph": "p60"
     },
     {
@@ -350,38 +350,45 @@
       "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 61 body units align one-to-one with spec paragraphs p01-p61 in spec order (verticals p49-p51 after identity, as the revised spec declares); each outliner summary states the aligned paragraph's controlling idea. The five callouts carry no spec paragraph and are listed with matched_spec_paragraph null.",
       "severity": "blocker"
     },
     {
       "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "The outliner marked only Introduction ¶1 as having two ideas (prior chapter made listings comparable + where this chapter sits). The spec's p01 controlling idea is exactly that single bridging idea, the chapter's place between normalization and its downstream readers, and the draft states nothing beyond it; its density is recorded under flow_is_followable. No other unit was marked.",
       "severity": "major"
     },
     {
       "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit ties to a supporting claim: intro and scene to the problem and S1; kinds to S1; identity and verticals to S2; pipeline to S3/S4; merge to S5; practice to S3-S6 (Keybridge p43 to S6, Tradeyard and Barcelona p45-p46 to S1/S4); trade-offs, failure modes, CA view and questions to S4-S6; conclusion to S1/S4/S5.",
       "severity": "major"
     },
     {
       "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Every table has a lead sentence that says what it compares (kinds p10, identity p14, verticals p49, merge p32, Lyon listings p38 read by the blocking and scoring paragraphs, trade-offs p47 followed by p48); Figures 1-4 carry captions stating what they show; the Splink, Zillow, OLX, Elastic, PDQ and Idealista sources are each followed by what they show or what they do not; Claire's quotation states the two constraints; the Lyon statistics are interpreted (\"which means the removed alerts were noise\", \"the most valuable labels\").",
       "severity": "major"
     },
     {
       "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/12/transition_in",
-      "draft_locus": "The Matching Pipeline ¶12 -> ¶13 (Online and batch)",
+      "spec_locus": "/sections/4/paragraphs/10",
+      "draft_locus": "The Matching Pipeline ¶11",
+      "quote": "This answers Ingrid's third question, who can dispute a grouping.",
+      "finding": "Declared additional_support carrying over 'what the registry keeps' and introducing 'human decisions as part of what it keeps'. The opening 'This answers' has no antecedent in the canonical-entity paragraph before it, and the registry is not picked up until the end of the third sentence, so the boundary reads as a jump from survivorship rules to disputes (both flow readers felt it). Open from the registry: it also keeps human decisions, which is what answers Ingrid's third question.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/12",
+      "draft_locus": "The Matching Pipeline ¶13",
       "quote": "Resolution runs at two speeds.",
-      "finding": "Declared conclusion_summary carrying over 'the stages and the registry' and introducing 'when they run'. The opening sentence starts a new topic and does not gather the stages just described (blocking, scoring, clustering, registry) before saying when they run; coming straight after the registry's lifecycle paragraph, it reads as a return to pipeline mechanics, which both flow readers felt (A6, B6). A sentence that names the stages and the registry as what runs at two speeds would express the summary.",
+      "finding": "Declared conclusion_summary carrying over 'the stages and the registry' and introducing 'when they run'. The opening sentence starts a new topic and does not gather blocking, scoring, clustering and the registry before saying when they run; reader A felt it as a step backwards after the dispute discussion.",
       "fault": "draft",
       "severity": "major"
     },
@@ -392,45 +399,21 @@
       "spec_locus": "/introduction/paragraphs/0",
       "draft_locus": "Introduction ¶1",
       "quote": "This chapter's checks at publication time run inside [[publication-pipeline]], and search, alerts and valuation read the identifiers this chapter gives each cluster, the group of listings that describe one thing.",
-      "finding": "Both flow readers had to re-read the chapter's second sentence: it refers to 'checks at publication time' before any check is described and defines 'cluster' in a trailing appositive that is easy to miss. The spec's p01 order is fine; the sentence packs too much. Split it and define cluster where it is first used.",
+      "finding": "Both readers re-read the bridge's second sentence: it refers to 'checks at publication time' before any check is described, and defines 'cluster' in a trailing appositive that reads like part of the list, after the term has done its work.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, item A1; flow reader B, item B1",
+      "corroborated_by": "flow reader B, item B1",
       "severity": "major"
     },
     {
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/12",
-      "draft_locus": "The Matching Pipeline ¶13 (subsection 'Online and batch')",
-      "quote": "Resolution runs at two speeds.",
-      "finding": "Both flow readers felt a step backward: the registry subsection answers Ingrid's third question and moves on to lifecycle and Ghost Inventory, and the pipeline then returns to how fast resolution runs. Both independently propose the same reorder (online-and-batch before or right after clustering, so the registry and its dispute path end the pipeline section and lead into merge policies). The difficulty comes from the declared position of p31 after p29-p30; the spec's flow rationale does not justify that position. Reader A also notes (A7) and reader B also notes (B6) that the answer to the third question has no heading of its own inside 'The entity registry: stable identifiers and lineage'.",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Five Kinds of Duplicate ¶1",
+      "quote": "Ingrid's first question, what is being duplicated, has two parts.",
+      "finding": "Both readers could not place Vertical Differences: the roadmap says three sections answer the first question, the body says it 'has two parts' and names only the kind and 'same what?'. The draft follows the spec's own section transitions ('the first half of the answer', 'the second half'), which contradict the roadmap promise and the flow rationale's 'three steps'; the spec must say what Vertical Differences is to the first question before the draft can.",
       "fault": "spec",
-      "corroborated_by": "flow reader A, items A6 and A7; flow reader B, item B6",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/6",
-      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶7",
-      "quote": "Veldmark decided in March 2027 that Hearthly may not use Keybridge agency data for ranking or sales targeting (see [[meet-veldmark]]).",
-      "finding": "Both readers re-read to check whether matching was covered by the March 2027 decision or is a new extension: the paragraph cites a rule about ranking and sales targeting and then applies it to entity resolution without stating the step. The spec's controlling idea (the decision bars Hearthly from Keybridge agency data, so the matcher reads only what listings carry) is clear; the prose leaves the extension implicit. Reader A also needed a second reading of the closing 'competitors' sentence.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, item A11; flow reader B, item B8",
-      "severity": "major"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/9",
-      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶10",
-      "quote": "Its cost is in [[fraud-prevention]].",
-      "finding": "Both readers could not tell what 'Its' refers to (the ring, the stolen-copy problem, the missed link or the policy engine, which is the nearest noun). Name the referent.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, item A12; flow reader B, item B10",
+      "corroborated_by": "flow reader B, item B4",
       "severity": "major"
     },
     {
@@ -440,7 +423,127 @@
       "spec_locus": "/sections/3/paragraphs/0",
       "draft_locus": "Vertical Differences ¶1",
       "quote": "The identity table compared what each vertical resolves to; this one compares how duplicates behave in each: enforcement dominates general classifieds, clustering real estate, silent merges automotive:",
-      "finding": "Reader A re-read the gapped list and double colon, and found the section unfinished because its closing paragraphs cover general classifieds and automotive but not real estate. Reader B's points on this section are different (repetition, B11), so not corroborated.",
+      "finding": "Both readers re-read the section's opening sentence: two colons and a gapped, elliptical list that previews the table's 'Main action' row. Split it into plain sentences.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/10",
+      "draft_locus": "The Matching Pipeline ¶11",
+      "quote": "This answers Ingrid's third question, who can dispute a grouping.",
+      "finding": "Both readers found the answer to question three buried mid-subsection, after the unrelated canonical-entity paragraph and before 'Online and batch', which then returns to pipeline mechanics (A5, A6; B7). Both proposed the same reordering: disputes straight after stable IDs and lineage, and online/batch before the registry's dispute answer or after blocking. The difficulty comes from the declared paragraph order p27, p28, p29, p30, p31; a better opening sentence (see the p29 transition result) helps but does not remove it.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Merge Policies: What Each Audience Sees ¶4",
+      "quote": "Because each option rewards a behavior, the rule I recommend is that",
+      "finding": "Both readers were stopped by the only first-person 'I' in the body; elsewhere recommendations are impersonal or attributed to Veldmark. Reader B adds that the opening clause restates the sentence before it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶6",
+      "quote": "when listing C drops to €389,000 it is reported as an update on the known property, \"now €389,000 at a third agency\", not as a new listing; no price-drop alert fires, because the property's lowest asking price is still €389,000.",
+      "finding": "Both readers had to stop and reconcile this sentence with the merge-policy table: it carries two alert rules and three prices at once. Split it and say that the property's lowest price was already €389,000.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶7",
+      "quote": "**The Keybridge constraint.** Hearthly could match on richer data and does not.",
+      "finding": "Both readers met the rule on what the matcher may read after blocking, scoring, clustering and presentation had already used the listings' data, and both proposed moving it before Blocking. The position is the spec's (p43 after p42 in a sequence-ordered walk-through), so the fix is a spec order change.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶7",
+      "quote": "Without it, a better match rate would cost Veldmark the trust of every agency that uses Keybridge to publish to Hearthly's competitors.",
+      "finding": "Both readers re-read this sentence: in this chapter Keybridge is glossed only as 'the group's agent CRM', so the fact the argument rests on (it publishes agencies' listings to Hearthly's competitors) arrives unprepared. The book establishes it in meet-veldmark, but the chapter's own gloss omits it; add it to the first mention.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/9",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶10",
+      "quote": "Its cost is in [[fraud-prevention]].",
+      "finding": "Both readers could not tell what 'Its' refers to (the ring, the missed link, the routing failure or the policy engine). Name the referent.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "quote": "The trade-off that decides most of the others is **where the cluster ID is stored**.",
+      "finding": "Both readers scanned the five-row table for this decision and did not find it; the spec declares p48 as emphasis on one of the five choices, but none of the table's rows is where the cluster ID is stored. Add the row to the table or tie the sentence to a row it contains.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "Common Ground should build them once.",
+      "finding": "Both readers stopped at 'Common Ground', which this chapter never glosses, although it glosses every other Veldmark name on first use (Hearthly, Valuo, Tradeyard, Keybridge). The intended reader knows it from earlier chapters, so a two-word gloss is enough.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "**Keeping hashes forever.** Perceptual hashes of removed listings are valuable against fraud and are also personal data in some contexts.",
+      "finding": "Both readers found failure mode 10 to be new material in a list that otherwise looks back at the body: hash retention and its personal-data status are never discussed earlier. Tie the item to the perceptual-hash matching the body already describes (blocking keys, the Barcelona case) so it reads as a consequence, not a new topic.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B15",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "The Matching Pipeline ¶1",
+      "quote": "Its last component is the **policy engine**: rules, not a model, that read each cluster's duplicate kind and send it to enforcement or to presentation.",
+      "finding": "Reader A (A4) waited for the policy engine to be explained; no subsection covers it and it reappears only at the end of the abuse subsection. Not reported by reader B.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -448,21 +551,10 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/3",
-      "draft_locus": "Vertical Differences (table and ¶2-¶3)",
-      "quote": "In general classifieds, a perceptual-hash detector without an allowlist of manufacturer images floods moderators with false matches",
-      "finding": "Reader B found the section's rows largely restate the five-kinds and identity tables, which slowed reading, and called it the weakest-motivated section. Reader A placed it without difficulty. The repetition comes from the section's declared content (a seven-dimension comparison including dominant kind and main action), so the fault is the spec. (Both readers also noted 'perceptual hash' is only fully explained later, A4/B11; the audience already knows perceptual image hashes from the media pipeline, so that part is not a failure.)",
-      "fault": "spec",
-      "severity": "minor"
-    },
-    {
-      "criterion": "flow_is_followable",
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/1",
-      "draft_locus": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶2",
-      "quote": "Before 2027, a buyer searching \"T3 Lyon 7e under €400,000\" saw three cards with three photo sets, two prices and three agency names.",
-      "finding": "Reader B could not reconcile 'before 2027' with listings that arrive in May 2027, and had to infer that it means before the new pipeline. Not reported by reader A.",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶4",
+      "quote": "Julien Marchand, Hearthly's CTO, has a nightly deduplication job that already groups some listings by exact address.",
+      "finding": "Reader B (B2) expected the exact-address job to return, for example in the blocking or clustering discussion, and it never does. Not reported by reader A.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -472,8 +564,8 @@
       "verdict": "fail",
       "spec_locus": "/sections/0/paragraphs/0",
       "draft_locus": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times ¶1",
-      "quote": "Two other agencies hold mandates too, and their transaction software sends the flat through two different real-estate software vendors.",
-      "finding": "Reader B re-read to work out that each agency uses a different vendor. Not reported by reader A.",
+      "quote": "The other agencies list it at €389,000 and €395,000, because French sale prices are usually shown fees included, and the agencies charge different fees.",
+      "finding": "Reader B (B3) re-checked the prices: two of three agencies show the same price, so 'different fees' seems to explain only one. Not reported by reader A.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -481,10 +573,32 @@
       "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/5",
-      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶6",
-      "quote": "no price-drop alert fires, because the property's lowest asking price is still €389,000.",
-      "finding": "Reader A re-read the sentence to see why a price drop fires no price-drop alert; it carries two rules at once. Not reported by reader B.",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Merge Policies: What Each Audience Sees ¶4",
+      "quote": "One of the book's failure patterns, **Multiplier Creep**,",
+      "finding": "Reader B (B8) re-read the long Multiplier Creep sentence to see how it connects to the representative rule. Not reported by reader A.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶4",
+      "quote": "Hearthly's thresholds put automatic linking at 0.92 and the gray zone between 0.70 and 0.92.",
+      "finding": "Reader B (B9) went back to place each score in its band because the thresholds come after the scores. Not reported by reader A.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "In Practice: Resolving the Lyon Apartment ¶7",
+      "quote": "Veldmark decided in March 2027 that Hearthly may not use Keybridge agency data for ranking or sales targeting",
+      "finding": "Reader B (B11) had to supply the step from a rule about ranking and sales targeting to a rule about matching. Not reported by reader A.",
       "fault": "draft",
       "severity": "minor"
     },
@@ -492,56 +606,60 @@
       "criterion": "known_before_new",
       "check": "known_before_new",
       "verdict": "pass",
-      "finding": "Every does_not_know term is given where first used in the body: blocking (p20), pairwise scoring (p22), Fellegi-Sunter (p23), MinHash and SimHash (p20), connected components and chaining (p26), survivorship (p28), field collapsing and its counting limits (p33), T3, DPE and fees-included prices (p06), the Base Adresse Nationale and the RNB (p15). Terms the readers flagged are on already_knows: perceptual hashes (A4/B11; media pipeline) and Common Ground and Motorvane (A13; Veldmark and its brands from earlier chapters). Named people are introduced with their role. Paragraph openings start from introduced material.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_introduction_pattern",
       "check": "no_weak_introduction_pattern",
       "verdict": "pass",
-      "finding": "The introduction opens with the bridge from normalization and enrichment, then the four-case hook, definitions, scope and a roadmap; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
       "severity": "major"
     },
     {
       "criterion": "no_weak_conclusion_pattern",
       "check": "no_weak_conclusion_pattern",
       "verdict": "pass",
-      "finding": "The conclusion opens with a synthesis ('Ingrid's four questions turn out to be one'), adds no new subtopic or evidence, does not open with 'in conclusion' and ends on the hand-off to the publication pipeline rather than a restated thesis.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_synthesizes_and_answers_so_what",
       "check": "conclusion_synthesizes_and_answers_so_what",
       "verdict": "pass",
-      "finding": "p60 states what no single section states (the four questions reduce to deciding what a duplicate is before how to find it, with kind, entity, registry and policies each setting one part) and why it matters: search, alerts, valuation and pro reporting all count by the cluster identifier, so governing it once lets them agree.",
       "severity": "major"
     },
     {
       "criterion": "conclusion_calls_back_to_introduction",
       "check": "conclusion_calls_back_to_introduction",
       "verdict": "pass",
-      "finding": "p60 returns to Claire Fontaine's two sentences as callback.to declares: 'It also answers Claire: buyers see the Lyon flat once, and every agency stays one click away under a rule none can buy.'",
       "severity": "major"
     },
     {
-      "criterion": "AC-2",
+      "criterion": "intro_predicts_content",
       "check": "intro_predicts_content",
       "verdict": "pass",
-      "finding": "The cold reader predicted the sections in the order of the spec's roadmap and the actual draft: scene and four questions; kinds; real-world entity by vertical; vertical differences; matching pipeline through stable IDs; registry with dispute path; merge policies with Idealista; Lyon resolved; abuse; trade-offs; failure modes; Chief Architect's view; review questions. It named the evidence (public sources such as Idealista, standards, research, the fictional Veldmark) and the tone. Its splits of the registry and of abuse into their own sections are subsection-level and the roadmap itself groups them ('pipeline and its registry', 'resolved and abuse handled'). The only mismatch with AC-2's expected text is that the expected text lists vertical differences after trade-offs, the older order; the revised roadmap and the draft put it after real-world identity, as the reader predicted.",
       "severity": "major"
     },
     {
       "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader classed the bike repost as abuse with enforcement owned by trust and safety (with listing policy or monetization), a statement of reasons under DSA Art. 17, original creation date kept and a paid bump offered; the flat as a legitimate multi-agency listing clustered into one canonical property with a stable registry ID, owned by the listing data domain with discovery; and described the buyer view: one card chosen by the published completeness and media-quality rule, 'also listed by 2 other agencies', every agency one click away, leads not re-routed, one alert per property, counts from a property-level index. It does not mention disputes as labels or the published-data-only matcher input, which the probe did not ask about.",
       "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
     },
     {
       "criterion": "AC-4",
       "check": "custom",
       "verdict": "pass",
-      "finding": "The reader named the unstable nightly IDs and the search index as the only record, prescribed an entity registry as system of record with durable IDs, merge and split lineage published as events, reviewer decisions stored as constraints, and counts from a property-level document because collapsing leaves hit counts and aggregations counting listings; all elements of the expected answer.",
       "severity": "minor"
     }
   ]

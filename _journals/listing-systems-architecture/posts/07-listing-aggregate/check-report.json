@@ -1,15 +1,15 @@
 {
   "spec": "_journals/listing-systems-architecture/posts/07-listing-aggregate/spec.json",
   "draft": "_journals/listing-systems-architecture/posts/07-listing-aggregate/index.md",
-  "spec_sha": "bcebe1f3e588b001",
+  "spec_sha": "c633ae5eeb110d55",
   "draft_sha": "1e7da838cfe9015f",
-  "run_at": "2026-11-12T21:40:20+01:00",
-  "round": 4,
+  "run_at": "2026-11-13T00:08:25+01:00",
+  "round": 5,
   "verdict": "escalate",
   "reverse_outline": [
     {
       "draft_locator": "Introduction callout",
-      "summary": "Chapter goals: define the listing aggregate and trace one bike",
+      "summary": "Chapter goals: listing as aggregate, lifecycle, worked bike example",
       "matched_spec_paragraph": null
     },
     {
@@ -19,12 +19,12 @@
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Listing is copied everywhere, so vague states spread to every copy",
+      "summary": "Listing is copied everywhere, so vague states spread inconsistency",
       "matched_spec_paragraph": null
     },
     {
       "draft_locator": "Introduction callout",
-      "summary": "Three key points: offer not thing, two-dimensional lifecycle, events with deadlines",
+      "summary": "Listing is an offer distinct from entity + two-dimensional lifecycle with enforcement overlay + every transition an event with a removal deadline",
       "matched_spec_paragraph": null
     },
     {
@@ -34,52 +34,52 @@
     },
     {
       "draft_locator": "Introduction ¶1",
-      "summary": "The listing table is old, heavily copied and rarely designed",
+      "summary": "The listings table as an old, bloated, undesigned object",
       "matched_spec_paragraph": "p01"
     },
     {
       "draft_locator": "Introduction ¶2",
-      "summary": "Chapter models the listing as a Supply-side aggregate, scoped against other chapters",
+      "summary": "Chapter designs the Supply-side listing as an aggregate, scope limits",
       "matched_spec_paragraph": "p02"
     },
     {
       "draft_locator": "Introduction ¶3",
-      "summary": "Test of a model: can every copy say if a listing is for sale and why",
+      "summary": "Test: can the platform say if a listing is for sale and visible, in every copy",
       "matched_spec_paragraph": "p03"
     },
     {
       "draft_locator": "Introduction ¶4",
-      "summary": "Roadmap of the chapter",
+      "summary": "Roadmap of the chapter's sections",
       "matched_spec_paragraph": "p04"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶1",
-      "summary": "Femke's bike sold yet still sent in Tuesday's alert digest",
+      "summary": "Femke's bike sold but still sent in Tuesday alert digest",
       "matched_spec_paragraph": "p05"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶2",
-      "summary": "Ingrid asks the bike's state at 08:00 Tuesday; Daan gathers system answers",
+      "summary": "Chief architect asks what state the bike was in; four systems queried",
       "matched_spec_paragraph": "p06"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶3",
-      "summary": "Systems disagreed; each was wrong or right for the wrong reason",
+      "summary": "The systems disagreed, each wrong in its own way",
       "matched_spec_paragraph": "p07"
     },
     {
       "draft_locator": "Setting the Scene at Veldmark: Four Answers to One Question ¶4",
-      "summary": "Event contract needs prior agreement on what a listing is",
+      "summary": "Event contract cannot be written until listing is defined",
       "matched_spec_paragraph": "p08"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶1",
-      "summary": "Definition of a listing and why neighbors stay outside it",
+      "summary": "Definition of a listing and separation from its neighbors",
       "matched_spec_paragraph": "p09"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶2",
-      "summary": "Listing versus entity, with eBay's product/item split and PBSE rollback",
+      "summary": "One entity yields many listings; eBay's product vs item aspects and PBSE rollback",
       "matched_spec_paragraph": "p10"
     },
     {
@@ -89,17 +89,17 @@
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶4",
-      "summary": "Transactional test for what sits inside the aggregate",
+      "summary": "Transactional test for what belongs inside the aggregate",
       "matched_spec_paragraph": "p12"
     },
     {
       "draft_locator": "What a Listing Is, and What It Is Not ¶5",
-      "summary": "Paid visibility and moderation decisions held as references, not fields",
+      "summary": "Paid visibility and moderation decisions are references, not fields",
       "matched_spec_paragraph": "p13"
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶1",
-      "summary": "One immutable meaningless internal ID with mapped keys",
+      "summary": "One immutable meaningless internal ID; other keys map to it",
       "matched_spec_paragraph": "p14"
     },
     {
@@ -109,7 +109,7 @@
     },
     {
       "draft_locator": "Identity: One ID, Several Keys ¶3",
-      "summary": "Relisting identity depends on the selling campaign",
+      "summary": "Relisting: same or new listing depends on the campaign",
       "matched_spec_paragraph": "p16"
     },
     {
@@ -119,17 +119,17 @@
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶1",
-      "summary": "Lifecycle defined; three parties change state for different reasons",
+      "summary": "Lifecycle definition and the three parties that change state",
       "matched_spec_paragraph": "p22"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶2",
-      "summary": "Single status column fails; split publication state and enforcement overlay",
+      "summary": "Fix single status column with publication state plus enforcement overlay",
       "matched_spec_paragraph": "p23"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶3",
-      "summary": "Enforcement overlay states, independence and DSA statement of reasons",
+      "summary": "Enforcement overlay states and their DSA legal significance",
       "matched_spec_paragraph": "p24"
     },
     {
@@ -139,12 +139,12 @@
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶5",
-      "summary": "URL response depends on why the listing left",
+      "summary": "Lifecycle reason drives URL status (200 vs 410)",
       "matched_spec_paragraph": "p26"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶6",
-      "summary": "Feed status vocabularies like RESO need a mapping in the contract",
+      "summary": "Feed state vocabularies like RESO need a mapping in the contract",
       "matched_spec_paragraph": "p39"
     },
     {
@@ -159,17 +159,17 @@
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶9",
-      "summary": "Expiry as a cheap data-quality and ghost-inventory control",
+      "summary": "Expiry as data-quality control enforced by downstream channels",
       "matched_spec_paragraph": "p29"
     },
     {
       "draft_locator": "The Lifecycle: Two Dimensions, Not One Status ¶10",
-      "summary": "Outcome records distinguish how a listing ended",
+      "summary": "Terminal transitions carry an outcome record, not just 'sold'",
       "matched_spec_paragraph": "p30"
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶1",
-      "summary": "Invariants defined and separated from cross-listing policies",
+      "summary": "Invariants vs cross-listing policies",
       "matched_spec_paragraph": "p18"
     },
     {
@@ -184,37 +184,37 @@
     },
     {
       "draft_locator": "Invariants: What Must Always Be True ¶4",
-      "summary": "Enforce current rules on create and revise, with exemptions",
+      "summary": "Enforce rules on create and on revise, with exemptions",
       "matched_spec_paragraph": "p21"
     },
     {
       "draft_locator": "Availability, Units and Multi-Item Listings ¶1",
-      "summary": "Aggregate must state quantity and availability",
+      "summary": "Aggregate must model quantity and availability",
       "matched_spec_paragraph": "p37"
     },
     {
       "draft_locator": "Availability, Units and Multi-Item Listings ¶2",
-      "summary": "Parent counts as listing only if contactable + sold out differs from sold",
+      "summary": "Parent is a listing only if contactable; sold out differs from sold",
       "matched_spec_paragraph": "p38"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶1",
-      "summary": "Listing versions and their four jobs",
+      "summary": "Listing versions and their four jobs: ordering, concurrency, evidence, re-moderation",
       "matched_spec_paragraph": "p31"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶2",
-      "summary": "Default storage: current state, history table and outbox",
+      "summary": "Default storage: current state plus history table plus outbox",
       "matched_spec_paragraph": "p32"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶3",
-      "summary": "Outbox pattern; aggregate, not CDC, decides event meaning",
+      "summary": "Outbox pattern; aggregate decides event meaning, CDC only interim",
       "matched_spec_paragraph": "p33"
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶4",
-      "summary": "Why price needs its own history: alerts, models, prior-price regulation",
+      "summary": "Price history needed for alerts, models and EU prior-price rule",
       "matched_spec_paragraph": "p34"
     },
     {
@@ -224,12 +224,12 @@
     },
     {
       "draft_locator": "Versions, Change History and Price History ¶6",
-      "summary": "Recalculated regulated attributes need effective dates (bitemporal)",
+      "summary": "Recalculated regulated facts (DPE) need effective dates, bitemporal lite",
       "matched_spec_paragraph": "p36"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶1",
-      "summary": "Listing service is the single owner of the aggregate",
+      "summary": "One listing service owns the aggregate; others read",
       "matched_spec_paragraph": "p40"
     },
     {
@@ -239,12 +239,12 @@
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶3",
-      "summary": "Events folded into twelve contract types; three properties follow",
+      "summary": "Events folded into twelve contract types + three properties of the contract introduced",
       "matched_spec_paragraph": "p42"
     },
     {
       "draft_locator": "Architecture: One Owner, Many Copies ¶4",
-      "summary": "Events carry full state so consumers converge by version",
+      "summary": "Events carry state and version so consumers converge",
       "matched_spec_paragraph": "p43"
     },
     {
@@ -259,122 +259,122 @@
     },
     {
       "draft_locator": "In Practice: What Public Evidence Shows ¶1",
-      "summary": "Public evidence reveals contracts, not internals",
+      "summary": "Public evidence comes from contracts, not internals",
       "matched_spec_paragraph": "p46"
     },
     {
       "draft_locator": "In Practice: What Public Evidence Shows ¶2",
-      "summary": "Auto Trader: who may trigger transitions is a business-model choice",
+      "summary": "Auto Trader reservation case: transition permissions are business model",
       "matched_spec_paragraph": "p47"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶1",
-      "summary": "Introducing the bike replay under the new lifecycle",
+      "summary": "Replay of Femke's bike under the new lifecycle",
       "matched_spec_paragraph": "p48"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶2",
-      "summary": "Replay shows aggregate changes only for offer facts: scam, reservation, sale price",
+      "summary": "Replay lessons: phishing off-aggregate, order-set reservation, sale price in outcome",
       "matched_spec_paragraph": "p49"
     },
     {
       "draft_locator": "The Rotterdam City Bike, Transition by Transition ¶3",
-      "summary": "Tuesday digest as ghost inventory, its fix and the 41,000-listing audit",
+      "summary": "Digest fix under new contract + audit finding 41,000 ghost listings",
       "matched_spec_paragraph": "p50"
     },
     {
       "draft_locator": "Trade-offs ¶1",
-      "summary": "Four trade-off decisions that shift with scale",
+      "summary": "Four trade-off decisions; simple options fit early stage only",
       "matched_spec_paragraph": "p51"
     },
     {
       "draft_locator": "Trade-offs ¶2",
-      "summary": "Delete semantics bounded by DSA appeals and GDPR; tiered retention",
+      "summary": "Delete semantics bounded by DSA appeal window and GDPR via tiered retention",
       "matched_spec_paragraph": "p52"
     },
     {
       "draft_locator": "Vertical Differences ¶1",
-      "summary": "Lifecycle, units and invariants differ by vertical",
+      "summary": "Aggregate shape common but lifecycle varies by vertical",
       "matched_spec_paragraph": "p53"
     },
     {
       "draft_locator": "Vertical Differences ¶2",
-      "summary": "Veldmark handles verticals by configuration + Motorvane Golf late-feed ghost",
+      "summary": "Veldmark brands configure verticals, not fork + late dealer feed Golf ghost example",
       "matched_spec_paragraph": "p54"
     },
     {
       "draft_locator": "Failure Modes ¶1",
-      "summary": "Failure: overloaded status column",
+      "summary": "Overloaded status column failure",
       "matched_spec_paragraph": "p55"
     },
     {
       "draft_locator": "Failure Modes ¶2",
-      "summary": "Failure: consumers that never hear removals",
+      "summary": "Consumers that never receive removals cause ghost inventory",
       "matched_spec_paragraph": "p56"
     },
     {
       "draft_locator": "Failure Modes ¶3",
-      "summary": "Failure: bumps that reset age",
+      "summary": "Bumps resetting age corrupt ranking and analytics",
       "matched_spec_paragraph": "p57"
     },
     {
       "draft_locator": "Failure Modes ¶4",
-      "summary": "Failure: hard deletes destroy evidence",
+      "summary": "Hard deletes destroy moderation evidence",
       "matched_spec_paragraph": "p58"
     },
     {
       "draft_locator": "Failure Modes ¶5",
-      "summary": "Failure: edits bypassing moderation",
+      "summary": "Edits bypassing moderation gate",
       "matched_spec_paragraph": "p59"
     },
     {
       "draft_locator": "Failure Modes ¶6",
-      "summary": "Failure: expiry jobs falling behind",
+      "summary": "Lagging expiry jobs need backlog monitoring",
       "matched_spec_paragraph": "p60"
     },
     {
       "draft_locator": "Failure Modes ¶7",
-      "summary": "Failure: purges that miss copies",
+      "summary": "Purges must reach every copy",
       "matched_spec_paragraph": "p61"
     },
     {
       "draft_locator": "The Chief Architect's View ¶1",
-      "summary": "Fix the lifecycle contract at group level, brands own services",
+      "summary": "Group-level lifecycle contract, brand-owned services",
       "matched_spec_paragraph": "p62"
     },
     {
       "draft_locator": "The Chief Architect's View ¶2",
-      "summary": "Explicit owner for every listing dimension",
+      "summary": "One owner per listing dimension",
       "matched_spec_paragraph": "p63"
     },
     {
       "draft_locator": "The Chief Architect's View ¶3",
-      "summary": "Govern state vocabulary changes like API changes",
+      "summary": "Treat state vocabulary changes as versioned API changes",
       "matched_spec_paragraph": "p64"
     },
     {
       "draft_locator": "The Chief Architect's View ¶4",
-      "summary": "Four fitness functions to watch",
+      "summary": "Four fitness functions to monitor the rules",
       "matched_spec_paragraph": "p65"
     },
     {
       "draft_locator": "The Chief Architect's View ¶5",
-      "summary": "Resist the god listing; keep aggregate narrow",
+      "summary": "Resist adding columns; keep aggregate narrow",
       "matched_spec_paragraph": "p66"
     },
     {
       "draft_locator": "Questions to Ask ¶1",
-      "summary": "Design-review questions",
+      "summary": "Design review questions for the listing model",
       "matched_spec_paragraph": "p67"
     },
     {
       "draft_locator": "From Aggregate to Category ¶1",
-      "summary": "Answer to the bike's state and how the rules fix every copy",
+      "summary": "Answer to the bike's state and how the rules fix each failure",
       "matched_spec_paragraph": "p68"
     },
     {
       "draft_locator": "From Aggregate to Category ¶2",
-      "summary": "Category is assumed here; next chapter designs taxonomy",
+      "summary": "Hand-off: categories and taxonomy as next chapter",
       "matched_spec_paragraph": "p69"
     }
   ],
@@ -387,419 +387,238 @@
       "finding": "sections, unit counts and unit forms match the spec"
     },
     {
+      "criterion": "reverse_outline_matches_spec",
       "check": "reverse_outline_matches_spec",
       "verdict": "pass",
-      "finding": "All 70 body paragraphs' outline summaries match the controlling idea of the spec paragraph they align to, in spec order (p01-p69, with p22-p30/p39 lifecycle before p18-p21 invariants as the spec's section order declares); the five callouts have no spec paragraph.",
-      "criterion": "AC-3",
+      "finding": "All 69 aligned outline summaries state the controlling idea of their spec paragraph, in the spec's order (p01-p04, p05-p08, p09-p13, p14-p17, p22-p30 with p39, p18-p21, p37-p38, p31-p36, p40-p45, p46-p47, p48-p50, p51-p52, p53-p54, p55-p61, p62-p66, p67, p68-p69). The five opening callouts carry no spec paragraph by design.",
       "severity": "blocker"
     },
     {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "The independent outline lists the spec's controlling ideas in the spec's section and paragraph order; no unit is missing, added or reordered.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "pass",
-      "finding": "Availability ¶2, flagged two_ideas by the outliner, opens with one controlling sentence ('Two rules keep this manageable.') that both rules serve, exactly as spec p38 declares; not a failure. The only other flagged unit fails below.",
-      "criterion": "one_controlling_idea_per_paragraph",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "finding": "Marked two ideas by the outliner, but this callout is the declared placement of the three-part thesis statement (introduction.thesis_statement.placement), so its three bullets are intended.",
       "severity": "major"
     },
     {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Architecture: One Owner, Many Copies ¶3",
+      "finding": "Marked two ideas, but the second sentence ('Three properties make the contract work.') is a signpost for p43-p45, whose phrase transitions ('the first/second/third property') depend on it; the paragraph's one idea is how the table's events fold into twelve contract types.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶3",
+      "finding": "Marked two ideas, but the audit figure is the evidence that the digest is Ghost Inventory 'in miniature' of a common failure; fix and audit both serve the one controlling idea of p50.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
       "check": "one_controlling_idea_per_paragraph",
       "verdict": "fail",
       "spec_locus": "/sections/11/paragraphs/1",
       "draft_locus": "Vertical Differences ¶2",
-      "quote": "Motorvane's Essen Volkswagen Golf shows the automotive ghost source: it sold on 29 April 2027, but the dealer feed's removal arrived 26 hours later",
-      "finding": "The paragraph opens on configuration ('At Veldmark the table translates into configuration, not forks') and then turns to a late-feed ghost that configuration cannot address, with no sentence tying the two; the outliner needed two summaries. A framing that presents the Golf as the one row of the table that configuration cannot fix, only measure, would make it one idea as p54 intends.",
-      "fault": "draft",
-      "criterion": "one_controlling_idea_per_paragraph",
+      "quote": "At Veldmark the table translates into configuration, not forks.",
+      "finding": "The paragraph carries two ideas: vertical differences become per-brand configuration of one lifecycle, and the Essen Golf shows a late-feed ghost source the aggregate can only measure. The spec's controlling idea for p54 joins exactly these two with 'and', so the draft follows the spec; splitting or reframing needs a spec change.",
+      "fault": "spec",
       "severity": "major"
     },
     {
+      "criterion": "paragraph_traces_to_thesis",
       "check": "paragraph_traces_to_thesis",
       "verdict": "pass",
-      "finding": "Every unit ties to a supporting claim: intro and scene to the thesis and L6; what-is to L1; identity to L2; lifecycle, availability, in-practice, verticals to L4; invariants to L3; versions to L5; architecture and bike to L5/L6; trade-offs, failure modes, CA view and questions to the claims their spec sections name.",
-      "criterion": "paragraph_traces_to_thesis",
+      "finding": "Every unit ties to a supporting claim: scene to L6; what-is to L1; identity to L2; lifecycle, availability, in-practice and verticals to L4; invariants to L3; versions to L5; architecture, bike and failure modes to L4-L6; trade-offs, CA view and questions to the claims they list; the callouts and introduction state the thesis.",
       "severity": "major"
     },
     {
+      "criterion": "evidence_is_explained",
       "check": "evidence_is_explained",
       "verdict": "pass",
-      "finding": "Every table, figure, quotation and source is accompanied by a sentence saying what it shows (e.g. 'The table does: each neighbor has its own identity and lifetime...', 'Both are external-key designs...', 'The pattern is consistent...', 'A dealer listing that shows \"price reduced\" must therefore be backed by a price series...', 'The replay shows the aggregate changing only for facts about the offer...', 'Veldmark's March 2027 audit found the problem was not rare'); figures 1-5 carry explanatory captions.",
-      "criterion": "evidence_is_explained",
+      "finding": "Each table is introduced or followed by a sentence that says what it shows (four answers -> 'Only the order service and Yardstick agreed'; inside/outside -> 'Two rows matter most'; identity keys -> external keys paragraph; relisting -> 'The pattern is consistent'; derived visibility -> URL column; timestamps -> bumps; invariants -> trader-status row and the 'When' column; units -> 'Two rules'; storage -> outbox; commands -> twelve types; public evidence has a 'Lesson' column; replay -> 'The replay shows'; trade-offs -> delete-semantics row; verticals -> Veldmark configuration; fitness functions -> lead-in states what they measure). Figures 1-5 have explanatory captions; productscape, eBay, Rightmove, mobile.de, Vinted, Google, DSA, Omnibus and DPE citations are each followed by their lesson.",
       "severity": "major"
     },
     {
+      "criterion": "transition_expresses_declared_relationship",
       "check": "transition_expresses_declared_relationship",
       "verdict": "pass",
-      "finding": "All other boundaries express the declared relationship and pick up the declared known information, e.g. 'Identity names the listing; the lifecycle gives its state.', 'With the states defined, which rules must always hold?', 'The sold transition so far assumes one thing that sells once', 'Every transition, edit and change of quantity leaves a trace.', 'Public contracts show a lifecycle's edges; a replay shows its inside.', 'Group-scale decisions prevent these failures.', 'So what was the state of Femke's bike at 08:00 on Tuesday?'.",
-      "criterion": "transition_expresses_declared_relationship",
+      "finding": "At every section and paragraph boundary the opening sentence or bold phrase expresses the declared relationship and picks up the declared known information (e.g. 'Identity names the listing; the lifecycle gives its state.', 'With the states defined, which rules must always hold?', 'The sold transition so far assumes one thing that sells once', 'Every transition, edit and change of quantity leaves a trace.', 'Public contracts show a lifecycle's edges; a replay shows its inside.', 'Group-scale decisions prevent these failures.', 'So what was the state of Femke's bike at 08:00 on Tuesday?'). Some section openings rely on subheadings or implicit pickup (identity, trade-offs) but none misstates the relationship.",
       "severity": "major"
     },
     {
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/8",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶9",
-      "quote": "**Expiry is a data-quality control, not just a revenue lever.**",
-      "finding": "Spec p29 declares a contrast with renewal as a ranking act (carries over 'Renewal as a ranking act'). The opening contrasts expiry with a revenue lever instead, and the previous paragraph's renewal/bump point is not picked up until the paragraph's last sentences, so the boundary does not express the declared relationship.",
-      "fault": "draft",
-      "criterion": "transition_expresses_declared_relationship",
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers name the organising principle as the roadmap's 'order a contract needs it' (scene, then model built piece by piece, then tests, then judgements), which agrees with the declared prerequisite_order with assertion_evidence_reasoning for the tests and grouping for the closing sections. Neither marks any section's position 'unclear'. Points reported only because the readers read the chapter alone are dismissed: the phishing episode, the November 2027 bikes split, the Essen Golf and the brand names, 'Moderation as an Afterthought' and 'share platforms, not products' are all introduced in meet-veldmark or where-listing-systems-go-wrong, which the spec's audience already knows.",
       "severity": "major"
     },
     {
-      "check": "transition_expresses_declared_relationship",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/5",
-      "draft_locus": "Versions, Change History and Price History ¶6",
-      "quote": "Some attributes change meaning without anyone editing the listing.",
-      "finding": "Spec p36 declares similarity with price as a time series. The opening sentence does not pick up the price series or signal that these facts are kept the same way; the likeness (an effective date and a source) appears only at the paragraph's end.",
-      "fault": "draft",
-      "criterion": "transition_expresses_declared_relationship",
-      "severity": "major"
-    },
-    {
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/5",
       "draft_locus": "Availability, Units and Multi-Item Listings ¶1",
       "quote": "The sold transition so far assumes one thing that sells once, and not every listing offers that.",
-      "finding": "Both flow readers could explain the Availability section's position only weakly: it qualifies the sold transition, so it belongs next to the lifecycle, yet it sits after the invariants and breaks the invariants-to-versions link (material edits). Both proposed the same reorder (lifecycle, availability, invariants, versions). The spec's flow rationale justifies 'availability follows' only by the sold transition, which argues for placing it after the lifecycle, so the difficulty comes from the declared order itself.",
+      "finding": "Both readers could not see why units come after invariants rather than straight after the lifecycle, which they extend (A: 'it is less clear why it comes after invariants rather than straight after the lifecycle'; B: 'reads as an add-on to the lifecycle that is parked between invariants and versions'), and both propose the same move. The difficulty comes from the spec's section order, whose rationale gives no reason for invariants to sit between lifecycle and availability.",
       "fault": "spec",
-      "corroborated_by": "flow reader A, section 2 (Availability) and reordering 1; flow reader B, section 2 (Availability) and reordering 3",
-      "criterion": "flow_is_followable",
+      "corroborated_by": "flow reader B, section 2 (Availability) and section 4, first proposed move; flow reader A, section 2 and section 4 item 1",
       "severity": "major"
     },
     {
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/4/paragraphs/0",
       "draft_locus": "Invariants: What Must Always Be True ¶1",
       "quote": "In the table, the moderation gate is the pending-review check, and a *material* edit changes what moderation approved.",
-      "finding": "The gloss sits between the definition of an invariant and the invariant/policy distinction, for a table not yet seen; both readers had to come back to it, and 'material' is defined again in Versions. The spec asks only for the gloss at the section opening; placing it just before the table (or in the table) keeps the definition whole.",
+      "finding": "The gloss the spec asks for is wedged between the definition of an invariant and the invariant-versus-policy distinction, before the table appears, so both readers had to re-read to find where the argument resumed. Moving it to the end of the paragraph, just before the table, keeps the gloss and the argument.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, point 4; flow reader B, point 11",
-      "criterion": "flow_is_followable",
+      "corroborated_by": "flow reader B, section 3 item 1 (flow reader A, section 3 item 1)",
       "severity": "major"
     },
     {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/6/paragraphs/1",
-      "draft_locus": "Versions, Change History and Price History ¶2",
-      "quote": "For most listing services the right default is the first: current state plus a history table plus an outbox.",
-      "finding": "The outbox is named as the default (and used in the table) before the following paragraph explains it; both readers read ahead and came back. A clause glossing the outbox at first mention would remove the double-back.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, point 7; flow reader B, point 14",
       "criterion": "flow_is_followable",
-      "severity": "major"
-    },
-    {
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/7/paragraphs/2",
       "draft_locus": "Architecture: One Owner, Many Copies ¶3",
       "quote": "The table names events by meaning; the contract folds them into twelve domain event types",
-      "finding": "The command table lists about twenty event names; both readers tried to reconcile them with 'twelve' and could not, and lost the thread before the three properties. The sentence needs to say which names fold together (or drop the count).",
+      "finding": "The number twelve cannot be checked against the command table's roughly twenty event names, and both readers stopped to count or to wonder whether the table was wrong. A sentence that says which names fold together (or that the count is given in event-driven-listings) would remove the stop.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, point 9; flow reader B, point 15",
-      "criterion": "flow_is_followable",
+      "corroborated_by": "flow reader B, section 3 item 3 (flow reader A, section 3 item 2)",
       "severity": "major"
     },
     {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/9/paragraphs/0",
-      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1",
-      "quote": "category Bikes, the leaf before the November 2027 bikes split",
-      "finding": "Both readers stopped mid-replay at a forward reference to a future taxonomy change that the chapter never explains and that does not serve the replay's point; it reads as a leftover.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, point 10; flow reader B, point 16",
       "criterion": "flow_is_followable",
-      "severity": "major"
-    },
-    {
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/9/paragraphs/0",
-      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1",
+      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶1 (replay table)",
       "quote": "`Purge`, brought forward by Femke's erasure request",
-      "finding": "The Purge row jumps six months, skips archiving, introduces the erasure request only inside a cell and refers to a display window whose length is never given; both readers re-read it. 'Purged' is also not among the listed publication states.",
+      "finding": "The September 2027 purge row surprised both readers: A because the opening callout promises the bike's 'two-day life' and the erasure request was never mentioned, B because a sold page 'still inside its display window' six months later was not prepared by the visibility table. A short lead-in that the replay runs to the purge, or a callout wording that does not say 'two-day life', would prepare it.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, point 11; flow reader B, point 17",
-      "criterion": "flow_is_followable",
+      "corroborated_by": "flow reader B, section 3 item 7 (flow reader A, section 3 item 4)",
       "severity": "major"
     },
     {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/2",
-      "draft_locus": "Identity: One ID, Several Keys ¶3",
-      "quote": "It depends on the campaign, one continuous attempt to sell or let.",
-      "finding": "The concept that decides every relisting default is defined only in a trailing appositive; both readers slowed down or re-read it before the table.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, point 2; flow reader B, point 5",
       "criterion": "flow_is_followable",
-      "severity": "major"
-    },
-    {
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/12/paragraphs/0",
       "draft_locus": "Failure Modes ¶1",
       "quote": "Each failure is a missing rule. **The overloaded status column.**",
-      "finding": "The section's framing sentence and the first failure run together in one paragraph, so the first failure is nearly missed and the list's structure is unclear at its start; both readers reported it.",
+      "finding": "The section's framing sentence and the first failure share one paragraph while every other failure has its own, so both readers had to re-read to see where the lead ended and the first item began.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, point 16; flow reader B, point 19",
-      "criterion": "flow_is_followable",
+      "corroborated_by": "flow reader B, section 3 item 9 (flow reader A, section 3, last item)",
       "severity": "major"
     },
     {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/2",
-      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶3",
-      "quote": "Only the order service and Yardstick agreed, and only on the most basic fact.",
-      "finding": "The next sentence says search was right too (for the wrong reason), and the table shows search 'Not present', so the claim that only two systems agreed looks contradicted; the reader re-read the table. Reported by one reader only (flow reader A, point 1).",
-      "fault": "draft",
       "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/1",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶2",
-      "quote": "The publication states, drawn in Figure 4 below, are draft, pending review, rejected, active, paused, reserved, sold, expired, withdrawn and archived.",
-      "finding": "A bare list that does not distinguish withdrawn from archived, and omits the 'Purged' state used later in the replay and the command table. Reported by one reader only (flow reader A, point 3).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/3",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶4",
-      "quote": "Existing conversations, plus waitlist per vertical",
-      "finding": "'Waitlist per vertical' in the visibility table is never explained. Reported by one reader only (flow reader A, point 6).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
       "check": "flow_is_followable",
       "verdict": "fail",
       "spec_locus": "/sections/8/paragraphs/0",
       "draft_locus": "In Practice: What Public Evidence Shows ¶1",
       "quote": "Two sources cited above and one new one, side by side:",
-      "finding": "Two of three rows repeat sources already used, so the section reads less like the promised test of the model. Reported by one reader only (flow reader A, point 12).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
+      "finding": "One reader found the section's position 'partly unclear': two of three rows repeat inline sources, and the Auto Trader lesson about transition permissions sends the reader back to the lifecycle after the architecture. The other reader found the placement clear.",
+      "fault": "unclear",
       "severity": "minor"
     },
     {
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
       "verdict": "fail",
-      "spec_locus": "/sections/8/paragraphs/0",
-      "draft_locus": "In Practice: What Public Evidence Shows ¶1",
-      "quote": "Retailer backlash to the Deal Builder reservation rollout in late 2025",
-      "finding": "The table row names Deal Builder before the following paragraph explains it. Reported by one reader only (flow reader A, point 13).",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Availability, Units and Multi-Item Listings ¶2",
+      "quote": "**\"sold out\" and \"sold\" are different states**",
+      "finding": "One reader had to re-read to tell whether 'sold out' is a new publication state (none is listed earlier) or a condition mapped onto paused, as the same sentence says.",
       "fault": "draft",
-      "criterion": "flow_is_followable",
       "severity": "minor"
     },
     {
+      "criterion": "flow_is_followable",
       "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/9/paragraphs/1",
-      "draft_locus": "The Rotterdam City Bike, Transition by Transition ¶2",
-      "quote": "The replay shows the aggregate changing only for facts about the offer, in three ways.",
-      "finding": "The first of the 'three ways' is a case where the aggregate does not change, so the framing does not match the list; the reader re-read it. Reported by one reader only (flow reader A, point 14).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/0/paragraphs/0",
-      "draft_locus": "Setting the Scene at Veldmark: Four Answers to One Question ¶1",
-      "quote": "On Tuesday morning, an alert digest assembled the evening before still told 214 buyers about it.",
-      "finding": "'The evening before' reads as after the sale (18:10); the reader worked out from the table that assembly (17:30) preceded it. Reported by one reader only (flow reader B, point 1).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/0",
-      "draft_locus": "What a Listing Is, and What It Is Not ¶1",
-      "quote": "| **Offer** (commercial) | Terms under which the thing is available | Often the listing itself |",
-      "finding": "The listing has just been defined as the offer, yet 'Offer' is a separate neighbor whose identity is 'often the listing itself'; the reader stopped to reconcile. Reported by one reader only (flow reader B, point 2).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/1/paragraphs/1",
-      "draft_locus": "What a Listing Is, and What It Is Not ¶2",
-      "quote": "eBay also shows the limit of pushing the idea too far",
-      "finding": "'The idea' has an unclear referent after two sentences about eBay's aspect model; the reader re-read. Reported by one reader only (flow reader B, point 3).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/2",
-      "draft_locus": "Identity: One ID, Several Keys ¶3",
-      "quote": "| Seller deletes and reposts to look new | Not what the seller asked for | What the seller asked for |",
-      "finding": "This row switches the meaning of the 'Same listing ID'/'New listing ID' columns from costs to the seller's wish; the reader re-read the headers. Reported by one reader only (flow reader B, point 6).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/5",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶6",
-      "quote": "Feeds bring their own state vocabulary, and real-estate data standards show how rich this vocabulary gets.",
-      "finding": "The RESO paragraph sits between the URL/SEO paragraph and the renewal subsection and felt out of place. Reported by one reader only (flow reader B, point 8).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/7",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶8",
-      "quote": "**Bumps and renewals of an active listing are not state transitions.**",
-      "finding": "Conflicts on its face with 'every transition is an event' and with the `ListingRenewed` event in the command table; the reader had to reconcile them. Reported by one reader only (flow reader B, point 9).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/3/paragraphs/6",
-      "draft_locus": "The Lifecycle: Two Dimensions, Not One Status ¶7",
-      "quote": "Renewal, paid bump, relist within the same campaign",
-      "finding": "The timestamps table lets relisting within a campaign move `ranked_at`, while the invariants table says it 'moves only through renewal or a paid bump'; the reader noticed the mismatch. Reported by one reader only (flow reader B, point 10).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/4/paragraphs/0",
-      "draft_locus": "Invariants: What Must Always Be True ¶1",
-      "quote": "Entitlement service, checked at publish with a reservation",
-      "finding": "'Reservation' of a listing slot is briefly confused with the Reserved publication state. Reported by one reader only (flow reader B, point 12).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "flow_is_followable",
-      "verdict": "fail",
-      "spec_locus": "/sections/13/paragraphs/3",
-      "draft_locus": "The Chief Architect's View ¶4",
-      "quote": "Under 10 seconds for search",
-      "finding": "The reader had to work out whether the 10-second search target contradicts the replay's 'removed from search within its removal deadline (it was gone at 18:11)'. Reported by one reader only (flow reader B, point 22).",
-      "fault": "draft",
-      "criterion": "flow_is_followable",
-      "severity": "minor"
-    },
-    {
-      "check": "known_before_new",
-      "verdict": "pass",
-      "finding": "Terms on does_not_know are given before or at first use: enforcement overlay, outcome records, renewal vs creation (in the lifecycle), units, regulated price history, invariant vs policy, DSA statement of reasons, trader status, the Omnibus prior-price rule, DPE and RESO statuses. Veldmark brands (Motorvane, Hearthly), failure-pattern names (incl. Moderation as an Afterthought), productscape, versions, the outbox and listing slots are in already_knows or ordinary for the audience; the flow readers' remarks on them (A15/B18, A16/B20, A5, A8, B4, B13) are not term failures for this audience.",
-      "criterion": "known_before_new",
-      "severity": "major"
-    },
-    {
-      "check": "known_before_new",
       "verdict": "fail",
       "spec_locus": "/sections/13/paragraphs/0",
       "draft_locus": "The Chief Architect's View ¶1",
       "quote": "This is \"share platforms, not products\" applied to the most central object",
-      "finding": "The principle is quoted as established, but no earlier chapter (Part I) or earlier passage introduces it; it first appears in later chapters. The rest of the sentence glosses the application, not the principle.",
+      "finding": "One reader met the quoted principle as if already known; it is introduced in the opening pages the audience has read, so this is minor.",
       "fault": "draft",
-      "corroborated_by": "flow reader A, point 17; flow reader B, point 21",
-      "criterion": "known_before_new",
-      "severity": "major"
-    },
-    {
-      "check": "known_before_new",
-      "verdict": "fail",
-      "spec_locus": "/sections/2/paragraphs/2",
-      "draft_locus": "Identity: One ID, Several Keys ¶3",
-      "quote": "| Seller renews an expired listing within the renewal window | Keeps URL, history and favorites | Loses them | **Same ID**, new version, state back to active |",
-      "finding": "The relisting table uses renewal, the renewal window and lifecycle transitions (back to active, sold → active) before the lifecycle section introduces them; 'renewal versus creation' is on does_not_know. A short gloss or forward pointer in the table would fix it without reordering.",
-      "fault": "draft",
-      "corroborated_by": "flow reader A, point 2; flow reader B, point 7",
-      "criterion": "known_before_new",
-      "severity": "major"
-    },
-    {
-      "check": "no_weak_introduction_pattern",
-      "verdict": "pass",
-      "finding": "The introduction opens with an intriguing example (the fifteen-year-old `ads` table), bridges to Part II's claim, states the test and gives a roadmap; none of the five weak patterns.",
-      "criterion": "no_weak_introduction_pattern",
-      "severity": "major"
-    },
-    {
-      "check": "no_weak_conclusion_pattern",
-      "verdict": "pass",
-      "finding": "The conclusion opens by answering the scene's question, synthesizes, gives the so-what and hands off to categories as the spec's declared hand-off; no 'in conclusion', no new subtopic, no body evidence.",
-      "criterion": "no_weak_conclusion_pattern",
-      "severity": "major"
-    },
-    {
-      "check": "conclusion_synthesizes_and_answers_so_what",
-      "verdict": "pass",
-      "finding": "'Each system that went wrong exposed a different missing rule ... Only the rules together answer the chapter's test for every copy, and they are the agreement Sven's contract needed. Ghost inventory then becomes a measure per consumer, fixed in the copy that missed the event rather than in search.' states what no single section states and why it matters.",
-      "criterion": "conclusion_synthesizes_and_answers_so_what",
-      "severity": "major"
-    },
-    {
-      "check": "conclusion_calls_back_to_introduction",
-      "verdict": "pass",
-      "finding": "Returns to Ingrid's question ('So what was the state of Femke's bike at 08:00 on Tuesday?') with one answer (sold, no enforcement, version 9, outcome sold on platform, €225) and why each system was wrong.",
-      "criterion": "conclusion_calls_back_to_introduction",
-      "severity": "major"
-    },
-    {
-      "check": "intro_predicts_content",
-      "verdict": "pass",
-      "finding": "The reader predicted all fifteen sections in the draft's (and spec's) section order, the evidence (fictional Veldmark and the bike; public APIs and standards) and the tone. Note: AC-2's expected text lists invariants before the lifecycle, the reverse of the spec's own section order; the reader's prediction matches the spec's sections.",
-      "criterion": "AC-2",
-      "severity": "major"
-    },
-    {
-      "check": "custom",
-      "verdict": "pass",
-      "finding": "The reader locates the failure in the digest copy, not search (assembled at 17:30 from a pre-sale snapshot, nothing re-checked), and names the fixes in the chapter's terms: versioned events for sold/expired/withdrawn/blocked, a declared removal deadline per consumer, re-check at send / purge on removal. The reader did not mention the sale price as an outcome; the probe gives no sale price and does not ask about analytics, so that element of expected is not elicited by the probe; the chapter states it (replay ¶2).",
-      "criterion": "AC-1",
-      "severity": "major"
-    },
-    {
-      "check": "custom",
-      "verdict": "pass",
-      "finding": "Matches expected: three owners on one status field so one overwrites another (resume set status = active); publication state owned by the listing (seller and clock) plus an enforcement overlay owned by trust and safety, visibility derived from both; no seller command may lift a block, enforced by the listing service as an invariant on every seller command.",
-      "criterion": "AC-4",
       "severity": "minor"
     },
     {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given where first used: enforcement overlay (Lifecycle ¶2-3), outcome record (Lifecycle ¶10), renewal versus creation (timestamps and bumps), units and availability (Availability), regulated price history (Versions ¶4-5), invariant versus policy (Invariants ¶1), DSA statement of reasons (Lifecycle ¶3), trader status (Invariants ¶2), the Omnibus prior-price rule (Versions ¶4), DPE (Versions ¶6), RESO statuses (Lifecycle ¶6). 'Material edit' is glossed before the invariants table uses it, as the spec asks, and defined fully in Versions; the flow readers' complaint there is about the gloss's placement and is recorded under flow_is_followable. Veldmark cast, brands, the Essen Golf and failure-pattern names are on the already_knows list.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with an intriguing example (the fifteen-year-old `ads` table), then the aggregate, the test and a roadmap; none of the five weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers the scene's question, synthesizes the four failures into the rules, and hands off; it does not open with 'in conclusion', add a new subtopic, or merely restate the thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'Each system that went wrong exposed a different missing rule ... Only the rules together answer the chapter's test for every copy' states what no section states alone; the so-what is that ghost inventory becomes a per-consumer measure fixed in the copy, not in search, and that the rules are the agreement Sven's contract needed.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'So what was the state of Femke's bike at 08:00 on Tuesday? Under the contract, one answer: sold, no enforcement, version 9, outcome \"sold on platform, €225\".' returns to Ingrid's question from the scene, as callback.to names.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "Both intro readers (reader-intro and reader-AC-2) predicted the scene, definition, identity, two-dimensional lifecycle with renewals and outcomes, invariants, multi-unit listings, versions and price history, one owner and its events, the tests on public APIs/standards and the bike replay, and the closing trade-offs, verticals, failure modes, Chief Architect's view and review questions, in that order, with Veldmark and public APIs/standards as evidence and a declarative first-person tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
       "check": "custom",
       "verdict": "pass",
-      "finding": "Matches expected on all four: (a) invariant, listing service against the category schema at submission and on edits of an active listing, not in draft; (b) policy, asynchronous duplicate detection after publish; (c) policy, entitlement service at publish with a reservation, reconciled later; (d) invariant, listing service on every command, a bump moves only ranked_at.",
+      "finding": "The reader located the failure in the downstream digest copy (snapshot before the sale, no subscription to removals, no re-check at send), not in search, and named the fixes in the chapter's terms: versioned lifecycle events, a declared removal deadline per consumer with sold-to-gone monitoring, re-check at send, and Veldmark's concrete digest fix. It did not restate that the sale price goes into the outcome, which the probe did not ask about and the chapter states in the replay.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader diagnosed one status column shared by three owners and prescribed a publication state plus an enforcement overlay owned by trust and safety, derived visibility, and the invariant that no seller command makes a blocked listing visible, matching the expected answer.",
+      "severity": "minor"
+    },
+    {
       "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader classified (a) invariant at submission/active edit, not in draft, (b) asynchronous duplicate-detection policy after publish, (c) entitlement-service policy at publish with a reservation, reconciled later, (d) invariant on every command, exactly as expected.",
       "severity": "minor"
     }
   ]
